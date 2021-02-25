@@ -1,0 +1,34 @@
+<ng-container *ngIf="labelDirective; else noLabelRef">
+  <ng-content select="label"></ng-content>
+</ng-container>
+<ng-template #noLabelRef>
+  <label *ngIf="label" [for]="id">{{ label }}</label>
+</ng-template>
+<div
+  class="input-wrapper"
+  [ngClass]="{
+    'has-prefix': !!prefixDirective,
+    'has-suffix': !!sufixDirective,
+    disabled: controlDirective?.isDisabled,
+    'is-select': !!selectComponent
+  }"
+>
+  <div class="spinner-wrapper">
+    <spinner *ngIf="loading" [size]="0.1"></spinner>
+  </div>
+  <div class="preffix-wrapper" *ngIf="prefixDirective" (click)="$event.stopPropagation()">
+    <ng-content select="[prefix]"></ng-content>
+  </div>
+  <ng-content></ng-content>
+  <div class="suffix-wrapper" *ngIf="sufixDirective" (click)="$event.stopPropagation()">
+    <ng-content select="[suffix]"></ng-content>
+  </div>
+</div>
+<div class="bottom-wrapper">
+  <div class="hints" *ngIf="controlDirective?.isTouched || !(controlDirective?.control?.hasErrors$ | async)" @fadeIn>
+    <ng-content select="hint:not([end]),[hint]:not([end])"></ng-content>
+    <div class="hint-spacer"></div>
+    <ng-content select="hint[end],[hint][end]"></ng-content>
+  </div>
+  <ng-content select="errors,[errors]"></ng-content>
+</div>

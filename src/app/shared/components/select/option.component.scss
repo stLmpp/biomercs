@@ -1,0 +1,26 @@
+@import 'variables';
+@import 'mixins';
+
+.bio-option {
+  height: 35px;
+  padding: 0.5rem 1rem;
+  outline: none;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  &.selected {
+    font-weight: 500;
+  }
+  &:not(.disabled) {
+    &:hover,
+    &:focus,
+    &.selected {
+      background-color: $primary-100;
+    }
+  }
+  &.disabled {
+    cursor: default;
+    color: hsla(0, 0%, 100%, 0.5);
+  }
+}

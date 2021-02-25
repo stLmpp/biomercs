@@ -1,0 +1,34 @@
+@import 'variables';
+@import 'mixins';
+
+.menu {
+  min-width: 150px;
+  background-color: $dark-overlay;
+  border-radius: $radius;
+  padding: 0.5rem 0;
+  display: flex;
+  flex-direction: column;
+  @include elevation(3);
+  .menu-item {
+    width: 100%;
+    border-radius: 0;
+    text-align: start;
+    &.button:not(.disabled) {
+      &:focus {
+        box-shadow: none;
+        background-color: transparentize($white, 0.9);
+        &.primary,
+        &.accent,
+        &.danger {
+          background-color: transparentize($white, 0.9);
+          box-shadow: none;
+        }
+      }
+      &.primary,
+      &.accent,
+      &.danger {
+        background-color: transparent;
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+@import 'variables';
+
+:host {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: $accent-300;
+  padding: 1rem;
+  min-width: 64px;
+  > .brand {
+    text-decoration: none;
+    color: $primary-600;
+    font-size: 1.25rem;
+  }
+}

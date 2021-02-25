@@ -1,0 +1,15 @@
+.d-grid {
+  display: grid;
+}
+
+@for $i from 1 through 20 {
+  .grid-columns-#{$i} {
+    grid-template-columns: repeat(#{$i}, minmax(0, 1fr));
+  }
+}
+
+@for $i from 1 through 5 {
+  .grid-gap-#{$i} {
+    grid-gap: #{$i}rem;
+  }
+}

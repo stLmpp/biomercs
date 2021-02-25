@@ -1,0 +1,70 @@
+<card>
+  <h3 cardTitle>Parameters</h3>
+  <card-content>
+    <bio-params
+      [params]="form.value$ | async"
+      (paramsChange)="paramsChange($event)"
+      [config]="paramsConfig"
+      setQueryParamsOnChange
+    ></bio-params>
+  </card-content>
+</card>
+<card [bioLoading]="tableLoading$ | async" class="top-table flex-table">
+  <card-content>
+    <ng-container *ngIf="scoreTopTableOrdered$ | async as scores">
+      <ng-container *ngLet="order$ | async as order">
+        <div class="header" *ngLet="order.orderByDirection === 'desc' ? 'arrow_drop_up' : 'arrow_drop_down' as arrow">
+          <div></div>
+          <div class="player" (click)="updateOrderByPlayer()">
+            Player
+            <icon class="order-icon" *ngIf="order.orderByType === 'personaName'" small>
+              {{ arrow }}
+            </icon>
+          </div>
+          <div *ngFor="let stage of scores.stages; trackBy: trackByStage" (click)="updateOrderByStage(stage.id)">
+            {{ stage.shortName }}
+            <icon class="order-icon" *ngIf="order.orderBy === stage.id" small>
+              {{ arrow }}
+            </icon>
+          </div>
+          <div (click)="updateOrderByTotal()">
+            Total
+            <icon class="order-icon" *ngIf="order.orderByType === 'total'" small>
+              {{ arrow }}
+            </icon>
+          </div>
+        </div>
+      </ng-container>
+
+      <hr />
+      <div class="body">
+        <div class="no-data-found" *ngIf="!scores.scoreTables.length">No scores found</div>
+        <ng-container *ngFor="let player of scores.scoreTables; trackBy: trackByPlayer">
+          <div>
+            <div class="pos-{{ player.position }}">{{ player.position }}</div>
+            <div class="player">
+              <a block bioButton [routerLink]="['/player', player.idPlayer]"> {{ player.personaName }} </a>
+            </div>
+            <div class="score" *ngFor="let score of player.scores; trackBy: trackByScore">
+              <a block bioButton>{{ score?.score || 0 | number: '1.0-0' }}</a>
+            </div>
+            <div class="total">
+              {{ player.total | number: '1.0-0' }}
+            </div>
+          </div>
+          <hr />
+        </ng-container>
+      </div>
+    </ng-container>
+  </card-content>
+  <card-actions end>
+    <pagination
+      *ngIf="paginationMeta$ | async as paginationMeta"
+      [meta]="paginationMeta"
+      (currentPageChange)="changePage($event)"
+      (itemsPerPageChange)="changeItemsPerPage($event)"
+      [itemsPerPageOptions]="itemsPerPageOptions"
+      setQueryParamsOnChange
+    ></pagination>
+  </card-actions>
+</card>

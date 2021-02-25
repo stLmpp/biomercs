@@ -1,0 +1,24 @@
+<loading [show]="loading$ | async"></loading>
+<h3 modalTitle>Region</h3>
+<div modalTitle>
+  <label class="cdk-visually-hidden" for="search">Search</label>
+  <input id="search" placeholder="Search" bioInput type="search" [control]="searchControl" autocomplete="off" />
+</div>
+<list modalContent [(model)]="idRegion">
+  <cdk-virtual-scroll-viewport
+    itemSize="44"
+    [style.height.px]="10 * 44"
+    (keydown.control.s)="$event.preventDefault(); onSave()"
+    *ngLet="all$ | async as all"
+  >
+    <list-item [value]="region.id" *cdkVirtualFor="let region of all; trackBy: trackByRegion; templateCacheSize: 0">
+      <icon prefix [flag]="region.shortName"></icon>
+      {{ region.name }}
+    </list-item>
+    <list-item *ngIf="!all.length"> No data found </list-item>
+  </cdk-virtual-scroll-viewport>
+</list>
+<modal-actions end *ngLet="saving$ | async as saving">
+  <button bioButton type="button" (click)="onSave()" [loading]="saving">Save</button>
+  <button bioButton type="button" (click)="onClose()" [disabled]="saving">Close</button>
+</modal-actions>

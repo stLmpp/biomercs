@@ -1,0 +1,32 @@
+@import 'variables';
+@import 'mixins';
+
+.card {
+  border-radius: $radius;
+  background-color: $light;
+  padding: 1rem;
+  position: relative;
+  display: block;
+  color: $dark;
+  @include elevation(2);
+  > .header {
+    margin-bottom: 1rem;
+  }
+  .card-title {
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+  }
+  .card-subtitle {
+    font-size: 0.85rem;
+    color: $primary-100;
+    &:not(:last-child) {
+      margin-bottom: 0.25rem;
+    }
+  }
+  .card-content {
+    display: block;
+  }
+  .card-actions {
+    @include actions();
+  }
+}

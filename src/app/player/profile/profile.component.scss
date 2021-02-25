@@ -1,0 +1,29 @@
+:host {
+  display: flex;
+  justify-content: center;
+  > card {
+    max-width: 599px;
+    width: 100%;
+    .card-subtitle.about-me {
+      white-space: pre;
+    }
+    .card-title {
+      display: flex;
+      align-items: center;
+      .icon,
+      .button {
+        margin-left: 0.5rem;
+        cursor: pointer;
+      }
+      .icon {
+        opacity: 0;
+        transition: opacity 100ms ease;
+      }
+      &:hover {
+        .icon {
+          opacity: 1;
+        }
+      }
+    }
+  }
+}

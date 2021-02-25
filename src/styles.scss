@@ -1,1 +1,30 @@
 /* You can add global styles to this file, and also import other style files */
+@import 'theme';
+
+body {
+  background-color: $dark;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+*,
+::before,
+::after {
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: $light;
+}
+::-webkit-scrollbar-thumb {
+  background: $dark-weak;
+}
+
+hr {
+  border: 0;
+  border-bottom: 1px solid $primary-200;
+}

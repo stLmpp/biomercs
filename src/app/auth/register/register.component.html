@@ -1,0 +1,90 @@
+<form [controlGroup]="form" (groupSubmit)="submit()" *ngLet="emailSent$ | async as emailSent">
+  <card>
+    <h3 cardTitle>Register</h3>
+    <card-content>
+      <ng-container *ngIf="emailSent; else emailNotSent">
+        <p>Please confirm the code we sent to your e-mail</p>
+        <bio-confirmation-code-input
+          controlName="code"
+          label="Confirmation code"
+          [codeError]="errorConfirmationCode$ | async"
+          (focusoutLastItem)="submit()"
+        ></bio-confirmation-code-input>
+      </ng-container>
+      <ng-template #emailNotSent>
+        <form-field label="Username" [loading]="form.get('username').pending">
+          <input bioInput placeholder="Username" controlName="username" autocomplete="username" />
+          <errors>
+            <error *error="'required'">Username is required</error>
+            <error *error="'minLength'; let error">Username must have at least {{ error.required }} characters</error>
+            <error *error="'usernameExists'">Username already exists</error>
+          </errors>
+        </form-field>
+        <form-field label="E-mail" [loading]="form.get('email').pending">
+          <input bioInput placeholder="E-mail" controlName="email" type="email" autocomplete="email" />
+          <errors>
+            <error *error="'required'">E-mail is required</error>
+            <error *error="'email'">E-mail not valid</error>
+            <error *error="'emailExists'">E-mail already exists</error>
+          </errors>
+        </form-field>
+        <form-field label="Password">
+          <input
+            bioInput
+            placeholder="Password"
+            controlName="password"
+            [type]="hidePassword ? 'password' : 'text'"
+            autocomplete="new-password"
+          />
+          <button suffix bioButton icon type="button" (click)="hidePassword = !hidePassword">
+            <icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</icon>
+          </button>
+          <errors>
+            <error *error="'required'">Password is required</error>
+            <error *error="'minLength'; let error">Password must have at least {{ error.required }} characters</error>
+          </errors>
+        </form-field>
+        <bio-password-strong [password]="password$ | async"></bio-password-strong>
+        <form-field label="Confirm password">
+          <input
+            bioInput
+            placeholder="Confirm password"
+            controlName="confirmPassword"
+            [type]="hideConfirmPassword ? 'password' : 'text'"
+            autocomplete="off"
+          />
+          <button suffix bioButton icon type="button" (click)="hideConfirmPassword = !hideConfirmPassword">
+            <icon>{{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}</icon>
+          </button>
+          <errors>
+            <error *error="'required'">Password is required</error>
+            <error *error="'minLength'; let error">Password must have at least {{ error.required }} characters</error>
+            <error *error="'sibblingEquals'">Passwords does't match</error>
+          </errors>
+        </form-field>
+      </ng-template>
+    </card-content>
+    <card-actions end *ngLet="loading$ | async as state">
+      <button
+        bioButton
+        primary
+        type="button"
+        (click)="registerSteam()"
+        [loading]="state.loadingSteam"
+        [disabled]="state.loading"
+        *ngIf="!emailSent"
+      >
+        Register with Steam
+      </button>
+      <button
+        bioButton
+        primary
+        type="submit"
+        [disabled]="state.loadingSteam || form.invalid || form.pending"
+        [loading]="state.loading"
+      >
+        {{ emailSent ? 'Confirm code' : 'Register' }}
+      </button>
+    </card-actions>
+  </card>
+</form>

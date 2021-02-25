@@ -1,0 +1,25 @@
+@import 'variables';
+
+.flex-table {
+  font-size: 0.85rem;
+  &.card {
+    background-color: $primary;
+    color: $primary-600;
+  }
+  .header,
+  .body > div {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    > div {
+      position: relative;
+      flex: 1;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}

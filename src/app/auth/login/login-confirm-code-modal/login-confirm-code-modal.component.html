@@ -1,0 +1,15 @@
+<form [controlGroup]="form" (groupSubmit)="submit()" *ngLet="loading$ | async as loading">
+  <h3 modalTitle>Code confirmation</h3>
+  <modal-content>
+    <bio-confirmation-code-input
+      controlName="code"
+      (focusoutLastItem)="submit()"
+      label="Confirmation code"
+      [codeError]="error$ | async"
+    ></bio-confirmation-code-input>
+  </modal-content>
+  <modal-actions end>
+    <button bioButton primary type="button" [disabled]="loading" (click)="modalRef.close()">Close</button>
+    <button bioButton primary type="submit" [loading]="loading" [disabled]="form.invalid">Confirm</button>
+  </modal-actions>
+</form>

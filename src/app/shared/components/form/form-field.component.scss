@@ -1,0 +1,85 @@
+@import 'variables';
+
+.form-field {
+  display: block;
+  > .input-wrapper {
+    z-index: 1;
+    position: relative;
+
+    &.has-prefix {
+      > .input {
+        padding-left: 1.25rem;
+      }
+    }
+    &.has-suffix {
+      > .input {
+        padding-right: 1.25rem;
+      }
+      > .spinner-wrapper {
+        right: calc(0.5rem + 18px);
+      }
+    }
+    &.has-prefix,
+    &.has-suffix {
+      .icon {
+        line-height: 18px;
+        font-size: 18px;
+        transform: rotate(0.03deg);
+      }
+      .button {
+        padding: 0;
+      }
+    }
+    &.disabled {
+      pointer-events: none;
+    }
+    &.is-select {
+      > .spinner-wrapper {
+        right: 2rem;
+      }
+    }
+    > .spinner-wrapper {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      top: 0;
+      bottom: 0;
+      right: 0.5rem;
+    }
+    > .suffix-wrapper,
+    > .preffix-wrapper {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      top: 0;
+      height: 100%;
+    }
+    > .suffix-wrapper {
+      right: 0.1rem;
+    }
+    > .preffix-wrapper {
+      left: 0.1rem;
+    }
+  }
+  > .bottom-wrapper {
+    padding: 0.25rem 0.5rem 0;
+    min-height: 1.25rem;
+    position: relative;
+    .errors {
+      position: absolute;
+      top: 0.25rem;
+    }
+    > .hints {
+      display: flex;
+      .hint {
+        font-size: 0.65rem;
+        color: $primary-100;
+        display: block;
+      }
+      > .hint-spacer {
+        flex-grow: 1;
+      }
+    }
+  }
+}

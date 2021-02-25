@@ -1,0 +1,21 @@
+@import 'variables';
+
+:host {
+  > div {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-gap: 1rem;
+    @media only screen and (max-width: $mobile-width) {
+      grid-template-columns: 1fr;
+    }
+    @media only screen and (min-width: $big-screen-width) {
+      display: flex;
+      > .form-field {
+        width: 100%;
+        &:not(:last-of-type) {
+          margin-right: 1rem;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+@import 'variables';
+
+@function get-color($type: $primary-type, $level: 0) {
+  @if $type == $primary-type {
+    @return map-get($primary-pallete, $level);
+  } @else if $type == $accent-type {
+    @return map-get($accent-pallete, $level);
+  } @else if $type == $danger-type {
+    @return map-get($danger-pallete, $level);
+  }
+}
+
+@function get-disabled-color($color) {
+  @return lighten($color, 20);
+}

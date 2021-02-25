@@ -1,3 +1,6 @@
 export const environment = {
-  production: true
+  production: true,
+  dev: false,
+  api: '/api',
+  cacheTimeout: 450_000,
 };

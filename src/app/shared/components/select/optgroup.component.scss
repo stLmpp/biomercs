@@ -1,0 +1,16 @@
+@import 'mixins';
+
+.bio-optgroup {
+  > .label {
+    padding: 0.5rem 1rem;
+    color: hsla(0, 0%, 100%, 0.5);
+    height: 35px;
+  }
+  > .options {
+    display: flex;
+    flex-direction: column;
+    > .bio-option {
+      padding-left: 2rem;
+    }
+  }
+}

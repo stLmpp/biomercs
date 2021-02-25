@@ -1,0 +1,20 @@
+<a class="brand" routerLink="/"> Biomercs </a>
+<div class="end">
+  <ng-container *ngIf="isLogged$ | async; else notLogged">
+    <ng-container *ngIf="user$ | async as user">
+      <button type="button" bioButton [menuTrigger]="menu">
+        <icon>person</icon>
+        {{ user.username }}
+      </button>
+      <bio-menu #menu>
+        <a bioButton menuItem [routerLink]="pathToProfile$ | async">Profile</a>
+        <a *ngIf="user.admin" bioButton menuItem routerLink="/admin">Admin</a>
+        <a bioButton menuItem routerLink="/auth/login" (click)="logout()">Logout</a>
+      </bio-menu>
+    </ng-container>
+  </ng-container>
+  <ng-template #notLogged>
+    <a bioButton routerLink="/auth/register">Register</a>
+    <a bioButton routerLink="/auth/login">Login</a>
+  </ng-template>
+</div>

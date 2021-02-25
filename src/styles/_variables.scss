@@ -1,0 +1,81 @@
+// Sizes
+$radius: 4px;
+
+// Colors
+$white: white;
+$light: #e7e7e7;
+$light-grey: #d0d0d0;
+$dark-weak: #757575;
+$dark-spinner: #6e6e6e;
+$dark-overlay: #4c4c4c;
+$dark: #303030;
+
+$primary-type: 'primary';
+$primary-pallete: (
+  0: #393b44,
+  50: #4f5460,
+  100: #626b77,
+  200: #788394,
+  300: #959bb5,
+  400: #d6e0f0,
+  500: #f1f3f8,
+  600: #f7f7ff,
+);
+
+$primary: map-get($primary-pallete, 0);
+$primary-50: map-get($primary-pallete, 50);
+$primary-100: map-get($primary-pallete, 100);
+$primary-200: map-get($primary-pallete, 200);
+$primary-300: map-get($primary-pallete, 300);
+$primary-400: map-get($primary-pallete, 400);
+$primary-500: map-get($primary-pallete, 500);
+$primary-600: map-get($primary-pallete, 600);
+
+$accent-type: 'accent';
+$accent-pallete: (
+  0: #00587a,
+  50: #005f85,
+  100: #00709d,
+  200: #0078a9,
+  300: #0084be,
+  400: #008dcf,
+  500: #009ee9,
+  600: #00acff,
+);
+
+$accent: map-get($accent-pallete, 0);
+$accent-50: map-get($accent-pallete, 50);
+$accent-100: map-get($accent-pallete, 100);
+$accent-200: map-get($accent-pallete, 200);
+$accent-300: map-get($accent-pallete, 300);
+$accent-400: map-get($accent-pallete, 400);
+$accent-500: map-get($accent-pallete, 500);
+$accent-600: map-get($accent-pallete, 600);
+
+$danger-type: 'danger';
+$danger-pallete: (
+  0: #860f0f,
+  50: #941616,
+  100: #a01c1c,
+  200: #ac2323,
+  300: #c13030,
+  400: #d64141,
+  500: #e55151,
+  600: #f66464,
+);
+
+$danger: map-get($danger-pallete, 0);
+$danger-50: map-get($danger-pallete, 50);
+$danger-100: map-get($danger-pallete, 100);
+$danger-200: map-get($danger-pallete, 200);
+$danger-300: map-get($danger-pallete, 300);
+$danger-400: map-get($danger-pallete, 400);
+$danger-500: map-get($danger-pallete, 500);
+$danger-600: map-get($danger-pallete, 600);
+
+$mobile-width: 599px;
+$big-screen-width: 1200px;
+
+$gold: gold;
+$silver: silver;
+$bronze: #cd7f32;

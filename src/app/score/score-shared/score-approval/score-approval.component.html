@@ -1,0 +1,53 @@
+<card>
+  <h3 cardTitle>Parameters</h3>
+  <card-content>
+    <bio-params
+      [config]="paramsConfig"
+      [params]="params$ | async"
+      (paramsChange)="updateParams($event)"
+      setQueryParamsOnChange
+      clearable
+    ></bio-params>
+  </card-content>
+</card>
+<card [bioLoading]="tableLoading$ | async" class="flex-table">
+  <card-content>
+    <div class="header">
+      <div>Platform</div>
+      <div>Game</div>
+      <div>Mini game</div>
+      <div>Mode</div>
+      <div>Score</div>
+      <div>Date achieved</div>
+      <div>Player(s)</div>
+    </div>
+    <hr />
+    <div class="body" *ngIf="scores$ | async as scores">
+      <div class="no-data-found" *ngIf="!scores.length">No scores found</div>
+      <ng-container *ngFor="let score of scores; trackBy: trackByScore">
+        <div>
+          <div>{{ score.platformShortName }}</div>
+          <div>{{ score.gameShortName }}</div>
+          <div>{{ score.miniGameName }}</div>
+          <div>{{ score.modeName }}</div>
+          <div>{{ score.score | number: '1.0-0' }}</div>
+          <div>{{ score.dateAchieved | date }}</div>
+          <div>
+            {{ score.scorePlayers | join: 'playerPersonaName':' | ' }}
+          </div>
+        </div>
+        <hr />
+      </ng-container>
+    </div>
+  </card-content>
+  <card-actions end>
+    <pagination
+      *ngIf="meta$ | async as meta"
+      [meta]="meta"
+      [itemsPerPageOptions]="itemsPerPageOptions"
+      (currentPageChange)="changeCurrentPage($event)"
+      (itemsPerPageChange)="changeItemsPerPage($event)"
+      setQueryParamsOnChange
+    ></pagination>
+  </card-actions>
+</card>

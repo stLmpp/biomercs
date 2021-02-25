@@ -1,0 +1,16 @@
+@import 'variables';
+@import 'mixins';
+
+.tooltip {
+  margin: 1rem;
+  border-radius: $radius;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.85rem;
+  background-color: transparentize($dark-overlay, 0.1);
+  min-width: 50px;
+  color: $primary-600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  @include elevation(2);
+}

@@ -1,0 +1,28 @@
+<card *ngIf="player$ | async as player">
+  <h3 cardTitle>
+    {{ player.personaName }}
+    <button bioButton icon [loading]="loadingRegion$ | async">
+      <icon [flag]="player.region?.shortName" (click)="openModalSelectRegion()" (mouseenter)="preloadRegions()"></icon>
+    </button>
+    <icon small *ngIf="isSameAsLogged$ | async" (click)="toggleEditMode()">edit</icon>
+  </h3>
+  <div cardSubtitle>{{ player.title }}</div>
+  <div cardSubtitle class="about-me">{{ player.aboutMe }}</div>
+  <card-content>
+    <div class="edit" @collapse *ngIf="editMode$ | async">
+      <form-field label="Title">
+        <input bioInput [model]="player.title" placeholder="Title" (modelChange)="update('title', $event)" />
+      </form-field>
+      <form-field label="About me">
+        <textarea
+          bioInput
+          resize="vertical"
+          rows="3"
+          [model]="player.aboutMe"
+          placeholder="Title"
+          (modelChange)="update('aboutMe', $event)"
+        ></textarea>
+      </form-field>
+    </div>
+  </card-content>
+</card>

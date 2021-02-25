@@ -1,0 +1,15 @@
+.button:not(:last-of-type) {
+  margin-right: 1rem;
+}
+
+:host {
+  display: flex;
+  align-items: center;
+  > span {
+    padding: 0 1rem;
+    white-space: nowrap;
+  }
+  > .bio-select {
+    min-width: 80px;
+  }
+}

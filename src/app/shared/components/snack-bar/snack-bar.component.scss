@@ -1,0 +1,20 @@
+@import 'variables';
+@import 'mixins';
+
+.snack-bar {
+  font-size: 0.75rem;
+  background-color: $dark-overlay;
+  border-radius: $radius;
+  padding: 0.75rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  @include elevation(5);
+  &.no-action {
+    justify-content: flex-start;
+  }
+  > .action {
+    margin-left: 1rem;
+  }
+}

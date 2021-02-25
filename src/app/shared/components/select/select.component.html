@@ -1,0 +1,19 @@
+<div class="select-value" [class.placeholder]="!viewValue && placeholder">
+  {{ viewValue || placeholder }}
+</div>
+<div class="select-icon">
+  <icon>keyboard_arrow_down</icon>
+</div>
+<ng-template #panel>
+  <div
+    class="select-panel height-{{ (options?.length || 0) + (optgroups?.length || 0) }}"
+    tabindex="0"
+    (keydown)="onPanelKeydown($event)"
+    cdkTrapFocus
+    @fadeInOut
+    @scaleIn
+    (@fadeInOut.done)="onFadeInOutDone($event)"
+  >
+    <ng-content></ng-content>
+  </div>
+</ng-template>

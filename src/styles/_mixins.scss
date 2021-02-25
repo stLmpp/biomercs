@@ -1,0 +1,48 @@
+@import 'variables';
+@import '~@material/elevation/elevation-theme';
+@import 'functions';
+
+@mixin actions() {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  button:not(:last-of-type) {
+    margin-right: 1rem;
+  }
+  &.end {
+    justify-content: flex-end;
+  }
+  &.start {
+    justify-content: flex-start;
+  }
+}
+
+@mixin form-focus() {
+  @include _form-focus($primary-type);
+  @include _form-focus($accent-type);
+  @include _form-focus($danger-type);
+  transition: box-shadow 200ms ease-in-out;
+}
+
+@mixin _form-focus($type) {
+  &.#{$type} {
+    &:not(.disabled):not([disabled]):not(:disabled) {
+      &:focus,
+      &.is-open {
+        box-shadow: 0 0 0 2px transparentize(get-color($type, 300), 0.5);
+      }
+      &:active {
+        box-shadow: 0 0 0 3px transparentize(get-color($type, 300), 0.5);
+      }
+    }
+  }
+}
+
+@mixin disabled() {
+  &.disabled,
+  &:disabled,
+  &[disabled] {
+    cursor: default;
+    color: hsla(0, 0%, 100%, 0.5);
+  }
+}

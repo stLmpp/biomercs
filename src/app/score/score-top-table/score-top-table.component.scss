@@ -1,0 +1,45 @@
+@import 'variables';
+
+.card {
+  margin-bottom: 1rem;
+}
+
+.top-table {
+  .header {
+    > div {
+      cursor: pointer;
+    }
+  }
+  .header,
+  .body > div {
+    &.no-data-found {
+      justify-content: center;
+    }
+    > div {
+      &:first-child {
+        flex-grow: 0;
+        flex-basis: 25px;
+      }
+      &.player {
+        flex-basis: 100px;
+      }
+      &.pos-1 {
+        color: $gold;
+      }
+      &.pos-2 {
+        color: $silver;
+      }
+      &.pos-3 {
+        color: $bronze;
+      }
+      > .order-icon {
+        position: absolute;
+        right: 0;
+      }
+    }
+  }
+}
+
+.pagination {
+  margin-right: 1rem;
+}

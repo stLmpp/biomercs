@@ -1,0 +1,20 @@
+<form [controlGroup]="form">
+  <label *ngIf="label" (click)="focusManager.setFirstItemActive()">{{ label }}</label>
+  <div controlArrayName="array" #arrayRef="controlArrayName" (keydown)="focusManager.onKeydown($event)">
+    <input
+      class="no-arrows"
+      bioInput
+      *ngFor="let input of arrayRef; let $index = index"
+      [controlName]="$index"
+      (blur)="onTouched$.next()"
+      (focus)="focusManager.setActiveItem($index)"
+      (paste)="onPaste($event)"
+      placeholder="0"
+      confirmationCodeInput
+    />
+  </div>
+  <div class="errors">
+    <error *ngIf="array.invalid && isTouched">Invalid code</error>
+    <span class="error" *ngIf="codeError">{{ codeError }}</span>
+  </div>
+</form>

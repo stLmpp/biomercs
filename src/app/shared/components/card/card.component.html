@@ -1,0 +1,10 @@
+<div class="header" *ngIf="cardTitleDirectives?.length">
+  <ng-content select="[cardTitle]"></ng-content>
+  <ng-content select="[cardSubtitle]"></ng-content>
+</div>
+<div class="content" *ngIf="cardContentDirectives?.length">
+  <ng-content select="card-content, [cardContent]"></ng-content>
+</div>
+<div class="actions" *ngIf="cardActionsDirective?.length">
+  <ng-content select="card-actions"></ng-content>
+</div>

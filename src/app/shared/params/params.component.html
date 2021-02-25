@@ -1,0 +1,178 @@
+<div [controlGroup]="form" *ngLet="state$ | async as state">
+  <!-- <editor-fold desc="Platform"> -->
+  <form-field *ngIf="formsConfig.idPlatform.show" label="Platform">
+    <bio-select controlName="idPlatform" placeholder="Platform">
+      <bio-option
+        (click)="idPlatformControl.setValue(null)"
+        *ngIf="(formsConfig.idPlatform.clearable | stDefault: state.clearable) && !!(idPlatform$ | async)"
+      >
+        Clear
+      </bio-option>
+      <bio-option
+        [value]="platform.id"
+        *ngFor="let platform of platforms$ | async; trackBy: trackByPlatform"
+        [title]="platform.name"
+      >
+        {{ platform.name }}
+      </bio-option>
+    </bio-select>
+    <errors *ngIf="formsConfig.idPlatform.validators?.length" controlError="idPlatform">
+      <ng-container *ngFor="let validator of formsConfig.idPlatform.validators; trackBy: trackByControlValidator">
+        <error *error="validator.name">{{ formsConfig.idPlatform.errorMessages | get: validator.name }}</error>
+      </ng-container>
+    </errors>
+  </form-field>
+  <!-- </editor-fold> -->
+  <!-- <editor-fold desc="Game"> -->
+  <form-field
+    [loading]="state.gameLoading"
+    [disabled]="!(idPlatform$ | async)"
+    *ngIf="formsConfig.idGame.show"
+    label="Game"
+  >
+    <bio-select controlName="idGame" placeholder="Game">
+      <bio-option disabled *ngIf="state.gameLoading"><spinner [size]="0.1"></spinner> Loading...</bio-option>
+      <bio-option
+        (click)="idGameControl.setValue(null)"
+        *ngIf="(formsConfig.idGame.clearable | stDefault: state.clearable) && !!(idGame$ | async)"
+      >
+        Clear
+      </bio-option>
+      <bio-option [value]="game.id" *ngFor="let game of games$ | async; trackBy: trackByGame" [title]="game.name">
+        {{ game.name }}
+      </bio-option>
+    </bio-select>
+    <errors *ngIf="formsConfig.idPlatform.validators?.length" controlError="idGame">
+      <ng-container *ngFor="let validator of formsConfig.idPlatform.validators; trackBy: trackByControlValidator">
+        <error *error="validator.name">{{ formsConfig.idPlatform.errorMessages | get: validator.name }}</error>
+      </ng-container>
+    </errors>
+  </form-field>
+  <!-- </editor-fold> -->
+  <!-- <editor-fold desc="Mini game"> -->
+  <form-field
+    [loading]="state.miniGameLoading"
+    [disabled]="!(idGame$ | async)"
+    *ngIf="formsConfig.idMiniGame.show"
+    label="Mini game"
+  >
+    <bio-select controlName="idMiniGame" placeholder="Mini Game">
+      <bio-option disabled *ngIf="state.miniGameLoading"><spinner [size]="0.1"></spinner> Loading...</bio-option>
+      <bio-option
+        (click)="idMiniGameControl.setValue(null)"
+        *ngIf="(formsConfig.idMiniGame.clearable | stDefault: state.clearable) && !!(idMiniGame$ | async)"
+      >
+        Clear
+      </bio-option>
+      <bio-option
+        [value]="miniGame.id"
+        *ngFor="let miniGame of miniGames$ | async; trackBy: trackByMiniGame"
+        [title]="miniGame.name"
+      >
+        {{ miniGame.name }}
+      </bio-option>
+    </bio-select>
+    <errors *ngIf="formsConfig.idPlatform.validators?.length" controlError="idMiniGame">
+      <ng-container *ngFor="let validator of formsConfig.idPlatform.validators; trackBy: trackByControlValidator">
+        <error *error="validator.name">{{ formsConfig.idPlatform.errorMessages | get: validator.name }}</error>
+      </ng-container>
+    </errors>
+  </form-field>
+  <!-- </editor-fold> -->
+  <!-- <editor-fold desc="Mode"> -->
+  <form-field
+    [loading]="state.modeLoading"
+    [disabled]="!(idMiniGame$ | async)"
+    *ngIf="formsConfig.idMode.show"
+    label="Mode"
+  >
+    <bio-select controlName="idMode" placeholder="Mode">
+      <bio-option disabled *ngIf="state.modeLoading"><spinner [size]="0.1"></spinner> Loading...</bio-option>
+      <bio-option
+        (click)="idModeControl.setValue(null)"
+        *ngIf="(formsConfig.idMode.clearable | stDefault: state.clearable) && !!(idMode$ | async)"
+      >
+        Clear
+      </bio-option>
+      <bio-option [value]="mode.id" *ngFor="let mode of modes$ | async; trackBy: trackByMode" [title]="mode.name">
+        {{ mode.name }}
+      </bio-option>
+    </bio-select>
+    <errors *ngIf="formsConfig.idPlatform.validators?.length" controlError="idMode">
+      <ng-container *ngFor="let validator of formsConfig.idPlatform.validators; trackBy: trackByControlValidator">
+        <error *error="validator.name">{{ formsConfig.idPlatform.errorMessages | get: validator.name }}</error>
+      </ng-container>
+    </errors>
+  </form-field>
+  <!-- </editor-fold> -->
+  <ng-container *ngLet="!(idModeSelected$ | async) as idModeNotSelected">
+    <!-- <editor-fold desc="Stage"> -->
+    <form-field
+      [loading]="state.stageLoading"
+      [disabled]="idModeNotSelected"
+      *ngIf="formsConfig.idStage.show"
+      label="Stage"
+    >
+      <bio-select controlName="idStage" placeholder="Stage">
+        <bio-option disabled *ngIf="state.stageLoading"><spinner [size]="0.1"></spinner> Loading...</bio-option>
+        <bio-option
+          (click)="idStageControl.setValue(null)"
+          *ngIf="(formsConfig.idStage.clearable | stDefault: state.clearable) && !!(idStage$ | async)"
+        >
+          Clear
+        </bio-option>
+        <bio-option
+          [value]="stage.id"
+          *ngFor="let stage of stages$ | async; trackBy: trackByStage"
+          [title]="stage.name"
+        >
+          {{ stage.name }}
+        </bio-option>
+      </bio-select>
+      <errors *ngIf="formsConfig.idPlatform.validators?.length" controlError="idStage">
+        <ng-container *ngFor="let validator of formsConfig.idPlatform.validators; trackBy: trackByControlValidator">
+          <error *error="validator.name">{{ formsConfig.idPlatform.errorMessages | get: validator.name }}</error>
+        </ng-container>
+      </errors>
+    </form-field>
+    <!-- </editor-fold> -->
+    <!-- <editor-fold desc="Character"> -->
+    <form-field
+      [loading]="state.characterLoading"
+      [disabled]="idModeNotSelected"
+      *ngIf="formsConfig.idCharacterCostume.show"
+      label="Character"
+    >
+      <bio-select controlName="idCharacterCostume" placeholder="Character">
+        <bio-option disabled *ngIf="state.characterLoading"><spinner [size]="0.1"></spinner> Loading...</bio-option>
+        <bio-option
+          (click)="idCharacterCostumeControl.setValue(null)"
+          *ngIf="
+            (formsConfig.idCharacterCostume.clearable | stDefault: state.clearable) && !!(idCharacterCostume$ | async)
+          "
+        >
+          Clear
+        </bio-option>
+        <bio-optgroup
+          *ngFor="let character of characters$ | async; trackBy: trackByCharacter"
+          [label]="character.name"
+          [title]="character.name"
+        >
+          <bio-option
+            *ngFor="let characterCostume of character.characterCostumes; trackBy: trackByCharacterCostume"
+            [value]="characterCostume.id"
+            title="{{ character.name }} {{ characterCostume.name }}"
+          >
+            {{ characterCostume.name }}
+          </bio-option>
+        </bio-optgroup>
+      </bio-select>
+      <errors *ngIf="formsConfig.idPlatform.validators?.length" controlError="idCharacterCostume">
+        <ng-container *ngFor="let validator of formsConfig.idPlatform.validators; trackBy: trackByControlValidator">
+          <error *error="validator.name">{{ formsConfig.idPlatform.errorMessages | get: validator.name }}</error>
+        </ng-container>
+      </errors>
+    </form-field>
+    <!-- </editor-fold> -->
+  </ng-container>
+</div>

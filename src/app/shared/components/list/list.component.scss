@@ -1,0 +1,32 @@
+@import 'variables';
+
+.list {
+  display: flex;
+  flex-direction: column;
+  .list-item {
+    padding: 0.75rem 0.5rem;
+    border-bottom: 1px solid $primary-400;
+    display: flex;
+    outline: none;
+    .suffix {
+      margin-left: auto;
+    }
+    .prefix {
+      margin-right: 0.5rem;
+    }
+    > input.control {
+      margin-right: 1rem;
+    }
+  }
+  &.control {
+    .list-item {
+      cursor: pointer;
+      transition: background-color 150ms ease;
+      &:hover,
+      &.selected,
+      &:focus {
+        background-color: $primary-50;
+      }
+    }
+  }
+}

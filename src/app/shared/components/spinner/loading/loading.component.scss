@@ -1,0 +1,18 @@
+@import 'variables';
+
+.loading-backdrop {
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: wait;
+  > .loading-box {
+    width: 130px;
+    height: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $radius;
+    background-color: transparentize($light-grey, 0.1);
+  }
+}
