@@ -51,7 +51,7 @@ export class RegionSelectComponent
   searchControl = new Control<string>('');
   search$ = this.searchControl.value$.pipe(debounceTime(400));
   all$ = combineLatest([this.regionQuery.all$, this.search$.pipe(startWith(''))]).pipe(
-    map(([regions, term]) => /*search(regions, 'name', term) TODO*/ regions)
+    map(([regions, term]) => regions.search('name', term))
   );
 
   trackByRegion = trackByRegion;
