@@ -1,8 +1,4 @@
-@import '~@angular/cdk/overlay';
-@import '~@angular/cdk/a11y';
-@import '~@angular/cdk/text-field/text-field';
+@import '~@angular/cdk/overlay-prebuilt.css';
+@import '~@angular/cdk/a11y-prebuilt.css';
+@import '~@angular/cdk/text-field-prebuilt.css';
 @import '~flag-icon-css/sass/flag-icon';
-
-@include cdk-text-field();
-@include cdk-overlay();
-@include cdk-a11y();
