@@ -13,6 +13,7 @@
 <card [bioLoading]="tableLoading$ | async" class="flex-table">
   <card-content *ngLet="order$ | async as order">
     <div class="header" *ngLet="order.orderByDirection === 'desc' ? 'arrow_drop_up' : 'arrow_drop_down' as arrow">
+      <div class="approve"></div>
       <div class="platform">Platform</div>
       <div class="game" (click)="changeOrder('game')">
         Game
@@ -57,6 +58,28 @@
       <div class="no-data-found" *ngIf="!scores.length">No scores found</div>
       <ng-container *ngFor="let score of scores; trackBy: trackByScore">
         <div>
+          <div class="approve">
+            <button
+              bioButton
+              icon
+              small
+              tooltip="Approve"
+              tooltipPosition="right"
+              (click)="openModalApproval(scoreApprovalActionEnum.Approve, score)"
+            >
+              <icon small>check</icon>
+            </button>
+            <button
+              bioButton
+              icon
+              small
+              tooltip="Reject"
+              tooltipPosition="right"
+              (click)="openModalApproval(scoreApprovalActionEnum.Reject, score)"
+            >
+              <icon small>close</icon>
+            </button>
+          </div>
           <div class="platform">{{ score.platformShortName }}</div>
           <div class="game">{{ score.gameShortName }}</div>
           <div class="mini-game">{{ score.miniGameName }}</div>
@@ -64,8 +87,8 @@
           <div class="score">{{ score.score | number: '1.0-0' }}</div>
           <div class="date-achieved">{{ score.dateAchieved | date: 'dd/MM/yyyy' }}</div>
           <div class="creation-date">{{ score.creationDate | date: 'dd/MM/yyyy' }}</div>
-          <div class="players">
-            {{ score.scorePlayers | join: 'playerPersonaName':' | ' }}
+          <div class="players" *ngLet="score.scorePlayers | join: 'playerPersonaName':' | ' as players">
+            <span [tooltip]="players" tooltipPosition="left">{{ players }}</span>
           </div>
         </div>
         <hr />

@@ -9,4 +9,5 @@ export interface User extends Base {
   admin: boolean;
   token?: string;
   player?: Player;
+  dateFormat: string;
 }

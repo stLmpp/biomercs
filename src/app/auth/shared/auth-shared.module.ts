@@ -8,8 +8,9 @@ import {
 import { StControlModule } from '@stlmpp/control';
 import { FormModule } from '@shared/components/form/form.module';
 import { PasswordStrongComponent } from './password-strong/password-strong.component';
+import { AuthDateFormatPipe } from './auth-date-format.pipe';
 
-const PIPES = [IsSameAsLoggedPipe];
+const PIPES = [IsSameAsLoggedPipe, AuthDateFormatPipe];
 const DECLARATIONS = [ConfirmationCodeInputComponent, ConfirmationCodeInputDirective, PasswordStrongComponent];
 
 @NgModule({

@@ -1,22 +1,25 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { PARAMS_FORM_NULL, ParamsConfig, ParamsForm } from '@shared/params/params.component';
 import { StateComponent } from '@shared/components/common/state-component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ScoreService } from '../../score.service';
-import { debounceTime, filter, finalize, pluck, shareReplay, switchMap } from 'rxjs/operators';
+import { debounceTime, filter, finalize, pluck, switchMap, takeUntil } from 'rxjs/operators';
 import { trackByFactory } from '@stlmpp/utils';
 import { Observable } from 'rxjs';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { PaginationMetaVW } from '@model/pagination';
 import { ScoreVW } from '@model/score';
 import { OrderByDirection } from 'st-utils';
+import { ScoreApprovalActionEnum } from '@model/enum/score-approval-action.enum';
+import { ScoreApprovalVW } from '@model/score-approval';
 
-interface ScoreApprovalComponentState extends ParamsForm {
+export interface ScoreApprovalComponentState extends ParamsForm {
   page: number;
   itemsPerPage: number;
   tableLoading: boolean;
   orderBy?: string | null;
   orderByDirection?: OrderByDirection | null;
+  data?: ScoreApprovalVW;
 }
 
 @Component({
@@ -25,7 +28,7 @@ interface ScoreApprovalComponentState extends ParamsForm {
   styleUrls: ['./score-approval.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ScoreApprovalComponent extends StateComponent<ScoreApprovalComponentState> {
+export class ScoreApprovalComponent extends StateComponent<ScoreApprovalComponentState> implements OnInit {
   constructor(private activatedRoute: ActivatedRoute, private scoreService: ScoreService, private router: Router) {
     super({ itemsPerPage: 10, page: 1, ...PARAMS_FORM_NULL, tableLoading: false });
     this.updateState({
@@ -46,30 +49,9 @@ export class ScoreApprovalComponent extends StateComponent<ScoreApprovalComponen
     });
   }
 
-  private _data$ = this.selectStateMulti([
-    'idPlatform',
-    'page',
-    'idGame',
-    'idMiniGame',
-    'idMode',
-    'itemsPerPage',
-    'orderBy',
-    'orderByDirection',
-  ]).pipe(
-    debounceTime(50),
-    filter(params => !!params.idPlatform && !!params.page && !!params.itemsPerPage),
-    switchMap(({ idMiniGame, idPlatform, idGame, idMode, itemsPerPage, page, orderBy, orderByDirection }) => {
-      this.updateState('tableLoading', true);
-      return this.scoreService
-        .findApprovalAdmin(idPlatform!, page, idGame, idMiniGame, idMode, itemsPerPage, orderBy, orderByDirection)
-        .pipe(
-          finalize(() => {
-            this.updateState('tableLoading', false);
-          })
-        );
-    }),
-    shareReplay()
-  );
+  private _data$ = this.selectState('data');
+
+  scoreApprovalActionEnum = ScoreApprovalActionEnum;
 
   tableLoading$ = this.selectState('tableLoading');
   scores$: Observable<ScoreVW[]> = this._data$.pipe(pluck('scores'));
@@ -136,5 +118,49 @@ export class ScoreApprovalComponent extends StateComponent<ScoreApprovalComponen
         })
         .then();
     }
+  }
+
+  async openModalApproval(action: ScoreApprovalActionEnum, score: ScoreVW): Promise<void> {
+    const modalRef = await this.scoreService.openModalScoreApproval({
+      score,
+      action,
+      scoreApprovalComponentState: this.getState(),
+    });
+    modalRef.onClose$.subscribe(data => {
+      if (data) {
+        this.updateState({ data });
+      }
+    });
+  }
+
+  ngOnInit(): void {
+    this.selectStateMulti([
+      'idPlatform',
+      'page',
+      'idGame',
+      'idMiniGame',
+      'idMode',
+      'itemsPerPage',
+      'orderBy',
+      'orderByDirection',
+    ])
+      .pipe(
+        debounceTime(50),
+        filter(params => !!params.idPlatform && !!params.page && !!params.itemsPerPage),
+        switchMap(({ idMiniGame, idPlatform, idGame, idMode, itemsPerPage, page, orderBy, orderByDirection }) => {
+          this.updateState('tableLoading', true);
+          return this.scoreService
+            .findApprovalAdmin(idPlatform!, page, idGame, idMiniGame, idMode, itemsPerPage, orderBy, orderByDirection)
+            .pipe(
+              finalize(() => {
+                this.updateState('tableLoading', false);
+              })
+            );
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(data => {
+        this.updateState({ data });
+      });
   }
 }

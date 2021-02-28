@@ -16,6 +16,10 @@ import { AuthInterceptor } from '../auth/auth.interceptor';
 import { AuthErrorInterceptor } from '../auth/auth-error.interceptor';
 import { AbstractRegionService } from '../region/region-service.token';
 import { RegionService } from '../region/region.service';
+import { registerLocaleData } from '@angular/common';
+import localePt from '@angular/common/locales/pt';
+import { ScoreService } from '../score/score.service';
+import { AbstractScoreService } from '../score/abstract-score.service';
 
 const withInterceptors = (...interceptors: any[]): Provider[] =>
   interceptors.map(useClass => ({
@@ -23,9 +27,6 @@ const withInterceptors = (...interceptors: any[]): Provider[] =>
     useClass,
     multi: true,
   }));
-
-import { registerLocaleData } from '@angular/common';
-import localePt from '@angular/common/locales/pt';
 
 registerLocaleData(localePt);
 
@@ -60,6 +61,7 @@ export class CoreModule {
         },
         { provide: AbstractRegionService, useClass: RegionService },
         { provide: NAVIGATOR, useFactory: (window: Window) => window.navigator ?? {}, deps: [WINDOW] },
+        { provide: AbstractScoreService, useClass: ScoreService },
       ],
     };
   }

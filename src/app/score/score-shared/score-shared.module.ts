@@ -8,9 +8,17 @@ import { NgLetModule } from '@shared/let/ng-let.module';
 import { SpinnerModule } from '@shared/components/spinner/spinner.module';
 import { ArrayModule } from '@shared/array/array.module';
 import { IconModule } from '@shared/components/icon/icon.module';
+import { ButtonModule } from '@shared/components/button/button.module';
+import { TooltipModule } from '@shared/components/tooltip/tooltip.module';
+import { ScoreApprovalModalComponent } from './score-approval/score-approval-modal/score-approval-modal.component';
+import { ModalModule } from '@shared/components/modal/modal.module';
+import { AuthSharedModule } from '../../auth/shared/auth-shared.module';
+import { FormModule } from '@shared/components/form/form.module';
+import { SelectModule } from '@shared/components/select/select.module';
+import { StControlModule } from '@stlmpp/control';
 
 @NgModule({
-  declarations: [ScoreApprovalComponent],
+  declarations: [ScoreApprovalComponent, ScoreApprovalModalComponent],
   imports: [
     CommonModule,
     ParamsModule,
@@ -20,7 +28,14 @@ import { IconModule } from '@shared/components/icon/icon.module';
     SpinnerModule,
     ArrayModule,
     IconModule,
+    ButtonModule,
+    TooltipModule,
+    ModalModule,
+    AuthSharedModule,
+    FormModule,
+    SelectModule,
+    StControlModule,
   ],
-  exports: [ScoreApprovalComponent],
+  exports: [ScoreApprovalComponent, ScoreApprovalModalComponent],
 })
 export class ScoreSharedModule {}
