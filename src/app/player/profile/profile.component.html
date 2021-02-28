@@ -1,10 +1,10 @@
 <card *ngIf="player$ | async as player">
   <h3 cardTitle>
     {{ player.personaName }}
-    <button bioButton icon [loading]="loadingRegion$ | async">
+    <button bioButton icon [loading]="loadingRegion$ | async" [tooltip]="player.region?.name">
       <icon [flag]="player.region?.shortName" (click)="openModalSelectRegion()" (mouseenter)="preloadRegions()"></icon>
     </button>
-    <icon small *ngIf="isSameAsLogged$ | async" (click)="toggleEditMode()">edit</icon>
+    <icon tooltip="Edit profile" small *ngIf="isSameAsLogged$ | async" (click)="toggleEditMode()">edit</icon>
   </h3>
   <div cardSubtitle>{{ player.title }}</div>
   <div cardSubtitle class="about-me">{{ player.aboutMe }}</div>

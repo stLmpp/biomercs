@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { PARAMS_FORM_NULL, ParamsConfig, ParamsForm } from '../../../shared/params/params.component';
-import { StateComponent } from '../../../shared/components/common/state-component';
-import { ActivatedRoute } from '@angular/router';
+import { PARAMS_FORM_NULL, ParamsConfig, ParamsForm } from '@shared/params/params.component';
+import { StateComponent } from '@shared/components/common/state-component';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ScoreService } from '../../score.service';
 import { debounceTime, filter, finalize, pluck, shareReplay, switchMap } from 'rxjs/operators';
 import { trackByFactory } from '@stlmpp/utils';
@@ -9,11 +9,14 @@ import { Observable } from 'rxjs';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { PaginationMetaVW } from '@model/pagination';
 import { ScoreVW } from '@model/score';
+import { OrderByDirection } from 'st-utils';
 
 interface ScoreApprovalComponentState extends ParamsForm {
   page: number;
   itemsPerPage: number;
   tableLoading: boolean;
+  orderBy?: string | null;
+  orderByDirection?: OrderByDirection | null;
 }
 
 @Component({
@@ -23,7 +26,7 @@ interface ScoreApprovalComponentState extends ParamsForm {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScoreApprovalComponent extends StateComponent<ScoreApprovalComponentState> {
-  constructor(private activatedRoute: ActivatedRoute, private scoreService: ScoreService) {
+  constructor(private activatedRoute: ActivatedRoute, private scoreService: ScoreService, private router: Router) {
     super({ itemsPerPage: 10, page: 1, ...PARAMS_FORM_NULL, tableLoading: false });
     this.updateState({
       itemsPerPage: this._getItemsPerPageFromRoute(),
@@ -34,19 +37,36 @@ export class ScoreApprovalComponent extends StateComponent<ScoreApprovalComponen
       idMode: this._getParamOrNull(RouteParamEnum.idMode),
       idStage: this._getParamOrNull(RouteParamEnum.idStage),
       idCharacterCostume: this._getParamOrNull(RouteParamEnum.idCharacterCostume),
+      orderBy: this.activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.orderBy) ?? 'creationDate',
+      orderByDirection:
+        (this.activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.orderByDirection) as
+          | OrderByDirection
+          | undefined
+          | null) ?? 'desc',
     });
   }
 
-  private _data$ = this.selectStateMulti(['idPlatform', 'page', 'idGame', 'idMiniGame', 'idMode', 'itemsPerPage']).pipe(
+  private _data$ = this.selectStateMulti([
+    'idPlatform',
+    'page',
+    'idGame',
+    'idMiniGame',
+    'idMode',
+    'itemsPerPage',
+    'orderBy',
+    'orderByDirection',
+  ]).pipe(
     debounceTime(50),
     filter(params => !!params.idPlatform && !!params.page && !!params.itemsPerPage),
-    switchMap(({ idMiniGame, idPlatform, idGame, idMode, itemsPerPage, page }) => {
+    switchMap(({ idMiniGame, idPlatform, idGame, idMode, itemsPerPage, page, orderBy, orderByDirection }) => {
       this.updateState('tableLoading', true);
-      return this.scoreService.findApprovalAdmin(idPlatform!, page, idGame, idMiniGame, idMode, itemsPerPage).pipe(
-        finalize(() => {
-          this.updateState('tableLoading', false);
-        })
-      );
+      return this.scoreService
+        .findApprovalAdmin(idPlatform!, page, idGame, idMiniGame, idMode, itemsPerPage, orderBy, orderByDirection)
+        .pipe(
+          finalize(() => {
+            this.updateState('tableLoading', false);
+          })
+        );
     }),
     shareReplay()
   );
@@ -54,6 +74,7 @@ export class ScoreApprovalComponent extends StateComponent<ScoreApprovalComponen
   tableLoading$ = this.selectState('tableLoading');
   scores$: Observable<ScoreVW[]> = this._data$.pipe(pluck('scores'));
   meta$: Observable<PaginationMetaVW> = this._data$.pipe(pluck('meta'));
+  order$ = this.selectStateMulti(['orderBy', 'orderByDirection']);
 
   itemsPerPageOptions = [5, 10, 25, 50, 100];
 
@@ -78,6 +99,18 @@ export class ScoreApprovalComponent extends StateComponent<ScoreApprovalComponen
     return this.itemsPerPageOptions.includes(itemsPerPage) ? itemsPerPage : 10;
   }
 
+  private _updateOrderDirection(): void {
+    const orderByDirection = this.getState('orderByDirection') === 'asc' ? 'desc' : 'asc';
+    this.updateState('orderByDirection', this.getState('orderByDirection') === 'asc' ? 'desc' : 'asc');
+    this.router
+      .navigate([], {
+        relativeTo: this.activatedRoute,
+        queryParamsHandling: 'merge',
+        queryParams: { [RouteParamEnum.orderByDirection]: orderByDirection },
+      })
+      .then();
+  }
+
   updateParams($event: ParamsForm): void {
     this.updateState($event);
   }
@@ -88,5 +121,20 @@ export class ScoreApprovalComponent extends StateComponent<ScoreApprovalComponen
 
   changeItemsPerPage(itemsPerPage: number): void {
     this.updateState({ itemsPerPage });
+  }
+
+  changeOrder(orderBy: string): void {
+    if (this.getState('orderBy') === orderBy) {
+      this._updateOrderDirection();
+    } else {
+      this.updateState({ orderBy });
+      this.router
+        .navigate([], {
+          relativeTo: this.activatedRoute,
+          queryParamsHandling: 'merge',
+          queryParams: { [RouteParamEnum.orderBy]: orderBy },
+        })
+        .then();
+    }
   }
 }

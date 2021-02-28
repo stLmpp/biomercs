@@ -7,10 +7,20 @@ import { CardModule } from '@shared/components/card/card.module';
 import { NgLetModule } from '@shared/let/ng-let.module';
 import { SpinnerModule } from '@shared/components/spinner/spinner.module';
 import { ArrayModule } from '@shared/array/array.module';
+import { IconModule } from '@shared/components/icon/icon.module';
 
 @NgModule({
   declarations: [ScoreApprovalComponent],
-  imports: [CommonModule, ParamsModule, PaginationModule, CardModule, NgLetModule, SpinnerModule, ArrayModule],
+  imports: [
+    CommonModule,
+    ParamsModule,
+    PaginationModule,
+    CardModule,
+    NgLetModule,
+    SpinnerModule,
+    ArrayModule,
+    IconModule,
+  ],
   exports: [ScoreApprovalComponent],
 })
 export class ScoreSharedModule {}

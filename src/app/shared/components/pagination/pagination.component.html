@@ -1,19 +1,52 @@
 <span> Items per page: </span>
-<bio-select [model]="itemsPerPage" (modelChange)="itemsPerPageChange.emit($event)" placeholder="Items per page">
+<bio-select
+  [disabled]="!itemCount"
+  [model]="itemsPerPage"
+  (modelChange)="itemsPerPageChange.emit($event)"
+  placeholder="Items per page"
+>
   <bio-option *ngFor="let option of itemsPerPageOptions" [value]="option">{{ option }}</bio-option>
 </bio-select>
 <span>
   {{ (currentPage - 1) * itemsPerPage + 1 }} - {{ currentPage * itemsPerPage | min: totalItems }} of {{ totalItems }}
 </span>
-<button bioButton icon type="button" (click)="onFirstPage()" [disabled]="currentPage === 1" tooltip="First page">
+<button
+  bioButton
+  icon
+  type="button"
+  (click)="onFirstPage()"
+  [disabled]="!itemCount || currentPage === 1"
+  tooltip="First page"
+>
   <icon>first_page</icon>
 </button>
-<button bioButton icon type="button" (click)="onPreviousPage()" [disabled]="currentPage === 1" tooltip="Previous page">
+<button
+  bioButton
+  icon
+  type="button"
+  (click)="onPreviousPage()"
+  [disabled]="!itemCount || currentPage === 1"
+  tooltip="Previous page"
+>
   <icon>chevron_left</icon>
 </button>
-<button bioButton icon type="button" (click)="onNextPage()" [disabled]="currentPage === totalPages" tooltip="Next page">
+<button
+  bioButton
+  icon
+  type="button"
+  (click)="onNextPage()"
+  [disabled]="!itemCount || currentPage === totalPages"
+  tooltip="Next page"
+>
   <icon>chevron_right</icon>
 </button>
-<button bioButton icon type="button" (click)="onLastPage()" [disabled]="currentPage === totalPages" tooltip="Last page">
+<button
+  bioButton
+  icon
+  type="button"
+  (click)="onLastPage()"
+  [disabled]="!itemCount || currentPage === totalPages"
+  tooltip="Last page"
+>
   <icon>last_page</icon>
 </button>

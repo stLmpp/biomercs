@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { HttpParams } from '@util/http-params';
 import { ScoreAdd, ScoreTopTableVW, ScoreVW } from '@model/score';
 import { ScoreApprovalVW } from '@model/score-approval';
+import { OrderByDirection } from 'st-utils';
 
 @Injectable({ providedIn: 'root' })
 export class ScoreService {
@@ -40,9 +41,14 @@ export class ScoreService {
     idGame?: number | null,
     idMiniGame?: number | null,
     idMode?: number | null,
-    limit?: number
+    limit?: number,
+    orderBy?: string | null,
+    orderByDirection?: OrderByDirection | null
   ): Observable<ScoreApprovalVW> {
-    const params = new HttpParams({ idPlatform, page, idGame, idMiniGame, idMode, limit }, true);
+    const params = new HttpParams(
+      { idPlatform, page, idGame, idMiniGame, idMode, limit, orderBy, orderByDirection },
+      true
+    );
     return this.http.get<ScoreApprovalVW>(`${this.endPoint}/approval/admin`, { params });
   }
 
@@ -52,9 +58,14 @@ export class ScoreService {
     idGame?: number,
     idMiniGame?: number,
     idMode?: number,
-    limit?: number
+    limit?: number,
+    orderBy?: string | null,
+    orderByDirection?: OrderByDirection | null
   ): Observable<ScoreApprovalVW> {
-    const params = new HttpParams({ idPlatform, page, idGame, idMiniGame, idMode, limit }, true);
+    const params = new HttpParams(
+      { idPlatform, page, idGame, idMiniGame, idMode, limit, orderBy, orderByDirection },
+      true
+    );
     return this.http.get<ScoreApprovalVW>(`${this.endPoint}/approval/player`, { params });
   }
 }

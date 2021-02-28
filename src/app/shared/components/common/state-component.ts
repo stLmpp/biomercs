@@ -1,17 +1,35 @@
 import { BehaviorSubject, Observable, OperatorFunction } from 'rxjs';
-import { distinctUntilChanged, map, pluck } from 'rxjs/operators';
+import { auditTime, distinctUntilChanged, filter, map, pluck, takeUntil } from 'rxjs/operators';
 import { Directive } from '@angular/core';
 import { Destroyable } from './destroyable-component';
 import { isFunction, isObject } from 'st-utils';
+import { Entries } from '@stlmpp/store';
 
 @Directive()
 export abstract class StateComponent<T extends Record<string, any> = Record<string, any>> extends Destroyable {
   protected constructor(initialState: T) {
     super();
     this._state$ = new BehaviorSubject(initialState);
+    this._updateQueue$
+      .pipe(
+        takeUntil(this.destroy$),
+        filter(updates => !!updates.length),
+        auditTime(0)
+      )
+      .subscribe(updates => {
+        this._updateQueue$.next([]);
+        const state = { ...this._state$.value };
+        const newState = updates.reduce((acc, item) => item(acc), state);
+        this._state$.next(newState);
+      });
   }
 
   private _state$: BehaviorSubject<T>;
+  private _updateQueue$ = new BehaviorSubject<((state: T) => T)[]>([]);
+
+  private _updateQueue(callback: (state: T) => T): void {
+    this._updateQueue$.next([...this._updateQueue$.value, callback]);
+  }
 
   updateState(partial: Partial<T> | ((state: T) => T)): void;
   updateState<K extends keyof T>(key: K, value: T[K] | ((state: T[K] | undefined) => T[K])): void;
@@ -21,11 +39,10 @@ export abstract class StateComponent<T extends Record<string, any> = Record<stri
   ): void {
     if (isFunction(key) || isObject(key)) {
       const callback = isFunction(key) ? key : (state: T) => ({ ...state, ...key });
-      this._state$.next(callback({ ...this._state$.value }));
+      this._updateQueue(callback);
     } else {
       const callback = isFunction(value) ? value : () => value;
-      const state = { ...this._state$.value };
-      this._state$.next({ ...state, [key]: callback(state[key]) });
+      this._updateQueue(state => ({ ...state, [key]: callback(state[key]) }));
     }
   }
 
@@ -43,9 +60,9 @@ export abstract class StateComponent<T extends Record<string, any> = Record<stri
     return this._state$.pipe(
       distinctUntilKeysChanged(keys),
       map(state =>
-        Object.entries(state).reduce(
-          (acc, [key, value]) => (keys.includes(key as any) ? { ...acc, [key]: value } : acc),
-          {} as any
+        (Object.entries(state) as Entries<T, K>).reduce(
+          (acc, [key, value]) => (keys.includes(key) ? { ...acc, [key]: value } : acc),
+          {} as Pick<T, K>
         )
       )
     );

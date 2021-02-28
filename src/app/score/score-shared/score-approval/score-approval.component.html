@@ -11,28 +11,60 @@
   </card-content>
 </card>
 <card [bioLoading]="tableLoading$ | async" class="flex-table">
-  <card-content>
-    <div class="header">
-      <div>Platform</div>
-      <div>Game</div>
-      <div>Mini game</div>
-      <div>Mode</div>
-      <div>Score</div>
-      <div>Date achieved</div>
-      <div>Player(s)</div>
+  <card-content *ngLet="order$ | async as order">
+    <div class="header" *ngLet="order.orderByDirection === 'desc' ? 'arrow_drop_up' : 'arrow_drop_down' as arrow">
+      <div class="platform">Platform</div>
+      <div class="game" (click)="changeOrder('game')">
+        Game
+        <icon class="order-icon" *ngIf="order.orderBy === 'game'" small>
+          {{ arrow }}
+        </icon>
+      </div>
+      <div class="mini-game" (click)="changeOrder('miniGame')">
+        Mini game
+        <icon class="order-icon" *ngIf="order.orderBy === 'miniGame'" small>
+          {{ arrow }}
+        </icon>
+      </div>
+      <div class="mode" (click)="changeOrder('mode')">
+        Mode
+        <icon class="order-icon" *ngIf="order.orderBy === 'mode'" small>
+          {{ arrow }}
+        </icon>
+      </div>
+      <div class="score" (click)="changeOrder('score')">
+        Score
+        <icon class="order-icon" *ngIf="order.orderBy === 'score'" small>
+          {{ arrow }}
+        </icon>
+      </div>
+      <div class="date-achieved" (click)="changeOrder('dateAchieved')">
+        Date achieved
+        <icon class="order-icon" *ngIf="order.orderBy === 'dateAchieved'" small>
+          {{ arrow }}
+        </icon>
+      </div>
+      <div class="creation-date" (click)="changeOrder('creationDate')">
+        Creation date
+        <icon class="order-icon" *ngIf="order.orderBy === 'creationDate'" small>
+          {{ arrow }}
+        </icon>
+      </div>
+      <div class="players">Player(s)</div>
     </div>
     <hr />
     <div class="body" *ngIf="scores$ | async as scores">
       <div class="no-data-found" *ngIf="!scores.length">No scores found</div>
       <ng-container *ngFor="let score of scores; trackBy: trackByScore">
         <div>
-          <div>{{ score.platformShortName }}</div>
-          <div>{{ score.gameShortName }}</div>
-          <div>{{ score.miniGameName }}</div>
-          <div>{{ score.modeName }}</div>
-          <div>{{ score.score | number: '1.0-0' }}</div>
-          <div>{{ score.dateAchieved | date }}</div>
-          <div>
+          <div class="platform">{{ score.platformShortName }}</div>
+          <div class="game">{{ score.gameShortName }}</div>
+          <div class="mini-game">{{ score.miniGameName }}</div>
+          <div class="mode">{{ score.modeName }}</div>
+          <div class="score">{{ score.score | number: '1.0-0' }}</div>
+          <div class="date-achieved">{{ score.dateAchieved | date: 'dd/MM/yyyy' }}</div>
+          <div class="creation-date">{{ score.creationDate | date: 'dd/MM/yyyy' }}</div>
+          <div class="players">
             {{ score.scorePlayers | join: 'playerPersonaName':' | ' }}
           </div>
         </div>
