@@ -46,7 +46,9 @@
               <a block bioButton [routerLink]="['/player', player.idPlayer]"> {{ player.personaName }} </a>
             </div>
             <div class="score" *ngFor="let score of player.scores; trackBy: trackByScore">
-              <a block bioButton>{{ score?.score || 0 | number: '1.0-0' }}</a>
+              <button [disabled]="!score" block bioButton (click)="openScoreInfo(score!)">
+                {{ score?.score || 0 | number: '1.0-0' }}
+              </button>
             </div>
             <div class="total">
               {{ player.total | number: '1.0-0' }}

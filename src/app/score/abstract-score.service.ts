@@ -34,7 +34,8 @@ export abstract class AbstractScoreService {
     );
   }
 
-  findApprovalAdmin(
+  findApproval(
+    playerMode: boolean,
     idPlatform: number,
     page: number,
     idGame?: number | null,
@@ -48,31 +49,17 @@ export abstract class AbstractScoreService {
       { idPlatform, page, idGame, idMiniGame, idMode, limit, orderBy, orderByDirection },
       true
     );
-    return this.http.get<ScoreApprovalVW>(`${this.endPoint}/approval/admin`, { params });
+    const path = playerMode ? 'player' : 'admin';
+    return this.http.get<ScoreApprovalVW>(`${this.endPoint}/approval/${path}`, { params });
   }
 
-  findApprovalPlayer(
-    idPlatform: number,
-    page: number,
-    idGame?: number,
-    idMiniGame?: number,
-    idMode?: number,
-    limit?: number,
-    orderBy?: string | null,
-    orderByDirection?: OrderByDirection | null
-  ): Observable<ScoreApprovalVW> {
-    const params = new HttpParams(
-      { idPlatform, page, idGame, idMiniGame, idMode, limit, orderBy, orderByDirection },
-      true
-    );
-    return this.http.get<ScoreApprovalVW>(`${this.endPoint}/approval/player`, { params });
-  }
-
-  approveOrRejectAdmin(idScore: number, action: ScoreApprovalActionEnum, payload: ScoreApprovalAdd): Observable<void> {
-    return this.http.post<void>(`${this.endPoint}/${idScore}/${action.toLowerCase()}/admin`, payload);
-  }
-
-  approveOrRejectPlayer(idScore: number, action: ScoreApprovalActionEnum, payload: ScoreApprovalAdd): Observable<void> {
-    return this.http.post<void>(`${this.endPoint}/${idScore}/${action.toLowerCase()}/player`, payload);
+  approveOrReject(
+    playerMode: boolean,
+    idScore: number,
+    action: ScoreApprovalActionEnum,
+    payload: ScoreApprovalAdd
+  ): Observable<void> {
+    const path = playerMode ? 'player' : 'admin';
+    return this.http.post<void>(`${this.endPoint}/${idScore}/${action.toLowerCase()}/${path}`, payload);
   }
 }

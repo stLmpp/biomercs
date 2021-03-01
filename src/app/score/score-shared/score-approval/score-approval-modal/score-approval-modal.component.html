@@ -1,26 +1,7 @@
 <form [controlGroup]="form" (groupSubmit)="save()">
   <h4 modalTitle>{{ action }} score</h4>
   <modal-content>
-    <div class="items">
-      <div class="title">Platform:</div>
-      <div class="value">{{ score.platformName }}</div>
-      <div class="title">Game:</div>
-      <div class="value">{{ score.gameName }}</div>
-      <div class="title">Mini game:</div>
-      <div class="value">{{ score.miniGameName }}</div>
-      <div class="title">Mode:</div>
-      <div class="value">{{ score.modeName }}</div>
-      <div class="title">Score:</div>
-      <div class="value">{{ score.score | number: '1.0-0' }}</div>
-      <div class="title">Date achieved:</div>
-      <div class="value">{{ score.dateAchieved | authDateFormat }}</div>
-      <div class="title">Creation date:</div>
-      <div class="value">{{ score.creationDate | authDateFormat }}</div>
-      <ng-container *ngFor="let player of score.scorePlayers; let $index = index; trackBy: trackByScorePlayer">
-        <div class="title">Player {{ $index + 1 }}:</div>
-        <div class="value">{{ player.playerPersonaName }}</div>
-      </ng-container>
-    </div>
+    <bio-score-info [score]="score"></bio-score-info>
     <hr />
     <form-field label="Description">
       <textarea placeholder="Description" resize="vertical" bioInput controlName="description"></textarea>

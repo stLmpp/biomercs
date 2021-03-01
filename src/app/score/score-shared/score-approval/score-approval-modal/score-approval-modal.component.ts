@@ -20,6 +20,7 @@ export interface ScoreApprovalModalData {
   score: ScoreVW;
   action: ScoreApprovalActionEnum;
   scoreApprovalComponentState: ScoreApprovalComponentState;
+  playerMode: boolean;
 }
 
 @Component({
@@ -30,7 +31,7 @@ export interface ScoreApprovalModalData {
 })
 export class ScoreApprovalModalComponent extends StateComponent<{ saving: boolean }> implements OnInit {
   constructor(
-    @Inject(MODAL_DATA) { action, score, scoreApprovalComponentState }: ScoreApprovalModalData,
+    @Inject(MODAL_DATA) { action, score, scoreApprovalComponentState, playerMode }: ScoreApprovalModalData,
     private scoreService: AbstractScoreService,
     public modalRef: ModalRef<ScoreApprovalModalComponent, ScoreApprovalModalData, ScoreApprovalVW>,
     public scoreApprovalMotiveQuery: ScoreApprovalMotiveQuery,
@@ -41,6 +42,7 @@ export class ScoreApprovalModalComponent extends StateComponent<{ saving: boolea
     this.score = score;
     this.action = action;
     this.scoreApprovalComponentState = scoreApprovalComponentState;
+    this.playerMode = playerMode;
     this.scoreApprovalMotives$ = this.scoreApprovalMotiveQuery.selectByAction(this.action);
   }
 
@@ -48,6 +50,7 @@ export class ScoreApprovalModalComponent extends StateComponent<{ saving: boolea
   scoreApprovalActionEnum = ScoreApprovalActionEnum;
   score: ScoreVW;
   action: ScoreApprovalActionEnum;
+  playerMode: boolean;
   saving$ = this.selectState('saving');
   scoreApprovalMotives$: Observable<StMapView<ScoreApprovalMotive>>;
 
@@ -64,7 +67,7 @@ export class ScoreApprovalModalComponent extends StateComponent<{ saving: boolea
     this.form.disable();
     const payload = this.form.value;
     this.scoreService
-      .approveOrRejectAdmin(this.score.idScore, this.action, payload)
+      .approveOrReject(this.playerMode, this.score.idScore, this.action, payload)
       .pipe(
         switchMap(() => {
           const {
@@ -77,7 +80,8 @@ export class ScoreApprovalModalComponent extends StateComponent<{ saving: boolea
             orderBy,
             orderByDirection,
           } = this.scoreApprovalComponentState;
-          return this.scoreService.findApprovalAdmin(
+          return this.scoreService.findApproval(
+            this.playerMode,
             idPlatform!,
             page,
             idGame,

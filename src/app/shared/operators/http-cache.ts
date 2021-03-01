@@ -16,7 +16,7 @@ function cache(key: string, value: any): void {
 }
 
 export function httpCache<T>(store: EntityStore<any, any, any>, params: any[]): MonoTypeOperatorFunction<T> {
-  const key = (store as any).options.name + '-' + params.map(param => '' + param).join('-');
+  const key = (store as any).options.name + '-' + params.map(param => param?.toString?.() ?? '').join('-');
   const hasCache = !!cacheMap.get(key);
   return source =>
     new Observable<T>(subscriber => {

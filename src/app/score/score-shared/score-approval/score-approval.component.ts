@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { PARAMS_FORM_NULL, ParamsConfig, ParamsForm } from '@shared/params/params.component';
 import { StateComponent } from '@shared/components/common/state-component';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -50,6 +50,8 @@ export class ScoreApprovalComponent extends StateComponent<ScoreApprovalComponen
   }
 
   private _data$ = this.selectState('data');
+
+  @Input() playerMode = false;
 
   scoreApprovalActionEnum = ScoreApprovalActionEnum;
 
@@ -125,6 +127,7 @@ export class ScoreApprovalComponent extends StateComponent<ScoreApprovalComponen
       score,
       action,
       scoreApprovalComponentState: this.getState(),
+      playerMode: this.playerMode,
     });
     modalRef.onClose$.subscribe(data => {
       if (data) {
@@ -150,7 +153,17 @@ export class ScoreApprovalComponent extends StateComponent<ScoreApprovalComponen
         switchMap(({ idMiniGame, idPlatform, idGame, idMode, itemsPerPage, page, orderBy, orderByDirection }) => {
           this.updateState('tableLoading', true);
           return this.scoreService
-            .findApprovalAdmin(idPlatform!, page, idGame, idMiniGame, idMode, itemsPerPage, orderBy, orderByDirection)
+            .findApproval(
+              this.playerMode,
+              idPlatform!,
+              page,
+              idGame,
+              idMiniGame,
+              idMode,
+              itemsPerPage,
+              orderBy,
+              orderByDirection
+            )
             .pipe(
               finalize(() => {
                 this.updateState('tableLoading', false);

@@ -16,9 +16,14 @@ import { AuthSharedModule } from '../../auth/shared/auth-shared.module';
 import { FormModule } from '@shared/components/form/form.module';
 import { SelectModule } from '@shared/components/select/select.module';
 import { StControlModule } from '@stlmpp/control';
+import { ScoreInfoComponent } from './score-info/score-info.component';
+import { RouterModule } from '@angular/router';
+import { ScoreInfoModalComponent } from './score-info/score-info-modal/score-info-modal.component';
+
+const DECLARATIONS = [ScoreApprovalComponent, ScoreApprovalModalComponent, ScoreInfoComponent, ScoreInfoModalComponent];
 
 @NgModule({
-  declarations: [ScoreApprovalComponent, ScoreApprovalModalComponent],
+  declarations: [...DECLARATIONS],
   imports: [
     CommonModule,
     ParamsModule,
@@ -35,7 +40,8 @@ import { StControlModule } from '@stlmpp/control';
     FormModule,
     SelectModule,
     StControlModule,
+    RouterModule,
   ],
-  exports: [ScoreApprovalComponent, ScoreApprovalModalComponent],
+  exports: [...DECLARATIONS],
 })
 export class ScoreSharedModule {}

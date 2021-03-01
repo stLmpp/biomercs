@@ -1,0 +1,25 @@
+<div class="title">Platform:</div>
+<div class="value">{{ score.platformName }}</div>
+<div class="title">Game:</div>
+<div class="value">{{ score.gameName }}</div>
+<div class="title">Mini game:</div>
+<div class="value">{{ score.miniGameName }}</div>
+<div class="title">Mode:</div>
+<div class="value">{{ score.modeName }}</div>
+<div class="title">Score:</div>
+<div class="value">{{ score.score | number: '1.0-0' }}</div>
+<div class="title">Date achieved:</div>
+<div class="value">{{ score.dateAchieved | authDateFormat }}</div>
+<div class="title">Creation date:</div>
+<div class="value">{{ score.creationDate | authDateFormat }}</div>
+<ng-container *ngFor="let player of score.scorePlayers; let $index = index; trackBy: trackByScorePlayer">
+  <div class="title">Player {{ $index + 1 }}:</div>
+  <div class="value with-icon">
+    {{ player.playerPersonaName }}
+    <a [tabindex]="-1" bioButton icon small [routerLink]="['/player', player.idPlayer]" target="_blank">
+      <icon small>launch</icon>
+    </a>
+  </div>
+  <div class="title">Character {{ $index + 1 }}:</div>
+  <div class="value">{{ player.characterName }} {{ player.characterCostumeName }}</div>
+</ng-container>

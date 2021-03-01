@@ -195,4 +195,8 @@ export class ScoreTopTableComponent extends StateComponent<{
       this.form.patchValue({ ...$event, page: 1 });
     }
   }
+
+  openScoreInfo(score: ScoreVW): void {
+    this.scoreService.openModalScoreInfo(score).then();
+  }
 }
