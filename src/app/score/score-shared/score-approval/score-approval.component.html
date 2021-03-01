@@ -85,8 +85,8 @@
           <div class="mini-game">{{ score.miniGameName }}</div>
           <div class="mode">{{ score.modeName }}</div>
           <div class="score">{{ score.score | number: '1.0-0' }}</div>
-          <div class="date-achieved">{{ score.dateAchieved | date: 'dd/MM/yyyy' }}</div>
-          <div class="creation-date">{{ score.creationDate | date: 'dd/MM/yyyy' }}</div>
+          <div class="date-achieved">{{ score.dateAchieved | authDateFormat }}</div>
+          <div class="creation-date">{{ score.creationDate | authDateFormat }}</div>
           <div class="players" *ngLet="score.scorePlayers | join: 'playerPersonaName':' | ' as players">
             <span [tooltip]="players" tooltipPosition="left">{{ players }}</span>
           </div>
