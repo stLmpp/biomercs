@@ -20,6 +20,7 @@ export interface ScoreApprovalComponentState extends ParamsForm {
   orderBy?: string | null;
   orderByDirection?: OrderByDirection | null;
   data?: ScoreApprovalVW;
+  loadingApprovalModal: boolean;
 }
 
 @Component({
@@ -30,7 +31,7 @@ export interface ScoreApprovalComponentState extends ParamsForm {
 })
 export class ScoreApprovalComponent extends StateComponent<ScoreApprovalComponentState> implements OnInit {
   constructor(private activatedRoute: ActivatedRoute, private scoreService: ScoreService, private router: Router) {
-    super({ itemsPerPage: 10, page: 1, ...PARAMS_FORM_NULL, tableLoading: false });
+    super({ itemsPerPage: 10, page: 1, ...PARAMS_FORM_NULL, tableLoading: false, loadingApprovalModal: false });
     this.updateState({
       itemsPerPage: this._getItemsPerPageFromRoute(),
       page: +(this._getParamOrNull(RouteParamEnum.page) ?? 1),
@@ -45,7 +46,7 @@ export class ScoreApprovalComponent extends StateComponent<ScoreApprovalComponen
         (this.activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.orderByDirection) as
           | OrderByDirection
           | undefined
-          | null) ?? 'desc',
+          | null) ?? 'asc',
     });
   }
 
@@ -56,6 +57,7 @@ export class ScoreApprovalComponent extends StateComponent<ScoreApprovalComponen
   scoreApprovalActionEnum = ScoreApprovalActionEnum;
 
   tableLoading$ = this.selectState('tableLoading');
+  loadingApprovalModal$ = this.selectState('loadingApprovalModal');
   scores$: Observable<ScoreVW[]> = this._data$.pipe(pluck('scores'));
   meta$: Observable<PaginationMetaVW> = this._data$.pipe(pluck('meta'));
   order$ = this.selectStateMulti(['orderBy', 'orderByDirection']);
@@ -122,6 +124,7 @@ export class ScoreApprovalComponent extends StateComponent<ScoreApprovalComponen
   }
 
   async openModalApproval(action: ScoreApprovalActionEnum, score: ScoreVW): Promise<void> {
+    this.updateState({ loadingApprovalModal: true });
     const modalRef = await this.scoreService.openModalScoreApproval({
       score,
       action,
@@ -133,6 +136,7 @@ export class ScoreApprovalComponent extends StateComponent<ScoreApprovalComponen
         this.updateState({ data });
       }
     });
+    this.updateState({ loadingApprovalModal: false });
   }
 
   ngOnInit(): void {

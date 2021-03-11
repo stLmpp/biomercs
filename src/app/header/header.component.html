@@ -2,13 +2,19 @@
 <div class="end">
   <ng-container *ngIf="isLogged$ | async; else notLogged">
     <ng-container *ngIf="user$ | async as user">
+      <a type="button" bioButton routerLink="/score/leaderboards" queryParamsHandling="merge">
+        <icon>leaderboard</icon>
+        Leaderboards
+      </a>
       <button type="button" bioButton [menuTrigger]="menu">
         <icon>person</icon>
         {{ user.username }}
       </button>
       <bio-menu #menu>
         <a bioButton menuItem [routerLink]="pathToProfile$ | async">Profile</a>
-        <a *ngIf="user.admin" bioButton menuItem routerLink="/admin">Admin</a>
+        <a *ngIf="user.admin" bioButton menuItem routerLink="/admin/approval" queryParamsHandling="merge">
+          Scores approval
+        </a>
         <a bioButton menuItem routerLink="/auth/login" (click)="logout()">Logout</a>
       </bio-menu>
     </ng-container>

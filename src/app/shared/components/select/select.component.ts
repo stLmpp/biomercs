@@ -26,10 +26,10 @@ import { auditTime, startWith, takeUntil } from 'rxjs/operators';
 import { FocusKeyManager } from '@angular/cdk/a11y';
 import { Animations } from '../../animations/animations';
 import { AnimationEvent } from '@angular/animations';
-import { Key } from 'ts-key-enum';
 import { OptgroupComponent } from './optgroup.component';
 import { getOverlayPositionMenu } from '../menu/menu-trigger.directive';
 import { isNil } from 'st-utils';
+import { KeyCode } from '@model/enum/key-code';
 
 @Component({
   selector: 'bio-select',
@@ -128,7 +128,7 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
 
   onPanelKeydown($event: KeyboardEvent): void {
     this._focusManager?.onKeydown($event);
-    if ($event.key === Key.Escape) {
+    if ($event.key === KeyCode.Escape) {
       this.close();
     }
   }

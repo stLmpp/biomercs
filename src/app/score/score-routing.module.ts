@@ -5,7 +5,7 @@ import { PlatformResolver } from '@shared/services/platform/platform.resolver';
 
 const routes: Routes = [
   {
-    path: 'top',
+    path: 'leaderboards',
     component: ScoreTopTableComponent,
     resolve: [PlatformResolver],
   },
