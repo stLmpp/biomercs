@@ -79,6 +79,7 @@ export class ScoreApprovalModalComponent extends StateComponent<{ saving: boolea
             page,
             orderBy,
             orderByDirection,
+            idStage,
           } = this.scoreApprovalComponentState;
           return this.scoreService.findApproval(
             this.playerMode,
@@ -87,6 +88,7 @@ export class ScoreApprovalModalComponent extends StateComponent<{ saving: boolea
             idGame,
             idMiniGame,
             idMode,
+            idStage,
             itemsPerPage,
             orderBy,
             orderByDirection

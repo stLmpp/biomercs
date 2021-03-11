@@ -33,15 +33,15 @@
           {{ arrow }}
         </icon>
       </div>
-      <div class="score" (click)="changeOrder('score')">
-        Score
-        <icon class="order-icon" *ngIf="order.orderBy === 'score'" small>
+      <div class="stage" (click)="changeOrder('stage')">
+        Stage
+        <icon class="order-icon" *ngIf="order.orderBy === 'stage'" small>
           {{ arrow }}
         </icon>
       </div>
-      <div class="date-achieved" (click)="changeOrder('dateAchieved')">
-        Date achieved
-        <icon class="order-icon" *ngIf="order.orderBy === 'dateAchieved'" small>
+      <div class="score" (click)="changeOrder('score')">
+        Score
+        <icon class="order-icon" *ngIf="order.orderBy === 'score'" small>
           {{ arrow }}
         </icon>
       </div>
@@ -84,8 +84,8 @@
           <div class="game">{{ score.gameShortName }}</div>
           <div class="mini-game">{{ score.miniGameName }}</div>
           <div class="mode">{{ score.modeName }}</div>
+          <div class="stage">{{ score.stageShortName }}</div>
           <div class="score">{{ score.score | number: '1.0-0' }}</div>
-          <div class="date-achieved">{{ score.dateAchieved | authDateFormat }}</div>
           <div class="creation-date">{{ score.creationDate | authDateFormat }}</div>
           <div class="players" *ngLet="score.scorePlayers | join: 'playerPersonaName':' | ' as players">
             <span [tooltip]="players" tooltipPosition="left">{{ players }}</span>

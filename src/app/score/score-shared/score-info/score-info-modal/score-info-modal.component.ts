@@ -4,6 +4,11 @@ import { ScoreInfoComponent } from '../score-info.component';
 import { ScoreVW } from '@model/score';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
 
+export interface ScoreInfoModalData {
+  score: ScoreVW;
+  showWorldRecord?: boolean;
+}
+
 @Component({
   selector: 'bio-score-info-modal',
   templateUrl: './score-info-modal.component.html',
@@ -11,5 +16,14 @@ import { MODAL_DATA } from '@shared/components/modal/modal.config';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScoreInfoModalComponent {
-  constructor(@Inject(MODAL_DATA) public score: ScoreVW, public modalRef: ModalRef<ScoreInfoComponent, ScoreVW>) {}
+  constructor(
+    @Inject(MODAL_DATA) { score, showWorldRecord }: ScoreInfoModalData,
+    public modalRef: ModalRef<ScoreInfoComponent, ScoreVW>
+  ) {
+    this.score = score;
+    this.showWorldRecord = showWorldRecord ?? false;
+  }
+
+  score: ScoreVW;
+  showWorldRecord: boolean;
 }

@@ -6,20 +6,42 @@
 <div class="value">{{ score.miniGameName }}</div>
 <div class="title">Mode:</div>
 <div class="value">{{ score.modeName }}</div>
+<div class="title">Stage:</div>
+<div class="value">{{ score.stageName }}</div>
 <div class="title">Score:</div>
-<div class="value">{{ score.score | number: '1.0-0' }}</div>
-<div class="title">Date achieved:</div>
-<div class="value">{{ score.dateAchieved | authDateFormat }}</div>
+<div class="value">
+  {{ score.score | number: '1.0-0' }}
+  <ng-container *ngIf="showWorldRecord">
+    <icon mdi="trophy" *ngIf="score.isWorldRecord" tooltip="World Record" tooltipPosition="right"></icon>
+    <icon
+      mdi="trophy-award"
+      *ngIf="score.isCombinationWorldRecord"
+      tooltip="Combination World Record"
+      tooltipPosition="right"
+    ></icon>
+  </ng-container>
+</div>
+<div class="title">Approval date:</div>
+<div class="value">{{ score.approvalDate | authDateFormat }}</div>
 <div class="title">Creation date:</div>
 <div class="value">{{ score.creationDate | authDateFormat }}</div>
+
 <ng-container *ngFor="let player of score.scorePlayers; let $index = index; trackBy: trackByScorePlayer">
   <div class="title">Player {{ $index + 1 }}:</div>
-  <div class="value with-icon">
+  <div class="value redirect-icon">
     {{ player.playerPersonaName }}
     <a [tabindex]="-1" bioButton icon small [routerLink]="['/player', player.idPlayer]" target="_blank">
       <icon small>launch</icon>
     </a>
   </div>
   <div class="title">Character {{ $index + 1 }}:</div>
-  <div class="value">{{ player.characterName }} {{ player.characterCostumeName }}</div>
+  <div class="value">
+    {{ player.characterName }} {{ player.characterCostumeName }}
+    <icon
+      mdi="account-star"
+      *ngIf="showWorldRecord && player.isCharacterWorldRecord"
+      tooltip="Character World Record"
+      tooltipPosition="right"
+    ></icon>
+  </div>
 </ng-container>

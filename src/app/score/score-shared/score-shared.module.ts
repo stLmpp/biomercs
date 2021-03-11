@@ -19,6 +19,7 @@ import { StControlModule } from '@stlmpp/control';
 import { ScoreInfoComponent } from './score-info/score-info.component';
 import { RouterModule } from '@angular/router';
 import { ScoreInfoModalComponent } from './score-info/score-info-modal/score-info-modal.component';
+import { UtilModule } from '@shared/util/util.module';
 
 const DECLARATIONS = [ScoreApprovalComponent, ScoreApprovalModalComponent, ScoreInfoComponent, ScoreInfoModalComponent];
 
@@ -41,6 +42,7 @@ const DECLARATIONS = [ScoreApprovalComponent, ScoreApprovalModalComponent, Score
     SelectModule,
     StControlModule,
     RouterModule,
+    UtilModule,
   ],
   exports: [...DECLARATIONS],
 })

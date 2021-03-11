@@ -62,11 +62,10 @@ export class ScoreApprovalComponent extends StateComponent<ScoreApprovalComponen
 
   itemsPerPageOptions = [5, 10, 25, 50, 100];
 
-  params$ = this.selectStateMulti(['idPlatform', 'idGame', 'idMiniGame', 'idMode']);
+  params$ = this.selectStateMulti(['idPlatform', 'idGame', 'idMiniGame', 'idMode', 'idStage']);
 
   paramsConfig: Partial<ParamsConfig> = {
     idCharacterCostume: { show: false },
-    idStage: { show: false },
     idPlatform: { clearable: false },
   };
 
@@ -146,30 +145,34 @@ export class ScoreApprovalComponent extends StateComponent<ScoreApprovalComponen
       'itemsPerPage',
       'orderBy',
       'orderByDirection',
+      'idStage',
     ])
       .pipe(
         debounceTime(50),
         filter(params => !!params.idPlatform && !!params.page && !!params.itemsPerPage),
-        switchMap(({ idMiniGame, idPlatform, idGame, idMode, itemsPerPage, page, orderBy, orderByDirection }) => {
-          this.updateState('tableLoading', true);
-          return this.scoreService
-            .findApproval(
-              this.playerMode,
-              idPlatform!,
-              page,
-              idGame,
-              idMiniGame,
-              idMode,
-              itemsPerPage,
-              orderBy,
-              orderByDirection
-            )
-            .pipe(
-              finalize(() => {
-                this.updateState('tableLoading', false);
-              })
-            );
-        }),
+        switchMap(
+          ({ idMiniGame, idPlatform, idGame, idMode, itemsPerPage, page, orderBy, orderByDirection, idStage }) => {
+            this.updateState('tableLoading', true);
+            return this.scoreService
+              .findApproval(
+                this.playerMode,
+                idPlatform!,
+                page,
+                idGame,
+                idMiniGame,
+                idMode,
+                idStage,
+                itemsPerPage,
+                orderBy,
+                orderByDirection
+              )
+              .pipe(
+                finalize(() => {
+                  this.updateState('tableLoading', false);
+                })
+              );
+          }
+        ),
         takeUntil(this.destroy$)
       )
       .subscribe(data => {

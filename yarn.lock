@@ -1231,6 +1231,11 @@
   dependencies:
     "@material/feature-targeting" "^10.0.0"
 
+"@mdi/font@^5.9.55":
+  version "5.9.55"
+  resolved "https://registry.yarnpkg.com/@mdi/font/-/font-5.9.55.tgz#41acd50b88073ded7095fc3029d8712b6e12f38e"
+  integrity sha512-jswRF6q3eq8NWpWiqct6q+6Fg/I7nUhrxYJfiEM8JJpap0wVJLQdbKtyS65GdlK7S7Ytnx3TTi/bmw+tBhkGmg==
+
 "@ngtools/webpack@11.2.2":
   version "11.2.2"
   resolved "https://registry.yarnpkg.com/@ngtools/webpack/-/webpack-11.2.2.tgz#647862ed19761796c7f84d5fb3305661d2a3af67"
@@ -1344,37 +1349,37 @@
     semver "7.3.4"
     semver-intersect "1.4.0"
 
-"@stlmpp/control@~5.0.0-rc.2":
-  version "5.0.0-rc.2"
-  resolved "https://registry.yarnpkg.com/@stlmpp/control/-/control-5.0.0-rc.2.tgz#d61f98e22886c3eaae74316d0df9d7de3ee398db"
-  integrity sha512-lziMtZpVOyHbRYMBh9vQxBlD+0EgSRBJWPs5xaboZpB3/Xu9/BKwfse5bnSwkkT1TMsZfMRAUN6DvNYOXLahiA==
+"@stlmpp/control@~5.0.0-rc.3":
+  version "5.0.0-rc.3"
+  resolved "https://registry.yarnpkg.com/@stlmpp/control/-/control-5.0.0-rc.3.tgz#591599f794f7051d5ce01b87fc743431443e63fc"
+  integrity sha512-Dfx66gyrb46fkkplbEQZs2bDCRhCDCQLRY301Xxmd3Vwkz+iep6ZZ10m2EQEI63CXH7E6IRF+k6JhlfpPvnj+Q==
   dependencies:
     date-fns "~2.17.0"
     st-utils "~1.5.0"
     tslib "~2.0.3"
 
-"@stlmpp/router@~5.0.0-rc.2":
-  version "5.0.0-rc.2"
-  resolved "https://registry.yarnpkg.com/@stlmpp/router/-/router-5.0.0-rc.2.tgz#9e1d931e568ac9a1453ee63aa2767ace845ec334"
-  integrity sha512-BEi8jzZu61G460yHAu5GpoYBFNDdAun7gNXwHK0Aei7E3zugmr7yL89EB2U3DKkHlJpeNSguqc4No2i8jmM1wQ==
+"@stlmpp/router@~5.0.0-rc.3":
+  version "5.0.0-rc.3"
+  resolved "https://registry.yarnpkg.com/@stlmpp/router/-/router-5.0.0-rc.3.tgz#767533a361e46a231c9a29f1005bec6042511dc6"
+  integrity sha512-NKpBFqepmtRWxJyEptT0rZT1UuCfyxwMzPOTWz0Ng1PaE/VdG+EFtIBlTkH9kwfKHK0fTS3Vbn98NGfxBAiJAw==
   dependencies:
     st-utils "~1.5.0"
     tslib "~2.0.3"
 
-"@stlmpp/store@~5.0.0-rc.2":
-  version "5.0.0-rc.2"
-  resolved "https://registry.yarnpkg.com/@stlmpp/store/-/store-5.0.0-rc.2.tgz#b1d77bb56ecda6eb46210f1fca0ade1c12aa5e07"
-  integrity sha512-DbfqZyOHRhJAAqAWg0xTybTCb7xs7ODZlc3A3YUuLPt0vpFNsQPAVJAFCZnCFqZ+DTpu8T0l+JdcAPV01W00SA==
+"@stlmpp/store@~5.0.0-rc.3":
+  version "5.0.0-rc.3"
+  resolved "https://registry.yarnpkg.com/@stlmpp/store/-/store-5.0.0-rc.3.tgz#5d7585d5d68f70aebfe29f0a91a5e1beeaed42ad"
+  integrity sha512-OVTFlz3AsfirBtpVEBaCmwnxGC/w9SuILg67Bv8Bmm/SQWa8v7/PBXCzV1h0DcJYKtzmYKPVxzylWakwaT1/rA==
   dependencies:
     copy-anything "~2.0.3"
     st-utils "~1.5.0"
     tslib "~2.0.3"
     type-fest "~0.21.2"
 
-"@stlmpp/utils@~5.0.0-rc.2":
-  version "5.0.0-rc.2"
-  resolved "https://registry.yarnpkg.com/@stlmpp/utils/-/utils-5.0.0-rc.2.tgz#f63f4a0c60d6d57339d45f4df4ee4619b71c4d57"
-  integrity sha512-9FfY0YTjoQha4l+FzBj2zNzJsYqbyL+HoHHIhvmN4uWfavDs9VZyoQ53ZLtdzssDDF4uu9iK0W/gfcw3+lZrxg==
+"@stlmpp/utils@~5.0.0-rc.3":
+  version "5.0.0-rc.3"
+  resolved "https://registry.yarnpkg.com/@stlmpp/utils/-/utils-5.0.0-rc.3.tgz#46582102e5c74786144ed256fce25005a4a8f6ac"
+  integrity sha512-Nr5WrdvBrTEmHt6jn4mwnGAa4c2lRThiBvQiNrnDN3SGwkXZkl8QwB415LHBQMnKelZFiXG3yxk8bXbFeSF7kA==
   dependencies:
     st-utils "~1.5.0"
     tslib "~2.0.3"

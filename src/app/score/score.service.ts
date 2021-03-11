@@ -9,7 +9,10 @@ import { ModalService } from '@shared/components/modal/modal.service';
 import { HttpClient } from '@angular/common/http';
 import type { ScoreApprovalVW } from '@model/score-approval';
 import type { ScoreVW } from '@model/score';
-import type { ScoreInfoModalComponent } from './score-shared/score-info/score-info-modal/score-info-modal.component';
+import type {
+  ScoreInfoModalComponent,
+  ScoreInfoModalData,
+} from './score-shared/score-info/score-info-modal/score-info-modal.component';
 
 @Injectable({ providedIn: 'root' })
 export class ScoreService extends AbstractScoreService {
@@ -29,13 +32,13 @@ export class ScoreService extends AbstractScoreService {
     );
   }
 
-  async openModalScoreInfo(score: ScoreVW): Promise<ModalRef<ScoreInfoModalComponent, ScoreVW>> {
+  async openModalScoreInfo(data: ScoreInfoModalData): Promise<ModalRef<ScoreInfoModalComponent, ScoreVW>> {
     return this.modalService.openLazy(
       () =>
         import('./score-shared/score-info/score-info-modal/score-info-modal.component').then(
           m => m.ScoreInfoModalComponent
         ),
-      { data: score, minWidth: '30vw' }
+      { data, minWidth: '30vw' }
     );
   }
 }

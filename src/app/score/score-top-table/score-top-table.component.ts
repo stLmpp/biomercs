@@ -19,24 +19,27 @@ interface TopTableForm extends ParamsForm {
   itemsPerPage: number;
 }
 
+export interface ScoreTopTableState {
+  tableLoading: boolean;
+  orderBy?: number;
+  orderByDirection?: OrderByDirection;
+  orderByType?: 'stage' | 'total' | 'personaName';
+  loadingInfo: boolean;
+}
+
 @Component({
   selector: 'bio-score-top-table',
   templateUrl: './score-top-table.component.html',
   styleUrls: ['./score-top-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ScoreTopTableComponent extends StateComponent<{
-  tableLoading: boolean;
-  orderBy?: number;
-  orderByDirection?: OrderByDirection;
-  orderByType?: 'stage' | 'total' | 'personaName';
-}> {
+export class ScoreTopTableComponent extends StateComponent<ScoreTopTableState> {
   constructor(
     private controlBuilder: ControlBuilder,
     private scoreService: ScoreService,
     private activatedRoute: ActivatedRoute
   ) {
-    super({ tableLoading: false, orderByDirection: 'desc', orderByType: 'total' });
+    super({ tableLoading: false, orderByDirection: 'desc', orderByType: 'total', loadingInfo: false });
   }
 
   private _firstParamsChange = true;
@@ -69,6 +72,7 @@ export class ScoreTopTableComponent extends StateComponent<{
 
   tableLoading$ = this.selectState('tableLoading');
   order$ = this.selectStateMulti(['orderBy', 'orderByDirection', 'orderByType']);
+  loadingInfo$ = this.selectState('loadingInfo');
 
   scoreTopTable$ = this.form.value$.pipe(
     debounceTime(100),
@@ -196,7 +200,9 @@ export class ScoreTopTableComponent extends StateComponent<{
     }
   }
 
-  openScoreInfo(score: ScoreVW): void {
-    this.scoreService.openModalScoreInfo(score).then();
+  async openScoreInfo(score: ScoreVW): Promise<void> {
+    this.updateState({ loadingInfo: true });
+    await this.scoreService.openModalScoreInfo({ score, showWorldRecord: true });
+    this.updateState({ loadingInfo: false });
   }
 }

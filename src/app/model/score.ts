@@ -38,10 +38,13 @@ export interface ScoreVW {
   score: number;
   maxCombo: number;
   time: string;
-  dateAchieved?: Date;
+  approvalDate?: Date;
   status: ScoreStatusEnum;
   scorePlayers: ScorePlayerVW[];
   creationDate: Date;
+  isWorldRecord: boolean;
+  isCharacterWorldRecord: boolean;
+  isCombinationWorldRecord: boolean;
 }
 
 export interface ScoreTableVW {

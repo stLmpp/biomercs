@@ -11,15 +11,20 @@
   > .title {
     font-weight: 500;
   }
-  > .value.with-icon {
-    > .button {
+  > .value {
+    > .icon {
       margin-left: 0.5rem;
-      opacity: 0;
-      transition: opacity 150ms ease;
     }
-    &:hover {
+    &.redirect-icon {
       > .button {
-        opacity: 1;
+        margin-left: 0.5rem;
+        opacity: 0;
+        transition: opacity 150ms ease;
+      }
+      &:hover {
+        > .button {
+          opacity: 1;
+        }
       }
     }
   }

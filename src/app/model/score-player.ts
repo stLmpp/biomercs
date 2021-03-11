@@ -15,6 +15,7 @@ export interface ScorePlayerVW {
   idPlayer: number;
   playerPersonaName: string;
   idPlatformGameMiniGameModeCharacterCostume: number;
+  isCharacterWorldRecord: boolean;
   idCharacterCostume: number;
   characterCostumeName: string;
   characterCostumeShortName: string;

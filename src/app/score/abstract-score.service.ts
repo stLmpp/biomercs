@@ -41,12 +41,13 @@ export abstract class AbstractScoreService {
     idGame?: number | null,
     idMiniGame?: number | null,
     idMode?: number | null,
+    idStage?: number | null,
     limit?: number,
     orderBy?: string | null,
     orderByDirection?: OrderByDirection | null
   ): Observable<ScoreApprovalVW> {
     const params = new HttpParams(
-      { idPlatform, page, idGame, idMiniGame, idMode, limit, orderBy, orderByDirection },
+      { idPlatform, page, idGame, idMiniGame, idMode, limit, orderBy, orderByDirection, idStage },
       true
     );
     const path = playerMode ? 'player' : 'admin';

@@ -10,5 +10,6 @@ import { trackByScorePlayerVW } from '@model/score-player';
 })
 export class ScoreInfoComponent {
   @Input() score!: ScoreVW;
+  @Input() showWorldRecord = false;
   trackByScorePlayer = trackByScorePlayerVW;
 }

@@ -173,9 +173,31 @@ export class ParamsComponent
   }
 
   idPlatform$ = this.idPlatformControl.value$.pipe(distinctUntilChanged());
-  idGame$ = this.idGameControl.value$.pipe(distinctUntilChanged());
-  idMiniGame$ = this.idMiniGameControl.value$.pipe(distinctUntilChanged());
-  idMode$ = this.idModeControl.value$.pipe(distinctUntilChanged());
+  idGame$ = this.idGameControl.value$.pipe(
+    distinctUntilChanged(),
+    tap(idGame => {
+      if (!idGame) {
+        this.idMiniGameControl.setValue(null);
+      }
+    })
+  );
+  idMiniGame$ = this.idMiniGameControl.value$.pipe(
+    distinctUntilChanged(),
+    tap(idMiniGame => {
+      if (!idMiniGame) {
+        this.idModeControl.setValue(null);
+      }
+    })
+  );
+  idMode$ = this.idModeControl.value$.pipe(
+    distinctUntilChanged(),
+    tap(idMode => {
+      if (!idMode) {
+        this.idStageControl.setValue(null);
+        this.idCharacterCostumeControl.setValue(null);
+      }
+    })
+  );
   idStage$ = this.idStageControl.value$.pipe(distinctUntilChanged());
   idCharacterCostume$ = this.idCharacterCostumeControl.value$.pipe(distinctUntilChanged());
 
@@ -339,7 +361,8 @@ export class ParamsComponent
       const formConfig = this.formsConfig[id];
       if (formConfig.show) {
         control.valueChanges$.pipe(takeUntil(this.destroy$)).subscribe(idValue => {
-          (this as any)[id + 'Change'].next(idValue);
+          const keyChange = `${id}Change` as `${keyof ParamsForm}Change`;
+          this[keyChange].emit(idValue);
         });
       }
       if (formConfig.validators) {
@@ -349,6 +372,7 @@ export class ParamsComponent
     this.form.value$
       .pipe(
         skip(1),
+        debounceTime(0),
         takeUntil(this.destroy$),
         distinctUntilChangedObject(),
         tap(params => {
