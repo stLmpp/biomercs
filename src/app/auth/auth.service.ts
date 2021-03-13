@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { filter, finalize, switchMap, takeUntil, tap, timeout } from 'rxjs/operators';
 import { AuthStore } from './auth.store';
 import { catchAndThrow } from '@util/operators/catchError';
-import { SocketIOService } from '@shared/socket-io/socket-io.service';
+import { SocketIOService } from '@shared/services/socket-io/socket-io.service';
 import { AuthErrorInterceptor } from './auth-error.interceptor';
 import { HttpParams } from '@util/http-params';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';

@@ -1,0 +1,80 @@
+@use 'variables' as v;
+
+:host {
+  display: flex;
+  max-height: 100px;
+  height: 100px;
+  font-size: 0.75rem;
+  width: 100%;
+  position: relative;
+  color: inherit;
+  outline: none;
+  &:hover {
+    text-decoration: none;
+  }
+  &:hover,
+  &:active {
+    .img,
+    .body {
+      border-color: v.$accent-400;
+    }
+  }
+}
+
+.img {
+  width: 100px;
+  min-width: 100px;
+  height: 100px;
+  min-height: 100px;
+  object-fit: contain;
+  border: 1px solid v.$primary-400;
+  border-right: 0;
+  border-radius: 10px 0 0 10px;
+  transition: border-color 200ms ease-in-out;
+  &.skeleton,
+  &.no-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid v.$primary-400;
+  }
+}
+
+.body {
+  border: 1px solid v.$primary-400;
+  border-left: 0;
+  border-radius: 0 10px 10px 0;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 100%;
+  transition: border-color 200ms ease-in-out;
+  .skeleton {
+    align-items: flex-start;
+    justify-content: center;
+  }
+}
+
+.title {
+  font-size: 0.8rem;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.description {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  white-space: pre-line;
+}
+
+.domain {
+  display: flex;
+  align-items: center;
+  .icon {
+    margin-right: 0.25rem;
+  }
+}

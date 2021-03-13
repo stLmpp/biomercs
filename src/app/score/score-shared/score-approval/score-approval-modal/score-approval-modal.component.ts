@@ -4,7 +4,6 @@ import { ScoreApprovalActionEnum } from '@model/enum/score-approval-action.enum'
 import { AbstractScoreService } from '../../../abstract-score.service';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import { ModalRef } from '@shared/components/modal/modal-ref';
-import { trackByScorePlayerVW } from '@model/score-player';
 import { ScoreApprovalMotiveQuery } from '@shared/services/score-approval-motive/score-approval-motive.query';
 import { ScoreApprovalMotiveService } from '@shared/services/score-approval-motive/score-approval-motive.service';
 import { ControlBuilder, Validators } from '@stlmpp/control';
@@ -55,11 +54,10 @@ export class ScoreApprovalModalComponent extends StateComponent<{ saving: boolea
   scoreApprovalMotives$: Observable<StMapView<ScoreApprovalMotive>>;
 
   form = this.controlBuilder.group<ScoreApprovalAdd>({
-    idScoreApprovalMotive: [-1, [Validators.required]],
+    idScoreApprovalMotive: [-1, [Validators.required, Validators.min(1)]],
     description: ['', [Validators.required]],
   });
 
-  trackByScorePlayer = trackByScorePlayerVW;
   trackByScoreApprovalMotive = trackByScoreApprovalMotive;
 
   save(): void {
