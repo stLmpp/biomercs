@@ -6,7 +6,7 @@ import { RouterQuery } from '@stlmpp/router';
 import { ControlBuilder, Validators } from '@stlmpp/control';
 import { Observable } from 'rxjs';
 import { finalize, tap } from 'rxjs/operators';
-import { catchAndThrow } from '@util/operators/catchError';
+import { catchAndThrow } from '@util/operators/catch-and-throw';
 import { StateComponent } from '@shared/components/common/state-component';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { User } from '@model/user';

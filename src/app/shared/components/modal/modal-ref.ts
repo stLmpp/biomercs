@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 import { hasModifierKey } from '@angular/cdk/keycodes';
 import { ModalConfig } from './modal.config';
-import { KeyCode } from '@model/enum/key-code';
+import { Key } from '@model/enum/key';
 
 export class ModalRef<T = any, D = any, R = any> {
   constructor(
@@ -11,7 +11,7 @@ export class ModalRef<T = any, D = any, R = any> {
     private readonly overlayRef: OverlayRef,
     private readonly modalConfig: ModalConfig
   ) {
-    this.init();
+    this._init();
   }
 
   componentInstance?: T;
@@ -19,13 +19,7 @@ export class ModalRef<T = any, D = any, R = any> {
 
   onClose$ = new Subject<R | null>();
 
-  close(value?: R): void {
-    this.overlayRef.detach();
-    this.onClose$.next(value);
-    this.onClose$.complete();
-  }
-
-  init(): void {
+  private _init(): void {
     this.overlayRef
       .backdropClick()
       .pipe(take(1))
@@ -37,11 +31,17 @@ export class ModalRef<T = any, D = any, R = any> {
     this.overlayRef
       .keydownEvents()
       .pipe(
-        filter(event => event.key === KeyCode.Escape && !this.modalConfig.disableClose && !hasModifierKey(event)),
+        filter(event => event.key === Key.Escape && !this.modalConfig.disableClose && !hasModifierKey(event)),
         take(1)
       )
       .subscribe(() => {
         this.close();
       });
+  }
+
+  close(value?: R): void {
+    this.overlayRef.detach();
+    this.onClose$.next(value);
+    this.onClose$.complete();
   }
 }

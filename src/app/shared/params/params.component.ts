@@ -16,14 +16,14 @@ import { GameService } from '../services/game/game.service';
 import { MiniGameService } from '../services/mini-game/mini-game.service';
 import { ModeService } from '../services/mode/mode.service';
 import { filterNil } from '../operators/filter';
-import { debounceTime, distinctUntilChanged, finalize, map, skip, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, finalize, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 import { StageService } from '../services/stage/stage.service';
 import { trackByFactory } from '@stlmpp/utils';
 import { StateComponent } from '../components/common/state-component';
 import { CharacterService } from '../services/character/character.service';
 import { distinctUntilChangedObject } from '@util/operators/distinct-until-changed-object';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
 import { CharacterCostume } from '@model/character-costume';
 import { Game } from '@model/game';
@@ -32,6 +32,7 @@ import { Mode } from '@model/mode';
 import { Stage } from '@model/stage';
 import { MiniGame } from '@model/mini-game';
 import { Platform } from '@model/platform';
+import { RouteParamEnum } from '@model/enum/route-param.enum';
 
 export interface ParamsForm {
   idPlatform: Nullable<number>;
@@ -76,7 +77,6 @@ const defaultConfigs: ParamsConfig = {
   templateUrl: './params.component.html',
   styleUrls: ['./params.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  inputs: ['idPlatform', 'idGame', 'idMiniGame', 'idMode', 'idStage', 'idCharacterCostume'],
 })
 export class ParamsComponent
   extends StateComponent<{
@@ -96,19 +96,31 @@ export class ParamsComponent
     private modeService: ModeService,
     private stageService: StageService,
     private characterService: CharacterService,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {
-    super({
-      gameLoading: false,
-      miniGameLoading: false,
-      modeLoading: false,
-      stageLoading: false,
-      characterLoading: false,
-      clearable: false,
-    });
+    super(
+      {
+        gameLoading: false,
+        miniGameLoading: false,
+        modeLoading: false,
+        stageLoading: false,
+        characterLoading: false,
+        clearable: false,
+      },
+      { inputs: ['clearable'] }
+    );
   }
 
   private _setQueryParamsOnChange = false;
+
+  @Input() idPlatform: number | null = null;
+  @Input() idGame: number | null = null;
+  @Input() idMiniGame: number | null = null;
+  @Input() idMode: number | null = null;
+  @Input() idStage: number | null = null;
+  @Input() idCharacterCostume: number | null = null;
+  @Input() clearable = false;
 
   @Input()
   set config(config: Partial<ParamsConfig>) {
@@ -129,11 +141,6 @@ export class ParamsComponent
     this._setQueryParamsOnChange = coerceBooleanProperty(setQueryParamsOnChange);
   }
 
-  @Input()
-  set clearable(clearable: boolean) {
-    this.updateState('clearable', coerceBooleanProperty(clearable));
-  }
-
   @Output() idPlatformChange = new EventEmitter<Nullable<number>>();
   @Output() idGameChange = new EventEmitter<Nullable<number>>();
   @Output() idMiniGameChange = new EventEmitter<Nullable<number>>();
@@ -145,12 +152,12 @@ export class ParamsComponent
   formsConfig = defaultConfigs;
 
   form = this.controlBuilder.group<ParamsForm>({
-    idPlatform: null,
-    idGame: null,
-    idMiniGame: null,
-    idMode: null,
-    idStage: null,
-    idCharacterCostume: null,
+    idPlatform: this._getParamOrNull(RouteParamEnum.idPlatform),
+    idGame: this._getParamOrNull(RouteParamEnum.idGame),
+    idMiniGame: this._getParamOrNull(RouteParamEnum.idMiniGame),
+    idMode: this._getParamOrNull(RouteParamEnum.idMode),
+    idStage: this._getParamOrNull(RouteParamEnum.idStage),
+    idCharacterCostume: this._getParamOrNull(RouteParamEnum.idCharacterCostume),
   });
 
   get idPlatformControl(): Control<Nullable<number>> {
@@ -355,6 +362,11 @@ export class ParamsComponent
   trackByCharacterCostume = trackByFactory<CharacterCostume>('id');
   trackByControlValidator = trackByFactory<ControlValidator>('name');
 
+  private _getParamOrNull(param: string): number | null {
+    const id = this.activatedRoute.snapshot.queryParamMap.get(param);
+    return id ? +id : null;
+  }
+
   ngOnInit(): void {
     for (const id of ids) {
       const control = this.form.get(id);
@@ -371,8 +383,6 @@ export class ParamsComponent
     }
     this.form.value$
       .pipe(
-        skip(1),
-        debounceTime(0),
         takeUntil(this.destroy$),
         distinctUntilChangedObject(),
         tap(params => {
@@ -395,5 +405,6 @@ export class ParamsComponent
   }
 
   static ngAcceptInputType_setQueryParamsOnChange: BooleanInput;
+  static ngAcceptInputType_getQueryParamsOnInit: BooleanInput;
   static ngAcceptInputType_clearable: BooleanInput;
 }

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
 import { PaginationMetaVW } from '@model/pagination';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
@@ -12,7 +12,7 @@ import { RouteParamEnum } from '@model/enum/route-param.enum';
   host: { class: 'pagination' },
 })
 export class PaginationComponent implements OnChanges, PaginationMetaVW {
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
+  constructor(private router: Router) {}
 
   private _setQueryParamsOnChange = false;
 

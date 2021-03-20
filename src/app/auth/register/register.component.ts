@@ -4,7 +4,7 @@ import { AuthService } from '../auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { debounceTime, finalize, tap } from 'rxjs/operators';
 import { ControlBuilder, Validators } from '@stlmpp/control';
-import { catchAndThrow } from '@util/operators/catchError';
+import { catchAndThrow } from '@util/operators/catch-and-throw';
 import { EmailExistsValidator } from '@shared/validators/email-exists.validator';
 import { UsernameExistsValidator } from '@shared/validators/username-exists.validator';
 import { StateComponent } from '@shared/components/common/state-component';

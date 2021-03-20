@@ -29,7 +29,7 @@ import { AnimationEvent } from '@angular/animations';
 import { OptgroupComponent } from './optgroup.component';
 import { getOverlayPositionMenu } from '../menu/menu-trigger.directive';
 import { isNil } from 'st-utils';
-import { KeyCode } from '@model/enum/key-code';
+import { Key } from '@model/enum/key';
 
 @Component({
   selector: 'bio-select',
@@ -128,7 +128,7 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
 
   onPanelKeydown($event: KeyboardEvent): void {
     this._focusManager?.onKeydown($event);
-    if ($event.key === KeyCode.Escape) {
+    if ($event.key === Key.Escape) {
       this.close();
     }
   }

@@ -1,0 +1,18 @@
+.card {
+  margin-bottom: 1rem;
+}
+
+.score-params,
+.player {
+  .card-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-gap: 1rem;
+  }
+}
+
+.player {
+  .host {
+    grid-column: 1/-1;
+  }
+}

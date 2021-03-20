@@ -5,7 +5,7 @@ import { WINDOW } from '../../core/window.service';
 import { filter, finalize, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchAndThrow } from '@util/operators/catchError';
+import { catchAndThrow } from '@util/operators/catch-and-throw';
 import { SnackBarService } from '@shared/components/snack-bar/snack-bar.service';
 import { ModalService } from '@shared/components/modal/modal.service';
 import type { LoginConfirmCodeModalComponent } from './login-confirm-code-modal/login-confirm-code-modal.component';

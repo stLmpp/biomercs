@@ -1,31 +1,42 @@
-import { BehaviorSubject, Observable, OperatorFunction } from 'rxjs';
-import { auditTime, distinctUntilChanged, filter, map, pluck, takeUntil } from 'rxjs/operators';
-import { Directive } from '@angular/core';
+import { BehaviorSubject, Observable, queueScheduler, SchedulerLike } from 'rxjs';
+import { distinctUntilChanged, filter, map, observeOn, pluck, takeUntil } from 'rxjs/operators';
+import { Directive, OnChanges } from '@angular/core';
 import { Destroyable } from './destroyable-component';
-import { isFunction, isObject } from 'st-utils';
+import { isFunction, isObject, isObjectEmpty } from 'st-utils';
 import { Entries } from '@stlmpp/store';
+import { distinctUntilKeysChanged } from '@util/operators/distinct-until-keys-changed';
+import { SimpleChangesCustom } from '@util/util';
+
+export interface StateComponentConfig<K extends keyof any> {
+  inputs?: K[];
+  scheduler?: SchedulerLike;
+}
 
 @Directive()
-export abstract class StateComponent<T extends Record<string, any> = Record<string, any>> extends Destroyable {
-  protected constructor(initialState: T) {
+export abstract class StateComponent<T extends Record<string, any> = Record<string, any>>
+  extends Destroyable
+  implements OnChanges {
+  protected constructor(initialState: T, config: StateComponentConfig<keyof T> = {}) {
     super();
+    this._inputs = config.inputs ?? [];
     this._state$ = new BehaviorSubject(initialState);
     this._updateQueue$
       .pipe(
+        observeOn(config.scheduler ?? queueScheduler),
         takeUntil(this.destroy$),
-        filter(updates => !!updates.length),
-        auditTime(0)
+        filter(updates => !!updates.length)
       )
       .subscribe(updates => {
-        this._updateQueue$.next([]);
         const state = { ...this._state$.value };
         const newState = updates.reduce((acc, item) => item(acc), state);
         this._state$.next(newState);
+        this._updateQueue$.next([]);
       });
   }
 
-  private _state$: BehaviorSubject<T>;
-  private _updateQueue$ = new BehaviorSubject<((state: T) => T)[]>([]);
+  private readonly _inputs: (keyof T)[];
+  private readonly _state$: BehaviorSubject<T>;
+  private readonly _updateQueue$ = new BehaviorSubject<((state: T) => T)[]>([]);
 
   private _updateQueue(callback: (state: T) => T): void {
     this._updateQueue$.next([...this._updateQueue$.value, callback]);
@@ -73,19 +84,17 @@ export abstract class StateComponent<T extends Record<string, any> = Record<stri
   getState<K extends keyof T>(key?: K): T | T[K] {
     return key ? this._state$.value[key] : this._state$.value;
   }
-}
 
-export function distinctUntilKeysChanged<T extends Record<string, any>, K extends keyof T>(
-  keys: K[]
-): OperatorFunction<T, T> {
-  return distinctUntilChanged((valueA, valueB) => {
-    let index = keys.length;
-    while (index--) {
-      const key = keys[index];
-      if (valueA[key] !== valueB[key]) {
-        return false;
+  ngOnChanges(changes: SimpleChangesCustom): void {
+    let stateUpdate: Partial<T> = {};
+    for (const input of this._inputs) {
+      const inputChanges = changes[input];
+      if (inputChanges && inputChanges.currentValue !== inputChanges.previousValue) {
+        stateUpdate = { ...stateUpdate, [input]: inputChanges.currentValue };
       }
     }
-    return true;
-  });
+    if (!isObjectEmpty(stateUpdate)) {
+      this.updateState(stateUpdate);
+    }
+  }
 }

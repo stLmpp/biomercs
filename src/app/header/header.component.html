@@ -6,6 +6,10 @@
         <icon>leaderboard</icon>
         Leaderboards
       </a>
+      <a type="button" bioButton routerLink="/score/add" queryParamsHandling="merge">
+        <icon>add</icon>
+        Submit score
+      </a>
       <button type="button" bioButton [menuTrigger]="menu">
         <icon>person</icon>
         {{ user.username }}

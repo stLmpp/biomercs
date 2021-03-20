@@ -5,7 +5,7 @@ import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import { AuthService } from '../../auth.service';
 import { finalize, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { catchAndThrow } from '@util/operators/catchError';
+import { catchAndThrow } from '@util/operators/catch-and-throw';
 import { StateComponent } from '@shared/components/common/state-component';
 
 interface LoginConfirmationForm {

@@ -5,7 +5,7 @@ import { BehaviorSubject, isObservable, Observable } from 'rxjs';
 import { MODAL_DATA } from '../modal.config';
 import { take, takeUntil } from 'rxjs/operators';
 import { Destroyable } from '../../common/destroyable-component';
-import { catchAndThrow } from '@util/operators/catchError';
+import { catchAndThrow } from '@util/operators/catch-and-throw';
 import { isFunction } from 'st-utils';
 
 export interface DialogData {

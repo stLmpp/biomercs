@@ -17,6 +17,8 @@ import { HeaderModule } from './header/header.module';
 import { NgProgressModule } from 'ngx-progressbar';
 import { NgProgressRouterModule } from 'ngx-progressbar/router';
 import { TooltipModule } from '@shared/components/tooltip/tooltip.module';
+import { CurrencyMaskModule } from '@shared/currency-mask/currency-mask.module';
+import { MaskModule } from '@shared/mask/mask.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -36,6 +38,8 @@ import { TooltipModule } from '@shared/components/tooltip/tooltip.module';
     NgProgressModule.withConfig({ color: '#00acff', spinner: false, debounceTime: 100 }),
     NgProgressRouterModule,
     TooltipModule.forRoot(),
+    CurrencyMaskModule.forRoot(),
+    MaskModule.forRoot(),
   ],
   bootstrap: [AppComponent],
 })

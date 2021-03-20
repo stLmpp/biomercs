@@ -52,12 +52,12 @@ export class ScoreTopTableComponent extends StateComponent<ScoreTopTableState> {
   itemsPerPageOptions = [5, 10, 25, 50, 100];
 
   form = this.controlBuilder.group<TopTableForm>({
-    idPlatform: this._getParamOrNull(RouteParamEnum.idPlatform),
-    idGame: this._getParamOrNull(RouteParamEnum.idGame),
-    idMiniGame: this._getParamOrNull(RouteParamEnum.idMiniGame),
-    idMode: this._getParamOrNull(RouteParamEnum.idMode),
-    idStage: this._getParamOrNull(RouteParamEnum.idStage),
-    idCharacterCostume: this._getParamOrNull(RouteParamEnum.idCharacterCostume),
+    idPlatform: null,
+    idGame: null,
+    idMiniGame: null,
+    idMode: null,
+    idStage: null,
+    idCharacterCostume: null,
     itemsPerPage: this._getItemsPerPageFromRoute(),
     page: +(this.activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.page) ?? 1),
   });
@@ -141,12 +141,6 @@ export class ScoreTopTableComponent extends StateComponent<ScoreTopTableState> {
 
   trackByStage = trackByFactory<Stage>('id');
   trackByPlayer = trackByFactory<ScoreTableVW>('idPlayer');
-
-  private _getParamOrNull(param: RouteParamEnum): number | null {
-    return this.activatedRoute.snapshot.queryParamMap.has(param)
-      ? +this.activatedRoute.snapshot.queryParamMap.get(param)!
-      : null;
-  }
 
   private _getItemsPerPageFromRoute(): number {
     const itemsPerPage = +(this.activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.itemsPerPage) ?? 10);

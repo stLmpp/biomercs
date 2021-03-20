@@ -12,7 +12,6 @@ export interface ScoreAdd {
   score: number;
   maxCombo: number;
   time: string;
-  dateAchieved?: Date;
   scorePlayers: ScorePlayerAdd[];
 }
 

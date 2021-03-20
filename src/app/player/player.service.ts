@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { PlayerStore } from './player.store';
 import { tap } from 'rxjs/operators';
 import { Player, PlayerUpdate } from '@model/player';
+import { HttpParams } from '@util/http-params';
 
 @Injectable({ providedIn: 'root' })
 export class PlayerService {
@@ -27,11 +28,30 @@ export class PlayerService {
     return this.http.get<number>(`${this.endPoint}/user/${idUser}/id`);
   }
 
+  getAuth(): Observable<Player> {
+    return this.http.get<Player>(`${this.endPoint}/auth`).pipe(
+      tap(player => {
+        this.playerStore.upsert(player.id, player);
+      })
+    );
+  }
+
   update(idPlayer: number, dto: PlayerUpdate): Observable<Player> {
     return this.http.patch<Player>(`${this.endPoint}/${idPlayer}`, dto).pipe(
       tap(player => {
         this.playerStore.upsert(idPlayer, player);
       })
     );
+  }
+
+  search(personaName: string): Observable<Player[]> {
+    const params = new HttpParams({ personaName });
+    return this.http
+      .get<Player[]>(`${this.endPoint}/search`, { params })
+      .pipe(
+        tap(players => {
+          this.playerStore.upsert(players);
+        })
+      );
   }
 }

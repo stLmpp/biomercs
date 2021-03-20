@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { filter, finalize, switchMap, takeUntil, tap, timeout } from 'rxjs/operators';
 import { AuthStore } from './auth.store';
-import { catchAndThrow } from '@util/operators/catchError';
+import { catchAndThrow } from '@util/operators/catch-and-throw';
 import { SocketIOService } from '@shared/services/socket-io/socket-io.service';
 import { AuthErrorInterceptor } from './auth-error.interceptor';
 import { HttpParams } from '@util/http-params';

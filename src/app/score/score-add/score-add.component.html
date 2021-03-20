@@ -1,0 +1,100 @@
+<ng-container *ngLet="{ hasMode: hasIdMode$ | async } as state">
+  <card class="params">
+    <h3 cardTitle>Parameters</h3>
+    <card-content>
+      <bio-params
+        [params]="form.valueChanges$ | async"
+        (paramsChange)="form.patchValue($event)"
+        (idModeChange)="onModeChange($event)"
+        [config]="paramsConfig"
+        setQueryParamsOnChange
+      ></bio-params>
+    </card-content>
+  </card>
+  <form [controlGroup]="form">
+    <card class="score-params">
+      <h3 cardTitle>Score info</h3>
+      <card-content>
+        <form-field label="Score" [disabled]="!state.hasMode">
+          <input bioInput controlName="score" bioCurrencyMask />
+        </form-field>
+        <form-field label="Max combo" [disabled]="!state.hasMode">
+          <input bioInput controlName="maxCombo" type="number" />
+        </form-field>
+        <form-field label="Time" [disabled]="!state.hasMode">
+          <input
+            bioInput
+            controlName="time"
+            [bioMask]="maskEnum.time"
+            [dropSpecialCharacters]="false"
+            [patterns]="maskTimePattern"
+          />
+        </form-field>
+      </card-content>
+    </card>
+    <div controlArrayName="scorePlayers" #scorePlayersControls="controlArrayName">
+      <card
+        class="player"
+        [controlGroupName]="$index"
+        *ngFor="let scorePlayerControl of scorePlayersControls; let $index = index; let $first = first"
+      >
+        <h3 cardTitle>
+          Player {{ $index + 1 }}
+          <label class="host">
+            <input
+              [disabled]="!state.hasMode"
+              type="radio"
+              name="host"
+              [value]="true"
+              controlName="host"
+              (change)="hostChange($index)"
+            />
+            Host
+          </label>
+        </h3>
+        <card-content>
+          <form-field label="Player" *ngIf="!$first">
+            <input bioInput controlName="personaName" />
+            <!--TODO create autocomplete-->
+          </form-field>
+          <!--<editor-fold desc="Character">-->
+          <form-field
+            [loading]="characterLoading"
+            [disabled]="!state.hasMode"
+            label="Character"
+            *ngLet="characterLoading$ | async as characterLoading"
+          >
+            <bio-select controlName="idCharacterCostume" placeholder="Character">
+              <bio-option disabled *ngIf="characterLoading"><spinner [size]="0.1"></spinner> Loading...</bio-option>
+              <bio-optgroup
+                *ngFor="let character of characters$ | async; trackBy: trackByCharacter"
+                [label]="character.name"
+                [title]="character.name"
+              >
+                <bio-option
+                  *ngFor="let characterCostume of character.characterCostumes; trackBy: trackByCharacterCostume"
+                  [value]="characterCostume.id"
+                  title="{{ character.name }} {{ characterCostume.name }}"
+                >
+                  {{ characterCostume.name }}
+                </bio-option>
+              </bio-optgroup>
+            </bio-select>
+          </form-field>
+          <!--</editor-fold>-->
+          <form-field label="Description" [disabled]="!state.hasMode">
+            <input bioInput controlName="description" />
+          </form-field>
+          <form-field label="Bullet kills" [disabled]="!state.hasMode">
+            <input bioInput controlName="bulletKills" type="number" />
+          </form-field>
+          <form-field label="Evidence" [disabled]="!state.hasMode">
+            <input bioInput controlName="evidence" type="url" />
+          </form-field>
+        </card-content>
+      </card>
+    </div>
+  </form>
+  <hr />
+  {{ form.value$ | async | json }}
+</ng-container>

@@ -11,9 +11,14 @@ import { ButtonModule } from '@shared/components/button/button.module';
 import { IconModule } from '@shared/components/icon/icon.module';
 import { StControlModule } from '@stlmpp/control';
 import { PaginationModule } from '@shared/components/pagination/pagination.module';
+import { ScoreAddComponent } from './score-add/score-add.component';
+import { FormModule } from '@shared/components/form/form.module';
+import { CurrencyMaskModule } from '@shared/currency-mask/currency-mask.module';
+import { MaskModule } from '@shared/mask/mask.module';
+import { SelectModule } from '@shared/components/select/select.module';
 
 @NgModule({
-  declarations: [ScoreTopTableComponent],
+  declarations: [ScoreTopTableComponent, ScoreAddComponent],
   imports: [
     CommonModule,
     ScoreRoutingModule,
@@ -25,6 +30,10 @@ import { PaginationModule } from '@shared/components/pagination/pagination.modul
     IconModule,
     StControlModule,
     PaginationModule,
+    FormModule,
+    CurrencyMaskModule.forChild(),
+    MaskModule.forChild(),
+    SelectModule,
   ],
 })
 export class ScoreModule {}

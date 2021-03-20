@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { AuthService } from '../auth.service';
 import { debounceTime, finalize, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { catchAndThrow } from '@util/operators/catchError';
+import { catchAndThrow } from '@util/operators/catch-and-throw';
 import { SnackBarService } from '@shared/components/snack-bar/snack-bar.service';
 import { StateComponent } from '@shared/components/common/state-component';
 import { User } from '@model/user';

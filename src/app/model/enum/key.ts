@@ -1,3 +1,3 @@
-export enum KeyCode {
+export enum Key {
   Escape = 'Escape',
 }

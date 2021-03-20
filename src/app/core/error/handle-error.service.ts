@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpError } from '@model/http-error';
 import { OperatorFunction } from 'rxjs';
-import { catchAndThrow } from '@util/operators/catchError';
+import { catchAndThrow } from '@util/operators/catch-and-throw';
 import { SnackBarService } from '@shared/components/snack-bar/snack-bar.service';
 import { ModalService } from '@shared/components/modal/modal.service';
 import { take } from 'rxjs/operators';
