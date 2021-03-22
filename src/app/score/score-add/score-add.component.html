@@ -5,21 +5,41 @@
       <bio-params
         [params]="form.valueChanges$ | async"
         (paramsChange)="form.patchValue($event)"
-        (idModeChange)="onModeChange($event)"
         [config]="paramsConfig"
         setQueryParamsOnChange
       ></bio-params>
     </card-content>
   </card>
-  <form [controlGroup]="form">
+  <form [controlGroup]="form" (groupSubmit)="onSubmit()">
+    <ng-container *ngFor="let scorePlayerControl of scorePlayersControl; let $index = index; let $first = first">
+      <bio-score-add-player
+        *ngIf="scorePlayerControl.value$ | async as player"
+        [disabled]="!state.hasMode"
+        (hostChange)="hostChange($index)"
+        (playerChange)="scorePlayerControl.setValue($event)"
+        [player]="player"
+        [characters]="characters$ | async"
+        [charactersLoading]="characterLoading$ | async"
+        [first]="$first"
+        [playerNumber]="$index + 1"
+      ></bio-score-add-player>
+    </ng-container>
     <card class="score-params">
       <h3 cardTitle>Score info</h3>
       <card-content>
         <form-field label="Score" [disabled]="!state.hasMode">
-          <input bioInput controlName="score" bioCurrencyMask />
+          <input bioInput controlName="score" bioCurrencyMask placeholder="Score" autocomplete="off" />
+          <errors>
+            <error *error="'required'">Score is required</error>
+          </errors>
         </form-field>
         <form-field label="Max combo" [disabled]="!state.hasMode">
-          <input bioInput controlName="maxCombo" type="number" />
+          <input bioInput controlName="maxCombo" type="number" autocomplete="off" />
+          <errors>
+            <error *error="'required'">Max combo is required</error>
+            <error *error="'min'">Max combo can't be negative</error>
+            <error *error="'max'">Max combo can surpass 400</error>
+          </errors>
         </form-field>
         <form-field label="Time" [disabled]="!state.hasMode">
           <input
@@ -28,73 +48,16 @@
             [bioMask]="maskEnum.time"
             [dropSpecialCharacters]="false"
             [patterns]="maskTimePattern"
+            autocomplete="off"
           />
+          <errors>
+            <error *error="'required'">Time is required</error>
+          </errors>
         </form-field>
       </card-content>
+      <card-actions (mouseenter)="onMouseenterCardActions()">
+        <button bioButton type="submit" primary [disabled]="form.invalid">Submit</button>
+      </card-actions>
     </card>
-    <div controlArrayName="scorePlayers" #scorePlayersControls="controlArrayName">
-      <card
-        class="player"
-        [controlGroupName]="$index"
-        *ngFor="let scorePlayerControl of scorePlayersControls; let $index = index; let $first = first"
-      >
-        <h3 cardTitle>
-          Player {{ $index + 1 }}
-          <label class="host">
-            <input
-              [disabled]="!state.hasMode"
-              type="radio"
-              name="host"
-              [value]="true"
-              controlName="host"
-              (change)="hostChange($index)"
-            />
-            Host
-          </label>
-        </h3>
-        <card-content>
-          <form-field label="Player" *ngIf="!$first">
-            <input bioInput controlName="personaName" />
-            <!--TODO create autocomplete-->
-          </form-field>
-          <!--<editor-fold desc="Character">-->
-          <form-field
-            [loading]="characterLoading"
-            [disabled]="!state.hasMode"
-            label="Character"
-            *ngLet="characterLoading$ | async as characterLoading"
-          >
-            <bio-select controlName="idCharacterCostume" placeholder="Character">
-              <bio-option disabled *ngIf="characterLoading"><spinner [size]="0.1"></spinner> Loading...</bio-option>
-              <bio-optgroup
-                *ngFor="let character of characters$ | async; trackBy: trackByCharacter"
-                [label]="character.name"
-                [title]="character.name"
-              >
-                <bio-option
-                  *ngFor="let characterCostume of character.characterCostumes; trackBy: trackByCharacterCostume"
-                  [value]="characterCostume.id"
-                  title="{{ character.name }} {{ characterCostume.name }}"
-                >
-                  {{ characterCostume.name }}
-                </bio-option>
-              </bio-optgroup>
-            </bio-select>
-          </form-field>
-          <!--</editor-fold>-->
-          <form-field label="Description" [disabled]="!state.hasMode">
-            <input bioInput controlName="description" />
-          </form-field>
-          <form-field label="Bullet kills" [disabled]="!state.hasMode">
-            <input bioInput controlName="bulletKills" type="number" />
-          </form-field>
-          <form-field label="Evidence" [disabled]="!state.hasMode">
-            <input bioInput controlName="evidence" type="url" />
-          </form-field>
-        </card-content>
-      </card>
-    </div>
   </form>
-  <hr />
-  {{ form.value$ | async | json }}
 </ng-container>

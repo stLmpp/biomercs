@@ -116,13 +116,11 @@
             "default": [
               "signature",
 
-              // Constructors
               "private-constructor",
               "protected-constructor",
               "public-constructor",
               "constructor",
 
-              // Fields
               "private-decorated-field",
               "private-abstract-field",
               "private-instance-field",
@@ -141,7 +139,6 @@
               "decorated-field",
               "field",
 
-              // Methods
               "private-decorated-method",
               "private-instance-method",
               "private-abstract-method",

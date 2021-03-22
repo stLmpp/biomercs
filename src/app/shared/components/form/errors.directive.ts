@@ -11,9 +11,9 @@ export class FormFieldErrorsDirective extends ControlError implements AfterConte
   constructor(
     @Host() private formFieldComponent: FormFieldComponent,
     keyValueDiffers: KeyValueDiffers,
-    @Optional() @Host() controlParent?: ControlParent
+    @Optional() @Host() private _controlParent?: ControlParent
   ) {
-    super(keyValueDiffers, controlParent);
+    super(keyValueDiffers, _controlParent);
   }
 
   ngOnInit(): void {
@@ -23,7 +23,7 @@ export class FormFieldErrorsDirective extends ControlError implements AfterConte
   }
 
   ngAfterContentInit(): void {
-    if (this.formFieldComponent.controlDirective?.control) {
+    if (this.formFieldComponent.controlDirective?.control && !this.controlError) {
       this.controlError = this.formFieldComponent.controlDirective.control;
       super.ngOnInit();
     }

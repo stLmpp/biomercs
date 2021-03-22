@@ -58,6 +58,6 @@ export class MenuComponent extends Menu {
       .withWrap()
       .withVerticalOrientation()
       .skipPredicate((element: MenuItem) => element.isDisabled());
-    this.focusManager?.setFirstItemActive();
+    this.focusManager.setFirstItemActive();
   }
 }

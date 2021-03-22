@@ -27,9 +27,9 @@ import { FocusKeyManager } from '@angular/cdk/a11y';
 import { Animations } from '../../animations/animations';
 import { AnimationEvent } from '@angular/animations';
 import { OptgroupComponent } from './optgroup.component';
-import { getOverlayPositionMenu } from '../menu/menu-trigger.directive';
 import { isNil } from 'st-utils';
 import { Key } from '@model/enum/key';
+import { getOverlayPositionMenu } from '@shared/components/menu/util';
 
 @Component({
   selector: 'bio-select',
@@ -50,7 +50,7 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
     private changeDetectorRef: ChangeDetectorRef,
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
-    private elementRef: ElementRef<HTMLElement>
+    public elementRef: ElementRef<HTMLElement>
   ) {
     super();
   }
@@ -95,6 +95,16 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
     }
   }
 
+  private _initFocus(): void {
+    this._focusManager = new FocusKeyManager(this.options).withVerticalOrientation().withTypeAhead(400);
+    if (!isNil(this.value)) {
+      const optionSelected = this.options.toArray().findIndex(option => this.compareWith(option.value, this.value));
+      this._focusManager.setActiveItem(Math.max(optionSelected, 0));
+    } else {
+      this._focusManager.setFirstItemActive();
+    }
+  }
+
   @HostListener('click')
   onClick(): void {
     if (this.disabled) {
@@ -119,6 +129,7 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
   onFadeInOutDone($event: AnimationEvent): void {
     if ($event.toState === 'void') {
       this._overlayRef?.dispose();
+      this.focus();
     }
   }
 
@@ -133,14 +144,8 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
     }
   }
 
-  initFocus(): void {
-    this._focusManager = new FocusKeyManager(this.options).withVerticalOrientation().withTypeAhead(400);
-    if (!isNil(this.value)) {
-      const optionSelected = this.options.toArray().findIndex(option => this.compareWith(option.value, this.value));
-      this._focusManager.setActiveItem(Math.max(optionSelected, 0));
-    } else {
-      this._focusManager.setFirstItemActive();
-    }
+  focus(): void {
+    this.elementRef.nativeElement.focus();
   }
 
   open(): void {
@@ -161,7 +166,7 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
       .subscribe(() => {
         this.close();
       });
-    this.initFocus();
+    this._initFocus();
     this.isOpen = true;
     this.changeDetectorRef.markForCheck();
   }

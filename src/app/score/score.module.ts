@@ -16,9 +16,12 @@ import { FormModule } from '@shared/components/form/form.module';
 import { CurrencyMaskModule } from '@shared/currency-mask/currency-mask.module';
 import { MaskModule } from '@shared/mask/mask.module';
 import { SelectModule } from '@shared/components/select/select.module';
+import { AutocompleteModule } from '@shared/components/autocomplete/autocomplete.module';
+import { ScoreAddPlayerComponent } from './score-add/score-add-player/score-add-player.component';
+import { UrlPreviewModule } from '@shared/url-preview/url-preview.module';
 
 @NgModule({
-  declarations: [ScoreTopTableComponent, ScoreAddComponent],
+  declarations: [ScoreTopTableComponent, ScoreAddComponent, ScoreAddPlayerComponent],
   imports: [
     CommonModule,
     ScoreRoutingModule,
@@ -34,6 +37,8 @@ import { SelectModule } from '@shared/components/select/select.module';
     CurrencyMaskModule.forChild(),
     MaskModule.forChild(),
     SelectModule,
+    AutocompleteModule,
+    UrlPreviewModule,
   ],
 })
 export class ScoreModule {}

@@ -1,13 +1,14 @@
-.card {
-  margin-bottom: 1rem;
-}
-
-.score-params,
-.player {
-  .card-content {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    grid-gap: 1rem;
+:host ::ng-deep {
+  .score-params,
+  .player {
+    .card-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      grid-gap: 1rem;
+    }
+  }
+  .card {
+    margin-bottom: 1rem;
   }
 }
 

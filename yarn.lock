@@ -1354,10 +1354,10 @@
     semver "7.3.4"
     semver-intersect "1.4.0"
 
-"@stlmpp/control@~5.1.0":
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/@stlmpp/control/-/control-5.1.0.tgz#7615378c1c00cfe52f235e6c7e40f78068140d70"
-  integrity sha512-3RRBsxL8AkeHyO614iQH5UKTQIcwVzB5hCjQp9wxX1CvgA4yzPZzwH7PLwpoISJuC0dX636s55d4Bx9SPu9KKw==
+"@stlmpp/control@~5.1.2":
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/@stlmpp/control/-/control-5.1.2.tgz#7c5e03bdfddb2900d8082a07fe1a71f4c122f637"
+  integrity sha512-FClip6BxZuuWpesjjOKImAhfWoxrWSzTNRgDBPhW2CYETMd4zJ9czyFXIg7qtxjfnYagT08iUDtxKy4qWA0Qzw==
   dependencies:
     date-fns "~2.19.0"
     st-utils "~1.5.0"

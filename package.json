@@ -24,7 +24,7 @@
     "@angular/router": "~11.2.6",
     "@material/elevation": "~10.0.0",
     "@mdi/font": "~5.9.55",
-    "@stlmpp/control": "~5.1.0",
+    "@stlmpp/control": "~5.1.2",
     "@stlmpp/router": "~5.0.0",
     "@stlmpp/store": "~5.0.0",
     "@stlmpp/utils": "~5.0.0",

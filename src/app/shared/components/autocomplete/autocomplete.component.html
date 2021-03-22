@@ -1,0 +1,13 @@
+<ng-template>
+  <div
+    cdkTrapFocus
+    @fadeInOut
+    @scaleIn
+    (@fadeInOut.done)="onFadeDone($event)"
+    (keydown)="onKeydown($event)"
+    class="autocomplete"
+    [style.height.px]="((optionsCount$ | async) || 0) * 35"
+  >
+    <ng-content></ng-content>
+  </div>
+</ng-template>

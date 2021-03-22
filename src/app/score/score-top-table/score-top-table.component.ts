@@ -7,7 +7,6 @@ import { trackByFactory } from '@stlmpp/utils';
 import { StateComponent } from '@shared/components/common/state-component';
 import { combineLatest, Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { distinctUntilChangedObject } from '@util/operators/distinct-until-changed-object';
 import { orderBy, OrderByDirection } from 'st-utils';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { PaginationMetaVW } from '@model/pagination';
@@ -76,7 +75,6 @@ export class ScoreTopTableComponent extends StateComponent<ScoreTopTableState> {
 
   scoreTopTable$ = this.form.value$.pipe(
     debounceTime(100),
-    distinctUntilChangedObject(),
     filter(params => !!params.idPlatform && !!params.idGame && !!params.idMiniGame && !!params.idMode && !!params.page),
     switchMap(params => {
       this.updateState('tableLoading', true);

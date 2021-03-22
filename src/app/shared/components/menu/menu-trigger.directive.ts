@@ -1,23 +1,12 @@
 import { Directive, ElementRef, HostListener, Inject, Input, ViewContainerRef } from '@angular/core';
 import { MenuComponent } from './menu.component';
-import { Overlay, PositionStrategy } from '@angular/cdk/overlay';
-import { cdkOverlayTransparentBackdrop, overlayPositions } from '@util/overlay';
+import { Overlay } from '@angular/cdk/overlay';
+import { cdkOverlayTransparentBackdrop } from '@util/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Destroyable } from '../common/destroyable-component';
 import { takeUntil } from 'rxjs/operators';
 import { DOCUMENT } from '@angular/common';
-
-export function getOverlayPositionMenu(overlay: Overlay, elementRef: ElementRef): PositionStrategy {
-  return overlay
-    .position()
-    .flexibleConnectedTo(elementRef.nativeElement)
-    .withPositions([
-      { ...overlayPositions().bottom, offsetY: 2, overlayX: 'start', originX: 'start' },
-      { ...overlayPositions().bottom, offsetY: 2, overlayX: 'end', originX: 'end' },
-      { ...overlayPositions().top, offsetY: -2, overlayX: 'start', originX: 'start' },
-      { ...overlayPositions().top, offsetY: -2, overlayX: 'end', originX: 'end' },
-    ]);
-}
+import { getOverlayPositionMenu } from '@shared/components/menu/util';
 
 @Directive({
   selector: '[menuTrigger]',

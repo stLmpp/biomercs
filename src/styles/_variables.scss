@@ -73,6 +73,27 @@ $danger-400: map-get($danger-pallete, 400);
 $danger-500: map-get($danger-pallete, 500);
 $danger-600: map-get($danger-pallete, 600);
 
+$success-type: 'success';
+$success-pallete: (
+  0: #4caf50,
+  50: #62cb68,
+  100: #70dd76,
+  200: #7be980,
+  300: #85f38b,
+  400: #90fd96,
+  500: #9cffa2,
+  600: #acffb1,
+);
+
+$success: map-get($success-pallete, 0);
+$success-50: map-get($success-pallete, 50);
+$success-100: map-get($success-pallete, 100);
+$success-200: map-get($success-pallete, 200);
+$success-300: map-get($success-pallete, 300);
+$success-400: map-get($success-pallete, 400);
+$success-500: map-get($success-pallete, 500);
+$success-600: map-get($success-pallete, 600);
+
 $mobile-width: 599px;
 $big-screen-width: 1200px;
 

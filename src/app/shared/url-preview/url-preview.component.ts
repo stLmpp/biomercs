@@ -3,6 +3,7 @@ import { StateComponent } from '@shared/components/common/state-component';
 import { UrlMetadataService } from '@shared/services/url-metadata/url-metadata.service';
 import { filterNil } from '@shared/operators/filter';
 import { finalize, switchMap } from 'rxjs/operators';
+import { BooleanInput } from '@angular/cdk/coercion';
 
 @Component({
   selector: 'a[bio-url-preview]',
@@ -41,4 +42,6 @@ export class UrlPreviewComponent extends StateComponent<{ url: string | null; lo
       );
     })
   );
+
+  static ngAcceptInputType_dark: BooleanInput;
 }

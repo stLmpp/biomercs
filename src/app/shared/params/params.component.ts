@@ -22,7 +22,6 @@ import { StageService } from '../services/stage/stage.service';
 import { trackByFactory } from '@stlmpp/utils';
 import { StateComponent } from '../components/common/state-component';
 import { CharacterService } from '../services/character/character.service';
-import { distinctUntilChangedObject } from '@util/operators/distinct-until-changed-object';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
 import { CharacterCostume } from '@model/character-costume';
@@ -372,7 +371,7 @@ export class ParamsComponent
       const control = this.form.get(id);
       const formConfig = this.formsConfig[id];
       if (formConfig.show) {
-        control.valueChanges$.pipe(takeUntil(this.destroy$)).subscribe(idValue => {
+        control.value$.pipe(takeUntil(this.destroy$)).subscribe(idValue => {
           const keyChange = `${id}Change` as `${keyof ParamsForm}Change`;
           this[keyChange].emit(idValue);
         });
@@ -384,14 +383,15 @@ export class ParamsComponent
     this.form.value$
       .pipe(
         takeUntil(this.destroy$),
-        distinctUntilChangedObject(),
         tap(params => {
           if (this._setQueryParamsOnChange) {
             this.router.navigate([], { queryParamsHandling: 'merge', queryParams: params }).then();
           }
         })
       )
-      .subscribe(params => this.paramsChange.emit(params));
+      .subscribe(params => {
+        this.paramsChange.emit(params);
+      });
   }
 
   ngOnChanges(changes: SimpleChanges): void {

@@ -1,0 +1,14 @@
+@use 'variables' as v;
+
+:host {
+  &.success {
+    .modal-title {
+      color: v.$success;
+      display: flex;
+      align-items: center;
+      .icon {
+        margin-right: 1rem;
+      }
+    }
+  }
+}

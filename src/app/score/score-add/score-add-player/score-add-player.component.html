@@ -1,0 +1,84 @@
+<card class="player" [controlGroup]="form">
+  <h3 cardTitle>
+    Player {{ playerNumber }}
+    <ng-container *ngIf="idPlayer$ | async as idPlayer">({{ idPlayer }})</ng-container>
+    <label class="host">
+      <input
+        [disabled]="disabled"
+        type="radio"
+        name="host"
+        [value]="true"
+        controlName="host"
+        (change)="hostChange.emit()"
+      />
+      Host
+    </label>
+  </h3>
+  <card-content>
+    <form-field label="Player" *ngIf="!first" [loading]="playersLoading$ | async">
+      <input
+        bioInput
+        controlName="personaName"
+        placeholder="Start typing to search"
+        [bioAutocomplete]="autocomplete"
+        [bioAutocompleteNext]="select"
+        bioAutocompleteSelectFirstOptionOnEnter
+        #bioAutocomplete="bio-autocomplete"
+        (blur)="idPlayerControl.markAsTouched()"
+        [bioType]="idPlayerControl.invalid && idPlayerControl.touched ? 'danger' : null"
+      />
+      <bio-autocomplete #autocomplete>
+        <bio-autocomplete-option
+          *ngFor="let player of players$ | async; trackBy: trackByPlayer"
+          [value]="player.personaName"
+          (click)="form.patchValue({ idPlayer: player.id })"
+        >
+          {{ player.personaName }}
+        </bio-autocomplete-option>
+      </bio-autocomplete>
+      <errors controlError="idPlayer">
+        <error *error="'required'">Player is required</error>
+      </errors>
+    </form-field>
+    <!--<editor-fold desc="Character">-->
+    <form-field [loading]="charactersLoading" [disabled]="disabled" label="Character">
+      <bio-select controlName="idCharacterCostume" placeholder="Character" #select>
+        <bio-option disabled *ngIf="charactersLoading"><spinner [size]="0.1"></spinner> Loading...</bio-option>
+        <bio-optgroup
+          *ngFor="let character of characters; trackBy: trackByCharacter"
+          [label]="character.name"
+          [title]="character.name"
+        >
+          <bio-option
+            *ngFor="let characterCostume of character.characterCostumes; trackBy: trackByCharacterCostume"
+            [value]="characterCostume.id"
+            title="{{ character.name }} {{ characterCostume.name }}"
+          >
+            {{ characterCostume.name }}
+          </bio-option>
+        </bio-optgroup>
+      </bio-select>
+    </form-field>
+    <!--</editor-fold>-->
+    <form-field label="Description" [disabled]="disabled">
+      <input bioInput controlName="description" placeholder="Description" />
+      <errors>
+        <error *error="'required'">Description is required</error>
+      </errors>
+    </form-field>
+    <form-field label="Bullet kills" [disabled]="disabled">
+      <input bioInput controlName="bulletKills" placeholder="Number of bullet kils" type="number" />
+      <errors>
+        <error *error="'required'">Bullet kills is required</error>
+      </errors>
+    </form-field>
+    <form-field label="Evidence" [disabled]="disabled">
+      <input bioInput controlName="evidence" placeholder="Evidence video URL" type="url" />
+      <errors>
+        <error *error="'required'">Evidence is required</error>
+        <error *error="'url'">Evidence must be an URL</error>
+      </errors>
+    </form-field>
+    <a *ngIf="evidenceControl.valid" bio-url-preview [url]="evidence$ | async"></a>
+  </card-content>
+</card>

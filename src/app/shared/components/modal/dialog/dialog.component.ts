@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Inject } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { ModalRef } from '../modal-ref';
 import { BehaviorSubject, isObservable, Observable } from 'rxjs';
@@ -8,6 +8,11 @@ import { Destroyable } from '../../common/destroyable-component';
 import { catchAndThrow } from '@util/operators/catch-and-throw';
 import { isFunction } from 'st-utils';
 
+export enum DialogType {
+  confirmation,
+  success,
+}
+
 export interface DialogData {
   title?: string | null;
   content: string | SafeHtml;
@@ -15,6 +20,7 @@ export interface DialogData {
   btnNo?: string | null;
   yesAction?: ((modalRef: ModalRef<DialogComponent, DialogData, boolean>) => any) | Observable<any>;
   noAction?: ((modalRef: ModalRef<DialogComponent, DialogData, boolean>) => any) | Observable<any>;
+  type?: DialogType;
 }
 
 @Component({
@@ -32,6 +38,18 @@ export class DialogComponent extends Destroyable {
   }
 
   loading$ = new BehaviorSubject<boolean>(false);
+
+  dialogType = DialogType;
+
+  @HostBinding('class.success')
+  get successClass(): boolean {
+    return this.data.type === DialogType.success;
+  }
+
+  @HostBinding('class.confirmation')
+  get confirmationClass(): boolean {
+    return this.data.type === DialogType.confirmation;
+  }
 
   private _proccessObservable(observable: Observable<any>, action: boolean): void {
     this.loading$.next(true);

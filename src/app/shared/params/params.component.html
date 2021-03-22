@@ -42,9 +42,9 @@
         {{ game.name }}
       </bio-option>
     </bio-select>
-    <errors *ngIf="formsConfig.idPlatform.validators?.length" controlError="idGame">
-      <ng-container *ngFor="let validator of formsConfig.idPlatform.validators; trackBy: trackByControlValidator">
-        <error *error="validator.name">{{ formsConfig.idPlatform.errorMessages | get: validator.name }}</error>
+    <errors *ngIf="formsConfig.idGame.validators?.length" controlError="idGame">
+      <ng-container *ngFor="let validator of formsConfig.idGame.validators; trackBy: trackByControlValidator">
+        <error *error="validator.name">{{ formsConfig.idGame.errorMessages | get: validator.name }}</error>
       </ng-container>
     </errors>
   </form-field>
@@ -72,9 +72,9 @@
         {{ miniGame.name }}
       </bio-option>
     </bio-select>
-    <errors *ngIf="formsConfig.idPlatform.validators?.length" controlError="idMiniGame">
-      <ng-container *ngFor="let validator of formsConfig.idPlatform.validators; trackBy: trackByControlValidator">
-        <error *error="validator.name">{{ formsConfig.idPlatform.errorMessages | get: validator.name }}</error>
+    <errors *ngIf="formsConfig.idMiniGame.validators?.length" controlError="idMiniGame">
+      <ng-container *ngFor="let validator of formsConfig.idMiniGame.validators; trackBy: trackByControlValidator">
+        <error *error="validator.name">{{ formsConfig.idMiniGame.errorMessages | get: validator.name }}</error>
       </ng-container>
     </errors>
   </form-field>
@@ -98,9 +98,9 @@
         {{ mode.name }}
       </bio-option>
     </bio-select>
-    <errors *ngIf="formsConfig.idPlatform.validators?.length" controlError="idMode">
-      <ng-container *ngFor="let validator of formsConfig.idPlatform.validators; trackBy: trackByControlValidator">
-        <error *error="validator.name">{{ formsConfig.idPlatform.errorMessages | get: validator.name }}</error>
+    <errors *ngIf="formsConfig.idMode.validators?.length" controlError="idMode">
+      <ng-container *ngFor="let validator of formsConfig.idMode.validators; trackBy: trackByControlValidator">
+        <error *error="validator.name">{{ formsConfig.idMode.errorMessages | get: validator.name }}</error>
       </ng-container>
     </errors>
   </form-field>
@@ -129,9 +129,9 @@
           {{ stage.name }}
         </bio-option>
       </bio-select>
-      <errors *ngIf="formsConfig.idPlatform.validators?.length" controlError="idStage">
-        <ng-container *ngFor="let validator of formsConfig.idPlatform.validators; trackBy: trackByControlValidator">
-          <error *error="validator.name">{{ formsConfig.idPlatform.errorMessages | get: validator.name }}</error>
+      <errors *ngIf="formsConfig.idStage.validators?.length" controlError="idStage">
+        <ng-container *ngFor="let validator of formsConfig.idStage.validators; trackBy: trackByControlValidator">
+          <error *error="validator.name">{{ formsConfig.idStage.errorMessages | get: validator.name }}</error>
         </ng-container>
       </errors>
     </form-field>
@@ -167,9 +167,13 @@
           </bio-option>
         </bio-optgroup>
       </bio-select>
-      <errors *ngIf="formsConfig.idPlatform.validators?.length" controlError="idCharacterCostume">
-        <ng-container *ngFor="let validator of formsConfig.idPlatform.validators; trackBy: trackByControlValidator">
-          <error *error="validator.name">{{ formsConfig.idPlatform.errorMessages | get: validator.name }}</error>
+      <errors *ngIf="formsConfig.idCharacterCostume.validators?.length" controlError="idCharacterCostume">
+        <ng-container
+          *ngFor="let validator of formsConfig.idCharacterCostume.validators; trackBy: trackByControlValidator"
+        >
+          <error *error="validator.name">
+            {{ formsConfig.idCharacterCostume.errorMessages | get: validator.name }}
+          </error>
         </ng-container>
       </errors>
     </form-field>
