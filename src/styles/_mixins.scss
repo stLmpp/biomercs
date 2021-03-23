@@ -6,7 +6,7 @@
   margin-top: 1rem;
   display: flex;
   align-items: center;
-  button:not(:last-of-type) {
+  button:not(:last-child) {
     margin-right: 1rem;
   }
   &.end {

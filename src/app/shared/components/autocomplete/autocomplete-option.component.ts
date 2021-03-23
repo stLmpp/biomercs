@@ -1,7 +1,17 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Host, HostBinding, HostListener, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Host,
+  HostBinding,
+  HostListener,
+  Input,
+  Output,
+} from '@angular/core';
 import { FocusableOption, FocusOrigin } from '@angular/cdk/a11y';
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Autocomplete } from '@shared/components/autocomplete/autocomplete';
+import { EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'bio-autocomplete-option',
@@ -25,6 +35,8 @@ export class AutocompleteOptionComponent implements FocusableOption {
     return this._disabled;
   }
 
+  @Output() autocompleteSelect = new EventEmitter<string>();
+
   @HostBinding('attr.tabindex')
   get tabindex(): number {
     return this._disabled ? -1 : 0;
@@ -37,9 +49,10 @@ export class AutocompleteOptionComponent implements FocusableOption {
 
   @HostListener('click')
   @HostListener('keydown.enter')
-  onClick(): void {
+  onSelect(): void {
     if (!this._disabled) {
       this.autocomplete.select(this.value);
+      this.autocompleteSelect.emit(this.value);
     }
   }
 

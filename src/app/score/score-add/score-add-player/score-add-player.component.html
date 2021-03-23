@@ -31,7 +31,7 @@
         <bio-autocomplete-option
           *ngFor="let player of players$ | async; trackBy: trackByPlayer"
           [value]="player.personaName"
-          (click)="form.patchValue({ idPlayer: player.id })"
+          (autocompleteSelect)="idPlayerControl.setValue(player.id)"
         >
           {{ player.personaName }}
         </bio-autocomplete-option>

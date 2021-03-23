@@ -2,13 +2,18 @@ import { BehaviorSubject, Observable, queueScheduler, SchedulerLike } from 'rxjs
 import { distinctUntilChanged, filter, map, observeOn, pluck, takeUntil } from 'rxjs/operators';
 import { Directive, OnChanges } from '@angular/core';
 import { Destroyable } from './destroyable-component';
-import { isFunction, isObject, isObjectEmpty } from 'st-utils';
+import { isFunction, isKeyof, isObject, isObjectEmpty } from 'st-utils';
 import { Entries } from '@stlmpp/store';
 import { distinctUntilKeysChanged } from '@util/operators/distinct-until-keys-changed';
 import { SimpleChangesCustom } from '@util/util';
 
-export interface StateComponentConfig<K extends keyof any> {
-  inputs?: K[];
+export interface StateComponentConfigInput<T extends Record<any, any>, K extends keyof T = keyof T> {
+  key: K;
+  transformer: (value: T[K]) => any;
+}
+
+export interface StateComponentConfig<T extends Record<any, any>, K extends keyof T = keyof T> {
+  inputs?: Array<K | StateComponentConfigInput<T, K>>;
   scheduler?: SchedulerLike;
 }
 
@@ -16,9 +21,11 @@ export interface StateComponentConfig<K extends keyof any> {
 export abstract class StateComponent<T extends Record<string, any> = Record<string, any>>
   extends Destroyable
   implements OnChanges {
-  protected constructor(initialState: T, config: StateComponentConfig<keyof T> = {}) {
+  protected constructor(initialState: T, config: StateComponentConfig<T> = {}) {
     super();
-    this._inputs = config.inputs ?? [];
+    this._inputs = (config.inputs ?? []).map(keyOrConfig =>
+      isKeyof<T, keyof T>(keyOrConfig) ? { key: keyOrConfig, transformer: value => value } : keyOrConfig
+    );
     this._state$ = new BehaviorSubject(initialState);
     this._updateQueue$
       .pipe(
@@ -34,7 +41,7 @@ export abstract class StateComponent<T extends Record<string, any> = Record<stri
       });
   }
 
-  private readonly _inputs: (keyof T)[];
+  private readonly _inputs: StateComponentConfigInput<T>[];
   private readonly _state$: BehaviorSubject<T>;
   private readonly _updateQueue$ = new BehaviorSubject<((state: T) => T)[]>([]);
 
@@ -87,10 +94,10 @@ export abstract class StateComponent<T extends Record<string, any> = Record<stri
 
   ngOnChanges(changes: SimpleChangesCustom): void {
     let stateUpdate: Partial<T> = {};
-    for (const input of this._inputs) {
-      const inputChanges = changes[input];
+    for (const { key, transformer } of this._inputs) {
+      const inputChanges = changes[key];
       if (inputChanges && inputChanges.currentValue !== inputChanges.previousValue) {
-        stateUpdate = { ...stateUpdate, [input]: inputChanges.currentValue };
+        stateUpdate = { ...stateUpdate, [key]: transformer(inputChanges.currentValue) };
       }
     }
     if (!isObjectEmpty(stateUpdate)) {

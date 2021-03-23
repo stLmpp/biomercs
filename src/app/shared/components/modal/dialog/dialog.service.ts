@@ -23,9 +23,13 @@ export class DialogService {
   }
 
   confirm(data: DialogData, config?: ModalConfig): Observable<boolean> {
-    return from(this._getModalRef({ ...data, type: DialogType.confirmation }, config)).pipe(
+    return from(this._getModalRef({ ...data, type: DialogType.confirm }, config)).pipe(
       switchMap(modalRef => modalRef.onClose$.pipe(map(Boolean)))
     );
+  }
+
+  async info(data: DialogData, config?: ModalConfig): Promise<DialogRef> {
+    return this._getModalRef({ ...data, type: DialogType.info }, config);
   }
 
   async success(data: DialogData, config?: ModalConfig): Promise<DialogRef> {

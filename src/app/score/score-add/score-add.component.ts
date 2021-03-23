@@ -18,10 +18,12 @@ import { ScoreService } from '../score.service';
 import { ScoreAdd } from '@model/score';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
 import { ModalConfig } from '@shared/components/modal/modal.config';
+import { Mode } from '@model/mode';
 
 export interface ScoreAddState {
   characterLoading: boolean;
   submitting: boolean;
+  submitModalLoading: boolean;
 }
 
 @Component({
@@ -52,7 +54,7 @@ export class ScoreAddComponent extends StateComponent<ScoreAddState> implements 
     private scoreService: ScoreService,
     private dialogService: DialogService
   ) {
-    super({ characterLoading: false, submitting: false });
+    super({ characterLoading: false, submitting: false, submitModalLoading: false });
   }
 
   @ViewChildren(ScoreAddPlayerComponent) scoreAddPlayerComponents!: QueryList<ScoreAddPlayerComponent>;
@@ -98,6 +100,7 @@ export class ScoreAddComponent extends StateComponent<ScoreAddState> implements 
   idMiniGameNotNil$ = this.form.get('idMiniGame').value$.pipe(filterNil());
   idModeNotNil$ = this.form.get('idMode').value$.pipe(filterNil());
   characterLoading$ = this.selectState('characterLoading');
+  submitModalLoading$ = this.selectState('submitModalLoading');
 
   hasIdMode$ = this.form.get('idMode').value$.pipe(map(idMode => !!idMode));
 
@@ -140,6 +143,10 @@ export class ScoreAddComponent extends StateComponent<ScoreAddState> implements 
     return this.form.get('scorePlayers');
   }
 
+  private _getCurrentMode(): Mode | undefined {
+    return this.modeQuery.getEntity(this.form.get('idMode').value ?? -1);
+  }
+
   private _changeAllForms(callback: (form: ControlGroup<any>) => void): void {
     callback(this.form);
     callback(this.paramsComponent.form);
@@ -161,7 +168,7 @@ export class ScoreAddComponent extends StateComponent<ScoreAddState> implements 
     this._changeAllForms(form => form.markAsTouched());
   }
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     if (this.form.invalid) {
       return;
     }
@@ -175,14 +182,20 @@ export class ScoreAddComponent extends StateComponent<ScoreAddState> implements 
           {
             title: 'Score submited successfully!',
             content: 'Your score was submitted and will be reviewed by one of ours administrators',
-            btnNo: null,
-            btnYes: 'Close',
+            btnNo: 'Close',
+            btnYes: 'Submit another',
+            yesAction: modalRef => {
+              this._changeAllForms(form => form.enable());
+              this.onReset();
+              modalRef.close();
+            },
           },
           new ModalConfig({ width: 500, disableClose: true })
         );
       })
     );
-    this.dialogService.confirm(
+    this.updateState({ submitModalLoading: true });
+    await this.dialogService.info(
       {
         btnNo: 'Cancel',
         btnYes: 'Submit',
@@ -196,6 +209,41 @@ export class ScoreAddComponent extends StateComponent<ScoreAddState> implements 
       },
       new ModalConfig({ width: 500, disableClose: true })
     );
+    this.updateState({ submitModalLoading: false });
+  }
+
+  onReset(): void {
+    const scorePlayers: Partial<ScorePlayerAddForm>[] = [
+      {
+        evidence: '',
+        host: true,
+        description: '',
+        idCharacterCostume: null,
+        bulletKills: 0,
+      },
+    ];
+    const mode = this._getCurrentMode();
+    if (mode && mode.playerQuantity > 1) {
+      const playerCount = this.form.get('scorePlayers').length - 1;
+      for (let i = 0; i < playerCount; i++) {
+        scorePlayers.push({
+          personaName: '',
+          host: false,
+          bulletKills: 0,
+          description: '',
+          idCharacterCostume: null,
+          evidence: '',
+          idPlayer: null,
+        });
+      }
+    }
+    this.form.patchValue({
+      score: 0,
+      time: `00"00'00`,
+      maxCombo: 0,
+      scorePlayers,
+    });
+    this._changeAllForms(form => form.markAsTouched(false));
   }
 
   ngOnInit(): void {

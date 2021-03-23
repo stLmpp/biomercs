@@ -107,7 +107,7 @@ export class ParamsComponent
         characterLoading: false,
         clearable: false,
       },
-      { inputs: ['clearable'] }
+      { inputs: [{ key: 'clearable', transformer: coerceBooleanProperty }] }
     );
   }
 
@@ -402,6 +402,7 @@ export class ParamsComponent
       }
     }
     this.form.patchValue(params);
+    super.ngOnChanges(changes);
   }
 
   static ngAcceptInputType_setQueryParamsOnChange: BooleanInput;

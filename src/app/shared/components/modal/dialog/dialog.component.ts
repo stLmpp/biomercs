@@ -1,16 +1,17 @@
 import { ChangeDetectionStrategy, Component, HostBinding, Inject } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { ModalRef } from '../modal-ref';
-import { BehaviorSubject, isObservable, Observable } from 'rxjs';
+import { isObservable, Observable } from 'rxjs';
 import { MODAL_DATA } from '../modal.config';
 import { take, takeUntil } from 'rxjs/operators';
-import { Destroyable } from '../../common/destroyable-component';
 import { catchAndThrow } from '@util/operators/catch-and-throw';
 import { isFunction } from 'st-utils';
+import { StateComponent } from '@shared/components/common/state-component';
 
 export enum DialogType {
-  confirmation,
+  confirm,
   success,
+  info,
 }
 
 export interface DialogData {
@@ -29,17 +30,18 @@ export interface DialogData {
   styleUrls: ['./dialog.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DialogComponent extends Destroyable {
+export class DialogComponent extends StateComponent<{ loadingYes: boolean; loadingNo: boolean }> {
   constructor(
     private modalRef: ModalRef<DialogComponent, DialogData, boolean>,
     @Inject(MODAL_DATA) public data: DialogData
   ) {
-    super();
+    super({ loadingNo: false, loadingYes: false });
   }
 
-  loading$ = new BehaviorSubject<boolean>(false);
+  state$ = this.selectState();
 
   dialogType = DialogType;
+  typesWithoutIcon = [DialogType.confirm, DialogType.info];
 
   @HostBinding('class.success')
   get successClass(): boolean {
@@ -48,21 +50,26 @@ export class DialogComponent extends Destroyable {
 
   @HostBinding('class.confirmation')
   get confirmationClass(): boolean {
-    return this.data.type === DialogType.confirmation;
+    return this.data.type === DialogType.confirm;
+  }
+
+  private _setLoading(action: boolean, loading: boolean): void {
+    const stateKey = action ? 'loadingYes' : 'loadingNo';
+    this.updateState({ [stateKey]: loading });
   }
 
   private _proccessObservable(observable: Observable<any>, action: boolean): void {
-    this.loading$.next(true);
+    this._setLoading(action, true);
     observable
       .pipe(
         take(1),
         takeUntil(this.destroy$),
         catchAndThrow(() => {
-          this.loading$.next(false);
+          this._setLoading(action, false);
         })
       )
       .subscribe(() => {
-        this.loading$.next(false);
+        this._setLoading(action, false);
         this.modalRef.close(action);
       });
   }

@@ -55,8 +55,13 @@
           </errors>
         </form-field>
       </card-content>
-      <card-actions (mouseenter)="onMouseenterCardActions()">
-        <button bioButton type="submit" primary [disabled]="form.invalid">Submit</button>
+      <card-actions>
+        <button bioButton type="button" primary (click)="onReset()">Reset</button>
+        <div class="submit-wrapper" (mouseenter)="onMouseenterCardActions()">
+          <button bioButton type="submit" primary [disabled]="form.invalid || (submitModalLoading$ | async)">
+            Submit
+          </button>
+        </div>
       </card-actions>
     </card>
   </form>

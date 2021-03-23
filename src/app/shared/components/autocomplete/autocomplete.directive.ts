@@ -161,7 +161,7 @@ export class AutocompleteDirective extends Destroyable {
       this._bioAutocompleteSelectFirstOptionOnEnter &&
       this.bioAutocomplete.autocompleteOptions.length
     ) {
-      this.bioAutocomplete.autocompleteOptions.find(option => !option.disabled)?.onClick();
+      this.bioAutocomplete.autocompleteOptions.find(option => !option.disabled)?.onSelect();
     }
   }
 

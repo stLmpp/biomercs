@@ -5,8 +5,7 @@
     @scaleIn
     (@fadeInOut.done)="onFadeDone($event)"
     (keydown)="onKeydown($event)"
-    class="autocomplete"
-    [style.height.px]="((optionsCount$ | async) || 0) * 35"
+    class="autocomplete height-{{ (optionsCount$ | async) || 0 }}"
   >
     <ng-content></ng-content>
   </div>
