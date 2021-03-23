@@ -1,20 +1,14 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { ScoreTopTableComponent } from './score-top-table/score-top-table.component';
-import { PlatformResolver } from '@shared/services/platform/platform.resolver';
-import { ScoreAddComponent } from './score-add/score-add.component';
-import { AuthPlayerResolver } from '../auth/auth-player.resolver';
+import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
     path: 'leaderboards',
-    component: ScoreTopTableComponent,
-    resolve: [PlatformResolver],
+    loadChildren: () => import('./score-leaderboards/score-leaderboards.module').then(m => m.ScoreLeaderboardsModule),
   },
   {
     path: 'add',
-    component: ScoreAddComponent,
-    resolve: [PlatformResolver, AuthPlayerResolver],
+    loadChildren: () => import('./score-add/score-add.module').then(m => m.ScoreAddModule),
   },
 ];
 

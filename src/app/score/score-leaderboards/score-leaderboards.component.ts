@@ -18,7 +18,7 @@ interface TopTableForm extends ParamsForm {
   itemsPerPage: number;
 }
 
-export interface ScoreTopTableState {
+export interface ScoreLeaderboardsState {
   tableLoading: boolean;
   orderBy?: number;
   orderByDirection?: OrderByDirection;
@@ -27,12 +27,12 @@ export interface ScoreTopTableState {
 }
 
 @Component({
-  selector: 'bio-score-top-table',
-  templateUrl: './score-top-table.component.html',
-  styleUrls: ['./score-top-table.component.scss'],
+  selector: 'bio-score-leaderboards',
+  templateUrl: './score-leaderboards.component.html',
+  styleUrls: ['./score-leaderboards.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ScoreTopTableComponent extends StateComponent<ScoreTopTableState> {
+export class ScoreLeaderboardsComponent extends StateComponent<ScoreLeaderboardsState> {
   constructor(
     private controlBuilder: ControlBuilder,
     private scoreService: ScoreService,
