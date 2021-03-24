@@ -13,7 +13,8 @@
     text-decoration: none;
   }
   &:hover,
-  &:active {
+  &:active,
+  &:focus {
     .img,
     .body {
       border-color: v.$accent-400;

@@ -1,4 +1,13 @@
-import { ComponentRef, Directive, ElementRef, HostListener, Inject, Input, ViewContainerRef } from '@angular/core';
+import {
+  ComponentRef,
+  Directive,
+  ElementRef,
+  HostListener,
+  Inject,
+  Input,
+  OnDestroy,
+  ViewContainerRef,
+} from '@angular/core';
 import { Nullable } from '../../type/nullable';
 import { BooleanInput, coerceBooleanProperty, NumberInput } from '@angular/cdk/coercion';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
@@ -13,7 +22,7 @@ export type TooltipPosition = 'top' | 'right' | 'bottom' | 'left';
   selector: '[tooltip]',
   exportAs: 'tooltip',
 })
-export class TooltipDirective {
+export class TooltipDirective implements OnDestroy {
   constructor(
     private overlay: Overlay,
     private elementRef: ElementRef<HTMLElement>,
@@ -137,6 +146,12 @@ export class TooltipDirective {
     } else {
       this.show(delay);
     }
+  }
+
+  ngOnDestroy(): void {
+    clearTimeout(this._showTimeout);
+    clearTimeout(this._hideTimeout);
+    this._overlayRef?.dispose();
   }
 
   static ngAcceptInputType_tooltipDisabled: BooleanInput;
