@@ -1,25 +1,54 @@
 <a class="brand" routerLink="/"> Biomercs </a>
-<div class="end">
+<div class="end" *ngLet="isMediumScreen$ | async as isMediumScreen">
   <ng-container *ngIf="isLogged$ | async; else notLogged">
     <ng-container *ngIf="user$ | async as user">
-      <a type="button" bioButton routerLink="/score/leaderboards" queryParamsHandling="merge">
-        <icon>leaderboard</icon>
-        Leaderboards
-      </a>
-      <a type="button" bioButton routerLink="/score/add" queryParamsHandling="merge">
-        <icon>add</icon>
-        Submit score
-      </a>
+      <ng-container *ngIf="isMediumScreen">
+        <a bioButton routerLink="/score/leaderboards" queryParamsHandling="merge">
+          <icon>leaderboard</icon>
+          Leaderboards
+        </a>
+        <a bioButton routerLink="/score/add" queryParamsHandling="merge">
+          <icon>add</icon>
+          Submit score
+        </a>
+        <a bioButton routerLink="/admin/approval" queryParamsHandling="merge">
+          <icon>checklist</icon>
+          Scores approval (Admin)
+        </a>
+        <a bioButton [routerLink]="pathToScoreApproval$ | async" queryParamsHandling="merge">
+          <icon>checklist</icon>
+          Scores approval
+        </a>
+      </ng-container>
       <button type="button" bioButton [menuTrigger]="menu">
         <icon>person</icon>
         {{ user.username }}
+        <icon class="triangle" mdi="triangle"></icon>
       </button>
       <bio-menu #menu>
-        <a bioButton menuItem [routerLink]="pathToProfile$ | async">Profile</a>
-        <a *ngIf="user.admin" bioButton menuItem routerLink="/admin/approval" queryParamsHandling="merge">
-          Scores approval
-        </a>
-        <a bioButton menuItem routerLink="/auth/login" (click)="logout()">Logout</a>
+        <a bioButton menuItem [routerLink]="pathToProfile$ | async"> <icon>person</icon> Profile </a>
+        <ng-container *ngIf="!isMediumScreen">
+          <a menuItem bioButton routerLink="/score/leaderboards" queryParamsHandling="merge">
+            <icon>leaderboard</icon>
+            Leaderboards
+          </a>
+          <a menuItem bioButton routerLink="/score/add" queryParamsHandling="merge">
+            <icon>add</icon>
+            Submit score
+          </a>
+          <a menuItem bioButton routerLink="/admin/approval" queryParamsHandling="merge">
+            <icon>checklist</icon>
+            Scores approval (Admin)
+          </a>
+          <a menuItem bioButton [routerLink]="pathToScoreApproval$ | async" queryParamsHandling="merge">
+            <icon>checklist</icon>
+            Scores approval
+          </a>
+        </ng-container>
+        <button type="button" bioButton menuItem (click)="logout()">
+          <icon>logout</icon>
+          Logout
+        </button>
       </bio-menu>
     </ng-container>
   </ng-container>

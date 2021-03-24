@@ -15,13 +15,15 @@ import { isObjectEmpty } from 'st-utils';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 
 @Component({
-  selector: 'bio-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss'],
+  selector: 'bio-player-profile',
+  templateUrl: './player-profile.component.html',
+  styleUrls: ['./player-profile.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [Animations.collapse.collapse()],
 })
-export class ProfileComponent extends StateComponent<{ editMode: boolean; loadingRegion: boolean }> implements OnInit {
+export class PlayerProfileComponent
+  extends StateComponent<{ editMode: boolean; loadingRegion: boolean }>
+  implements OnInit {
   constructor(
     private playerQuery: PlayerQuery,
     private routerQuery: RouterQuery,

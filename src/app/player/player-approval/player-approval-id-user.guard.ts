@@ -8,7 +8,7 @@ import { RouteParamEnum } from '@model/enum/route-param.enum';
 @Injectable({
   providedIn: 'root',
 })
-export class ProfileIdUserGuard implements CanActivate {
+export class PlayerApprovalIdUserGuard implements CanActivate {
   constructor(private playerService: PlayerService, private router: Router) {}
 
   canActivate(
@@ -18,6 +18,6 @@ export class ProfileIdUserGuard implements CanActivate {
     const idUser = +route.paramMap.get(RouteParamEnum.idUser)!;
     return this.playerService
       .getIdByIdUser(idUser)
-      .pipe(map(idPlayer => this.router.createUrlTree(['/player', idPlayer])));
+      .pipe(map(idPlayer => this.router.createUrlTree(['/player', idPlayer, 'approval'])));
   }
 }

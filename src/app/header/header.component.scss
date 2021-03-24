@@ -12,4 +12,12 @@
     color: $primary-600;
     font-size: 1.25rem;
   }
+
+  .triangle {
+    font-size: 8px;
+    line-height: 8px;
+    &::before {
+      transform: rotate(180deg);
+    }
+  }
 }

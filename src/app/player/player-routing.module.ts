@@ -1,24 +1,40 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ProfileComponent } from './profile/profile.component';
-import { ProfilePersonaNameGuard } from './profile/profile-persona-name.guard';
-import { PlayerResolver } from './player.resolver';
-import { ProfileIdUserGuard } from './profile/profile-id-user.guard';
+import { PlayerProfilePersonaNameGuard } from './player-profile/player-profile-persona-name.guard';
+import { PlayerProfileIdUserGuard } from './player-profile/player-profile-id-user.guard';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
+import { PlayerApprovalIdUserGuard } from './player-approval/player-approval-id-user.guard';
 
 const routes: Routes = [
   {
     path: `p/:${RouteParamEnum.personaName}`,
-    canActivate: [ProfilePersonaNameGuard],
+    canActivate: [PlayerProfilePersonaNameGuard],
   },
   {
     path: `u/:${RouteParamEnum.idUser}`,
-    canActivate: [ProfileIdUserGuard],
+    children: [
+      {
+        path: '',
+        canActivate: [PlayerProfileIdUserGuard],
+      },
+      {
+        path: 'approval',
+        canActivate: [PlayerApprovalIdUserGuard],
+      },
+    ],
   },
   {
     path: `:${RouteParamEnum.idPlayer}`,
-    component: ProfileComponent,
-    resolve: [PlayerResolver],
+    children: [
+      {
+        path: '',
+        loadChildren: () => import('./player-profile/player-profile.module').then(m => m.PlayerProfileModule),
+      },
+      {
+        path: 'approval',
+        loadChildren: () => import('./player-approval/player-approval.module').then(m => m.PlayerApprovalModule),
+      },
+    ],
   },
 ];
 

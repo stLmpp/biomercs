@@ -1,4 +1,4 @@
-import { Directive, Input, OnDestroy, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
+import { Directive, Input, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
 
 class NgLetContext<T> {
   $implicit!: T;
@@ -11,7 +11,7 @@ class NgLetContext<T> {
 }
 
 @Directive({ selector: '[ngLet]' })
-export class NgLetDirective<T> implements OnDestroy, OnInit {
+export class NgLetDirective<T> implements OnInit {
   constructor(private viewContainer: ViewContainerRef, private templateRef: TemplateRef<NgLetContext<T>>) {}
 
   private _context = new NgLetContext<T>();
@@ -24,10 +24,6 @@ export class NgLetDirective<T> implements OnDestroy, OnInit {
   ngOnInit(): void {
     this.viewContainer.clear();
     this.viewContainer.createEmbeddedView(this.templateRef, this._context);
-  }
-
-  ngOnDestroy(): void {
-    this.viewContainer.clear();
   }
 
   static ngTemplateContextGuard<ST>(dir: NgLetDirective<ST>, ctx: any): ctx is NgLetContext<NonNullable<ST>> {

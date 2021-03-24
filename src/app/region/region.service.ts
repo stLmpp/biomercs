@@ -36,7 +36,7 @@ export class RegionService extends AbstractRegionService {
       () => import('./region-select/region-select.component').then(c => c.RegionSelectComponent),
       {
         data: { idRegion, onSelect },
-        minWidth: 500,
+        width: 500,
         module: () => import('./region.module').then(m => m.RegionModule),
       }
     );

@@ -1,6 +1,10 @@
 .list.modal-content {
   padding: 0;
+  max-height: 440px;
   .list-item {
     max-height: 44px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
