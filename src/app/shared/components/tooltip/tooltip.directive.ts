@@ -91,7 +91,7 @@ export class TooltipDirective {
       if (this._overlayRef) {
         /*
           If there's a overlayRef already (it shouldn't), dispose it.
-          This will avoid creating one overlay over another (happens sometimes because how setTimout works)
+          This will avoid creating one overlay over another (happens sometimes because how setTimeout works)
         */
         this._overlayRef.dispose();
       }
