@@ -35,8 +35,6 @@ export class TooltipDirective implements OnDestroy {
   private _componentRef?: ComponentRef<TooltipComponent>;
   private _showTimeout: any;
   private _hideTimeout: any;
-  private _animationRunning = false;
-  private _openAfterAnimationEnd = false;
 
   @Input() tooltip!: Nullable<string | number>;
   @Input() tooltipPosition: TooltipPosition = 'top';
@@ -89,21 +87,12 @@ export class TooltipDirective implements OnDestroy {
 
   show(delay?: number): void {
     clearTimeout(this._hideTimeout);
-    if (this._animationRunning) {
-      this._openAfterAnimationEnd = true;
-    }
-    if (this.isOpen || this._openAfterAnimationEnd) {
+    if (this.isOpen) {
       return;
     }
     delay ??= this._getShowDelay();
     this._showTimeout = setTimeout(() => {
-      if (this._overlayRef) {
-        /*
-          If there's a overlayRef already (it shouldn't), dispose it.
-          This will avoid creating one overlay over another (happens sometimes because how setTimeout works)
-        */
-        this._overlayRef.dispose();
-      }
+      this._overlayRef?.dispose();
       this._overlayRef = this.overlay.create({
         hasBackdrop: false,
         positionStrategy: this.overlay
@@ -127,15 +116,9 @@ export class TooltipDirective implements OnDestroy {
     delay ??= this._getHideDelay();
     this._hideTimeout = setTimeout(() => {
       this._overlayRef?.detach();
-      this._animationRunning = true;
+      this.isOpen = false;
       this._componentRef?.instance.onAnimationEnd$.subscribe(() => {
         this._overlayRef?.dispose();
-        this.isOpen = false;
-        this._animationRunning = false;
-        if (this._openAfterAnimationEnd) {
-          this._openAfterAnimationEnd = false;
-          this.show();
-        }
       });
     }, delay);
   }
