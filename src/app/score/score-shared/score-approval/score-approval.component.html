@@ -68,6 +68,7 @@
                 tooltipPosition="right"
                 (click)="openModalApproval(scoreApprovalActionEnum.Approve, score)"
                 [disabled]="loadingApprovalModal"
+                type="button"
               >
                 <icon small>check</icon>
               </button>
@@ -79,8 +80,21 @@
                 tooltipPosition="right"
                 (click)="openModalApproval(scoreApprovalActionEnum.Reject, score)"
                 [disabled]="loadingApprovalModal"
+                type="button"
               >
                 <icon small>close</icon>
+              </button>
+              <button
+                bioButton
+                icon
+                small
+                tooltip="Request changes"
+                tooltipPosition="right"
+                *ngIf="!playerMode"
+                type="button"
+                (click)="openModalRequestChanges(score)"
+              >
+                <icon small>sync_alt</icon>
               </button>
             </div>
             <div class="platform">{{ score.platformShortName }}</div>

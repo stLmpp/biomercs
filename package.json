@@ -27,7 +27,7 @@
     "@stlmpp/control": "~5.1.2",
     "@stlmpp/router": "~5.0.0",
     "@stlmpp/store": "~5.0.0",
-    "@stlmpp/utils": "~5.0.0",
+    "@stlmpp/utils": "~5.0.1",
     "flag-icon-css": "~3.5.0",
     "ngx-currency": "~2.5.2",
     "ngx-mask": "~11.1.5",

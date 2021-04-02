@@ -7,6 +7,7 @@ import { MODAL_DATA } from '@shared/components/modal/modal.config';
 export interface ScoreInfoModalData {
   score: ScoreVW;
   showWorldRecord?: boolean;
+  showApprovalDate?: boolean;
 }
 
 @Component({
@@ -17,13 +18,15 @@ export interface ScoreInfoModalData {
 })
 export class ScoreInfoModalComponent {
   constructor(
-    @Inject(MODAL_DATA) { score, showWorldRecord }: ScoreInfoModalData,
+    @Inject(MODAL_DATA) { score, showWorldRecord, showApprovalDate }: ScoreInfoModalData,
     public modalRef: ModalRef<ScoreInfoComponent, ScoreVW>
   ) {
     this.score = score;
     this.showWorldRecord = showWorldRecord ?? false;
+    this.showApprovalDate = showApprovalDate ?? false;
   }
 
   score: ScoreVW;
   showWorldRecord: boolean;
+  showApprovalDate: boolean;
 }

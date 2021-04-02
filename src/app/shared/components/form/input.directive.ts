@@ -1,13 +1,18 @@
-import { Directive, HostBinding, Input, Optional, Self } from '@angular/core';
+import { Directive, ElementRef, HostBinding, Input, Optional, Self } from '@angular/core';
 import { AbstractComponent } from '../core/abstract-component';
 import { ControlDirective } from '@stlmpp/control';
+import { FocusableOption, FocusOrigin } from '@angular/cdk/a11y';
 
 @Directive({
   selector: 'input[bioInput]:not([type=checkbox]):not([type=radio]),textarea[bioInput]',
   host: { class: 'input' },
+  exportAs: 'bio-input',
 })
-export class InputDirective extends AbstractComponent {
-  constructor(@Optional() @Self() public controlDirective?: ControlDirective) {
+export class InputDirective extends AbstractComponent implements FocusableOption {
+  constructor(
+    private elementRef: ElementRef<HTMLInputElement | HTMLTextAreaElement>,
+    @Optional() @Self() public controlDirective?: ControlDirective
+  ) {
     super();
   }
 
@@ -19,5 +24,9 @@ export class InputDirective extends AbstractComponent {
 
   get dangerClass(): boolean {
     return this.bioType === 'danger' || !!(this.controlDirective?.isTouched && this.controlDirective.isInvalid);
+  }
+
+  focus(origin?: FocusOrigin): void {
+    this.elementRef.nativeElement.focus();
   }
 }

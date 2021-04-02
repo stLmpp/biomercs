@@ -3,19 +3,19 @@
   <ng-container *ngIf="isLogged$ | async; else notLogged">
     <ng-container *ngIf="user$ | async as user">
       <ng-container *ngIf="isMediumScreen">
-        <a bioButton routerLink="/score/leaderboards" queryParamsHandling="merge">
+        <a bioButton routerLink="/score/leaderboards" queryParamsHandling="preserve">
           <icon>leaderboard</icon>
           Leaderboards
         </a>
-        <a bioButton routerLink="/score/add" queryParamsHandling="merge">
+        <a bioButton routerLink="/score/add" queryParamsHandling="preserve">
           <icon>add</icon>
           Submit score
         </a>
-        <a bioButton routerLink="/admin/approval" queryParamsHandling="merge">
+        <a bioButton routerLink="/admin/approval" queryParamsHandling="preserve">
           <icon>checklist</icon>
           Scores approval (Admin)
         </a>
-        <a bioButton [routerLink]="pathToScoreApproval$ | async" queryParamsHandling="merge">
+        <a bioButton [routerLink]="pathToScoreApproval$ | async" queryParamsHandling="preserve">
           <icon>checklist</icon>
           Scores approval
         </a>
@@ -28,19 +28,19 @@
       <bio-menu #menu>
         <a bioButton menuItem [routerLink]="pathToProfile$ | async"> <icon>person</icon> Profile </a>
         <ng-container *ngIf="!isMediumScreen">
-          <a menuItem bioButton routerLink="/score/leaderboards" queryParamsHandling="merge">
+          <a menuItem bioButton routerLink="/score/leaderboards" queryParamsHandling="preserve">
             <icon>leaderboard</icon>
             Leaderboards
           </a>
-          <a menuItem bioButton routerLink="/score/add" queryParamsHandling="merge">
+          <a menuItem bioButton routerLink="/score/add" queryParamsHandling="preserve">
             <icon>add</icon>
             Submit score
           </a>
-          <a menuItem bioButton routerLink="/admin/approval" queryParamsHandling="merge">
+          <a menuItem bioButton routerLink="/admin/approval" queryParamsHandling="preserve">
             <icon>checklist</icon>
             Scores approval (Admin)
           </a>
-          <a menuItem bioButton [routerLink]="pathToScoreApproval$ | async" queryParamsHandling="merge">
+          <a menuItem bioButton [routerLink]="pathToScoreApproval$ | async" queryParamsHandling="preserve">
             <icon>checklist</icon>
             Scores approval
           </a>

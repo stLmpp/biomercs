@@ -21,6 +21,7 @@ export interface ScoreApprovalComponentState extends ParamsForm {
   orderByDirection?: OrderByDirection | null;
   data?: ScoreApprovalVW;
   loadingApprovalModal: boolean;
+  loadingRequestChangesModal: boolean;
 }
 
 @Component({
@@ -31,7 +32,14 @@ export interface ScoreApprovalComponentState extends ParamsForm {
 })
 export class ScoreApprovalComponent extends StateComponent<ScoreApprovalComponentState> implements OnInit {
   constructor(private activatedRoute: ActivatedRoute, private scoreService: ScoreService, private router: Router) {
-    super({ itemsPerPage: 10, page: 1, ...PARAMS_FORM_NULL, tableLoading: false, loadingApprovalModal: false });
+    super({
+      itemsPerPage: 10,
+      page: 1,
+      ...PARAMS_FORM_NULL,
+      tableLoading: false,
+      loadingApprovalModal: false,
+      loadingRequestChangesModal: false,
+    });
     this.updateState({
       itemsPerPage: this._getItemsPerPageFromRoute(),
       page: +(this._getParamOrNull(RouteParamEnum.page) ?? 1),
@@ -137,6 +145,23 @@ export class ScoreApprovalComponent extends StateComponent<ScoreApprovalComponen
       }
     });
     this.updateState({ loadingApprovalModal: false });
+  }
+
+  async openModalRequestChanges(score: ScoreVW): Promise<void> {
+    if (this.playerMode) {
+      return;
+    }
+    this.updateState({ loadingRequestChangesModal: true });
+    const modalRef = await this.scoreService.openModalRequestChangesScore({
+      score,
+      scoreApprovalComponentState: this.getState(),
+    });
+    modalRef.onClose$.subscribe(data => {
+      if (data) {
+        this.updateState({ data });
+      }
+    });
+    this.updateState({ loadingRequestChangesModal: false });
   }
 
   ngOnInit(): void {

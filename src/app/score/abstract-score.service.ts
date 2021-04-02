@@ -5,6 +5,7 @@ import { ScoreApprovalAdd, ScoreApprovalVW } from '@model/score-approval';
 import { HttpParams } from '@util/http-params';
 import { HttpClient } from '@angular/common/http';
 import { ScoreApprovalActionEnum } from '@model/enum/score-approval-action.enum';
+import { ScoreChangeRequest, ScoreChangeRequests } from '@model/score-change-request';
 
 export abstract class AbstractScoreService {
   protected constructor(private http: HttpClient) {}
@@ -62,5 +63,14 @@ export abstract class AbstractScoreService {
   ): Observable<void> {
     const path = playerMode ? 'player' : 'admin';
     return this.http.post<void>(`${this.endPoint}/${idScore}/${action.toLowerCase()}/${path}`, payload);
+  }
+
+  findChangeRequests(page: number, limit?: number): Observable<ScoreChangeRequests[]> {
+    const params = new HttpParams({ page, limit }, true);
+    return this.http.get<ScoreChangeRequests[]>(`${this.endPoint}/player/change-requests`, { params });
+  }
+
+  requestChanges(idScore: number, changes: string[]): Observable<ScoreChangeRequest[]> {
+    return this.http.post<ScoreChangeRequest[]>(`${this.endPoint}/${idScore}/request-changes`, changes);
   }
 }

@@ -194,7 +194,7 @@ export class ScoreLeaderboardsComponent extends StateComponent<ScoreLeaderboards
 
   async openScoreInfo(score: ScoreVW): Promise<void> {
     this.updateState({ loadingInfo: true });
-    await this.scoreService.openModalScoreInfo({ score, showWorldRecord: true });
+    await this.scoreService.openModalScoreInfo({ score, showWorldRecord: true, showApprovalDate: true });
     this.updateState({ loadingInfo: false });
   }
 }

@@ -21,8 +21,15 @@ import { RouterModule } from '@angular/router';
 import { ScoreInfoModalComponent } from './score-info/score-info-modal/score-info-modal.component';
 import { UtilModule } from '@shared/util/util.module';
 import { UrlPreviewModule } from '@shared/url-preview/url-preview.module';
+import { ScoreRequestChangesModalComponent } from './score-approval/score-request-changes-modal/score-request-changes-modal.component';
 
-const DECLARATIONS = [ScoreApprovalComponent, ScoreApprovalModalComponent, ScoreInfoComponent, ScoreInfoModalComponent];
+const DECLARATIONS = [
+  ScoreApprovalComponent,
+  ScoreApprovalModalComponent,
+  ScoreInfoComponent,
+  ScoreInfoModalComponent,
+  ScoreRequestChangesModalComponent,
+];
 
 @NgModule({
   declarations: [...DECLARATIONS],

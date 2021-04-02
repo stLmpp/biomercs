@@ -21,8 +21,8 @@
     ></icon>
   </ng-container>
 </div>
-<div class="title">Approval date:</div>
-<div class="value">{{ score.approvalDate | authDateFormat }}</div>
+<div class="title" *ngIf="showApprovalDate">Approval date:</div>
+<div class="value" *ngIf="showApprovalDate">{{ score.approvalDate | authDateFormat }}</div>
 <div class="title">Creation date:</div>
 <div class="value">{{ score.creationDate | authDateFormat }}</div>
 

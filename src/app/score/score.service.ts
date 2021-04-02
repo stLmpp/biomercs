@@ -13,6 +13,13 @@ import type {
   ScoreInfoModalComponent,
   ScoreInfoModalData,
 } from './score-shared/score-info/score-info-modal/score-info-modal.component';
+import type {
+  ScoreRequestChangesModalData,
+  ScoreRequestChangesModalComponent,
+} from './score-shared/score-approval/score-request-changes-modal/score-request-changes-modal.component';
+import { LazyFn } from '../core/dynamic-loader.service';
+
+const importScoreSharedFn: LazyFn = () => import('./score-shared/score-shared.module').then(m => m.ScoreSharedModule);
 
 @Injectable({ providedIn: 'root' })
 export class ScoreService extends AbstractScoreService {
@@ -28,7 +35,7 @@ export class ScoreService extends AbstractScoreService {
         import('./score-shared/score-approval/score-approval-modal/score-approval-modal.component').then(
           m => m.ScoreApprovalModalComponent
         ),
-      { data, minWidth: '30vw' }
+      { data, minWidth: '30vw', module: importScoreSharedFn }
     );
   }
 
@@ -38,7 +45,19 @@ export class ScoreService extends AbstractScoreService {
         import('./score-shared/score-info/score-info-modal/score-info-modal.component').then(
           m => m.ScoreInfoModalComponent
         ),
-      { data, minWidth: '30vw' }
+      { data, minWidth: '30vw', module: importScoreSharedFn }
+    );
+  }
+
+  async openModalRequestChangesScore(
+    data: ScoreRequestChangesModalData
+  ): Promise<ModalRef<ScoreRequestChangesModalComponent, ScoreRequestChangesModalData, ScoreApprovalVW>> {
+    return this.modalService.openLazy(
+      () =>
+        import('./score-shared/score-approval/score-request-changes-modal/score-request-changes-modal.component').then(
+          m => m.ScoreRequestChangesModalComponent
+        ),
+      { data, minWidth: '30vw', module: importScoreSharedFn }
     );
   }
 }
