@@ -93,6 +93,9 @@ export abstract class StateComponent<T extends Record<string, any> = Record<stri
   }
 
   ngOnChanges(changes: SimpleChangesCustom): void {
+    if (!this._inputs.length) {
+      return;
+    }
     let stateUpdate: Partial<T> = {};
     for (const { key, transformer } of this._inputs) {
       const inputChanges = changes[key];

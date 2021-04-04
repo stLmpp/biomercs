@@ -6,7 +6,8 @@
   align-items: center;
   background-color: $accent-300;
   padding: 1rem;
-  min-width: 64px;
+  height: 64px;
+  min-height: 64px;
   > .brand {
     text-decoration: none;
     color: $primary-600;

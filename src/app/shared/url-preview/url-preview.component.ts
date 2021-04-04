@@ -14,20 +14,12 @@ import { BooleanInput } from '@angular/cdk/coercion';
 })
 export class UrlPreviewComponent extends StateComponent<{ url: string | null; loading: boolean }> {
   constructor(private urlMetadataService: UrlMetadataService) {
-    super({ url: null, loading: false });
-  }
-
-  private _url: string | null = null;
-
-  @Input() set url(url: string | null) {
-    this.updateState({ url });
-    this._url = url;
+    super({ url: null, loading: false }, { inputs: ['url'] });
   }
 
   @HostBinding('attr.href')
-  get href(): string | null {
-    return this._url;
-  }
+  @Input()
+  url: string | null = null;
 
   loading$ = this.selectState('loading');
 
