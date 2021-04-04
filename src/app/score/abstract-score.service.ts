@@ -6,11 +6,19 @@ import { HttpParams } from '@util/http-params';
 import { HttpClient } from '@angular/common/http';
 import { ScoreApprovalActionEnum } from '@model/enum/score-approval-action.enum';
 import { ScoreChangeRequest, ScoreChangeRequests } from '@model/score-change-request';
+import { HeaderState, HeaderStore } from '../header/header.store';
+import { tap } from 'rxjs/operators';
 
 export abstract class AbstractScoreService {
-  protected constructor(private http: HttpClient) {}
+  protected constructor(private http: HttpClient, private headerStore: HeaderStore) {}
 
   endPoint = 'score';
+
+  private _subtractApprovalCount(playerMode: boolean): void {
+    const path = playerMode ? 'player' : 'admin';
+    const key = `${path}ApprovalCount` as keyof HeaderState;
+    this.headerStore.update(state => ({ ...state, [key]: state[key] - 1 }));
+  }
 
   add(dto: ScoreAdd): Observable<ScoreVW> {
     return this.http.post<ScoreVW>(this.endPoint, dto);
@@ -62,7 +70,11 @@ export abstract class AbstractScoreService {
     payload: ScoreApprovalAdd
   ): Observable<void> {
     const path = playerMode ? 'player' : 'admin';
-    return this.http.post<void>(`${this.endPoint}/${idScore}/${action.toLowerCase()}/${path}`, payload);
+    return this.http.post<void>(`${this.endPoint}/${idScore}/${action.toLowerCase()}/${path}`, payload).pipe(
+      tap(() => {
+        this._subtractApprovalCount(playerMode);
+      })
+    );
   }
 
   findChangeRequests(page: number, limit?: number): Observable<ScoreChangeRequests[]> {
@@ -71,6 +83,28 @@ export abstract class AbstractScoreService {
   }
 
   requestChanges(idScore: number, changes: string[]): Observable<ScoreChangeRequest[]> {
-    return this.http.post<ScoreChangeRequest[]>(`${this.endPoint}/${idScore}/request-changes`, changes);
+    return this.http.post<ScoreChangeRequest[]>(`${this.endPoint}/${idScore}/request-changes`, changes).pipe(
+      tap(() => {
+        this._subtractApprovalCount(false);
+      })
+    );
+  }
+
+  findApprovalCount(playerMode: boolean): Observable<number> {
+    const path = playerMode ? 'player' : 'admin';
+    return this.http.get<number>(`${this.endPoint}/approval/${path}/count`).pipe(
+      tap(count => {
+        const key = `${path}ApprovalCount` as keyof HeaderState;
+        this.headerStore.update({ [key]: count });
+      })
+    );
+  }
+
+  findChangeRequestsCount(): Observable<number> {
+    return this.http.get<number>(`${this.endPoint}/player/change-requests/count`).pipe(
+      tap(count => {
+        this.headerStore.update({ playerRequestChangesCount: count });
+      })
+    );
   }
 }

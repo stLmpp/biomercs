@@ -66,6 +66,7 @@ export class ScoreApprovalComponent extends StateComponent<ScoreApprovalComponen
 
   tableLoading$ = this.selectState('tableLoading');
   loadingApprovalModal$ = this.selectState('loadingApprovalModal');
+  loadingRequestChangesModal$ = this.selectState('loadingRequestChangesModal');
   scores$: Observable<ScoreVW[]> = this._data$.pipe(pluck('scores'));
   meta$: Observable<PaginationMetaVW> = this._data$.pipe(pluck('meta'));
   order$ = this.selectStateMulti(['orderBy', 'orderByDirection']);

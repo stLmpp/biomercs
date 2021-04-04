@@ -14,17 +14,22 @@ import type {
   ScoreInfoModalData,
 } from './score-shared/score-info/score-info-modal/score-info-modal.component';
 import type {
-  ScoreRequestChangesModalData,
   ScoreRequestChangesModalComponent,
+  ScoreRequestChangesModalData,
 } from './score-shared/score-approval/score-request-changes-modal/score-request-changes-modal.component';
-import { LazyFn } from '../core/dynamic-loader.service';
+import { HeaderStore } from '../header/header.store';
+import type { ModalConfigLazy } from '@shared/components/modal/modal.config';
 
-const importScoreSharedFn: LazyFn = () => import('./score-shared/score-shared.module').then(m => m.ScoreSharedModule);
+const scoreModalDefaults: ModalConfigLazy = {
+  minWidth: '30vw',
+  module: () => import('./score-shared/score-shared.module').then(m => m.ScoreSharedModule),
+  disableClose: true,
+};
 
 @Injectable({ providedIn: 'root' })
 export class ScoreService extends AbstractScoreService {
-  constructor(http: HttpClient, private modalService: ModalService) {
-    super(http);
+  constructor(http: HttpClient, headerStore: HeaderStore, private modalService: ModalService) {
+    super(http, headerStore);
   }
 
   async openModalScoreApproval(
@@ -35,7 +40,7 @@ export class ScoreService extends AbstractScoreService {
         import('./score-shared/score-approval/score-approval-modal/score-approval-modal.component').then(
           m => m.ScoreApprovalModalComponent
         ),
-      { data, minWidth: '30vw', module: importScoreSharedFn }
+      { data, ...scoreModalDefaults }
     );
   }
 
@@ -45,7 +50,7 @@ export class ScoreService extends AbstractScoreService {
         import('./score-shared/score-info/score-info-modal/score-info-modal.component').then(
           m => m.ScoreInfoModalComponent
         ),
-      { data, minWidth: '30vw', module: importScoreSharedFn }
+      { data, ...scoreModalDefaults }
     );
   }
 
@@ -57,7 +62,7 @@ export class ScoreService extends AbstractScoreService {
         import('./score-shared/score-approval/score-request-changes-modal/score-request-changes-modal.component').then(
           m => m.ScoreRequestChangesModalComponent
         ),
-      { data, minWidth: '30vw', module: importScoreSharedFn }
+      { data, ...scoreModalDefaults }
     );
   }
 }

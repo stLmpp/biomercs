@@ -1,10 +1,10 @@
 import { Directive, HostBinding, Input } from '@angular/core';
-import { BioSizeInput, BioTypeInput } from './types';
+import { BioSizeInput } from './types';
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
-import { Destroyable } from '../common/destroyable-component';
+import { AbstractColorComponent } from '@shared/components/core/abstract-color-component';
 
 @Directive()
-export abstract class AbstractComponent extends Destroyable {
+export abstract class AbstractComponent extends AbstractColorComponent {
   @Input()
   get disabled(): boolean {
     return this._disabled;
@@ -14,38 +14,7 @@ export abstract class AbstractComponent extends Destroyable {
   }
   private _disabled = false;
 
-  @Input() bioType: BioTypeInput;
   @Input() bioSize: BioSizeInput;
-
-  @HostBinding('class.primary') get primaryClass(): boolean {
-    return this.bioType === 'primary';
-  }
-
-  @HostBinding('class.accent') get accentClass(): boolean {
-    return this.bioType === 'accent';
-  }
-
-  @HostBinding('class.danger') get dangerClass(): boolean {
-    return this.bioType === 'danger';
-  }
-
-  @Input() set primary(primary: BooleanInput) {
-    if (coerceBooleanProperty(primary)) {
-      this.bioType = 'primary';
-    }
-  }
-
-  @Input() set accent(accent: BooleanInput) {
-    if (coerceBooleanProperty(accent)) {
-      this.bioType = 'accent';
-    }
-  }
-
-  @Input() set danger(danger: BooleanInput) {
-    if (coerceBooleanProperty(danger)) {
-      this.bioType = 'danger';
-    }
-  }
 
   @HostBinding('class.disabled')
   get disabledClass(): boolean | null {

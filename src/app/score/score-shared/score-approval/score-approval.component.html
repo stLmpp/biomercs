@@ -93,6 +93,7 @@
                 *ngIf="!playerMode"
                 type="button"
                 (click)="openModalRequestChanges(score)"
+                [disabled]="loadingRequestChangesModal$ | async"
               >
                 <icon small>sync_alt</icon>
               </button>

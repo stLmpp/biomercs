@@ -1,0 +1,85 @@
+@use 'variables' as v;
+
+$overlap-size: -8px;
+
+.badge-container {
+  .badge {
+    position: absolute;
+    height: 16px;
+    min-width: 16px;
+    min-height: 16px;
+    line-height: 16px;
+    border-radius: 16px;
+    font-size: 0.75em;
+    padding: 0 0.25rem;
+    z-index: 1;
+    pointer-events: none;
+    display: grid;
+    place-items: center;
+  }
+
+  &.badge-container-overlap {
+    &.badge-container-top {
+      .badge {
+        top: $overlap-size;
+      }
+    }
+
+    &.badge-container-bottom {
+      .badge {
+        bottom: $overlap-size;
+      }
+    }
+
+    &.badge-container-right {
+      .badge {
+        right: $overlap-size;
+      }
+    }
+
+    &.badge-container-left {
+      .badge {
+        left: $overlap-size;
+      }
+    }
+  }
+
+  &.badge-container-top {
+    .badge {
+      top: 0;
+    }
+  }
+  &.badge-container-bottom {
+    .badge {
+      bottom: 0;
+    }
+  }
+  &.badge-container-right {
+    .badge {
+      right: 0;
+    }
+  }
+  &.badge-container-left {
+    .badge {
+      left: 0;
+    }
+  }
+
+  &.badge-container-primary {
+    .badge {
+      background-color: v.$primary;
+    }
+  }
+
+  &.badge-container-accent {
+    .badge {
+      background-color: v.$accent;
+    }
+  }
+
+  &.badge-container-danger {
+    .badge {
+      background-color: v.$danger;
+    }
+  }
+}

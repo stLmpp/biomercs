@@ -4,6 +4,7 @@ import { PlayerProfilePersonaNameGuard } from './player-profile/player-profile-p
 import { PlayerProfileIdUserGuard } from './player-profile/player-profile-id-user.guard';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { PlayerApprovalIdUserGuard } from './player-approval/player-approval-id-user.guard';
+import { PlayerChangeRequestsIdUserGuard } from './player-change-requests/player-change-requests-id-user.guard';
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
         path: 'approval',
         canActivate: [PlayerApprovalIdUserGuard],
       },
+      {
+        path: 'change-requests',
+        canActivate: [PlayerChangeRequestsIdUserGuard],
+      },
     ],
   },
   {
@@ -33,6 +38,11 @@ const routes: Routes = [
       {
         path: 'approval',
         loadChildren: () => import('./player-approval/player-approval.module').then(m => m.PlayerApprovalModule),
+      },
+      {
+        path: 'change-requests',
+        loadChildren: () =>
+          import('./player-change-requests/player-change-requests.module').then(m => m.PlayerChangeRequestsModule),
       },
     ],
   },

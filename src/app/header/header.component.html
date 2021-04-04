@@ -11,13 +11,32 @@
           <icon>add</icon>
           Submit score
         </a>
-        <a bioButton routerLink="/admin/approval" queryParamsHandling="preserve">
+        <a
+          bioButton
+          routerLink="/admin/approval"
+          queryParamsHandling="preserve"
+          [bioBadge]="headerQuery.adminApprovalCount$ | async"
+        >
           <icon>checklist</icon>
           Scores approval (Admin)
         </a>
-        <a bioButton [routerLink]="pathToScoreApproval$ | async" queryParamsHandling="preserve">
+        <a
+          bioButton
+          [routerLink]="pathToScoreApproval$ | async"
+          queryParamsHandling="preserve"
+          [bioBadge]="headerQuery.playerApprovalCount$ | async"
+        >
           <icon>checklist</icon>
           Scores approval
+        </a>
+        <a
+          bioButton
+          [routerLink]="pathToScoreChangeRequests$ | async"
+          queryParamsHandling="preserve"
+          [bioBadge]="headerQuery.playerRequestChangesCount$ | async"
+        >
+          <icon>sync_alt</icon>
+          Score change requests
         </a>
       </ng-container>
       <button type="button" bioButton [menuTrigger]="menu">
@@ -36,13 +55,38 @@
             <icon>add</icon>
             Submit score
           </a>
-          <a menuItem bioButton routerLink="/admin/approval" queryParamsHandling="preserve">
+          <a
+            menuItem
+            bioButton
+            routerLink="/admin/approval"
+            queryParamsHandling="preserve"
+            [bioBadge]="headerQuery.adminApprovalCount$ | async"
+            [bioBadgeOverlap]="false"
+          >
             <icon>checklist</icon>
             Scores approval (Admin)
           </a>
-          <a menuItem bioButton [routerLink]="pathToScoreApproval$ | async" queryParamsHandling="preserve">
+          <a
+            menuItem
+            bioButton
+            [routerLink]="pathToScoreApproval$ | async"
+            queryParamsHandling="preserve"
+            [bioBadge]="headerQuery.playerApprovalCount$ | async"
+            [bioBadgeOverlap]="false"
+          >
             <icon>checklist</icon>
             Scores approval
+          </a>
+          <a
+            menuItem
+            bioButton
+            [routerLink]="pathToScoreChangeRequests$ | async"
+            queryParamsHandling="preserve"
+            [bioBadge]="headerQuery.playerRequestChangesCount$ | async"
+            [bioBadgeOverlap]="false"
+          >
+            <icon>sync_alt</icon>
+            Score change requests
           </a>
         </ng-container>
         <button type="button" bioButton menuItem (click)="logout()">

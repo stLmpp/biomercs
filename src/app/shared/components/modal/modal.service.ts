@@ -10,7 +10,13 @@ import {
 } from '@angular/core';
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ModalRef } from './modal-ref';
-import { MODAL_DATA, MODAL_DEFAULT_CONFIG, MODAL_LAST_FOCUSED_ELEMENT, ModalConfig } from './modal.config';
+import {
+  MODAL_DATA,
+  MODAL_DEFAULT_CONFIG,
+  MODAL_LAST_FOCUSED_ELEMENT,
+  ModalConfig,
+  ModalConfigLazy,
+} from './modal.config';
 import { coerceArray } from '@angular/cdk/coercion';
 import { ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
 import { ModalComponent } from './modal.component';
@@ -114,10 +120,7 @@ export class ModalService implements OnDestroy {
     return modalRef;
   }
 
-  async openLazy<T = any, D = any, R = any>(
-    componentFn: LazyFn,
-    config?: Partial<ModalConfig & { module: LazyFn }>
-  ): Promise<ModalRef<T, D, R>> {
+  async openLazy<T = any, D = any, R = any>(componentFn: LazyFn, config?: ModalConfigLazy): Promise<ModalRef<T, D, R>> {
     if (config?.module) {
       await this.dynamicLoaderService.loadModule(config.module);
     }
