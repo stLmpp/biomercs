@@ -5,7 +5,7 @@ import { ScoreApprovalAdd, ScoreApprovalVW } from '@model/score-approval';
 import { HttpParams } from '@util/http-params';
 import { HttpClient } from '@angular/common/http';
 import { ScoreApprovalActionEnum } from '@model/enum/score-approval-action.enum';
-import { ScoreChangeRequest, ScoreChangeRequests } from '@model/score-change-request';
+import { ScoreChangeRequest, ScoreChangeRequestsPaginationVW } from '@model/score-change-request';
 import { HeaderState, HeaderStore } from '../header/header.store';
 import { tap } from 'rxjs/operators';
 
@@ -77,9 +77,9 @@ export abstract class AbstractScoreService {
     );
   }
 
-  findChangeRequests(page: number, limit?: number): Observable<ScoreChangeRequests[]> {
+  findChangeRequests(page: number, limit?: number): Observable<ScoreChangeRequestsPaginationVW> {
     const params = new HttpParams({ page, limit }, true);
-    return this.http.get<ScoreChangeRequests[]>(`${this.endPoint}/player/change-requests`, { params });
+    return this.http.get<ScoreChangeRequestsPaginationVW>(`${this.endPoint}/player/change-requests`, { params });
   }
 
   requestChanges(idScore: number, changes: string[]): Observable<ScoreChangeRequest[]> {

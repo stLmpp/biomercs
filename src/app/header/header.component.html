@@ -16,6 +16,7 @@
           routerLink="/admin/approval"
           queryParamsHandling="preserve"
           [bioBadge]="headerQuery.adminApprovalCount$ | async"
+          *ngIf="user.admin"
         >
           <icon>checklist</icon>
           Scores approval (Admin)
@@ -62,6 +63,7 @@
             queryParamsHandling="preserve"
             [bioBadge]="headerQuery.adminApprovalCount$ | async"
             [bioBadgeOverlap]="false"
+            *ngIf="user.admin"
           >
             <icon>checklist</icon>
             Scores approval (Admin)

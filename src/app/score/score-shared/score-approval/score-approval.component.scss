@@ -2,7 +2,7 @@
   margin-bottom: 1rem;
 }
 
-.flex-table {
+@mixin table-scores() {
   .header,
   .body {
     .platform,
@@ -16,10 +16,6 @@
       flex-basis: 125px;
       flex-grow: 0;
     }
-    .approve {
-      flex-basis: 100px;
-      flex-grow: 0;
-    }
     .score {
       justify-content: flex-end;
       padding-right: 1.25rem;
@@ -28,6 +24,16 @@
     }
     .mini-game {
       flex-basis: 250px;
+      flex-grow: 0;
+    }
+  }
+}
+
+.flex-table {
+  .header,
+  .body {
+    .approve {
+      flex-basis: 100px;
       flex-grow: 0;
     }
     .order-icon {
@@ -40,4 +46,5 @@
       cursor: pointer;
     }
   }
+  @include table-scores();
 }

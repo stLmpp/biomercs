@@ -1,0 +1,12 @@
+@use '../../score/score-shared/score-approval/score-approval.component' as scoreApproval;
+
+.flex-table {
+  @include scoreApproval.table-scores();
+  .header,
+  .body {
+    .action {
+      flex-basis: 100px;
+      flex-grow: 0;
+    }
+  }
+}
