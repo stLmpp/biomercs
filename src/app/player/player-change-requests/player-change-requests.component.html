@@ -18,7 +18,16 @@
         <ng-container *ngFor="let score of scores; trackBy: trackByScore">
           <div>
             <div class="action">
-              <button bioButton icon small tooltip="Check requested changes" tooltipPosition="right" type="button">
+              <button
+                bioButton
+                icon
+                small
+                tooltip="Check requested changes"
+                tooltipPosition="right"
+                type="button"
+                [disabled]="loadingModal$ | async"
+                (click)="openModalChangeRequests(score)"
+              >
                 <icon small>sync_alt</icon>
               </button>
             </div>

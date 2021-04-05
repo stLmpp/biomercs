@@ -12,9 +12,16 @@ import { IconModule } from '@shared/components/icon/icon.module';
 import { NgLetModule } from '@shared/let/ng-let.module';
 import { AuthSharedModule } from '../../auth/shared/auth-shared.module';
 import { ArrayModule } from '@shared/array/array.module';
+import { PlayerChangeRequestsModalComponent } from './player-change-requests-modal/player-change-requests-modal.component';
+import { ModalModule } from '@shared/components/modal/modal.module';
+import { StControlModule } from '@stlmpp/control';
+import { FormModule } from '@shared/components/form/form.module';
+import { UrlPreviewModule } from '@shared/url-preview/url-preview.module';
+import { CurrencyMaskModule } from '@shared/currency-mask/currency-mask.module';
+import { MaskModule } from '@shared/mask/mask.module';
 
 @NgModule({
-  declarations: [PlayerChangeRequestsComponent],
+  declarations: [PlayerChangeRequestsComponent, PlayerChangeRequestsModalComponent],
   imports: [
     CommonModule,
     PlayerChangeRequestsRoutingModule,
@@ -27,6 +34,12 @@ import { ArrayModule } from '@shared/array/array.module';
     NgLetModule,
     AuthSharedModule,
     ArrayModule,
+    ModalModule,
+    StControlModule,
+    FormModule,
+    UrlPreviewModule,
+    CurrencyMaskModule,
+    MaskModule,
   ],
 })
 export class PlayerChangeRequestsModule {}

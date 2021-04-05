@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, OnInit, QueryList, ViewChild, ViewC
 import { ControlArray, ControlBuilder, ControlGroup, Validators } from '@stlmpp/control';
 import { AuthQuery } from '../../auth/auth.query';
 import { ParamsComponent, ParamsConfig } from '@shared/params/params.component';
-import { CurrencyMaskConfig, CurrencyMaskInputMode } from 'ngx-currency';
 import { CURRENCY_MASK_CONFIG } from '@shared/currency-mask/currency-mask-config.token';
 import { MaskEnum, MaskEnumPatterns } from '@shared/mask/mask.enum';
 import { combineLatest } from 'rxjs';
@@ -19,6 +18,7 @@ import { ScoreAdd } from '@model/score';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
 import { ModalConfig } from '@shared/components/modal/modal.config';
 import { Mode } from '@model/mode';
+import { scoreCurrencyMask } from '../score-shared/util';
 
 export interface ScoreAddState {
   characterLoading: boolean;
@@ -34,14 +34,7 @@ export interface ScoreAddState {
   providers: [
     {
       provide: CURRENCY_MASK_CONFIG,
-      useValue: {
-        align: 'left',
-        allowNegative: false,
-        nullable: true,
-        allowZero: true,
-        inputMode: CurrencyMaskInputMode.NATURAL,
-        precision: 0,
-      } as Partial<CurrencyMaskConfig>,
+      useValue: scoreCurrencyMask,
     },
   ],
 })

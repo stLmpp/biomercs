@@ -1,4 +1,4 @@
-import { ScoreAdd, ScoreTopTableVW, ScoreVW } from '@model/score';
+import { ScoreAdd, ScoreChangeRequestsFulfilDto, ScoreTopTableVW, ScoreVW } from '@model/score';
 import { Observable } from 'rxjs';
 import { OrderByDirection } from 'st-utils';
 import { ScoreApprovalAdd, ScoreApprovalVW } from '@model/score-approval';
@@ -104,6 +104,20 @@ export abstract class AbstractScoreService {
     return this.http.get<number>(`${this.endPoint}/player/change-requests/count`).pipe(
       tap(count => {
         this.headerStore.update({ playerRequestChangesCount: count });
+      })
+    );
+  }
+
+  fulfilChangeRequests(idScore: number, dto: ScoreChangeRequestsFulfilDto): Observable<boolean> {
+    return this.http.patch<boolean>(`${this.endPoint}/${idScore}/fulfil-change-requests`, dto).pipe(
+      tap(hasAnyRequestChange => {
+        if (!hasAnyRequestChange) {
+          this.headerStore.update(state => ({
+            ...state,
+            playerRequestChangesCount: state.playerRequestChangesCount - 1,
+            adminApprovalCount: state.adminApprovalCount + 1,
+          }));
+        }
       })
     );
   }

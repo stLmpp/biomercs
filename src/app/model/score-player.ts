@@ -27,4 +27,12 @@ export interface ScorePlayerVW {
   evidence: string;
 }
 
+export interface ScorePlayerUpdateDto {
+  id: number;
+  host?: boolean;
+  bulletKills?: number;
+  description?: string;
+  evidence?: string;
+}
+
 export const trackByScorePlayerVW = trackByFactory<ScorePlayerVW>('idScorePlayer');

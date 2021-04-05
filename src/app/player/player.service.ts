@@ -5,10 +5,16 @@ import { PlayerStore } from './player.store';
 import { tap } from 'rxjs/operators';
 import { Player, PlayerUpdate } from '@model/player';
 import { HttpParams } from '@util/http-params';
+import { ModalRef } from '@shared/components/modal/modal-ref';
+import type {
+  PlayerChangeRequestsModalComponent,
+  PlayerChangeRequestsModalData,
+} from './player-change-requests/player-change-requests-modal/player-change-requests-modal.component';
+import { ModalService } from '@shared/components/modal/modal.service';
 
 @Injectable({ providedIn: 'root' })
 export class PlayerService {
-  constructor(private http: HttpClient, private playerStore: PlayerStore) {}
+  constructor(private http: HttpClient, private playerStore: PlayerStore, private modalService: ModalService) {}
 
   endPoint = 'player';
 
@@ -53,5 +59,17 @@ export class PlayerService {
           this.playerStore.upsert(players);
         })
       );
+  }
+
+  async openPlayerChangeRequestsModal(
+    data: PlayerChangeRequestsModalData
+  ): Promise<ModalRef<PlayerChangeRequestsModalComponent>> {
+    return this.modalService.openLazy(
+      () =>
+        import('./player-change-requests/player-change-requests-modal/player-change-requests-modal.component').then(
+          m => m.PlayerChangeRequestsModalComponent
+        ),
+      { data, disableClose: true, minWidth: '60vw' }
+    );
   }
 }

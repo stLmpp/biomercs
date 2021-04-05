@@ -1,4 +1,4 @@
-import { ScorePlayerAdd, ScorePlayerVW } from './score-player';
+import { ScorePlayerAdd, ScorePlayerUpdateDto, ScorePlayerVW } from './score-player';
 import { ScoreStatusEnum } from '@model/enum/score-status.enum';
 import { Stage } from '@model/stage';
 import { PaginationMetaVW } from '@model/pagination';
@@ -58,4 +58,12 @@ export interface ScoreTopTableVW {
   stages: Stage[];
   scoreTables: ScoreTableVW[];
   meta: PaginationMetaVW;
+}
+
+export interface ScoreChangeRequestsFulfilDto {
+  time?: string;
+  score?: number;
+  maxCombo?: number;
+  scorePlayers: ScorePlayerUpdateDto[];
+  idsScoreChangeRequests: number[];
 }
