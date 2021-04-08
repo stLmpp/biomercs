@@ -15,7 +15,6 @@ import { generateScorePlayerControlGroup, ScoreAddForm, ScorePlayerAddForm } fro
 import { ScoreService } from '../score.service';
 import { ScoreAdd } from '@model/score';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
-import { ModalConfig } from '@shared/components/modal/modal.config';
 import { Mode } from '@model/mode';
 import { scoreCurrencyMask } from '../score-shared/util';
 import { trackByFactory } from '@stlmpp/utils';
@@ -186,7 +185,7 @@ export class ScoreAddComponent extends LocalState<ScoreAddState> implements OnIn
               modalRef.close();
             },
           },
-          new ModalConfig({ width: 500, disableClose: true })
+          { width: 500, disableClose: true }
         );
       })
     );
@@ -203,7 +202,7 @@ export class ScoreAddComponent extends LocalState<ScoreAddState> implements OnIn
           modalRef.close();
         },
       },
-      new ModalConfig({ width: 500, disableClose: true })
+      { width: 500, disableClose: true }
     );
     this.updateState({ submitModalLoading: false });
   }

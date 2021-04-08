@@ -9,9 +9,9 @@
     ></bio-params>
   </card-content>
 </card>
-<card [bioLoading]="tableLoading$ | async" class="top-table flex-table">
+<card *ngLet="tableLoading$ | async as tableLoading" [bioLoading]="tableLoading" class="top-table flex-table">
   <card-content>
-    <ng-container *ngIf="scoreTopTableOrdered$ | async as scores">
+    <ng-container *ngIf="scoreTopTableOrdered$ | async as scores; else noParams">
       <ng-container *ngLet="order$ | async as order">
         <div class="header" *ngLet="order.orderByDirection === 'desc' ? 'arrow_drop_up' : 'arrow_drop_down' as arrow">
           <div></div>
@@ -58,6 +58,9 @@
         </ng-container>
       </div>
     </ng-container>
+    <ng-template #noParams>
+      <div class="no-params" *ngIf="!tableLoading">Select the params above to search the leaderboards</div>
+    </ng-template>
   </card-content>
   <card-actions end>
     <pagination

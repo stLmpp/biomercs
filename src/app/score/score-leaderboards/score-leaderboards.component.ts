@@ -102,7 +102,6 @@ export class ScoreLeaderboardsComponent extends LocalState<ScoreLeaderboardsStat
     this.selectState('orderByDirection'),
     this.selectState('orderByType'),
   ]).pipe(
-    debounceTime(50),
     map(([scoreTable, idStage, orderByDiretion, orderByType]) => {
       orderByDiretion ??= 'asc';
       switch (orderByType) {
