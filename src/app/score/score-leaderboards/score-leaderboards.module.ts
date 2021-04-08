@@ -11,6 +11,7 @@ import { IconModule } from '@shared/components/icon/icon.module';
 import { StControlModule } from '@stlmpp/control';
 import { PaginationModule } from '@shared/components/pagination/pagination.module';
 import { ScoreLeaderboardsComponent } from './score-leaderboards.component';
+import { TooltipModule } from '@shared/components/tooltip/tooltip.module';
 
 @NgModule({
   declarations: [ScoreLeaderboardsComponent],
@@ -25,6 +26,7 @@ import { ScoreLeaderboardsComponent } from './score-leaderboards.component';
     IconModule,
     StControlModule,
     PaginationModule,
+    TooltipModule,
   ],
 })
 export class ScoreLeaderboardsModule {}

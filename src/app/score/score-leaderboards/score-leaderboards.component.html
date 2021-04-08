@@ -21,7 +21,11 @@
               {{ arrow }}
             </icon>
           </div>
-          <div *ngFor="let stage of scores.stages; trackBy: trackByStage" (click)="updateOrderByStage(stage.id)">
+          <div
+            *ngFor="let stage of scores.stages; trackBy: trackByStage"
+            (click)="updateOrderByStage(stage.id)"
+            [tooltip]="stage.name"
+          >
             {{ stage.shortName }}
             <icon class="order-icon" *ngIf="order.orderBy === stage.id" small>
               {{ arrow }}
