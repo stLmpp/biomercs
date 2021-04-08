@@ -7,7 +7,6 @@ import { MaskEnum, MaskEnumPatterns } from '@shared/mask/mask.enum';
 import { combineLatest } from 'rxjs';
 import { debounceTime, finalize, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { CharacterCostume } from '@model/character-costume';
-import { StateComponent } from '@shared/components/common/state-component';
 import { filterNil } from '@shared/operators/filter';
 import { CharacterService } from '@shared/services/character/character.service';
 import { ModeQuery } from '@shared/services/mode/mode.query';
@@ -20,6 +19,7 @@ import { ModalConfig } from '@shared/components/modal/modal.config';
 import { Mode } from '@model/mode';
 import { scoreCurrencyMask } from '../score-shared/util';
 import { trackByFactory } from '@stlmpp/utils';
+import { LocalState } from '@stlmpp/store';
 
 export interface ScoreAddState {
   characterLoading: boolean;
@@ -39,7 +39,7 @@ export interface ScoreAddState {
     },
   ],
 })
-export class ScoreAddComponent extends StateComponent<ScoreAddState> implements OnInit {
+export class ScoreAddComponent extends LocalState<ScoreAddState> implements OnInit {
   constructor(
     private controlBuilder: ControlBuilder,
     private authQuery: AuthQuery,

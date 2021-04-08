@@ -6,9 +6,9 @@ import { trackByFactory } from '@stlmpp/utils';
 import { CharacterCostume } from '@model/character-costume';
 import { PlayerService } from '../../../player/player.service';
 import { Player } from '@model/player';
-import { StateComponent } from '@shared/components/common/state-component';
 import { AutocompleteDirective } from '@shared/components/autocomplete/autocomplete.directive';
 import { generateScorePlayerControlGroup, ScorePlayerAddForm } from '../score-add';
+import { LocalState } from '@stlmpp/store';
 
 @Component({
   selector: 'bio-score-add-player',
@@ -16,7 +16,7 @@ import { generateScorePlayerControlGroup, ScorePlayerAddForm } from '../score-ad
   styleUrls: ['./score-add-player.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ScoreAddPlayerComponent extends StateComponent<{ playersLoading: boolean }> implements OnInit {
+export class ScoreAddPlayerComponent extends LocalState<{ playersLoading: boolean }> implements OnInit {
   constructor(private controlBuilder: ControlBuilder, private playerService: PlayerService) {
     super({ playersLoading: false });
   }

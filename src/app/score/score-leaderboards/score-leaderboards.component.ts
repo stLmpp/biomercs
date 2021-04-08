@@ -4,7 +4,6 @@ import { Control, ControlBuilder } from '@stlmpp/control';
 import { ScoreService } from '../score.service';
 import { debounceTime, filter, finalize, map, pluck, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { trackByFactory } from '@stlmpp/utils';
-import { StateComponent } from '@shared/components/common/state-component';
 import { combineLatest, Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { orderBy, OrderByDirection } from 'st-utils';
@@ -12,6 +11,7 @@ import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { PaginationMetaVW } from '@model/pagination';
 import { Stage } from '@model/stage';
 import { ScoreTableVW, ScoreTopTableVW, ScoreVW } from '@model/score';
+import { LocalState } from '@stlmpp/store';
 
 interface TopTableForm extends ParamsForm {
   page: number;
@@ -32,7 +32,7 @@ export interface ScoreLeaderboardsState {
   styleUrls: ['./score-leaderboards.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ScoreLeaderboardsComponent extends StateComponent<ScoreLeaderboardsState> {
+export class ScoreLeaderboardsComponent extends LocalState<ScoreLeaderboardsState> {
   constructor(
     private controlBuilder: ControlBuilder,
     private scoreService: ScoreService,
@@ -70,7 +70,7 @@ export class ScoreLeaderboardsComponent extends StateComponent<ScoreLeaderboards
   }
 
   tableLoading$ = this.selectState('tableLoading');
-  order$ = this.selectStateMulti(['orderBy', 'orderByDirection', 'orderByType']);
+  order$ = this.selectState(['orderBy', 'orderByDirection', 'orderByType']);
   loadingInfo$ = this.selectState('loadingInfo');
 
   scoreTopTable$ = this.form.value$.pipe(

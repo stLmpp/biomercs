@@ -1,10 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { normalizeString } from 'st-utils';
 
 export function normalize(str: any): string {
-  return (str ?? '')
-    .toString()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '');
+  return normalizeString(str);
 }
 
 export function search<T, K extends keyof T>(array: T[], key: K, term: string): T[] {

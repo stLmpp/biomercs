@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { PARAMS_FORM_NULL, ParamsConfig, ParamsForm } from '@shared/params/params.component';
-import { StateComponent } from '@shared/components/common/state-component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ScoreService } from '../../score.service';
 import { debounceTime, filter, finalize, pluck, switchMap, takeUntil } from 'rxjs/operators';
@@ -12,6 +11,7 @@ import { ScoreVW } from '@model/score';
 import { OrderByDirection } from 'st-utils';
 import { ScoreApprovalActionEnum } from '@model/enum/score-approval-action.enum';
 import { ScoreApprovalVW } from '@model/score-approval';
+import { LocalState } from '@stlmpp/store';
 
 export interface ScoreApprovalComponentState extends ParamsForm {
   page: number;
@@ -30,7 +30,7 @@ export interface ScoreApprovalComponentState extends ParamsForm {
   styleUrls: ['./score-approval.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ScoreApprovalComponent extends StateComponent<ScoreApprovalComponentState> implements OnInit {
+export class ScoreApprovalComponent extends LocalState<ScoreApprovalComponentState> implements OnInit {
   constructor(private activatedRoute: ActivatedRoute, private scoreService: ScoreService, private router: Router) {
     super({
       itemsPerPage: 10,
@@ -69,11 +69,11 @@ export class ScoreApprovalComponent extends StateComponent<ScoreApprovalComponen
   loadingRequestChangesModal$ = this.selectState('loadingRequestChangesModal');
   scores$: Observable<ScoreVW[]> = this._data$.pipe(pluck('scores'));
   meta$: Observable<PaginationMetaVW> = this._data$.pipe(pluck('meta'));
-  order$ = this.selectStateMulti(['orderBy', 'orderByDirection']);
+  order$ = this.selectState(['orderBy', 'orderByDirection']);
 
   itemsPerPageOptions = [5, 10, 25, 50, 100];
 
-  params$ = this.selectStateMulti(['idPlatform', 'idGame', 'idMiniGame', 'idMode', 'idStage']);
+  params$ = this.selectState(['idPlatform', 'idGame', 'idMiniGame', 'idMode', 'idStage']);
 
   paramsConfig: Partial<ParamsConfig> = {
     idCharacterCostume: { show: false },
@@ -166,7 +166,7 @@ export class ScoreApprovalComponent extends StateComponent<ScoreApprovalComponen
   }
 
   ngOnInit(): void {
-    this.selectStateMulti([
+    this.selectState([
       'idPlatform',
       'page',
       'idGame',

@@ -6,7 +6,7 @@ import { MODAL_DATA } from '../modal.config';
 import { take, takeUntil } from 'rxjs/operators';
 import { catchAndThrow } from '@util/operators/catch-and-throw';
 import { isFunction } from 'st-utils';
-import { StateComponent } from '@shared/components/common/state-component';
+import { LocalState } from '@stlmpp/store';
 
 export enum DialogType {
   confirm,
@@ -30,7 +30,7 @@ export interface DialogData {
   styleUrls: ['./dialog.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DialogComponent extends StateComponent<{ loadingYes: boolean; loadingNo: boolean }> {
+export class DialogComponent extends LocalState<{ loadingYes: boolean; loadingNo: boolean }> {
   constructor(
     private modalRef: ModalRef<DialogComponent, DialogData, boolean>,
     @Inject(MODAL_DATA) public data: DialogData

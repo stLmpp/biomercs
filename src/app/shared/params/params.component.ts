@@ -20,7 +20,6 @@ import { debounceTime, distinctUntilChanged, finalize, map, switchMap, takeUntil
 import { combineLatest } from 'rxjs';
 import { StageService } from '../services/stage/stage.service';
 import { trackByFactory } from '@stlmpp/utils';
-import { StateComponent } from '../components/common/state-component';
 import { CharacterService } from '../services/character/character.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
@@ -32,6 +31,7 @@ import { Stage } from '@model/stage';
 import { MiniGame } from '@model/mini-game';
 import { Platform } from '@model/platform';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
+import { LocalState } from '@stlmpp/store';
 
 export interface ParamsForm {
   idPlatform: Nullable<number>;
@@ -78,7 +78,7 @@ const defaultConfigs: ParamsConfig = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ParamsComponent
-  extends StateComponent<{
+  extends LocalState<{
     gameLoading: boolean;
     miniGameLoading: boolean;
     modeLoading: boolean;

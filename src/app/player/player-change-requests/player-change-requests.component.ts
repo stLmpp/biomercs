@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ScoreService } from '../../score/score.service';
 import { ActivatedRoute } from '@angular/router';
-import { StateComponent } from '@shared/components/common/state-component';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { filter, finalize, pluck, shareReplay, skip, switchMap, takeUntil } from 'rxjs/operators';
 import { filterNil } from '@shared/operators/filter';
@@ -13,6 +12,7 @@ import {
 } from '@model/score-change-request';
 import { PaginationMetaVW } from '@model/pagination';
 import { PlayerService } from '../player.service';
+import { LocalState } from '@stlmpp/store';
 
 export interface PlayerChangeRequestsState {
   page: number;
@@ -28,7 +28,7 @@ export interface PlayerChangeRequestsState {
   styleUrls: ['./player-change-requests.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PlayerChangeRequestsComponent extends StateComponent<PlayerChangeRequestsState> implements OnInit {
+export class PlayerChangeRequestsComponent extends LocalState<PlayerChangeRequestsState> implements OnInit {
   constructor(
     private scoreService: ScoreService,
     private activatedRoute: ActivatedRoute,
@@ -74,7 +74,7 @@ export class PlayerChangeRequestsComponent extends StateComponent<PlayerChangeRe
   }
 
   ngOnInit(): void {
-    this.selectStateMulti(['page', 'itemsPerPage'])
+    this.selectState(['page', 'itemsPerPage'])
       .pipe(
         skip(1),
         filter(({ page, itemsPerPage }) => !!page && !!itemsPerPage),

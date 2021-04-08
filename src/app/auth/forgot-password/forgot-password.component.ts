@@ -6,8 +6,8 @@ import { debounceTime, finalize, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { catchAndThrow } from '@util/operators/catch-and-throw';
 import { SnackBarService } from '@shared/components/snack-bar/snack-bar.service';
-import { StateComponent } from '@shared/components/common/state-component';
 import { User } from '@model/user';
+import { LocalState } from '@stlmpp/store';
 
 interface ForgotPasswordForm {
   email: string;
@@ -21,7 +21,7 @@ interface ForgotPasswordForm {
   styleUrls: ['./forgot-password.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ForgotPasswordComponent extends StateComponent<{
+export class ForgotPasswordComponent extends LocalState<{
   loading: boolean;
   emailSent: boolean;
   confirmCodeError: null | string;
@@ -36,7 +36,7 @@ export class ForgotPasswordComponent extends StateComponent<{
     code: new Control(null),
   });
 
-  state$ = this.selectStateMulti(['loading', 'emailSent']);
+  state$ = this.selectState(['loading', 'emailSent']);
   confirmCodeError$ = this.selectState('confirmCodeError');
   password$ = this.emailForm.get('password').value$.pipe(debounceTime(300));
 

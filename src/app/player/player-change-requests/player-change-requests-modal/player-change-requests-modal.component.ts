@@ -9,10 +9,10 @@ import { IdChecked } from '@shared/type/id-checked';
 import { MaskEnum, MaskEnumPatterns } from '@shared/mask/mask.enum';
 import { CURRENCY_MASK_CONFIG } from '@shared/currency-mask/currency-mask-config.token';
 import { scoreCurrencyMask } from '../../../score/score-shared/util';
-import { StateComponent } from '@shared/components/common/state-component';
 import { ScoreService } from '../../../score/score.service';
 import { finalize, switchMapTo } from 'rxjs/operators';
 import { SnackBarService } from '@shared/components/snack-bar/snack-bar.service';
+import { LocalState } from '@stlmpp/store';
 
 export interface PlayerChangeRequestsModalData {
   score: ScoreChangeRequests;
@@ -40,7 +40,7 @@ interface PlayerChangeRequestsModalState {
     },
   ],
 })
-export class PlayerChangeRequestsModalComponent extends StateComponent<PlayerChangeRequestsModalState> {
+export class PlayerChangeRequestsModalComponent extends LocalState<PlayerChangeRequestsModalState> {
   constructor(
     @Inject(MODAL_DATA) public data: PlayerChangeRequestsModalData,
     public modalRef: ModalRef<PlayerChangeRequestsModalComponent, PlayerChangeRequestsModalData>,

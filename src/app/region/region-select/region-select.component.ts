@@ -1,6 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, Inject, ViewChild } from '@angular/core';
 import { RegionQuery } from '../region.query';
-import { StateComponent } from '@shared/components/common/state-component';
 import { debounceTime, delay, finalize, map, startWith, tap } from 'rxjs/operators';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
@@ -9,6 +8,7 @@ import { trackByRegion } from '@model/region';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { combineLatest, Observable } from 'rxjs';
 import { Control } from '@stlmpp/control';
+import { LocalState } from '@stlmpp/store';
 
 export interface RegionSelectData {
   idRegion: number;
@@ -21,9 +21,7 @@ export interface RegionSelectData {
   styleUrls: ['./region-select.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RegionSelectComponent
-  extends StateComponent<{ loading: boolean; saving: boolean }>
-  implements AfterViewInit {
+export class RegionSelectComponent extends LocalState<{ loading: boolean; saving: boolean }> implements AfterViewInit {
   constructor(
     private modalRef: ModalRef,
     @Inject(MODAL_DATA) { idRegion, onSelect }: RegionSelectData,

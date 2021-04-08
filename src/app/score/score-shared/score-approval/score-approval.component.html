@@ -51,6 +51,12 @@
           {{ arrow }}
         </icon>
       </div>
+      <div class="last-updated-date" (click)="changeOrder('lastUpdatedDate')">
+        Last updated date
+        <icon class="order-icon" *ngIf="order.orderBy === 'lastUpdatedDate'" small>
+          {{ arrow }}
+        </icon>
+      </div>
       <div class="players">Player(s)</div>
     </div>
     <hr />
@@ -105,6 +111,7 @@
             <div class="stage">{{ score.stageShortName }}</div>
             <div class="score">{{ score.score | number: '1.0-0' }}</div>
             <div class="creation-date">{{ score.creationDate | authDateFormat }}</div>
+            <div class="creation-date">{{ score.lastUpdatedDate | authDateFormat }}</div>
             <div class="players" *ngLet="score.scorePlayers | join: 'playerPersonaName':' | ' as players">
               <span [tooltip]="players" tooltipPosition="left">{{ players }}</span>
             </div>

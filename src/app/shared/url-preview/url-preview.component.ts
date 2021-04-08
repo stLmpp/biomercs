@@ -1,9 +1,9 @@
 import { Component, ChangeDetectionStrategy, Input, HostBinding } from '@angular/core';
-import { StateComponent } from '@shared/components/common/state-component';
 import { UrlMetadataService } from '@shared/services/url-metadata/url-metadata.service';
 import { filterNil } from '@shared/operators/filter';
 import { finalize, switchMap } from 'rxjs/operators';
 import { BooleanInput } from '@angular/cdk/coercion';
+import { LocalState } from '@stlmpp/store';
 
 @Component({
   selector: 'a[bio-url-preview]',
@@ -12,7 +12,7 @@ import { BooleanInput } from '@angular/cdk/coercion';
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'url-preview' },
 })
-export class UrlPreviewComponent extends StateComponent<{ url: string | null; loading: boolean }> {
+export class UrlPreviewComponent extends LocalState<{ url: string | null; loading: boolean }> {
   constructor(private urlMetadataService: UrlMetadataService) {
     super({ url: null, loading: false }, { inputs: ['url'] });
   }

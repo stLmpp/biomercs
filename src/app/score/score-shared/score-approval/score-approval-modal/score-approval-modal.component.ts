@@ -10,10 +10,10 @@ import { ControlBuilder, Validators } from '@stlmpp/control';
 import { ScoreApprovalMotive, trackByScoreApprovalMotive } from '@model/score-approval-motive';
 import { Observable } from 'rxjs';
 import { StMapView } from '@stlmpp/store/lib/map';
-import { StateComponent } from '@shared/components/common/state-component';
 import { finalize, switchMap, tap } from 'rxjs/operators';
 import { ScoreApprovalAdd, ScoreApprovalVW } from '@model/score-approval';
 import { ScoreApprovalComponentState } from '../score-approval.component';
+import { LocalState } from '@stlmpp/store';
 
 export interface ScoreApprovalModalData {
   score: ScoreVW;
@@ -28,7 +28,7 @@ export interface ScoreApprovalModalData {
   styleUrls: ['./score-approval-modal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ScoreApprovalModalComponent extends StateComponent<{ saving: boolean }> implements OnInit {
+export class ScoreApprovalModalComponent extends LocalState<{ saving: boolean }> implements OnInit {
   constructor(
     @Inject(MODAL_DATA) { action, score, scoreApprovalComponentState, playerMode }: ScoreApprovalModalData,
     private scoreService: AbstractScoreService,

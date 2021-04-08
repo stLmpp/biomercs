@@ -4,7 +4,6 @@ import { RouterQuery } from '@stlmpp/router';
 import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
 import { PlayerService } from '../player.service';
-import { StateComponent } from '@shared/components/common/state-component';
 import { Animations } from '@shared/animations/animations';
 import { AuthQuery } from '../../auth/auth.query';
 import { RegionService } from '../../region/region.service';
@@ -13,6 +12,7 @@ import { DynamicLoaderService } from '../../core/dynamic-loader.service';
 import { Player, PlayerUpdate } from '@model/player';
 import { isObjectEmpty } from 'st-utils';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
+import { LocalState } from '@stlmpp/store';
 
 @Component({
   selector: 'bio-player-profile',
@@ -22,7 +22,7 @@ import { RouteParamEnum } from '@model/enum/route-param.enum';
   animations: [Animations.collapse.collapse()],
 })
 export class PlayerProfileComponent
-  extends StateComponent<{ editMode: boolean; loadingRegion: boolean }>
+  extends LocalState<{ editMode: boolean; loadingRegion: boolean }>
   implements OnInit {
   constructor(
     private playerQuery: PlayerQuery,

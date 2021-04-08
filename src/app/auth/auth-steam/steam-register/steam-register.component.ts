@@ -7,10 +7,10 @@ import { ControlBuilder, Validators } from '@stlmpp/control';
 import { Observable } from 'rxjs';
 import { finalize, tap } from 'rxjs/operators';
 import { catchAndThrow } from '@util/operators/catch-and-throw';
-import { StateComponent } from '@shared/components/common/state-component';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { User } from '@model/user';
 import { AuthRegisterVW } from '@model/auth';
+import { LocalState } from '@stlmpp/store';
 
 interface SteamRegisterForm {
   code: number | null;
@@ -24,7 +24,7 @@ interface SteamRegisterForm {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SteamRegisterComponent
-  extends StateComponent<{
+  extends LocalState<{
     loading: boolean;
     emailSent: boolean;
     confirmCodeError: string | null;
@@ -55,7 +55,7 @@ export class SteamRegisterComponent
     email: ['', [Validators.required, Validators.email]],
   });
 
-  state$ = this.selectStateMulti(['emailSent', 'loading']);
+  state$ = this.selectState(['emailSent', 'loading']);
 
   confirmCodeError$ = this.selectState('confirmCodeError');
 

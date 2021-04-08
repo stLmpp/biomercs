@@ -7,9 +7,9 @@ import { Control, ControlBuilder, Validators } from '@stlmpp/control';
 import { catchAndThrow } from '@util/operators/catch-and-throw';
 import { EmailExistsValidator } from '@shared/validators/email-exists.validator';
 import { UsernameExistsValidator } from '@shared/validators/username-exists.validator';
-import { StateComponent } from '@shared/components/common/state-component';
 import { AuthRegister, AuthRegisterVW } from '@model/auth';
 import { User } from '@model/user';
+import { LocalState } from '@stlmpp/store';
 
 interface AuthRegisterForm extends AuthRegister {
   confirmPassword: string;
@@ -22,7 +22,7 @@ interface AuthRegisterForm extends AuthRegister {
   styleUrls: ['./register.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RegisterComponent extends StateComponent<{
+export class RegisterComponent extends LocalState<{
   loadingSteam: boolean;
   loading: boolean;
   emailSent: boolean;
@@ -41,7 +41,7 @@ export class RegisterComponent extends StateComponent<{
 
   private _idUser = 0;
 
-  loading$ = this.selectStateMulti(['loading', 'loadingSteam']);
+  loading$ = this.selectState(['loading', 'loadingSteam']);
 
   hidePassword = true;
   hideConfirmPassword = true;

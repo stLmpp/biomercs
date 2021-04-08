@@ -10,9 +10,9 @@ import { SnackBarService } from '@shared/components/snack-bar/snack-bar.service'
 import { ModalService } from '@shared/components/modal/modal.service';
 import type { LoginConfirmCodeModalComponent } from './login-confirm-code-modal/login-confirm-code-modal.component';
 import { HttpError } from '@model/http-error';
-import { StateComponent } from '@shared/components/common/state-component';
 import { HttpStatusCode } from '@model/enum/http-code';
 import { AuthCredentials } from '@model/auth';
+import { LocalState } from '@stlmpp/store';
 
 @Component({
   selector: 'bio-login',
@@ -21,7 +21,7 @@ import { AuthCredentials } from '@model/auth';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent
-  extends StateComponent<{ loadingSteam: boolean; loading: boolean; error: string | null }>
+  extends LocalState<{ loadingSteam: boolean; loading: boolean; error: string | null }>
   implements OnInit {
   constructor(
     private authService: AuthService,
@@ -35,7 +35,7 @@ export class LoginComponent
     super({ error: null, loading: false, loadingSteam: false });
   }
 
-  loading$ = this.selectStateMulti(['loading', 'loadingSteam']);
+  loading$ = this.selectState(['loading', 'loadingSteam']);
   typePassword = 'password';
   error$ = this.selectState('error');
 

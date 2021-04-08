@@ -10,7 +10,6 @@ import {
 import { ScoreVW } from '@model/score';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import { Control, ControlArray, ControlBuilder, Validators } from '@stlmpp/control';
-import { StateComponent } from '@shared/components/common/state-component';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import { ScoreApprovalVW } from '@model/score-approval';
 import { Subject } from 'rxjs';
@@ -21,6 +20,7 @@ import { InputDirective } from '@shared/components/form/input.directive';
 import { AbstractScoreService } from '../../../abstract-score.service';
 import { ScoreApprovalComponentState } from '../score-approval.component';
 import { trackByFactory } from '@stlmpp/utils';
+import { LocalState } from '@stlmpp/store';
 
 export interface ScoreRequestChangesModalData {
   score: ScoreVW;
@@ -43,7 +43,7 @@ export interface TextAreaEvent {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScoreRequestChangesModalComponent
-  extends StateComponent<{ saving: boolean }>
+  extends LocalState<{ saving: boolean }>
   implements OnInit, AfterViewInit {
   constructor(
     @Inject(MODAL_DATA) { score, scoreApprovalComponentState }: ScoreRequestChangesModalData,

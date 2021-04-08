@@ -6,7 +6,7 @@ import { AuthService } from '../../auth.service';
 import { finalize, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { catchAndThrow } from '@util/operators/catch-and-throw';
-import { StateComponent } from '@shared/components/common/state-component';
+import { LocalState } from '@stlmpp/store';
 
 interface LoginConfirmationForm {
   code: number | null;
@@ -18,7 +18,7 @@ interface LoginConfirmationForm {
   styleUrls: ['./login-confirm-code-modal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginConfirmCodeModalComponent extends StateComponent<{ loading: boolean; error: string | null }> {
+export class LoginConfirmCodeModalComponent extends LocalState<{ loading: boolean; error: string | null }> {
   constructor(
     public modalRef: ModalRef<LoginConfirmCodeModalComponent, number>,
     private controlBuilder: ControlBuilder,

@@ -41,6 +41,7 @@ export interface ScoreVW {
   status: ScoreStatusEnum;
   scorePlayers: ScorePlayerVW[];
   creationDate: Date;
+  lastUpdatedDate: Date | null;
   isWorldRecord: boolean;
   isCharacterWorldRecord: boolean;
   isCombinationWorldRecord: boolean;
