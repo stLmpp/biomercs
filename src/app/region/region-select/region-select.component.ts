@@ -56,7 +56,7 @@ export class RegionSelectComponent
 
   trackByRegion = trackByRegion;
 
-  onSave($event?: KeyboardEvent): void {
+  onSave($event?: Event): void {
     $event?.preventDefault();
     if (this.idRegionOrigin !== this.idRegion) {
       this.updateState('saving', true);
