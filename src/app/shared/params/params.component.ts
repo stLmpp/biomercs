@@ -140,13 +140,13 @@ export class ParamsComponent
     this._setQueryParamsOnChange = coerceBooleanProperty(setQueryParamsOnChange);
   }
 
-  @Output() idPlatformChange = new EventEmitter<Nullable<number>>();
-  @Output() idGameChange = new EventEmitter<Nullable<number>>();
-  @Output() idMiniGameChange = new EventEmitter<Nullable<number>>();
-  @Output() idModeChange = new EventEmitter<Nullable<number>>();
-  @Output() idStageChange = new EventEmitter<Nullable<number>>();
-  @Output() idCharacterCostumeChange = new EventEmitter<Nullable<number>>();
-  @Output() paramsChange = new EventEmitter<ParamsForm>();
+  @Output() readonly idPlatformChange = new EventEmitter<Nullable<number>>();
+  @Output() readonly idGameChange = new EventEmitter<Nullable<number>>();
+  @Output() readonly idMiniGameChange = new EventEmitter<Nullable<number>>();
+  @Output() readonly idModeChange = new EventEmitter<Nullable<number>>();
+  @Output() readonly idStageChange = new EventEmitter<Nullable<number>>();
+  @Output() readonly idCharacterCostumeChange = new EventEmitter<Nullable<number>>();
+  @Output() readonly paramsChange = new EventEmitter<ParamsForm>();
 
   formsConfig = defaultConfigs;
 

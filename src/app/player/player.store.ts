@@ -15,7 +15,7 @@ export class PlayerStore extends EntityStore<PlayerEntityState> {
   private _updateUser(entity: Player): void {
     if (entity.idUser === this.authQuery.getUser()?.id) {
       // This can't happen if the user is not logged, so no need to worry here
-      this.authStore.update(state => ({ ...state, user: { ...state.user!, player: entity } }));
+      this.authStore.updateState(state => ({ ...state, user: { ...state.user!, player: entity } }));
     }
   }
 

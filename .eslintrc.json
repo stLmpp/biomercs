@@ -201,23 +201,20 @@
         "@angular-eslint/component-class-suffix": ["off"],
         "@angular-eslint/prefer-on-push-component-change-detection": ["warn"],
         "@angular-eslint/use-lifecycle-interface": ["warn"],
-        "@angular-eslint/component-max-inline-declarations": [
-          "error",
-          {
-            "animations": 20,
-            "styles": 8,
-            "template": 5
-          }
-        ]
+        "@angular-eslint/no-conflicting-lifecycle": ["warn"],
+        "@angular-eslint/contextual-decorator": ["error"],
+        "@angular-eslint/prefer-output-readonly": ["warn"],
+        "@angular-eslint/component-max-inline-declarations": ["error", { "animations": 20, "styles": 8, "template": 5 }]
       }
     },
     {
       "files": ["*.html"],
       "extends": ["plugin:@angular-eslint/template/recommended"],
       "rules": {
-        "@angular-eslint/template/no-negated-async": ["error"],
+        "@angular-eslint/template/no-negated-async": ["off"],
         "@angular-eslint/template/no-call-expression": ["error"],
-        "@angular-eslint/template/use-track-by-function": ["error"]
+        "@angular-eslint/template/use-track-by-function": ["warn"],
+        "@angular-eslint/template/banana-in-box": ["error"]
       }
     }
   ]

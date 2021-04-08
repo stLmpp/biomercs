@@ -57,7 +57,7 @@ export class AuthService {
       .post<User>(`${this.endPoint}/login`, dto, { headers: AuthErrorInterceptor.ignoreHeaders })
       .pipe(
         tap(user => {
-          this.authStore.update({ user });
+          this.authStore.updateState({ user });
         })
       );
   }
@@ -67,10 +67,10 @@ export class AuthService {
       .post<User>(`${this.endPoint}/auto-login`, undefined, { headers: AuthErrorInterceptor.ignoreHeaders })
       .pipe(
         tap(user => {
-          this.authStore.update({ user });
+          this.authStore.updateState({ user });
         }),
         catchAndThrow(() => {
-          this.authStore.update({ user: null });
+          this.authStore.updateState({ user: null });
           return of(null);
         })
       );
@@ -83,7 +83,7 @@ export class AuthService {
   confirmCode(idUser: number, code: number): Observable<User> {
     return this.http.post<User>(`${this.endPoint}/user/${idUser}/confirm-code/${code}`, undefined).pipe(
       tap(user => {
-        this.authStore.update({ user });
+        this.authStore.updateState({ user });
       })
     );
   }
@@ -175,12 +175,12 @@ export class AuthService {
   }
 
   updateToken(token: string): Observable<User> {
-    this.authStore.update(state => ({ ...state, user: { token } as any }));
+    this.authStore.updateState(state => ({ ...state, user: { token } as any }));
     return this.autoLogin();
   }
 
   logout(): void {
-    this.authStore.update({ user: null });
+    this.authStore.updateState({ user: null });
   }
 
   forgotPassword(email: string): Observable<void> {
@@ -193,7 +193,7 @@ export class AuthService {
       .post<User>(`${this.endPoint}/forgot-password/change-password`, { confirmationCode, password })
       .pipe(
         tap(user => {
-          this.authStore.update({ user });
+          this.authStore.updateState({ user });
         })
       );
   }

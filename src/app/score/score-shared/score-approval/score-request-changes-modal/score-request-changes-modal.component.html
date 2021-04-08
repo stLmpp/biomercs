@@ -8,7 +8,7 @@
         <icon>add_circle</icon>
       </button>
     </div>
-    <div class="change" *ngFor="let change of changesControl; let $index = index">
+    <div class="change" *ngFor="let change of changesControl; trackBy: trackByControl; let $index = index">
       <form-field label="Change {{ $index + 1 }}">
         <textarea
           rows="1"

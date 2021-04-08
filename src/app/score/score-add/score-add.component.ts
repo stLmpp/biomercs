@@ -19,6 +19,7 @@ import { DialogService } from '@shared/components/modal/dialog/dialog.service';
 import { ModalConfig } from '@shared/components/modal/modal.config';
 import { Mode } from '@model/mode';
 import { scoreCurrencyMask } from '../score-shared/util';
+import { trackByFactory } from '@stlmpp/utils';
 
 export interface ScoreAddState {
   characterLoading: boolean;
@@ -131,6 +132,8 @@ export class ScoreAddComponent extends StateComponent<ScoreAddState> implements 
       );
     })
   );
+
+  trackByScorePlayerControl = trackByFactory<ControlGroup<ScorePlayerAddForm>>('uniqueId');
 
   get scorePlayersControl(): ControlArray<ScorePlayerAddForm> {
     return this.form.get('scorePlayers');

@@ -8,7 +8,6 @@ import {
   OnChanges,
   Optional,
   Renderer2,
-  SimpleChange,
   SimpleChanges,
 } from '@angular/core';
 import { ControlValue } from '@stlmpp/control';

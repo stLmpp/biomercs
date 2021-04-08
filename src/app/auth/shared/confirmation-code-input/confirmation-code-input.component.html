@@ -4,7 +4,7 @@
     <input
       class="no-arrows"
       bioInput
-      *ngFor="let input of arrayRef; let $index = index"
+      *ngFor="let input of arrayControl; let $index = index; trackBy: trackByControl"
       [controlName]="$index"
       (blur)="onTouched$.next()"
       (focus)="focusManager.setActiveItem($index)"
@@ -14,7 +14,7 @@
     />
   </div>
   <div class="errors">
-    <error *ngIf="array.invalid && isTouched">Invalid code</error>
+    <error *ngIf="arrayControl.invalid && isTouched">Invalid code</error>
     <span class="error" *ngIf="codeError">{{ codeError }}</span>
   </div>
 </form>

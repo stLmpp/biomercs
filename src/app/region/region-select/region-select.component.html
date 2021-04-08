@@ -8,7 +8,7 @@
   <cdk-virtual-scroll-viewport
     itemSize="44"
     [style.height.px]="10 * 44"
-    (keydown.control.s)="$event.preventDefault(); onSave()"
+    (keydown.control.s)="onSave($event)"
     *ngLet="all$ | async as all"
   >
     <list-item [value]="region.id" *cdkVirtualFor="let region of all; trackBy: trackByRegion; templateCacheSize: 0">

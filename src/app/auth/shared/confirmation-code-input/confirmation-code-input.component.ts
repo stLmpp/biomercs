@@ -14,11 +14,12 @@ import {
   QueryList,
   ViewChildren,
 } from '@angular/core';
-import { ControlArray, ControlBuilder, ControlValue, Validators } from '@stlmpp/control';
+import { Control, ControlArray, ControlBuilder, ControlValue, Validators } from '@stlmpp/control';
 import { FocusableOption, FocusKeyManager } from '@angular/cdk/a11y';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { SimpleChangesCustom } from '@util/util';
+import { trackByFactory } from '@stlmpp/utils';
 
 @Directive({ selector: 'input[confirmationCodeInput]' })
 export class ConfirmationCodeInputDirective implements FocusableOption {
@@ -47,7 +48,7 @@ export class ConfirmationCodeInputComponent
   private _destroy$ = new Subject();
 
   @ViewChildren(ConfirmationCodeInputDirective) inputList!: QueryList<ConfirmationCodeInputDirective>;
-  @Output() focusoutLastItem = new EventEmitter<void>();
+  @Output() readonly focusoutLastItem = new EventEmitter<void>();
 
   @Input() length = 6;
   @Input() label?: string;
@@ -57,22 +58,26 @@ export class ConfirmationCodeInputComponent
 
   form = this.controlBuilder.group<{ array: string[] }>({
     array: this.controlBuilder.array<string>(
-      Array.from({ length: this.length }).map(() => ['', [Validators.required, Validators.maxLength(1)]])
+      Array.from({ length: this.length }).map(() =>
+        this.controlBuilder.control(['', [Validators.required, Validators.maxLength(1)]])
+      )
     ),
   });
 
-  get array(): ControlArray<string> {
+  trackByControl = trackByFactory<Control<string>>('uniqueId');
+
+  get arrayControl(): ControlArray<string> {
     return this.form.get('array');
   }
 
   get isTouched(): boolean {
-    return this.array.controls.every(control => control.touched);
+    return this.arrayControl.controls.every(control => control.touched);
   }
 
   private _init(): void {
     this._destroy$.next();
-    for (let i = 0, len = this.array.length; i < len; i++) {
-      const input = this.array.get(i);
+    for (let i = 0, len = this.arrayControl.length; i < len; i++) {
+      const input = this.arrayControl.get(i);
       if (input) {
         input.valueChanges$
           .pipe(
@@ -95,7 +100,7 @@ export class ConfirmationCodeInputComponent
   setValue(value: number | string | null | undefined): void {
     if (value) {
       const newValue = value.toString().split('');
-      this.array.patchValue(newValue);
+      this.arrayControl.patchValue(newValue);
     }
   }
 
@@ -107,13 +112,13 @@ export class ConfirmationCodeInputComponent
     const clipboardData = $event.clipboardData;
     const pastedText = clipboardData?.getData('text');
     if (pastedText?.length === 6) {
-      this.array.setValue(pastedText.split(''));
+      this.arrayControl.setValue(pastedText.split(''));
     }
   }
 
   ngOnInit(): void {
     this._init();
-    this.array.value$.pipe(takeUntil(this._destroy$)).subscribe(values => {
+    this.arrayControl.value$.pipe(takeUntil(this._destroy$)).subscribe(values => {
       this.onChange$.next(+values.filter(value => value).join(''));
     });
   }
@@ -125,13 +130,12 @@ export class ConfirmationCodeInputComponent
 
   ngOnChanges(changes: SimpleChangesCustom<ConfirmationCodeInputComponent>): void {
     if (changes.length && !changes.length.isFirstChange()) {
-      const arrayValues = this.array.value;
+      const arrayValues = this.arrayControl.value;
       this.form = this.controlBuilder.group<{ array: string[] }>({
         array: this.controlBuilder.array<string>(
-          Array.from({ length: this.length }).map((_, index) => [
-            arrayValues[index],
-            [Validators.required, Validators.maxLength(1)],
-          ])
+          Array.from({ length: this.length }).map((_, index) =>
+            this.controlBuilder.control([arrayValues[index], [Validators.required, Validators.maxLength(1)]])
+          )
         ),
       });
       this._init();

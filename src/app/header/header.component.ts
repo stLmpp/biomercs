@@ -7,7 +7,7 @@ import { BreakpointObserverService } from '@shared/services/breakpoint-observer/
 import { Router } from '@angular/router';
 import { HeaderQuery } from './header.query';
 import { Destroyable } from '@shared/components/common/destroyable-component';
-import { forkJoin, of } from 'rxjs';
+import { forkJoin } from 'rxjs';
 import { ScoreService } from '../score/score.service';
 import { filterNil } from '@shared/operators/filter';
 

@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { AuthService } from '../auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { debounceTime, finalize, tap } from 'rxjs/operators';
-import { ControlBuilder, Validators } from '@stlmpp/control';
+import { Control, ControlBuilder, Validators } from '@stlmpp/control';
 import { catchAndThrow } from '@util/operators/catch-and-throw';
 import { EmailExistsValidator } from '@shared/validators/email-exists.validator';
 import { UsernameExistsValidator } from '@shared/validators/username-exists.validator';
@@ -57,6 +57,14 @@ export class RegisterComponent extends StateComponent<{
   });
 
   password$ = this.form.get('password').value$.pipe(debounceTime(300));
+
+  get usernameControl(): Control<string> {
+    return this.form.get('username');
+  }
+
+  get emailControl(): Control<string> {
+    return this.form.get('email');
+  }
 
   registerSteam(): void {
     this.updateState('loadingSteam', true);

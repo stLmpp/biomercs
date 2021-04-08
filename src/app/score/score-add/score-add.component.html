@@ -11,7 +11,14 @@
     </card-content>
   </card>
   <form [controlGroup]="form" (groupSubmit)="onSubmit()">
-    <ng-container *ngFor="let scorePlayerControl of scorePlayersControl; let $index = index; let $first = first">
+    <ng-container
+      *ngFor="
+        let scorePlayerControl of scorePlayersControl;
+        trackBy: trackByScorePlayerControl;
+        let $index = index;
+        let $first = first
+      "
+    >
       <bio-score-add-player
         *ngIf="scorePlayerControl.value$ | async as player"
         [disabled]="!state.hasMode"

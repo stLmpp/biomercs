@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { ScoreVW } from '@model/score';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
-import { ControlArray, ControlBuilder, Validators } from '@stlmpp/control';
+import { Control, ControlArray, ControlBuilder, Validators } from '@stlmpp/control';
 import { StateComponent } from '@shared/components/common/state-component';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import { ScoreApprovalVW } from '@model/score-approval';
@@ -20,6 +20,7 @@ import { FocusKeyManager } from '@angular/cdk/a11y';
 import { InputDirective } from '@shared/components/form/input.directive';
 import { AbstractScoreService } from '../../../abstract-score.service';
 import { ScoreApprovalComponentState } from '../score-approval.component';
+import { trackByFactory } from '@stlmpp/utils';
 
 export interface ScoreRequestChangesModalData {
   score: ScoreVW;
@@ -68,6 +69,8 @@ export class ScoreRequestChangesModalComponent
   form = this.controlBuilder.group<ScoreRequestChangesModalForm>({
     changes: this.controlBuilder.array<string>([['', [Validators.required]]]),
   });
+
+  trackByControl = trackByFactory<Control<string>>('uniqueId');
 
   get changesControl(): ControlArray<string> {
     return this.form.get('changes');

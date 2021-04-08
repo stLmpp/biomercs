@@ -17,7 +17,7 @@ export abstract class AbstractScoreService {
   private _subtractApprovalCount(playerMode: boolean): void {
     const path = playerMode ? 'player' : 'admin';
     const key = `${path}ApprovalCount` as keyof HeaderState;
-    this.headerStore.update(state => ({ ...state, [key]: state[key] - 1 }));
+    this.headerStore.updateState(state => ({ ...state, [key]: state[key] - 1 }));
   }
 
   add(dto: ScoreAdd): Observable<ScoreVW> {
@@ -95,7 +95,7 @@ export abstract class AbstractScoreService {
     return this.http.get<number>(`${this.endPoint}/approval/${path}/count`).pipe(
       tap(count => {
         const key = `${path}ApprovalCount` as keyof HeaderState;
-        this.headerStore.update({ [key]: count });
+        this.headerStore.updateState({ [key]: count });
       })
     );
   }
@@ -103,7 +103,7 @@ export abstract class AbstractScoreService {
   findChangeRequestsCount(): Observable<number> {
     return this.http.get<number>(`${this.endPoint}/player/change-requests/count`).pipe(
       tap(count => {
-        this.headerStore.update({ playerRequestChangesCount: count });
+        this.headerStore.updateState({ playerRequestChangesCount: count });
       })
     );
   }
@@ -112,7 +112,7 @@ export abstract class AbstractScoreService {
     return this.http.patch<boolean>(`${this.endPoint}/${idScore}/fulfil-change-requests`, dto).pipe(
       tap(hasAnyRequestChange => {
         if (!hasAnyRequestChange) {
-          this.headerStore.update(state => ({
+          this.headerStore.updateState(state => ({
             ...state,
             playerRequestChangesCount: state.playerRequestChangesCount - 1,
             adminApprovalCount: state.adminApprovalCount + 1,

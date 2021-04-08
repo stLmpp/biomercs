@@ -5,7 +5,9 @@
   (modelChange)="itemsPerPageChange.emit($event)"
   placeholder="Items per page"
 >
-  <bio-option *ngFor="let option of itemsPerPageOptions" [value]="option">{{ option }}</bio-option>
+  <bio-option *ngFor="let option of itemsPerPageOptions; trackBy: trackByNumber" [value]="option">
+    {{ option }}
+  </bio-option>
 </bio-select>
 <span>
   {{ (currentPage - 1) * itemsPerPage + 1 }} - {{ currentPage * itemsPerPage | min: totalItems }} of {{ totalItems }}

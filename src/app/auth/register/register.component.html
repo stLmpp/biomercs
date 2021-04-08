@@ -12,7 +12,7 @@
         ></bio-confirmation-code-input>
       </ng-container>
       <ng-template #emailNotSent>
-        <form-field label="Username" [loading]="form.get('username').pending">
+        <form-field label="Username" [loading]="usernameControl.pending">
           <input bioInput placeholder="Username" controlName="username" autocomplete="username" />
           <errors>
             <error *error="'required'">Username is required</error>
@@ -20,7 +20,7 @@
             <error *error="'usernameExists'">Username already exists</error>
           </errors>
         </form-field>
-        <form-field label="E-mail" [loading]="form.get('email').pending">
+        <form-field label="E-mail" [loading]="emailControl.pending">
           <input bioInput placeholder="E-mail" controlName="email" type="email" autocomplete="email" />
           <errors>
             <error *error="'required'">E-mail is required</error>

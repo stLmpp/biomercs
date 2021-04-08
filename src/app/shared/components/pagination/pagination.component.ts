@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
 import { PaginationMetaVW } from '@model/pagination';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
+import { trackByFactory } from '@stlmpp/utils';
 
 @Component({
   selector: 'pagination',
@@ -38,12 +39,14 @@ export class PaginationComponent implements OnChanges, PaginationMetaVW {
     this.totalPages = totalPages;
   }
 
-  @Output() nextPage = new EventEmitter<number>();
-  @Output() previousPage = new EventEmitter<number>();
-  @Output() firstPage = new EventEmitter<number>();
-  @Output() lastPage = new EventEmitter<number>();
-  @Output() itemsPerPageChange = new EventEmitter<number>();
-  @Output() currentPageChange = new EventEmitter<number>();
+  @Output() readonly nextPage = new EventEmitter<number>();
+  @Output() readonly previousPage = new EventEmitter<number>();
+  @Output() readonly firstPage = new EventEmitter<number>();
+  @Output() readonly lastPage = new EventEmitter<number>();
+  @Output() readonly itemsPerPageChange = new EventEmitter<number>();
+  @Output() readonly currentPageChange = new EventEmitter<number>();
+
+  trackByNumber = trackByFactory<number>();
 
   private _setQueryParams(): void {
     if (!this._setQueryParamsOnChange) {

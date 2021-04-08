@@ -31,8 +31,8 @@ export class ScoreAddPlayerComponent extends StateComponent<{ playersLoading: bo
     this.form.setValue(player);
   }
 
-  @Output() playerChange = new EventEmitter<ScorePlayerAddForm>();
-  @Output() hostChange = new EventEmitter<void>();
+  @Output() readonly playerChange = new EventEmitter<ScorePlayerAddForm>();
+  @Output() readonly hostChange = new EventEmitter<void>();
 
   @ViewChild('bioAutocomplete') bioAutocomplete!: AutocompleteDirective;
 
