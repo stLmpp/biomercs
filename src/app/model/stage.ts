@@ -1,6 +1,5 @@
-import { Base } from './base';
-
-export interface Stage extends Base {
+export interface Stage {
+  id: number;
   name: string;
   shortName: string;
 }
