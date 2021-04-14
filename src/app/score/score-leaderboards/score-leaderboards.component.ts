@@ -79,7 +79,7 @@ export class ScoreLeaderboardsComponent extends LocalState<ScoreLeaderboardsStat
     switchMap(params => {
       this.updateState('tableLoading', true);
       return this.scoreService
-        .findTopScoresTable(
+        .findLeaderboards(
           params.idPlatform!,
           params.idGame!,
           params.idMiniGame!,

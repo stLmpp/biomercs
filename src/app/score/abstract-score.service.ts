@@ -28,7 +28,7 @@ export abstract class AbstractScoreService {
     return this.http.get<ScoreVW>(`${this.endPoint}/${idScore}`);
   }
 
-  findTopScoresTable(
+  findLeaderboards(
     idPlatform: number,
     idGame: number,
     idMiniGame: number,
@@ -38,7 +38,7 @@ export abstract class AbstractScoreService {
   ): Observable<ScoreTopTableVW> {
     const params = new HttpParams({ page, limit }, true);
     return this.http.get<ScoreTopTableVW>(
-      `${this.endPoint}/platform/${idPlatform}/game/${idGame}/mini-game/${idMiniGame}/mode/${idMode}/score-table`,
+      `${this.endPoint}/platform/${idPlatform}/game/${idGame}/mini-game/${idMiniGame}/mode/${idMode}/leaderboards`,
       { params }
     );
   }
