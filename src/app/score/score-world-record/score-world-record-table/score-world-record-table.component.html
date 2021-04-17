@@ -1,0 +1,49 @@
+<card>
+  <h3 cardTitle>Parameters</h3>
+  <card-content>
+    <bio-params
+      [params]="form.valueChanges$ | async"
+      (paramsChange)="paramsChange($event)"
+      [config]="paramsConfig"
+      setQueryParamsOnChange
+    ></bio-params>
+  </card-content>
+</card>
+<card *ngLet="tableLoading$ | async as tableLoading" [bioLoading]="tableLoading" class="top-table flex-table">
+  <card-content>
+    <ng-container *ngIf="scoreTopTable$ | async as scoreTopTable; else noParams">
+      <ng-container>
+        <div class="header">
+          <div class="character">Character</div>
+          <div *ngFor="let stage of scoreTopTable.stages; trackBy: trackByStage" [tooltip]="stage.name">
+            {{ stage.shortName }}
+          </div>
+        </div>
+      </ng-container>
+
+      <hr />
+      <div class="body">
+        <div class="no-data-found" *ngIf="!scoreTopTable.scoreTables.length">No scores found</div>
+        <ng-container *ngFor="let character of scoreTopTable.scoreTables; trackBy: trackByScoreTable">
+          <div>
+            <div class="character">{{ character.characaterName }} {{ character.characterCostumeName }}</div>
+            <div class="score" *ngFor="let score of character.scores; trackBy: trackByScore">
+              <button
+                [disabled]="!score || (loadingInfoModal$ | async)"
+                block
+                bioButton
+                (click)="openScoreInfo(score!)"
+              >
+                {{ score?.score || 0 | number: '1.0-0' }}
+              </button>
+            </div>
+          </div>
+          <hr />
+        </ng-container>
+      </div>
+    </ng-container>
+    <ng-template #noParams>
+      <div class="no-params" *ngIf="!tableLoading">Select the params above to search the leaderboards</div>
+    </ng-template>
+  </card-content>
+</card>

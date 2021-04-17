@@ -10,6 +10,10 @@ const routes: Routes = [
     path: 'add',
     loadChildren: () => import('./score-add/score-add.module').then(m => m.ScoreAddModule),
   },
+  {
+    path: 'world-record',
+    loadChildren: () => import('./score-world-record/score-world-record.module').then(m => m.ScoreWorldRecordModule),
+  },
 ];
 
 @NgModule({

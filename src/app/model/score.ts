@@ -68,3 +68,17 @@ export interface ScoreChangeRequestsFulfilDto {
   scorePlayers: ScorePlayerUpdateDto[];
   idsScoreChangeRequests: number[];
 }
+
+export interface ScoreTopTableWorldRecord {
+  stages: Stage[];
+  scoreTables: ScoreTableWorldRecord[];
+}
+
+export interface ScoreTableWorldRecord {
+  idCharacter: number;
+  idCharacterCustome: number;
+  characaterName: string;
+  characterCostumeName: string;
+  characterCostumeShortName: string;
+  scores: (ScoreVW | undefined)[];
+}

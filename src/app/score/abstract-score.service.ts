@@ -1,4 +1,10 @@
-import { ScoreAdd, ScoreChangeRequestsFulfilDto, ScoreTopTableVW, ScoreVW } from '@model/score';
+import {
+  ScoreAdd,
+  ScoreChangeRequestsFulfilDto,
+  ScoreTopTableVW,
+  ScoreTopTableWorldRecord,
+  ScoreVW,
+} from '@model/score';
 import { Observable } from 'rxjs';
 import { OrderByDirection } from 'st-utils';
 import { ScoreApprovalAdd, ScoreApprovalVW } from '@model/score-approval';
@@ -120,5 +126,15 @@ export abstract class AbstractScoreService {
         }
       })
     );
+  }
+
+  findWorldRecordTable(
+    idPlatform: number,
+    idGame: number,
+    idMiniGame: number,
+    idMode: number
+  ): Observable<ScoreTopTableWorldRecord> {
+    const params = new HttpParams({ idPlatform, idGame, idMiniGame, idMode });
+    return this.http.get<ScoreTopTableWorldRecord>(`${this.endPoint}/world-record/table`, { params });
   }
 }
