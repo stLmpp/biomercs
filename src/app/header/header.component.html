@@ -3,6 +3,10 @@
   <ng-container *ngIf="isLogged$ | async; else notLogged">
     <ng-container *ngIf="user$ | async as user">
       <ng-container *ngIf="isMediumScreen">
+        <a class="world-records" bioButton routerLink="/score/world-record/table" queryParamsHandling="preserve">
+          <icon mdi="trophy"></icon>
+          World records
+        </a>
         <a bioButton routerLink="/score/leaderboards" queryParamsHandling="preserve">
           <icon>leaderboard</icon>
           Leaderboards

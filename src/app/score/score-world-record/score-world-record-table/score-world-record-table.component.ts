@@ -6,7 +6,7 @@ import { LocalState } from '@stlmpp/store';
 import { trackByFactory } from '@stlmpp/utils';
 import { Stage } from '@model/stage';
 import { ScoreTableWorldRecord, ScoreVW } from '@model/score';
-import { filter, finalize, pluck, switchMap } from 'rxjs/operators';
+import { filter, finalize, shareReplay, switchMap } from 'rxjs/operators';
 
 export interface ScoreWorldRecordTableForm {
   idPlatform: number | null;
@@ -57,10 +57,9 @@ export class ScoreWorldRecordTableComponent extends LocalState<ScoreWorldRecordT
             this.updateState({ tableLoading: false });
           })
         );
-    })
+    }),
+    shareReplay()
   );
-
-  scoreTables$ = this.scoreTopTable$.pipe(pluck('scoreTables'));
 
   trackByStage = trackByFactory<Stage>('id');
   trackByScoreTable = trackByFactory<ScoreTableWorldRecord>('idCharacterCustome');

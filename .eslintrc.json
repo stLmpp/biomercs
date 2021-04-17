@@ -41,7 +41,6 @@
         ],
         "arrow-body-style": ["error", "as-needed"],
         "prefer-arrow-callback": ["error"],
-        "prefer-arrow/prefer-arrow-functions": ["off"],
         "no-shadow": ["off"],
         "prefer-const": ["error", { "destructuring": "all" }],
         "@typescript-eslint/explicit-member-accessibility": ["off", { "accessibility": "explicit" }],
@@ -73,7 +72,6 @@
             "format": ["camelCase"],
             "leadingUnderscore": "allow"
           },
-
           {
             "selector": "memberLike",
             "modifiers": ["private"],

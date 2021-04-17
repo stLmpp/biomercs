@@ -26,7 +26,12 @@
         <div class="no-data-found" *ngIf="!scoreTopTable.scoreTables.length">No scores found</div>
         <ng-container *ngFor="let character of scoreTopTable.scoreTables; trackBy: trackByScoreTable">
           <div>
-            <div class="character">{{ character.characaterName }} {{ character.characterCostumeName }}</div>
+            <div class="character">
+              {{ character.characterName }}
+              <ng-container *ngIf="character.characterCostumeName !== character.characterName">
+                {{ character.characterCostumeName }}
+              </ng-container>
+            </div>
             <div class="score" *ngFor="let score of character.scores; trackBy: trackByScore">
               <button
                 [disabled]="!score || (loadingInfoModal$ | async)"
@@ -43,7 +48,7 @@
       </div>
     </ng-container>
     <ng-template #noParams>
-      <div class="no-params" *ngIf="!tableLoading">Select the params above to search the leaderboards</div>
+      <div class="no-params" *ngIf="!tableLoading">Select the params above to search the world records</div>
     </ng-template>
   </card-content>
 </card>

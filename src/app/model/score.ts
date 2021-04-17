@@ -77,7 +77,7 @@ export interface ScoreTopTableWorldRecord {
 export interface ScoreTableWorldRecord {
   idCharacter: number;
   idCharacterCustome: number;
-  characaterName: string;
+  characterName: string;
   characterCostumeName: string;
   characterCostumeShortName: string;
   scores: (ScoreVW | undefined)[];
