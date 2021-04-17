@@ -1,22 +1,30 @@
 <card>
   <h3 cardTitle>Parameters</h3>
   <card-content>
-    <bio-params
-      [params]="form.valueChanges$ | async"
-      (paramsChange)="paramsChange($event)"
-      [config]="paramsConfig"
-      setQueryParamsOnChange
-    ></bio-params>
+    <bio-params (paramsChange)="paramsChange($event)" [config]="paramsConfig" setQueryParamsOnChange></bio-params>
   </card-content>
 </card>
 <card *ngLet="tableLoading$ | async as tableLoading" [bioLoading]="tableLoading" class="top-table flex-table">
   <card-content>
     <ng-container *ngIf="scoreTopTable$ | async as scoreTopTable; else noParams">
-      <ng-container>
-        <div class="header">
-          <div class="character">Character</div>
-          <div *ngFor="let stage of scoreTopTable.stages; trackBy: trackByStage" [tooltip]="stage.name">
+      <ng-container *ngLet="orderBy$ | async as order">
+        <div class="header" *ngLet="order.orderByDirection === 'desc' ? 'arrow_drop_up' : 'arrow_drop_down' as arrow">
+          <div class="character" (click)="updateOrderByCharacter()">
+            Character
+            <icon class="order-icon" *ngIf="order.orderByCharacter" small>
+              {{ arrow }}
+            </icon>
+          </div>
+          <div
+            *ngFor="let stage of scoreTopTable.stages; trackBy: trackByStage"
+            [tooltip]="stage.name"
+            (click)="updateOrderByIdStage(stage.id)"
+            class="stage"
+          >
             {{ stage.shortName }}
+            <icon class="order-icon" *ngIf="order.orderByStage === stage.id" small>
+              {{ arrow }}
+            </icon>
           </div>
         </div>
       </ng-container>

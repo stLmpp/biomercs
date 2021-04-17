@@ -1,3 +1,13 @@
 .card {
   margin-bottom: 1rem;
 }
+
+.header {
+  > div {
+    cursor: pointer;
+  }
+  .order-icon {
+    position: absolute;
+    right: 0;
+  }
+}

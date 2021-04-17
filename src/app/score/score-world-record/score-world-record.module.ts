@@ -9,6 +9,7 @@ import { SpinnerModule } from '@shared/components/spinner/spinner.module';
 import { TooltipModule } from '@shared/components/tooltip/tooltip.module';
 import { ButtonModule } from '@shared/components/button/button.module';
 import { NgLetModule } from '@shared/let/ng-let.module';
+import { IconModule } from '@shared/components/icon/icon.module';
 
 @NgModule({
   declarations: [ScoreWorldRecordTableComponent],
@@ -21,6 +22,7 @@ import { NgLetModule } from '@shared/let/ng-let.module';
     TooltipModule,
     ButtonModule,
     NgLetModule,
+    IconModule,
   ],
 })
 export class ScoreWorldRecordModule {}
