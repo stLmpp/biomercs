@@ -12,12 +12,21 @@
 <div class="value">
   {{ score.score | number: '1.0-0' }}
   <ng-container *ngIf="showWorldRecord">
-    <icon mdi="trophy" *ngIf="score.isWorldRecord" tooltip="World Record" tooltipPosition="right"></icon>
     <icon
+      class="icon-wr"
+      mdi="trophy"
+      *ngIf="score.isWorldRecord"
+      tooltip="World Record (Click the see the history)"
+      tooltipPosition="right"
+      (click)="navigateToHistory(scoreWorldRecordTypeEnum.WorldRecord)"
+    ></icon>
+    <icon
+      class="icon-wr"
       mdi="trophy-award"
       *ngIf="score.isCombinationWorldRecord"
-      tooltip="Combination World Record"
+      tooltip="Combination World Record (Click the see the history)"
       tooltipPosition="right"
+      (click)="navigateToHistory(scoreWorldRecordTypeEnum.CombinationWorldRecord)"
     ></icon>
   </ng-container>
 </div>
@@ -38,10 +47,12 @@
   <div class="value">
     {{ player.characterName }} {{ player.characterCostumeName }}
     <icon
+      class="icon-wr"
       mdi="account-star"
       *ngIf="showWorldRecord && player.isCharacterWorldRecord"
-      tooltip="Character World Record"
+      tooltip="Character World Record (Click the see the history)"
       tooltipPosition="right"
+      (click)="navigateToHistory(scoreWorldRecordTypeEnum.CharacterWorldRecord, player.idCharacterCostume)"
     ></icon>
   </div>
   <a bio-url-preview [url]="player.evidence"></a>

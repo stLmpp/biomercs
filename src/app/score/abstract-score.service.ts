@@ -14,6 +14,7 @@ import { ScoreApprovalActionEnum } from '@model/enum/score-approval-action.enum'
 import { ScoreChangeRequest, ScoreChangeRequestsPaginationVW } from '@model/score-change-request';
 import { HeaderState, HeaderStore } from '../header/header.store';
 import { tap } from 'rxjs/operators';
+import { ScoreWorldRecordHistoryDto } from '@model/score-world-record';
 
 export abstract class AbstractScoreService {
   protected constructor(private http: HttpClient, private headerStore: HeaderStore) {}
@@ -45,6 +46,33 @@ export abstract class AbstractScoreService {
     const params = new HttpParams({ page, limit }, true);
     return this.http.get<ScoreTopTableVW>(
       `${this.endPoint}/platform/${idPlatform}/game/${idGame}/mini-game/${idMiniGame}/mode/${idMode}/leaderboards`,
+      { params }
+    );
+  }
+
+  findWorldRecordTable(
+    idPlatform: number,
+    idGame: number,
+    idMiniGame: number,
+    idMode: number
+  ): Observable<ScoreTopTableWorldRecord> {
+    return this.http.get<ScoreTopTableWorldRecord>(
+      `${this.endPoint}/platform/${idPlatform}/game/${idGame}/mini-game/${idMiniGame}/mode/${idMode}/world-record/table`
+    );
+  }
+
+  findWorldRecordHistory({
+    idPlatform,
+    idGame,
+    idMiniGame,
+    idMode,
+    idStage,
+    type,
+    ...dto
+  }: ScoreWorldRecordHistoryDto): Observable<ScoreVW[]> {
+    const params = new HttpParams(dto, true);
+    return this.http.get<ScoreVW[]>(
+      `${this.endPoint}/platform/${idPlatform}/game/${idGame}/mini-game/${idMiniGame}/mode/${idMode}/stage/${idStage}/world-record/type/${type}/history`,
       { params }
     );
   }
@@ -126,15 +154,5 @@ export abstract class AbstractScoreService {
         }
       })
     );
-  }
-
-  findWorldRecordTable(
-    idPlatform: number,
-    idGame: number,
-    idMiniGame: number,
-    idMode: number
-  ): Observable<ScoreTopTableWorldRecord> {
-    const params = new HttpParams({ idPlatform, idGame, idMiniGame, idMode });
-    return this.http.get<ScoreTopTableWorldRecord>(`${this.endPoint}/world-record/table`, { params });
   }
 }

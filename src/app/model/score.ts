@@ -2,6 +2,7 @@ import { ScorePlayerAdd, ScorePlayerUpdateDto, ScorePlayerVW } from './score-pla
 import { ScoreStatusEnum } from '@model/enum/score-status.enum';
 import { Stage } from '@model/stage';
 import { PaginationMetaVW } from '@model/pagination';
+import { trackByFactory } from '@stlmpp/utils';
 
 export interface ScoreAdd {
   idPlatform: number;
@@ -45,6 +46,8 @@ export interface ScoreVW {
   isWorldRecord: boolean;
   isCharacterWorldRecord: boolean;
   isCombinationWorldRecord: boolean;
+  combinationWorldRecordEndDate: Date | null;
+  worldRecordEndDate: Date | null;
 }
 
 export interface ScoreTableVW {
@@ -82,3 +85,5 @@ export interface ScoreTableWorldRecord {
   characterCostumeShortName: string;
   scores: (ScoreVW | undefined)[];
 }
+
+export const trackByScoreVW = trackByFactory<ScoreVW>('idScore');

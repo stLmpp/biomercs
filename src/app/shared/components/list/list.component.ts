@@ -17,7 +17,7 @@ import { ListParentControl } from './list-config';
 import { FocusKeyManager } from '@angular/cdk/a11y';
 
 @Component({
-  selector: 'list',
+  selector: 'bio-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -27,7 +27,7 @@ import { FocusKeyManager } from '@angular/cdk/a11y';
 export class ListComponent {}
 
 @Directive({
-  selector: 'list[model],list[control],list[controlName]',
+  selector: 'bio-list[model],bio-list[control],bio-list[controlName]',
   providers: [
     { provide: ControlValue, useExisting: forwardRef(() => ListControlValue), multi: true },
     { provide: ListParentControl, useExisting: forwardRef(() => ListControlValue) },

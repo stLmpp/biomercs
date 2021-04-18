@@ -1,0 +1,26 @@
+<card>
+  <h3 cardTitle>Parameters</h3>
+  <card-content>
+    <bio-params (paramsChange)="paramsChange($event)" [config]="paramsConfig" setQueryParamsOnChange>
+      <form-field label="Type" *ngLet="type$ | async as type">
+        <bio-select [model]="type" (modelChange)="typeChange($event)">
+          <bio-option *ngFor="let type of types; trackBy: trackByIdDescription" [value]="type.description">
+            {{ type.description }}
+          </bio-option>
+        </bio-select>
+      </form-field>
+    </bio-params>
+  </card-content>
+</card>
+<card class="scores">
+  <card-content>
+    <bio-list>
+      <bio-list-item *ngFor="let score of scores$ | async; trackBy: trackByScore">
+        [{{ score.gameShortName }} {{ score.platformShortName }}] {{ score.miniGameName }} {{ score.modeName }} -
+        {{ score.stageName }} '{{ score.scorePlayers | join: 'characterCostumeShortName' }}' {{ score.score }} - (
+        {{ score.worldRecordEndDate | date }}
+        )
+      </bio-list-item>
+    </bio-list>
+  </card-content>
+</card>

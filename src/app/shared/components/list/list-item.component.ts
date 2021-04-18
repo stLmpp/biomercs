@@ -15,7 +15,7 @@ import { ListParentControl } from './list-config';
 import { FocusableOption } from '@angular/cdk/a11y';
 
 @Component({
-  selector: 'list-item',
+  selector: 'bio-list-item',
   templateUrl: './list-item.component.html',
   styleUrls: ['./list-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

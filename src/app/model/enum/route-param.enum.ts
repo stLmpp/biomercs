@@ -27,4 +27,7 @@ export enum RouteParamEnum {
   limit = 'limit',
   page = 'page',
   itemsPerPage = 'itemsPerPage',
+  type = 'type',
+  fromDate = 'fromDate',
+  toDate = 'toDate',
 }

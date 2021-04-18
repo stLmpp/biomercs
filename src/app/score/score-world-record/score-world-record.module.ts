@@ -10,9 +10,15 @@ import { TooltipModule } from '@shared/components/tooltip/tooltip.module';
 import { ButtonModule } from '@shared/components/button/button.module';
 import { NgLetModule } from '@shared/let/ng-let.module';
 import { IconModule } from '@shared/components/icon/icon.module';
+import { ScoreWorldRecordHistoryComponent } from './score-world-record-history/score-world-record-history.component';
+import { FormModule } from '@shared/components/form/form.module';
+import { SelectModule } from '@shared/components/select/select.module';
+import { StControlModule } from '@stlmpp/control';
+import { ListModule } from '@shared/components/list/list.module';
+import { ArrayModule } from '@shared/array/array.module';
 
 @NgModule({
-  declarations: [ScoreWorldRecordTableComponent],
+  declarations: [ScoreWorldRecordTableComponent, ScoreWorldRecordHistoryComponent],
   imports: [
     CommonModule,
     ScoreWorldRecordRoutingModule,
@@ -23,6 +29,11 @@ import { IconModule } from '@shared/components/icon/icon.module';
     ButtonModule,
     NgLetModule,
     IconModule,
+    FormModule,
+    SelectModule,
+    StControlModule,
+    ListModule,
+    ArrayModule,
   ],
 })
 export class ScoreWorldRecordModule {}
