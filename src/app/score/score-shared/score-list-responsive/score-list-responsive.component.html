@@ -1,0 +1,19 @@
+<ng-container *ngIf="isSmall$ | async; else scoreTable">
+  <bio-score-list [scores]="scores" [loading]="loading"></bio-score-list>
+</ng-container>
+<ng-template #scoreTable>
+  <bio-table
+    [colDefs]="colDefs"
+    [order]="order"
+    [colDefDefault]="colDefDefault"
+    [data]="scores"
+    [itemsPerPageOptions]="itemsPerPageOptions"
+    [loading]="loading"
+    [paginationMeta]="paginationMeta"
+    [trackBy]="trackByScore"
+    (currentPageChange)="currentPageChange.emit($event)"
+    (itemsPerPageChange)="itemsPerPageChange.emit($event)"
+    (orderChange)="orderChange.emit($event)"
+  >
+  </bio-table>
+</ng-template>

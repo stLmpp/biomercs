@@ -10,12 +10,32 @@
     outline: none;
     .suffix {
       margin-left: auto;
+      display: grid;
+      place-items: center;
     }
     .prefix {
       margin-right: 0.5rem;
+      display: grid;
+      place-items: center;
     }
     > input.control {
       margin-right: 1rem;
+    }
+    > .list-item-content {
+      display: flex;
+      flex-direction: column;
+      flex: auto;
+      box-sizing: border-box;
+      overflow: hidden;
+      .list-item-line {
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        &:not(:last-of-type) {
+          margin-bottom: 0.2rem;
+        }
+      }
     }
   }
   &.control {

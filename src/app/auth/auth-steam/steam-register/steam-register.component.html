@@ -1,7 +1,7 @@
 <form [controlGroup]="form" (groupSubmit)="submit()" *ngIf="state$ | async as state">
-  <card>
-    <h3 cardTitle>Register Steam</h3>
-    <card-content>
+  <bio-card>
+    <h3 bioCardTitle>Register Steam</h3>
+    <bio-card-content>
       <ng-container *ngIf="state.emailSent; else emailForm">
         <p>Please confirm the code we sent to your e-mail</p>
         <bio-confirmation-code-input
@@ -22,11 +22,11 @@
           </errors>
         </form-field>
       </ng-template>
-    </card-content>
-    <card-actions end>
+    </bio-card-content>
+    <bio-card-actions end>
       <button bioButton primary type="submit" [disabled]="form.invalid" [loading]="state.loading">
         {{ state.emailSent ? 'Send confirmation code' : 'Register' }}
       </button>
-    </card-actions>
-  </card>
+    </bio-card-actions>
+  </bio-card>
 </form>

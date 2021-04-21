@@ -2,7 +2,7 @@ import { Directive, HostBinding, Input } from '@angular/core';
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
 
 @Directive({
-  selector: '[cardActions], card-actions',
+  selector: '[bioCardActions], bio-card-actions',
   host: { class: 'card-actions' },
 })
 export class CardActionsDirective {

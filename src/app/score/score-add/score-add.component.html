@@ -1,15 +1,15 @@
 <ng-container *ngLet="{ hasMode: hasIdMode$ | async } as state">
-  <card class="params">
-    <h3 cardTitle>Parameters</h3>
-    <card-content>
+  <bio-card class="params">
+    <h3 bioCardTitle>Parameters</h3>
+    <bio-card-content>
       <bio-params
         [params]="form.valueChanges$ | async"
         (paramsChange)="form.patchValue($event)"
         [config]="paramsConfig"
         setQueryParamsOnChange
       ></bio-params>
-    </card-content>
-  </card>
+    </bio-card-content>
+  </bio-card>
   <form [controlGroup]="form" (groupSubmit)="onSubmit()">
     <ng-container
       *ngFor="
@@ -31,9 +31,9 @@
         [playerNumber]="$index + 1"
       ></bio-score-add-player>
     </ng-container>
-    <card class="score-params">
-      <h3 cardTitle>Score info</h3>
-      <card-content>
+    <bio-card class="score-params">
+      <h3 bioCardTitle>Score info</h3>
+      <bio-card-content>
         <form-field label="Score" [disabled]="!state.hasMode">
           <input bioInput controlName="score" bioCurrencyMask placeholder="Score" autocomplete="off" />
           <errors>
@@ -61,15 +61,15 @@
             <error *error="'required'">Time is required</error>
           </errors>
         </form-field>
-      </card-content>
-      <card-actions>
+      </bio-card-content>
+      <bio-card-actions>
         <button bioButton type="button" primary (click)="onReset()">Reset</button>
         <div class="submit-wrapper" (mouseenter)="onMouseenterCardActions()">
           <button bioButton type="submit" primary [disabled]="form.invalid || (submitModalLoading$ | async)">
             Submit
           </button>
         </div>
-      </card-actions>
-    </card>
+      </bio-card-actions>
+    </bio-card>
   </form>
 </ng-container>

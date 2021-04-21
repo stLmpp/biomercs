@@ -1,5 +1,5 @@
-<card class="player" [controlGroup]="form">
-  <h3 cardTitle>
+<bio-card class="player" [controlGroup]="form">
+  <h3 bioCardTitle>
     Player {{ playerNumber }}
     <ng-container *ngIf="idPlayer$ | async as idPlayer">({{ idPlayer }})</ng-container>
     <label class="host">
@@ -14,7 +14,7 @@
       Host
     </label>
   </h3>
-  <card-content>
+  <bio-card-content>
     <form-field label="Player" *ngIf="!first" [loading]="playersLoading$ | async">
       <input
         bioInput
@@ -80,5 +80,5 @@
       </errors>
     </form-field>
     <a *ngIf="evidenceControl.valid" bio-url-preview [url]="evidence$ | async"></a>
-  </card-content>
-</card>
+  </bio-card-content>
+</bio-card>

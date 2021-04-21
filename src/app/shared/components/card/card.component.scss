@@ -9,6 +9,23 @@
   display: block;
   color: $dark;
   @include elevation(2);
+  &.collapsable {
+    > .header {
+      position: relative;
+      padding-right: 1.5rem;
+      cursor: pointer;
+      &.collapsed {
+        margin-bottom: 0;
+      }
+      .collapse-icon-wrapper {
+        display: grid;
+        place-items: center;
+        position: absolute;
+        right: 0;
+        top: 0;
+      }
+    }
+  }
   > .header {
     margin-bottom: 1rem;
   }

@@ -12,7 +12,7 @@ import { CollapseTitleDirective } from './collapse-title.directive';
 import { Animations } from '../../animations/animations';
 
 @Component({
-  selector: 'collapse',
+  selector: 'bio-collapse',
   templateUrl: './collapse.component.html',
   styleUrls: ['./collapse.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

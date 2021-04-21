@@ -1,7 +1,7 @@
 <form [controlGroup]="form" (groupSubmit)="submit()" *ngLet="emailSent$ | async as emailSent">
-  <card>
-    <h3 cardTitle>Register</h3>
-    <card-content>
+  <bio-card>
+    <h3 bioCardTitle>Register</h3>
+    <bio-card-content>
       <ng-container *ngIf="emailSent; else emailNotSent">
         <p>Please confirm the code we sent to your e-mail</p>
         <bio-confirmation-code-input
@@ -63,8 +63,8 @@
           </errors>
         </form-field>
       </ng-template>
-    </card-content>
-    <card-actions end *ngLet="loading$ | async as state">
+    </bio-card-content>
+    <bio-card-actions end *ngLet="loading$ | async as state">
       <button
         bioButton
         primary
@@ -85,6 +85,6 @@
       >
         {{ emailSent ? 'Confirm code' : 'Register' }}
       </button>
-    </card-actions>
-  </card>
+    </bio-card-actions>
+  </bio-card>
 </form>

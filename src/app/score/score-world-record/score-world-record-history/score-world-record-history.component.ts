@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, TemplateRef, ViewChild } from '@angular/core';
 import { ScoreService } from '../../score.service';
 import { ScoreWorldRecordHistoryDto } from '@model/score-world-record';
 import { LocalState } from '@stlmpp/store';
@@ -10,7 +10,10 @@ import { debounceTime, filter, finalize, shareReplay, switchMap } from 'rxjs/ope
 import { OperatorFunction } from 'rxjs';
 import { ParamsConfig, ParamsForm } from '@shared/params/params.component';
 import { trackByIdDescription } from '@model/id-description';
-import { trackByScoreVW } from '@model/score';
+import { ScoreVW, trackByScoreVW } from '@model/score';
+import { ColDef } from '@shared/components/table/col-def';
+import { formatNumber } from '@angular/common';
+import { AuthDateFormatPipe } from '../../../auth/shared/auth-date-format.pipe';
 
 export interface ScoreWorldRecordHistoryState extends AllNullable<ScoreWorldRecordHistoryDto> {
   loading: boolean;
@@ -41,7 +44,12 @@ function validateParamsOperator(): OperatorFunction<
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScoreWorldRecordHistoryComponent extends LocalState<ScoreWorldRecordHistoryState> {
-  constructor(private scoreService: ScoreService, private activatedRoute: ActivatedRoute, private router: Router) {
+  constructor(
+    private scoreService: ScoreService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private authDateFormatPipe: AuthDateFormatPipe
+  ) {
     super({
       loading: false,
       idPlatform: null,
@@ -60,10 +68,13 @@ export class ScoreWorldRecordHistoryComponent extends LocalState<ScoreWorldRecor
     });
   }
 
+  @ViewChild('templateRef', { read: TemplateRef }) templateRef!: TemplateRef<any>;
+
   paramsConfig: Partial<ParamsConfig> = {
     idCharacterCostume: { clearable: true },
   };
 
+  loading$ = this.selectState('loading');
   scores$ = this.selectState([
     'idPlatform',
     'idGame',
@@ -89,8 +100,39 @@ export class ScoreWorldRecordHistoryComponent extends LocalState<ScoreWorldRecor
   );
 
   type$ = this.selectState('type');
-
   types = getScoreWorldRecordTypes();
+
+  colDefs: ColDef<ScoreVW>[] = [
+    { property: 'platformShortName', title: 'Platform', tooltip: 'platformName', width: '80px' },
+    { property: 'gameShortName', title: 'Game', tooltip: 'gameName', width: '80px' },
+    { property: 'miniGameName', title: 'Mini game', width: '250px' },
+    { property: 'modeName', title: 'Mode', width: '80px' },
+    { property: 'stageShortName', title: 'Stage', tooltip: 'stageName', width: '80px' },
+    {
+      property: 'score',
+      title: 'Score',
+      width: '150px',
+      style: { justifyContent: 'flex-end', paddingRight: '1.25rem' },
+      formatter: value => formatNumber(value, 'pt-BR', '1.0-0'),
+    } as ColDef<ScoreVW, 'score'>,
+    {
+      property: 'creationDate',
+      title: 'Creation date',
+      width: '125px',
+      formatter: value => this.authDateFormatPipe.transform(value),
+    } as ColDef<ScoreVW, 'creationDate'>,
+    {
+      property: 'lastUpdatedDate',
+      title: 'Last updated date',
+      width: '140px',
+      formatter: value => this.authDateFormatPipe.transform(value),
+    } as ColDef<ScoreVW, 'lastUpdatedDate'>,
+    {
+      property: 'scorePlayers',
+      title: 'Player(s)',
+      formatter: scorePlayers => scorePlayers.map(scorePlayer => scorePlayer.playerPersonaName).join(' | '),
+    } as ColDef<ScoreVW, 'scorePlayers'>,
+  ];
 
   trackByIdDescription = trackByIdDescription;
   trackByScore = trackByScoreVW;

@@ -14,8 +14,9 @@ import { ScoreWorldRecordHistoryComponent } from './score-world-record-history/s
 import { FormModule } from '@shared/components/form/form.module';
 import { SelectModule } from '@shared/components/select/select.module';
 import { StControlModule } from '@stlmpp/control';
-import { ListModule } from '@shared/components/list/list.module';
 import { ArrayModule } from '@shared/array/array.module';
+import { ScoreSharedModule } from '../score-shared/score-shared.module';
+import { TableModule } from '@shared/components/table/table.module';
 
 @NgModule({
   declarations: [ScoreWorldRecordTableComponent, ScoreWorldRecordHistoryComponent],
@@ -32,8 +33,9 @@ import { ArrayModule } from '@shared/array/array.module';
     FormModule,
     SelectModule,
     StControlModule,
-    ListModule,
     ArrayModule,
+    ScoreSharedModule,
+    TableModule,
   ],
 })
 export class ScoreWorldRecordModule {}

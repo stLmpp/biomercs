@@ -1,6 +1,6 @@
-<card class="params">
-  <h3 cardTitle>Parameters</h3>
-  <card-content>
+<bio-card class="params">
+  <h3 bioCardTitle>Parameters</h3>
+  <bio-card-content>
     <bio-params
       [config]="paramsConfig"
       [params]="params$ | async"
@@ -8,10 +8,10 @@
       setQueryParamsOnChange
       clearable
     ></bio-params>
-  </card-content>
-</card>
-<card [bioLoading]="tableLoading$ | async" class="flex-table">
-  <card-content *ngLet="order$ | async as order">
+  </bio-card-content>
+</bio-card>
+<bio-card [bioLoading]="tableLoading$ | async" class="flex-table">
+  <bio-card-content *ngLet="order$ | async as order">
     <div class="header" *ngLet="order.orderByDirection === 'desc' ? 'arrow_drop_up' : 'arrow_drop_down' as arrow">
       <div class="approve"></div>
       <div class="platform">Platform</div>
@@ -120,8 +120,8 @@
         </ng-container>
       </ng-container>
     </div>
-  </card-content>
-  <card-actions end>
+  </bio-card-content>
+  <bio-card-actions end>
     <pagination
       *ngIf="meta$ | async as meta"
       [meta]="meta"
@@ -130,5 +130,5 @@
       (itemsPerPageChange)="changeItemsPerPage($event)"
       setQueryParamsOnChange
     ></pagination>
-  </card-actions>
-</card>
+  </bio-card-actions>
+</bio-card>

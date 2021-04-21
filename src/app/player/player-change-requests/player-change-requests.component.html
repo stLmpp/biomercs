@@ -1,5 +1,5 @@
-<card [bioLoading]="loading$ | async" class="flex-table">
-  <card-content>
+<bio-card [bioLoading]="loading$ | async" class="flex-table">
+  <bio-card-content>
     <div class="header">
       <div class="action"></div>
       <div class="platform">Platform</div>
@@ -46,8 +46,8 @@
         </ng-container>
       </ng-container>
     </div>
-  </card-content>
-  <card-actions end>
+  </bio-card-content>
+  <bio-card-actions end>
     <pagination
       *ngIf="meta$ | async as meta"
       [meta]="meta"
@@ -55,5 +55,5 @@
       (itemsPerPageChange)="onItemsPerPageChange($event)"
       setQueryParamsOnChange
     ></pagination>
-  </card-actions>
-</card>
+  </bio-card-actions>
+</bio-card>

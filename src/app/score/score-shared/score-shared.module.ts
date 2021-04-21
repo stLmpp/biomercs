@@ -22,6 +22,11 @@ import { ScoreInfoModalComponent } from './score-info/score-info-modal/score-inf
 import { UtilModule } from '@shared/util/util.module';
 import { UrlPreviewModule } from '@shared/url-preview/url-preview.module';
 import { ScoreRequestChangesModalComponent } from './score-approval/score-request-changes-modal/score-request-changes-modal.component';
+import { ScoreListComponent } from './score-list/score-list.component';
+import { ScoreFormatPipe } from './score-format.pipe';
+import { ListModule } from '@shared/components/list/list.module';
+import { ScoreListResponsiveComponent } from './score-list-responsive/score-list-responsive.component';
+import { TableModule } from '@shared/components/table/table.module';
 
 const DECLARATIONS = [
   ScoreApprovalComponent,
@@ -29,10 +34,12 @@ const DECLARATIONS = [
   ScoreInfoComponent,
   ScoreInfoModalComponent,
   ScoreRequestChangesModalComponent,
+  ScoreFormatPipe,
+  ScoreListComponent,
 ];
 
 @NgModule({
-  declarations: [...DECLARATIONS],
+  declarations: [...DECLARATIONS, ScoreListResponsiveComponent],
   imports: [
     CommonModule,
     ParamsModule,
@@ -52,7 +59,9 @@ const DECLARATIONS = [
     RouterModule,
     UtilModule,
     UrlPreviewModule,
+    ListModule,
+    TableModule,
   ],
-  exports: [...DECLARATIONS],
+  exports: [...DECLARATIONS, ScoreListResponsiveComponent],
 })
 export class ScoreSharedModule {}

@@ -85,6 +85,11 @@
             "leadingUnderscore": "allow"
           },
           {
+            "selector": "memberLike",
+            "format": ["camelCase"],
+            "leadingUnderscore": "allow"
+          },
+          {
             "selector": "typeLike",
             "format": ["PascalCase"]
           },

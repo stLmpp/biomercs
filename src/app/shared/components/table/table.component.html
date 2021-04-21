@@ -1,0 +1,48 @@
+<bio-card [bioLoading]="loading" class="bio-table">
+  <bio-card-content *ngLet="colDefs$ | async as colDefs">
+    <div
+      class="header"
+      [class.order]="order"
+      *ngLet="order?.orderByDirection === 'desc' ? 'arrow_drop_up' : 'arrow_drop_down' as arrow"
+    >
+      <div
+        *ngFor="let colDef of colDefs; trackBy: trackByColDef"
+        [style.flex-basis]="colDef.width"
+        [class.flex-grow-0]="colDef.width"
+        [ngStyle]="colDef.headerStyle"
+        (click)="changeOrder(colDef.property)"
+      >
+        {{ colDef.title }}
+        <icon class="order-icon" *ngIf="order?.orderBy === colDef.property" small>
+          {{ arrow }}
+        </icon>
+      </div>
+    </div>
+    <hr />
+    <div class="body" *ngIf="data$ | async as data">
+      <div class="no-data-found" *ngIf="!data.length">No data found</div>
+      <ng-container *ngFor="let item of data; trackBy: trackBy">
+        <div>
+          <bio-cell
+            *ngFor="let colDef of colDefs; trackBy: trackByColDef"
+            [ngStyle]="colDef.bodyStyle"
+            [colDef]="colDef"
+            [item]="item"
+            [tooltip]="colDef.tooltip ? item[colDef.tooltip] + '' : ''"
+            [tooltipDisabled]="!colDef.tooltip"
+          ></bio-cell>
+        </div>
+        <hr />
+      </ng-container>
+    </div>
+  </bio-card-content>
+  <bio-card-actions end *ngIf="paginationMeta">
+    <pagination
+      [meta]="paginationMeta"
+      [itemsPerPageOptions]="itemsPerPageOptions"
+      (currentPageChange)="currentPageChange.emit($event)"
+      (itemsPerPageChange)="itemsPerPageChange.emit($event)"
+      setQueryParamsOnChange
+    ></pagination>
+  </bio-card-actions>
+</bio-card>

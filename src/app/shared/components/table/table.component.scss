@@ -1,0 +1,49 @@
+@use 'variables' as v;
+
+.bio-table {
+  font-size: 0.85rem;
+  background-color: v.$primary;
+  color: v.$primary-600;
+  &.card {
+    background-color: v.$primary;
+    color: v.$primary-600;
+  }
+  .header,
+  .body > div {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    min-height: 36px;
+    > div,
+    > .bio-cell {
+      position: relative;
+      flex: 1;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 4px;
+      &.flex-grow-0 {
+        flex-grow: 0;
+      }
+    }
+  }
+
+  .header,
+  .body {
+    .order-icon {
+      position: absolute;
+      right: 0;
+    }
+  }
+
+  .header {
+    &.order {
+      > div:not(:last-child):not(:first-child):not(.platform) {
+        cursor: pointer;
+      }
+    }
+  }
+}

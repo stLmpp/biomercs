@@ -1,14 +1,14 @@
-<card *ngIf="player$ | async as player">
-  <h3 cardTitle>
+<bio-card *ngIf="player$ | async as player">
+  <h3 bioCardTitle>
     {{ player.personaName }}
     <button bioButton icon [disabled]="loadingRegion$ | async" [tooltip]="player.region?.name">
       <icon [flag]="player.region?.shortName" (click)="openModalSelectRegion()" (mouseenter)="preloadRegions()"></icon>
     </button>
     <icon tooltip="Edit profile" small *ngIf="isSameAsLogged$ | async" (click)="toggleEditMode()">edit</icon>
   </h3>
-  <div cardSubtitle>{{ player.title }}</div>
-  <div cardSubtitle class="about-me">{{ player.aboutMe }}</div>
-  <card-content>
+  <div bioCardSubtitle>{{ player.title }}</div>
+  <div bioCardSubtitle class="about-me">{{ player.aboutMe }}</div>
+  <bio-card-content>
     <div class="edit" @collapse *ngIf="editMode$ | async">
       <form-field label="Title">
         <input bioInput [model]="player.title" placeholder="Title" (modelChange)="update('title', $event)" />
@@ -24,5 +24,5 @@
         ></textarea>
       </form-field>
     </div>
-  </card-content>
-</card>
+  </bio-card-content>
+</bio-card>

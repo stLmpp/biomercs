@@ -1,10 +1,32 @@
-<div class="header" *ngIf="cardTitleDirectives?.length">
-  <ng-content select="[cardTitle]"></ng-content>
-  <ng-content select="[cardSubtitle]"></ng-content>
+<div
+  class="header"
+  [class.collapsed]="collapsed && collapsedComplete"
+  *ngIf="cardTitleDirectives?.length || cardSubtitleDirective?.length"
+  (click)="onCollapseToggle()"
+>
+  <ng-content select="[bioCardTitle]"></ng-content>
+  <ng-content select="[bioCardSubtitle]"></ng-content>
+  <div class="collapse-icon-wrapper" *ngIf="collapsable">
+    <icon [@collapseIcon]="collapsed ? 'collapsed' : 'expanded'">expand_less</icon>
+  </div>
 </div>
-<div class="content" *ngIf="cardContentDirectives?.length">
-  <ng-content select="card-content, [cardContent]"></ng-content>
-</div>
-<div class="actions" *ngIf="cardActionsDirective?.length">
-  <ng-content select="card-actions"></ng-content>
-</div>
+<ng-container *ngIf="collapsable; else cardContent">
+  <div @skipFirstAnimation>
+    <div
+      *ngIf="!collapsed"
+      @collapse
+      (@collapse.done)="onCollapseAnimationDone($event)"
+      (@collapse.start)="onCollapseAnimationStart($event)"
+    >
+      <ng-container *ngTemplateOutlet="cardContent"></ng-container>
+    </div>
+  </div>
+</ng-container>
+<ng-template #cardContent>
+  <div class="content" *ngIf="cardContentDirectives?.length">
+    <ng-content></ng-content>
+  </div>
+  <div class="actions" *ngIf="cardActionsDirective?.length">
+    <ng-content select="bio-card-actions"></ng-content>
+  </div>
+</ng-template>

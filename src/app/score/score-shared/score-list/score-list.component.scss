@@ -1,0 +1,11 @@
+@use 'variables' as v;
+
+.list-item-line:not(:first-of-type) {
+  font-size: 0.9em;
+  color: v.$primary-400;
+}
+
+.scores {
+  background-color: v.$primary;
+  color: v.$primary-600;
+}

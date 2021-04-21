@@ -1,16 +1,16 @@
-<card>
-  <h3 cardTitle>Parameters</h3>
-  <card-content>
+<bio-card>
+  <h3 bioCardTitle>Parameters</h3>
+  <bio-card-content>
     <bio-params
       [params]="form.valueChanges$ | async"
       (paramsChange)="paramsChange($event)"
       [config]="paramsConfig"
       setQueryParamsOnChange
     ></bio-params>
-  </card-content>
-</card>
-<card *ngLet="tableLoading$ | async as tableLoading" [bioLoading]="tableLoading" class="top-table flex-table">
-  <card-content>
+  </bio-card-content>
+</bio-card>
+<bio-card *ngLet="tableLoading$ | async as tableLoading" [bioLoading]="tableLoading" class="top-table flex-table">
+  <bio-card-content>
     <ng-container *ngIf="scoreTopTableOrdered$ | async as scores; else noParams">
       <ng-container *ngLet="order$ | async as order">
         <div class="header" *ngLet="order.orderByDirection === 'desc' ? 'arrow_drop_up' : 'arrow_drop_down' as arrow">
@@ -65,8 +65,8 @@
     <ng-template #noParams>
       <div class="no-params" *ngIf="!tableLoading">Select the params above to search the leaderboards</div>
     </ng-template>
-  </card-content>
-  <card-actions end>
+  </bio-card-content>
+  <bio-card-actions end>
     <pagination
       *ngIf="paginationMeta$ | async as paginationMeta"
       [meta]="paginationMeta"
@@ -75,5 +75,5 @@
       [itemsPerPageOptions]="itemsPerPageOptions"
       setQueryParamsOnChange
     ></pagination>
-  </card-actions>
-</card>
+  </bio-card-actions>
+</bio-card>

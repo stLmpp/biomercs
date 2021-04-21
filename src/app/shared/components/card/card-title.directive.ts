@@ -1,7 +1,7 @@
 import { Directive } from '@angular/core';
 
 @Directive({
-  selector: '[cardTitle]',
+  selector: '[bioCardTitle]',
   host: { class: 'card-title' },
 })
 export class CardTitleDirective {}

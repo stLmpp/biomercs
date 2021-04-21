@@ -1,11 +1,11 @@
-<card>
-  <h3 cardTitle>Parameters</h3>
-  <card-content>
+<bio-card>
+  <h3 bioCardTitle>Parameters</h3>
+  <bio-card-content>
     <bio-params (paramsChange)="paramsChange($event)" [config]="paramsConfig" setQueryParamsOnChange></bio-params>
-  </card-content>
-</card>
-<card *ngLet="tableLoading$ | async as tableLoading" [bioLoading]="tableLoading" class="top-table flex-table">
-  <card-content>
+  </bio-card-content>
+</bio-card>
+<bio-card *ngLet="tableLoading$ | async as tableLoading" [bioLoading]="tableLoading" class="top-table flex-table">
+  <bio-card-content>
     <ng-container *ngIf="scoreTopTable$ | async as scoreTopTable; else noParams">
       <ng-container *ngLet="orderBy$ | async as order">
         <div class="header" *ngLet="order.orderByDirection === 'desc' ? 'arrow_drop_up' : 'arrow_drop_down' as arrow">
@@ -58,5 +58,5 @@
     <ng-template #noParams>
       <div class="no-params" *ngIf="!tableLoading">Select the params above to search the world records</div>
     </ng-template>
-  </card-content>
-</card>
+  </bio-card-content>
+</bio-card>

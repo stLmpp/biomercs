@@ -1,0 +1,12 @@
+<ng-container *ngIf="!colDef.component">
+  <ng-container
+    *ngIf="colDef.template; else noTemplate"
+    [ngTemplateOutlet]="colDef.template"
+    [ngTemplateOutletContext]="{ item: item, colDef: colDef }"
+  >
+  </ng-container>
+  <ng-template #noTemplate>
+    {{ item[colDef.propertyFormatted] }}
+  </ng-template>
+</ng-container>
+<ng-template cdkPortalOutlet></ng-template>
