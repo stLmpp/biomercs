@@ -40,8 +40,8 @@
   }
 
   .header {
-    &.order {
-      > div:not(:last-child):not(:first-child):not(.platform) {
+    &.header-order {
+      > .order-by {
         cursor: pointer;
       }
     }

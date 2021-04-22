@@ -12,7 +12,7 @@ export abstract class AbstractComponent extends AbstractColorComponent {
   set disabled(disabled: boolean) {
     this._disabled = coerceBooleanProperty(disabled);
   }
-  private _disabled = false;
+  protected _disabled = false;
 
   @Input() bioSize: BioSizeInput;
 

@@ -1,8 +1,9 @@
-<bio-card [bioLoading]="loading" class="bio-table">
+<bio-card class="bio-table">
+  <bio-loading *ngIf="loading"></bio-loading>
   <bio-card-content *ngLet="colDefs$ | async as colDefs">
     <div
       class="header"
-      [class.order]="order"
+      [class.header-order]="order"
       *ngLet="order?.orderByDirection === 'desc' ? 'arrow_drop_up' : 'arrow_drop_down' as arrow"
     >
       <div
@@ -10,10 +11,11 @@
         [style.flex-basis]="colDef.width"
         [class.flex-grow-0]="colDef.width"
         [ngStyle]="colDef.headerStyle"
-        (click)="changeOrder(colDef.property)"
+        [class.order-by]="colDef.orderBy"
+        (click)="changeOrder(colDef.orderByKey)"
       >
         {{ colDef.title }}
-        <icon class="order-icon" *ngIf="order?.orderBy === colDef.property" small>
+        <icon class="order-icon" *ngIf="colDef.orderBy && order?.orderBy === colDef.orderByKey" small>
           {{ arrow }}
         </icon>
       </div>
@@ -30,6 +32,8 @@
             [item]="item"
             [tooltip]="colDef.tooltip ? item[colDef.tooltip] + '' : ''"
             [tooltipDisabled]="!colDef.tooltip"
+            [metadata]="metadata"
+            (notifyChange)="notifyChange.emit($event)"
           ></bio-cell>
         </div>
         <hr />

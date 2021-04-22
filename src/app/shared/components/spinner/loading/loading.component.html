@@ -1,8 +1,6 @@
-<div class="loading-backdrop cdk-overlay-backdrop cdk-overlay-dark-backdrop cdk-overlay-backdrop-showing" *ngIf="show">
-  <div *ngIf="!noBox; else onlySpinner" class="loading-box">
-    <spinner [size]="0.5"></spinner>
-  </div>
-  <ng-template #onlySpinner>
-    <spinner></spinner>
-  </ng-template>
+<div *ngIf="!noBox; else onlySpinner" class="loading-box">
+  <spinner [size]="0.5"></spinner>
 </div>
+<ng-template #onlySpinner>
+  <spinner></spinner>
+</ng-template>

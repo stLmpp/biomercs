@@ -1,4 +1,4 @@
-<loading [show]="loading$ | async"></loading>
+<bio-loading *ngIf="loading$ | async"></bio-loading>
 <h3 modalTitle>Region</h3>
 <div modalTitle>
   <label class="cdk-visually-hidden" for="search">Search</label>

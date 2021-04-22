@@ -107,7 +107,7 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
 
   @HostListener('click')
   onClick(): void {
-    if (this.disabled) {
+    if (this._disabled) {
       return;
     }
     this.isOpen ? this.close() : this.open();

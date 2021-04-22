@@ -1375,10 +1375,10 @@
     st-utils "~1.5.0"
     tslib "~2.0.3"
 
-"@stlmpp/store@~5.1.1":
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/@stlmpp/store/-/store-5.1.1.tgz#4f21d3361918cd548773a927c10edd0332e60ad0"
-  integrity sha512-VLpghHZWZjXEZKAUqHMaJeQVr5A3vmZGqE6nAJZiWlKcehQnq3NuHMEqnc9/aEyuZGOKWrHdrHm7m0voVuKiZw==
+"@stlmpp/store@~5.1.2":
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/@stlmpp/store/-/store-5.1.2.tgz#7f6cdac950e7c77bd9c089c691a93ea894d4a5c6"
+  integrity sha512-DCZKD5flk3O8ZYG0V0H3aFsWm2Vougjpgg9jz58pfTTlOO1JZsA8vz/h78xHawI2oYKV7nXZbXfpV+GkIcewOg==
   dependencies:
     copy-anything "~2.0.3"
     st-utils "~1.5.0"

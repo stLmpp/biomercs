@@ -6,12 +6,12 @@ import { PaginationModule } from '@shared/components/pagination/pagination.modul
 import { SpinnerModule } from '@shared/components/spinner/spinner.module';
 import { IconModule } from '@shared/components/icon/icon.module';
 import { NgLetModule } from '@shared/let/ng-let.module';
-import { CellComponent } from './cell/cell.component';
+import { TableCellComponent } from './table-cell/table-cell.component';
 import { PortalModule } from '@angular/cdk/portal';
 import { TooltipModule } from '@shared/components/tooltip/tooltip.module';
 
 @NgModule({
-  declarations: [TableComponent, CellComponent],
+  declarations: [TableComponent, TableCellComponent],
   imports: [
     CommonModule,
     CardModule,

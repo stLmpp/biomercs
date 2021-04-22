@@ -10,10 +10,9 @@ import { debounceTime, filter, finalize, shareReplay, switchMap } from 'rxjs/ope
 import { OperatorFunction } from 'rxjs';
 import { ParamsConfig, ParamsForm } from '@shared/params/params.component';
 import { trackByIdDescription } from '@model/id-description';
-import { ScoreVW, trackByScoreVW } from '@model/score';
-import { ColDef } from '@shared/components/table/col-def';
-import { formatNumber } from '@angular/common';
+import { trackByScoreVW } from '@model/score';
 import { AuthDateFormatPipe } from '../../../auth/shared/auth-date-format.pipe';
+import { getScoreDefaultColDefs } from '../../score-shared/util';
 
 export interface ScoreWorldRecordHistoryState extends AllNullable<ScoreWorldRecordHistoryDto> {
   loading: boolean;
@@ -102,37 +101,7 @@ export class ScoreWorldRecordHistoryComponent extends LocalState<ScoreWorldRecor
   type$ = this.selectState('type');
   types = getScoreWorldRecordTypes();
 
-  colDefs: ColDef<ScoreVW>[] = [
-    { property: 'platformShortName', title: 'Platform', tooltip: 'platformName', width: '80px' },
-    { property: 'gameShortName', title: 'Game', tooltip: 'gameName', width: '80px' },
-    { property: 'miniGameName', title: 'Mini game', width: '250px' },
-    { property: 'modeName', title: 'Mode', width: '80px' },
-    { property: 'stageShortName', title: 'Stage', tooltip: 'stageName', width: '80px' },
-    {
-      property: 'score',
-      title: 'Score',
-      width: '150px',
-      style: { justifyContent: 'flex-end', paddingRight: '1.25rem' },
-      formatter: value => formatNumber(value, 'pt-BR', '1.0-0'),
-    } as ColDef<ScoreVW, 'score'>,
-    {
-      property: 'creationDate',
-      title: 'Creation date',
-      width: '125px',
-      formatter: value => this.authDateFormatPipe.transform(value),
-    } as ColDef<ScoreVW, 'creationDate'>,
-    {
-      property: 'lastUpdatedDate',
-      title: 'Last updated date',
-      width: '140px',
-      formatter: value => this.authDateFormatPipe.transform(value),
-    } as ColDef<ScoreVW, 'lastUpdatedDate'>,
-    {
-      property: 'scorePlayers',
-      title: 'Player(s)',
-      formatter: scorePlayers => scorePlayers.map(scorePlayer => scorePlayer.playerPersonaName).join(' | '),
-    } as ColDef<ScoreVW, 'scorePlayers'>,
-  ];
+  colDefs = getScoreDefaultColDefs(this.authDateFormatPipe);
 
   trackByIdDescription = trackByIdDescription;
   trackByScore = trackByScoreVW;

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
 import { PaginationMetaVW } from '@model/pagination';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
@@ -93,4 +93,10 @@ export class PaginationComponent implements OnChanges, PaginationMetaVW {
   }
 
   static ngAcceptInputType_setQueryParamsOnChange: BooleanInput;
+  static defaultItemsPerPageOptions = [5, 10, 25, 50, 100];
+  static getItemsPerPageFromRoute(activatedRoute: ActivatedRoute, itemPerPageOptions?: number[]): number {
+    itemPerPageOptions ??= PaginationComponent.defaultItemsPerPageOptions;
+    const itemsPerPage = +(activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.itemsPerPage) ?? 10);
+    return itemPerPageOptions.includes(itemsPerPage) ? itemsPerPage : 10;
+  }
 }

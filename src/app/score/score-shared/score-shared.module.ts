@@ -27,6 +27,7 @@ import { ScoreFormatPipe } from './score-format.pipe';
 import { ListModule } from '@shared/components/list/list.module';
 import { ScoreListResponsiveComponent } from './score-list-responsive/score-list-responsive.component';
 import { TableModule } from '@shared/components/table/table.module';
+import { ScoreApprovalActionsCellComponent } from './score-approval/score-approval-actions-cell/score-approval-actions-cell.component';
 
 const DECLARATIONS = [
   ScoreApprovalComponent,
@@ -36,10 +37,12 @@ const DECLARATIONS = [
   ScoreRequestChangesModalComponent,
   ScoreFormatPipe,
   ScoreListComponent,
+  ScoreListResponsiveComponent,
+  ScoreApprovalActionsCellComponent,
 ];
 
 @NgModule({
-  declarations: [...DECLARATIONS, ScoreListResponsiveComponent],
+  declarations: [...DECLARATIONS],
   imports: [
     CommonModule,
     ParamsModule,
@@ -62,6 +65,6 @@ const DECLARATIONS = [
     ListModule,
     TableModule,
   ],
-  exports: [...DECLARATIONS, ScoreListResponsiveComponent],
+  exports: [...DECLARATIONS],
 })
 export class ScoreSharedModule {}

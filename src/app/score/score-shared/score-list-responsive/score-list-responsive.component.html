@@ -11,9 +11,11 @@
     [loading]="loading"
     [paginationMeta]="paginationMeta"
     [trackBy]="trackByScore"
+    [metadata]="metadata"
     (currentPageChange)="currentPageChange.emit($event)"
     (itemsPerPageChange)="itemsPerPageChange.emit($event)"
     (orderChange)="orderChange.emit($event)"
+    (notifyChange)="notifyChange.emit($event)"
   >
   </bio-table>
 </ng-template>

@@ -20,7 +20,7 @@ export class ButtonComponent extends AbstractComponent {
   private _block = false;
 
   get disabledClass(): boolean | null {
-    return this.loading || this.disabled || null;
+    return this._loading || this._disabled || null;
   }
 
   @Input()

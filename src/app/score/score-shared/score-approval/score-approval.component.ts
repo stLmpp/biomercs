@@ -2,8 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { PARAMS_FORM_NULL, ParamsConfig, ParamsForm } from '@shared/params/params.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ScoreService } from '../../score.service';
-import { debounceTime, filter, finalize, pluck, switchMap, takeUntil } from 'rxjs/operators';
-import { trackByFactory } from '@stlmpp/utils';
+import { filter, finalize, pluck, skip, switchMap, takeUntil } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { PaginationMetaVW } from '@model/pagination';
@@ -12,18 +11,24 @@ import { OrderByDirection } from 'st-utils';
 import { ScoreApprovalActionEnum } from '@model/enum/score-approval-action.enum';
 import { ScoreApprovalVW } from '@model/score-approval';
 import { LocalState } from '@stlmpp/store';
+import { getScoreDefaultColDefs } from '../util';
+import { AuthDateFormatPipe } from '../../../auth/shared/auth-date-format.pipe';
+import { ColDef } from '@shared/components/table/col-def';
+import { ScoreApprovalActionsCellComponent } from './score-approval-actions-cell/score-approval-actions-cell.component';
+import { TableCellNotifyChange, TableOrder } from '@shared/components/table/type';
+import { PaginationComponent } from '@shared/components/pagination/pagination.component';
 
 export interface ScoreApprovalComponentState extends ParamsForm {
   page: number;
   itemsPerPage: number;
   tableLoading: boolean;
   orderBy?: string | null;
-  orderByDirection?: OrderByDirection | null;
+  orderByDirection: OrderByDirection;
   data?: ScoreApprovalVW;
   loadingApprovalModal: boolean;
   loadingRequestChangesModal: boolean;
+  playerMode: boolean;
 }
-
 @Component({
   selector: 'bio-score-approval',
   templateUrl: './score-approval.component.html',
@@ -31,31 +36,30 @@ export interface ScoreApprovalComponentState extends ParamsForm {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScoreApprovalComponent extends LocalState<ScoreApprovalComponentState> implements OnInit {
-  constructor(private activatedRoute: ActivatedRoute, private scoreService: ScoreService, private router: Router) {
-    super({
-      itemsPerPage: 10,
-      page: 1,
-      ...PARAMS_FORM_NULL,
-      tableLoading: false,
-      loadingApprovalModal: false,
-      loadingRequestChangesModal: false,
-    });
-    this.updateState({
-      itemsPerPage: this._getItemsPerPageFromRoute(),
-      page: +(this._getParamOrNull(RouteParamEnum.page) ?? 1),
-      idPlatform: this._getParamOrNull(RouteParamEnum.idPlatform),
-      idGame: this._getParamOrNull(RouteParamEnum.idGame),
-      idMiniGame: this._getParamOrNull(RouteParamEnum.idMiniGame),
-      idMode: this._getParamOrNull(RouteParamEnum.idMode),
-      idStage: this._getParamOrNull(RouteParamEnum.idStage),
-      idCharacterCostume: this._getParamOrNull(RouteParamEnum.idCharacterCostume),
-      orderBy: this.activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.orderBy) ?? 'creationDate',
-      orderByDirection:
-        (this.activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.orderByDirection) as
-          | OrderByDirection
-          | undefined
-          | null) ?? 'asc',
-    });
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private scoreService: ScoreService,
+    private router: Router,
+    private authDateFormatPipe: AuthDateFormatPipe
+  ) {
+    super(
+      {
+        itemsPerPage: PaginationComponent.getItemsPerPageFromRoute(activatedRoute),
+        page: +(activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.page) ?? 1),
+        ...PARAMS_FORM_NULL,
+        tableLoading: false,
+        loadingApprovalModal: false,
+        loadingRequestChangesModal: false,
+        playerMode: false,
+        orderByDirection:
+          (activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.orderByDirection) as
+            | OrderByDirection
+            | undefined
+            | null) ?? 'asc',
+        orderBy: activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.orderBy) ?? 'creationDate',
+      },
+      { inputs: ['playerMode'] }
+    );
   }
 
   private _data$ = this.selectState('data');
@@ -65,45 +69,41 @@ export class ScoreApprovalComponent extends LocalState<ScoreApprovalComponentSta
   scoreApprovalActionEnum = ScoreApprovalActionEnum;
 
   tableLoading$ = this.selectState('tableLoading');
-  loadingApprovalModal$ = this.selectState('loadingApprovalModal');
-  loadingRequestChangesModal$ = this.selectState('loadingRequestChangesModal');
   scores$: Observable<ScoreVW[]> = this._data$.pipe(pluck('scores'));
   meta$: Observable<PaginationMetaVW> = this._data$.pipe(pluck('meta'));
   order$ = this.selectState(['orderBy', 'orderByDirection']);
 
   itemsPerPageOptions = [5, 10, 25, 50, 100];
 
-  params$ = this.selectState(['idPlatform', 'idGame', 'idMiniGame', 'idMode', 'idStage']);
+  params$ = this.selectState(['idPlatform', 'idGame', 'idMiniGame', 'idMode', 'idStage']).pipe(skip(1));
+  metadata$ = this.selectState();
 
   paramsConfig: Partial<ParamsConfig> = {
     idCharacterCostume: { show: false },
     idPlatform: { clearable: false },
   };
 
-  trackByScore = trackByFactory<ScoreVW>('idScore');
-
-  private _getParamOrNull(param: RouteParamEnum): number | null {
-    return this.activatedRoute.snapshot.queryParamMap.has(param)
-      ? +this.activatedRoute.snapshot.queryParamMap.get(param)!
-      : null;
-  }
-
-  private _getItemsPerPageFromRoute(): number {
-    const itemsPerPage = +(this.activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.itemsPerPage) ?? 10);
-    return this.itemsPerPageOptions.includes(itemsPerPage) ? itemsPerPage : 10;
-  }
-
-  private _updateOrderDirection(): void {
-    const orderByDirection = this.getState('orderByDirection') === 'asc' ? 'desc' : 'asc';
-    this.updateState('orderByDirection', this.getState('orderByDirection') === 'asc' ? 'desc' : 'asc');
-    this.router
-      .navigate([], {
-        relativeTo: this.activatedRoute,
-        queryParamsHandling: 'merge',
-        queryParams: { [RouteParamEnum.orderByDirection]: orderByDirection },
-      })
-      .then();
-  }
+  colDefs: ColDef<ScoreVW>[] = [
+    { property: 'idScore', component: ScoreApprovalActionsCellComponent, width: '100px' } as ColDef<ScoreVW>,
+    ...getScoreDefaultColDefs(this.authDateFormatPipe),
+  ].map(colDef => {
+    let orderByKey: string | undefined;
+    switch (colDef.property) {
+      case 'gameShortName':
+        orderByKey = 'game';
+        break;
+      case 'miniGameName':
+        orderByKey = 'miniGame';
+        break;
+      case 'modeName':
+        orderByKey = 'mode';
+        break;
+      case 'stageShortName':
+        orderByKey = 'stage';
+        break;
+    }
+    return { ...colDef, orderByKey };
+  });
 
   updateParams($event: ParamsForm): void {
     this.updateState($event);
@@ -117,52 +117,22 @@ export class ScoreApprovalComponent extends LocalState<ScoreApprovalComponentSta
     this.updateState({ itemsPerPage });
   }
 
-  changeOrder(orderBy: string): void {
-    if (this.getState('orderBy') === orderBy) {
-      this._updateOrderDirection();
-    } else {
-      this.updateState({ orderBy });
-      this.router
-        .navigate([], {
-          relativeTo: this.activatedRoute,
-          queryParamsHandling: 'merge',
-          queryParams: { [RouteParamEnum.orderBy]: orderBy },
-        })
-        .then();
-    }
+  changeOrder(order: TableOrder<ScoreVW>): void {
+    this.updateState(order);
+    this.router
+      .navigate([], {
+        relativeTo: this.activatedRoute,
+        queryParamsHandling: 'merge',
+        queryParams: {
+          [RouteParamEnum.orderBy]: order.orderBy,
+          [RouteParamEnum.orderByDirection]: order.orderByDirection,
+        },
+      })
+      .then();
   }
 
-  async openModalApproval(action: ScoreApprovalActionEnum, score: ScoreVW): Promise<void> {
-    this.updateState({ loadingApprovalModal: true });
-    const modalRef = await this.scoreService.openModalScoreApproval({
-      score,
-      action,
-      scoreApprovalComponentState: this.getState(),
-      playerMode: this.playerMode,
-    });
-    modalRef.onClose$.subscribe(data => {
-      if (data) {
-        this.updateState({ data });
-      }
-    });
-    this.updateState({ loadingApprovalModal: false });
-  }
-
-  async openModalRequestChanges(score: ScoreVW): Promise<void> {
-    if (this.playerMode) {
-      return;
-    }
-    this.updateState({ loadingRequestChangesModal: true });
-    const modalRef = await this.scoreService.openModalRequestChangesScore({
-      score,
-      scoreApprovalComponentState: this.getState(),
-    });
-    modalRef.onClose$.subscribe(data => {
-      if (data) {
-        this.updateState({ data });
-      }
-    });
-    this.updateState({ loadingRequestChangesModal: false });
+  onNotifyChange({ data }: TableCellNotifyChange<ScoreApprovalVW, ScoreVW>): void {
+    this.updateState({ data });
   }
 
   ngOnInit(): void {
@@ -178,7 +148,6 @@ export class ScoreApprovalComponent extends LocalState<ScoreApprovalComponentSta
       'idStage',
     ])
       .pipe(
-        debounceTime(50),
         filter(params => !!params.idPlatform && !!params.page && !!params.itemsPerPage),
         switchMap(
           ({ idMiniGame, idPlatform, idGame, idMode, itemsPerPage, page, orderBy, orderByDirection, idStage }) => {

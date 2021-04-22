@@ -77,7 +77,6 @@ export class LoadingDirective implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {
     this.componentFactory = this.componentFactoryResolver.resolveComponentFactory(LoadingComponent);
     this.componentRef = this.viewContainerRef.createComponent(this.componentFactory);
-    this.componentRef.instance.show = true;
     this.componentRef.instance.noBox = this._noBox;
     this.componentRef.changeDetectorRef.markForCheck();
   }

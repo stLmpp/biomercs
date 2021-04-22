@@ -10,125 +10,19 @@
     ></bio-params>
   </bio-card-content>
 </bio-card>
-<bio-card [bioLoading]="tableLoading$ | async" class="flex-table">
-  <bio-card-content *ngLet="order$ | async as order">
-    <div class="header" *ngLet="order.orderByDirection === 'desc' ? 'arrow_drop_up' : 'arrow_drop_down' as arrow">
-      <div class="approve"></div>
-      <div class="platform">Platform</div>
-      <div class="game" (click)="changeOrder('game')">
-        Game
-        <icon class="order-icon" *ngIf="order.orderBy === 'game'" small>
-          {{ arrow }}
-        </icon>
-      </div>
-      <div class="mini-game" (click)="changeOrder('miniGame')">
-        Mini game
-        <icon class="order-icon" *ngIf="order.orderBy === 'miniGame'" small>
-          {{ arrow }}
-        </icon>
-      </div>
-      <div class="mode" (click)="changeOrder('mode')">
-        Mode
-        <icon class="order-icon" *ngIf="order.orderBy === 'mode'" small>
-          {{ arrow }}
-        </icon>
-      </div>
-      <div class="stage" (click)="changeOrder('stage')">
-        Stage
-        <icon class="order-icon" *ngIf="order.orderBy === 'stage'" small>
-          {{ arrow }}
-        </icon>
-      </div>
-      <div class="score" (click)="changeOrder('score')">
-        Score
-        <icon class="order-icon" *ngIf="order.orderBy === 'score'" small>
-          {{ arrow }}
-        </icon>
-      </div>
-      <div class="creation-date" (click)="changeOrder('creationDate')">
-        Creation date
-        <icon class="order-icon" *ngIf="order.orderBy === 'creationDate'" small>
-          {{ arrow }}
-        </icon>
-      </div>
-      <div class="last-updated-date" (click)="changeOrder('lastUpdatedDate')">
-        Last updated date
-        <icon class="order-icon" *ngIf="order.orderBy === 'lastUpdatedDate'" small>
-          {{ arrow }}
-        </icon>
-      </div>
-      <div class="players">Player(s)</div>
-    </div>
-    <hr />
-    <div class="body" *ngIf="scores$ | async as scores">
-      <div class="no-data-found" *ngIf="!scores.length">No scores found</div>
-      <ng-container *ngLet="loadingApprovalModal$ | async as loadingApprovalModal">
-        <ng-container *ngFor="let score of scores; trackBy: trackByScore">
-          <div>
-            <div class="approve">
-              <button
-                bioButton
-                icon
-                small
-                tooltip="Approve"
-                tooltipPosition="right"
-                (click)="openModalApproval(scoreApprovalActionEnum.Approve, score)"
-                [disabled]="loadingApprovalModal"
-                type="button"
-              >
-                <icon small>check</icon>
-              </button>
-              <button
-                bioButton
-                icon
-                small
-                tooltip="Reject"
-                tooltipPosition="right"
-                (click)="openModalApproval(scoreApprovalActionEnum.Reject, score)"
-                [disabled]="loadingApprovalModal"
-                type="button"
-              >
-                <icon small>close</icon>
-              </button>
-              <button
-                bioButton
-                icon
-                small
-                tooltip="Request changes"
-                tooltipPosition="right"
-                *ngIf="!playerMode"
-                type="button"
-                (click)="openModalRequestChanges(score)"
-                [disabled]="loadingRequestChangesModal$ | async"
-              >
-                <icon small>sync_alt</icon>
-              </button>
-            </div>
-            <div class="platform" [tooltip]="score.platformName">{{ score.platformShortName }}</div>
-            <div class="game" [tooltip]="score.gameName">{{ score.gameShortName }}</div>
-            <div class="mini-game">{{ score.miniGameName }}</div>
-            <div class="mode">{{ score.modeName }}</div>
-            <div class="stage" [tooltip]="score.stageName">{{ score.stageShortName }}</div>
-            <div class="score">{{ score.score | number: '1.0-0' }}</div>
-            <div class="creation-date">{{ score.creationDate | authDateFormat }}</div>
-            <div class="creation-date">{{ score.lastUpdatedDate | authDateFormat }}</div>
-            <div class="players" *ngLet="score.scorePlayers | join: 'playerPersonaName':' | ' as players">
-              <span [tooltip]="players" tooltipPosition="left">{{ players }}</span>
-            </div>
-          </div>
-          <hr />
-        </ng-container>
-      </ng-container>
-    </div>
-  </bio-card-content>
-  <bio-card-actions end>
-    <pagination
-      *ngIf="meta$ | async as meta"
-      [meta]="meta"
-      [itemsPerPageOptions]="itemsPerPageOptions"
-      (currentPageChange)="changeCurrentPage($event)"
-      (itemsPerPageChange)="changeItemsPerPage($event)"
-      setQueryParamsOnChange
-    ></pagination>
-  </bio-card-actions>
-</bio-card>
+<ng-container *ngLet="order$ | async as order">
+  <bio-score-list-responsive
+    *ngIf="scores$ | async as scores"
+    [loading]="tableLoading$ | async"
+    [colDefs]="colDefs"
+    [paginationMeta]="meta$ | async"
+    [itemsPerPageOptions]="itemsPerPageOptions"
+    [scores]="scores"
+    [metadata]="metadata$ | async"
+    [order]="order"
+    (itemsPerPageChange)="changeItemsPerPage($event)"
+    (currentPageChange)="changeCurrentPage($event)"
+    (orderChange)="changeOrder($event)"
+    (notifyChange)="onNotifyChange($event)"
+  ></bio-score-list-responsive>
+</ng-container>

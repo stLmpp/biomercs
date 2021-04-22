@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { Nullable } from '../../type/nullable';
 import { BooleanInput, coerceBooleanProperty, NumberInput } from '@angular/cdk/coercion';
-import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { ConnectedPosition, Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { overlayPositionsArray } from '@util/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { TooltipComponent } from './tooltip.component';
@@ -35,12 +35,19 @@ export class TooltipDirective implements OnDestroy {
   private _componentRef?: ComponentRef<TooltipComponent>;
   private _showTimeout: any;
   private _hideTimeout: any;
+  private _hasShown = false;
 
   @Input() tooltip!: Nullable<string | number>;
-  @Input() tooltipPosition: TooltipPosition = 'top';
+  @Input() tooltipPositions: ConnectedPosition[] = overlayPositionsArray('top');
   @Input() tooltipShowDelay = 0;
   @Input() tooltipHideDelay = 0;
   @Input() tooltipDelay = 0;
+  @Input() tooltipScrollStrategy = this.overlay.scrollStrategies.reposition({ autoClose: true, scrollThrottle: 5 });
+
+  @Input()
+  set tooltipPosition(position: TooltipPosition) {
+    this.tooltipPositions = overlayPositionsArray(position);
+  }
 
   @Input()
   get tooltipDisabled(): boolean {
@@ -48,6 +55,9 @@ export class TooltipDirective implements OnDestroy {
   }
   set tooltipDisabled(disabled: boolean) {
     this._disabled = coerceBooleanProperty(disabled);
+    if (this._disabled && this.isOpen) {
+      this._overlayRef?.dispose();
+    }
   }
 
   isOpen = false;
@@ -70,8 +80,8 @@ export class TooltipDirective implements OnDestroy {
     );
   }
 
-  @HostListener('body:click')
-  onBodyClick(): void {
+  @HostListener('mousedown')
+  onMousedown(): void {
     this.hide(0);
   }
 
@@ -87,10 +97,12 @@ export class TooltipDirective implements OnDestroy {
 
   show(delay?: number): void {
     clearTimeout(this._hideTimeout);
-    if (this.isOpen) {
+    this._hideTimeout = null;
+    if (this.isOpen || this._disabled) {
       return;
     }
     delay ??= this._getShowDelay();
+    this._hasShown = true;
     this._showTimeout = setTimeout(() => {
       this._overlayRef?.dispose();
       this._overlayRef = this.overlay.create({
@@ -98,8 +110,8 @@ export class TooltipDirective implements OnDestroy {
         positionStrategy: this.overlay
           .position()
           .flexibleConnectedTo(this.elementRef.nativeElement)
-          .withPositions(overlayPositionsArray(this.tooltipPosition)),
-        scrollStrategy: this.overlay.scrollStrategies.reposition({ autoClose: true, scrollThrottle: 5 }),
+          .withPositions(this.tooltipPositions),
+        scrollStrategy: this.tooltipScrollStrategy,
       });
       this._componentRef = this._overlayRef.attach(new ComponentPortal(TooltipComponent, this.viewContainerRef));
       this._componentRef.instance.content = this.tooltip;
@@ -110,7 +122,8 @@ export class TooltipDirective implements OnDestroy {
 
   hide(delay?: number): void {
     clearTimeout(this._showTimeout);
-    if (!this.isOpen) {
+    this._showTimeout = null;
+    if (!this.isOpen || this._disabled) {
       return;
     }
     delay ??= this._getHideDelay();
@@ -132,8 +145,12 @@ export class TooltipDirective implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    clearTimeout(this._showTimeout);
-    clearTimeout(this._hideTimeout);
+    if (this._showTimeout) {
+      clearTimeout(this._showTimeout);
+    }
+    if (this._hideTimeout) {
+      clearTimeout(this._hideTimeout);
+    }
     this._overlayRef?.dispose();
   }
 

@@ -1,6 +1,6 @@
-@import 'variables';
+@use 'variables' as v;
 
-.loading-backdrop {
+.bio-loading.bio-loading-backdrop {
   z-index: 2000;
   display: flex;
   align-items: center;
@@ -12,7 +12,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: $radius;
-    background-color: transparentize($light-grey, 0.1);
+    border-radius: v.$radius;
+    background-color: transparentize(v.$light-grey, 0.1);
   }
 }

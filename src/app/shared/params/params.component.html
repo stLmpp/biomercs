@@ -3,7 +3,7 @@
   <form-field *ngIf="formsConfig.idPlatform.show" label="Platform">
     <bio-select controlName="idPlatform" placeholder="Platform">
       <bio-option
-        (click)="idPlatformControl.setValue(null)"
+        [value]="null"
         *ngIf="(formsConfig.idPlatform.clearable | stDefault: state.clearable) && !!(idPlatform$ | async)"
       >
         Clear
@@ -33,7 +33,7 @@
     <bio-select controlName="idGame" placeholder="Game">
       <bio-option disabled *ngIf="state.gameLoading"><spinner [size]="0.1"></spinner> Loading...</bio-option>
       <bio-option
-        (click)="idGameControl.setValue(null)"
+        [value]="null"
         *ngIf="(formsConfig.idGame.clearable | stDefault: state.clearable) && !!(idGame$ | async)"
       >
         Clear
@@ -59,7 +59,7 @@
     <bio-select controlName="idMiniGame" placeholder="Mini Game">
       <bio-option disabled *ngIf="state.miniGameLoading"><spinner [size]="0.1"></spinner> Loading...</bio-option>
       <bio-option
-        (click)="idMiniGameControl.setValue(null)"
+        [value]="null"
         *ngIf="(formsConfig.idMiniGame.clearable | stDefault: state.clearable) && !!(idMiniGame$ | async)"
       >
         Clear
@@ -89,7 +89,7 @@
     <bio-select controlName="idMode" placeholder="Mode">
       <bio-option disabled *ngIf="state.modeLoading"><spinner [size]="0.1"></spinner> Loading...</bio-option>
       <bio-option
-        (click)="idModeControl.setValue(null)"
+        [value]="null"
         *ngIf="(formsConfig.idMode.clearable | stDefault: state.clearable) && !!(idMode$ | async)"
       >
         Clear
@@ -116,7 +116,7 @@
       <bio-select controlName="idStage" placeholder="Stage">
         <bio-option disabled *ngIf="state.stageLoading"><spinner [size]="0.1"></spinner> Loading...</bio-option>
         <bio-option
-          (click)="idStageControl.setValue(null)"
+          [value]="null"
           *ngIf="(formsConfig.idStage.clearable | stDefault: state.clearable) && !!(idStage$ | async)"
         >
           Clear
@@ -146,7 +146,7 @@
       <bio-select controlName="idCharacterCostume" placeholder="Character">
         <bio-option disabled *ngIf="state.characterLoading"><spinner [size]="0.1"></spinner> Loading...</bio-option>
         <bio-option
-          (click)="idCharacterCostumeControl.setValue(null)"
+          [value]="null"
           *ngIf="
             (formsConfig.idCharacterCostume.clearable | stDefault: state.clearable) && !!(idCharacterCostume$ | async)
           "
