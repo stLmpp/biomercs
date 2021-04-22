@@ -6,7 +6,7 @@
   >
   </ng-container>
   <ng-template #noTemplate>
-    {{ item[colDef.propertyFormatted] }}
+    {{ item[colDef.property] | tableCellFormatter: colDef.formatter }}
   </ng-template>
 </ng-container>
 <ng-template cdkPortalOutlet></ng-template>

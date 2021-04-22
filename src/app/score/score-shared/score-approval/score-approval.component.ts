@@ -29,6 +29,7 @@ export interface ScoreApprovalComponentState extends ParamsForm {
   loadingRequestChangesModal: boolean;
   playerMode: boolean;
 }
+
 @Component({
   selector: 'bio-score-approval',
   templateUrl: './score-approval.component.html',

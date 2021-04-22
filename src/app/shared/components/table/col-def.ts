@@ -1,9 +1,12 @@
 import { Nullable } from '@shared/type/nullable';
 import { TemplateRef } from '@angular/core';
 import { BioCellComponentType } from '@shared/components/table/type';
-import { getFormattedKey } from '@shared/components/table/util';
 
 let uid = 99;
+
+export type TableCellFormatter<T extends Record<any, any>, K extends keyof T = keyof T> = (
+  value: T[K]
+) => Nullable<string>;
 
 export interface ColDefTemplateRefContext<T extends Record<any, any>, K extends keyof T = keyof T> {
   item: T;
@@ -22,7 +25,7 @@ export interface ColDef<T extends Record<any, any>, K extends keyof T = keyof T>
   style?: Record<string, any> | null;
   template?: TemplateRef<ColDefTemplateRefContext<T, K>>;
   component?: BioCellComponentType;
-  formatter?(value: T[K], score: T, colDef: ColDefInternal<T, K>): Nullable<string>;
+  formatter?: TableCellFormatter<T, K>;
 }
 
 export class ColDefInternal<T extends Record<any, any>, K extends keyof T = keyof T> {
@@ -31,7 +34,6 @@ export class ColDefInternal<T extends Record<any, any>, K extends keyof T = keyo
     this.headerStyle = headerStyle ?? style ?? null;
     this.bodyStyle = bodyStyle ?? style ?? null;
     this.formatter = formatter ?? (value => value && `${value}`);
-    this.propertyFormatted = getFormattedKey(property);
     this.property = property;
     this.orderByKey = orderByKey ?? this.property;
     Object.assign(this, colDef);
@@ -40,7 +42,6 @@ export class ColDefInternal<T extends Record<any, any>, K extends keyof T = keyo
   id: number;
   headerStyle: Record<string, any> | null;
   bodyStyle: Record<string, any> | null;
-  propertyFormatted: `${K & string}Formatted`;
   property: K;
   tooltip?: keyof T;
   title?: string;
@@ -49,7 +50,7 @@ export class ColDefInternal<T extends Record<any, any>, K extends keyof T = keyo
   width?: string;
   template?: TemplateRef<ColDefTemplateRefContext<T, K>>;
   component?: BioCellComponentType;
-  formatter: (value: T[K], score: T, colDef: ColDefInternal<T, K>) => Nullable<string>;
+  formatter: TableCellFormatter<T, K>;
 
   static convertAll<T1 extends Record<any, any>, K1 extends keyof T1 = keyof T1>(
     colDefs: ColDef<T1, K1>[]

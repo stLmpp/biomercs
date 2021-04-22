@@ -3,7 +3,7 @@ import {
   BreakpointObserverService,
   MediaQueryEnum,
 } from '@shared/services/breakpoint-observer/breakpoint-observer.service';
-import { ScoreVW, trackByScoreVW } from '@model/score';
+import { ScoreVW } from '@model/score';
 import { map } from 'rxjs/operators';
 import { BooleanInput } from 'st-utils';
 import { PaginationMetaVW } from '@model/pagination';
@@ -35,6 +35,4 @@ export class ScoreListResponsiveComponent {
   @Output() readonly notifyChange = new EventEmitter<TableCellNotifyChange<any, ScoreVW>>();
 
   isSmall$ = this.breakpointObserverService.observe([MediaQueryEnum.md]).pipe(map(isMd => !isMd));
-
-  trackByScore = trackByScoreVW;
 }

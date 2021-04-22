@@ -1,12 +1,6 @@
 import { OrderByDirection } from 'st-utils';
 import { ColDefInternal } from '@shared/components/table/col-def';
 import { Directive, EventEmitter, Output, Type } from '@angular/core';
-import { Nullable } from '@shared/type/nullable';
-
-export type TableDataWithFormatted<T extends Record<any, any>> = {
-  [K in keyof T as `${K & string}Formatted`]: Nullable<string>;
-} &
-  T;
 
 export interface TableOrder<T extends Record<any, any>> {
   orderBy?: keyof T | string | null;

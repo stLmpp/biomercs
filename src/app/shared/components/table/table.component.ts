@@ -14,7 +14,7 @@ import { LocalState } from '@stlmpp/store';
 import { ColDef, ColDefInternal } from '@shared/components/table/col-def';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { TableCellNotifyChange, TableDataWithFormatted, TableOrder } from '@shared/components/table/type';
+import { TableCellNotifyChange, TableOrder } from '@shared/components/table/type';
 import { trackByFactory } from '@stlmpp/utils';
 
 export interface ScoreTableState<T extends Record<any, any>, K extends keyof T = keyof T> {
@@ -49,8 +49,6 @@ export class TableComponent<T extends Record<any, any>, K extends keyof T>
   private _colDefDefault$ = this.selectState('colDefDefault');
   private _colDefs$ = this.selectState('colDefs');
 
-  private _data$ = this.selectState('data');
-
   @Input() loading: BooleanInput = false;
   @Input() data: T[] = [];
   @Input() paginationMeta?: PaginationMetaVW | null;
@@ -68,17 +66,7 @@ export class TableComponent<T extends Record<any, any>, K extends keyof T>
   colDefs$: Observable<ColDefInternal<T, K>[]> = combineLatest([this._colDefs$, this._colDefDefault$]).pipe(
     map(([colDefs, colDefDefault]) => colDefs.map(colDef => ({ ...colDefDefault, ...colDef })))
   );
-  data$: Observable<TableDataWithFormatted<T>[]> = combineLatest([this._data$, this.colDefs$]).pipe(
-    map(([data, colDefs]) =>
-      data.map(item => {
-        const itemUpdate: Partial<TableDataWithFormatted<T>> = {};
-        for (const colDef of colDefs) {
-          (itemUpdate as any)[colDef.propertyFormatted] = colDef.formatter(item[colDef.property], item, colDef);
-        }
-        return { ...item, ...itemUpdate } as TableDataWithFormatted<T>;
-      })
-    )
-  );
+  data$ = this.selectState('data');
 
   trackByColDef = trackByFactory<ColDefInternal<T, K>>('id');
 

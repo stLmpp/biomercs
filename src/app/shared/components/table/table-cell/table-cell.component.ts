@@ -98,7 +98,7 @@ export class TableCellComponent<T extends Record<any, any>, K extends keyof T>
       }
       const metadataChanges = changes.metadata;
       if (metadataChanges) {
-        this._componentRef.instance.metadata = changes.metadata;
+        this._componentRef.instance.metadata = metadataChanges.currentValue;
       }
       if (itemChanges || colDefChanges || metadataChanges) {
         this._componentRef.changeDetectorRef.markForCheck();
