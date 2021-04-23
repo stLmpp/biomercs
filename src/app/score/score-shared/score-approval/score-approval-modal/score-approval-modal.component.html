@@ -1,6 +1,6 @@
 <form [controlGroup]="form" (groupSubmit)="save()">
-  <h4 modalTitle>{{ action }} score</h4>
-  <modal-content>
+  <h4 bioModalTitle>{{ action }} score</h4>
+  <bio-modal-content>
     <bio-score-info [score]="score"></bio-score-info>
     <hr />
     <form-field label="Description">
@@ -22,8 +22,8 @@
         <error *error="'required'">Motive is required</error>
       </errors>
     </form-field>
-  </modal-content>
-  <modal-actions end *ngLet="saving$ | async as saving">
+  </bio-modal-content>
+  <bio-modal-actions end *ngLet="saving$ | async as saving">
     <button
       [disabled]="form.invalid"
       [loading]="saving"
@@ -34,5 +34,5 @@
       {{ action }}
     </button>
     <button type="button" bioButton (click)="modalRef.close()" [disabled]="saving">Close</button>
-  </modal-actions>
+  </bio-modal-actions>
 </form>

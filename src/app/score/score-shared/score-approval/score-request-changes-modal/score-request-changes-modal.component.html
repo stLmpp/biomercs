@@ -1,6 +1,6 @@
 <form [controlGroup]="form" (groupSubmit)="onSubmit()" *ngLet="saving$ | async as saving">
-  <h4 modalTitle>Request changes</h4>
-  <modal-content controlArrayName="changes">
+  <h4 bioModalTitle>Request changes</h4>
+  <bio-modal-content controlArrayName="changes">
     <bio-score-info [score]="score"></bio-score-info>
     <hr />
     <div class="actions">
@@ -33,11 +33,11 @@
         </button>
       </div>
     </div>
-  </modal-content>
-  <modal-actions end>
+  </bio-modal-content>
+  <bio-modal-actions end>
     <button [disabled]="form.invalid || !changesControl.length" [loading]="saving" accent bioButton type="submit">
       Submit
     </button>
     <button type="button" bioButton (click)="modalRef.close()" [disabled]="saving">Close</button>
-  </modal-actions>
+  </bio-modal-actions>
 </form>

@@ -20,7 +20,7 @@ import { AnimationEvent } from '@angular/animations';
 import { Animations } from '../../animations/animations';
 
 @Component({
-  selector: 'modal',
+  selector: 'bio-modal',
   template: '<ng-template cdkPortalOutlet></ng-template>',
   styleUrls: ['./modal.component.scss'],
   encapsulation: ViewEncapsulation.None,

@@ -1,6 +1,6 @@
 <form [controlGroup]="form" (groupSubmit)="onSubmit()">
-  <h4 modalTitle>Update score</h4>
-  <modal-content>
+  <h4 bioModalTitle>Update score</h4>
+  <bio-modal-content>
     <div controlArrayName="scorePlayers">
       <ng-container
         *ngFor="let scorePlayer of data.score.scorePlayers; trackBy: trackByScorePlayer; let $index = index"
@@ -92,9 +92,9 @@
       </label>
     </div>
     <hr />
-  </modal-content>
-  <modal-actions end *ngLet="loading$ | async as loading">
+  </bio-modal-content>
+  <bio-modal-actions end *ngLet="loading$ | async as loading">
     <button bioButton type="submit" [disabled]="form.invalid" [loading]="loading" primary>Submit</button>
     <button bioButton type="button" (click)="modalRef.close()" [disabled]="loading">Close</button>
-  </modal-actions>
+  </bio-modal-actions>
 </form>
