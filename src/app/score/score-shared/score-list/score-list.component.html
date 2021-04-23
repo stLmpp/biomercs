@@ -1,6 +1,6 @@
 <bio-card [bioLoading]="loading" class="scores">
   <bio-card-content>
-    <bio-list>
+    <bio-list selectable>
       <bio-list-item *ngFor="let score of scores; trackBy: trackByScoreVW">
         <bio-list-item-line> [{{ score.platformShortName }}] {{ score.gameName }} </bio-list-item-line>
         <bio-list-item-line> {{ score.miniGameName }} {{ score.modeName }} </bio-list-item-line>

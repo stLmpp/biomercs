@@ -6,6 +6,7 @@ import {
   Directive,
   forwardRef,
   HostListener,
+  Input,
   OnDestroy,
   QueryList,
   ViewEncapsulation,
@@ -25,6 +26,9 @@ import { FocusKeyManager } from '@angular/cdk/a11y';
   host: { class: 'list' },
 })
 export class ListComponent {}
+
+@Directive({ selector: 'bio-list[selectable]', host: { class: 'control' } })
+export class ListSelectable {}
 
 @Directive({
   selector: 'bio-list[model],bio-list[control],bio-list[controlName]',
