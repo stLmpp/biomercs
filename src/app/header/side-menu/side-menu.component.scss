@@ -1,0 +1,23 @@
+@use 'variables' as v;
+@use 'mixins' as m;
+
+:host {
+  display: block;
+  position: fixed;
+  left: 0;
+  top: v.$header-height;
+  bottom: 0;
+  width: 300px;
+  background-color: v.$primary;
+  padding: 1rem 0;
+  @include m.elevation(3);
+  .list .list-item {
+    padding: 0.75rem 1rem;
+  }
+}
+
+.world-records {
+  .icon {
+    font-size: 1.25rem;
+  }
+}

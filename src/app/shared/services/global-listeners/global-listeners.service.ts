@@ -7,4 +7,5 @@ import { share } from 'rxjs/operators';
 export class GlobalListenersService {
   constructor(@Inject(DOCUMENT) private document: Document) {}
   bodyClick$ = fromEvent(this.document.body, 'click').pipe(share());
+  htmlClick$ = fromEvent(this.document.documentElement, 'click').pipe(share());
 }

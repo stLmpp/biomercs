@@ -1,17 +1,25 @@
-@import 'variables';
+@use 'variables' as v;
 
 :host {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: $accent-300;
+  background-color: v.$accent-300;
   padding: 1rem;
-  height: 64px;
-  min-height: 64px;
-  > .brand {
-    text-decoration: none;
-    color: $primary-600;
-    font-size: 1.25rem;
+  height: v.$header-height;
+  min-height: v.$header-height;
+
+  .brand-wrapper {
+    display: flex;
+    align-items: center;
+    .button {
+      margin-right: 1rem;
+    }
+    .brand {
+      text-decoration: none;
+      color: v.$primary-600;
+      font-size: 1.25rem;
+    }
   }
 
   .triangle {
@@ -19,12 +27,6 @@
     line-height: 8px;
     &::before {
       transform: rotate(180deg);
-    }
-  }
-
-  .world-records {
-    .icon {
-      font-size: 1.25rem;
     }
   }
 }

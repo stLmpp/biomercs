@@ -1,0 +1,54 @@
+<bio-list selectable>
+  <bio-list-item
+    routerLink="/score/world-record/table"
+    queryParamsHandling="preserve"
+    (click)="onMenuSelected($event)"
+    class="world-records"
+  >
+    <icon prefix mdi="trophy"></icon>
+    World records
+  </bio-list-item>
+  <!--TODO added better Leaderboards layout to support mobile, for now it's disabled-->
+  <bio-list-item
+    *ngIf="isSmallScreen"
+    routerLink="/score/leaderboards"
+    queryParamsHandling="preserve"
+    (click)="onMenuSelected($event)"
+  >
+    <icon prefix>leaderboard</icon>
+    Leaderboards
+  </bio-list-item>
+  <bio-list-item
+    routerLink="/admin/approval"
+    queryParamsHandling="preserve"
+    [bioBadge]="headerQuery.adminApprovalCount$ | async"
+    [bioBadgeOverlap]="false"
+    (click)="onMenuSelected($event)"
+    *ngIf="user.admin"
+  >
+    <icon prefix>checklist</icon>
+    Scores approval (Admin)
+  </bio-list-item>
+  <bio-list-item
+    [routerLink]="user.player?.id ? ['player', user.player!.id, 'approval'] : ['/player/u', user.id, 'approval']"
+    queryParamsHandling="preserve"
+    [bioBadge]="headerQuery.playerApprovalCount$ | async"
+    [bioBadgeOverlap]="false"
+    (click)="onMenuSelected($event)"
+  >
+    <icon prefix>checklist</icon>
+    Scores approval
+  </bio-list-item>
+  <bio-list-item
+    [routerLink]="
+      user.player?.id ? ['/player', user.player!.id, 'change-requests'] : ['player/u', user.id, 'change-requests']
+    "
+    queryParamsHandling="preserve"
+    [bioBadge]="headerQuery.playerRequestChangesCount$ | async"
+    [bioBadgeOverlap]="false"
+    (click)="onMenuSelected($event)"
+  >
+    <icon prefix>sync_alt</icon>
+    Score change requests
+  </bio-list-item>
+</bio-list>
