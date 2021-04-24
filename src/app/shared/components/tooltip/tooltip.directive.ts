@@ -45,7 +45,7 @@ export class TooltipDirective implements OnDestroy {
   @Input() tooltipScrollStrategy = this.overlay.scrollStrategies.reposition({ autoClose: true, scrollThrottle: 5 });
 
   @Input()
-  set tooltipPosition(position: TooltipPosition) {
+  set tooltipPosition(position: TooltipPosition | undefined) {
     this.tooltipPositions = overlayPositionsArray(position);
   }
 

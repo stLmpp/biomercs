@@ -6,7 +6,14 @@
   >
   </ng-container>
   <ng-template #noTemplate>
-    {{ item[colDef.property] | tableCellFormatter: colDef.formatter }}
+    <span
+      *ngLet="item[colDef.property] | tableCellFormatter: colDef.formatter as value"
+      [tooltip]="item | tableCellTooltip: colDef.tooltip:value"
+      [tooltipPosition]="colDef.tooltipPosition"
+      [tooltipDisabled]="!colDef.tooltip"
+    >
+      {{ value }}
+    </span>
   </ng-template>
 </ng-container>
 <ng-template cdkPortalOutlet></ng-template>

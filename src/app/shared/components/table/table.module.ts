@@ -10,9 +10,10 @@ import { TableCellComponent } from './table-cell/table-cell.component';
 import { PortalModule } from '@angular/cdk/portal';
 import { TooltipModule } from '@shared/components/tooltip/tooltip.module';
 import { TableCellFormatterPipe } from './table-cell-formatter.pipe';
+import { TableCellTooltipPipe } from './table-cell-tooltip.pipe';
 
 @NgModule({
-  declarations: [TableComponent, TableCellComponent, TableCellFormatterPipe],
+  declarations: [TableComponent, TableCellComponent, TableCellFormatterPipe, TableCellTooltipPipe],
   imports: [
     CommonModule,
     CardModule,

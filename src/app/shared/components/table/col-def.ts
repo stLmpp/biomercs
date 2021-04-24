@@ -1,6 +1,7 @@
 import { Nullable } from '@shared/type/nullable';
 import { TemplateRef } from '@angular/core';
 import { BioCellComponentType } from '@shared/components/table/type';
+import { TooltipPosition } from '@shared/components/tooltip/tooltip.directive';
 
 let uid = 99;
 
@@ -15,7 +16,8 @@ export interface ColDefTemplateRefContext<T extends Record<any, any>, K extends 
 
 export interface ColDef<T extends Record<any, any>, K extends keyof T = keyof T> {
   property: K;
-  tooltip?: keyof T;
+  tooltip?: keyof T | boolean;
+  tooltipPosition?: TooltipPosition;
   title?: string;
   orderBy?: boolean;
   orderByKey?: string | K;
@@ -43,7 +45,8 @@ export class ColDefInternal<T extends Record<any, any>, K extends keyof T = keyo
   headerStyle: Record<string, any> | null;
   bodyStyle: Record<string, any> | null;
   property: K;
-  tooltip?: keyof T;
+  tooltip?: keyof T | boolean;
+  tooltipPosition?: TooltipPosition;
   title?: string;
   orderBy?: boolean;
   orderByKey?: string | K;

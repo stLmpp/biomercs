@@ -48,6 +48,8 @@ export function getScoreDefaultColDefs(authDateFormatPipe: AuthDateFormatPipe): 
       title: 'Player(s)',
       formatter: scorePlayers =>
         (scorePlayers as ScorePlayerVW[]).map(scorePlayer => scorePlayer.playerPersonaName).join(' | '),
+      tooltip: true,
+      tooltipPosition: 'left',
     },
   ];
 }
