@@ -13,6 +13,7 @@
   @include m.elevation(3);
   .list .list-item {
     padding: 0.75rem 1rem;
+    align-items: center;
   }
 }
 

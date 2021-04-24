@@ -2,20 +2,32 @@
 
 $overlap-size: -8px;
 
+.badge {
+  height: 16px;
+  min-width: 16px;
+  min-height: 16px;
+  line-height: 16px;
+  border-radius: 16px;
+  font-size: 0.75em;
+  padding: 0 0.25rem;
+  display: grid;
+  place-items: center;
+  &.badge-primary {
+    background-color: v.$primary;
+  }
+  &.badge-accent {
+    background-color: v.$accent;
+  }
+  &.badge-danger {
+    background-color: v.$danger;
+  }
+}
+
 .badge-container {
   .badge {
     position: absolute;
-    height: 16px;
-    min-width: 16px;
-    min-height: 16px;
-    line-height: 16px;
-    border-radius: 16px;
-    font-size: 0.75em;
-    padding: 0 0.25rem;
     z-index: 1;
     pointer-events: none;
-    display: grid;
-    place-items: center;
   }
 
   &.badge-container-overlap {
@@ -65,19 +77,19 @@ $overlap-size: -8px;
     }
   }
 
-  &.badge-container-primary {
+  &.badge-primary {
     .badge {
       background-color: v.$primary;
     }
   }
 
-  &.badge-container-accent {
+  &.badge-accent {
     .badge {
       background-color: v.$accent;
     }
   }
 
-  &.badge-container-danger {
+  &.badge-danger {
     .badge {
       background-color: v.$danger;
     }

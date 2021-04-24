@@ -1,7 +1,7 @@
 import { AfterViewInit, Directive, ElementRef, HostBinding, Input, Renderer2 } from '@angular/core';
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
 import { isNil } from 'st-utils';
-import { BioTypeInput } from '@shared/components/core/types';
+import { BadgeBase } from '@shared/components/badge/badge';
 
 export type VerticalPosition = 'top' | 'bottom';
 export type HorizontalPosistion = 'left' | 'right';
@@ -12,11 +12,12 @@ export type BioBadgePosition = `${VerticalPosition} ${HorizontalPosistion}`;
   host: {
     class: 'badge-container',
     '[style.position]': `'relative'`,
-    '[class.badge-container-hidden]': '',
   },
 })
-export class BadgeDirective implements AfterViewInit {
-  constructor(private renderer2: Renderer2, private elementRef: ElementRef) {}
+export class BadgeDirective extends BadgeBase implements AfterViewInit {
+  constructor(private renderer2: Renderer2, private elementRef: ElementRef) {
+    super();
+  }
 
   private _bioBadge = '';
   private _bioBadgeTop = true;
@@ -90,44 +91,6 @@ export class BadgeDirective implements AfterViewInit {
   set bioBadgeLeft(bioBadgeLeft: boolean) {
     this._bioBadgeLeft = coerceBooleanProperty(bioBadgeLeft);
     this._setPosition();
-  }
-
-  @Input() bioType: BioTypeInput = 'accent';
-
-  @HostBinding('class.badge-container-primary')
-  get primaryClass(): boolean {
-    return this.bioType === 'primary';
-  }
-
-  @HostBinding('class.badge-container-accent')
-  get accentClass(): boolean {
-    return this.bioType === 'accent';
-  }
-
-  @HostBinding('class.badge-container-danger')
-  get dangerClass(): boolean {
-    return this.bioType === 'danger';
-  }
-
-  @Input()
-  set primary(primary: BooleanInput) {
-    if (coerceBooleanProperty(primary)) {
-      this.bioType = 'primary';
-    }
-  }
-
-  @Input()
-  set accent(accent: BooleanInput) {
-    if (coerceBooleanProperty(accent)) {
-      this.bioType = 'accent';
-    }
-  }
-
-  @Input()
-  set danger(danger: BooleanInput) {
-    if (coerceBooleanProperty(danger)) {
-      this.bioType = 'danger';
-    }
   }
 
   @HostBinding('class.badge-container-overlap')
