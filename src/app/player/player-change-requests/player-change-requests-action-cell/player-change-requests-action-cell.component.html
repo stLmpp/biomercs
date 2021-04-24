@@ -1,0 +1,12 @@
+<button
+  bioButton
+  icon
+  small
+  tooltip="Check requested changes"
+  tooltipPosition="right"
+  type="button"
+  [disabled]="loadingModal$ | async"
+  (click)="openModalChangeRequests()"
+>
+  <icon small>sync_alt</icon>
+</button>

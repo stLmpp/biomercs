@@ -9,6 +9,7 @@ import { BooleanInput } from 'st-utils';
 import { PaginationMetaVW } from '@model/pagination';
 import { TableCellNotifyChange, TableOrder } from '@shared/components/table/type';
 import { ColDef } from '@shared/components/table/col-def';
+import { PaginationComponent } from '@shared/components/pagination/pagination.component';
 
 @Component({
   selector: 'bio-score-list-responsive',
@@ -16,24 +17,24 @@ import { ColDef } from '@shared/components/table/col-def';
   styleUrls: ['./score-list-responsive.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ScoreListResponsiveComponent {
+export class ScoreListResponsiveComponent<T extends ScoreVW = ScoreVW> {
   constructor(private breakpointObserverService: BreakpointObserverService) {}
 
-  @Input() scores: ScoreVW[] = [];
+  @Input() scores: T[] = [];
 
   @Input() loading: BooleanInput = false;
   @Input() paginationMeta?: PaginationMetaVW | null;
-  @Input() itemsPerPageOptions: number[] = [];
-  @Input() order?: TableOrder<ScoreVW> | null;
-  @Input() colDefs!: ColDef<ScoreVW>[];
-  @Input() colDefDefault: Partial<ColDef<ScoreVW>> = {};
+  @Input() itemsPerPageOptions: number[] = PaginationComponent.defaultItemsPerPageOptions;
+  @Input() order?: TableOrder<T> | null;
+  @Input() colDefs!: ColDef<T>[];
+  @Input() colDefDefault: Partial<ColDef<T>> = {};
   @Input() metadata: any;
 
   @Output() readonly currentPageChange = new EventEmitter<number>();
   @Output() readonly itemsPerPageChange = new EventEmitter<number>();
-  @Output() readonly orderChange = new EventEmitter<TableOrder<ScoreVW>>();
-  @Output() readonly notifyChange = new EventEmitter<TableCellNotifyChange<any, ScoreVW>>();
-  @Output() readonly scoreClicked = new EventEmitter<ScoreVW>();
+  @Output() readonly orderChange = new EventEmitter<TableOrder<T>>();
+  @Output() readonly notifyChange = new EventEmitter<TableCellNotifyChange<any, T>>();
+  @Output() readonly scoreClicked = new EventEmitter<T>();
 
   isSmall$ = this.breakpointObserverService.observe([MediaQueryEnum.md]).pipe(map(isMd => !isMd));
 }

@@ -1,5 +1,9 @@
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
-import { ScoreChangeRequests, trackByScoreChangeRequest } from '@model/score-change-request';
+import {
+  ScoreChangeRequests,
+  ScoreChangeRequestsPaginationVW,
+  trackByScoreChangeRequest,
+} from '@model/score-change-request';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import { Control, ControlArray, ControlGroup, Validators } from '@stlmpp/control';
 import { ScoreChangeRequestsFulfilDto } from '@model/score';
@@ -43,7 +47,11 @@ interface PlayerChangeRequestsModalState {
 export class PlayerChangeRequestsModalComponent extends LocalState<PlayerChangeRequestsModalState> {
   constructor(
     @Inject(MODAL_DATA) public data: PlayerChangeRequestsModalData,
-    public modalRef: ModalRef<PlayerChangeRequestsModalComponent, PlayerChangeRequestsModalData>,
+    public modalRef: ModalRef<
+      PlayerChangeRequestsModalComponent,
+      PlayerChangeRequestsModalData,
+      ScoreChangeRequestsPaginationVW
+    >,
     private scoreService: ScoreService,
     private snackBarService: SnackBarService
   ) {

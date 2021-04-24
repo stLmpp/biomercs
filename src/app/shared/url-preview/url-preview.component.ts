@@ -1,7 +1,7 @@
-import { Component, ChangeDetectionStrategy, Input, HostBinding } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
 import { UrlMetadataService } from '@shared/services/url-metadata/url-metadata.service';
 import { filterNil } from '@shared/operators/filter';
-import { finalize, switchMap } from 'rxjs/operators';
+import { debounceTime, finalize, switchMap } from 'rxjs/operators';
 import { BooleanInput } from '@angular/cdk/coercion';
 import { LocalState } from '@stlmpp/store';
 
@@ -24,6 +24,7 @@ export class UrlPreviewComponent extends LocalState<{ url: string | null; loadin
   loading$ = this.selectState('loading');
 
   urlMetadata$ = this.selectState('url').pipe(
+    debounceTime(300),
     filterNil(),
     switchMap(url => {
       this.updateState({ loading: true });

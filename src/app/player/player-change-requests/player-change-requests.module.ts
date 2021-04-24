@@ -19,9 +19,15 @@ import { FormModule } from '@shared/components/form/form.module';
 import { UrlPreviewModule } from '@shared/url-preview/url-preview.module';
 import { CurrencyMaskModule } from '@shared/currency-mask/currency-mask.module';
 import { MaskModule } from '@shared/mask/mask.module';
+import { PlayerChangeRequestsActionCellComponent } from './player-change-requests-action-cell/player-change-requests-action-cell.component';
+import { ScoreSharedModule } from '../../score/score-shared/score-shared.module';
 
 @NgModule({
-  declarations: [PlayerChangeRequestsComponent, PlayerChangeRequestsModalComponent],
+  declarations: [
+    PlayerChangeRequestsComponent,
+    PlayerChangeRequestsModalComponent,
+    PlayerChangeRequestsActionCellComponent,
+  ],
   imports: [
     CommonModule,
     PlayerChangeRequestsRoutingModule,
@@ -40,6 +46,7 @@ import { MaskModule } from '@shared/mask/mask.module';
     UrlPreviewModule,
     CurrencyMaskModule,
     MaskModule,
+    ScoreSharedModule,
   ],
 })
 export class PlayerChangeRequestsModule {}

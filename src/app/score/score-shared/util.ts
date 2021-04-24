@@ -14,7 +14,9 @@ export const scoreCurrencyMask: Partial<CurrencyMaskConfig> = {
   precision: 0,
 };
 
-export function getScoreDefaultColDefs(authDateFormatPipe: AuthDateFormatPipe): ColDef<ScoreVW>[] {
+export function getScoreDefaultColDefs<T extends ScoreVW = ScoreVW>(
+  authDateFormatPipe: AuthDateFormatPipe
+): ColDef<T>[] {
   return [
     { property: 'platformShortName', title: 'Platform', tooltip: 'platformName', width: '80px' },
     { property: 'gameShortName', title: 'Game', tooltip: 'gameName', width: '80px', orderBy: true },
@@ -26,28 +28,28 @@ export function getScoreDefaultColDefs(authDateFormatPipe: AuthDateFormatPipe): 
       title: 'Score',
       width: '150px',
       style: { justifyContent: 'flex-end', paddingRight: '1.25rem' },
-      formatter: value => formatNumber(value as number, 'pt-BR', '1.0-0'),
+      formatter: value => formatNumber(value as any, 'pt-BR', '1.0-0'),
       orderBy: true,
     },
     {
       property: 'creationDate',
       title: 'Creation date',
       width: '125px',
-      formatter: value => authDateFormatPipe.transform(value as Date),
+      formatter: value => authDateFormatPipe.transform(value as any),
       orderBy: true,
     },
     {
       property: 'lastUpdatedDate',
       title: 'Last updated date',
       width: '140px',
-      formatter: value => authDateFormatPipe.transform(value as Date),
+      formatter: value => authDateFormatPipe.transform(value as any),
       orderBy: true,
     },
     {
       property: 'scorePlayers',
       title: 'Player(s)',
       formatter: scorePlayers =>
-        (scorePlayers as ScorePlayerVW[]).map(scorePlayer => scorePlayer.playerPersonaName).join(' | '),
+        ((scorePlayers as unknown) as ScorePlayerVW[]).map(scorePlayer => scorePlayer.playerPersonaName).join(' | '),
       tooltip: true,
       tooltipPosition: 'left',
     },

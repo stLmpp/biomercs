@@ -11,6 +11,7 @@ import type {
   PlayerChangeRequestsModalData,
 } from './player-change-requests/player-change-requests-modal/player-change-requests-modal.component';
 import { ModalService } from '@shared/components/modal/modal.service';
+import { ScoreChangeRequestsPaginationVW } from '@model/score-change-request';
 
 @Injectable({ providedIn: 'root' })
 export class PlayerService {
@@ -63,7 +64,9 @@ export class PlayerService {
 
   async openPlayerChangeRequestsModal(
     data: PlayerChangeRequestsModalData
-  ): Promise<ModalRef<PlayerChangeRequestsModalComponent>> {
+  ): Promise<
+    ModalRef<PlayerChangeRequestsModalComponent, PlayerChangeRequestsModalData, ScoreChangeRequestsPaginationVW>
+  > {
     return this.modalService.openLazy(
       () =>
         import('./player-change-requests/player-change-requests-modal/player-change-requests-modal.component').then(

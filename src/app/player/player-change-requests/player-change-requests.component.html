@@ -1,59 +1,12 @@
-<bio-card [bioLoading]="loading$ | async" class="flex-table">
-  <bio-card-content>
-    <div class="header">
-      <div class="action"></div>
-      <div class="platform">Platform</div>
-      <div class="game">Game</div>
-      <div class="mini-game">Mini game</div>
-      <div class="mode">Mode</div>
-      <div class="stage">Stage</div>
-      <div class="score">Score</div>
-      <div class="creation-date">Creation date</div>
-      <div class="players">Player(s)</div>
-    </div>
-    <hr />
-    <div class="body" *ngIf="scores$ | async as scores">
-      <div class="no-data-found" *ngIf="!scores.length">No scores found</div>
-      <ng-container>
-        <ng-container *ngFor="let score of scores; trackBy: trackByScore">
-          <div>
-            <div class="action">
-              <button
-                bioButton
-                icon
-                small
-                tooltip="Check requested changes"
-                tooltipPosition="right"
-                type="button"
-                [disabled]="loadingModal$ | async"
-                (click)="openModalChangeRequests(score)"
-              >
-                <icon small>sync_alt</icon>
-              </button>
-            </div>
-            <div class="platform">{{ score.platformShortName }}</div>
-            <div class="game">{{ score.gameShortName }}</div>
-            <div class="mini-game">{{ score.miniGameName }}</div>
-            <div class="mode">{{ score.modeName }}</div>
-            <div class="stage">{{ score.stageShortName }}</div>
-            <div class="score">{{ score.score | number: '1.0-0' }}</div>
-            <div class="creation-date">{{ score.creationDate | authDateFormat }}</div>
-            <div class="players" *ngLet="score.scorePlayers | join: 'playerPersonaName':' | ' as players">
-              <span [tooltip]="players" tooltipPosition="left">{{ players }}</span>
-            </div>
-          </div>
-          <hr />
-        </ng-container>
-      </ng-container>
-    </div>
-  </bio-card-content>
-  <bio-card-actions end>
-    <pagination
-      *ngIf="meta$ | async as meta"
-      [meta]="meta"
-      (currentPageChange)="onCurrentPageChange($event)"
-      (itemsPerPageChange)="onItemsPerPageChange($event)"
-      setQueryParamsOnChange
-    ></pagination>
-  </bio-card-actions>
-</bio-card>
+<bio-score-list-responsive
+  *ngIf="scores$ | async as scores"
+  [scores]="scores"
+  [paginationMeta]="paginationMeta$ | async"
+  [colDefs]="colDefs"
+  [loading]="loading$ | async"
+  [metadata]="metadata$ | async"
+  (scoreClicked)="openModalChangeRequests($event)"
+  (notifyChange)="onNotifyChange($event)"
+  (currentPageChange)="onCurrentPageChange($event)"
+  (itemsPerPageChange)="onItemsPerPageChange($event)"
+></bio-score-list-responsive>

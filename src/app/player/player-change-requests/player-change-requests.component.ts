@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ScoreService } from '../../score/score.service';
 import { ActivatedRoute } from '@angular/router';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
-import { filter, finalize, pluck, shareReplay, skip, switchMap, takeUntil } from 'rxjs/operators';
+import { filter, finalize, map, pluck, shareReplay, skip, switchMap, takeUntil } from 'rxjs/operators';
 import { filterNil } from '@shared/operators/filter';
 import { Observable } from 'rxjs';
 import {
@@ -13,12 +13,19 @@ import {
 import { PaginationMetaVW } from '@model/pagination';
 import { PlayerService } from '../player.service';
 import { LocalState } from '@stlmpp/store';
+import { getScoreDefaultColDefs } from '../../score/score-shared/util';
+import { AuthDateFormatPipe } from '../../auth/shared/auth-date-format.pipe';
+import { ColDef } from '@shared/components/table/col-def';
+import {
+  PlayerChangeRequestsActionCellComponent,
+  PlayerChangeRequestsActionCellComponentMetadata,
+} from './player-change-requests-action-cell/player-change-requests-action-cell.component';
+import { TableCellNotifyChange } from '@shared/components/table/type';
 
 export interface PlayerChangeRequestsState {
   page: number;
   itemsPerPage: number;
   loading: boolean;
-  loadingModal: boolean;
   data: ScoreChangeRequestsPaginationVW;
 }
 
@@ -32,13 +39,13 @@ export class PlayerChangeRequestsComponent extends LocalState<PlayerChangeReques
   constructor(
     private scoreService: ScoreService,
     private activatedRoute: ActivatedRoute,
-    private playerService: PlayerService
+    private playerService: PlayerService,
+    private authDateFormatPipe: AuthDateFormatPipe
   ) {
     super({
       page: +(activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.page) ?? 1),
       itemsPerPage: +(activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.itemsPerPage) ?? 10),
       loading: false,
-      loadingModal: false,
       data: activatedRoute.snapshot.data.data,
     });
   }
@@ -46,15 +53,23 @@ export class PlayerChangeRequestsComponent extends LocalState<PlayerChangeReques
   private _data$: Observable<ScoreChangeRequestsPaginationVW> = this.selectState('data');
 
   scores$: Observable<ScoreChangeRequests[]> = this._data$.pipe(filterNil(), pluck('scores'));
-  meta$: Observable<PaginationMetaVW> = this._data$.pipe(filterNil(), pluck('meta'));
+  paginationMeta$: Observable<PaginationMetaVW> = this._data$.pipe(filterNil(), pluck('meta'));
+  metadata$: Observable<PlayerChangeRequestsActionCellComponentMetadata> = this.paginationMeta$.pipe(
+    map(paginationMeta => ({ page: paginationMeta.currentPage, itemsPerPage: paginationMeta.itemsPerPage }))
+  );
 
   loading$ = this.selectState('loading');
-  loadingModal$ = this.selectState('loadingModal');
 
-  trackByScore = trackByScoreChangeRequests;
+  colDefs: ColDef<ScoreChangeRequests>[] = [
+    {
+      property: 'idScore',
+      component: PlayerChangeRequestsActionCellComponent,
+      width: '100px',
+    },
+    ...getScoreDefaultColDefs<ScoreChangeRequests>(this.authDateFormatPipe),
+  ];
 
   async openModalChangeRequests(score: ScoreChangeRequests): Promise<void> {
-    this.updateState({ loadingModal: true });
     const { page, itemsPerPage } = this.getState();
     const modalRef = await this.playerService.openPlayerChangeRequestsModal({ score, page, itemsPerPage });
     modalRef.onClose$.subscribe(data => {
@@ -62,7 +77,6 @@ export class PlayerChangeRequestsComponent extends LocalState<PlayerChangeReques
         this.updateState({ data });
       }
     });
-    this.updateState({ loadingModal: false });
   }
 
   onCurrentPageChange($event: number): void {
@@ -71,6 +85,12 @@ export class PlayerChangeRequestsComponent extends LocalState<PlayerChangeReques
 
   onItemsPerPageChange($event: number): void {
     this.updateState({ itemsPerPage: $event });
+  }
+
+  onNotifyChange($event: TableCellNotifyChange<ScoreChangeRequestsPaginationVW, ScoreChangeRequests>): void {
+    if ($event.data) {
+      this.updateState({ data: $event.data });
+    }
   }
 
   ngOnInit(): void {
