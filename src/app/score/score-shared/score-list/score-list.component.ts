@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter } from '@angular/core';
-import { ScoreVW, trackByScoreVW } from '@model/score';
+import { ScoreVW } from '@model/score';
 import { trackByScorePlayerVW } from '@model/score-player';
 import { BooleanInput } from '@angular/cdk/coercion';
 import { PaginationMetaVW } from '@model/pagination';

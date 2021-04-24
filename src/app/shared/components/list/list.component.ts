@@ -6,7 +6,6 @@ import {
   Directive,
   forwardRef,
   HostListener,
-  Input,
   OnDestroy,
   QueryList,
   ViewEncapsulation,

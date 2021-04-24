@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 import { TableCell } from '@shared/components/table/type';
-import { ScoreVW } from '@model/score';
 import { ColDefInternal } from '@shared/components/table/col-def';
 import { ScoreChangeRequests } from '@model/score-change-request';
 import { LocalState } from '@stlmpp/store';

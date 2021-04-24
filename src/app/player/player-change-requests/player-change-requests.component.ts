@@ -5,11 +5,7 @@ import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { filter, finalize, map, pluck, shareReplay, skip, switchMap, takeUntil } from 'rxjs/operators';
 import { filterNil } from '@shared/operators/filter';
 import { Observable } from 'rxjs';
-import {
-  ScoreChangeRequests,
-  ScoreChangeRequestsPaginationVW,
-  trackByScoreChangeRequests,
-} from '@model/score-change-request';
+import { ScoreChangeRequests, ScoreChangeRequestsPaginationVW } from '@model/score-change-request';
 import { PaginationMetaVW } from '@model/pagination';
 import { PlayerService } from '../player.service';
 import { LocalState } from '@stlmpp/store';
