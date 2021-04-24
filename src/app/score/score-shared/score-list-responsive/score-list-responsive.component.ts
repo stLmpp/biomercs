@@ -33,6 +33,7 @@ export class ScoreListResponsiveComponent {
   @Output() readonly itemsPerPageChange = new EventEmitter<number>();
   @Output() readonly orderChange = new EventEmitter<TableOrder<ScoreVW>>();
   @Output() readonly notifyChange = new EventEmitter<TableCellNotifyChange<any, ScoreVW>>();
+  @Output() readonly scoreClicked = new EventEmitter<ScoreVW>();
 
   isSmall$ = this.breakpointObserverService.observe([MediaQueryEnum.md]).pipe(map(isMd => !isMd));
 }

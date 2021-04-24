@@ -27,7 +27,7 @@ export class ModalConfig<D = any> {
   componentFactoryResolver?: ComponentFactoryResolver;
 }
 
-export type ModalConfigLazy = Partial<ModalConfig & { module: LazyFn }>;
+export type ModalConfigLazy<D = any> = Partial<ModalConfig<D> & { module: LazyFn }>;
 
 export const MODAL_DEFAULT_CONFIG = new InjectionToken<ModalConfig>('MODAL_DEFAULT_CONFIG');
 export const MODAL_DATA = new InjectionToken<any>('MODAL_DATA');

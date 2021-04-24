@@ -1,7 +1,15 @@
 <bio-card [bioLoading]="loading" class="scores">
   <bio-card-content>
+    <pagination
+      *ngIf="paginationMeta"
+      [meta]="paginationMeta"
+      [itemsPerPageOptions]="itemsPerPageOptions"
+      (currentPageChange)="currentPageChange.emit($event)"
+      (itemsPerPageChange)="itemsPerPageChange.emit($event)"
+      setQueryParamsOnChange
+    ></pagination>
     <bio-list selectable>
-      <bio-list-item *ngFor="let score of scores; trackBy: trackByScoreVW">
+      <bio-list-item *ngFor="let score of scores; trackBy: trackByScoreVW" (click)="scoreClicked.emit(score)">
         <bio-list-item-line> [{{ score.platformShortName }}] {{ score.gameName }} </bio-list-item-line>
         <bio-list-item-line> {{ score.miniGameName }} {{ score.modeName }} </bio-list-item-line>
         <bio-list-item-line>
@@ -14,4 +22,13 @@
       </bio-list-item>
     </bio-list>
   </bio-card-content>
+  <bio-card-actions end *ngIf="paginationMeta">
+    <pagination
+      [meta]="paginationMeta"
+      [itemsPerPageOptions]="itemsPerPageOptions"
+      (currentPageChange)="currentPageChange.emit($event)"
+      (itemsPerPageChange)="itemsPerPageChange.emit($event)"
+      setQueryParamsOnChange
+    ></pagination>
+  </bio-card-actions>
 </bio-card>

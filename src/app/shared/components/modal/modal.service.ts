@@ -120,12 +120,15 @@ export class ModalService implements OnDestroy {
     return modalRef;
   }
 
-  async openLazy<T = any, D = any, R = any>(componentFn: LazyFn, config?: ModalConfigLazy): Promise<ModalRef<T, D, R>> {
+  async openLazy<T = any, D = any, R = any>(
+    componentFn: LazyFn,
+    config?: ModalConfigLazy<D>
+  ): Promise<ModalRef<T, D, R>> {
     if (config?.module) {
       await this.dynamicLoaderService.loadModule(config.module);
     }
     const component = await componentFn();
-    return this.open(component, config);
+    return this.open<T, D, R>(component, config);
   }
 
   findClosestModal(element: ElementRef<HTMLElement>): ModalRef | undefined {

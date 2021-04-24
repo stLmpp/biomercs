@@ -5,11 +5,24 @@
 :host {
   display: flex;
   align-items: center;
-  > span {
-    padding: 0 1rem;
-    white-space: nowrap;
-  }
-  > .bio-select {
-    min-width: 80px;
+  justify-content: flex-end;
+  flex-wrap: wrap-reverse;
+  padding: 0.5rem;
+  > div {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    &.buttons {
+      margin-left: 1rem;
+    }
+    &.items-per-page {
+      > span {
+        padding: 0 1rem;
+        white-space: nowrap;
+      }
+      > .bio-select {
+        min-width: 80px;
+      }
+    }
   }
 }

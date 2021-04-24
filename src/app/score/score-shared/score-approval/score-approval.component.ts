@@ -17,6 +17,11 @@ import { ColDef } from '@shared/components/table/col-def';
 import { ScoreApprovalActionsCellComponent } from './score-approval-actions-cell/score-approval-actions-cell.component';
 import { TableCellNotifyChange, TableOrder } from '@shared/components/table/type';
 import { PaginationComponent } from '@shared/components/pagination/pagination.component';
+import { ModalService } from '@shared/components/modal/modal.service';
+import type {
+  ScoreApprovalActionsModalComponent,
+  ScoreApprovalActionsModalData,
+} from './score-approval-actions-modal/score-approval-actions-modal.component';
 
 export interface ScoreApprovalComponentState extends ParamsForm {
   page: number;
@@ -41,7 +46,8 @@ export class ScoreApprovalComponent extends LocalState<ScoreApprovalComponentSta
     private activatedRoute: ActivatedRoute,
     private scoreService: ScoreService,
     private router: Router,
-    private authDateFormatPipe: AuthDateFormatPipe
+    private authDateFormatPipe: AuthDateFormatPipe,
+    private modalService: ModalService
   ) {
     super(
       {
@@ -134,6 +140,27 @@ export class ScoreApprovalComponent extends LocalState<ScoreApprovalComponentSta
 
   onNotifyChange({ data }: TableCellNotifyChange<ScoreApprovalVW, ScoreVW>): void {
     this.updateState({ data });
+  }
+
+  async openModalSelectApprovalType(score: ScoreVW): Promise<void> {
+    const modalRef = await this.modalService.openLazy<
+      ScoreApprovalActionsModalComponent,
+      ScoreApprovalActionsModalData,
+      ScoreApprovalVW
+    >(
+      () =>
+        import('./score-approval-actions-modal/score-approval-actions-modal.component').then(
+          m => m.ScoreApprovalActionsModalComponent
+        ),
+      {
+        data: { scoreApprovalComponentState: this.getState(), score },
+      }
+    );
+    modalRef.onClose$.subscribe(data => {
+      if (data) {
+        this.updateState({ data });
+      }
+    });
   }
 
   ngOnInit(): void {

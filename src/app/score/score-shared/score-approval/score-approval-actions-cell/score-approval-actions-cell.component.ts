@@ -8,7 +8,7 @@ import { ScoreService } from '../../../score.service';
 import { ScoreApprovalComponentState } from '../score-approval.component';
 import { ScoreApprovalVW } from '@model/score-approval';
 
-interface ScoreApprovalActionsCellState {
+export interface ScoreApprovalActionsCellState {
   loadingApprovalModal: boolean;
   loadingRequestChangesModal: boolean;
 }

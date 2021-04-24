@@ -1,0 +1,15 @@
+.modal-content {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-gap: 0.5rem;
+}
+
+.title {
+  text-align: center;
+}
+
+.button-wrapper,
+.title {
+  display: grid;
+  place-items: center;
+}
