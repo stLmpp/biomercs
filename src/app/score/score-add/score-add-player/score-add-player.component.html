@@ -1,4 +1,4 @@
-<bio-card class="player" [controlGroup]="form">
+<bio-card class="player" [controlGroup]="form" collapsable>
   <h3 bioCardTitle>
     Player {{ playerNumber }}
     <ng-container *ngIf="idPlayer$ | async as idPlayer">({{ idPlayer }})</ng-container>

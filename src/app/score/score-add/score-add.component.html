@@ -1,5 +1,5 @@
 <ng-container *ngLet="{ hasMode: hasIdMode$ | async } as state">
-  <bio-card class="params">
+  <bio-card class="params" collapsable>
     <h3 bioCardTitle>Parameters</h3>
     <bio-card-content>
       <bio-params
@@ -31,7 +31,7 @@
         [playerNumber]="$index + 1"
       ></bio-score-add-player>
     </ng-container>
-    <bio-card class="score-params">
+    <bio-card class="score-params" collapsable>
       <h3 bioCardTitle>Score info</h3>
       <bio-card-content>
         <form-field label="Score" [disabled]="!state.hasMode">

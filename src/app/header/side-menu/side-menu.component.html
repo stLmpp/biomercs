@@ -8,6 +8,15 @@
     <icon prefix mdi="trophy"></icon>
     World records
   </bio-list-item>
+  <bio-list-item
+    routerLink="/score/world-record/history"
+    queryParamsHandling="preserve"
+    (click)="onMenuSelected($event)"
+    class="world-records"
+  >
+    <icon prefix>history</icon>
+    World records history
+  </bio-list-item>
   <!--TODO added better Leaderboards layout to support mobile, for now it's disabled-->
   <bio-list-item
     *ngIf="isSmallScreen"
