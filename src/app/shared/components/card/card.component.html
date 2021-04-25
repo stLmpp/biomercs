@@ -1,9 +1,4 @@
-<div
-  class="header"
-  [class.collapsed]="collapsed && collapsedComplete"
-  *ngIf="cardTitleDirectives?.length || cardSubtitleDirective?.length"
-  (click)="onCollapseToggle()"
->
+<div class="header" *ngIf="cardTitleDirectives?.length || cardSubtitleDirective?.length" (click)="onCollapseToggle()">
   <ng-content select="[bioCardTitle]"></ng-content>
   <ng-content select="[bioCardSubtitle]"></ng-content>
   <div class="collapse-icon-wrapper" *ngIf="collapsable">
@@ -11,15 +6,8 @@
   </div>
 </div>
 <ng-container *ngIf="collapsable; else cardContent">
-  <div @skipFirstAnimation>
-    <div
-      *ngIf="!collapsed"
-      @collapse
-      (@collapse.done)="onCollapseAnimationDone($event)"
-      (@collapse.start)="onCollapseAnimationStart($event)"
-    >
-      <ng-container *ngTemplateOutlet="cardContent"></ng-container>
-    </div>
+  <div [bioCollapsed]="collapsed">
+    <ng-container *ngTemplateOutlet="cardContent"></ng-container>
   </div>
 </ng-container>
 <ng-template #cardContent>

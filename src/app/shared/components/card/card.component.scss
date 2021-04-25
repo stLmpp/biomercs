@@ -4,7 +4,6 @@
 .card {
   border-radius: $radius;
   background-color: $light;
-  padding: 1rem;
   position: relative;
   display: block;
   color: $dark;
@@ -14,20 +13,19 @@
       position: relative;
       padding-right: 1.5rem;
       cursor: pointer;
-      &.collapsed {
-        margin-bottom: 0;
-      }
       .collapse-icon-wrapper {
         display: grid;
         place-items: center;
         position: absolute;
         right: 0;
         top: 0;
+        padding-top: inherit;
+        padding-right: inherit;
       }
     }
   }
   > .header {
-    margin-bottom: 1rem;
+    padding: 1rem;
   }
   .card-title {
     margin-bottom: 0.25rem;
@@ -42,8 +40,14 @@
   }
   .card-content {
     display: block;
+    padding: 1rem;
+  }
+  &.has-header {
+    .card-content {
+      padding-top: 0;
+    }
   }
   .card-actions {
-    @include actions();
+    @include actions('0');
   }
 }

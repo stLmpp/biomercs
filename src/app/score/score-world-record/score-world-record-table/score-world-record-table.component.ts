@@ -11,6 +11,8 @@ import { orderBy, OrderByDirection, OrderByType } from 'st-utils';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { combineLatest } from 'rxjs';
+import { isNotNil } from '@shared/operators/filter';
+import { BreakpointObserverService } from '@shared/services/breakpoint-observer/breakpoint-observer.service';
 
 export interface ScoreWorldRecordTableState {
   tableLoading: boolean;
@@ -35,7 +37,8 @@ export class ScoreWorldRecordTableComponent extends LocalState<ScoreWorldRecordT
     private scoreService: ScoreService,
     private controlBuilder: ControlBuilder,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private breakpointObserverService: BreakpointObserverService
   ) {
     super({
       tableLoading: false,
@@ -91,6 +94,16 @@ export class ScoreWorldRecordTableComponent extends LocalState<ScoreWorldRecordT
       };
     })
   );
+  scoreTopTableList$ = this.scoreTopTable$.pipe(
+    map(scoreTopTable => ({
+      ...scoreTopTable,
+      scoreTables: scoreTopTable.scoreTables
+        .map(scoreTable => ({ ...scoreTable, scores: scoreTable.scores.filter(isNotNil) }))
+        .filter(scoreTable => scoreTable.scores.length),
+    }))
+  );
+
+  isMobile$ = this.breakpointObserverService.isMobile$;
 
   trackByStage = trackByFactory<Stage>('id');
   trackByScoreTable = trackByFactory<ScoreTableWorldRecord>('idCharacterCustome');

@@ -1,4 +1,6 @@
-<bio-card [bioLoading]="loading" class="scores">
+<bio-card class="scores" [collapsable]="collapsable" [collapsed]="true">
+  <bio-loading *ngIf="loading"></bio-loading>
+  <h3 bioCardTitle *ngIf="title">{{ title }}</h3>
   <bio-card-content>
     <pagination
       *ngIf="paginationMeta"

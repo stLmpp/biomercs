@@ -1,6 +1,6 @@
 <div class="collapse-header" (click)="toggle()">
   <ng-container *ngIf="collapseTitleDirectives?.length; else notTitleRef">
-    <ng-content select="[collapseTitle]"></ng-content>
+    <ng-content select="[bioCollapseTitle], bio-collapse-title"></ng-content>
   </ng-container>
   <ng-template #notTitleRef>
     <div class="collapse-title">{{ collapseTitle }}</div>

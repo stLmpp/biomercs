@@ -17,6 +17,8 @@ export class BreakpointObserverService {
 
   private _resize$ = fromEvent(this.window, 'resize').pipe(auditTime(300), shareReplay());
 
+  isMobile$ = this.observe([MediaQueryEnum.sm]).pipe(map(isSmallScreen => !isSmallScreen));
+
   private _getQuery(medias: MediaQueryEnum[], customMedia?: string[]): boolean {
     return [...medias, ...(customMedia ?? [])].some(key => this.window.matchMedia(key).matches);
   }

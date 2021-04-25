@@ -11,6 +11,8 @@ import { CdkAccordionItem } from '@angular/cdk/accordion';
 import { CollapseTitleDirective } from './collapse-title.directive';
 import { Animations } from '../../animations/animations';
 
+// TODO REFACTOR THIS TO BE ACCORDION
+
 @Component({
   selector: 'bio-collapse',
   templateUrl: './collapse.component.html',

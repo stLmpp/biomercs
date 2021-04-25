@@ -15,7 +15,6 @@ import { CardActionsDirective } from './card-actions.directive';
 import { CardSubtitleDirective } from '@shared/components/card/card-subtitle.directive';
 import { Animations } from '@shared/animations/animations';
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
-import { AnimationEvent } from '@angular/animations';
 
 @Component({
   selector: 'bio-card',
@@ -24,7 +23,7 @@ import { AnimationEvent } from '@angular/animations';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'card' },
-  animations: [Animations.skipFirstAnimation(), Animations.collapse.collapse(), Animations.collapse.collapseIcon()],
+  animations: [Animations.skipFirstAnimation(), Animations.collapse.collapseIcon()],
   exportAs: 'bio-card',
 })
 export class CardComponent {
@@ -48,28 +47,16 @@ export class CardComponent {
 
   @Input() collapsed = false;
 
-  collapsedComplete = false;
-
+  @HostBinding('class.has-header')
+  get hasHeaderClass(): boolean {
+    return !!this.cardTitleDirectives?.length || !!this.cardSubtitleDirective?.length;
+  }
   onCollapseToggle(): void {
     if (!this._collapsable) {
       return;
     }
     this.collapsed = !this.collapsed;
     this.changeDetectorRef.markForCheck();
-  }
-
-  onCollapseAnimationDone($event: AnimationEvent): void {
-    if ($event.toState === 'void') {
-      this.collapsedComplete = true;
-      this.changeDetectorRef.markForCheck();
-    }
-  }
-
-  onCollapseAnimationStart($event: AnimationEvent): void {
-    if ($event.fromState === 'void') {
-      this.collapsedComplete = false;
-      this.changeDetectorRef.markForCheck();
-    }
   }
 
   static ngAcceptInputType_collapsable: BooleanInput;
