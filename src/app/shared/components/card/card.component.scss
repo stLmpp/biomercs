@@ -47,7 +47,13 @@
       padding-top: 0;
     }
   }
+  &.has-actions {
+    .card-content {
+      padding-bottom: 0;
+    }
+  }
   .card-actions {
     @include actions('0');
+    padding: 1rem;
   }
 }

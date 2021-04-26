@@ -1,62 +1,59 @@
 import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
 import { Observable, Subject } from 'rxjs';
-import { shareReplay } from 'rxjs/operators';
-import { Socket } from 'socket.io-client';
+import { environment } from '@environment/environment';
+import { finalize, take } from 'rxjs/operators';
 
-interface SocketEntity {
-  socket: typeof Socket;
-  events: Map<string, Subject<any>>;
+export class SocketIOConnection {
+  constructor(private connection: typeof io.Socket) {}
+
+  private _events = new Map<string, Subject<any>>();
+
+  private _createEventSubject<T>(event: string): Subject<T> {
+    if (this._events.has(event)) {
+      return this._events.get(event)!;
+    }
+    const subject = new Subject<T>();
+    this.connection.on(event, (data: T) => {
+      subject.next(data);
+    });
+    this._events.set(event, subject);
+    return subject;
+  }
+
+  fromEvent<T>(event: string): Observable<T> {
+    return this._createEventSubject(event);
+  }
+
+  fromEventOnce<T>(event: string): Observable<T> {
+    const subject = this._createEventSubject<T>(event);
+    return subject.asObservable().pipe(
+      take(1),
+      finalize(() => {
+        this._events.delete(event);
+      })
+    );
+  }
+
+  connect(): this {
+    this.connection.connect();
+    return this;
+  }
+
+  disconnect(): this {
+    this.connection.disconnect();
+    for (const [, event] of this._events) {
+      event.complete();
+    }
+    this._events.clear();
+    return this;
+  }
 }
 
 @Injectable({ providedIn: 'root' })
 export class SocketIOService {
-  private _events = new Map<string, Subject<any>>();
-
-  private _sockets = new Map<string, SocketEntity>();
-
-  private _checkIfExists(namespace: string): SocketEntity {
-    let socket = this._sockets.get(namespace);
-    if (!socket) {
-      socket = this._sockets
-        .set(namespace, { socket: io('http://localhost:3000/auth'), events: new Map() })
-        .get(namespace)!;
-    }
-    return socket;
-  }
-
-  disconnect(namespace: string): void {
-    const socket = this._checkIfExists(namespace);
-    socket.socket.disconnect();
-    for (const [, $event] of this._events) {
-      $event.complete();
-    }
-  }
-
-  fromEvent<T>(namespace: string, eventName: string): Observable<T> {
-    const { socket, events } = this._checkIfExists(namespace);
-    if (events.has(eventName)) {
-      return events.get(eventName)!.asObservable();
-    }
-    const event$ = new Subject<T>();
-    socket.on(eventName, (data: T) => {
-      event$.next(data);
-    });
-    events.set(eventName, event$);
-    return event$.asObservable().pipe(shareReplay());
-  }
-
-  fromEventOnce<T>(namespace: string, eventName: string): Observable<T> {
-    const { socket, events } = this._checkIfExists(namespace);
-    if (events.has(eventName)) {
-      return events.get(eventName)!.asObservable();
-    }
-    const event$ = new Subject<T>();
-    socket.on(eventName, (data: T) => {
-      event$.next(data);
-      event$.complete();
-    });
-    events.set(eventName, event$);
-    return event$.asObservable();
+  createConnection(namespace: string): SocketIOConnection {
+    const connection = io(`${environment.socketIO}${namespace}`);
+    return new SocketIOConnection(connection).connect();
   }
 }

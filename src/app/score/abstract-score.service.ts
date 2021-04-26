@@ -1,6 +1,7 @@
 import {
   ScoreAdd,
   ScoreChangeRequestsFulfilDto,
+  ScoreGatewayEvents,
   ScoreTopTableVW,
   ScoreTopTableWorldRecord,
   ScoreVW,
@@ -13,11 +14,18 @@ import { HttpClient } from '@angular/common/http';
 import { ScoreApprovalActionEnum } from '@model/enum/score-approval-action.enum';
 import { ScoreChangeRequest, ScoreChangeRequestsPaginationVW } from '@model/score-change-request';
 import { HeaderState, HeaderStore } from '../header/header.store';
-import { tap } from 'rxjs/operators';
+import { auditTime, tap } from 'rxjs/operators';
 import { ScoreWorldRecordHistoryDto } from '@model/score-world-record';
+import { SocketIOService } from '@shared/services/socket-io/socket-io.service';
 
 export abstract class AbstractScoreService {
-  protected constructor(private http: HttpClient, private headerStore: HeaderStore) {}
+  protected constructor(
+    private http: HttpClient,
+    private headerStore: HeaderStore,
+    private socketIOService: SocketIOService
+  ) {}
+
+  private _socketConnection = this.socketIOService.createConnection('score');
 
   endPoint = 'score';
 
@@ -154,5 +162,9 @@ export abstract class AbstractScoreService {
         }
       })
     );
+  }
+
+  onUpdateCountApprovals(): Observable<void> {
+    return this._socketConnection.fromEvent<void>(ScoreGatewayEvents.updateCountApprovals).pipe(auditTime(5000));
   }
 }

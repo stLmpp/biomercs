@@ -42,7 +42,6 @@ export interface AuthSteamLoginSocketVW {
   idUser?: number;
 }
 
-export class AuthSteamLoginSocketEvent {
-  static eventName = 'logged-steam';
-  static namespace = 'auth';
+export enum AuthGatewayEvents {
+  loginSteam = 'loginSteam',
 }

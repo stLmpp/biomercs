@@ -87,3 +87,7 @@ export interface ScoreTableWorldRecord {
 }
 
 export const trackByScoreVW = trackByFactory<ScoreVW>('idScore');
+
+export enum ScoreGatewayEvents {
+  updateCountApprovals = 'updateCountApprovals',
+}

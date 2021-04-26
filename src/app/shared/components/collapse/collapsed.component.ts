@@ -16,6 +16,7 @@ export class CollapsedComponent {
   constructor(private renderer2: Renderer2, private elementRef: ElementRef) {}
 
   private _bioCollapsed = false;
+  private _isRunning = 0;
 
   @Input()
   set bioExpanded(bioExpanded: BooleanInput) {
@@ -36,10 +37,14 @@ export class CollapsedComponent {
   onCollapseStart($event: AnimationEvent): void {
     this.renderer2.addClass(this.elementRef.nativeElement, 'bio-collapsed-animating');
     this.animationStart.emit($event);
+    this._isRunning++;
   }
 
   onCollapseDone($event: AnimationEvent): void {
-    this.renderer2.removeClass(this.elementRef.nativeElement, 'bio-collapsed-animating');
+    this._isRunning = Math.max(this._isRunning - 1, 0);
+    if (!this._isRunning) {
+      this.renderer2.removeClass(this.elementRef.nativeElement, 'bio-collapsed-animating');
+    }
     this.animationDone.emit($event);
   }
 

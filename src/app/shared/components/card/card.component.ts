@@ -51,6 +51,12 @@ export class CardComponent {
   get hasHeaderClass(): boolean {
     return !!this.cardTitleDirectives?.length || !!this.cardSubtitleDirective?.length;
   }
+
+  @HostBinding('class.has-actions')
+  get hasActionsClass(): boolean {
+    return !!this.cardActionsDirective?.length;
+  }
+
   onCollapseToggle(): void {
     if (!this._collapsable) {
       return;

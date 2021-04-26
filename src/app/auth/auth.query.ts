@@ -33,6 +33,11 @@ export class AuthQuery extends Query<Auth> {
     return this.getState().user;
   }
 
+  getIsLogged(): boolean {
+    const user = this.getUser();
+    return !!user?.id && !!user.token;
+  }
+
   selectIsSameAsLogged(value: number | Player): Observable<boolean> {
     const idPlayer = isNumber(value) ? value : value.id;
     return this.user$.pipe(map(user => user?.player?.id === idPlayer));

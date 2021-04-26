@@ -1,10 +1,9 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { filter, finalize, switchMap, takeUntil, tap, timeout } from 'rxjs/operators';
+import { finalize, switchMap, takeUntil, tap, timeout } from 'rxjs/operators';
 import { AuthStore } from './auth.store';
 import { catchAndThrow } from '@util/operators/catch-and-throw';
-import { SocketIOService } from '@shared/services/socket-io/socket-io.service';
 import { AuthErrorInterceptor } from './auth-error.interceptor';
 import { HttpParams } from '@util/http-params';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
@@ -12,29 +11,25 @@ import { WINDOW } from '../core/window.service';
 import { SnackBarService } from '@shared/components/snack-bar/snack-bar.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { v4 } from 'uuid';
-import {
-  AuthCredentials,
-  AuthRegister,
-  AuthRegisterVW,
-  AuthSteamLoginSocketEvent,
-  AuthSteamLoginSocketVW,
-} from '@model/auth';
+import { AuthCredentials, AuthGatewayEvents, AuthRegister, AuthRegisterVW, AuthSteamLoginSocketVW } from '@model/auth';
 import { User } from '@model/user';
 import { AuthSteamLoginSocketErrorType } from '@model/enum/auth-steam-login-socket-error-type';
+import { SocketIOService } from '@shared/services/socket-io/socket-io.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   constructor(
     private http: HttpClient,
     private authStore: AuthStore,
-    private socketIOService: SocketIOService,
     private dialogService: DialogService,
     @Inject(WINDOW) private window: Window,
     private snackBarService: SnackBarService,
-    private router: Router
+    private router: Router,
+    private socketIOService: SocketIOService
   ) {}
 
   private _steamidAuthMap = new Map<string, [string, number?]>();
+  private _socketConnection = this.socketIOService.createConnection('auth');
 
   endPoint = 'auth';
 
@@ -98,7 +93,7 @@ export class AuthService {
     const uuid = v4();
     return this._getSteamLoginUrl(uuid).pipe(
       switchMap(url => {
-        const windowSteam = this.window.open(url, 'Login Steam', 'width=500');
+        const windowSteam = this.window.open(url, 'Login Steam', 'width=500,height=500');
         return this.loginSteamSocket(uuid).pipe(
           takeUntil(destroy$),
           timeout(5 * 60 * 1000), // Timeout after 5 minutes
@@ -169,9 +164,7 @@ export class AuthService {
   }
 
   loginSteamSocket(uuid: string): Observable<AuthSteamLoginSocketVW> {
-    return this.socketIOService
-      .fromEvent<AuthSteamLoginSocketVW>(AuthSteamLoginSocketEvent.namespace, AuthSteamLoginSocketEvent.eventName)
-      .pipe(filter(event => event.uuid === uuid));
+    return this._socketConnection.fromEventOnce<AuthSteamLoginSocketVW>(AuthGatewayEvents.loginSteam + uuid);
   }
 
   updateToken(token: string): Observable<User> {

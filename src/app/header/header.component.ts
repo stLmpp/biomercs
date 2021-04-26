@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { AuthQuery } from '../auth/auth.query';
 import { AuthService } from '../auth/auth.service';
 import { SnackBarService } from '@shared/components/snack-bar/snack-bar.service';
-import { filter, map, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { filter, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 import {
   BreakpointObserverService,
   MediaQueryEnum,
@@ -10,7 +10,6 @@ import {
 import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { ScoreService } from '../score/score.service';
-import { filterNil } from '@shared/operators/filter';
 import { LocalState } from '@stlmpp/store';
 import { GlobalListenersService } from '@shared/services/global-listeners/global-listeners.service';
 
@@ -68,17 +67,22 @@ export class HeaderComponent extends LocalState<HeaderComponentState> implements
   }
 
   ngOnInit(): void {
-    this.user$
+    let updateCountApprovals$ = this.scoreService.onUpdateCountApprovals();
+    if (this.authQuery.getIsLogged()) {
+      updateCountApprovals$ = updateCountApprovals$.pipe(startWith(void 0));
+    }
+    updateCountApprovals$
       .pipe(
-        takeUntil(this.destroy$),
-        filterNil(),
-        switchMap(user => {
+        withLatestFrom(this.user$),
+        filter(([, user]) => !!user),
+        switchMap(([, user]) => {
           const requests$ = [this.scoreService.findApprovalCount(true), this.scoreService.findChangeRequestsCount()];
-          if (user.admin) {
+          if (user!.admin) {
             requests$.push(this.scoreService.findApprovalCount(false));
           }
           return forkJoin(requests$);
-        })
+        }),
+        takeUntil(this.destroy$)
       )
       .subscribe();
     this.globalListenersService.htmlClick$

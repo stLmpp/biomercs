@@ -19,6 +19,7 @@ import type {
 } from './score-shared/score-approval/score-request-changes-modal/score-request-changes-modal.component';
 import { HeaderStore } from '../header/header.store';
 import type { ModalConfigLazy } from '@shared/components/modal/modal.config';
+import { SocketIOService } from '@shared/services/socket-io/socket-io.service';
 
 const scoreModalDefaults: ModalConfigLazy = {
   minWidth: '30vw',
@@ -28,8 +29,13 @@ const scoreModalDefaults: ModalConfigLazy = {
 
 @Injectable({ providedIn: 'root' })
 export class ScoreService extends AbstractScoreService {
-  constructor(http: HttpClient, headerStore: HeaderStore, private modalService: ModalService) {
-    super(http, headerStore);
+  constructor(
+    http: HttpClient,
+    headerStore: HeaderStore,
+    socketIOService: SocketIOService,
+    private modalService: ModalService
+  ) {
+    super(http, headerStore, socketIOService);
   }
 
   async openModalScoreApproval(
