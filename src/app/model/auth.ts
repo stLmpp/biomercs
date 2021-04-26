@@ -43,5 +43,5 @@ export interface AuthSteamLoginSocketVW {
 }
 
 export enum AuthGatewayEvents {
-  loginSteam = 'loginSteam',
+  loginSteam = 'login-steam',
 }
