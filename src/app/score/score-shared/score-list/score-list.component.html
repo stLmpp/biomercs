@@ -22,15 +22,17 @@
         </bio-list-item-line>
         <div suffix>{{ score.score | scoreFormat }}</div>
       </bio-list-item>
+      <bio-list-item *ngIf="!scores.length">
+        <bio-list-item-line>No data found</bio-list-item-line>
+      </bio-list-item>
     </bio-list>
-  </bio-card-content>
-  <bio-card-actions end *ngIf="paginationMeta">
     <pagination
+      *ngIf="paginationMeta"
       [meta]="paginationMeta"
       [itemsPerPageOptions]="itemsPerPageOptions"
       (currentPageChange)="currentPageChange.emit($event)"
       (itemsPerPageChange)="itemsPerPageChange.emit($event)"
       setQueryParamsOnChange
     ></pagination>
-  </bio-card-actions>
+  </bio-card-content>
 </bio-card>

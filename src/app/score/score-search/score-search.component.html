@@ -1,0 +1,22 @@
+<bio-card collapsable class="params">
+  <bio-card-content>
+    <form-field label="Search">
+      <input bioInput type="search" placeholder="Search for scores" [control]="termControl" />
+    </form-field>
+    <label>
+      <input type="checkbox" [model]="onlyMyScores" (modelChange)="changeOnlyMyScores($event)" />
+      Only my scores
+    </label>
+  </bio-card-content>
+</bio-card>
+<bio-score-list-responsive
+  *ngIf="scores$ | async as scores"
+  [scores]="scores"
+  [colDefs]="colDefs"
+  [paginationMeta]="paginationMeta$ | async"
+  [loading]="loading$ | async"
+  (currentPageChange)="onCurrentPageChange($event)"
+  (itemsPerPageChange)="onItemsPerPageChange($event)"
+  (scoreClicked)="openInfoScore($event)"
+>
+</bio-score-list-responsive>

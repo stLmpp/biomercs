@@ -30,4 +30,5 @@ export enum RouteParamEnum {
   type = 'type',
   fromDate = 'fromDate',
   toDate = 'toDate',
+  term = 'term',
 }

@@ -3,12 +3,16 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
+    path: 'add',
+    loadChildren: () => import('./score-add/score-add.module').then(m => m.ScoreAddModule),
+  },
+  {
     path: 'leaderboards',
     loadChildren: () => import('./score-leaderboards/score-leaderboards.module').then(m => m.ScoreLeaderboardsModule),
   },
   {
-    path: 'add',
-    loadChildren: () => import('./score-add/score-add.module').then(m => m.ScoreAddModule),
+    path: 'search',
+    loadChildren: () => import('./score-search/score-search.module').then(m => m.ScoreSearchModule),
   },
   {
     path: 'world-record',

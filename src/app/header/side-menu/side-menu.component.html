@@ -1,4 +1,18 @@
 <bio-list selectable>
+  <bio-list-item routerLink="/score/search" queryParamsHandling="preserve" (click)="onMenuSelected($event)">
+    <icon prefix>search</icon>
+    Search scores
+  </bio-list-item>
+  <!--TODO added better Leaderboards layout to support mobile, for now it's disabled-->
+  <bio-list-item
+    *ngIf="isSmallScreen"
+    routerLink="/score/leaderboards"
+    queryParamsHandling="preserve"
+    (click)="onMenuSelected($event)"
+  >
+    <icon prefix>leaderboard</icon>
+    Leaderboards
+  </bio-list-item>
   <bio-list-item
     routerLink="/score/world-record/table"
     queryParamsHandling="preserve"
@@ -16,16 +30,6 @@
   >
     <icon prefix>history</icon>
     World records history
-  </bio-list-item>
-  <!--TODO added better Leaderboards layout to support mobile, for now it's disabled-->
-  <bio-list-item
-    *ngIf="isSmallScreen"
-    routerLink="/score/leaderboards"
-    queryParamsHandling="preserve"
-    (click)="onMenuSelected($event)"
-  >
-    <icon prefix>leaderboard</icon>
-    Leaderboards
   </bio-list-item>
   <bio-list-item
     routerLink="/admin/approval"

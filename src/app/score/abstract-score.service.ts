@@ -17,6 +17,8 @@ import { HeaderState, HeaderStore } from '../header/header.store';
 import { auditTime, tap } from 'rxjs/operators';
 import { ScoreWorldRecordHistoryDto } from '@model/score-world-record';
 import { SocketIOService } from '@shared/services/socket-io/socket-io.service';
+import { Pagination } from '@model/pagination';
+import { ScoreStatusEnum } from '@model/enum/score-status.enum';
 
 export abstract class AbstractScoreService {
   protected constructor(
@@ -144,8 +146,8 @@ export abstract class AbstractScoreService {
 
   findChangeRequestsCount(): Observable<number> {
     return this.http.get<number>(`${this.endPoint}/player/change-requests/count`).pipe(
-      tap(count => {
-        this.headerStore.updateState({ playerRequestChangesCount: count });
+      tap(playerRequestChangesCount => {
+        this.headerStore.updateState({ playerRequestChangesCount });
       })
     );
   }
@@ -166,5 +168,10 @@ export abstract class AbstractScoreService {
 
   onUpdateCountApprovals(): Observable<void> {
     return this._socketConnection.fromEvent<void>(ScoreGatewayEvents.updateCountApprovals).pipe(auditTime(5000));
+  }
+
+  search(term: string, status: ScoreStatusEnum, page: number, limit: number): Observable<Pagination<ScoreVW>> {
+    const params = new HttpParams({ term, status, page, limit });
+    return this.http.get<Pagination<ScoreVW>>(`${this.endPoint}/search`, { params });
   }
 }

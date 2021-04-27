@@ -13,7 +13,11 @@
     padding-left: 0;
     padding-right: 0;
   }
-  .list-item {
-    padding: 1rem 0.75rem;
+  .list {
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    .list-item {
+      padding: 1rem 0.75rem;
+    }
   }
 }

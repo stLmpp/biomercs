@@ -53,7 +53,7 @@
     }
   }
   .card-actions {
-    @include actions('0');
+    @include actions(0);
     padding: 1rem;
   }
 }
