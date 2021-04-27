@@ -15,7 +15,6 @@ import { ScoreApprovalActionEnum } from '@model/enum/score-approval-action.enum'
 import { ScoreChangeRequest, ScoreChangeRequestsPaginationVW } from '@model/score-change-request';
 import { HeaderState, HeaderStore } from '../header/header.store';
 import { auditTime, tap } from 'rxjs/operators';
-import { ScoreWorldRecordHistoryDto } from '@model/score-world-record';
 import { SocketIOService } from '@shared/services/socket-io/socket-io.service';
 import { Pagination } from '@model/pagination';
 import { ScoreStatusEnum } from '@model/enum/score-status.enum';
@@ -68,22 +67,6 @@ export abstract class AbstractScoreService {
   ): Observable<ScoreTopTableWorldRecord> {
     return this.http.get<ScoreTopTableWorldRecord>(
       `${this.endPoint}/platform/${idPlatform}/game/${idGame}/mini-game/${idMiniGame}/mode/${idMode}/world-record/table`
-    );
-  }
-
-  findWorldRecordHistory({
-    idPlatform,
-    idGame,
-    idMiniGame,
-    idMode,
-    idStage,
-    type,
-    ...dto
-  }: ScoreWorldRecordHistoryDto): Observable<ScoreVW[]> {
-    const params = new HttpParams(dto, true);
-    return this.http.get<ScoreVW[]>(
-      `${this.endPoint}/platform/${idPlatform}/game/${idGame}/mini-game/${idMiniGame}/mode/${idMode}/stage/${idStage}/world-record/type/${type}/history`,
-      { params }
     );
   }
 

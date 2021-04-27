@@ -5,37 +5,26 @@ import { ScoreWorldRecordRoutingModule } from './score-world-record-routing.modu
 import { ScoreWorldRecordTableComponent } from './score-world-record-table/score-world-record-table.component';
 import { CardModule } from '@shared/components/card/card.module';
 import { ParamsModule } from '@shared/params/params.module';
+import { NgLetModule } from '@shared/let/ng-let.module';
 import { SpinnerModule } from '@shared/components/spinner/spinner.module';
+import { ScoreSharedModule } from '../score-shared/score-shared.module';
+import { IconModule } from '@shared/components/icon/icon.module';
 import { TooltipModule } from '@shared/components/tooltip/tooltip.module';
 import { ButtonModule } from '@shared/components/button/button.module';
-import { NgLetModule } from '@shared/let/ng-let.module';
-import { IconModule } from '@shared/components/icon/icon.module';
-import { ScoreWorldRecordHistoryComponent } from './score-world-record-history/score-world-record-history.component';
-import { FormModule } from '@shared/components/form/form.module';
-import { SelectModule } from '@shared/components/select/select.module';
-import { StControlModule } from '@stlmpp/control';
-import { ArrayModule } from '@shared/array/array.module';
-import { ScoreSharedModule } from '../score-shared/score-shared.module';
-import { TableModule } from '@shared/components/table/table.module';
 
 @NgModule({
-  declarations: [ScoreWorldRecordTableComponent, ScoreWorldRecordHistoryComponent],
+  declarations: [ScoreWorldRecordTableComponent],
   imports: [
     CommonModule,
     ScoreWorldRecordRoutingModule,
     CardModule,
     ParamsModule,
+    NgLetModule,
     SpinnerModule,
+    ScoreSharedModule,
+    IconModule,
     TooltipModule,
     ButtonModule,
-    NgLetModule,
-    IconModule,
-    FormModule,
-    SelectModule,
-    StControlModule,
-    ArrayModule,
-    ScoreSharedModule,
-    TableModule,
   ],
 })
 export class ScoreWorldRecordModule {}

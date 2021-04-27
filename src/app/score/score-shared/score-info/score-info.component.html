@@ -16,17 +16,15 @@
       class="icon-wr"
       mdi="trophy"
       *ngIf="score.isWorldRecord"
-      tooltip="World Record (Click the see the history)"
+      tooltip="World Record"
       tooltipPosition="right"
-      (click)="navigateToHistory(scoreWorldRecordTypeEnum.WorldRecord)"
     ></icon>
     <icon
       class="icon-wr"
       mdi="trophy-award"
       *ngIf="score.isCombinationWorldRecord"
-      tooltip="Combination World Record (Click the see the history)"
+      tooltip="Combination World Record"
       tooltipPosition="right"
-      (click)="navigateToHistory(scoreWorldRecordTypeEnum.CombinationWorldRecord)"
     ></icon>
   </ng-container>
 </div>
@@ -50,9 +48,8 @@
       class="icon-wr"
       mdi="account-star"
       *ngIf="showWorldRecord && player.isCharacterWorldRecord"
-      tooltip="Character World Record (Click the see the history)"
+      tooltip="Character World Record"
       tooltipPosition="right"
-      (click)="navigateToHistory(scoreWorldRecordTypeEnum.CharacterWorldRecord, player.idCharacterCostume)"
     ></icon>
   </div>
   <a bio-url-preview [url]="player.evidence"></a>
