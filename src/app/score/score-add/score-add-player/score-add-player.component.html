@@ -15,7 +15,12 @@
     </label>
   </h3>
   <bio-card-content>
-    <form-field label="Player" *ngIf="!first" [loading]="playersLoading$ | async">
+    <form-field
+      label="Player"
+      *ngIf="!first || (isAdmin$ | async)"
+      [loading]="playersLoading$ | async"
+      [disabled]="disabled"
+    >
       <input
         bioInput
         controlName="personaName"

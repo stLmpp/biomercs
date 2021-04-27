@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { Player } from '@model/player';
 import { User } from '@model/user';
 import { isNumber } from 'st-utils';
+import { filterNil } from '@shared/operators/filter';
 
 @Injectable({ providedIn: 'root' })
 export class AuthQuery extends Query<Auth> {
@@ -16,6 +17,10 @@ export class AuthQuery extends Query<Auth> {
 
   isLogged$ = this.select('user').pipe(map(user => !!user?.id && !!user.token));
   user$ = this.select('user');
+  isAdmin$ = this.user$.pipe(
+    filterNil(),
+    map(user => user.admin)
+  );
 
   selectIsAdmin(): Observable<boolean> {
     return this.user$.pipe(map(user => !!user?.admin));

@@ -19,6 +19,7 @@ import { Mode } from '@model/mode';
 import { scoreCurrencyMask } from '../score-shared/util';
 import { trackByFactory } from '@stlmpp/utils';
 import { LocalState } from '@stlmpp/store';
+import { Router } from '@angular/router';
 
 export interface ScoreAddState {
   characterLoading: boolean;
@@ -31,12 +32,7 @@ export interface ScoreAddState {
   templateUrl: './score-add.component.html',
   styleUrls: ['./score-add.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    {
-      provide: CURRENCY_MASK_CONFIG,
-      useValue: scoreCurrencyMask,
-    },
-  ],
+  providers: [{ provide: CURRENCY_MASK_CONFIG, useValue: scoreCurrencyMask }],
 })
 export class ScoreAddComponent extends LocalState<ScoreAddState> implements OnInit {
   constructor(
@@ -45,7 +41,8 @@ export class ScoreAddComponent extends LocalState<ScoreAddState> implements OnIn
     private characterService: CharacterService,
     private modeQuery: ModeQuery,
     private scoreService: ScoreService,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private router: Router
   ) {
     super({ characterLoading: false, submitting: false, submitModalLoading: false });
   }
@@ -182,6 +179,10 @@ export class ScoreAddComponent extends LocalState<ScoreAddState> implements OnIn
             yesAction: modalRef => {
               this._changeAllForms(form => form.enable());
               this.onReset();
+              modalRef.close();
+            },
+            noAction: modalRef => {
+              this.router.navigate(['/']).then();
               modalRef.close();
             },
           },

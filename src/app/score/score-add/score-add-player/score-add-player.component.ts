@@ -9,6 +9,7 @@ import { Player } from '@model/player';
 import { AutocompleteDirective } from '@shared/components/autocomplete/autocomplete.directive';
 import { generateScorePlayerControlGroup, ScorePlayerAddForm } from '../score-add';
 import { LocalState } from '@stlmpp/store';
+import { AuthQuery } from '../../../auth/auth.query';
 
 @Component({
   selector: 'bio-score-add-player',
@@ -17,7 +18,11 @@ import { LocalState } from '@stlmpp/store';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScoreAddPlayerComponent extends LocalState<{ playersLoading: boolean }> implements OnInit {
-  constructor(private controlBuilder: ControlBuilder, private playerService: PlayerService) {
+  constructor(
+    private controlBuilder: ControlBuilder,
+    private playerService: PlayerService,
+    private authQuery: AuthQuery
+  ) {
     super({ playersLoading: false });
   }
 
@@ -27,7 +32,8 @@ export class ScoreAddPlayerComponent extends LocalState<{ playersLoading: boolea
   @Input() charactersLoading: boolean | null = false;
   @Input() characters: Character[] | null = [];
 
-  @Input() set player(player: ScorePlayerAddForm) {
+  @Input()
+  set player(player: ScorePlayerAddForm) {
     this.form.setValue(player);
   }
 
@@ -35,6 +41,8 @@ export class ScoreAddPlayerComponent extends LocalState<{ playersLoading: boolea
   @Output() readonly hostChange = new EventEmitter<void>();
 
   @ViewChild('bioAutocomplete') bioAutocomplete!: AutocompleteDirective;
+
+  isAdmin$ = this.authQuery.isAdmin$;
 
   get idPlayerControl(): Control<number | null> {
     return this.form.get('idPlayer');
@@ -49,8 +57,8 @@ export class ScoreAddPlayerComponent extends LocalState<{ playersLoading: boolea
   idPlayer$ = this.idPlayerControl.value$;
   evidence$ = this.evidenceControl.value$.pipe(debounceTime(400));
   players$ = this.form.get('personaName').value$.pipe(
-    filter(personaName => !!personaName && this.bioAutocomplete.hasFocus),
     debounceTime(500),
+    filter(personaName => !!personaName && this.bioAutocomplete?.hasFocus),
     switchMap(personaName => {
       this.updateState({ playersLoading: true });
       return this.playerService.search(personaName).pipe(
