@@ -14,11 +14,11 @@ export class ModalCloseDirective<T = any> implements OnInit {
 
   @Input() @HostBinding('attr.type') type = 'button';
 
-  @Input() modalClose?: T | '';
+  @Input() bioModalClose?: T | '';
 
   @HostListener('click')
   onClick(): void {
-    this.modalRef?.close(this.modalClose);
+    this.modalRef?.close(this.bioModalClose);
   }
 
   ngOnInit(): void {

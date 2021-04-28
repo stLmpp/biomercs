@@ -1,0 +1,33 @@
+<h3 bioModalTitle>Search players</h3>
+<bio-modal-content [controlGroup]="form">
+  <form-field label="Search">
+    <input autocomplete="off" type="search" bioInput placeholder="Search" controlName="term" />
+  </form-field>
+  <ng-container *ngLet="{ players: players$ | async, loading: loading$ | async, term: term$ | async } as state">
+    <ng-container *ngIf="!state.players?.length && !state.loading">
+      <p *ngIf="!state.term">Type something to start searching</p>
+      <p *ngIf="state.term">No data found</p>
+    </ng-container>
+    <bio-list [model]="idPlayer">
+      <bio-loading *ngIf="state.loading"></bio-loading>
+      <bio-list-item
+        *ngFor="let player of state.players; trackBy: trackByPlayer"
+        [value]="player.id"
+        [bioModalClose]="player"
+      >
+        {{ player.personaName }}
+      </bio-list-item>
+    </bio-list>
+  </ng-container>
+
+  <pagination
+    *ngIf="paginationMeta$ | async as paginationMeta"
+    [meta]="paginationMeta"
+    (itemsPerPageChange)="onItemsPerPageChange($event)"
+    (currentPageChange)="onCurrentPageChange($event)"
+  >
+  </pagination>
+</bio-modal-content>
+<bio-modal-actions end>
+  <button bioButton type="button" bioModalClose>Close</button>
+</bio-modal-actions>

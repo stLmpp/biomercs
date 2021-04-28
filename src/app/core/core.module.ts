@@ -20,6 +20,8 @@ import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
 import { ScoreService } from '../score/score.service';
 import { AbstractScoreService } from '../score/abstract-score.service';
+import { AbstractPlayerService } from '../player/abstract-player.service';
+import { PlayerService } from '../player/player.service';
 
 const withInterceptors = (...interceptors: any[]): Provider[] =>
   interceptors.map(useClass => ({
@@ -59,9 +61,10 @@ export class CoreModule {
           deps: [AuthService],
           multi: true,
         },
-        { provide: AbstractRegionService, useClass: RegionService },
+        { provide: AbstractRegionService, useExisting: RegionService },
         { provide: NAVIGATOR, useFactory: (window: Window) => window.navigator ?? {}, deps: [WINDOW] },
-        { provide: AbstractScoreService, useClass: ScoreService },
+        { provide: AbstractScoreService, useExisting: ScoreService },
+        { provide: AbstractPlayerService, useExisting: PlayerService },
       ],
     };
   }

@@ -9,7 +9,7 @@
         name="host"
         [value]="true"
         controlName="host"
-        (change)="hostChange.emit()"
+        (change)="onHostChange($event)"
       />
       Host
     </label>
@@ -44,6 +44,17 @@
       <errors controlError="idPlayer">
         <error *error="'required'">Player is required</error>
       </errors>
+      <button
+        type="button"
+        bioButton
+        icon
+        suffix
+        tooltip="Advanced search"
+        (click)="openPlayerSearchModal()"
+        [disabled]="playerSearchModalLoading$ | async"
+      >
+        <icon>search</icon>
+      </button>
     </form-field>
     <!--<editor-fold desc="Character">-->
     <form-field [loading]="charactersLoading" [disabled]="disabled" label="Character">

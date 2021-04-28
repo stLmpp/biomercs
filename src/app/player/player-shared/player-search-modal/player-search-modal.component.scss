@@ -1,0 +1,27 @@
+@use 'variables' as v;
+
+.pagination {
+  margin-top: 1rem;
+}
+
+$list-item-height: 44px;
+
+.list-item {
+  height: $list-item-height;
+}
+
+.list {
+  height: $list-item-height * 10;
+  overflow: auto;
+  margin: 0 1rem;
+}
+
+::ng-deep {
+  .modal-container.player-search-modal {
+    min-width: 500px;
+
+    @media only screen and (max-width: v.$mobile-width) {
+      min-width: 80vw;
+    }
+  }
+}

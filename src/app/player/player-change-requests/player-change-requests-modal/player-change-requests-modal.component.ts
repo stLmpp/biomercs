@@ -56,7 +56,6 @@ export class PlayerChangeRequestsModalComponent extends LocalState<PlayerChangeR
     private snackBarService: SnackBarService
   ) {
     super({ loading: false });
-    (window as any).c = this;
   }
 
   loading$ = this.selectState('loading');

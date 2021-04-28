@@ -82,9 +82,15 @@
       background-color: transparentize($white, 0.9);
     }
   }
+
   &.disabled {
     cursor: default;
-    color: hsla(0, 0%, 100%, 0.5);
+    &:not(.button-icon) {
+      color: hsla(0, 0%, 100%, 0.5);
+    }
+    &.button-icon {
+      opacity: 0.5;
+    }
   }
   &.loading {
     > .button-content-wrapper {

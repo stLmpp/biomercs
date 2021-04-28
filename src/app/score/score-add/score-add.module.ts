@@ -15,6 +15,8 @@ import { ParamsModule } from '@shared/params/params.module';
 import { StControlModule } from '@stlmpp/control';
 import { ButtonModule } from '@shared/components/button/button.module';
 import { SpinnerModule } from '@shared/components/spinner/spinner.module';
+import { IconModule } from '@shared/components/icon/icon.module';
+import { TooltipModule } from '@shared/components/tooltip/tooltip.module';
 
 @NgModule({
   declarations: [ScoreAddComponent, ScoreAddPlayerComponent],
@@ -33,6 +35,8 @@ import { SpinnerModule } from '@shared/components/spinner/spinner.module';
     StControlModule,
     ButtonModule,
     SpinnerModule,
+    IconModule,
+    TooltipModule,
   ],
 })
 export class ScoreAddModule {}

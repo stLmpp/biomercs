@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Control, ControlBuilder } from '@stlmpp/control';
-import { debounceTime, filter, finalize, switchMap, takeUntil } from 'rxjs/operators';
+import { debounceTime, filter, finalize, pluck, switchMap, takeUntil } from 'rxjs/operators';
 import { Character } from '@model/character';
 import { trackByFactory } from '@stlmpp/utils';
 import { CharacterCostume } from '@model/character-costume';
@@ -11,19 +11,24 @@ import { generateScorePlayerControlGroup, ScorePlayerAddForm } from '../score-ad
 import { LocalState } from '@stlmpp/store';
 import { AuthQuery } from '../../../auth/auth.query';
 
+interface ScoreAddPlayerComponentState {
+  playersLoading: boolean;
+  playerSearchModalLoading: boolean;
+}
+
 @Component({
   selector: 'bio-score-add-player',
   templateUrl: './score-add-player.component.html',
   styleUrls: ['./score-add-player.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ScoreAddPlayerComponent extends LocalState<{ playersLoading: boolean }> implements OnInit {
+export class ScoreAddPlayerComponent extends LocalState<ScoreAddPlayerComponentState> implements OnInit {
   constructor(
     private controlBuilder: ControlBuilder,
     private playerService: PlayerService,
     private authQuery: AuthQuery
   ) {
-    super({ playersLoading: false });
+    super({ playersLoading: false, playerSearchModalLoading: false });
   }
 
   @Input() playerNumber!: number;
@@ -61,19 +66,41 @@ export class ScoreAddPlayerComponent extends LocalState<{ playersLoading: boolea
     filter(personaName => !!personaName && this.bioAutocomplete?.hasFocus),
     switchMap(personaName => {
       this.updateState({ playersLoading: true });
-      return this.playerService.search(personaName).pipe(
+      return this.playerService.search(personaName, 1, 8).pipe(
         finalize(() => {
           this.updateState({ playersLoading: false });
         })
       );
-    })
+    }),
+    pluck('items')
   );
 
   playersLoading$ = this.selectState('playersLoading');
+  playerSearchModalLoading$ = this.selectState('playerSearchModalLoading');
 
   trackByCharacter = trackByFactory<Character>('id');
   trackByCharacterCostume = trackByFactory<CharacterCostume>('id');
   trackByPlayer = trackByFactory<Player>('id');
+
+  async openPlayerSearchModal(): Promise<void> {
+    this.updateState({ playerSearchModalLoading: true });
+    const idPlayer = this.idPlayerControl.value;
+    const modalRef = await this.playerService.openPlayerSearchModal({ idPlayer });
+    modalRef.onClose$.subscribe(player => {
+      if (player && player.id !== idPlayer) {
+        this.form.patchValue({
+          idPlayer: player.id,
+          personaName: player.personaName,
+        });
+      }
+    });
+    this.updateState({ playerSearchModalLoading: false });
+  }
+
+  onHostChange($event: Event): void {
+    $event.stopPropagation();
+    this.hostChange.emit();
+  }
 
   ngOnInit(): void {
     this.form.valueChanges$.pipe(takeUntil(this.destroy$)).subscribe(player => {

@@ -1,4 +1,5 @@
 import { Region } from './region';
+import { trackByFactory } from '@stlmpp/utils';
 
 export interface Player {
   id: number;
@@ -30,3 +31,5 @@ export interface PlayerUpdate {
   aboutMe?: string;
   idRegion?: number;
 }
+
+export const trackByPlayer = trackByFactory<Player>('id');
