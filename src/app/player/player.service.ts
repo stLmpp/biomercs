@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PlayerStore } from './player.store';
 import { tap } from 'rxjs/operators';
-import { Player, PlayerUpdate } from '@model/player';
+import { Player, PlayerAdd, PlayerUpdate } from '@model/player';
 import { HttpParams } from '@util/http-params';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import type {
@@ -74,5 +74,14 @@ export class PlayerService {
         ),
       { data, disableClose: true, minWidth: '60vw' }
     );
+  }
+
+  personaNameExists(personaName: string): Observable<boolean> {
+    const params = new HttpParams({ personaName }, true);
+    return this.http.get<boolean>(`${this.endPoint}/exists`, { params });
+  }
+
+  create(dto: PlayerAdd): Observable<Player> {
+    return this.http.post<Player>(this.endPoint, dto);
   }
 }

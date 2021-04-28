@@ -1,5 +1,6 @@
-<h1 bioModalTitle>{{ httpError?.status }} - {{ httpError?.message }}</h1>
+<h1 bioModalTitle>{{ httpError?.status }}</h1>
 <bio-modal-content>
+  <p *ngIf="httpError?.message">Message: {{ httpError?.message }}</p>
   <p *ngIf="httpError?.error">Error: {{ httpError?.error }}</p>
   <p *ngIf="httpError?.sqlMessage">SQL Message: {{ httpError?.sqlMessage }}</p>
 </bio-modal-content>

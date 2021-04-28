@@ -19,7 +19,9 @@ export interface PlayerAdd {
   title?: string;
   aboutMe?: string;
   idRegion?: number;
+  steamid?: string;
 }
+
 export interface PlayerUpdate {
   personaName?: string;
   idUser?: number;

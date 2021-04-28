@@ -52,4 +52,8 @@
     Score change requests
     <bio-badge suffix>{{ headerQuery.playerRequestChangesCount$ | async }}</bio-badge>
   </bio-list-item>
+  <bio-list-item routerLink="/admin/create-player" (click)="onMenuSelected($event)" *ngIf="user.admin">
+    <icon prefix>person_add_alt_1</icon>
+    Create player
+  </bio-list-item>
 </bio-list>

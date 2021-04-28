@@ -1,0 +1,44 @@
+<form [controlGroup]="form" (groupSubmit)="onSubmit()">
+  <bio-card *ngLet="isInvalid$ | async as isInvalid">
+    <h3 bioCardTitle>Create player</h3>
+    <bio-card-content>
+      <form-field label="Steam ID">
+        <input bioInput type="text" controlName="steamid" placeholder="Steam ID" />
+        <errors>
+          <error *error="'steamIdExists'">Steam ID already exists</error>
+        </errors>
+      </form-field>
+      <form-field label="Player name">
+        <input bioInput type="text" controlName="personaName" placeholder="Player name" />
+        <errors>
+          <error *error="'personaNameExists'">Player name already exists</error>
+        </errors>
+      </form-field>
+      <form-field label="Title">
+        <input bioInput type="text" controlName="title" placeholder="Title" />
+      </form-field>
+      <form-field label="About me">
+        <input bioInput type="text" controlName="aboutMe" placeholder="About me" />
+      </form-field>
+      <form-field label="Region">
+        <bio-select controlName="idRegion" placeholder="Region">
+          <bio-option *ngFor="let region of regions$ | async; trackBy: trackByRegion" [value]="region.id">
+            <icon [flag]="region.shortName"></icon> {{ region.name }}
+          </bio-option>
+        </bio-select>
+      </form-field>
+      <p class="text-danger" *ngIf="isInvalid && form.touched">Either Steam ID or Player name must be fulfilled</p>
+    </bio-card-content>
+    <bio-card-actions (mouseenter)="onCardActionsMouseenter()">
+      <button
+        bioButton
+        [disabled]="isInvalid || form.invalid || form.pending"
+        type="submit"
+        primary
+        [loading]="loading$ | async"
+      >
+        Create
+      </button>
+    </bio-card-actions>
+  </bio-card>
+</form>

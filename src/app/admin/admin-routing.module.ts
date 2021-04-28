@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AdminComponent } from './admin.component';
-import { ScoreApprovalAdminComponent } from './score-approval-admin/score-approval-admin.component';
-import { PlatformResolver } from '@shared/services/platform/platform.resolver';
 
 const routes: Routes = [
   {
@@ -10,9 +8,13 @@ const routes: Routes = [
     component: AdminComponent,
   },
   {
+    path: 'create-player',
+    loadChildren: () => import('./admin-create-player/admin-create-player.module').then(m => m.AdminCreatePlayerModule),
+  },
+  {
     path: 'approval',
-    component: ScoreApprovalAdminComponent,
-    resolve: [PlatformResolver],
+    loadChildren: () =>
+      import('./admin-score-approval/admin-score-approval.module').then(m => m.AdminScoreApprovalModule),
   },
 ];
 
