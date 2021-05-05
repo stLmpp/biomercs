@@ -21,6 +21,7 @@ import { CurrencyMaskModule } from '@shared/currency-mask/currency-mask.module';
 import { MaskModule } from '@shared/mask/mask.module';
 import { PlayerChangeRequestsActionCellComponent } from './player-change-requests-action-cell/player-change-requests-action-cell.component';
 import { ScoreSharedModule } from '../../score/score-shared/score-shared.module';
+import { CheckboxModule } from '@shared/components/checkbox/checkbox.module';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { ScoreSharedModule } from '../../score/score-shared/score-shared.module'
     CurrencyMaskModule,
     MaskModule,
     ScoreSharedModule,
+    CheckboxModule,
   ],
 })
 export class PlayerChangeRequestsModule {}

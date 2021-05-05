@@ -4351,6 +4351,11 @@ fast-sort@~2.2.0:
   resolved "https://registry.yarnpkg.com/fast-sort/-/fast-sort-2.2.0.tgz#20903763531fbcbb41c9df5ab1bf5f2cefc8476a"
   integrity sha512-W7zqnn2zsYoQA87FKmYtgOsbJohOrh7XrtZrCVHN5XZKqTBTv5UG+rSS3+iWbg/nepRQUOu+wnas8BwtK8kiCg==
 
+fast-sort@~3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/fast-sort/-/fast-sort-3.0.2.tgz#98e5d77f85b48932bc4c395e3025b7a26051b6c2"
+  integrity sha512-DIKDkHBt+IubEEU44/kEulX3SbIuufEHIhRfw0MCh7f/HLGWmR/Dk7xg2tapT28pVFqnEV1ZDtl6SeViAyVe4Q==
+
 fastq@^1.6.0:
   version "1.11.0"
   resolved "https://registry.yarnpkg.com/fastq/-/fastq-1.11.0.tgz#bb9fb955a07130a918eb63c1f5161cc32a5d0858"
@@ -8799,6 +8804,14 @@ st-utils@~1.5.0:
   dependencies:
     fast-sort "~2.2.0"
     type-fest "~0.21.1"
+
+st-utils@~1.6.1:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/st-utils/-/st-utils-1.6.1.tgz#3c1fcfabeb7a10d4ef7bc91cd35f163beb88e4bd"
+  integrity sha512-5vitLlD8Qcnz4uToKMcsyeo1t6+xcVd7sbLnLV8OqhscM25KhS/MOw170e8ghdKMqIAUw+evfZpEuVUNoIlcFg==
+  dependencies:
+    fast-sort "~3.0.2"
+    type-fest "~1.0.2"
 
 stable@^0.1.8:
   version "0.1.8"

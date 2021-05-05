@@ -1,0 +1,13 @@
+<label class="checkbox" [ngClass]="labelPosition">
+  <input
+    type="checkbox"
+    [checked]="checked"
+    (change)="onChange($event)"
+    [indeterminate]="indeterminate"
+    (blur)="onBlur()"
+    [disabled]="disabled"
+    [attr.aria-disabled]="disabled"
+    [name]="name"
+  />
+  <ng-content></ng-content>
+</label>

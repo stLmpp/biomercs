@@ -1,7 +1,12 @@
 .params {
   .card-content {
     display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     grid-gap: 1rem;
   }
   margin-bottom: 1rem;
+}
+
+.checkbox-container {
+  grid-column: 1/-1;
 }

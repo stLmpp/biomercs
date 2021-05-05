@@ -79,7 +79,7 @@
     <hr />
     <h5>Changes Requested</h5>
     <div class="score-changes" controlArrayName="idsScoreChangeRequests">
-      <label
+      <div
         *ngFor="
           let scoreChangeRequest of data.score.scoreChangeRequests;
           trackBy: trackByScoreChangeRequest;
@@ -87,9 +87,8 @@
         "
         [controlGroupName]="$index"
       >
-        <input type="checkbox" controlName="checked" />
-        {{ scoreChangeRequest.description }}
-      </label>
+        <bio-checkbox controlName="checked">{{ scoreChangeRequest.description }}</bio-checkbox>
+      </div>
     </div>
     <hr />
   </bio-modal-content>

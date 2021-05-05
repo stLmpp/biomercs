@@ -10,6 +10,6 @@ export class ScoreFormatPipe implements PipeTransform {
     if (value < 1000) {
       return formatNumber(value, 'pt-BR', '1.0-0');
     }
-    return formatNumber(value / 1000, 'pt-BR', '1.0-0') + 'k';
+    return formatNumber(Math.floor(value / 1000), 'pt-BR', '1.0-0') + 'k';
   }
 }

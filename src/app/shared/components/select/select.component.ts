@@ -30,9 +30,10 @@ import { OptgroupComponent } from './optgroup.component';
 import { isNil } from 'st-utils';
 import { Key } from '@model/enum/key';
 import { getOverlayPositionMenu } from '@shared/components/menu/util';
+import { BooleanInput } from '@angular/cdk/coercion';
 
 @Component({
-  selector: 'bio-select',
+  selector: 'bio-select:not([multiple])',
   templateUrl: './select.component.html',
   styleUrls: ['./select.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -47,7 +48,7 @@ import { getOverlayPositionMenu } from '@shared/components/menu/util';
 // I had to do "implements", instead of "extends", so I can use the "Select" abastract class
 export class SelectComponent extends Select implements ControlValue, AfterContentInit {
   constructor(
-    private changeDetectorRef: ChangeDetectorRef,
+    protected changeDetectorRef: ChangeDetectorRef,
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
     public elementRef: ElementRef<HTMLElement>
@@ -121,11 +122,6 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
     this.open();
   }
 
-  @HostListener('blur')
-  onBlur(): void {
-    this.onTouched$.next();
-  }
-
   onFadeInOutDone($event: AnimationEvent): void {
     if ($event.toState === 'void') {
       this._overlayRef?.dispose();
@@ -133,8 +129,8 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
     }
   }
 
-  isSelected(value: any): boolean {
-    return this.compareWith(this.value, value);
+  isSelected(option: OptionComponent): boolean {
+    return this.compareWith(this.value, option.value);
   }
 
   onPanelKeydown($event: KeyboardEvent): void {
@@ -174,6 +170,7 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
   close(): void {
     this.isOpen = false;
     this._overlayRef?.detach();
+    this.onTouched$.next();
     this.changeDetectorRef.markForCheck();
   }
 
@@ -207,4 +204,6 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
       this._setViewValueFromOptions(this.value);
     });
   }
+
+  static ngAcceptInputType_multiple: BooleanInput;
 }

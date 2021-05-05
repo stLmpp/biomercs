@@ -2,10 +2,7 @@ import { AfterViewInit, Directive, ElementRef, HostBinding, Input, Renderer2 } f
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
 import { isNil } from 'st-utils';
 import { BadgeBase } from '@shared/components/badge/badge';
-
-export type VerticalPosition = 'top' | 'bottom';
-export type HorizontalPosistion = 'left' | 'right';
-export type BioBadgePosition = `${VerticalPosition} ${HorizontalPosistion}`;
+import { VerticalHorizontalPosition } from '@shared/components/common/positions';
 
 @Directive({
   selector: '[bioBadge]',
@@ -51,7 +48,7 @@ export class BadgeDirective extends BadgeBase implements AfterViewInit {
     this._buildBadge();
   }
 
-  @Input() bioBadgePosition: BioBadgePosition = 'top right';
+  @Input() bioBadgePosition: VerticalHorizontalPosition = 'top right';
 
   @HostBinding('class.badge-container-top')
   @Input()
@@ -111,7 +108,7 @@ export class BadgeDirective extends BadgeBase implements AfterViewInit {
     if (this._bioBadgeRight && !position.includes('left')) {
       position += 'right';
     }
-    this.bioBadgePosition = position as BioBadgePosition;
+    this.bioBadgePosition = position as VerticalHorizontalPosition;
     this._buildBadge();
   }
 

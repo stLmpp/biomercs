@@ -5,12 +5,14 @@ import { OptionComponent } from './option.component';
 import { IconModule } from '../icon/icon.module';
 import { A11yModule } from '@angular/cdk/a11y';
 import { OptgroupComponent } from './optgroup.component';
+import { SelectMultipleComponent } from '@shared/components/select/select-multiple.component';
+import { CheckboxModule } from '@shared/components/checkbox/checkbox.module';
 
-const DECLARATIONS = [SelectComponent, OptionComponent, OptgroupComponent];
+const DECLARATIONS = [SelectComponent, OptionComponent, OptgroupComponent, SelectMultipleComponent];
 
 @NgModule({
   declarations: [...DECLARATIONS],
-  imports: [CommonModule, IconModule, A11yModule],
+  imports: [CommonModule, IconModule, A11yModule, CheckboxModule],
   exports: [...DECLARATIONS],
 })
 export class SelectModule {}

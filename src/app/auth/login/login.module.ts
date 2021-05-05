@@ -13,6 +13,7 @@ import { ModalModule } from '@shared/components/modal/modal.module';
 import { SnackBarModule } from '@shared/components/snack-bar/snack-bar.module';
 import { AuthSharedModule } from '../shared/auth-shared.module';
 import { NgLetModule } from '@shared/let/ng-let.module';
+import { CheckboxModule } from '@shared/components/checkbox/checkbox.module';
 
 @NgModule({
   declarations: [LoginComponent, LoginConfirmCodeModalComponent],
@@ -28,6 +29,7 @@ import { NgLetModule } from '@shared/let/ng-let.module';
     SnackBarModule,
     AuthSharedModule,
     NgLetModule,
+    CheckboxModule,
   ],
 })
 export class LoginModule {}

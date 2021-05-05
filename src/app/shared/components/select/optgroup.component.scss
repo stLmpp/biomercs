@@ -13,4 +13,12 @@
       padding-left: 2rem;
     }
   }
+  &.multiple {
+    .checkbox-container {
+      width: unset;
+    }
+    > .label {
+      display: flex;
+    }
+  }
 }

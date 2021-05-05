@@ -5,6 +5,7 @@ import { tap } from 'rxjs/operators';
 import { ModeStore } from './mode.store';
 import { httpCache } from '../../operators/http-cache';
 import { Mode } from '@model/mode';
+import { HttpParams } from '@util/http-params';
 
 @Injectable({ providedIn: 'root' })
 export class ModeService {
@@ -19,5 +20,17 @@ export class ModeService {
         this.modeStore.upsert(modes);
       })
     );
+  }
+
+  findByIdPlatformsGamesMiniGames(idPlatforms: number[], idGames: number[], idMiniGames: number[]): Observable<Mode[]> {
+    const params = new HttpParams({ idPlatforms, idGames, idMiniGames });
+    return this.http
+      .get<Mode[]>(`${this.endPoint}/platforms/games/mini-games`, { params })
+      .pipe(
+        httpCache(this.modeStore, [...idPlatforms, ...idGames, ...idMiniGames]),
+        tap(modes => {
+          this.modeStore.upsert(modes);
+        })
+      );
   }
 }

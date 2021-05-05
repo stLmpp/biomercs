@@ -86,7 +86,7 @@ export class ScoreWorldRecordTableComponent extends LocalState<ScoreWorldRecordT
       if (orderByStage) {
         orderByValue = scoreTable => scoreTable.scores.find(score => score?.idStage === orderByStage)?.score ?? 0;
       } else {
-        orderByValue = 'idCharacterCustome';
+        orderByValue = 'idCharacterCostume';
       }
       return {
         ...scoreTopTable,
@@ -106,7 +106,7 @@ export class ScoreWorldRecordTableComponent extends LocalState<ScoreWorldRecordT
   isMobile$ = this.breakpointObserverService.isMobile$;
 
   trackByStage = trackByFactory<Stage>('id');
-  trackByScoreTable = trackByFactory<ScoreTableWorldRecord>('idCharacterCustome');
+  trackByScoreTable = trackByFactory<ScoreTableWorldRecord>('idCharacterCostume');
 
   trackByScore: TrackByFunction<ScoreVW | undefined> = (index, item) => (item ? item.idScore : index);
 

@@ -2,6 +2,7 @@ import {
   ScoreAdd,
   ScoreChangeRequestsFulfilDto,
   ScoreGatewayEvents,
+  ScoreSearch,
   ScoreTopTableVW,
   ScoreTopTableWorldRecord,
   ScoreVW,
@@ -17,7 +18,6 @@ import { HeaderState, HeaderStore } from '../header/header.store';
 import { auditTime, tap } from 'rxjs/operators';
 import { SocketIOService } from '@shared/services/socket-io/socket-io.service';
 import { Pagination } from '@model/pagination';
-import { ScoreStatusEnum } from '@model/enum/score-status.enum';
 
 export abstract class AbstractScoreService {
   protected constructor(
@@ -153,8 +153,8 @@ export abstract class AbstractScoreService {
     return this._socketConnection.fromEvent<void>(ScoreGatewayEvents.updateCountApprovals).pipe(auditTime(5000));
   }
 
-  search(term: string, status: ScoreStatusEnum, page: number, limit: number): Observable<Pagination<ScoreVW>> {
-    const params = new HttpParams({ term, status, page, limit });
+  search(dto: ScoreSearch): Observable<Pagination<ScoreVW>> {
+    const params = new HttpParams(dto, true);
     return this.http.get<Pagination<ScoreVW>>(`${this.endPoint}/search`, { params });
   }
 }

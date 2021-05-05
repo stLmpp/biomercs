@@ -24,4 +24,10 @@
     cursor: default;
     color: hsla(0, 0%, 100%, 0.5);
   }
+  &.multiple {
+    padding-left: 0.5rem;
+    > label {
+      padding: 0;
+    }
+  }
 }

@@ -79,7 +79,7 @@ export interface ScoreTopTableWorldRecord {
 
 export interface ScoreTableWorldRecord {
   idCharacter: number;
-  idCharacterCustome: number;
+  idCharacterCostume: number;
   characterName: string;
   characterCostumeName: string;
   characterCostumeShortName: string;
@@ -90,4 +90,21 @@ export const trackByScoreVW = trackByFactory<ScoreVW>('idScore');
 
 export enum ScoreGatewayEvents {
   updateCountApprovals = 'updateCountApprovals',
+}
+
+export interface ScoreSearch {
+  page: number;
+  limit: number;
+  status?: ScoreStatusEnum;
+  worldRecord?: boolean | null | undefined;
+  characterWorldRecord?: boolean | null | undefined;
+  combinationWorldRecord?: boolean | null | undefined;
+  score?: string | null | undefined;
+  idPlatforms: number[] | null | undefined;
+  idGames: number[] | null | undefined;
+  idMiniGames: number[] | null | undefined;
+  idModes: number[] | null | undefined;
+  idStages: number[] | null | undefined;
+  idCharacterCostumes: number[] | null | undefined;
+  onlyMyScores?: boolean;
 }

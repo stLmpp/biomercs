@@ -5,6 +5,7 @@ import { tap } from 'rxjs/operators';
 import { CharacterStore } from './character.store';
 import { httpCache } from '../../operators/http-cache';
 import { Character } from '@model/character';
+import { HttpParams } from '@util/http-params';
 
 @Injectable({ providedIn: 'root' })
 export class CharacterService {
@@ -22,6 +23,23 @@ export class CharacterService {
       .get<Character[]>(`${this.endPoint}/platform/${idPlatform}/game/${idGame}/mini-game/${idMiniGame}/mode/${idMode}`)
       .pipe(
         httpCache(this.characterStore, [idPlatform, idGame, idMiniGame, idMode]),
+        tap(characters => {
+          this.characterStore.upsert(characters);
+        })
+      );
+  }
+
+  findByIdPlatformsGamesMiniGamesModes(
+    idPlatforms: number[],
+    idGames: number[],
+    idMiniGames: number[],
+    idModes: number[]
+  ): Observable<Character[]> {
+    const params = new HttpParams({ idPlatforms, idGames, idMiniGames, idModes });
+    return this.http
+      .get<Character[]>(`${this.endPoint}/platforms/games/mini-games/modes`, { params })
+      .pipe(
+        httpCache(this.characterStore, [idPlatforms, idGames, idMiniGames, idModes]),
         tap(characters => {
           this.characterStore.upsert(characters);
         })

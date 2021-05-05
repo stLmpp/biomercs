@@ -1,22 +1,81 @@
-<bio-card collapsable class="params">
-  <bio-card-content>
-    <form-field label="Search">
-      <input bioInput type="search" placeholder="Search for scores" [control]="termControl" />
-    </form-field>
-    <label>
-      <input type="checkbox" [model]="onlyMyScores" (modelChange)="changeOnlyMyScores($event)" />
-      Only my scores
-    </label>
-  </bio-card-content>
-</bio-card>
-<bio-score-list-responsive
-  *ngIf="scores$ | async as scores"
-  [scores]="scores"
-  [colDefs]="colDefs"
-  [paginationMeta]="paginationMeta$ | async"
-  [loading]="loading$ | async"
-  (currentPageChange)="onCurrentPageChange($event)"
-  (itemsPerPageChange)="onItemsPerPageChange($event)"
-  (scoreClicked)="openInfoScore($event)"
->
-</bio-score-list-responsive>
+<ng-container *ngLet="{ loading: loading$ | async } as state">
+  <form [controlGroup]="form" (groupSubmit)="onSearch()">
+    <bio-card collapsable class="params">
+      <h3 bioCardTitle>Parameters</h3>
+      <bio-card-content>
+        <form-field label="Platforms">
+          <bio-select placeholder="Platforms" multiple controlName="idPlatforms">
+            <bio-option *ngFor="let platform of platforms$ | async; trackBy: trackByPlatform" [value]="platform.id">
+              {{ platform.name }}
+            </bio-option>
+          </bio-select>
+        </form-field>
+        <form-field label="Games" [loading]="gameLoading$ | async">
+          <bio-select placeholder="Games" multiple controlName="idGames">
+            <bio-option *ngFor="let game of games$ | async; trackBy: trackByGame" [value]="game.id">
+              {{ game.name }}
+            </bio-option>
+          </bio-select>
+        </form-field>
+        <form-field label="Mini games" [loading]="miniGameLoading$ | async">
+          <bio-select placeholder="Mini games" multiple controlName="idMiniGames">
+            <bio-option *ngFor="let miniGame of miniGames$ | async; trackBy: trackByMiniGame" [value]="miniGame.id">
+              {{ miniGame.name }}
+            </bio-option>
+          </bio-select>
+        </form-field>
+        <form-field label="Modes" [loading]="modeLoading$ | async">
+          <bio-select placeholder="Modes" multiple controlName="idModes">
+            <bio-option *ngFor="let mode of modes$ | async; trackBy: trackByMode" [value]="mode.id">
+              {{ mode.name }}
+            </bio-option>
+          </bio-select>
+        </form-field>
+        <form-field label="Stages" [loading]="stageLoading$ | async">
+          <bio-select placeholder="Stages" multiple controlName="idStages">
+            <bio-option *ngFor="let stage of stages$ | async; trackBy: trackByStage" [value]="stage.id">
+              {{ stage.name }}
+            </bio-option>
+          </bio-select>
+        </form-field>
+        <form-field [loading]="characterLoading$ | async" label="Characters">
+          <bio-select placeholder="Characters" multiple controlName="idCharacterCostumes">
+            <bio-optgroup
+              *ngFor="let character of characters$ | async; trackBy: trackByCharacter"
+              [label]="character.name"
+              [title]="character.name"
+            >
+              <bio-option
+                *ngFor="let characterCostume of character.characterCostumes; trackBy: trackByCharacterCostume"
+                [value]="characterCostume.id"
+              >
+                {{ characterCostume.name }}
+              </bio-option>
+            </bio-optgroup>
+          </bio-select>
+        </form-field>
+        <form-field label="Score">
+          <input bioInput controlName="score" type="text" autocomplete="off" />
+        </form-field>
+        <bio-checkbox controlName="worldRecord">World record</bio-checkbox>
+        <bio-checkbox controlName="characterWorldRecord">Character world record</bio-checkbox>
+        <bio-checkbox controlName="combinationWorldRecord">Combination World Record</bio-checkbox>
+        <bio-checkbox controlName="onlyMyScores">Only my scores</bio-checkbox>
+      </bio-card-content>
+      <bio-card-actions>
+        <button bioButton primary type="submit" [loading]="state.loading">Search</button>
+      </bio-card-actions>
+    </bio-card>
+  </form>
+  <bio-score-list-responsive
+    *ngIf="scores$ | async as scores"
+    [scores]="scores"
+    [colDefs]="colDefs"
+    [paginationMeta]="paginationMeta$ | async"
+    [loading]="state.loading"
+    (currentPageChange)="onCurrentPageChange($event)"
+    (itemsPerPageChange)="onItemsPerPageChange($event)"
+    (scoreClicked)="openInfoScore($event)"
+  >
+  </bio-score-list-responsive>
+</ng-container>

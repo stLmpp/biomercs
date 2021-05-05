@@ -1,0 +1,22 @@
+<div class="select-value" [class.placeholder]="!value.length && placeholder">
+  <ng-container *ngIf="value.length; else noValues"> {{ value.length }} items selected </ng-container>
+  <ng-template #noValues>
+    {{ placeholder }}
+  </ng-template>
+</div>
+<div class="select-icon">
+  <icon>keyboard_arrow_down</icon>
+</div>
+<ng-template #panel>
+  <div
+    class="select-panel height-{{ (options?.length || 0) + (optgroups?.length || 0) }}"
+    tabindex="0"
+    (keydown)="onPanelKeydown($event)"
+    cdkTrapFocus
+    @fadeInOut
+    @scaleIn
+    (@fadeInOut.done)="onFadeInOutDone($event)"
+  >
+    <ng-content></ng-content>
+  </div>
+</ng-template>

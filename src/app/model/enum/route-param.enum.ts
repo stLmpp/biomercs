@@ -11,6 +11,12 @@ export enum RouteParamEnum {
   idScore = 'idScore',
   idScoreApprovalMotive = 'idScoreApprovalMotive',
   idSteamProfile = 'idSteamProfile',
+  idPlatforms = 'idPlatforms',
+  idGames = 'idGames',
+  idMiniGames = 'idMiniGames',
+  idModes = 'idModes',
+  idStages = 'idStages',
+  idCharacterCostumes = 'idCharacterCostumes',
 
   steamid = 'steamid',
 
@@ -31,4 +37,9 @@ export enum RouteParamEnum {
   fromDate = 'fromDate',
   toDate = 'toDate',
   term = 'term',
+  worldRecord = 'worldRecord',
+  characterWorldRecord = 'characterWorldRecord',
+  combinationWorldRecord = 'combinationWorldRecord',
+  onlyMyScores = 'onlyMyScores',
+  score = 'score',
 }

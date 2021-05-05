@@ -26,10 +26,7 @@
           <icon>{{ typePassword === 'password' ? 'visibility_off' : 'visibility' }}</icon>
         </button>
       </form-field>
-      <label>
-        <input type="checkbox" controlName="rememberMe" />
-        Remember me
-      </label>
+      <bio-checkbox controlName="rememberMe"> Remember me </bio-checkbox>
       <p *ngIf="error$ | async as error" class="text-danger">{{ error }}</p>
     </bio-card-content>
     <bio-card-actions end *ngLet="loading$ | async as loading">
