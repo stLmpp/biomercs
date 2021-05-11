@@ -11,6 +11,7 @@ import { ScoreSharedModule } from '../score-shared/score-shared.module';
 import { IconModule } from '@shared/components/icon/icon.module';
 import { TooltipModule } from '@shared/components/tooltip/tooltip.module';
 import { ButtonModule } from '@shared/components/button/button.module';
+import { TitleModule } from '@shared/title/title.module';
 
 @NgModule({
   declarations: [ScoreWorldRecordTableComponent],
@@ -25,6 +26,7 @@ import { ButtonModule } from '@shared/components/button/button.module';
     IconModule,
     TooltipModule,
     ButtonModule,
+    TitleModule,
   ],
 })
 export class ScoreWorldRecordModule {}

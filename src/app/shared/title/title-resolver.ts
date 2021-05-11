@@ -1,5 +1,6 @@
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
+import { Type } from '@angular/core';
 
 export interface TitleResolver {
   resolve(
@@ -7,4 +8,4 @@ export interface TitleResolver {
   ): Observable<string | null | undefined> | Promise<string | null | undefined> | string | null | undefined;
 }
 
-export type TitleType = TitleResolver | string | null | undefined;
+export type TitleType = Type<TitleResolver> | string | null | undefined;

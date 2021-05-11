@@ -7,10 +7,10 @@ import { Title } from '@angular/platform-browser';
 import { isFunction } from 'st-utils';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { TitleResolver, TitleType } from '@shared/title/title-resolver';
-import { of } from 'rxjs';
+import { BehaviorSubject, isObservable, of } from 'rxjs';
 import { filterNil } from '@shared/operators/filter';
 
-function isType<T>(type: any): type is Type<T> {
+function isTitleResolver(type: any): type is Type<TitleResolver> {
   return isFunction(type);
 }
 
@@ -24,6 +24,9 @@ export class TitleService extends Destroyable {
     super();
   }
 
+  private _title$ = new BehaviorSubject<string | null | undefined>(null);
+  title$ = this._title$.asObservable();
+
   init(): void {
     this.globalListenersService.routerActivationEnd$
       .pipe(
@@ -35,13 +38,18 @@ export class TitleService extends Destroyable {
         ),
         switchMap(({ snapshot }) => {
           const title: TitleType = snapshot.data[RouteDataEnum.title];
-          if (isType<TitleResolver>(title)) {
+          if (isTitleResolver(title)) {
             const injector = Injector.create({
               parent: this.injector,
               providers: [{ provide: ActivatedRouteSnapshot, useValue: snapshot }],
             });
             const resolver = injector.get(title);
-            return resolver.resolve(snapshot);
+            const resolved = resolver.resolve(snapshot);
+            if (isObservable(resolved)) {
+              return resolved;
+            } else {
+              return Promise.resolve(resolved);
+            }
           } else {
             return of(title);
           }
@@ -51,6 +59,7 @@ export class TitleService extends Destroyable {
       )
       .subscribe(title => {
         this.title.setTitle('Biomercs - ' + title);
+        this._title$.next(title);
       });
   }
 }

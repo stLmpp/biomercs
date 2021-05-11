@@ -11,6 +11,7 @@ import { SelectModule } from '@shared/components/select/select.module';
 import { CheckboxModule } from '@shared/components/checkbox/checkbox.module';
 import { ButtonModule } from '@shared/components/button/button.module';
 import { NgLetModule } from '@shared/let/ng-let.module';
+import { TitleModule } from '@shared/title/title.module';
 
 @NgModule({
   declarations: [ScoreSearchComponent],
@@ -25,6 +26,7 @@ import { NgLetModule } from '@shared/let/ng-let.module';
     CheckboxModule,
     ButtonModule,
     NgLetModule,
+    TitleModule,
   ],
 })
 export class ScoreSearchModule {}

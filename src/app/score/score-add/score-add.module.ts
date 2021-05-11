@@ -17,6 +17,7 @@ import { ButtonModule } from '@shared/components/button/button.module';
 import { SpinnerModule } from '@shared/components/spinner/spinner.module';
 import { IconModule } from '@shared/components/icon/icon.module';
 import { TooltipModule } from '@shared/components/tooltip/tooltip.module';
+import { TitleModule } from '@shared/title/title.module';
 
 @NgModule({
   declarations: [ScoreAddComponent, ScoreAddPlayerComponent],
@@ -37,6 +38,7 @@ import { TooltipModule } from '@shared/components/tooltip/tooltip.module';
     SpinnerModule,
     IconModule,
     TooltipModule,
+    TitleModule,
   ],
 })
 export class ScoreAddModule {}
