@@ -68,17 +68,8 @@ export class ScoreApprovalModalComponent extends LocalState<{ saving: boolean }>
       .approveOrReject(this.playerMode, this.score.idScore, this.action, payload)
       .pipe(
         switchMap(() => {
-          const {
-            idMiniGame,
-            idPlatform,
-            idGame,
-            idMode,
-            itemsPerPage,
-            page,
-            orderBy,
-            orderByDirection,
-            idStage,
-          } = this.scoreApprovalComponentState;
+          const { idMiniGame, idPlatform, idGame, idMode, itemsPerPage, page, orderBy, orderByDirection, idStage } =
+            this.scoreApprovalComponentState;
           return this.scoreService.findApproval(
             this.playerMode,
             idPlatform!,

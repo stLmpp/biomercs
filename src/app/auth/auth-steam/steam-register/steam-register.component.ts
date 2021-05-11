@@ -29,7 +29,8 @@ export class SteamRegisterComponent
     emailSent: boolean;
     confirmCodeError: string | null;
   }>
-  implements OnDestroy, OnInit {
+  implements OnDestroy, OnInit
+{
   constructor(
     private authService: AuthService,
     private activatedRoute: ActivatedRoute,

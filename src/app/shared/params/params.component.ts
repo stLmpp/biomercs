@@ -86,7 +86,8 @@ export class ParamsComponent
     characterLoading: boolean;
     clearable: boolean;
   }>
-  implements OnChanges, OnInit {
+  implements OnChanges, OnInit
+{
   constructor(
     private controlBuilder: ControlBuilder,
     private platformQuery: PlatformQuery,

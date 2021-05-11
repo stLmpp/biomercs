@@ -15,14 +15,12 @@ export class UrlMetadataService {
 
   get(url: string): Observable<UrlMetadata> {
     const params = new HttpParams({ url });
-    return this.http
-      .get<UrlMetadata>(`${this.endPoint}`, { params })
-      .pipe(
-        useEntityCache(url, this.urlMetadataStore),
-        map(urlMetadata => ({ ...urlMetadata, id: url })),
-        tap(urlMetadata => {
-          this.urlMetadataStore.upsert(url, urlMetadata);
-        })
-      );
+    return this.http.get<UrlMetadata>(`${this.endPoint}`, { params }).pipe(
+      useEntityCache(url, this.urlMetadataStore),
+      map(urlMetadata => ({ ...urlMetadata, id: url })),
+      tap(urlMetadata => {
+        this.urlMetadataStore.upsert(url, urlMetadata);
+      })
+    );
   }
 }

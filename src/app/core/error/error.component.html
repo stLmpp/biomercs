@@ -4,9 +4,7 @@
   <p *ngIf="httpError?.error">Error: {{ httpError.error }}</p>
   <ng-container *ngIf="httpError.sqlError">
     <p *ngFor="let keyvalue of httpError.sqlError | keyvalue">
-      <span style="text-transform: capitalize">
-        {{ keyvalue.key }} </span
-      >: {{ keyvalue.value }}
+      <span style="text-transform: capitalize"> {{ keyvalue.key }} </span>: {{ keyvalue.value }}
     </p>
   </ng-container>
 </bio-modal-content>

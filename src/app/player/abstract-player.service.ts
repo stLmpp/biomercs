@@ -47,13 +47,11 @@ export class AbstractPlayerService {
 
   search(personaName: string, page: number, limit: number): Observable<Pagination<Player>> {
     const params = new HttpParams({ personaName, page, limit });
-    return this.http
-      .get<Pagination<Player>>(`${this.endPoint}/search`, { params })
-      .pipe(
-        tap(({ items }) => {
-          this.playerStore.upsert(items);
-        })
-      );
+    return this.http.get<Pagination<Player>>(`${this.endPoint}/search`, { params }).pipe(
+      tap(({ items }) => {
+        this.playerStore.upsert(items);
+      })
+    );
   }
 
   personaNameExists(personaName: string): Observable<boolean> {

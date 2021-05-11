@@ -24,13 +24,11 @@ export class GameService {
 
   findByIdPlatforms(idPlatforms: number[]): Observable<Game[]> {
     const params = new HttpParams({ idPlatforms });
-    return this.http
-      .get<Game[]>(`${this.endPoint}/platforms`, { params })
-      .pipe(
-        httpCache(this.gameStore, idPlatforms),
-        tap(games => {
-          this.gameStore.upsert(games);
-        })
-      );
+    return this.http.get<Game[]>(`${this.endPoint}/platforms`, { params }).pipe(
+      httpCache(this.gameStore, idPlatforms),
+      tap(games => {
+        this.gameStore.upsert(games);
+      })
+    );
   }
 }

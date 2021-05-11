@@ -17,15 +17,13 @@ export class ScoreApprovalMotiveService {
 
   getByAction(action: ScoreApprovalActionEnum): Observable<ScoreApprovalMotive[]> {
     const params = new HttpParams({ action });
-    return this.http
-      .get<ScoreApprovalMotive[]>(`${this.endPoint}/action`, { params })
-      .pipe(
-        httpCache(this.scoreApprovalMotiveStore, [action]),
-        setLoading(this.scoreApprovalMotiveStore),
-        tap(scoreApprovalMotives => {
-          this.scoreApprovalMotiveStore.upsert(scoreApprovalMotives);
-          this.scoreApprovalMotiveStore.setHasCache(true);
-        })
-      );
+    return this.http.get<ScoreApprovalMotive[]>(`${this.endPoint}/action`, { params }).pipe(
+      httpCache(this.scoreApprovalMotiveStore, [action]),
+      setLoading(this.scoreApprovalMotiveStore),
+      tap(scoreApprovalMotives => {
+        this.scoreApprovalMotiveStore.upsert(scoreApprovalMotives);
+        this.scoreApprovalMotiveStore.setHasCache(true);
+      })
+    );
   }
 }

@@ -23,7 +23,8 @@ import { LocalState } from '@stlmpp/store';
 })
 export class PlayerProfileComponent
   extends LocalState<{ editMode: boolean; loadingRegion: boolean }>
-  implements OnInit {
+  implements OnInit
+{
   constructor(
     private playerQuery: PlayerQuery,
     private routerQuery: RouterQuery,

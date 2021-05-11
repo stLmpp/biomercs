@@ -22,7 +22,8 @@ import { LocalState } from '@stlmpp/store';
 })
 export class LoginComponent
   extends LocalState<{ loadingSteam: boolean; loading: boolean; error: string | null }>
-  implements OnInit {
+  implements OnInit
+{
   constructor(
     private authService: AuthService,
     @Inject(WINDOW) private window: Window,

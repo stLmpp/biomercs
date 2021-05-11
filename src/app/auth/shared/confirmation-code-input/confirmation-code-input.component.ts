@@ -40,7 +40,8 @@ export class ConfirmationCodeInputDirective implements FocusableOption {
 })
 export class ConfirmationCodeInputComponent
   extends ControlValue
-  implements AfterViewInit, OnInit, OnDestroy, OnChanges {
+  implements AfterViewInit, OnInit, OnDestroy, OnChanges
+{
   constructor(private controlBuilder: ControlBuilder) {
     super();
   }

@@ -3,7 +3,6 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnChanges,
   Output,
   TrackByFunction,
   ViewEncapsulation,
@@ -30,9 +29,7 @@ export interface ScoreTableState<T extends Record<any, any>, K extends keyof T =
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
 })
-export class TableComponent<T extends Record<any, any>, K extends keyof T>
-  extends LocalState<ScoreTableState<T, K>>
-  implements OnChanges {
+export class TableComponent<T extends Record<any, any>, K extends keyof T> extends LocalState<ScoreTableState<T, K>> {
   constructor() {
     super(
       { colDefs: [], data: [], colDefDefault: {} },

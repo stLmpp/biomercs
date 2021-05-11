@@ -48,13 +48,11 @@ export class AuthService {
   }
 
   login(dto: AuthCredentials): Observable<User> {
-    return this.http
-      .post<User>(`${this.endPoint}/login`, dto, { headers: AuthErrorInterceptor.ignoreHeaders })
-      .pipe(
-        tap(user => {
-          this.authStore.updateState({ user });
-        })
-      );
+    return this.http.post<User>(`${this.endPoint}/login`, dto, { headers: AuthErrorInterceptor.ignoreHeaders }).pipe(
+      tap(user => {
+        this.authStore.updateState({ user });
+      })
+    );
   }
 
   autoLogin(): Observable<User> {

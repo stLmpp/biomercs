@@ -1,6 +1,8 @@
 export type CompareFn<T = any> = (valueA: T, valueB: T) => boolean;
-export const compareByFactory = <T = any>(key: keyof T): CompareFn<T> => (valueA, valueB) =>
-  valueA?.[key] === valueB?.[key];
+export const compareByFactory =
+  <T = any>(key: keyof T): CompareFn<T> =>
+  (valueA, valueB) =>
+    valueA?.[key] === valueB?.[key];
 
 export interface SimpleChangeCustom<T = any> {
   previousValue: T;
