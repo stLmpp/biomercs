@@ -7,7 +7,7 @@
       (menuSelected)="toggleSideMenu($event)"
     ></bio-side-menu>
     <div class="brand-wrapper">
-      <button bioButton icon type="button" (click)="toggleSideMenu($event)">
+      <button bioButton icon type="button" (click)="toggleSideMenu($event)" *ngIf="user">
         <icon>menu</icon>
       </button>
       <a class="brand" routerLink="/"> Biomercs </a>

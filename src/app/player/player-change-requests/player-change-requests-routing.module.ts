@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PlayerChangeRequestsComponent } from './player-change-requests.component';
 import { PlayerChangeRequestsResolver } from './player-change-requests.resolver';
+import { RouteDataEnum } from '@model/enum/route-data.enum';
 
 const routes: Routes = [
   {
@@ -9,6 +10,9 @@ const routes: Routes = [
     component: PlayerChangeRequestsComponent,
     resolve: {
       data: PlayerChangeRequestsResolver,
+    },
+    data: {
+      [RouteDataEnum.title]: 'Change requests',
     },
   },
 ];

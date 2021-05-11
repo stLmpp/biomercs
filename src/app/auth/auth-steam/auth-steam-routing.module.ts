@@ -13,11 +13,14 @@ const routes: Routes = [
       {
         path: 'register',
         component: SteamRegisterComponent,
+        data: {
+          [RouteDataEnum.title]: 'Register (steam)',
+        },
       },
       {
         path: 'confirm',
         component: SteamRegisterComponent,
-        data: { [RouteDataEnum.confirm]: true },
+        data: { [RouteDataEnum.confirm]: true, [RouteDataEnum.title]: 'Confirm (steam)' },
       },
     ],
   },

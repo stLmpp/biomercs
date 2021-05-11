@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { TitleService } from '@shared/title/title.service';
 
 @Component({
   selector: 'bio-root',
@@ -6,4 +7,14 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent {}
+export class AppComponent implements OnInit, OnDestroy {
+  constructor(private titleService: TitleService) {}
+
+  ngOnInit(): void {
+    this.titleService.init();
+  }
+
+  ngOnDestroy(): void {
+    this.titleService.ngOnDestroy();
+  }
+}

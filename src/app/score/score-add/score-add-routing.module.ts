@@ -3,12 +3,16 @@ import { RouterModule, Routes } from '@angular/router';
 import { ScoreAddComponent } from './score-add.component';
 import { PlatformResolver } from '@shared/services/platform/platform.resolver';
 import { AuthPlayerResolver } from '../../auth/auth-player.resolver';
+import { RouteDataEnum } from '@model/enum/route-data.enum';
 
 const routes: Routes = [
   {
     path: '',
     component: ScoreAddComponent,
     resolve: [PlatformResolver, AuthPlayerResolver],
+    data: {
+      [RouteDataEnum.title]: 'Submit score',
+    },
   },
 ];
 

@@ -41,10 +41,7 @@ export class CoreModule {
     return {
       ngModule: CoreModule,
       providers: [
-        {
-          provide: LOCALE_ID,
-          useValue: 'pt-BR',
-        },
+        { provide: LOCALE_ID, useValue: 'pt-BR' },
         ...WINDOW_PROVIDERS,
         ...withInterceptors(
           AuthInterceptor,
