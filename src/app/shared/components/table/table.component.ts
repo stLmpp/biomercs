@@ -54,6 +54,7 @@ export class TableComponent<T extends Record<any, any>, K extends keyof T> exten
   @Input() colDefs: ColDef<T>[] = [];
   @Input() colDefDefault: Partial<ColDef<T>> = {};
   @Input() metadata: any;
+  @Input() title?: string;
 
   @Output() readonly currentPageChange = new EventEmitter<number>();
   @Output() readonly itemsPerPageChange = new EventEmitter<number>();

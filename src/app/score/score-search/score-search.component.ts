@@ -94,7 +94,7 @@ export class ScoreSearchComponent extends LocalState<ScoreSearchComponentState> 
     combinationWorldRecord: new Control<boolean>(this._getParamBooleanFromRoute(RouteParamEnum.combinationWorldRecord)),
     score: new Control<string>(this.activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.score) ?? ''),
     onlyMyScores: new Control<boolean>(this._getParamBooleanFromRoute(RouteParamEnum.onlyMyScores)),
-    status: new Control<ScoreStatusEnum | undefined>(ScoreStatusEnum.Approved),
+    idScoreStatus: new Control<ScoreStatusEnum | undefined>(ScoreStatusEnum.Approved),
     idPlatforms: new Control<number[]>(this._getParamsArrayFromRoute(RouteParamEnum.idPlatforms), { updateOn: 'blur' }),
     idGames: new Control<number[]>(this._getParamsArrayFromRoute(RouteParamEnum.idGames), { updateOn: 'blur' }),
     idMiniGames: new Control<number[]>(this._getParamsArrayFromRoute(RouteParamEnum.idMiniGames), { updateOn: 'blur' }),

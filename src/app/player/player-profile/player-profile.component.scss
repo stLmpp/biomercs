@@ -1,9 +1,9 @@
 :host {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 599px));
+  grid-gap: 1rem;
   justify-content: center;
   > .card {
-    max-width: 599px;
-    width: 100%;
     .card-subtitle.about-me {
       white-space: pre;
     }

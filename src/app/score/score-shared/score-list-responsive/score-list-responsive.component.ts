@@ -29,6 +29,7 @@ export class ScoreListResponsiveComponent<T extends ScoreVW = ScoreVW> {
   @Input() colDefs!: ColDef<T>[];
   @Input() colDefDefault: Partial<ColDef<T>> = {};
   @Input() metadata: any;
+  @Input() title?: string;
 
   @Output() readonly currentPageChange = new EventEmitter<number>();
   @Output() readonly itemsPerPageChange = new EventEmitter<number>();

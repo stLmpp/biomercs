@@ -39,7 +39,8 @@ export interface ScoreVW {
   maxCombo: number;
   time: string;
   approvalDate?: Date;
-  status: ScoreStatusEnum;
+  scoreStatusDescription: string;
+  idScoreStatus: number;
   scorePlayers: ScorePlayerVW[];
   creationDate: Date;
   lastUpdatedDate: Date | null;
@@ -95,7 +96,7 @@ export enum ScoreGatewayEvents {
 export interface ScoreSearch {
   page: number;
   limit: number;
-  status?: ScoreStatusEnum;
+  idScoreStatus?: ScoreStatusEnum;
   worldRecord?: boolean | null | undefined;
   characterWorldRecord?: boolean | null | undefined;
   combinationWorldRecord?: boolean | null | undefined;

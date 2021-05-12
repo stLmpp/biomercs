@@ -26,3 +26,12 @@
     </div>
   </bio-card-content>
 </bio-card>
+<bio-score-list
+  *ngFor="let status of scoreGroupedByStatus$ | async; trackBy: trackByScoreGroupByStatus"
+  [scores]="status.scores"
+  [title]="status.description"
+  [disabledProperty]="'disabled'"
+  (scoreClicked)="openScoreInfo($event)"
+  collapsable
+>
+</bio-score-list>

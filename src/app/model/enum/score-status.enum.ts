@@ -1,7 +1,8 @@
 export enum ScoreStatusEnum {
-  Approved = 'Approved',
-  RejectedByAdmin = 'Rejected by Admin',
-  RejectedByPlayer = 'Rejected by Partner',
-  AwaitingApprovalAdmin = 'Awaiting Approval of Admin',
-  AwaitingApprovalPlayer = 'Awaiting Approval of Partner',
+  Approved = 1,
+  RejectedByAdmin,
+  RejectedByPlayer,
+  AwaitingApprovalAdmin,
+  AwaitingApprovalPlayer,
+  ChangesRequested,
 }

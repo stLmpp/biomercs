@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/
 import { AuthService } from '../../auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
-import { RouterQuery } from '@stlmpp/router';
 import { ControlBuilder, Validators } from '@stlmpp/control';
 import { Observable } from 'rxjs';
 import { finalize, tap } from 'rxjs/operators';
@@ -34,7 +33,6 @@ export class SteamRegisterComponent
   constructor(
     private authService: AuthService,
     private activatedRoute: ActivatedRoute,
-    private routerQuery: RouterQuery,
     private controlBuilder: ControlBuilder,
     private router: Router
   ) {

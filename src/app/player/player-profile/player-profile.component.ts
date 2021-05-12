@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { PlayerQuery } from '../player.query';
 import { RouterQuery } from '@stlmpp/router';
-import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
-import { BehaviorSubject } from 'rxjs';
+import { debounceTime, filter, map, switchMap, takeUntil } from 'rxjs/operators';
 import { PlayerService } from '../player.service';
 import { Animations } from '@shared/animations/animations';
 import { AuthQuery } from '../../auth/auth.query';
@@ -13,6 +12,21 @@ import { Player, PlayerUpdate } from '@model/player';
 import { isObjectEmpty } from 'st-utils';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { LocalState } from '@stlmpp/store';
+import {
+  ScoreGroupedByStatus,
+  ScoreScoreGroupedByStatusScoreVW,
+  trackByScoreGroupedByStatus,
+} from '@model/score-grouped-by-status';
+import { ActivatedRoute } from '@angular/router';
+import { ScoreVW } from '@model/score';
+import { ScoreService } from '../../score/score.service';
+
+interface PlayerProfileComponentState {
+  editMode: boolean;
+  loadingRegion: boolean;
+  update: PlayerUpdate;
+  scoreGroupedByStatus: ScoreGroupedByStatus[];
+}
 
 @Component({
   selector: 'bio-player-profile',
@@ -21,10 +35,7 @@ import { LocalState } from '@stlmpp/store';
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [Animations.collapse.collapse()],
 })
-export class PlayerProfileComponent
-  extends LocalState<{ editMode: boolean; loadingRegion: boolean }>
-  implements OnInit
-{
+export class PlayerProfileComponent extends LocalState<PlayerProfileComponentState> implements OnInit {
   constructor(
     private playerQuery: PlayerQuery,
     private routerQuery: RouterQuery,
@@ -32,12 +43,19 @@ export class PlayerProfileComponent
     private authQuery: AuthQuery,
     private regionService: RegionService,
     private regionQuery: RegionQuery,
-    private dynamicLoaderService: DynamicLoaderService
+    private dynamicLoaderService: DynamicLoaderService,
+    private activatedRoute: ActivatedRoute,
+    private scoreService: ScoreService
   ) {
-    super({ editMode: false, loadingRegion: false });
+    super({
+      editMode: false,
+      loadingRegion: false,
+      update: {},
+      scoreGroupedByStatus: activatedRoute.snapshot.data.scoreGroupedByStatus ?? [],
+    });
   }
 
-  private _update$ = new BehaviorSubject<PlayerUpdate>({});
+  private _update$ = this.selectState('update');
   private _idPlayer$ = this.routerQuery.selectParams(RouteParamEnum.idPlayer).pipe(
     filter(idPlayer => !!idPlayer),
     map(Number)
@@ -47,6 +65,9 @@ export class PlayerProfileComponent
   player$ = this._idPlayer$.pipe(switchMap(idPlayer => this.playerQuery.selectEntity(idPlayer)));
   isSameAsLogged$ = this._idPlayer$.pipe(switchMap(idPlayer => this.authQuery.selectIsSameAsLogged(idPlayer)));
   loadingRegion$ = this.selectState('loadingRegion');
+  scoreGroupedByStatus$ = this.selectState('scoreGroupedByStatus');
+
+  trackByScoreGroupByStatus = trackByScoreGroupedByStatus;
 
   get idPlayer(): number {
     // idPlayer is required to access this component
@@ -61,12 +82,35 @@ export class PlayerProfileComponent
     this.playerService.update(this.idPlayer, dto).subscribe();
   }
 
+  private _updateScore(
+    idScoreStatus: number,
+    idScore: number,
+    partial: Partial<ScoreScoreGroupedByStatusScoreVW>
+  ): void {
+    this.updateState('scoreGroupedByStatus', scoreGroupedByStatus =>
+      scoreGroupedByStatus.map(status => {
+        if (status.idScoreStatus === idScoreStatus) {
+          status = {
+            ...status,
+            scores: status.scores.map(score => {
+              if (score.idScore === idScore) {
+                score = { ...score, ...partial };
+              }
+              return score;
+            }),
+          };
+        }
+        return status;
+      })
+    );
+  }
+
   toggleEditMode(): void {
     this.updateState('editMode', !this.getState('editMode'));
   }
 
   update<K extends keyof PlayerUpdate>(key: K, value: PlayerUpdate[K]): void {
-    this._update$.next({ ...this._update$.value, [key]: value });
+    this.updateState('update', update => ({ ...update, [key]: value }));
   }
 
   async openModalSelectRegion(): Promise<void> {
@@ -87,15 +131,22 @@ export class PlayerProfileComponent
     }
   }
 
+  async openScoreInfo(score: ScoreVW): Promise<void> {
+    this._updateScore(score.idScoreStatus, score.idScore, { disabled: true });
+    await this.scoreService.openModalScoreInfo({ score });
+    this._updateScore(score.idScoreStatus, score.idScore, { disabled: false });
+  }
+
   ngOnInit(): void {
     this._update$
       .pipe(
-        filter(update => !isObjectEmpty(update)),
-        debounceTime(500)
+        takeUntil(this.destroy$),
+        debounceTime(500),
+        filter(update => !isObjectEmpty(update))
       )
       .subscribe(update => {
         this._update(update);
-        this._update$.next({});
+        this.updateState({ update: {} });
       });
   }
 }

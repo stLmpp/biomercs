@@ -1,5 +1,6 @@
 <bio-card class="bio-table">
   <bio-loading *ngIf="loading"></bio-loading>
+  <h3 bioCardTitle *ngIf="title">{{ title }}</h3>
   <bio-card-content *ngLet="colDefs$ | async as colDefs">
     <div
       class="header"

@@ -4,6 +4,7 @@ import {
   Component,
   ElementRef,
   Host,
+  HostBinding,
   HostListener,
   Input,
   OnInit,
@@ -13,6 +14,7 @@ import {
 } from '@angular/core';
 import { ListParentControl } from './list-config';
 import { FocusableOption } from '@angular/cdk/a11y';
+import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
 
 @Component({
   selector: 'bio-list-item',
@@ -29,10 +31,20 @@ export class ListItemComponent implements OnInit, FocusableOption {
     @Optional() @Host() public listParentControl?: ListParentControl
   ) {}
 
+  private _disabled = false;
+
   @ViewChild('control') controlInput?: ElementRef<HTMLInputElement>;
 
   @Input() value: any;
-  @Input() disabled = false;
+
+  @Input()
+  @HostBinding('class.disabled')
+  get disabled(): boolean {
+    return this._disabled;
+  }
+  set disabled(disabled: boolean) {
+    this._disabled = coerceBooleanProperty(disabled);
+  }
 
   model: any;
   name = '';
@@ -67,4 +79,6 @@ export class ListItemComponent implements OnInit, FocusableOption {
       this.model = this.listParentControl.value;
     }
   }
+
+  static ngAcceptInputType_disabled: BooleanInput;
 }
