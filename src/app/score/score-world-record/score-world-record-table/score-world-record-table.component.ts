@@ -5,12 +5,12 @@ import { ParamsConfig, ParamsForm } from '@shared/params/params.component';
 import { LocalState } from '@stlmpp/store';
 import { trackByFactory } from '@stlmpp/utils';
 import { Stage } from '@model/stage';
-import { ScoreTableWorldRecord, ScoreVW } from '@model/score';
+import { ScoreTableWorldRecord, ScoreTopTableWorldRecord, ScoreVW } from '@model/score';
 import { filter, finalize, map, shareReplay, switchMap } from 'rxjs/operators';
 import { orderBy, OrderByDirection, OrderByType } from 'st-utils';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { isNotNil } from '@shared/operators/filter';
 import { BreakpointObserverService } from '@shared/services/breakpoint-observer/breakpoint-observer.service';
 
@@ -77,7 +77,7 @@ export class ScoreWorldRecordTableComponent extends LocalState<ScoreWorldRecordT
     idCharacterCostume: { show: false },
   };
 
-  scoreTopTable$ = combineLatest([this._scoreTopTable$, this.orderBy$]).pipe(
+  scoreTopTable$: Observable<ScoreTopTableWorldRecord> = combineLatest([this._scoreTopTable$, this.orderBy$]).pipe(
     map(([scoreTopTable, { orderByStage, orderByDirection, orderByCharacter }]) => {
       if (!orderByStage && !orderByCharacter) {
         return scoreTopTable;
@@ -94,7 +94,7 @@ export class ScoreWorldRecordTableComponent extends LocalState<ScoreWorldRecordT
       };
     })
   );
-  scoreTopTableList$ = this.scoreTopTable$.pipe(
+  scoreTopTableList$: Observable<ScoreTopTableWorldRecord> = this.scoreTopTable$.pipe(
     map(scoreTopTable => ({
       ...scoreTopTable,
       scoreTables: scoreTopTable.scoreTables

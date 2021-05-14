@@ -4,11 +4,12 @@ import { debounceTime, delay, finalize, map, startWith, tap } from 'rxjs/operato
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import { AbstractRegionService } from '../region-service.token';
-import { trackByRegion } from '@model/region';
+import { Region, trackByRegion } from '@model/region';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { combineLatest, Observable } from 'rxjs';
 import { Control } from '@stlmpp/control';
 import { LocalState } from '@stlmpp/store';
+import { StMapView } from '@stlmpp/store/lib/map';
 
 export interface RegionSelectData {
   idRegion: number;
@@ -48,7 +49,7 @@ export class RegionSelectComponent extends LocalState<{ loading: boolean; saving
 
   searchControl = new Control<string>('');
   search$ = this.searchControl.value$.pipe(debounceTime(400));
-  all$ = combineLatest([this.regionQuery.all$, this.search$.pipe(startWith(''))]).pipe(
+  all$: Observable<StMapView<Region>> = combineLatest([this.regionQuery.all$, this.search$.pipe(startWith(''))]).pipe(
     map(([regions, term]) => regions.search('name', term))
   );
 

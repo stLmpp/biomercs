@@ -54,7 +54,7 @@ export class CoreModule {
         ),
         {
           provide: APP_INITIALIZER,
-          useFactory: (authService: AuthService) => () => authService.autoLogin().toPromise(),
+          useFactory: (authService: AuthService) => () => authService.autoLogin(),
           deps: [AuthService],
           multi: true,
         },

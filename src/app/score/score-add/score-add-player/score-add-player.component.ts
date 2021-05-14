@@ -10,6 +10,7 @@ import { AutocompleteDirective } from '@shared/components/autocomplete/autocompl
 import { generateScorePlayerControlGroup, ScorePlayerAddForm } from '../score-add';
 import { LocalState } from '@stlmpp/store';
 import { AuthQuery } from '../../../auth/auth.query';
+import { Observable } from 'rxjs';
 
 interface ScoreAddPlayerComponentState {
   playersLoading: boolean;
@@ -61,9 +62,9 @@ export class ScoreAddPlayerComponent extends LocalState<ScoreAddPlayerComponentS
 
   idPlayer$ = this.idPlayerControl.value$;
   evidence$ = this.evidenceControl.value$.pipe(debounceTime(400));
-  players$ = this.form.get('personaName').value$.pipe(
+  players$: Observable<Player[]> = this.form.get('personaName').value$.pipe(
     debounceTime(500),
-    filter(personaName => !!personaName && this.bioAutocomplete?.hasFocus),
+    filter(personaName => !!personaName && !!this.bioAutocomplete?.hasFocus),
     switchMap(personaName => {
       this.updateState({ playersLoading: true });
       return this.playerService.search(personaName, 1, 8).pipe(

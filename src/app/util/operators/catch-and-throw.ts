@@ -8,6 +8,6 @@ export const catchAndThrow = <T>(callback: (error: HttpError) => any): OperatorF
     if (isObservable(ret)) {
       return ret as Observable<any>;
     } else {
-      return throwError(err);
+      return throwError(() => err);
     }
   });

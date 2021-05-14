@@ -1,4 +1,4 @@
-<bio-card *ngIf="player$ | async as player">
+<bio-card *ngIf="player$ | async as player" class="player">
   <h3 bioCardTitle>
     {{ player.personaName }}
     <button bioButton icon [disabled]="loadingRegion$ | async" [tooltip]="player.region?.name">
