@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { StUtilsModule } from '@stlmpp/utils';
 import { StStoreModule } from '@stlmpp/store';
 import { CoreModule } from './core/core.module';
 import { HttpClientModule } from '@angular/common/http';
@@ -28,7 +27,6 @@ import { MaskModule } from '@shared/mask/mask.module';
     BrowserAnimationsModule,
     HttpClientModule,
     CoreModule.forRoot(),
-    StUtilsModule.forRoot(),
     StStoreModule.forRoot({ production: environment.production }),
     StRouterModule.forRoot(),
     StControlModule.forRoot(),

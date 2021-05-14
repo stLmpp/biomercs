@@ -22,6 +22,7 @@ import type {
   ScoreApprovalActionsModalComponent,
   ScoreApprovalActionsModalData,
 } from './score-approval-actions-modal/score-approval-actions-modal.component';
+import { filterNil } from '@shared/operators/filter';
 
 export interface ScoreApprovalComponentState extends ParamsForm {
   page: number;
@@ -69,7 +70,7 @@ export class ScoreApprovalComponent extends LocalState<ScoreApprovalComponentSta
     );
   }
 
-  private _data$ = this.selectState('data');
+  private _data$ = this.selectState('data').pipe(filterNil());
 
   @Input() playerMode = false;
 

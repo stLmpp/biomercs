@@ -17,7 +17,7 @@ export class ModalRef<T = any, D = any, R = any> {
   componentInstance?: T;
   data!: D | null;
 
-  onClose$ = new Subject<R | null>();
+  onClose$ = new Subject<R | null | undefined>();
 
   private _init(): void {
     this.overlayRef

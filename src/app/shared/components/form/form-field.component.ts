@@ -39,7 +39,7 @@ let uniqueId = 0;
 export class FormFieldComponent implements AfterContentInit, OnChanges, OnDestroy {
   constructor(private changeDetectorRef: ChangeDetectorRef) {}
 
-  private _destroy$ = new Subject();
+  private _destroy$ = new Subject<void>();
 
   @ContentChild(LabelDirective) labelDirective?: LabelDirective;
   @ContentChild(InputDirective) inputDirective?: InputDirective;

@@ -46,7 +46,7 @@ export class ConfirmationCodeInputComponent
     super();
   }
 
-  private _destroy$ = new Subject();
+  private _destroy$ = new Subject<void>();
 
   @ViewChildren(ConfirmationCodeInputDirective) inputList!: QueryList<ConfirmationCodeInputDirective>;
   @Output() readonly focusoutLastItem = new EventEmitter<void>();

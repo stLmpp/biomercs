@@ -65,19 +65,19 @@ export class PlayerChangeRequestsModalComponent extends LocalState<PlayerChangeR
 
   form = new ControlGroup<ScoreChangeRequestsFulfilForm>({
     score: new Control(this.data.score.score, [Validators.required]),
-    idsScoreChangeRequests: new ControlArray(
+    idsScoreChangeRequests: new ControlArray<IdChecked>(
       this.data.score.scoreChangeRequests.map(
         ({ idScoreChangeRequest }) =>
-          new ControlGroup({
+          new ControlGroup<IdChecked>({
             id: new Control(idScoreChangeRequest),
             checked: new Control(false),
           })
       )
     ),
-    scorePlayers: new ControlArray(
+    scorePlayers: new ControlArray<ScorePlayerUpdateDto>(
       this.data.score.scorePlayers.map(
         scorePlayer =>
-          new ControlGroup({
+          new ControlGroup<ScorePlayerUpdateDto>({
             id: new Control(scorePlayer.idScorePlayer),
             bulletKills: new Control(scorePlayer.bulletKills, [Validators.required, Validators.min(0)]),
             host: new Control(scorePlayer.host),

@@ -41,6 +41,7 @@ export class AuthErrorInterceptor implements HttpInterceptor {
     return request$;
   }
 
+  // TODO transform this into HttpContext (Ng12 feature)
   static ignoreKey = 'auth-error-interceptor-ignore';
   static ignoreHeaders = new HttpHeaders({
     [AuthErrorInterceptor.ignoreKey]: 'ignore',

@@ -38,7 +38,7 @@ export class ListSelectable {}
   host: { class: 'control' },
 })
 export class ListControlValue extends ListParentControl implements OnDestroy, AfterContentInit {
-  private _destroy$ = new Subject();
+  private _destroy$ = new Subject<void>();
 
   @ContentChildren(ListItemComponent, { descendants: true }) listItemComponents!: QueryList<ListItemComponent>;
 
