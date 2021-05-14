@@ -13,7 +13,7 @@
         title="{{ character.characterName }}{{
           character.characterCostumeName !== character.characterName ? ' ' + character.characterCostumeName : ''
         }}"
-        *ngFor="let character of scoreTopTable.scoreTables; trackBy: trackByScoreTable"
+        *ngFor="let character of scoreTopTable.scoreTables; trackBy: trackByScoreTableWithoutUndefined"
         collapsable
         [scores]="character.scores"
         class="card-score-list"

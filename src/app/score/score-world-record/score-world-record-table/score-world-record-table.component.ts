@@ -5,7 +5,13 @@ import { ParamsConfig, ParamsForm } from '@shared/params/params.component';
 import { LocalState } from '@stlmpp/store';
 import { trackByFactory } from '@stlmpp/utils';
 import { Stage } from '@model/stage';
-import { ScoreTableWorldRecord, ScoreTopTableWorldRecord, ScoreVW } from '@model/score';
+import {
+  ScoreTableWorldRecord,
+  ScoreTableWorldRecordWithoutUndefined,
+  ScoreTopTableWorldRecord,
+  ScoreTopTableWorldRecordWithoutUndefined,
+  ScoreVW,
+} from '@model/score';
 import { filter, finalize, map, shareReplay, switchMap } from 'rxjs/operators';
 import { orderBy, OrderByDirection, OrderByType } from 'st-utils';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -94,7 +100,7 @@ export class ScoreWorldRecordTableComponent extends LocalState<ScoreWorldRecordT
       };
     })
   );
-  scoreTopTableList$: Observable<ScoreTopTableWorldRecord> = this.scoreTopTable$.pipe(
+  scoreTopTableList$: Observable<ScoreTopTableWorldRecordWithoutUndefined> = this.scoreTopTable$.pipe(
     map(scoreTopTable => ({
       ...scoreTopTable,
       scoreTables: scoreTopTable.scoreTables
@@ -107,6 +113,7 @@ export class ScoreWorldRecordTableComponent extends LocalState<ScoreWorldRecordT
 
   trackByStage = trackByFactory<Stage>('id');
   trackByScoreTable = trackByFactory<ScoreTableWorldRecord>('idCharacterCostume');
+  trackByScoreTableWithoutUndefined = trackByFactory<ScoreTableWorldRecordWithoutUndefined>('idCharacterCostume');
 
   trackByScore: TrackByFunction<ScoreVW | undefined> = (index, item) => (item ? item.idScore : index);
 

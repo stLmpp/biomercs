@@ -87,6 +87,14 @@ export interface ScoreTableWorldRecord {
   scores: (ScoreVW | undefined)[];
 }
 
+export interface ScoreTableWorldRecordWithoutUndefined extends ScoreTableWorldRecord {
+  scores: ScoreVW[];
+}
+
+export interface ScoreTopTableWorldRecordWithoutUndefined extends ScoreTopTableWorldRecord {
+  scoreTables: ScoreTableWorldRecordWithoutUndefined[];
+}
+
 export const trackByScoreVW = trackByFactory<ScoreVW>('idScore');
 
 export enum ScoreGatewayEvents {
