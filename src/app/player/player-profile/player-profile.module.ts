@@ -10,6 +10,7 @@ import { IconModule } from '@shared/components/icon/icon.module';
 import { TooltipModule } from '@shared/components/tooltip/tooltip.module';
 import { PlayerProfileComponent } from './player-profile.component';
 import { ScoreSharedModule } from '../../score/score-shared/score-shared.module';
+import { NgLetModule } from '@shared/let/ng-let.module';
 
 @NgModule({
   declarations: [PlayerProfileComponent],
@@ -23,6 +24,7 @@ import { ScoreSharedModule } from '../../score/score-shared/score-shared.module'
     IconModule,
     TooltipModule,
     ScoreSharedModule,
+    NgLetModule,
   ],
 })
 export class PlayerProfileModule {}

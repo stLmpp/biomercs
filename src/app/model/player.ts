@@ -25,7 +25,6 @@ export interface PlayerAdd {
 
 export interface PlayerUpdate {
   personaName?: string;
-  idUser?: number;
   idSteamProfile?: number;
   title?: string;
   aboutMe?: string;

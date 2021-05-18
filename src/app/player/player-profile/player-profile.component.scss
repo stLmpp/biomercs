@@ -1,30 +1,16 @@
 :host {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(0, 599px));
-  grid-gap: 1rem;
-  justify-content: center;
-  > .player {
-    grid-column: 1/-1;
-    .card-subtitle.about-me {
-      white-space: pre;
-    }
-    .card-title {
-      display: flex;
-      align-items: center;
-      .icon,
-      .button {
-        margin-left: 0.5rem;
-        cursor: pointer;
-      }
-      .icon {
-        opacity: 0;
-        transition: opacity 100ms ease;
-      }
-      &:hover {
-        .icon {
-          opacity: 1;
-        }
-      }
+  > * {
+    margin-bottom: 1rem;
+  }
+}
+
+.player {
+  .card-title {
+    display: flex;
+    align-items: center;
+    .button {
+      margin-left: 0.5rem;
+      cursor: pointer;
     }
   }
 }

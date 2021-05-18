@@ -15,6 +15,7 @@ import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { TableCellNotifyChange, TableOrder } from '@shared/components/table/type';
 import { trackByFactory } from '@stlmpp/utils';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 export interface ScoreTableState<T extends Record<any, any>, K extends keyof T = keyof T> {
   colDefs: ColDefInternal<T, K>[];
@@ -43,6 +44,7 @@ export class TableComponent<T extends Record<any, any>, K extends keyof T> exten
     );
   }
 
+  private _collapsable = false;
   private _colDefDefault$ = this.selectState('colDefDefault');
   private _colDefs$ = this.selectState('colDefs');
 
@@ -55,6 +57,14 @@ export class TableComponent<T extends Record<any, any>, K extends keyof T> exten
   @Input() colDefDefault: Partial<ColDef<T>> = {};
   @Input() metadata: any;
   @Input() title?: string;
+
+  @Input()
+  get collapsable(): boolean {
+    return this._collapsable;
+  }
+  set collapsable(collapsable: boolean) {
+    this._collapsable = coerceBooleanProperty(collapsable);
+  }
 
   @Output() readonly currentPageChange = new EventEmitter<number>();
   @Output() readonly itemsPerPageChange = new EventEmitter<number>();
@@ -82,4 +92,6 @@ export class TableComponent<T extends Record<any, any>, K extends keyof T> exten
       }
     }
   }
+
+  static ngAcceptInputType_collapsable: BooleanInput;
 }

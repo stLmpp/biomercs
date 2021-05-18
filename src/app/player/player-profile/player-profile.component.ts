@@ -20,9 +20,12 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { ScoreVW } from '@model/score';
 import { ScoreService } from '../../score/score.service';
+import { getScoreDefaultColDefs } from '../../score/score-shared/util';
+import { AuthDateFormatPipe } from '../../auth/shared/auth-date-format.pipe';
+import { ColDef } from '@shared/components/table/col-def';
+import { ScoreOpenInfoCellComponent } from '../../score/score-shared/score-open-info-cell/score-open-info-cell.component';
 
 interface PlayerProfileComponentState {
-  editMode: boolean;
   loadingRegion: boolean;
   update: PlayerUpdate;
   scoreGroupedByStatus: ScoreGroupedByStatus[];
@@ -45,10 +48,10 @@ export class PlayerProfileComponent extends LocalState<PlayerProfileComponentSta
     private regionQuery: RegionQuery,
     private dynamicLoaderService: DynamicLoaderService,
     private activatedRoute: ActivatedRoute,
-    private scoreService: ScoreService
+    private scoreService: ScoreService,
+    private authDateFormatPipe: AuthDateFormatPipe
   ) {
     super({
-      editMode: false,
       loadingRegion: false,
       update: {},
       scoreGroupedByStatus: activatedRoute.snapshot.data.scoreGroupedByStatus ?? [],
@@ -61,11 +64,17 @@ export class PlayerProfileComponent extends LocalState<PlayerProfileComponentSta
     map(Number)
   );
 
-  editMode$ = this.selectState('editMode');
   player$ = this._idPlayer$.pipe(switchMap(idPlayer => this.playerQuery.selectEntity(idPlayer)));
   isSameAsLogged$ = this._idPlayer$.pipe(switchMap(idPlayer => this.authQuery.selectIsSameAsLogged(idPlayer)));
   loadingRegion$ = this.selectState('loadingRegion');
   scoreGroupedByStatus$ = this.selectState('scoreGroupedByStatus');
+
+  colDefs: ColDef<ScoreScoreGroupedByStatusScoreVW>[] = [
+    { property: 'idScore', component: ScoreOpenInfoCellComponent, width: '40px' },
+    ...getScoreDefaultColDefs<ScoreScoreGroupedByStatusScoreVW>(this.authDateFormatPipe),
+  ];
+
+  // TODO create form to update instead of the state, or maybe not, I don't know
 
   trackByScoreGroupByStatus = trackByScoreGroupedByStatus;
 
@@ -103,10 +112,6 @@ export class PlayerProfileComponent extends LocalState<PlayerProfileComponentSta
         return status;
       })
     );
-  }
-
-  toggleEditMode(): void {
-    this.updateState('editMode', !this.getState('editMode'));
   }
 
   update<K extends keyof PlayerUpdate>(key: K, value: PlayerUpdate[K]): void {

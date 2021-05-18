@@ -11,3 +11,9 @@ export interface User {
   player?: Player;
   dateFormat: string;
 }
+
+export interface UserUpdate {
+  lastOnline?: Date;
+  rememberMe?: boolean;
+  dateFormat?: string;
+}

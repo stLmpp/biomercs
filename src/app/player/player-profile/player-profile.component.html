@@ -4,34 +4,38 @@
     <button bioButton icon [disabled]="loadingRegion$ | async" [tooltip]="player.region?.name">
       <icon [flag]="player.region?.shortName" (click)="openModalSelectRegion()" (mouseenter)="preloadRegions()"></icon>
     </button>
-    <icon tooltip="Edit profile" small *ngIf="isSameAsLogged$ | async" (click)="toggleEditMode()">edit</icon>
   </h3>
-  <div bioCardSubtitle>{{ player.title }}</div>
-  <div bioCardSubtitle class="about-me">{{ player.aboutMe }}</div>
-  <bio-card-content>
-    <div class="edit" @collapse *ngIf="editMode$ | async">
-      <form-field label="Title">
-        <input bioInput [model]="player.title" placeholder="Title" (modelChange)="update('title', $event)" />
-      </form-field>
-      <form-field label="About me">
-        <textarea
-          bioInput
-          resize="vertical"
-          rows="3"
-          [model]="player.aboutMe"
-          placeholder="Title"
-          (modelChange)="update('aboutMe', $event)"
-        ></textarea>
-      </form-field>
-    </div>
-  </bio-card-content>
+  <ng-container *ngLet="isSameAsLogged$ | async as isSameAsLogged">
+    <ng-container *ngIf="isSameAsLogged; else notSameAsLogged">
+      <bio-card-content>
+        <form-field label="Title">
+          <input bioInput [model]="player.title" placeholder="Title" (modelChange)="update('title', $event)" />
+        </form-field>
+        <form-field label="About me">
+          <textarea
+            bioInput
+            resize="vertical"
+            rows="3"
+            [model]="player.aboutMe"
+            placeholder="Title"
+            (modelChange)="update('aboutMe', $event)"
+          ></textarea>
+        </form-field>
+      </bio-card-content>
+    </ng-container>
+    <ng-template #notSameAsLogged>
+      <div bioCardSubtitle>{{ player.title }}</div>
+      <div bioCardSubtitle class="about-me">{{ player.aboutMe }}</div>
+    </ng-template>
+  </ng-container>
 </bio-card>
-<bio-score-list
+<bio-score-list-responsive
   *ngFor="let status of scoreGroupedByStatus$ | async; trackBy: trackByScoreGroupByStatus"
   [scores]="status.scores"
   [title]="status.description"
+  [colDefs]="colDefs"
   [disabledProperty]="'disabled'"
   (scoreClicked)="openScoreInfo($event)"
-  collapsable
+  [collapsable]="false"
 >
-</bio-score-list>
+</bio-score-list-responsive>

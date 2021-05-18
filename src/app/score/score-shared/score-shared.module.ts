@@ -29,6 +29,7 @@ import { ScoreListResponsiveComponent } from './score-list-responsive/score-list
 import { TableModule } from '@shared/components/table/table.module';
 import { ScoreApprovalActionsCellComponent } from './score-approval/score-approval-actions-cell/score-approval-actions-cell.component';
 import { ScoreApprovalActionsModalComponent } from './score-approval/score-approval-actions-modal/score-approval-actions-modal.component';
+import { ScoreOpenInfoCellComponent } from './score-open-info-cell/score-open-info-cell.component';
 
 const DECLARATIONS = [
   ScoreApprovalComponent,
@@ -44,7 +45,7 @@ const DECLARATIONS = [
 ];
 
 @NgModule({
-  declarations: [...DECLARATIONS],
+  declarations: [...DECLARATIONS, ScoreOpenInfoCellComponent],
   imports: [
     CommonModule,
     ParamsModule,
