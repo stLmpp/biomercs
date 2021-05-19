@@ -74,8 +74,6 @@ export class PlayerProfileComponent extends LocalState<PlayerProfileComponentSta
     ...getScoreDefaultColDefs<ScoreScoreGroupedByStatusScoreVW>(this.authDateFormatPipe),
   ];
 
-  // TODO create form to update instead of the state, or maybe not, I don't know
-
   trackByScoreGroupByStatus = trackByScoreGroupedByStatus;
 
   get idPlayer(): number {
