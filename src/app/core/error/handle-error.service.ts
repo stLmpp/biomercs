@@ -4,7 +4,6 @@ import { OperatorFunction } from 'rxjs';
 import { catchAndThrow } from '@util/operators/catch-and-throw';
 import { SnackBarService } from '@shared/components/snack-bar/snack-bar.service';
 import { ModalService } from '@shared/components/modal/modal.service';
-import { take } from 'rxjs/operators';
 import { AuthQuery } from '../../auth/auth.query';
 
 @Injectable({ providedIn: 'root' })
@@ -18,7 +17,7 @@ export class HandleErrorService {
   private _snackBar(message: string, button: string, data: HttpError, isAdmin: boolean): void {
     const snack = this.snackBarService.open(message, { action: button });
     if (isAdmin) {
-      snack.onAction$.pipe(take(1)).subscribe(async () => {
+      snack.onAction$.subscribe(async () => {
         await this.modalService.openLazy(() => import('../error/error.component').then(c => c.ErrorComponent), {
           data,
         });
@@ -37,9 +36,6 @@ export class HandleErrorService {
           break;
         case 404:
           message = 'The data was not found, 404';
-          break;
-        case 409:
-          message = `Can't finish operation because of relations`;
           break;
         default:
           message = 'Internal error';

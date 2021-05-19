@@ -97,6 +97,7 @@ export class SnackBarComponent implements OnInit, OnDestroy {
     this.overlayRef.detach();
     this.onClose$.next();
     this.onClose$.complete();
+    this.onAction$.complete();
   }
 
   ngOnInit(): void {

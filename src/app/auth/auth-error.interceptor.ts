@@ -1,9 +1,19 @@
 import { Injectable } from '@angular/core';
-import { HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import {
+  HttpContext,
+  HttpContextToken,
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { catchAndThrow } from '@util/operators/catch-and-throw';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
+
+export const IgnoreErrorContextToken = new HttpContextToken(() => false);
+export const ignoreErrorContext = (): HttpContext => new HttpContext().set(IgnoreErrorContextToken, true);
 
 @Injectable({ providedIn: 'root' })
 export class AuthErrorInterceptor implements HttpInterceptor {
@@ -11,7 +21,7 @@ export class AuthErrorInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let request$ = next.handle(req);
-    if (!req.headers.has(AuthErrorInterceptor.ignoreKey)) {
+    if (!req.context.get(IgnoreErrorContextToken)) {
       request$ = request$.pipe(
         catchAndThrow(err => {
           switch (err.status) {
@@ -40,10 +50,4 @@ export class AuthErrorInterceptor implements HttpInterceptor {
     }
     return request$;
   }
-
-  // TODO transform this into HttpContext (Ng12 feature)
-  static ignoreKey = 'auth-error-interceptor-ignore';
-  static ignoreHeaders = new HttpHeaders({
-    [AuthErrorInterceptor.ignoreKey]: 'ignore',
-  });
 }
