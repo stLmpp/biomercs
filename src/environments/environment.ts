@@ -7,7 +7,8 @@ export const environment = {
   api: '/api',
   dev: true,
   cacheTimeout: 450_000,
-  socketIO: 'http://localhost:3000/',
+  socketIOPath: '/api/socket',
+  socketIOHost: 'http://localhost:3000',
 };
 
 /*

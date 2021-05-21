@@ -52,8 +52,16 @@ export class SocketIOConnection {
 
 @Injectable({ providedIn: 'root' })
 export class SocketIOService {
+  private _manager = new io.Manager(environment.socketIOHost, {
+    path: environment.socketIOPath,
+    transports: ['websocket', 'polling'],
+  });
+
   createConnection(namespace: string): SocketIOConnection {
-    const connection = io(`${environment.socketIO}${namespace}`);
+    if (!namespace.startsWith('/')) {
+      namespace = `/${namespace}`;
+    }
+    const connection = this._manager.socket(namespace);
     return new SocketIOConnection(connection).connect();
   }
 }

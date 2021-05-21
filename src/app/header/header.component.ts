@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { AuthQuery } from '../auth/auth.query';
 import { AuthService } from '../auth/auth.service';
 import { SnackBarService } from '@shared/components/snack-bar/snack-bar.service';
-import { debounceTime, defaultIfEmpty, filter, map, mapTo, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { debounceTime, filter, map, mapTo, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 import {
   BreakpointObserverService,
   MediaQueryEnum,
@@ -68,7 +68,7 @@ export class HeaderComponent extends LocalState<HeaderComponentState> implements
 
   ngOnInit(): void {
     const updateCountApprovals$ = combineLatest([
-      this.scoreService.onUpdateCountApprovals().pipe(defaultIfEmpty(1 as any)),
+      this.scoreService.onUpdateCountApprovals().pipe(startWith(void 0)),
       this.authQuery.isLogged$.pipe(filter(isLogged => isLogged)),
     ]).pipe(mapTo(void 0), debounceTime(50));
     updateCountApprovals$
