@@ -1,10 +1,25 @@
 <bio-card *ngIf="player$ | async as player" class="player">
-  <h3 bioCardTitle>
-    {{ player.personaName }}
-    <button bioButton icon [disabled]="loadingRegion$ | async" [tooltip]="player.region?.name">
-      <icon [flag]="player.region?.shortName" (click)="openModalSelectRegion()" (mouseenter)="preloadRegions()"></icon>
+  <div bioCardTitle>
+    <button class="flag" bioButton icon [disabled]="loadingRegion$ | async" [tooltip]="player.region?.name">
+      <icon
+        small
+        [flag]="player.region?.shortName"
+        (click)="openModalSelectRegion()"
+        (mouseenter)="preloadRegions()"
+      ></icon>
     </button>
-  </h3>
+    <h3>{{ player.personaName }}</h3>
+    <a
+      class="steam"
+      bioButton
+      icon
+      *ngIf="player.steamProfile"
+      [href]="player.steamProfile.profileurl"
+      tooltip="Steam profile"
+    >
+      <icon mdi="steam" medium></icon>
+    </a>
+  </div>
   <ng-container *ngLet="isSameAsLogged$ | async as isSameAsLogged">
     <ng-container *ngIf="isSameAsLogged; else notSameAsLogged">
       <bio-card-content>
@@ -27,6 +42,11 @@
       <div bioCardSubtitle>{{ player.title }}</div>
       <div bioCardSubtitle class="about-me">{{ player.aboutMe }}</div>
     </ng-template>
+    <bio-card-actions *ngIf="isSameAsLogged && !player.idSteamProfile">
+      <button bioButton primary type="button" (click)="linkSteam(player.id)" [loading]="loadingLinkSteam$ | async">
+        Link steam
+      </button>
+    </bio-card-actions>
   </ng-container>
 </bio-card>
 <bio-score-list-responsive

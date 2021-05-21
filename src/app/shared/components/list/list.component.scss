@@ -3,6 +3,13 @@
 .list {
   display: flex;
   flex-direction: column;
+  a.list-item {
+    text-decoration: none;
+    color: currentColor;
+    &:hover {
+      text-decoration: none;
+    }
+  }
   .list-item {
     padding: 0.75rem 0.5rem;
     border-bottom: 1px solid $primary-400;

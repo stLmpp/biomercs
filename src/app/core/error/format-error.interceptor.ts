@@ -3,20 +3,25 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/c
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { HttpErrorResponse } from '@model/http-error';
+import { isObject, isString } from 'st-utils';
 
 @Injectable({ providedIn: 'root' })
 export class FormatErrorInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
-      catchError(({ error }: HttpErrorResponse) => {
-        error = { ...error };
-        if (!error.message) {
-          error.message = 'Internal error';
+      catchError((response: HttpErrorResponse) => {
+        let { error } = response;
+        if (isString(error)) {
+          try {
+            error = JSON.parse(error);
+          } catch {}
         }
-        if (!error.error) {
-          error.error = 'Internal error';
+        if (isObject(error)) {
+          error = { ...error };
+          error.message ??= 'Internal error';
+          error.name ??= error.error ?? 'Internal error';
         }
-        return throwError(error);
+        return throwError(() => error);
       })
     );
   }

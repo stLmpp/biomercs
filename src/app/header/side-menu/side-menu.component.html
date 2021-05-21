@@ -1,10 +1,11 @@
 <bio-list selectable>
-  <bio-list-item routerLink="/score/search" queryParamsHandling="preserve" (click)="onMenuSelected($event)">
+  <a bioListItem routerLink="/score/search" queryParamsHandling="preserve" (click)="onMenuSelected($event)">
     <icon prefix>search</icon>
     Search scores
-  </bio-list-item>
+  </a>
   <!--TODO added better Leaderboards layout to support mobile, for now it's disabled-->
-  <bio-list-item
+  <a
+    bioListItem
     *ngIf="isSmallScreen"
     routerLink="/score/leaderboards"
     queryParamsHandling="preserve"
@@ -12,8 +13,9 @@
   >
     <icon prefix>leaderboard</icon>
     Leaderboards
-  </bio-list-item>
-  <bio-list-item
+  </a>
+  <a
+    bioListItem
     routerLink="/score/world-record/table"
     queryParamsHandling="preserve"
     (click)="onMenuSelected($event)"
@@ -21,8 +23,9 @@
   >
     <icon prefix mdi="trophy"></icon>
     World records
-  </bio-list-item>
-  <bio-list-item
+  </a>
+  <a
+    bioListItem
     routerLink="/admin/approval"
     queryParamsHandling="preserve"
     (click)="onMenuSelected($event)"
@@ -31,8 +34,9 @@
     <icon prefix>checklist</icon>
     Scores approval (Admin)
     <bio-badge suffix>{{ headerQuery.adminApprovalCount$ | async }}</bio-badge>
-  </bio-list-item>
-  <bio-list-item
+  </a>
+  <a
+    bioListItem
     [routerLink]="user.player?.id ? ['player', user.player!.id, 'approval'] : ['/player/u', user.id, 'approval']"
     queryParamsHandling="preserve"
     (click)="onMenuSelected($event)"
@@ -40,8 +44,9 @@
     <icon prefix>checklist</icon>
     Scores approval
     <bio-badge suffix>{{ headerQuery.playerApprovalCount$ | async }}</bio-badge>
-  </bio-list-item>
-  <bio-list-item
+  </a>
+  <a
+    bioListItem
     [routerLink]="
       user.player?.id ? ['/player', user.player!.id, 'change-requests'] : ['player/u', user.id, 'change-requests']
     "
@@ -51,9 +56,9 @@
     <icon prefix>sync_alt</icon>
     Score change requests
     <bio-badge suffix>{{ headerQuery.playerRequestChangesCount$ | async }}</bio-badge>
-  </bio-list-item>
-  <bio-list-item routerLink="/admin/create-player" (click)="onMenuSelected($event)" *ngIf="user.admin">
+  </a>
+  <a bioListItem routerLink="/admin/create-player" (click)="onMenuSelected($event)" *ngIf="user.admin">
     <icon prefix>person_add_alt_1</icon>
     Create player
-  </bio-list-item>
+  </a>
 </bio-list>

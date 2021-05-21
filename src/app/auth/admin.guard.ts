@@ -19,8 +19,8 @@ import { map } from 'rxjs/operators';
 export class AdminGuard implements CanActivate, CanLoad {
   constructor(private authQuery: AuthQuery, private router: Router) {}
 
-  private _validateAdmin(): Observable<boolean | UrlTree> {
-    return this.authQuery.selectIsAdmin().pipe(map(isAdmin => isAdmin || this.router.createUrlTree(['/'])));
+  private _validateAdmin(): boolean | UrlTree {
+    return this.authQuery.getIsAdmin() || this.router.createUrlTree(['/'])
   }
 
   canActivate(

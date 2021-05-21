@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { PlayerQuery } from '../player.query';
 import { RouterQuery } from '@stlmpp/router';
-import { debounceTime, filter, map, switchMap, takeUntil } from 'rxjs/operators';
+import { debounceTime, filter, finalize, map, switchMap, takeUntil } from 'rxjs/operators';
 import { PlayerService } from '../player.service';
 import { Animations } from '@shared/animations/animations';
 import { AuthQuery } from '../../auth/auth.query';
@@ -29,6 +29,7 @@ interface PlayerProfileComponentState {
   loadingRegion: boolean;
   update: PlayerUpdate;
   scoreGroupedByStatus: ScoreGroupedByStatus[];
+  loadingLinkSteam: boolean;
 }
 
 @Component({
@@ -55,6 +56,7 @@ export class PlayerProfileComponent extends LocalState<PlayerProfileComponentSta
       loadingRegion: false,
       update: {},
       scoreGroupedByStatus: activatedRoute.snapshot.data.scoreGroupedByStatus ?? [],
+      loadingLinkSteam: false,
     });
   }
 
@@ -68,6 +70,7 @@ export class PlayerProfileComponent extends LocalState<PlayerProfileComponentSta
   isSameAsLogged$ = this._idPlayer$.pipe(switchMap(idPlayer => this.authQuery.selectIsSameAsLogged(idPlayer)));
   loadingRegion$ = this.selectState('loadingRegion');
   scoreGroupedByStatus$ = this.selectState('scoreGroupedByStatus');
+  loadingLinkSteam$ = this.selectState('loadingLinkSteam');
 
   colDefs: ColDef<ScoreScoreGroupedByStatusScoreVW>[] = [
     { property: 'idScore', component: ScoreOpenInfoCellComponent, width: '40px' },
@@ -151,5 +154,17 @@ export class PlayerProfileComponent extends LocalState<PlayerProfileComponentSta
         this._update(update);
         this.updateState({ update: {} });
       });
+  }
+
+  linkSteam(idPlayer: number): void {
+    this.updateState({ loadingLinkSteam: true });
+    this.playerService
+      .linkSteam(idPlayer)
+      .pipe(
+        finalize(() => {
+          this.updateState({ loadingLinkSteam: false });
+        })
+      )
+      .subscribe();
   }
 }

@@ -28,6 +28,7 @@ export interface ColDef<T extends Record<any, any>, K extends keyof T = keyof T>
   template?: TemplateRef<ColDefTemplateRefContext<T, K>>;
   component?: BioCellComponentType;
   formatter?: TableCellFormatter<T, K>;
+  metadata?: any;
 }
 
 export class ColDefInternal<T extends Record<any, any>, K extends keyof T = keyof T> {
@@ -54,6 +55,7 @@ export class ColDefInternal<T extends Record<any, any>, K extends keyof T = keyo
   template?: TemplateRef<ColDefTemplateRefContext<T, K>>;
   component?: BioCellComponentType;
   formatter: TableCellFormatter<T, K>;
+  metadata?: any;
 
   static convertAll<T1 extends Record<any, any>, K1 extends keyof T1 = keyof T1>(
     colDefs: ColDef<T1, K1>[]

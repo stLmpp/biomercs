@@ -21,19 +21,23 @@ export abstract class AbstractComponent extends AbstractColorComponent {
     return this._disabled || null;
   }
 
-  @HostBinding('attr.aria-disabled') get ariaDisabled(): string {
+  @HostBinding('attr.aria-disabled')
+  get ariaDisabled(): string {
     return '' + this._disabled;
   }
 
-  @HostBinding('class.small') get smallClass(): boolean {
+  @HostBinding('class.small')
+  get smallClass(): boolean {
     return this.bioSize === 'small';
   }
 
-  @HostBinding('class.medium') get mediumClass(): boolean {
+  @HostBinding('class.medium')
+  get mediumClass(): boolean {
     return this.bioSize === 'medium';
   }
 
-  @HostBinding('class.large') get largeClass(): boolean {
+  @HostBinding('class.large')
+  get largeClass(): boolean {
     return this.bioSize === 'large';
   }
 

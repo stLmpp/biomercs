@@ -27,6 +27,8 @@ import { CharacterService } from '@shared/services/character/character.service';
 import { trackByCharacter } from '@model/character';
 import { trackByCharacterCostume } from '@model/character-costume';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { ColDef } from '@shared/components/table/col-def';
+import { ScoreOpenInfoCellComponent } from '../score-shared/score-open-info-cell/score-open-info-cell.component';
 
 export interface ScoreSearchComponentState {
   scores: ScoreVW[];
@@ -105,7 +107,10 @@ export class ScoreSearchComponent extends LocalState<ScoreSearchComponentState> 
     }),
   });
 
-  colDefs = getScoreDefaultColDefs(this.authDateFormatPipe);
+  colDefs: ColDef<ScoreVW>[] = [
+    { property: 'idScore', component: ScoreOpenInfoCellComponent, width: '40px', metadata: { showWorldRecord: true } },
+    ...getScoreDefaultColDefs(this.authDateFormatPipe),
+  ];
 
   get idPlatformsControl(): Control<number[] | null | undefined> {
     return this.form.get('idPlatforms');
