@@ -23,7 +23,7 @@ export class AuthQuery extends Query<Auth> {
   isAdmin$ = this.user$.pipe(
     filterNil(),
     map(user => user.admin),
-    distinctUntilChanged(),
+    distinctUntilChanged()
   );
 
   getToken(): string {

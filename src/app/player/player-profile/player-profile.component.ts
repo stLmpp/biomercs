@@ -24,12 +24,14 @@ import { getScoreDefaultColDefs } from '../../score/score-shared/util';
 import { AuthDateFormatPipe } from '../../auth/shared/auth-date-format.pipe';
 import { ColDef } from '@shared/components/table/col-def';
 import { ScoreOpenInfoCellComponent } from '../../score/score-shared/score-open-info-cell/score-open-info-cell.component';
+import { combineLatest, Observable } from 'rxjs';
 
 interface PlayerProfileComponentState {
   loadingRegion: boolean;
   update: PlayerUpdate;
   scoreGroupedByStatus: ScoreGroupedByStatus[];
   loadingLinkSteam: boolean;
+  editMode: boolean;
 }
 
 @Component({
@@ -57,6 +59,7 @@ export class PlayerProfileComponent extends LocalState<PlayerProfileComponentSta
       update: {},
       scoreGroupedByStatus: activatedRoute.snapshot.data.scoreGroupedByStatus ?? [],
       loadingLinkSteam: false,
+      editMode: false,
     });
   }
 
@@ -71,6 +74,11 @@ export class PlayerProfileComponent extends LocalState<PlayerProfileComponentSta
   loadingRegion$ = this.selectState('loadingRegion');
   scoreGroupedByStatus$ = this.selectState('scoreGroupedByStatus');
   loadingLinkSteam$ = this.selectState('loadingLinkSteam');
+  editMode$ = this.selectState('editMode');
+  state$: Observable<{ editMode: boolean; isSameAsLogged: boolean }> = combineLatest({
+    editMode: this.editMode$,
+    isSameAsLogged: this.isSameAsLogged$,
+  });
 
   colDefs: ColDef<ScoreScoreGroupedByStatusScoreVW>[] = [
     { property: 'idScore', component: ScoreOpenInfoCellComponent, width: '40px' },
@@ -143,6 +151,22 @@ export class PlayerProfileComponent extends LocalState<PlayerProfileComponentSta
     this._updateScore(score.idScoreStatus, score.idScore, { disabled: false });
   }
 
+  linkSteam(idPlayer: number): void {
+    this.updateState({ loadingLinkSteam: true });
+    this.playerService
+      .linkSteam(idPlayer)
+      .pipe(
+        finalize(() => {
+          this.updateState({ loadingLinkSteam: false });
+        })
+      )
+      .subscribe();
+  }
+
+  toggleEditMode(): void {
+    this.updateState('editMode', editMode => !editMode);
+  }
+
   ngOnInit(): void {
     this._update$
       .pipe(
@@ -154,17 +178,5 @@ export class PlayerProfileComponent extends LocalState<PlayerProfileComponentSta
         this._update(update);
         this.updateState({ update: {} });
       });
-  }
-
-  linkSteam(idPlayer: number): void {
-    this.updateState({ loadingLinkSteam: true });
-    this.playerService
-      .linkSteam(idPlayer)
-      .pipe(
-        finalize(() => {
-          this.updateState({ loadingLinkSteam: false });
-        })
-      )
-      .subscribe();
   }
 }

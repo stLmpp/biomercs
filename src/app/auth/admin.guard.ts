@@ -11,7 +11,6 @@ import {
 } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthQuery } from './auth.query';
-import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +19,7 @@ export class AdminGuard implements CanActivate, CanLoad {
   constructor(private authQuery: AuthQuery, private router: Router) {}
 
   private _validateAdmin(): boolean | UrlTree {
-    return this.authQuery.getIsAdmin() || this.router.createUrlTree(['/'])
+    return this.authQuery.getIsAdmin() || this.router.createUrlTree(['/']);
   }
 
   canActivate(

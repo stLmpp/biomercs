@@ -11,6 +11,7 @@ import { TooltipModule } from '@shared/components/tooltip/tooltip.module';
 import { PlayerProfileComponent } from './player-profile.component';
 import { ScoreSharedModule } from '../../score/score-shared/score-shared.module';
 import { NgLetModule } from '@shared/let/ng-let.module';
+import { ValidationModule } from '@shared/validators/validation.module';
 
 @NgModule({
   declarations: [PlayerProfileComponent],
@@ -25,6 +26,7 @@ import { NgLetModule } from '@shared/let/ng-let.module';
     TooltipModule,
     ScoreSharedModule,
     NgLetModule,
+    ValidationModule,
   ],
 })
 export class PlayerProfileModule {}

@@ -20,7 +20,7 @@ import { auditTime, takeUntil } from 'rxjs/operators';
 import { FormFieldErrorComponent } from './error.component';
 import { PrefixDirective } from '../common/prefix.directive';
 import { SuffixDirective } from '../common/suffix.directive';
-import { ControlDirective } from '@stlmpp/control';
+import { Control, ControlDirective, ModelDirective } from '@stlmpp/control';
 import { SelectComponent } from '../select/select.component';
 import { BooleanInput } from '@angular/cdk/coercion';
 import { isNil } from 'st-utils';
@@ -44,6 +44,7 @@ export class FormFieldComponent implements AfterContentInit, OnChanges, OnDestro
   @ContentChild(LabelDirective) labelDirective?: LabelDirective;
   @ContentChild(InputDirective) inputDirective?: InputDirective;
   @ContentChild(ControlDirective) controlDirective?: ControlDirective;
+  @ContentChild(ModelDirective) modelDirective?: ModelDirective;
   @ContentChildren(FormFieldErrorComponent, { descendants: true }) errorComponents!: QueryList<FormFieldErrorComponent>;
   @ContentChild(PrefixDirective) prefixDirective?: PrefixDirective;
   @ContentChild(SuffixDirective) sufixDirective?: SuffixDirective;
@@ -55,33 +56,35 @@ export class FormFieldComponent implements AfterContentInit, OnChanges, OnDestro
   @Input() loading?: BooleanInput;
   @Input() disabled?: BooleanInput;
 
+  get control(): Control | undefined {
+    return this.controlDirective?.control ?? this.modelDirective?.control;
+  }
+
   ngAfterContentInit(): void {
     if (this.labelDirective) {
       this.labelDirective.for = this.id;
     }
     if (this.inputDirective) {
       this.inputDirective.id = this.id;
-      if (this.inputDirective.controlDirective) {
-        this.inputDirective.controlDirective.control.stateChanged$
-          .pipe(takeUntil(this._destroy$), auditTime(50))
-          .subscribe(() => {
-            if (this.labelDirective) {
-              this.labelDirective.danger = !!this.inputDirective?.dangerClass;
-            }
-            this.changeDetectorRef.markForCheck();
-          });
+      if (this.inputDirective.control) {
+        this.inputDirective.control.stateChanged$.pipe(takeUntil(this._destroy$), auditTime(50)).subscribe(() => {
+          if (this.labelDirective) {
+            this.labelDirective.danger = !!this.inputDirective?.dangerClass;
+          }
+          this.changeDetectorRef.markForCheck();
+        });
       }
     }
-    if (this.controlDirective) {
+    if (this.control) {
       if (!isNil(this.disabled)) {
-        this.controlDirective.disabled = !!this.disabled;
+        this.control.disable(!!this.disabled);
       }
     }
   }
 
   ngOnChanges(changes: SimpleChangesCustom<FormFieldComponent>): void {
-    if (changes.disabled && this.controlDirective) {
-      this.controlDirective.disabled = !!changes.disabled.currentValue;
+    if (changes.disabled && this.control) {
+      this.control.disable(!!changes.disabled.currentValue);
     }
   }
 

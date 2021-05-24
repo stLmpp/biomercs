@@ -1,54 +1,74 @@
-<bio-card *ngIf="player$ | async as player" class="player">
-  <div bioCardTitle>
-    <button class="flag" bioButton icon [disabled]="loadingRegion$ | async" [tooltip]="player.region?.name">
-      <icon
-        small
-        [flag]="player.region?.shortName"
-        (click)="openModalSelectRegion()"
-        (mouseenter)="preloadRegions()"
-      ></icon>
-    </button>
-    <h3>{{ player.personaName }}</h3>
-    <a
-      class="steam"
-      bioButton
-      icon
-      *ngIf="player.steamProfile"
-      [href]="player.steamProfile.profileurl"
-      tooltip="Steam profile"
-    >
-      <icon mdi="steam" medium></icon>
-    </a>
-  </div>
-  <ng-container *ngLet="isSameAsLogged$ | async as isSameAsLogged">
-    <ng-container *ngIf="isSameAsLogged; else notSameAsLogged">
-      <bio-card-content>
-        <form-field label="Title">
-          <input bioInput [model]="player.title" placeholder="Title" (modelChange)="update('title', $event)" />
-        </form-field>
-        <form-field label="About me">
-          <textarea
-            bioInput
-            resize="vertical"
-            rows="3"
-            [model]="player.aboutMe"
-            placeholder="Title"
-            (modelChange)="update('aboutMe', $event)"
-          ></textarea>
-        </form-field>
-      </bio-card-content>
-    </ng-container>
+<ng-container *ngIf="state$ | async as state">
+  <bio-card *ngIf="player$ | async as player" class="player">
+    <div bioCardTitle>
+      <button class="flag" bioButton icon [disabled]="loadingRegion$ | async" [tooltip]="player.region?.name">
+        <icon
+          small
+          [flag]="player.region?.shortName"
+          (click)="openModalSelectRegion()"
+          (mouseenter)="preloadRegions()"
+        ></icon>
+      </button>
+      <h3>{{ player.personaName }}</h3>
+      <a
+        class="steam"
+        bioButton
+        icon
+        *ngIf="player.steamProfile"
+        [href]="player.steamProfile.profileurl"
+        tooltip="Steam profile"
+      >
+        <icon mdi="steam" medium></icon>
+      </a>
+    </div>
+    <bio-card-content *ngIf="state.isSameAsLogged && state.editMode; else notSameAsLogged">
+      <form-field label="Persona name" [loading]="model.isPending">
+        <input
+          bioInput
+          #model="model"
+          [model]="player.personaName"
+          placeholder="Persona name"
+          personaNameExists
+          [personaNameExistsIgnore]="player.personaName"
+        />
+        <errors>
+          <error *error="'personaNameExists'">Player name already exists</error>
+        </errors>
+      </form-field>
+      <form-field label="Title">
+        <input bioInput [model]="player.title" placeholder="Title" (modelChange)="update('title', $event)" />
+      </form-field>
+      <form-field label="About me">
+        <textarea
+          bioInput
+          resize="vertical"
+          rows="3"
+          [model]="player.aboutMe"
+          placeholder="Title"
+          (modelChange)="update('aboutMe', $event)"
+        ></textarea>
+      </form-field>
+    </bio-card-content>
     <ng-template #notSameAsLogged>
       <div bioCardSubtitle>{{ player.title }}</div>
       <div bioCardSubtitle class="about-me">{{ player.aboutMe }}</div>
     </ng-template>
-    <bio-card-actions *ngIf="isSameAsLogged && !player.idSteamProfile">
-      <button bioButton primary type="button" (click)="linkSteam(player.id)" [loading]="loadingLinkSteam$ | async">
+    <bio-card-actions *ngIf="state.isSameAsLogged">
+      <button
+        *ngIf="!player.idSteamProfile"
+        bioButton
+        primary
+        type="button"
+        (click)="linkSteam(player.id)"
+        [loading]="loadingLinkSteam$ | async"
+      >
         Link steam
       </button>
+      <button bioButton primary type="button" (click)="toggleEditMode()">Edit profile</button>
     </bio-card-actions>
-  </ng-container>
-</bio-card>
+  </bio-card>
+</ng-container>
+
 <bio-score-list-responsive
   *ngFor="let status of scoreGroupedByStatus$ | async; trackBy: trackByScoreGroupByStatus"
   [scores]="status.scores"
