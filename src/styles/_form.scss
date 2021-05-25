@@ -1,6 +1,5 @@
-@import 'variables';
-@import 'mixins';
-@import 'functions';
+@use 'variables' as v;
+@use 'mixins' as m;
 
 label {
   font-size: 0.75rem;
@@ -8,10 +7,10 @@ label {
   display: inline-block;
   font-weight: 500;
   &.accent {
-    color: $accent;
+    color: v.$accent;
   }
   &.danger {
-    color: $danger;
+    color: v.$danger;
   }
 }
 
@@ -20,14 +19,14 @@ label {
   outline: 0;
   padding: 0.25rem 0.5rem;
   box-sizing: border-box;
-  border-radius: $radius;
-  border: 1px solid $primary;
+  border-radius: v.$radius;
+  border: 1px solid v.$primary;
   font-size: 0.75rem;
   &.accent {
-    border-color: $accent;
+    border-color: v.$accent;
   }
   &.danger {
-    border-color: $danger;
+    border-color: v.$danger;
   }
   &.small {
     font-size: 0.5rem;
@@ -35,7 +34,7 @@ label {
   &.large {
     font-size: 1.25rem;
   }
-  @include form-focus();
+  @include m.form-focus();
 }
 
 textarea.input {
@@ -57,5 +56,5 @@ input.no-arrows {
 .error {
   display: block;
   font-size: 0.65rem;
-  color: $danger;
+  color: v.$danger;
 }

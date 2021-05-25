@@ -1,11 +1,11 @@
-@import 'variables';
-@import 'functions';
-@import 'mixins';
+@use 'variables' as v;
+@use 'mixins' as m;
+@use 'functions' as f;
 
 @mixin button($type) {
   &.#{$type} {
-    $color: get-color($primary-type, 500);
-    $background-color: get-color($type);
+    $color: f.get-color(v.$primary-type, 500);
+    $background-color: f.get-color($type);
     background-color: $background-color;
     color: $color;
     &.fab {
@@ -19,7 +19,7 @@
       }
     }
     &.disabled:not(.loading) {
-      $disabled-color: get-disabled-color($background-color);
+      $disabled-color: f.get-disabled-color($background-color);
       &:not(.button-icon) {
         background-color: $disabled-color;
       }
@@ -31,7 +31,7 @@
     }
     &:not(.disabled) {
       &:hover {
-        $hover-color: get-color($type, 50);
+        $hover-color: f.get-color($type, 50);
         &:not(.button-icon),
         &.fab {
           background-color: $hover-color;
@@ -64,22 +64,22 @@
   display: inline-block;
   white-space: nowrap;
   text-decoration: none;
-  @include button($primary-type);
-  @include button($accent-type);
-  @include button($danger-type);
-  @include form-focus();
+  @include button(v.$primary-type);
+  @include button(v.$accent-type);
+  @include button(v.$danger-type);
+  @include m.form-focus();
   &.block {
     width: 100%;
   }
   &:not(.disabled) {
     &:focus {
-      box-shadow: 0 0 0 2px transparentize($white, 0.5);
+      box-shadow: 0 0 0 2px transparentize(v.$white, 0.5);
     }
     &:active {
-      box-shadow: 0 0 0 3px transparentize($white, 0.5);
+      box-shadow: 0 0 0 3px transparentize(v.$white, 0.5);
     }
     &:hover {
-      background-color: transparentize($white, 0.9);
+      background-color: transparentize(v.$white, 0.9);
     }
   }
 

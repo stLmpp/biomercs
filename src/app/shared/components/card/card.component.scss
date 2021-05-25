@@ -1,13 +1,12 @@
-@import 'variables';
-@import 'mixins';
+@use 'variables' as v;
+@use 'mixins' as m;
 
 .card {
-  border-radius: $radius;
-  background-color: $light;
-  position: relative;
+  border-radius: v.$radius;
+  background-color: v.$light;
   display: block;
-  color: $dark;
-  @include elevation(2);
+  color: v.$dark;
+  @include m.elevation(2);
   &.collapsable {
     > .header {
       position: relative;
@@ -33,7 +32,7 @@
   }
   .card-subtitle {
     font-size: 0.85rem;
-    color: $primary-100;
+    color: v.$primary-100;
     &:not(:last-child) {
       margin-bottom: 0.25rem;
     }
@@ -53,7 +52,7 @@
     }
   }
   .card-actions {
-    @include actions(0);
+    @include m.actions(0);
     padding: 1rem;
   }
 }

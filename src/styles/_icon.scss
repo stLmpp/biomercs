@@ -1,21 +1,21 @@
-@import 'variables';
-@import 'functions';
+@use 'variables' as v;
+@use 'functions' as f;
 
 @mixin icon($type) {
   &.#{$type} {
-    $color: get-color($type);
+    $color: f.get-color($type);
     color: $color;
     &.disabled {
-      color: get-disabled-color($color);
+      color: f.get-disabled-color($color);
     }
   }
 }
 
 .icon {
   line-height: 24px;
-  @include icon($primary-type);
-  @include icon($accent-type);
-  @include icon($danger-type);
+  @include icon(v.$primary-type);
+  @include icon(v.$accent-type);
+  @include icon(v.$danger-type);
   fill: currentColor;
   font-weight: normal;
   font-style: normal;

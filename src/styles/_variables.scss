@@ -101,3 +101,8 @@ $header-height: 64px;
 $gold: gold;
 $silver: silver;
 $bronze: #cd7f32;
+
+$z-index: (
+  header: 1050,
+  loading: 2000,
+);

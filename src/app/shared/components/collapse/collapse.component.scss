@@ -1,12 +1,12 @@
-@import 'variables';
-@import 'functions';
-@import 'mixins';
+@use 'variables' as v;
+@use 'mixins' as m;
+@use 'functions' as f;
 
 .collapse {
   display: block;
-  border-radius: $radius;
-  background-color: $dark-overlay;
-  @include elevation(2);
+  border-radius: v.$radius;
+  background-color: v.$dark-overlay;
+  @include m.elevation(2);
   > .collapse-header,
   > .collapse-body > .collapse-content {
     padding: 1rem;
@@ -20,7 +20,7 @@
     }
     &:not(.expanded) {
       &:hover {
-        background-color: lighten($dark-overlay, 5);
+        background-color: lighten(v.$dark-overlay, 5);
       }
     }
   }
@@ -30,7 +30,7 @@
     > .collapse-icon {
       display: flex;
       icon {
-        color: get-color($primary-type, 600);
+        color: f.get-color(v.$primary-type, 600);
       }
     }
   }
