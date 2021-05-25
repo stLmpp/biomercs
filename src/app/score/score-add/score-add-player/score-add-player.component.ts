@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { Control, ControlBuilder } from '@stlmpp/control';
 import { debounceTime, filter, finalize, pluck, switchMap, takeUntil } from 'rxjs/operators';
 import { Character } from '@model/character';
@@ -11,6 +20,8 @@ import { generateScorePlayerControlGroup, ScorePlayerAddForm } from '../score-ad
 import { LocalState } from '@stlmpp/store';
 import { AuthQuery } from '../../../auth/auth.query';
 import { Observable } from 'rxjs';
+import { BooleanInput } from '@angular/cdk/coercion';
+import { SimpleChangesCustom } from '@util/util';
 
 interface ScoreAddPlayerComponentState {
   playersLoading: boolean;
@@ -23,7 +34,7 @@ interface ScoreAddPlayerComponentState {
   styleUrls: ['./score-add-player.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ScoreAddPlayerComponent extends LocalState<ScoreAddPlayerComponentState> implements OnInit {
+export class ScoreAddPlayerComponent extends LocalState<ScoreAddPlayerComponentState> implements OnInit, OnChanges {
   constructor(
     private controlBuilder: ControlBuilder,
     private playerService: PlayerService,
@@ -35,7 +46,7 @@ export class ScoreAddPlayerComponent extends LocalState<ScoreAddPlayerComponentS
   @Input() playerNumber!: number;
   @Input() disabled = false;
   @Input() first = false;
-  @Input() charactersLoading: boolean | null = false;
+  @Input() charactersLoading: BooleanInput = false;
   @Input() characters: Character[] | null = [];
 
   @Input()
@@ -107,5 +118,17 @@ export class ScoreAddPlayerComponent extends LocalState<ScoreAddPlayerComponentS
     this.form.valueChanges$.pipe(takeUntil(this.destroy$)).subscribe(player => {
       this.playerChange.emit(player);
     });
+  }
+
+  ngOnChanges(changes: SimpleChangesCustom): void {
+    super.ngOnChanges(changes);
+    const characterCostumes: CharacterCostume[] = ((changes.characters?.currentValue ?? []) as Character[]).reduce(
+      (acc, character) => [...acc, ...character.characterCostumes],
+      [] as CharacterCostume[]
+    );
+    const idCharacterCostumeControl = this.form.get('idCharacterCostume');
+    if (characterCostumes?.length === 1 && !idCharacterCostumeControl.value) {
+      this.form.get('idCharacterCostume').setValue(characterCostumes[0].id);
+    }
   }
 }
