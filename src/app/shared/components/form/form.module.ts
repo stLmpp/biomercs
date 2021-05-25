@@ -11,6 +11,8 @@ import { NgLetModule } from '../../let/ng-let.module';
 import { TextareaDirective } from './textarea.directive';
 import { BioCommonModule } from '../common/bio-common.module';
 import { SelectModule } from '../select/select.module';
+import { ArrayModule } from '@shared/array/array.module';
+import { ValidationModule } from '@shared/validators/validation.module';
 
 @NgModule({
   declarations: [
@@ -32,6 +34,6 @@ import { SelectModule } from '../select/select.module';
     TextareaDirective,
     BioCommonModule,
   ],
-  imports: [CommonModule, SpinnerModule, NgLetModule, BioCommonModule, SelectModule],
+  imports: [CommonModule, SpinnerModule, NgLetModule, BioCommonModule, SelectModule, ArrayModule, ValidationModule],
 })
 export class FormModule {}

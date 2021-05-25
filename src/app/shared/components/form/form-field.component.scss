@@ -83,3 +83,8 @@
     }
   }
 }
+
+label.required::after {
+  content: '*';
+  margin-left: 0.15rem;
+}

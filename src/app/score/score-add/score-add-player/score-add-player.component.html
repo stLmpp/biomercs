@@ -20,6 +20,7 @@
       *ngIf="!first || (isAdmin$ | async)"
       [loading]="playersLoading$ | async"
       [disabled]="disabled"
+      [forceRequired]="true"
     >
       <input
         bioInput

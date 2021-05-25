@@ -2,7 +2,9 @@
   <ng-content select="label"></ng-content>
 </ng-container>
 <ng-template #noLabelRef>
-  <label *ngIf="label" [for]="id">{{ label }}</label>
+  <label *ngIf="label" [for]="id" [class.required]="forceRequired || (control | hasValidators: ['required'])">
+    {{ label }}
+  </label>
 </ng-template>
 <div
   class="input-wrapper"

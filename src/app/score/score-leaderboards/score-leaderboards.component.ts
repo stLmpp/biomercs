@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, TrackByFunction } from '@angular/core';
 import { ParamsConfig, ParamsForm } from '@shared/params/params.component';
-import { Control, ControlBuilder } from '@stlmpp/control';
+import { Control, ControlBuilder, Validators } from '@stlmpp/control';
 import { ScoreService } from '../score.service';
 import { debounceTime, filter, finalize, map, pluck, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { trackByFactory } from '@stlmpp/utils';
@@ -46,6 +46,10 @@ export class ScoreLeaderboardsComponent extends LocalState<ScoreLeaderboardsStat
   paramsConfig: Partial<ParamsConfig> = {
     idStage: { show: false },
     idCharacterCostume: { show: false },
+    idPlatform: { validators: [Validators.required] },
+    idGame: { validators: [Validators.required] },
+    idMode: { validators: [Validators.required] },
+    idMiniGame: { validators: [Validators.required] },
   };
 
   itemsPerPageOptions = [5, 10, 25, 50, 100];

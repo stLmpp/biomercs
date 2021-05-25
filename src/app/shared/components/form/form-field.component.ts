@@ -55,6 +55,7 @@ export class FormFieldComponent implements AfterContentInit, OnChanges, OnDestro
 
   @Input() loading?: BooleanInput;
   @Input() disabled?: BooleanInput;
+  @Input() forceRequired = false;
 
   get control(): Control | undefined {
     return this.controlDirective?.control ?? this.modelDirective?.control;
