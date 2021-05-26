@@ -4,6 +4,7 @@ import { PlayerProfileComponent } from './player-profile.component';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { PlayerProfileTitleResolver } from './player-profile.title-resolver';
 import { PlayerProfileResolver } from './player-profile.resolver';
+import { createMeta } from '@shared/meta/meta';
 
 const routes: Routes = [
   {
@@ -14,6 +15,7 @@ const routes: Routes = [
     },
     data: {
       [RouteDataEnum.title]: PlayerProfileTitleResolver,
+      [RouteDataEnum.meta]: createMeta({ title: 'Player profile', description: 'Player profile' }),
     },
   },
 ];

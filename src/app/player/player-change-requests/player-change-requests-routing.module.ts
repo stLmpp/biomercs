@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { PlayerChangeRequestsComponent } from './player-change-requests.component';
 import { PlayerChangeRequestsResolver } from './player-change-requests.resolver';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
+import { createMeta } from '@shared/meta/meta';
 
 const routes: Routes = [
   {
@@ -13,6 +14,10 @@ const routes: Routes = [
     },
     data: {
       [RouteDataEnum.title]: 'Change requests',
+      [RouteDataEnum.meta]: createMeta({
+        title: 'Player change requests',
+        description: 'Change scores when requested by the admins',
+      }),
     },
   },
 ];

@@ -4,6 +4,7 @@ import { ScoreAddComponent } from './score-add.component';
 import { PlatformResolver } from '@shared/services/platform/platform.resolver';
 import { AuthPlayerResolver } from '../../auth/auth-player.resolver';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
+import { createMeta } from '@shared/meta/meta';
 
 const routes: Routes = [
   {
@@ -12,6 +13,7 @@ const routes: Routes = [
     resolve: [PlatformResolver, AuthPlayerResolver],
     data: {
       [RouteDataEnum.title]: 'Submit score',
+      [RouteDataEnum.meta]: createMeta({ title: 'Submit score', description: 'Submit new score for approval' }),
     },
   },
 ];

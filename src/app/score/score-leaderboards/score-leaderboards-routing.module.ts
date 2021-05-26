@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { PlatformResolver } from '@shared/services/platform/platform.resolver';
 import { ScoreLeaderboardsComponent } from './score-leaderboards.component';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
+import { createMeta } from '@shared/meta/meta';
 
 const routes: Routes = [
   {
@@ -11,6 +12,7 @@ const routes: Routes = [
     resolve: [PlatformResolver],
     data: {
       [RouteDataEnum.title]: 'Leaderboards',
+      [RouteDataEnum.meta]: createMeta({ title: 'Leaderboards', description: 'Leaderboards' }),
     },
   },
 ];

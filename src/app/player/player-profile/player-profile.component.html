@@ -7,14 +7,14 @@
         bioButton
         icon
         [disabled]="loadingRegion$ | async"
-        [tooltip]="player.region?.name"
         (click)="openModalSelectRegion()"
         (mouseenter)="preloadRegions()"
+        aria-label="Change region"
       >
         <ng-container *ngTemplateOutlet="flagTemplate"></ng-container>
       </button>
       <ng-template #flagTemplate>
-        <icon small [flag]="player.region?.shortName"></icon>
+        <icon small [flag]="player.region?.shortName" [tooltip]="player.region?.name"></icon>
       </ng-template>
       <h3>{{ player.personaName }}</h3>
       <a
