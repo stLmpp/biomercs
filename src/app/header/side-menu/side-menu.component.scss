@@ -9,7 +9,7 @@
   bottom: 0;
   width: 300px;
   background-color: v.$primary;
-  padding: 1rem 0;
+  padding: 1rem 0 v.$footer-height 0;
   @include m.elevation(3);
   .list .list-item {
     padding: 0.75rem 1rem;

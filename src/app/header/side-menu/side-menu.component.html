@@ -1,9 +1,13 @@
 <bio-list selectable>
+  <a bioListItem routerLink="/home" (click)="onMenuSelected($event)">
+    <icon prefix>home</icon>
+    Home
+  </a>
   <a bioListItem routerLink="/score/search" queryParamsHandling="preserve" (click)="onMenuSelected($event)">
     <icon prefix>search</icon>
     Search scores
   </a>
-  <!--TODO added better Leaderboards layout to support mobile, for now it's disabled-->
+  <!--TODO add better Leaderboards layout to support mobile, for now it's disabled-->
   <a
     bioListItem
     *ngIf="isSmallScreen"

@@ -97,6 +97,7 @@ $success-600: map-get($success-pallete, 600);
 $mobile-width: 599px;
 $big-screen-width: 1200px;
 $header-height: 64px;
+$footer-height: 64px;
 
 $gold: gold;
 $silver: silver;
@@ -104,6 +105,7 @@ $bronze: #cd7f32;
 
 $z-index: (
   header: 1050,
+  footer: 1050,
   overlay: 1500,
   loading: 2000,
 );

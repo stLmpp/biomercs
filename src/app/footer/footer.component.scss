@@ -1,0 +1,17 @@
+@use 'variables' as v;
+@use 'functions' as f;
+
+:host {
+  position: relative;
+  z-index: f.get-z-index(footer);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: v.$footer-height;
+  padding: 1rem;
+  background-color: v.$primary-100;
+  font-size: 0.75rem;
+  &.mobile {
+    justify-content: center;
+  }
+}

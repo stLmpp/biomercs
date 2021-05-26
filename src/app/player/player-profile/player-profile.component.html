@@ -102,6 +102,7 @@
         [loading]="state.saving"
         [disabled]="state.editMode && !state.canSave"
         *ngIf="state.editMode"
+        @fadeInOut
       >
         Save
       </button>

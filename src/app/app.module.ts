@@ -19,6 +19,7 @@ import { TooltipModule } from '@shared/components/tooltip/tooltip.module';
 import { CurrencyMaskModule } from '@shared/currency-mask/currency-mask.module';
 import { MaskModule } from '@shared/mask/mask.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { FooterModule } from './footer/footer.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -45,6 +46,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000',
     }),
+    FooterModule,
   ],
   bootstrap: [AppComponent],
 })

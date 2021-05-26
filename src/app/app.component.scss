@@ -1,15 +1,13 @@
 @use 'variables' as v;
 @use 'functions' as f;
 
-header {
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  z-index: f.get-z-index(header);
+:host {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
 }
 
 main {
-  margin-top: 64px;
+  margin-top: v.$header-height;
   padding: 1rem;
 }

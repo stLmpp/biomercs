@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { TitleService } from '@shared/title/title.service';
+import { BreakpointObserverService } from '@shared/services/breakpoint-observer/breakpoint-observer.service';
 
 @Component({
   selector: 'bio-root',
@@ -8,7 +9,9 @@ import { TitleService } from '@shared/title/title.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit, OnDestroy {
-  constructor(private titleService: TitleService) {}
+  constructor(private titleService: TitleService, private breakpointObserverService: BreakpointObserverService) {}
+
+  isMobile$ = this.breakpointObserverService.isMobile$;
 
   ngOnInit(): void {
     this.titleService.init();
