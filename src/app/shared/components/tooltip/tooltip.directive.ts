@@ -38,10 +38,7 @@ export class TooltipDirective implements OnDestroy {
   private _hideTimeout: any;
   private _hasShown = false;
 
-  @HostBinding('attr.aria-tooltip')
-  @Input()
-  tooltip!: Nullable<string | number>;
-
+  @Input() tooltip!: Nullable<string | number>;
   @Input() tooltipPositions: ConnectedPosition[] = overlayPositionsArray('top');
   @Input() tooltipShowDelay = 0;
   @Input() tooltipHideDelay = 0;
