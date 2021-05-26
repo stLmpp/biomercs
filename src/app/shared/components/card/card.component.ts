@@ -1,4 +1,5 @@
 import {
+  AfterContentInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -6,8 +7,10 @@ import {
   ElementRef,
   HostBinding,
   Input,
+  Output,
   QueryList,
   ViewEncapsulation,
+  EventEmitter,
 } from '@angular/core';
 import { CardTitleDirective } from './card-title.directive';
 import { CardContentDirective } from './card-content.directive';
@@ -15,6 +18,9 @@ import { CardActionsDirective } from './card-actions.directive';
 import { CardSubtitleDirective } from '@shared/components/card/card-subtitle.directive';
 import { Animations } from '@shared/animations/animations';
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
+import { CardChild } from '@shared/components/card/card-child';
+import { Destroyable } from '@shared/components/common/destroyable-component';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'bio-card',
@@ -26,8 +32,10 @@ import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
   animations: [Animations.skipFirstAnimation(), Animations.collapse.collapseIcon()],
   exportAs: 'bio-card',
 })
-export class CardComponent {
-  constructor(private changeDetectorRef: ChangeDetectorRef, public elementRef: ElementRef<HTMLElement>) {}
+export class CardComponent extends Destroyable implements AfterContentInit {
+  constructor(private changeDetectorRef: ChangeDetectorRef, public elementRef: ElementRef<HTMLElement>) {
+    super();
+  }
 
   private _collapsable = false;
 
@@ -35,6 +43,7 @@ export class CardComponent {
   @ContentChildren(CardSubtitleDirective) cardSubtitleDirective!: QueryList<CardSubtitleDirective>;
   @ContentChildren(CardContentDirective) cardContentDirectives!: QueryList<CardContentDirective>;
   @ContentChildren(CardActionsDirective) cardActionsDirective!: QueryList<CardActionsDirective>;
+  @ContentChildren(CardChild) cardChildren!: QueryList<CardChild>;
 
   @Input()
   @HostBinding('class.collapsable')
@@ -46,6 +55,7 @@ export class CardComponent {
   }
 
   @Input() collapsed = false;
+  @Output() readonly collapsedChange = new EventEmitter<boolean>();
 
   @HostBinding('class.has-header')
   get hasHeaderClass(): boolean {
@@ -62,7 +72,14 @@ export class CardComponent {
       return;
     }
     this.collapsed = !this.collapsed;
+    this.collapsedChange.emit(this.collapsed);
     this.changeDetectorRef.markForCheck();
+  }
+
+  ngAfterContentInit(): void {
+    this.cardChildren.changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.changeDetectorRef.markForCheck();
+    });
   }
 
   static ngAcceptInputType_collapsable: BooleanInput;

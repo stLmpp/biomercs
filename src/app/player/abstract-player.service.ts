@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { PlayerStore } from './player.store';
 import { Observable } from 'rxjs';
 import { Player, PlayerAdd, PlayerUpdate } from '@model/player';
-import { switchMap, tap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { Pagination } from '@model/pagination';
 import { HttpParams } from '@util/http-params';
 import { WINDOW } from '../core/window.service';
@@ -90,6 +90,17 @@ export class AbstractPlayerService {
               }
             })
           );
+        })
+      );
+  }
+
+  updatePersonaName(idPlayer: number, personaName: string): Observable<Date> {
+    return this.http
+      .put<string>(`${this.endPoint}/${idPlayer}/personaName`, { personaName }, { responseType: 'text' as any })
+      .pipe(
+        map(lastUpdatedPersonaNameDate => new Date(lastUpdatedPersonaNameDate)),
+        tap(lastUpdatedPersonaNameDate => {
+          this.playerStore.updateEntity(idPlayer, { personaName, lastUpdatedPersonaNameDate });
         })
       );
   }

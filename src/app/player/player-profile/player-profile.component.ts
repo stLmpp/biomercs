@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { PlayerQuery } from '../player.query';
 import { RouterQuery } from '@stlmpp/router';
-import { debounceTime, filter, finalize, map, switchMap, takeUntil } from 'rxjs/operators';
+import { debounceTime, filter, finalize, map, pluck, skip, switchMap, takeUntil } from 'rxjs/operators';
 import { PlayerService } from '../player.service';
 import { Animations } from '@shared/animations/animations';
 import { AuthQuery } from '../../auth/auth.query';
@@ -24,7 +24,9 @@ import { getScoreDefaultColDefs } from '../../score/score-shared/util';
 import { AuthDateFormatPipe } from '../../auth/shared/auth-date-format.pipe';
 import { ColDef } from '@shared/components/table/col-def';
 import { ScoreOpenInfoCellComponent } from '../../score/score-shared/score-open-info-cell/score-open-info-cell.component';
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest, concat, Observable } from 'rxjs';
+import { isBefore, subDays } from 'date-fns';
+import { filterNil } from '@shared/operators/filter';
 
 interface PlayerProfileComponentState {
   loadingRegion: boolean;
@@ -32,6 +34,8 @@ interface PlayerProfileComponentState {
   scoreGroupedByStatus: ScoreGroupedByStatus[];
   loadingLinkSteam: boolean;
   editMode: boolean;
+  newPersonaName: string | null;
+  saving: boolean;
 }
 
 @Component({
@@ -39,7 +43,7 @@ interface PlayerProfileComponentState {
   templateUrl: './player-profile.component.html',
   styleUrls: ['./player-profile.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [Animations.collapse.collapse()],
+  animations: [Animations.fade.inOut()],
 })
 export class PlayerProfileComponent extends LocalState<PlayerProfileComponentState> implements OnInit {
   constructor(
@@ -60,30 +64,48 @@ export class PlayerProfileComponent extends LocalState<PlayerProfileComponentSta
       scoreGroupedByStatus: activatedRoute.snapshot.data.scoreGroupedByStatus ?? [],
       loadingLinkSteam: false,
       editMode: false,
+      newPersonaName: null,
+      saving: false,
     });
   }
 
-  private _update$ = this.selectState('update');
   private _idPlayer$ = this.routerQuery.selectParams(RouteParamEnum.idPlayer).pipe(
     filter(idPlayer => !!idPlayer),
     map(Number)
   );
 
-  player$ = this._idPlayer$.pipe(switchMap(idPlayer => this.playerQuery.selectEntity(idPlayer)));
+  saving$ = this.selectState('saving');
+  player$ = this._idPlayer$.pipe(
+    switchMap(idPlayer => this.playerQuery.selectEntity(idPlayer)),
+    filterNil()
+  );
   isSameAsLogged$ = this._idPlayer$.pipe(switchMap(idPlayer => this.authQuery.selectIsSameAsLogged(idPlayer)));
   loadingRegion$ = this.selectState('loadingRegion');
   scoreGroupedByStatus$ = this.selectState('scoreGroupedByStatus');
   loadingLinkSteam$ = this.selectState('loadingLinkSteam');
   editMode$ = this.selectState('editMode');
-  state$: Observable<{ editMode: boolean; isSameAsLogged: boolean }> = combineLatest({
-    editMode: this.editMode$,
-    isSameAsLogged: this.isSameAsLogged$,
-  });
+  canSave$ = combineLatest([this.selectState(['update', 'newPersonaName']), this.player$]).pipe(
+    debounceTime(100),
+    map(
+      ([{ update, newPersonaName }, player]) =>
+        !isObjectEmpty(update) || this._validatePersonaName(player, newPersonaName)
+    )
+  );
+  state$: Observable<{ editMode: boolean; isSameAsLogged: boolean; saving: boolean; canSave: boolean }> = combineLatest(
+    {
+      editMode: this.editMode$,
+      isSameAsLogged: this.isSameAsLogged$,
+      saving: this.saving$,
+      canSave: this.canSave$,
+    }
+  );
 
   colDefs: ColDef<ScoreScoreGroupedByStatusScoreVW>[] = [
     { property: 'idScore', component: ScoreOpenInfoCellComponent, width: '40px' },
     ...getScoreDefaultColDefs<ScoreScoreGroupedByStatusScoreVW>(this.authDateFormatPipe),
   ];
+
+  todayMinusSevenDate = subDays(new Date(), 7);
 
   trackByScoreGroupByStatus = trackByScoreGroupedByStatus;
 
@@ -96,8 +118,13 @@ export class PlayerProfileComponent extends LocalState<PlayerProfileComponentSta
     return this.playerQuery.getEntity(this.idPlayer)!;
   }
 
-  private _update(dto: PlayerUpdate): void {
-    this.playerService.update(this.idPlayer, dto).subscribe();
+  private _validatePersonaName(player: Player, personaName: string | null): personaName is string {
+    return (
+      !!personaName &&
+      personaName.length >= 3 &&
+      personaName !== player.personaName &&
+      (!player.lastUpdatedPersonaNameDate || isBefore(player.lastUpdatedPersonaNameDate, subDays(new Date(), 7)))
+    );
   }
 
   private _updateScore(
@@ -140,7 +167,11 @@ export class PlayerProfileComponent extends LocalState<PlayerProfileComponentSta
   }
 
   preloadRegions(): void {
-    if (!this.regionQuery.getLoading() && !this.regionQuery.getAll().length) {
+    if (
+      this.authQuery.getIsSameAsLogged(this.idPlayer) &&
+      !this.regionQuery.getLoading() &&
+      !this.regionQuery.getAll().length
+    ) {
       this.dynamicLoaderService.preloadRequest(this.regionService.get());
     }
   }
@@ -164,19 +195,48 @@ export class PlayerProfileComponent extends LocalState<PlayerProfileComponentSta
   }
 
   toggleEditMode(): void {
-    this.updateState('editMode', editMode => !editMode);
+    const editMode = this.getState('editMode');
+    const update: Partial<PlayerProfileComponentState> = {};
+    if (editMode) {
+      update.update = {};
+      update.newPersonaName = null;
+    }
+    this.updateState({ editMode: !editMode, ...update });
+  }
+
+  save(): void {
+    const player = this.player;
+    const { update, newPersonaName } = this.getState();
+    const requests = [];
+    if (this._validatePersonaName(player, newPersonaName)) {
+      requests.push(this.playerService.updatePersonaName(player.id, newPersonaName));
+    }
+    if (!isObjectEmpty(update)) {
+      requests.push(this.playerService.update(player.id, update));
+    }
+    if (!requests.length) {
+      this.updateState({ editMode: false, update: {}, newPersonaName: null });
+      return;
+    }
+    this.updateState({ saving: true });
+    concat(...requests)
+      .pipe(
+        finalize(() => {
+          this.updateState({ saving: false, editMode: false, update: {}, newPersonaName: null });
+        })
+      )
+      .subscribe();
+  }
+
+  updatePersonaName($event: string): void {
+    this.updateState('newPersonaName', $event);
   }
 
   ngOnInit(): void {
-    this._update$
-      .pipe(
-        takeUntil(this.destroy$),
-        debounceTime(500),
-        filter(update => !isObjectEmpty(update))
-      )
-      .subscribe(update => {
-        this._update(update);
-        this.updateState({ update: {} });
+    this.activatedRoute.data
+      .pipe(takeUntil(this.destroy$), pluck('scoreGroupedByStatus'), skip(1), filterNil())
+      .subscribe((scoreGroupedByStatus: ScoreGroupedByStatus[]) => {
+        this.updateState({ scoreGroupedByStatus });
       });
   }
 }

@@ -13,6 +13,7 @@ export interface Player {
   idRegion: number;
   region?: Region;
   steamProfile?: SteamProfile;
+  lastUpdatedPersonaNameDate?: Date;
 }
 
 export interface PlayerAdd {

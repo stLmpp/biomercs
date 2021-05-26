@@ -1,9 +1,11 @@
 import { Directive, HostBinding, Input } from '@angular/core';
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
+import { CardChild } from '@shared/components/card/card-child';
 
 @Directive({
   selector: '[bioCardActions], bio-card-actions',
   host: { class: 'card-actions' },
+  providers: [{ provide: CardChild, useExisting: CardActionsDirective, multi: true }],
 })
 export class CardActionsDirective {
   @Input()

@@ -18,6 +18,7 @@ import { NgProgressRouterModule } from 'ngx-progressbar/router';
 import { TooltipModule } from '@shared/components/tooltip/tooltip.module';
 import { CurrencyMaskModule } from '@shared/currency-mask/currency-mask.module';
 import { MaskModule } from '@shared/mask/mask.module';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   declarations: [AppComponent],
@@ -38,6 +39,12 @@ import { MaskModule } from '@shared/mask/mask.module';
     TooltipModule.forRoot(),
     CurrencyMaskModule.forRoot(),
     MaskModule.forRoot(),
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the app is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000',
+    }),
   ],
   bootstrap: [AppComponent],
 })

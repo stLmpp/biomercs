@@ -1,14 +1,21 @@
 <ng-container *ngIf="state$ | async as state">
   <bio-card *ngIf="player$ | async as player" class="player">
     <div bioCardTitle>
-      <button class="flag" bioButton icon [disabled]="loadingRegion$ | async" [tooltip]="player.region?.name">
-        <icon
-          small
-          [flag]="player.region?.shortName"
-          (click)="openModalSelectRegion()"
-          (mouseenter)="preloadRegions()"
-        ></icon>
+      <button
+        *ngIf="state.isSameAsLogged; else flagTemplate"
+        class="flag"
+        bioButton
+        icon
+        [disabled]="loadingRegion$ | async"
+        [tooltip]="player.region?.name"
+        (click)="openModalSelectRegion()"
+        (mouseenter)="preloadRegions()"
+      >
+        <ng-container *ngTemplateOutlet="flagTemplate"></ng-container>
       </button>
+      <ng-template #flagTemplate>
+        <icon small [flag]="player.region?.shortName"></icon>
+      </ng-template>
       <h3>{{ player.personaName }}</h3>
       <a
         class="steam"
@@ -21,38 +28,60 @@
         <icon mdi="steam" medium></icon>
       </a>
     </div>
-    <bio-card-content *ngIf="state.isSameAsLogged && state.editMode; else notSameAsLogged">
-      <form-field label="Persona name" [loading]="model.isPending">
-        <input
-          bioInput
-          #model="model"
-          [model]="player.personaName"
-          placeholder="Persona name"
-          personaNameExists
-          [personaNameExistsIgnore]="player.personaName"
-        />
-        <errors>
-          <error *error="'personaNameExists'">Player name already exists</error>
-        </errors>
-      </form-field>
-      <form-field label="Title">
-        <input bioInput [model]="player.title" placeholder="Title" (modelChange)="update('title', $event)" />
-      </form-field>
-      <form-field label="About me">
-        <textarea
-          bioInput
-          resize="vertical"
-          rows="3"
-          [model]="player.aboutMe"
-          placeholder="Title"
-          (modelChange)="update('aboutMe', $event)"
-        ></textarea>
-      </form-field>
+    <div bioCardSubtitle>{{ player.title }}</div>
+    <div bioCardSubtitle class="about-me">{{ player.aboutMe }}</div>
+    <bio-card-content>
+      <div *ngIf="state.isSameAsLogged && state.editMode" @fadeInOut>
+        <form-field
+          label="Persona name"
+          [loading]="model.isPending"
+          *ngLet="player.lastUpdatedPersonaNameDate | playerCanUpdatePersonaName as canUpdatePersonaName"
+        >
+          <input
+            bioInput
+            #model="model"
+            [model]="player.personaName"
+            placeholder="Persona name"
+            personaNameExists
+            [personaNameExistsIgnore]="player.personaName"
+            [disabled]="!canUpdatePersonaName || state.saving"
+            (modelChange)="updatePersonaName($event)"
+          />
+          <hint>
+            <ng-container *ngIf="canUpdatePersonaName; else cantUpdatePersonaName">
+              The persona name can be updated one time per week
+            </ng-container>
+            <ng-template #cantUpdatePersonaName>
+              Persona name will be available again in
+              {{ player.lastUpdatedPersonaNameDate | dateDifference: todayMinusSevenDate:['days', 'hours'] }}
+            </ng-template>
+          </hint>
+          <errors>
+            <error *error="'personaNameExists'">Player name already exists</error>
+          </errors>
+        </form-field>
+        <form-field label="Title">
+          <input
+            bioInput
+            [model]="player.title"
+            placeholder="Title"
+            (modelChange)="update('title', $event)"
+            [disabled]="state.saving"
+          />
+        </form-field>
+        <form-field label="About me">
+          <textarea
+            bioInput
+            resize="vertical"
+            rows="3"
+            [model]="player.aboutMe"
+            placeholder="Title"
+            (modelChange)="update('aboutMe', $event)"
+            [disabled]="state.saving"
+          ></textarea>
+        </form-field>
+      </div>
     </bio-card-content>
-    <ng-template #notSameAsLogged>
-      <div bioCardSubtitle>{{ player.title }}</div>
-      <div bioCardSubtitle class="about-me">{{ player.aboutMe }}</div>
-    </ng-template>
     <bio-card-actions *ngIf="state.isSameAsLogged">
       <button
         *ngIf="!player.idSteamProfile"
@@ -61,10 +90,24 @@
         type="button"
         (click)="linkSteam(player.id)"
         [loading]="loadingLinkSteam$ | async"
+        [disabled]="state.saving"
       >
         Link steam
       </button>
-      <button bioButton primary type="button" (click)="toggleEditMode()">Edit profile</button>
+      <button
+        bioButton
+        primary
+        type="button"
+        (click)="save()"
+        [loading]="state.saving"
+        [disabled]="state.editMode && !state.canSave"
+        *ngIf="state.editMode"
+      >
+        Save
+      </button>
+      <button bioButton primary type="button" (click)="toggleEditMode()" [disabled]="state.saving">
+        {{ state.editMode ? 'Cancel' : 'Edit profile' }}
+      </button>
     </bio-card-actions>
   </bio-card>
 </ng-container>
@@ -76,6 +119,6 @@
   [colDefs]="colDefs"
   [disabledProperty]="'disabled'"
   (scoreClicked)="openScoreInfo($event)"
-  [collapsable]="false"
+  collapsable
 >
 </bio-score-list-responsive>

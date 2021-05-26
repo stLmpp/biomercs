@@ -12,9 +12,11 @@ import { PlayerProfileComponent } from './player-profile.component';
 import { ScoreSharedModule } from '../../score/score-shared/score-shared.module';
 import { NgLetModule } from '@shared/let/ng-let.module';
 import { ValidationModule } from '@shared/validators/validation.module';
+import { PlayerCanUpdatePersonaNamePipe } from './player-can-update-persona-name.pipe';
+import { DateModule } from '@shared/date/date.module';
 
 @NgModule({
-  declarations: [PlayerProfileComponent],
+  declarations: [PlayerProfileComponent, PlayerCanUpdatePersonaNamePipe],
   imports: [
     CommonModule,
     PlayerProfileRoutingModule,
@@ -27,6 +29,7 @@ import { ValidationModule } from '@shared/validators/validation.module';
     ScoreSharedModule,
     NgLetModule,
     ValidationModule,
+    DateModule,
   ],
 })
 export class PlayerProfileModule {}
