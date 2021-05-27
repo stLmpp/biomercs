@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../../auth.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { ControlBuilder, Validators } from '@stlmpp/control';
 import { Observable } from 'rxjs';
@@ -33,8 +33,7 @@ export class SteamRegisterComponent
   constructor(
     private authService: AuthService,
     private activatedRoute: ActivatedRoute,
-    private controlBuilder: ControlBuilder,
-    private router: Router
+    private controlBuilder: ControlBuilder
   ) {
     super({ emailSent: false, loading: false, confirmCodeError: null });
   }
@@ -73,7 +72,7 @@ export class SteamRegisterComponent
       // Code should be set here because of validations
       request$ = this.authService.confirmCode(this.idUser, code!).pipe(
         tap(() => {
-          this.router.navigate(['/']).then();
+          this.authService.showRegistrationCompletedModal().then();
         }),
         catchAndThrow(err => {
           this.updateState('confirmCodeError', err.message);

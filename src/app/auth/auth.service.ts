@@ -83,6 +83,24 @@ export class AuthService {
     );
   }
 
+  async showRegistrationCompletedModal(): Promise<void> {
+    this.router.navigate(['/']).then();
+    await this.dialogService.success({
+      title: 'Welcome to the family, son',
+      content: 'What now?',
+      btnYes: 'Submit your first score',
+      btnNo: 'Close',
+      yesAction: modalRef => {
+        modalRef.close();
+        this.router.navigate(['/score/add']).then();
+      },
+      noAction: modalRef => {
+        modalRef.close();
+        this.router.navigate(['/']).then();
+      },
+    });
+  }
+
   loginSteam(
     steamAuthRelativePath: string[],
     relativeTo: ActivatedRoute,
