@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, TrackByFunction } from '@angular/core';
-import { ScoreService } from '../../score.service';
+import { ScoreService } from '../score.service';
 import { ControlBuilder, Validators } from '@stlmpp/control';
 import { ParamsConfig, ParamsForm } from '@shared/params/params.component';
 import { LocalState } from '@stlmpp/store';
@@ -33,12 +33,12 @@ export interface ScoreWorldRecordTableState {
 }
 
 @Component({
-  selector: 'bio-score-world-record-table',
-  templateUrl: './score-world-record-table.component.html',
-  styleUrls: ['./score-world-record-table.component.scss'],
+  selector: 'bio-score-world-records',
+  templateUrl: './score-world-records.component.html',
+  styleUrls: ['./score-world-records.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ScoreWorldRecordTableComponent extends LocalState<ScoreWorldRecordTableState> {
+export class ScoreWorldRecordsComponent extends LocalState<ScoreWorldRecordTableState> {
   constructor(
     private scoreService: ScoreService,
     private controlBuilder: ControlBuilder,

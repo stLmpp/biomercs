@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ScoreWorldRecordRoutingModule } from './score-world-record-routing.module';
-import { ScoreWorldRecordTableComponent } from './score-world-record-table/score-world-record-table.component';
+import { ScoreWorldRecordsComponent } from './score-world-records.component';
 import { CardModule } from '@shared/components/card/card.module';
 import { ParamsModule } from '@shared/params/params.module';
 import { NgLetModule } from '@shared/let/ng-let.module';
@@ -14,7 +14,7 @@ import { ButtonModule } from '@shared/components/button/button.module';
 import { TitleModule } from '@shared/title/title.module';
 
 @NgModule({
-  declarations: [ScoreWorldRecordTableComponent],
+  declarations: [ScoreWorldRecordsComponent],
   imports: [
     CommonModule,
     ScoreWorldRecordRoutingModule,

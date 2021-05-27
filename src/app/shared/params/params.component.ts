@@ -16,7 +16,7 @@ import { GameService } from '../services/game/game.service';
 import { MiniGameService } from '../services/mini-game/mini-game.service';
 import { ModeService } from '../services/mode/mode.service';
 import { filterNil } from '../operators/filter';
-import { distinctUntilChanged, filter, finalize, map, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, finalize, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { combineLatest, MonoTypeOperatorFunction, OperatorFunction } from 'rxjs';
 import { StageService } from '../services/stage/stage.service';
 import { trackByFactory } from '@stlmpp/utils';
@@ -343,7 +343,7 @@ export class ParamsComponent
       const control = this.form.get(id);
       const formConfig = this.formsConfig[id];
       if (formConfig.show) {
-        control.value$.pipe(takeUntil(this.destroy$)).subscribe(idValue => {
+        control.value$.pipe(takeUntil(this.destroy$), debounceTime(50), distinctUntilChanged()).subscribe(idValue => {
           const keyChange = `${id}Change` as `${keyof ParamsForm}Change`;
           this[keyChange].emit(idValue);
         });
@@ -359,7 +359,8 @@ export class ParamsComponent
           if (this._setQueryParamsOnChange) {
             this.router.navigate([], { queryParamsHandling: 'merge', queryParams: params }).then();
           }
-        })
+        }),
+        debounceTime(50)
       )
       .subscribe(params => {
         this.paramsChange.emit(params);

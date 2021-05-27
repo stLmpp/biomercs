@@ -23,6 +23,10 @@ const routes: Routes = [
     loadChildren: () => import('./auth-steam/auth-steam.module').then(m => m.AuthSteamModule),
     canLoad: [AuthNotLoggedGuard],
   },
+  {
+    path: '**',
+    loadChildren: () => import('../not-found/not-found.module').then(m => m.NotFoundModule),
+  },
 ];
 
 @NgModule({

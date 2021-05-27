@@ -22,7 +22,7 @@ const routes: Routes = [
     loadChildren: () => import('./score/score.module').then(m => m.ScoreModule),
     canLoad: [AuthLoggedGuard],
   },
-  { path: '**', redirectTo: '/' },
+  { path: '**', loadChildren: () => import('./not-found/not-found.module').then(m => m.NotFoundModule) },
 ];
 
 @NgModule({

@@ -46,6 +46,10 @@ const routes: Routes = [
       },
     ],
   },
+  {
+    path: '**',
+    loadChildren: () => import('../not-found/not-found.module').then(m => m.NotFoundModule),
+  },
 ];
 
 @NgModule({

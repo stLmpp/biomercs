@@ -1,5 +1,5 @@
 <bio-list selectable>
-  <a bioListItem routerLink="/home" (click)="onMenuSelected($event)">
+  <a bioListItem routerLink="/" (click)="onMenuSelected($event)">
     <icon prefix>home</icon>
     Home
   </a>
@@ -20,7 +20,7 @@
   </a>
   <a
     bioListItem
-    routerLink="/score/world-record/table"
+    routerLink="/score/world-records"
     queryParamsHandling="preserve"
     (click)="onMenuSelected($event)"
     class="world-records"

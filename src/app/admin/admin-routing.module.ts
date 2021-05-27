@@ -16,6 +16,10 @@ const routes: Routes = [
     loadChildren: () =>
       import('./admin-score-approval/admin-score-approval.module').then(m => m.AdminScoreApprovalModule),
   },
+  {
+    path: '**',
+    loadChildren: () => import('../not-found/not-found.module').then(m => m.NotFoundModule),
+  },
 ];
 
 @NgModule({
