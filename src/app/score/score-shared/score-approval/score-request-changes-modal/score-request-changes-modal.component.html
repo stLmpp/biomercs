@@ -11,9 +11,10 @@
     <div class="change" *ngFor="let change of changesControl; trackBy: trackByControl; let $index = index">
       <form-field label="Change {{ $index + 1 }}">
         <textarea
-          rows="1"
           bioInput
-          resize="vertical"
+          cdkTextareaAutosize
+          [cdkAutosizeMinRows]="1"
+          [cdkAutosizeMaxRows]="5"
           [controlName]="$index"
           (keydown)="onTextAreaKeydown($index, $event)"
           placeholder="Describe what needs to be changed"

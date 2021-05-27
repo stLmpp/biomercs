@@ -30,6 +30,7 @@ import { TableModule } from '@shared/components/table/table.module';
 import { ScoreApprovalActionsCellComponent } from './score-approval/score-approval-actions-cell/score-approval-actions-cell.component';
 import { ScoreApprovalActionsModalComponent } from './score-approval/score-approval-actions-modal/score-approval-actions-modal.component';
 import { ScoreOpenInfoCellComponent } from './score-open-info-cell/score-open-info-cell.component';
+import { TextFieldModule } from '@angular/cdk/text-field';
 
 const DECLARATIONS = [
   ScoreApprovalComponent,
@@ -67,6 +68,7 @@ const DECLARATIONS = [
     UrlPreviewModule,
     ListModule,
     TableModule,
+    TextFieldModule,
   ],
   exports: [...DECLARATIONS],
 })
