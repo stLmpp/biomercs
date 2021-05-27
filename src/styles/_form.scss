@@ -18,10 +18,10 @@ label {
   width: 100%;
   outline: 0;
   padding: 0.25rem 0.5rem;
-  box-sizing: border-box;
   border-radius: v.$radius;
   border: 1px solid v.$primary;
   font-size: 0.75rem;
+  font-family: inherit;
   &.accent {
     border-color: v.$accent;
   }
@@ -37,8 +37,9 @@ label {
   @include m.form-focus();
 }
 
-textarea.input {
-  font-size: 0.85em;
+// https://github.com/angular/components/issues/13161
+textarea.cdk-textarea-autosize-measuring {
+  padding: 0.5rem 0 !important;
 }
 
 input.no-arrows {
@@ -53,7 +54,7 @@ input.no-arrows {
   }
 }
 
-.error {
+.form-field-error {
   display: block;
   font-size: 0.65rem;
   color: v.$danger;

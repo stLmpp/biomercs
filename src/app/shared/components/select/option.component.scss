@@ -1,4 +1,4 @@
-@import 'variables';
+@use 'variables' as v;
 
 .bio-option {
   height: 35px;
@@ -16,7 +16,7 @@
     &:hover,
     &:focus,
     &.selected {
-      background-color: $primary-100;
+      background-color: v.$primary-100;
     }
   }
   &.disabled {

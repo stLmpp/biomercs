@@ -12,6 +12,7 @@ export enum DialogType {
   confirm,
   success,
   info,
+  error,
 }
 
 export interface DialogData {
@@ -51,6 +52,11 @@ export class DialogComponent extends LocalState<{ loadingYes: boolean; loadingNo
   @HostBinding('class.confirmation')
   get confirmationClass(): boolean {
     return this.data.type === DialogType.confirm;
+  }
+
+  @HostBinding('class.error')
+  get errorClass(): boolean {
+    return this.data.type === DialogType.error;
   }
 
   private _setLoading(action: boolean, loading: boolean): void {

@@ -4,7 +4,7 @@ import { Animations } from '../../animations/animations';
 @Component({
   selector: 'error',
   template: '<ng-content></ng-content>',
-  host: { class: 'error', '[@slideIn]': '' },
+  host: { class: 'form-field-error', '[@slideIn]': '' },
   encapsulation: ViewEncapsulation.None,
   animations: [Animations.slide.in()],
   changeDetection: ChangeDetectionStrategy.OnPush,

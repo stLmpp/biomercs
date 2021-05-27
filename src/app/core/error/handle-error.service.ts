@@ -5,6 +5,7 @@ import { catchAndThrow } from '@util/operators/catch-and-throw';
 import { SnackBarService } from '@shared/components/snack-bar/snack-bar.service';
 import { ModalService } from '@shared/components/modal/modal.service';
 import { AuthQuery } from '../../auth/auth.query';
+import { HttpStatusCode } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class HandleErrorService {
@@ -31,11 +32,14 @@ export class HandleErrorService {
       let message: string;
       const button = isAdmin ? 'Show more info' : 'Close';
       switch (httpError.status) {
-        case 400:
+        case HttpStatusCode.BadRequest:
           message = 'The data sent was wrong, bad request';
           break;
-        case 404:
+        case HttpStatusCode.NotFound:
           message = 'The data was not found, 404';
+          break;
+        case HttpStatusCode.TooManyRequests:
+          message = 'Too many requests';
           break;
         default:
           message = 'Internal error';

@@ -29,10 +29,14 @@ export class DialogService {
   }
 
   async info(data: DialogData, config?: Partial<ModalConfig<DialogData>>): Promise<DialogRef> {
-    return this._getModalRef({ ...data, type: DialogType.info }, config);
+    return this._getModalRef({ ...data, type: DialogType.info }, { maxWidth: 500, ...config });
   }
 
   async success(data: DialogData, config?: Partial<ModalConfig<DialogData>>): Promise<DialogRef> {
-    return this._getModalRef({ ...data, type: DialogType.success }, config);
+    return this._getModalRef({ ...data, type: DialogType.success }, { maxWidth: 500, ...config });
+  }
+
+  async error(data: DialogData, config?: Partial<ModalConfig<DialogData>>): Promise<DialogRef> {
+    return this._getModalRef({ ...data, type: DialogType.error }, { maxWidth: 500, ...config });
   }
 }

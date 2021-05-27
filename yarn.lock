@@ -1532,41 +1532,41 @@
     "@angular-devkit/schematics" "12.0.2"
     jsonc-parser "3.0.0"
 
-"@stlmpp/control@~6.0.0":
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/@stlmpp/control/-/control-6.0.0.tgz#221b83ae3100651472e7f5db779c14e738a4c51c"
-  integrity sha512-VYVVncAl12WBDItw7gEtsIOMrPQE+Ga7qqQZgO1L7YAhADLLLajnUG9hfKoC1OYMpRdiGKwL6jSrU55yI3e6mA==
+"@stlmpp/control@~6.1.0":
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/@stlmpp/control/-/control-6.1.0.tgz#e5073f149e847e2e93a91587928fec46c81c8f2a"
+  integrity sha512-mh0r8W/dyOxoUcXIialx5kQiXXJ7t2k+zJk6pDKDjfftVg0+V2KrEbgq4LVL+zHonyI15wGvHOWPAXBbm21pMg==
   dependencies:
     date-fns "~2.21.3"
     st-utils "~1.7.0"
     tslib "~2.2.0"
 
-"@stlmpp/router@~6.0.0":
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/@stlmpp/router/-/router-6.0.0.tgz#191b555c4ddc06c3d6e3b4f4f361c08533f46df9"
-  integrity sha512-uNCDeUiEj/+Qx6GdVwzoa668JjAg1LSRwb5B3Ag10zKFAKl6MCFgFcfHKtsn6PEMwX1Yv6l7wfcdQaGZwUR3vw==
+"@stlmpp/router@~6.1.0":
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/@stlmpp/router/-/router-6.1.0.tgz#dc581a0e80976e69ff6a6fd2e127a4fb85c0777c"
+  integrity sha512-8zs4AlEojJLC9NbBSAu43hhLPDNSq1Yai+quXbdHj2D2V01Fod0YAmbUsllVjEzYDb4YJDeA+g7i/3mjv/8i7Q==
   dependencies:
     st-utils "~1.7.0"
     tslib "~2.2.0"
 
-"@stlmpp/store@~6.0.0":
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/@stlmpp/store/-/store-6.0.0.tgz#9ef9ae245d3b47818099d285dddb8820f437f369"
-  integrity sha512-wNR/8FKLcmZeZE5PFMQ7xwL4aaO7YTcHlg+684spibbDsWfY+8mENCFk4izMcNn2TEzkos9my5AqL7F7ODvNjQ==
+"@stlmpp/store@~6.1.0":
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/@stlmpp/store/-/store-6.1.0.tgz#7433a3bd0c75e72715acf012e17a1c2ceed354cf"
+  integrity sha512-swAiAbMm9QhZVln6zvu8d9/TiXU2S4UuCVOIB9MXeFL7COEeEw88HVyOcovKYLDZ8kofLNkB/hqu0az8xBCUww==
   dependencies:
     copy-anything "~2.0.3"
     st-utils "~1.7.0"
     tslib "~2.2.0"
-    type-fest "~1.1.1"
+    type-fest "~1.1.3"
 
-"@stlmpp/utils@~6.0.0":
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/@stlmpp/utils/-/utils-6.0.0.tgz#dc9a4044f620ef1a313d86c8dbc14a2f8cbf96a4"
-  integrity sha512-1Q0tHmahhbD1LXbjL1p8+rkGKYAzjuLuVMD/RgdgnPLDoL630MBVIxrg+evo9oW6hFYKdF4prw9ZF+kn9ZhAlQ==
+"@stlmpp/utils@~6.1.0":
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/@stlmpp/utils/-/utils-6.1.0.tgz#3ec27489b00b8f9f8c55ae806a6ca389cd393276"
+  integrity sha512-ztS9a4Sh9JN6qK0zpExt4qqhaM1AsO7z2p51OKmMZy8FeEadaR57AWgb2Up+ehW5Z9Xfn8FRKIBzqqUBzFziDg==
   dependencies:
     st-utils "~1.7.0"
     tslib "~2.2.0"
-    type-fest "~1.1.1"
+    type-fest "~1.1.3"
 
 "@tootallnate/once@1":
   version "1.1.2"
@@ -9008,10 +9008,10 @@ type-fest@~1.0.2:
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-1.0.2.tgz#3f9c39982859f385c77c38b7e5f1432b8a3661c6"
   integrity sha512-a720oz3Kjbp3ll0zkeN9qjRhO7I34MKMhPGQiQJAmaZQZQ1lo+NWThK322f7sXV+kTg9B1Ybt16KgBXWgteT8w==
 
-type-fest@~1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-1.1.1.tgz#210251e7f57357a1457269e6b34837fed067ac2c"
-  integrity sha512-RPDKc5KrIyKTP7Fk75LruUagqG6b+OTgXlCR2Z0aQDJFeIvL4/mhahSEtHmmVzXu4gmA0srkF/8FCH3WOWxTWA==
+type-fest@~1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-1.1.3.tgz#ea1a602e98e5a968a56a289886a52f04c686fc81"
+  integrity sha512-CsiQeFMR1jZEq8R+H59qe+bBevnjoV5N2WZTTdlyqxeoODQOOepN2+msQOywcieDq5sBjabKzTn3U+sfHZlMdw==
 
 type-is@~1.6.17, type-is@~1.6.18:
   version "1.6.18"

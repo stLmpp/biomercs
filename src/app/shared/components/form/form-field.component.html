@@ -27,7 +27,7 @@
   </div>
 </div>
 <div class="bottom-wrapper">
-  <div class="hints" *ngIf="control?.touched || !(control?.hasErrors$ | async)" @fadeIn>
+  <div class="hints" *ngIf="!control?.touched || !(control?.hasErrors$ | async)" @fadeIn>
     <ng-content select="hint:not([end]),[hint]:not([end])"></ng-content>
     <div class="hint-spacer"></div>
     <ng-content select="hint[end],[hint][end]"></ng-content>

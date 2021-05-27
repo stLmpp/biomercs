@@ -54,14 +54,14 @@ $accent-600: map-get($accent-pallete, 600);
 
 $danger-type: 'danger';
 $danger-pallete: (
-  0: #860f0f,
-  50: #941616,
-  100: #a01c1c,
-  200: #ac2323,
-  300: #c13030,
-  400: #d64141,
-  500: #e55151,
-  600: #f66464,
+  0: #ff0000,
+  50: #ed1010,
+  100: #dc1a1a,
+  200: #d22a2a,
+  300: #c93f3f,
+  400: #c14e4e,
+  500: #ba5d5d,
+  600: #b16a6a,
 );
 
 $danger: map-get($danger-pallete, 0);

@@ -22,6 +22,7 @@ import { ScoreService } from '../score/score.service';
 import { AbstractScoreService } from '../score/abstract-score.service';
 import { AbstractPlayerService } from '../player/abstract-player.service';
 import { PlayerService } from '../player/player.service';
+import { RetryInterceptor } from './retry.interceptor';
 
 const withInterceptors = (...interceptors: any[]): Provider[] =>
   interceptors.map(useClass => ({
@@ -50,6 +51,7 @@ export class CoreModule {
           LoadingInterceptor,
           DateInterceptor,
           HandleErrorDevInterceptor,
+          RetryInterceptor,
           FormatErrorInterceptor
         ),
         {

@@ -4,32 +4,30 @@ import {
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
   UrlTree,
-  Router,
   CanLoad,
   UrlSegment,
   Route,
 } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthQuery } from './auth.query';
-import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
-export class NotLoggedGuard implements CanActivate, CanLoad {
-  constructor(private authQuery: AuthQuery, private router: Router) {}
+export class AuthLoggedGuard implements CanActivate, CanLoad {
+  constructor(private authQuery: AuthQuery) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.authQuery.isLogged$.pipe(map(isLogged => !isLogged || this.router.createUrlTree(['/'])));
+    return this.authQuery.getIsLogged();
   }
 
   canLoad(
     route: Route,
     segments: UrlSegment[]
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.authQuery.isLogged$.pipe(map(isLogged => !isLogged || this.router.createUrlTree(['/'])));
+    return this.authQuery.getIsLogged();
   }
 }

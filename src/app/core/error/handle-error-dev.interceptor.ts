@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { HandleErrorService } from './handle-error.service';
 import { environment } from '@environment/environment';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class HandleErrorDevInterceptor implements HttpInterceptor {
   constructor(private handleErrorService: HandleErrorService) {}
 

@@ -15,7 +15,7 @@ import { AuthQuery } from './auth.query';
 @Injectable({
   providedIn: 'root',
 })
-export class AdminGuard implements CanActivate, CanLoad {
+export class AuthAdminGuard implements CanActivate, CanLoad {
   constructor(private authQuery: AuthQuery, private router: Router) {}
 
   private _validateAdmin(): boolean | UrlTree {
