@@ -28,7 +28,7 @@ import { Menu } from './menu';
 export class MenuComponent extends Menu {
   @ViewChild(TemplateRef) templateRef!: TemplateRef<any>;
 
-  @ContentChildren(MenuItem, { descendants: true }) menuItens!: QueryList<MenuItem>;
+  @ContentChildren(MenuItem, { descendants: true }) menuItems!: QueryList<MenuItem>;
 
   overlayRef?: OverlayRef;
   trigger?: 'hover' | 'click';
@@ -54,7 +54,7 @@ export class MenuComponent extends Menu {
   }
 
   initFocus(): void {
-    this.focusManager = new FocusKeyManager(this.menuItens)
+    this.focusManager = new FocusKeyManager(this.menuItems)
       .withWrap()
       .withVerticalOrientation()
       .skipPredicate((element: MenuItem) => element.isDisabled());

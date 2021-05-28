@@ -1,0 +1,122 @@
+<h4 bioPageTitle></h4>
+
+<form-field label="Search">
+  <input bioInput type="search" placeholder="Search" [control]="searchControl" autocomplete="off" />
+  <icon prefix>search</icon>
+</form-field>
+
+<bio-accordion
+  (itemExpanded)="onItemExpanded($event)"
+  [bioFilter]="search$ | async"
+  (bioFilterChange)="onFilterChange($event)"
+>
+  <bio-accordion-item
+    bioFilterItem
+    accordionTitle="How can I submit a score?"
+    *ngLet="isMobile$ | async as isMobile"
+    id="how-can-i-submit-a-score"
+  >
+    There a link in the header (
+    <a
+      bioButton
+      [icon]="isMobile"
+      routerLink="/score/add"
+      queryParamsHandling="preserve"
+      tooltip="Submit score"
+      tooltipPosition="bottom"
+      small
+      [tooltipDisabled]="!isMobile"
+    >
+      <icon small>add</icon>
+      <ng-container *ngIf="!isMobile">Submit score</ng-container>
+    </a>
+    ), that redirects you to the page of score submission.<br />
+    There you can select all the parameters of your score (Platform, Game, Stage, etc), and submit it.
+  </bio-accordion-item>
+  <bio-accordion-item
+    bioFilterItem
+    accordionTitle="After I submitted my score, what happens?"
+    id="after-i-submitted-my-score-what-happens"
+  >
+    It depends. <br /><br />
+    If your score is Solo:<br />
+    <ol>
+      <li>It goes to the approval of an admin</li>
+      <li>
+        If an admin approves your score:
+        <a class="inherit" [routerLink]="[]" fragment="what-happens-when-my-score-is-approved-by-an-admin">
+          What happens when my score is approved by an admin?
+        </a>
+      </li>
+      <li>
+        If an admin rejects your score:
+        <a class="inherit" [routerLink]="[]" fragment="what-happens-when-my-score-is-rejected-by-an-admin">
+          What happens when my score is rejected by an admin?
+        </a>
+      </li>
+      <li>
+        If an admin requests changes to your score:
+        <a class="inherit" [routerLink]="[]" fragment="what-do-i-need-to-do-when-an-admin-request-a-change-in-my-score">
+          What do I need to do when an admin request a change in my score?
+        </a>
+      </li>
+    </ol>
+
+    If your score is Duo:
+    <ol>
+      <li>It goes to the approval of your partner</li>
+      <li>
+        If your partner approves your score:
+        <a class="inherit" [routerLink]="[]" fragment="what-happens-when-my-score-is-approved-by-my-partner">
+          What happens when my score is approved by my patner?
+        </a>
+      </li>
+      <li>
+        If your partner rejects your score:
+        <a class="inherit" [routerLink]="[]" fragment="what-happens-when-my-score-is-rejected-by-my-partner">
+          What happens when my score is rejected by my partner?
+        </a>
+      </li>
+      <li>
+        If your partner requests changes to your score:
+        <a
+          class="inherit"
+          [routerLink]="[]"
+          fragment="what-do-i-need-to-do-when-my-partner-request-a-change-in-my-score"
+        >
+          What do I need to do when my partner request a change in my score?
+        </a>
+      </li>
+    </ol>
+  </bio-accordion-item>
+  <bio-accordion-item
+    bioFilterItem
+    accordionTitle="What happens when my score is approved by an admin?"
+    id="what-happens-when-my-score-is-approved-by-an-admin"
+  >
+  </bio-accordion-item>
+  <bio-accordion-item
+    bioFilterItem
+    accordionTitle="What happens when my score is rejected by an admin?"
+    id="what-happens-when-my-score-is-rejected-by-an-admin"
+  >
+  </bio-accordion-item>
+  <bio-accordion-item
+    bioFilterItem
+    accordionTitle="What do I need to do when an admin request a change in my score?"
+    id="what-do-i-need-to-do-when-an-admin-request-a-change-in-my-score"
+  >
+  </bio-accordion-item>
+  <bio-accordion-item
+    accordionTitle="What happens when my score is approved by my patner?"
+    id="what-happens-when-my-score-is-approved-by-my-partner"
+  ></bio-accordion-item>
+  <bio-accordion-item
+    accordionTitle="What happens when my score is rejected by my partner?"
+    id="what-happens-when-my-score-is-rejected-by-my-partner"
+  ></bio-accordion-item>
+  <bio-accordion-item
+    accordionTitle="What do I need to do when my partner request a change in my score?"
+    id="what-do-i-need-to-do-when-my-partner-request-a-change-in-my-score"
+  ></bio-accordion-item>
+</bio-accordion>

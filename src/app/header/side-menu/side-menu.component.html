@@ -10,7 +10,7 @@
   <!--TODO add better Leaderboards layout to support mobile, for now it's disabled-->
   <a
     bioListItem
-    *ngIf="isSmallScreen"
+    *ngIf="!isMobile"
     routerLink="/score/leaderboards"
     queryParamsHandling="preserve"
     (click)="onMenuSelected($event)"

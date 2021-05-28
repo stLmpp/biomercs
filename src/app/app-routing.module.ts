@@ -12,6 +12,7 @@ const routes: Routes = [
   },
   { path: 'auth', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule) },
   { path: 'contact', loadChildren: () => import('./contact/contact.module').then(m => m.ContactModule) },
+  { path: 'faq', loadChildren: () => import('./faq/faq.module').then(m => m.FaqModule) },
   {
     path: 'player',
     loadChildren: () => import('./player/player.module').then(m => m.PlayerModule),
