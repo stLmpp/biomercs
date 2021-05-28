@@ -4,6 +4,7 @@ import { Destroyable } from '@shared/components/common/destroyable-component';
 import { distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { RouterQuery } from '@stlmpp/router';
+import { isMap } from 'st-utils';
 
 @Injectable({ providedIn: 'root' })
 export class MetaService extends Destroyable {
@@ -19,7 +20,7 @@ export class MetaService extends Destroyable {
       .pipe(
         takeUntil(this.destroy$),
         distinctUntilChanged(),
-        map(metaMeta => metaMeta ?? new Map())
+        map(metaMap => (isMap(metaMap) ? metaMap : new Map()))
       )
       .subscribe(metaMap => {
         const diff = this.keyValueDiffer.diff(metaMap);

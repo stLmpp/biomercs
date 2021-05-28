@@ -1,0 +1,16 @@
+<div class="accordion-item-header" (click)="toggle()">
+  <ng-container *ngIf="accordionItemTitleDirectives?.length; else notTitleRef">
+    <ng-content select="[bioAccordionItemTitle], bio-accordion-item-title"></ng-content>
+  </ng-container>
+  <ng-template #notTitleRef>
+    <div class="accordion-item-title">{{ accordionTitle }}</div>
+  </ng-template>
+  <div class="accordion-item-icon">
+    <icon [@collapseIcon]="expanded ? 'expanded' : 'collapsed'">expand_less</icon>
+  </div>
+</div>
+<div class="accordion-item-body" [bioCollapsed]="!expanded" [bioExpanded]="expanded">
+  <div class="accordion-item-content">
+    <ng-content></ng-content>
+  </div>
+</div>
