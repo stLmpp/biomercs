@@ -17,8 +17,11 @@
       cursor: pointer;
     }
     &:not(.expanded) {
-      &:hover {
-        background-color: lighten(v.$dark-overlay, 5);
+      .accordion-item-header {
+        &:hover {
+          background-color: lighten(v.$dark-overlay, 5);
+          border-radius: v.$radius;
+        }
       }
     }
   }
@@ -30,6 +33,13 @@
 }
 .accordion-item-body .accordion-item-content {
   padding-top: 0;
+  font-size: 0.85rem;
+  color: v.$primary-600;
+}
+
+.accordion-item-title {
+  display: flex;
+  align-items: center;
 }
 
 .accordion-item-header {

@@ -29,4 +29,7 @@ a {
   &.white {
     color: v.$white;
   }
+  &.inherit {
+    color: inherit;
+  }
 }
