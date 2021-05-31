@@ -11,9 +11,7 @@ import {
 import { Observable } from 'rxjs';
 import { AuthQuery } from './auth.query';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class AuthLoggedGuard implements CanActivate, CanLoad {
   constructor(private authQuery: AuthQuery) {}
 

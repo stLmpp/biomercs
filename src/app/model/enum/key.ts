@@ -7,6 +7,7 @@ export enum Key {
   Delete = 'Delete',
   Enter = 'Enter',
   Space = ' ',
+  Tab = 'Tab',
 }
 
 export enum KeyCode {

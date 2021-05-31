@@ -2,6 +2,8 @@
 @use 'mixins' as m;
 @use 'functions' as f;
 
+$focus-background-color: lighten(v.$dark-overlay, 5);
+
 .accordion {
   display: grid;
   grid-row-gap: 1rem;
@@ -15,18 +17,21 @@
   &:not(.disabled) {
     .accordion-item-header {
       cursor: pointer;
-      &:focus {
-        background-color: lighten(v.$dark-overlay, 5);
-        border-radius: v.$radius;
-        outline: none;
-      }
     }
     &:not(.expanded) {
       .accordion-item-header {
-        &:hover {
-          background-color: lighten(v.$dark-overlay, 5);
+        &:hover,
+        &:focus {
+          background-color: $focus-background-color;
           border-radius: v.$radius;
+          outline: none;
         }
+      }
+    }
+    &.expanded:focus-within {
+      background-color: $focus-background-color;
+      .accordion-item-header {
+        outline: none;
       }
     }
   }

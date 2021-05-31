@@ -41,10 +41,15 @@ export class FaqComponent extends Destroyable implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    let isFirstChange = true;
     this.activatedRoute.fragment
       .pipe(observeOn(asyncScheduler), takeUntil(this.destroy$), filterNil(), distinctUntilChanged())
       .subscribe(fragment => {
+        if (isFirstChange) {
+          this.accordionDirective.focusItem(fragment);
+        }
         this.accordionDirective.expandItem(fragment);
+        isFirstChange = false;
       });
   }
 }
