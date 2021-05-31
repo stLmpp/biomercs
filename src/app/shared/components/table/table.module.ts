@@ -3,27 +3,19 @@ import { CommonModule } from '@angular/common';
 import { TableComponent } from './table.component';
 import { CardModule } from '@shared/components/card/card.module';
 import { PaginationModule } from '@shared/components/pagination/pagination.module';
-import { SpinnerModule } from '@shared/components/spinner/spinner.module';
-import { IconModule } from '@shared/components/icon/icon.module';
 import { NgLetModule } from '@shared/let/ng-let.module';
 import { TableCellComponent } from './table-cell/table-cell.component';
 import { PortalModule } from '@angular/cdk/portal';
-import { TooltipModule } from '@shared/components/tooltip/tooltip.module';
 import { TableCellFormatterPipe } from './table-cell-formatter.pipe';
 import { TableCellTooltipPipe } from './table-cell-tooltip.pipe';
 
+const DECLARATIONS = [TableComponent, TableCellComponent, TableCellFormatterPipe, TableCellTooltipPipe];
+const MODULES = [CommonModule, CardModule, PaginationModule, NgLetModule, PortalModule];
+const EXPORTS = [TableComponent, CommonModule, CardModule, PaginationModule, NgLetModule, PortalModule];
+
 @NgModule({
-  declarations: [TableComponent, TableCellComponent, TableCellFormatterPipe, TableCellTooltipPipe],
-  imports: [
-    CommonModule,
-    CardModule,
-    PaginationModule,
-    SpinnerModule,
-    IconModule,
-    NgLetModule,
-    PortalModule,
-    TooltipModule,
-  ],
-  exports: [TableComponent],
+  declarations: [...DECLARATIONS],
+  imports: [...MODULES],
+  exports: [...EXPORTS],
 })
 export class TableModule {}

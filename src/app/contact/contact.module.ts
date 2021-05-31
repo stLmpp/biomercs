@@ -1,6 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-
 import { ContactRoutingModule } from './contact-routing.module';
 import { ContactComponent } from './contact.component';
 import { CardModule } from '@shared/components/card/card.module';
@@ -11,6 +9,6 @@ import { ButtonModule } from '@shared/components/button/button.module';
 
 @NgModule({
   declarations: [ContactComponent],
-  imports: [CommonModule, ContactRoutingModule, CardModule, StControlModule, FormModule, TextFieldModule, ButtonModule],
+  imports: [ContactRoutingModule, CardModule, FormModule, ButtonModule, StControlModule, TextFieldModule],
 })
 export class ContactModule {}

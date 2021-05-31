@@ -7,10 +7,11 @@ import { AccordionItemTitleDirective } from '@shared/components/accordion/accord
 import { CollapseModule } from '@shared/components/collapse/collapse.module';
 
 const DECLARATIONS = [AccordionDirective, AccordionItemComponent, AccordionItemTitleDirective];
+const MODULES = [CommonModule, IconModule, CollapseModule];
 
 @NgModule({
   declarations: [...DECLARATIONS],
-  imports: [CommonModule, IconModule, CollapseModule],
-  exports: [...DECLARATIONS],
+  imports: [...MODULES],
+  exports: [...DECLARATIONS, ...MODULES],
 })
 export class AccordionModule {}

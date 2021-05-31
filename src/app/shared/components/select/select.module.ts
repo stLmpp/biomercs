@@ -9,10 +9,11 @@ import { SelectMultipleComponent } from '@shared/components/select/select-multip
 import { CheckboxModule } from '@shared/components/checkbox/checkbox.module';
 
 const DECLARATIONS = [SelectComponent, OptionComponent, OptgroupComponent, SelectMultipleComponent];
+const MODULES = [CommonModule, IconModule, A11yModule, CheckboxModule];
 
 @NgModule({
   declarations: [...DECLARATIONS],
-  imports: [CommonModule, IconModule, A11yModule, CheckboxModule],
-  exports: [...DECLARATIONS],
+  imports: [...MODULES],
+  exports: [...DECLARATIONS, ...MODULES],
 })
 export class SelectModule {}

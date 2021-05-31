@@ -5,7 +5,6 @@ import { CardTitleDirective } from './card-title.directive';
 import { CardContentDirective } from './card-content.directive';
 import { CardActionsDirective } from './card-actions.directive';
 import { CardSubtitleDirective } from './card-subtitle.directive';
-import { ButtonModule } from '@shared/components/button/button.module';
 import { IconModule } from '@shared/components/icon/icon.module';
 import { CollapseModule } from '@shared/components/collapse/collapse.module';
 
@@ -17,9 +16,11 @@ const DECLARATIONS = [
   CardSubtitleDirective,
 ];
 
+const MODULES = [CommonModule, IconModule, CollapseModule];
+
 @NgModule({
   declarations: [...DECLARATIONS],
-  imports: [CommonModule, ButtonModule, IconModule, CollapseModule],
-  exports: [...DECLARATIONS],
+  imports: [...MODULES],
+  exports: [...DECLARATIONS, ...MODULES],
 })
 export class CardModule {}

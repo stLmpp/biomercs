@@ -10,19 +10,22 @@ import { ObjectModule } from '../object/object.module';
 import { UtilModule } from '../util/util.module';
 import { StUtilsModule } from '@stlmpp/utils';
 
+const DECLARATIONS = [ParamsComponent];
+const MODULES = [
+  CommonModule,
+  StControlModule,
+  SelectModule,
+  FormModule,
+  SpinnerModule,
+  NgLetModule,
+  ObjectModule,
+  UtilModule,
+  StUtilsModule,
+];
+
 @NgModule({
-  declarations: [ParamsComponent],
-  exports: [ParamsComponent],
-  imports: [
-    CommonModule,
-    StControlModule,
-    SelectModule,
-    FormModule,
-    SpinnerModule,
-    NgLetModule,
-    ObjectModule,
-    UtilModule,
-    StUtilsModule,
-  ],
+  declarations: [...DECLARATIONS],
+  imports: [...MODULES],
+  exports: [...DECLARATIONS, ...MODULES],
 })
 export class ParamsModule {}

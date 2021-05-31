@@ -18,10 +18,12 @@ const DECLARATIONS = [
   ModalComponent,
 ];
 
+const MODULES = [CommonModule, OverlayModule, PortalModule];
+
 @NgModule({
   declarations: [...DECLARATIONS],
-  imports: [CommonModule, OverlayModule, PortalModule],
-  exports: [...DECLARATIONS],
+  imports: [...MODULES],
+  exports: [...DECLARATIONS, ...MODULES],
 })
 export class ModalModule {
   static forRoot(config?: Partial<ModalConfig>): ModuleWithProviders<ModalModule> {
