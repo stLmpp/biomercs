@@ -12,9 +12,7 @@ import {
 import { Observable } from 'rxjs';
 import { AuthQuery } from './auth.query';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class AuthAdminGuard implements CanActivate, CanLoad {
   constructor(private authQuery: AuthQuery, private router: Router) {}
 
