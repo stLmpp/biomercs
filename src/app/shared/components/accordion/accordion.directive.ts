@@ -1,7 +1,8 @@
-import { ContentChildren, Directive, QueryList } from '@angular/core';
+import { AfterContentInit, ContentChildren, Directive, QueryList } from '@angular/core';
 import { CdkAccordion } from '@angular/cdk/accordion';
 import { Accordion } from '@shared/components/accordion/accordion';
 import { AccordionItemComponent } from '@shared/components/accordion/accordion-item.component';
+import { FocusKeyManager } from '@angular/cdk/a11y';
 
 @Directive({
   selector: 'bio-accordion, [bioAccordion]',
@@ -12,8 +13,10 @@ import { AccordionItemComponent } from '@shared/components/accordion/accordion-i
   host: { class: 'accordion' },
   exportAs: 'bioAccordion',
 })
-export class AccordionDirective extends Accordion {
+export class AccordionDirective extends Accordion implements AfterContentInit {
   @ContentChildren(AccordionItemComponent) accordionItemComponents?: QueryList<AccordionItemComponent>;
+
+  focusKeyManager?: FocusKeyManager<AccordionItemComponent>;
 
   private _findAccordionItem(id: string): AccordionItemComponent | undefined {
     return this.accordionItemComponents?.find(accordionItemComponent => accordionItemComponent.id === id);
@@ -35,5 +38,14 @@ export class AccordionDirective extends Accordion {
     if (item) {
       item.expanded = false;
     }
+  }
+
+  ngAfterContentInit(): void {
+    if (!this.accordionItemComponents) {
+      return;
+    }
+    this.focusKeyManager = new FocusKeyManager<AccordionItemComponent>(this.accordionItemComponents)
+      .withVerticalOrientation()
+      .skipPredicate(item => item.disabled);
   }
 }

@@ -1,4 +1,10 @@
-<div class="accordion-item-header" (click)="toggle()">
+<div
+  class="accordion-item-header"
+  (click)="toggle()"
+  [tabIndex]="disabled ? -1 : 0"
+  #header
+  (keydown)="onKeydown($event)"
+>
   <ng-container *ngIf="accordionItemTitleDirectives?.length; else notTitleRef">
     <ng-content select="[bioAccordionItemTitle], bio-accordion-item-title"></ng-content>
   </ng-container>

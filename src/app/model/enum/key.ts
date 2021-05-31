@@ -5,6 +5,8 @@ export enum Key {
   Plus = 'Plus',
   Minus = 'Minus',
   Delete = 'Delete',
+  Enter = 'Enter',
+  Space = ' ',
 }
 
 export enum KeyCode {

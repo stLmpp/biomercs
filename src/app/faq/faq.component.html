@@ -1,7 +1,14 @@
 <h4 bioPageTitle></h4>
 
 <form-field label="Search">
-  <input bioInput type="search" placeholder="Search" [control]="searchControl" autocomplete="off" />
+  <input
+    bioInput
+    type="search"
+    placeholder="Search"
+    [control]="searchControl"
+    autocomplete="off"
+    (keydown.arrowDown)="accordionDirective?.focusKeyManager?.setFirstItemActive()"
+  />
   <icon prefix>search</icon>
 </form-field>
 
@@ -56,8 +63,8 @@
       </li>
       <li>
         If an admin requests changes to your score:
-        <a class="inherit" [routerLink]="[]" fragment="what-do-i-need-to-do-when-an-admin-request-a-change-in-my-score">
-          What do I need to do when an admin request a change in my score?
+        <a class="inherit" [routerLink]="[]" fragment="what-happens-when-an-admin-request-changes-to-my-score">
+          What happens when an admin request changes to my score?
         </a>
       </li>
     </ol>
@@ -103,8 +110,8 @@
   </bio-accordion-item>
   <bio-accordion-item
     bioFilterItem
-    accordionTitle="What do I need to do when an admin request a change in my score?"
-    id="what-do-i-need-to-do-when-an-admin-request-a-change-in-my-score"
+    accordionTitle="What happens when an admin request changes to my score?"
+    id="what-happens-when-an-admin-request-changes-to-my-score"
   >
   </bio-accordion-item>
   <bio-accordion-item

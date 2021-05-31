@@ -15,6 +15,11 @@
   &:not(.disabled) {
     .accordion-item-header {
       cursor: pointer;
+      &:focus {
+        background-color: lighten(v.$dark-overlay, 5);
+        border-radius: v.$radius;
+        outline: none;
+      }
     }
     &:not(.expanded) {
       .accordion-item-header {
