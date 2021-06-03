@@ -17,7 +17,5 @@ export class FooterComponent {
 
   year = new Date().getFullYear();
   startedYear = 2021;
-  poweredBy = 'stLmpp';
-  github = 'https://github.com/' + this.poweredBy;
-  copyright = '©' + this.startedYear + (this.year === this.startedYear ? '' : `-${this.year}`);
+  copyright = '\u00A9' + this.startedYear + (this.year === this.startedYear ? '' : `-${this.year}`);
 }

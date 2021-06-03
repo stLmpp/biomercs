@@ -6,8 +6,11 @@ export class LabelDirective {
   private _accent = false;
   private _danger = false;
 
-  @Input() @HostBinding('attr.for') for?: string | number;
+  @Input()
+  @HostBinding('attr.for')
+  for?: string | number;
 
+  @Input()
   @HostBinding('class.danger')
   get danger(): boolean {
     return this._danger;
@@ -16,6 +19,7 @@ export class LabelDirective {
     this._danger = coerceBooleanProperty(value);
   }
 
+  @Input()
   @HostBinding('class.accent')
   get accent(): boolean {
     return this._accent;

@@ -1,6 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Control } from '@stlmpp/control';
-import { ValidatorsModel } from '@stlmpp/control/lib/validator/validators';
+import { Control, ValidatorsModel } from '@stlmpp/control';
 
 @Pipe({ name: 'hasValidators' })
 export class HasValidatorsPipe implements PipeTransform {

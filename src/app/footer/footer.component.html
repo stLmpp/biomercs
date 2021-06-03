@@ -5,6 +5,4 @@
   <a bioButton small routerLink="/contact">Contact</a>
   <a bioButton small href="https://www.buymeacoffee.com/stlmpp">Buy me a coffee</a>
 </div>
-<div class="end" *ngIf="!mobile">
-  Powered by <a class="white" [href]="github">{{ poweredBy }}</a> {{ copyright }}
-</div>
+<div class="end" *ngIf="!mobile">Powered by <a class="white" routerLink="/stlmpp">stLmpp</a> {{ copyright }}</div>

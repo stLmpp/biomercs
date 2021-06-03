@@ -1,0 +1,38 @@
+@use 'variables' as v;
+@use 'mixins' as m;
+
+.item {
+  display: flex;
+  align-items: center;
+  .icon-wrapper {
+    &.drag {
+      margin-right: 0.5rem;
+      cursor: grab;
+    }
+    &.delete {
+      margin-left: 0.5rem;
+    }
+  }
+  .form-field {
+    width: 100%;
+  }
+
+  &.cdk-drag-preview {
+    color: v.$black;
+    opacity: 0.7;
+    @include m.elevation(3);
+  }
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating,
+.card-content.cdk-drop-list-dragging .item:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.actions {
+  margin-bottom: 1rem;
+}
