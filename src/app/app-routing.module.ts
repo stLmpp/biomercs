@@ -18,6 +18,7 @@ const routes: Routes = [
     loadChildren: () => import('./player/player.module').then(m => m.PlayerModule),
     canLoad: [AuthLoggedGuard],
   },
+  { path: 'rules', loadChildren: () => import('./rules/rules.module').then(m => m.RulesModule) },
   {
     path: 'score',
     loadChildren: () => import('./score/score.module').then(m => m.ScoreModule),

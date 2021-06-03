@@ -9,11 +9,10 @@ import { ScoreApprovalMotiveService } from '@shared/services/score-approval-moti
 import { ControlBuilder, Validators } from '@stlmpp/control';
 import { ScoreApprovalMotive, trackByScoreApprovalMotive } from '@model/score-approval-motive';
 import { Observable } from 'rxjs';
-import { StMapView } from '@stlmpp/store/lib/map';
+import { LocalState, StMapView } from '@stlmpp/store';
 import { finalize, switchMap, tap } from 'rxjs/operators';
 import { ScoreApprovalAdd, ScoreApprovalVW } from '@model/score-approval';
 import { ScoreApprovalComponentState } from '../score-approval.component';
-import { LocalState } from '@stlmpp/store';
 
 export interface ScoreApprovalModalData {
   score: ScoreVW;

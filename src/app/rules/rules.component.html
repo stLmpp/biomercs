@@ -1,0 +1,9 @@
+<bio-card>
+  <h3 bioCardTitle>Rules</h3>
+  <bio-card-content>
+    <h5 *ngFor="let rule of rules$ | async; trackBy: trackByRule">{{ rule.order }} - {{ rule.description }}</h5>
+  </bio-card-content>
+  <bio-card-actions *ngIf="isAdmin$ | async">
+    <a bioButton primary routerLink="/admin/rules">Edit rules</a>
+  </bio-card-actions>
+</bio-card>

@@ -8,13 +8,17 @@ const routes: Routes = [
     component: AdminComponent,
   },
   {
+    path: 'approval',
+    loadChildren: () =>
+      import('./admin-score-approval/admin-score-approval.module').then(m => m.AdminScoreApprovalModule),
+  },
+  {
     path: 'create-player',
     loadChildren: () => import('./admin-create-player/admin-create-player.module').then(m => m.AdminCreatePlayerModule),
   },
   {
-    path: 'approval',
-    loadChildren: () =>
-      import('./admin-score-approval/admin-score-approval.module').then(m => m.AdminScoreApprovalModule),
+    path: 'rules',
+    loadChildren: () => import('./admin-rules/admin-rules.module').then(m => m.AdminRulesModule),
   },
   {
     path: '**',

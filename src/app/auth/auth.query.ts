@@ -15,12 +15,12 @@ export class AuthQuery extends Query<Auth> {
     super(authStore);
   }
 
-  isLogged$ = this.select('user').pipe(
+  readonly isLogged$ = this.select('user').pipe(
     map(user => !!user?.id && !!user.token),
     distinctUntilChanged()
   );
-  user$ = this.select('user');
-  isAdmin$ = this.user$.pipe(
+  readonly user$ = this.select('user');
+  readonly isAdmin$ = this.user$.pipe(
     filterNil(),
     map(user => user.admin),
     distinctUntilChanged()

@@ -1,0 +1,15 @@
+@use 'variables' as v;
+
+:host {
+  display: flex;
+  justify-content: center;
+}
+
+.card {
+  max-width: v.$medium-screen-width;
+  width: 100%;
+}
+
+h5:not(:last-of-type) {
+  margin-bottom: 0.25rem;
+}

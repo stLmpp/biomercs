@@ -8,8 +8,7 @@ import { Region, trackByRegion } from '@model/region';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { combineLatest, Observable } from 'rxjs';
 import { Control } from '@stlmpp/control';
-import { LocalState } from '@stlmpp/store';
-import { StMapView } from '@stlmpp/store/lib/map';
+import { LocalState, StMapView } from '@stlmpp/store';
 
 export interface RegionSelectData {
   idRegion: number;
