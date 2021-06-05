@@ -1,0 +1,57 @@
+<bio-card *ngLet="fragment$ | async as fragment">
+  <div
+    *ngIf="fragment"
+    @fadeInOut
+    class="cdk-overlay-backdrop cdk-overlay-dark-backdrop cdk-overlay-backdrop-showing"
+  ></div>
+  <h3 bioCardTitle>stLmpp</h3>
+  <div bioCardSubtitle>Creator of biomercs.net</div>
+  <bio-card-content>
+    <div class="description" id="description" [class.active]="fragment === 'description'" #fragment>
+      <p>Hello, I'm stLmpp.</p>
+      <p>
+        I play The Mercenaries since Resident Evil 4. Peaked at Resident Evil 5 and 6, but always had the same problem
+        as everyone else, the leaderboards (when existent) were full of cheaters.
+      </p>
+      <p>
+        For a long time, the community used to have a sheet with all scores from Resident Evil 5, but it was not that
+        updated, and had a lot of flaws, because there were no (explict) regulations and the updates were dependent on
+        some people.
+      </p>
+      <p>
+        So I had the idea of creating this site, to keep a clean and legit leaderboards, and add support for others
+        Resident Evil games too.
+      </p>
+      <p>
+        Resident Evil Village recently (2021) launched, and there's no in-game leaderboards, so I saw an opportunity to
+        launch the site.
+      </p>
+    </div>
+    <div class="links" id="links" [class.active]="fragment === 'links'" #fragment>
+      <a bioButton href="https://github.com/stLmpp">
+        <icon mdi="github"></icon>
+        Github
+      </a>
+      <a bioButton href="https://steamcommunity.com/id/stlmpp/">
+        <icon mdi="steam"></icon>
+        Steam
+      </a>
+      <a bioButton href="https://youtube.com/stLmpp">
+        <icon mdi="youtube"></icon>
+        YouTube
+      </a>
+      <a bioButton routerLink="/player/p/stLmpp">
+        <icon>person</icon>
+        My profile
+      </a>
+    </div>
+    <div class="contact" id="contact" [class.active]="fragment === 'contact'" #fragment>
+      Want to contact me? Feel free to send an e-mail to <a [href]="mailTo">{{ mail }}</a> or
+      <a [href]="mailTo2">{{ mail2 }}</a>
+    </div>
+    <div class="support" id="support" [class.active]="fragment === 'support'" #fragment>
+      Want to support the site and me? Buy me a coffee <a href="https://www.buymeacoffee.com/stlmpp">here</a> or
+      <a href="https://ko-fi.com/stlmpp">here</a>
+    </div>
+  </bio-card-content>
+</bio-card>

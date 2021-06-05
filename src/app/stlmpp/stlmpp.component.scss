@@ -1,0 +1,45 @@
+@use 'variables' as v;
+@use 'functions' as f;
+
+:host {
+  display: flex;
+  justify-content: center;
+}
+
+.card {
+  max-width: v.$mobile-width;
+  width: 100%;
+  position: relative;
+}
+
+.card-content {
+  font-size: 0.85rem;
+  > div {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+}
+
+.cdk-overlay-backdrop {
+  border-radius: v.$radius;
+}
+
+.active {
+  position: relative;
+  z-index: f.get-z-index(header);
+  background-color: white;
+  margin-left: -1rem;
+  padding-left: 1rem;
+  margin-right: -1rem;
+  padding-right: 1rem;
+}
+
+.links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  @media only screen and (max-width: v.$mobile-width) {
+    display: grid;
+    justify-content: center;
+  }
+}

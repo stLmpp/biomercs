@@ -24,6 +24,10 @@ const routes: Routes = [
     loadChildren: () => import('./score/score.module').then(m => m.ScoreModule),
     canLoad: [AuthLoggedGuard],
   },
+  {
+    path: 'stlmpp',
+    loadChildren: () => import('./stlmpp/stlmpp.module').then(m => m.StlmppModule),
+  },
   { path: '**', loadChildren: () => import('./not-found/not-found.module').then(m => m.NotFoundModule) },
 ];
 
