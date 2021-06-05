@@ -5,9 +5,7 @@ import { StControlModule } from '@stlmpp/control';
 import { SelectModule } from '../components/select/select.module';
 import { FormModule } from '../components/form/form.module';
 import { SpinnerModule } from '../components/spinner/spinner.module';
-import { NgLetModule } from '../let/ng-let.module';
-import { ObjectModule } from '../object/object.module';
-import { StUtilsModule } from '@stlmpp/utils';
+import { NgLetModule, StUtilsObjectModule } from '@stlmpp/utils';
 
 const DECLARATIONS = [ParamsComponent];
 const MODULES = [
@@ -17,8 +15,7 @@ const MODULES = [
   FormModule,
   SpinnerModule,
   NgLetModule,
-  ObjectModule,
-  StUtilsModule,
+  StUtilsObjectModule,
 ];
 
 @NgModule({

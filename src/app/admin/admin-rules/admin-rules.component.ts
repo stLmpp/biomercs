@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Rule, RuleUpsert } from '@model/rule';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { ControlArray, ControlBuilder, ControlGroup, Validators } from '@stlmpp/control';
-import { WhiteSpaceValidator } from '@shared/validators/white-space.validator';
 import { LocalState } from '@stlmpp/store';
 import { trackByFactory } from '@stlmpp/utils';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
@@ -33,7 +32,6 @@ interface AdminRulesComponentState {
 export class AdminRulesComponent extends LocalState<AdminRulesComponentState> implements UnsavedData {
   constructor(
     private activatedRoute: ActivatedRoute,
-    private whiteSpaceValidator: WhiteSpaceValidator,
     private ruleService: RuleService,
     private ruleQuery: RuleQuery,
     private controlBuilder: ControlBuilder,
@@ -67,7 +65,7 @@ export class AdminRulesComponent extends LocalState<AdminRulesComponentState> im
 
   private _createControlGroup({ description, ...rule }: RuleUpsertForm): ControlGroup<RuleUpsertForm> {
     return this.controlBuilder.group<RuleUpsertForm>({
-      description: [description, { validators: [Validators.required, this.whiteSpaceValidator] }],
+      description: [description, { validators: [Validators.required, Validators.whiteSpace] }],
       ...rule,
     });
   }
@@ -81,9 +79,7 @@ export class AdminRulesComponent extends LocalState<AdminRulesComponentState> im
         const newOrder = index + 1;
         const orderControl = control.get('order');
         if (orderControl && orderControl.value !== newOrder) {
-          orderControl.setValue(newOrder);
-          orderControl.markAsTouched();
-          orderControl.markAsDirty();
+          orderControl.setValue(newOrder).markAsTouched().markAsDirty();
         }
       }
     }
@@ -118,11 +114,7 @@ export class AdminRulesComponent extends LocalState<AdminRulesComponentState> im
     if (!controlMoved) {
       return;
     }
-    const [control] = (this.rulesControl as any)._controls.splice($event.previousIndex, 1);
-    (this.rulesControl as any)._controls.splice($event.currentIndex, 0, control);
-    (this.rulesControl as any)._setValue$();
-    // rulesControl.removeAt($event.previousIndex);
-    // rulesControl.insert($event.currentIndex, controlMoved);
+    rulesControl.move($event.previousIndex, $event.currentIndex);
     this._reorder();
   }
 
@@ -131,9 +123,8 @@ export class AdminRulesComponent extends LocalState<AdminRulesComponentState> im
       return;
     }
     this.updateState({ saving: true });
-    const { deleted, rules } = this.form.value;
+    const { deleted, rules } = this.form.disable().value;
     const dtos: RuleUpsert[] = [...deleted, ...rules.map(dto => ({ ...dto, deleted: false }))];
-    this.form.disable();
     this.ruleService
       .upsert(dtos)
       .pipe(

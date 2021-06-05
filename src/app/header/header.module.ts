@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { HeaderComponent } from './header.component';
 import { ButtonModule } from '@shared/components/button/button.module';
 import { RouterModule } from '@angular/router';
-import { NgLetModule } from '@shared/let/ng-let.module';
+import { NgLetModule } from '@stlmpp/utils';
 import { MenuModule } from '@shared/components/menu/menu.module';
 import { BadgeModule } from '@shared/components/badge/badge.module';
 import { SideMenuComponent } from './side-menu/side-menu.component';

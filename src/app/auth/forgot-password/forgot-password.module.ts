@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ForgotPasswordRoutingModule } from './forgot-password-routing.module';
 import { ForgotPasswordComponent } from './forgot-password.component';
-import { NgLetModule } from '@shared/let/ng-let.module';
 import { CardModule } from '@shared/components/card/card.module';
 import { AuthSharedModule } from '../shared/auth-shared.module';
 import { ButtonModule } from '@shared/components/button/button.module';
+import { NgLetModule } from '@stlmpp/utils';
 
 @NgModule({
   declarations: [ForgotPasswordComponent],

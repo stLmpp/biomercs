@@ -5,7 +5,7 @@ import { ButtonModule } from '../button/button.module';
 import { SelectModule } from '../select/select.module';
 import { StControlModule } from '@stlmpp/control';
 import { TooltipModule } from '../tooltip/tooltip.module';
-import { NumberModule } from '@shared/number/number.module';
+import { StUtilsNumberModule } from '@stlmpp/utils';
 
 const DECLARATIONS = [PaginationComponent];
 const MODULES = [
@@ -14,9 +14,9 @@ const MODULES = [
   SelectModule,
   StControlModule,
   ButtonModule,
-  NumberModule,
+  StUtilsNumberModule,
 ];
-const EXPORTS = [CommonModule, TooltipModule, SelectModule, StControlModule, ButtonModule, NumberModule];
+const EXPORTS = [CommonModule, TooltipModule, SelectModule, StControlModule, ButtonModule, StUtilsNumberModule];
 
 @NgModule({
   declarations: [...DECLARATIONS],

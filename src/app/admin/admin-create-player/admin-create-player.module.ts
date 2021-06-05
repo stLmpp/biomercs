@@ -8,8 +8,8 @@ import { FormModule } from '@shared/components/form/form.module';
 import { StControlModule } from '@stlmpp/control';
 import { ButtonModule } from '@shared/components/button/button.module';
 import { SelectModule } from '@shared/components/select/select.module';
-import { NgLetModule } from '@shared/let/ng-let.module';
 import { TitleModule } from '@shared/title/title.module';
+import { NgLetModule } from '@stlmpp/utils';
 
 @NgModule({
   declarations: [AdminCreatePlayerComponent],

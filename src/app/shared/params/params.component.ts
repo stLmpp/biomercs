@@ -29,7 +29,6 @@ import { Character } from '@model/character';
 import { Mode } from '@model/mode';
 import { Stage } from '@model/stage';
 import { MiniGame } from '@model/mini-game';
-import { Platform } from '@model/platform';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { LocalState } from '@stlmpp/store';
 import { isNotNil } from 'st-utils';
@@ -238,7 +237,7 @@ export class ParamsComponent
         finalize(() => {
           this.updateState('gameLoading', false);
         }),
-        this._setParamOrNullOperator(this.idGameControl)
+        this._setParamOrNullOperator<Game>(this.idGameControl)
       );
     })
   );
@@ -250,7 +249,7 @@ export class ParamsComponent
         finalize(() => {
           this.updateState('miniGameLoading', false);
         }),
-        this._setParamOrNullOperator(this.idMiniGameControl)
+        this._setParamOrNullOperator<MiniGame>(this.idMiniGameControl)
       );
     })
   );
@@ -262,7 +261,7 @@ export class ParamsComponent
         finalize(() => {
           this.updateState('modeLoading', false);
         }),
-        this._setParamOrNullOperator(this.idModeControl)
+        this._setParamOrNullOperator<Mode>(this.idModeControl)
       );
     })
   );
@@ -274,7 +273,7 @@ export class ParamsComponent
         finalize(() => {
           this.updateState('stageLoading', false);
         }),
-        this._setParamOrNullOperator(this.idStageControl)
+        this._setParamOrNullOperator<Stage>(this.idStageControl)
       );
     })
   );
@@ -299,7 +298,7 @@ export class ParamsComponent
 
   state$ = this.selectState();
 
-  trackByPlatform = trackByFactory<Platform>('id');
+  trackByPlatform = this.platformQuery.trackBy;
   trackByGame = trackByFactory<Game>('id');
   trackByMiniGame = trackByFactory<MiniGame>('id');
   trackByMode = trackByFactory<Mode>('id');

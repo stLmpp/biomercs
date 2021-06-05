@@ -8,8 +8,8 @@ import { CardModule } from '@shared/components/card/card.module';
 import { ButtonModule } from '@shared/components/button/button.module';
 import { ModalModule } from '@shared/components/modal/modal.module';
 import { AuthSharedModule } from '../shared/auth-shared.module';
-import { NgLetModule } from '@shared/let/ng-let.module';
 import { CheckboxModule } from '@shared/components/checkbox/checkbox.module';
+import { NgLetModule } from '@stlmpp/utils';
 
 @NgModule({
   declarations: [LoginComponent, LoginConfirmCodeModalComponent],

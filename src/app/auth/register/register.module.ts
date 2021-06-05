@@ -6,7 +6,7 @@ import { RegisterComponent } from './register.component';
 import { CardModule } from '@shared/components/card/card.module';
 import { AuthSharedModule } from '../shared/auth-shared.module';
 import { ButtonModule } from '@shared/components/button/button.module';
-import { NgLetModule } from '@shared/let/ng-let.module';
+import { NgLetModule } from '@stlmpp/utils';
 
 @NgModule({
   declarations: [RegisterComponent],

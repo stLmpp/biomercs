@@ -4,6 +4,6 @@ import { Control, ValidatorsModel } from '@stlmpp/control';
 @Pipe({ name: 'hasValidators' })
 export class HasValidatorsPipe implements PipeTransform {
   transform(control: Control | null | undefined, validators: (keyof ValidatorsModel)[]): boolean {
-    return !!control?.validators.some(validator => validators.includes(validator));
+    return !!control?.hasValidators(validators);
   }
 }

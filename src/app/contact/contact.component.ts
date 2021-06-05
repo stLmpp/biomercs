@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Control, ControlGroup, Validators } from '@stlmpp/control';
 import { ContactSendMail } from '@model/contact';
-import { WhiteSpaceValidator } from '@shared/validators/white-space.validator';
 import { LocalState } from '@stlmpp/store';
 import { ContactService } from './contact.service';
 import { finalize, tap } from 'rxjs/operators';
@@ -24,7 +23,6 @@ interface ContactComponentState {
 })
 export class ContactComponent extends LocalState<ContactComponentState> {
   constructor(
-    private whiteSpaceValidator: WhiteSpaceValidator,
     private contactService: ContactService,
     private router: Router,
     private snackBarService: SnackBarService,
@@ -44,10 +42,10 @@ export class ContactComponent extends LocalState<ContactComponentState> {
       Validators.required,
       Validators.maxLength(2000),
       Validators.minLength(1),
-      this.whiteSpaceValidator,
+      Validators.whiteSpace,
     ]),
     subject: new Control('', {
-      validators: [Validators.required, Validators.maxLength(200), Validators.minLength(1), this.whiteSpaceValidator],
+      validators: [Validators.required, Validators.maxLength(200), Validators.minLength(1), Validators.whiteSpace],
       initialFocus: this.authQuery.getIsLogged(),
     }),
     from: new Control(this.authQuery.getUser()?.email ?? '', {

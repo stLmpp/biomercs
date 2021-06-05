@@ -138,9 +138,7 @@
         <bio-option disabled *ngIf="state.characterLoading"><spinner [size]="0.1"></spinner> Loading...</bio-option>
         <bio-option
           [value]="null"
-          *ngIf="
-            (formsConfig.idCharacterCostume.clearable ?? state.clearable) && !!(idCharacterCostume$ | async)
-          "
+          *ngIf="(formsConfig.idCharacterCostume.clearable ?? state.clearable) && !!(idCharacterCostume$ | async)"
         >
           Clear
         </bio-option>

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TableComponent } from './table.component';
 import { CardModule } from '@shared/components/card/card.module';
 import { PaginationModule } from '@shared/components/pagination/pagination.module';
-import { NgLetModule } from '@shared/let/ng-let.module';
+import { NgLetModule } from '@stlmpp/utils';
 import { TableCellComponent } from './table-cell/table-cell.component';
 import { PortalModule } from '@angular/cdk/portal';
 import { TableCellFormatterPipe } from './table-cell-formatter.pipe';
