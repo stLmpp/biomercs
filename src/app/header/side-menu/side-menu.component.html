@@ -65,4 +65,8 @@
     <icon prefix>person_add_alt_1</icon>
     Create player
   </a>
+  <a bioListItem routerLink="/admin/rules" (click)="onMenuSelected($event)" *ngIf="user.admin">
+    <icon prefix>article</icon>
+    Edit rules
+  </a>
 </bio-list>

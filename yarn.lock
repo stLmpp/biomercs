@@ -1532,37 +1532,37 @@
     "@angular-devkit/schematics" "12.0.3"
     jsonc-parser "3.0.0"
 
-"@stlmpp/control@~7.0.0-next.0":
-  version "7.0.0-next.0"
-  resolved "https://registry.yarnpkg.com/@stlmpp/control/-/control-7.0.0-next.0.tgz#c87401b99e9471eaf6995d1f2dd44e4dba88aa46"
-  integrity sha512-C+bE07LYZtwyPN4mUvD9E6d/lDOJVWbVb0qtKMK/DCuGtRHDpWRlVRA68PsA6SDVqILe0tIGaNcxTxDK6eql5g==
+"@stlmpp/control@~7.0.0-next.1":
+  version "7.0.0-next.1"
+  resolved "https://registry.yarnpkg.com/@stlmpp/control/-/control-7.0.0-next.1.tgz#64f8fbfafd0fc4dc1b7320a60ed54650d2a68899"
+  integrity sha512-6+MCU2aSIUjnVIlJebkGF7JdS0l0Q1CbvpFUV8j2PEkWpM0Z7tOVbgUEPsakGR4PPZ8PAbWwf70M7RWUbsFfvw==
   dependencies:
     date-fns "~2.22.1"
     st-utils "~1.7.0"
     tslib "~2.2.0"
 
-"@stlmpp/router@~7.0.0-next.0":
-  version "7.0.0-next.0"
-  resolved "https://registry.yarnpkg.com/@stlmpp/router/-/router-7.0.0-next.0.tgz#2279e5d746447893eaeeab8e56a21d384886029c"
-  integrity sha512-VFcQvtmNVMDrZldPivfAIrf6omBGGDf+D8SnpF43Et/ao/CVMbfVBo8V5+515/vfmOq9Q47hRSF8wIq3iOH4/A==
+"@stlmpp/router@~7.0.0-next.1":
+  version "7.0.0-next.1"
+  resolved "https://registry.yarnpkg.com/@stlmpp/router/-/router-7.0.0-next.1.tgz#0f4e54c73327397a69f348444bb44dadeef9ad1e"
+  integrity sha512-bJ+PDPCvXwNgfQo7gRFEZlUXYoCn4hGQEQR9y+QaXTggk3mAv6BZoe3stvowu3RY1dQhGyW/2s/1eLCYqrh2nA==
   dependencies:
     st-utils "~1.8.0"
     tslib "~2.2.0"
 
-"@stlmpp/store@~7.0.0-next.0":
-  version "7.0.0-next.0"
-  resolved "https://registry.yarnpkg.com/@stlmpp/store/-/store-7.0.0-next.0.tgz#1439a9b079acdc4c99e7d7f9d72cd41cf8536c06"
-  integrity sha512-zZCurxqOX1Iq0HmEXRR8DeHaO76Dwq5nIVpTj23fm+vD2SRFv0Q5lUq0RrktpetQMYojFEoV7nqvmKqbMZxMMg==
+"@stlmpp/store@~7.0.0-next.1":
+  version "7.0.0-next.1"
+  resolved "https://registry.yarnpkg.com/@stlmpp/store/-/store-7.0.0-next.1.tgz#6044c7a04e2e657e40f03578edfeb3bb7c20dd8a"
+  integrity sha512-zyGF6iVZBy+0nRuSf2ftRVdqoXioM3qH1p+mG7uTcPHdbK6IRSTZUsP35a6RDLjDfxqdSvcCGJ9xxTuf0AZSjw==
   dependencies:
     copy-anything "~2.0.3"
     st-utils "~1.8.0"
     tslib "~2.2.0"
     type-fest "~1.2.0"
 
-"@stlmpp/utils@~7.0.0-next.0":
-  version "7.0.0-next.0"
-  resolved "https://registry.yarnpkg.com/@stlmpp/utils/-/utils-7.0.0-next.0.tgz#d2ea38dd96592f94b3ceb1dbb1746502f05d283d"
-  integrity sha512-+rNAd9ZDTNLtZ7MaLC0aDVAsGpQodOC4/o7wKn6WNmC9aZmbN+zR7gYZ+0d8JDAPgYLRY96Y3a+6USGiLB+F2Q==
+"@stlmpp/utils@~7.0.0-next.1":
+  version "7.0.0-next.1"
+  resolved "https://registry.yarnpkg.com/@stlmpp/utils/-/utils-7.0.0-next.1.tgz#74ef691aad3062d81d96a4decf17ece980f46a72"
+  integrity sha512-rq4wqOgXvuVsxxpVewJOAZX0zzF3rSTHZowClj23K+WJBAIWjXsYQJ9MyKANxHUk/eDIUS9E+gXXTJ0IalOTWA==
   dependencies:
     st-utils "~1.8.0"
     tslib "~2.2.0"
@@ -7533,10 +7533,10 @@ prelude-ls@^1.2.1:
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.2.1.tgz#debc6489d7a6e6b0e7611888cec880337d316396"
   integrity sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==
 
-prettier@~2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.3.0.tgz#b6a5bf1284026ae640f17f7ff5658a7567fc0d18"
-  integrity sha512-kXtO4s0Lz/DW/IJ9QdWhAf7/NmPWQXkFr/r/WkR3vyI+0v8amTDxiaQSLzs8NBlytfLWX/7uQUMIW677yLKl4w==
+prettier@~2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.3.1.tgz#76903c3f8c4449bc9ac597acefa24dc5ad4cbea6"
+  integrity sha512-p+vNbgpLjif/+D+DwAZAbndtRrR0md0MwfmOVN9N+2RgyACMT+7tfaRnT+WDPkqnuVwleyuBIG2XBxKDme3hPA==
 
 pretty-bytes@^5.3.0:
   version "5.6.0"

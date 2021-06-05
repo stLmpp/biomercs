@@ -9,7 +9,7 @@ import {
   SimpleChange,
   SimpleChanges,
 } from '@angular/core';
-import { Control, ControlBuilder, ControlValidator, ValidatorsModel } from '@stlmpp/control';
+import { Control, ControlBuilder, ControlValidator, ValidatorsKeys } from '@stlmpp/control';
 import { Nullable } from '../type/nullable';
 import { PlatformQuery } from '../services/platform/platform.query';
 import { GameService } from '../services/game/game.service';
@@ -55,7 +55,7 @@ const ids: (keyof ParamsForm)[] = ['idPlatform', 'idGame', 'idMiniGame', 'idMode
 
 export interface ParamConfig {
   validators?: ControlValidator[];
-  errorMessages?: Record<keyof ValidatorsModel, string>;
+  errorMessages?: Record<ValidatorsKeys, string>;
   show?: boolean;
   clearable?: boolean;
 }
