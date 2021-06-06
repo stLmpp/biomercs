@@ -1,16 +1,16 @@
-@import 'variables';
-@import 'mixins';
+@use 'variables' as v;
+@use 'mixins' as m;
 
 .snack-bar {
   font-size: 0.75rem;
-  background-color: $dark-overlay;
-  border-radius: $radius;
+  background-color: v.$dark-overlay;
+  border-radius: v.$radius;
   padding: 0.75rem;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  @include elevation(5);
+  @include m.elevation(5);
   &.no-action {
     justify-content: flex-start;
   }

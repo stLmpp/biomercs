@@ -1,0 +1,51 @@
+<form [controlGroup]="form" (groupSubmit)="save()">
+  <bio-card>
+    <h3 bioCardTitle>Edit rules</h3>
+    <bio-card-content controlArrayName="rules" cdkDropList (cdkDropListDropped)="changeOrder($event)">
+      <div class="actions">
+        <button bioButton primary (click)="addRule()" type="button">Add rule</button>
+      </div>
+      <h5 *ngIf="!rulesControl.length">No rules found</h5>
+      <div
+        class="item"
+        *ngFor="let ruleControl of rulesControl; trackBy: trackByControlGroup; let $index = index"
+        [controlGroupName]="$index"
+        cdkDrag
+      >
+        <div class="icon-wrapper drag">
+          <icon cdkDragHandle>drag_handle</icon>
+        </div>
+        <form-field *ngIf="ruleControl.value$ | async as ruleValue" label="{{ ruleValue.order }}">
+          <textarea
+            bioInput
+            controlName="description"
+            cdkTextareaAutosize
+            [cdkAutosizeMinRows]="1"
+            [cdkAutosizeMaxRows]="6"
+          ></textarea>
+          <errors>
+            <error *error="'required'">Description is required</error>
+            <error *error="'whiteSpace'">Description is required</error>
+          </errors>
+        </form-field>
+        <div class="icon-wrapper delete">
+          <button bioButton icon type="button" (click)="deleteRule($index)">
+            <icon>delete</icon>
+          </button>
+        </div>
+      </div>
+    </bio-card-content>
+    <bio-card-actions (mouseenter)="onMouseenterActions()" *ngIf="deletedControl.value$ | async as deletedValue">
+      <button
+        bioButton
+        primary
+        type="submit"
+        [disabled]="(form.invalid || form.pristine) && !deletedValue.length"
+        [loading]="saving$ | async"
+      >
+        Save
+      </button>
+      <button bioButton primary type="reset" [disabled]="form.pristine && !deletedValue.length">Reset</button>
+    </bio-card-actions>
+  </bio-card>
+</form>

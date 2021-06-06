@@ -7,7 +7,8 @@ export const environment = {
   api: '/api',
   dev: true,
   cacheTimeout: 450_000,
-  socketIO: 'http://localhost:3000/',
+  socketIOPath: '/api/socket',
+  socketIOHost: 'http://localhost:3000',
 };
 
 /*
@@ -17,4 +18,4 @@ export const environment = {
  * This import should be commented out in production mode because it will have a negative impact
  * on performance if an error is thrown.
  */
-// import 'zone.js/dist/zone-error';  // Included with Angular CLI.
+// import 'zone.js/plugins/zone-error';  // Included with Angular CLI.

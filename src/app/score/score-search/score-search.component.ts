@@ -27,6 +27,8 @@ import { CharacterService } from '@shared/services/character/character.service';
 import { trackByCharacter } from '@model/character';
 import { trackByCharacterCostume } from '@model/character-costume';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { ColDef } from '@shared/components/table/col-def';
+import { ScoreOpenInfoCellComponent } from '../score-shared/score-open-info-cell/score-open-info-cell.component';
 
 export interface ScoreSearchComponentState {
   scores: ScoreVW[];
@@ -94,7 +96,7 @@ export class ScoreSearchComponent extends LocalState<ScoreSearchComponentState> 
     combinationWorldRecord: new Control<boolean>(this._getParamBooleanFromRoute(RouteParamEnum.combinationWorldRecord)),
     score: new Control<string>(this.activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.score) ?? ''),
     onlyMyScores: new Control<boolean>(this._getParamBooleanFromRoute(RouteParamEnum.onlyMyScores)),
-    status: new Control<ScoreStatusEnum | undefined>(ScoreStatusEnum.Approved),
+    idScoreStatus: new Control<ScoreStatusEnum | undefined>(ScoreStatusEnum.Approved),
     idPlatforms: new Control<number[]>(this._getParamsArrayFromRoute(RouteParamEnum.idPlatforms), { updateOn: 'blur' }),
     idGames: new Control<number[]>(this._getParamsArrayFromRoute(RouteParamEnum.idGames), { updateOn: 'blur' }),
     idMiniGames: new Control<number[]>(this._getParamsArrayFromRoute(RouteParamEnum.idMiniGames), { updateOn: 'blur' }),
@@ -105,7 +107,10 @@ export class ScoreSearchComponent extends LocalState<ScoreSearchComponentState> 
     }),
   });
 
-  colDefs = getScoreDefaultColDefs(this.authDateFormatPipe);
+  colDefs: ColDef<ScoreVW>[] = [
+    { property: 'idScore', component: ScoreOpenInfoCellComponent, width: '40px', metadata: { showWorldRecord: true } },
+    ...getScoreDefaultColDefs(this.authDateFormatPipe),
+  ];
 
   get idPlatformsControl(): Control<number[] | null | undefined> {
     return this.form.get('idPlatforms');

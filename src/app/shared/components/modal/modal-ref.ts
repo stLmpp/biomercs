@@ -17,21 +17,22 @@ export class ModalRef<T = any, D = any, R = any> {
   componentInstance?: T;
   data!: D | null;
 
-  onClose$ = new Subject<R | null>();
+  onClose$ = new Subject<R | null | undefined>();
 
   private _init(): void {
+    if (this.modalConfig.disableClose) {
+      return;
+    }
     this.overlayRef
       .backdropClick()
       .pipe(take(1))
       .subscribe(() => {
-        if (!this.modalConfig.disableClose) {
-          this.close();
-        }
+        this.close();
       });
     this.overlayRef
       .keydownEvents()
       .pipe(
-        filter(event => event.key === Key.Escape && !this.modalConfig.disableClose && !hasModifierKey(event)),
+        filter(event => event.key === Key.Escape && !hasModifierKey(event)),
         take(1)
       )
       .subscribe(() => {

@@ -36,13 +36,11 @@ export class StageService {
     idModes: number[]
   ): Observable<Stage[]> {
     const params = new HttpParams({ idPlatforms, idGames, idMiniGames, idModes });
-    return this.http
-      .get<Stage[]>(`${this.endPoint}/platforms/games/mini-games/modes`, { params })
-      .pipe(
-        httpCache(this.stageStore, [...idPlatforms, ...idGames, ...idMiniGames, ...idModes]),
-        tap(stages => {
-          this.stageStore.upsert(stages);
-        })
-      );
+    return this.http.get<Stage[]>(`${this.endPoint}/platforms/games/mini-games/modes`, { params }).pipe(
+      httpCache(this.stageStore, [...idPlatforms, ...idGames, ...idMiniGames, ...idModes]),
+      tap(stages => {
+        this.stageStore.upsert(stages);
+      })
+    );
   }
 }

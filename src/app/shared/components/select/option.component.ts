@@ -8,6 +8,7 @@ import {
   HostListener,
   Input,
   Optional,
+  SecurityContext,
   ViewEncapsulation,
 } from '@angular/core';
 import { Select } from './select';
@@ -15,6 +16,7 @@ import { FocusableOption } from '@angular/cdk/a11y';
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
 import { OptgroupComponent } from './optgroup.component';
 import { Option } from '@shared/components/select/option';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'bio-option',
@@ -30,6 +32,7 @@ export class OptionComponent extends Option implements FocusableOption {
     private elementRef: ElementRef<HTMLElement>,
     @Host() private select: Select,
     public changeDetectorRef: ChangeDetectorRef,
+    private domSanitizer: DomSanitizer,
     @Host() @Optional() public optgroupComponent?: OptgroupComponent
   ) {
     super();
@@ -75,9 +78,12 @@ export class OptionComponent extends Option implements FocusableOption {
   }
 
   @Input() labelFn: (optionComponent: OptionComponent) => string = optionComponent =>
-    this.optgroupComponent
-      ? `<span>${this.optgroupComponent.label}</span> ${this.elementRef.nativeElement.innerHTML}`
-      : optionComponent.elementRef.nativeElement.innerHTML;
+    this.domSanitizer.sanitize(
+      SecurityContext.HTML,
+      this.optgroupComponent
+        ? `${this.optgroupComponent.label} ${this.elementRef.nativeElement.innerHTML}`
+        : optionComponent.elementRef.nativeElement.innerHTML
+    ) ?? '';
 
   @HostListener('click', ['$event'])
   onClick($event: MouseEvent): void {

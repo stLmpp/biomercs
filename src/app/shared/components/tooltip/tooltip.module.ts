@@ -4,10 +4,13 @@ import { TooltipComponent } from './tooltip.component';
 import { TooltipDirective } from './tooltip.directive';
 import { DEFAULT_TOOLTIP_CONFIG, TOOLTIP_DEFAULT_CONFIG, TooltipConfig } from './tooltip-token';
 
+const DECLARATIONS = [TooltipComponent, TooltipDirective];
+const MODULES = [CommonModule];
+
 @NgModule({
-  declarations: [TooltipComponent, TooltipDirective],
-  exports: [TooltipComponent, TooltipDirective],
-  imports: [CommonModule],
+  declarations: [...DECLARATIONS],
+  imports: [...MODULES],
+  exports: [...DECLARATIONS, ...MODULES],
 })
 export class TooltipModule {
   static forRoot(config?: Partial<TooltipConfig>): ModuleWithProviders<TooltipModule> {

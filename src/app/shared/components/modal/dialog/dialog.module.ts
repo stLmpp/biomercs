@@ -4,20 +4,24 @@ import { DialogComponent } from './dialog.component';
 import { ButtonModule } from '../../button/button.module';
 import { CommonModule } from '@angular/common';
 import { IconModule } from '@shared/components/icon/icon.module';
-import { ArrayModule } from '@shared/array/array.module';
+import { StUtilsArrayModule } from '@stlmpp/utils';
+
+const DECLARATIONS = [DialogComponent];
+const MODULES = [
+  CommonModule,
+  ModalModule.forChild({
+    disableClose: true,
+    width: 500,
+  }),
+  ButtonModule,
+  IconModule,
+  StUtilsArrayModule,
+];
+const EXPORTS = [ModalModule, ButtonModule, IconModule, StUtilsArrayModule];
 
 @NgModule({
-  imports: [
-    CommonModule,
-    ModalModule.forChild({
-      disableClose: true,
-      width: 500,
-    }),
-    ButtonModule,
-    IconModule,
-    ArrayModule,
-  ],
-  declarations: [DialogComponent],
-  exports: [DialogComponent],
+  declarations: [...DECLARATIONS],
+  imports: [...MODULES],
+  exports: [...DECLARATIONS, ...EXPORTS],
 })
 export class DialogModule {}

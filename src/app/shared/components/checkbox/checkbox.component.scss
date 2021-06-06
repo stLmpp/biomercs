@@ -9,7 +9,7 @@
   align-items: center;
   font-size: unset;
   font-weight: unset;
-  cursor: inherit;
+  cursor: default;
   &.left {
     flex-direction: row-reverse;
     justify-content: flex-end;

@@ -1,4 +1,4 @@
-@import 'variables';
+@use 'variables' as v;
 
 .card {
   margin-bottom: 1rem;
@@ -24,13 +24,13 @@
         flex-basis: 100px;
       }
       &.pos-1 {
-        color: $gold;
+        color: v.$gold;
       }
       &.pos-2 {
-        color: $silver;
+        color: v.$silver;
       }
       &.pos-3 {
-        color: $bronze;
+        color: v.$bronze;
       }
       > .order-icon {
         position: absolute;

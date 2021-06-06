@@ -39,7 +39,8 @@ export interface ScoreVW {
   maxCombo: number;
   time: string;
   approvalDate?: Date;
-  status: ScoreStatusEnum;
+  scoreStatusDescription: string;
+  idScoreStatus: number;
   scorePlayers: ScorePlayerVW[];
   creationDate: Date;
   lastUpdatedDate: Date | null;
@@ -86,6 +87,14 @@ export interface ScoreTableWorldRecord {
   scores: (ScoreVW | undefined)[];
 }
 
+export interface ScoreTableWorldRecordWithoutUndefined extends ScoreTableWorldRecord {
+  scores: ScoreVW[];
+}
+
+export interface ScoreTopTableWorldRecordWithoutUndefined extends ScoreTopTableWorldRecord {
+  scoreTables: ScoreTableWorldRecordWithoutUndefined[];
+}
+
 export const trackByScoreVW = trackByFactory<ScoreVW>('idScore');
 
 export enum ScoreGatewayEvents {
@@ -95,7 +104,7 @@ export enum ScoreGatewayEvents {
 export interface ScoreSearch {
   page: number;
   limit: number;
-  status?: ScoreStatusEnum;
+  idScoreStatus?: ScoreStatusEnum;
   worldRecord?: boolean | null | undefined;
   characterWorldRecord?: boolean | null | undefined;
   combinationWorldRecord?: boolean | null | undefined;

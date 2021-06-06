@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { finalize, switchMap, takeUntil, tap, timeout } from 'rxjs/operators';
 import { AuthStore } from './auth.store';
 import { catchAndThrow } from '@util/operators/catch-and-throw';
-import { AuthErrorInterceptor } from './auth-error.interceptor';
+import { ignoreErrorContext } from './auth-error.interceptor';
 import { HttpParams } from '@util/http-params';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
 import { WINDOW } from '../core/window.service';
@@ -36,39 +36,39 @@ export class AuthService {
   private _getSteamLoginUrl(uuid: string): Observable<string> {
     const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
     return this.http.post<string>(`${this.endPoint}/steam/login/${uuid}`, undefined, {
-      responseType: 'text',
+      responseType: 'text' as any,
       headers,
-    } as any) as any;
+    });
   }
 
   register(dto: AuthRegister): Observable<AuthRegisterVW> {
     return this.http.post<AuthRegisterVW>(`${this.endPoint}/register`, dto, {
-      headers: AuthErrorInterceptor.ignoreHeaders,
+      context: ignoreErrorContext(),
     });
   }
 
   login(dto: AuthCredentials): Observable<User> {
-    return this.http
-      .post<User>(`${this.endPoint}/login`, dto, { headers: AuthErrorInterceptor.ignoreHeaders })
-      .pipe(
-        tap(user => {
-          this.authStore.updateState({ user });
-        })
-      );
+    return this.http.post<User>(`${this.endPoint}/login`, dto, { context: ignoreErrorContext() }).pipe(
+      tap(user => {
+        this.authStore.updateState({ user });
+      })
+    );
   }
 
-  autoLogin(): Observable<User> {
-    return this.http
-      .post<User>(`${this.endPoint}/auto-login`, undefined, { headers: AuthErrorInterceptor.ignoreHeaders })
-      .pipe(
-        tap(user => {
-          this.authStore.updateState({ user });
-        }),
-        catchAndThrow(() => {
-          this.authStore.updateState({ user: null });
-          return of(null);
-        })
-      );
+  autoLogin(): Observable<User | null> {
+    if (!this.authStore.getState().user?.token) {
+      return of(null);
+    }
+    return this.http.post<User>(`${this.endPoint}/auto-login`, undefined, { context: ignoreErrorContext() }).pipe(
+      tap(user => {
+        this.authStore.updateState({ user });
+      }),
+      catchAndThrow(() => {
+        this.authStore.updateState({ user: null });
+        this.router.navigate(['/auth/login']).then();
+        return of(null);
+      })
+    );
   }
 
   resendCode(idUser: number): Observable<void> {
@@ -83,13 +83,31 @@ export class AuthService {
     );
   }
 
+  async showRegistrationCompletedModal(): Promise<void> {
+    this.router.navigate(['/']).then();
+    await this.dialogService.success({
+      title: 'Welcome to the family, son',
+      content: 'What now?',
+      btnYes: 'Submit your first score',
+      btnNo: 'Close',
+      yesAction: modalRef => {
+        modalRef.close();
+        this.router.navigate(['/score/add']).then();
+      },
+      noAction: modalRef => {
+        modalRef.close();
+        this.router.navigate(['/']).then();
+      },
+    });
+  }
+
   loginSteam(
     steamAuthRelativePath: string[],
     relativeTo: ActivatedRoute,
     destroy$: Observable<any>,
     skipConfirmCreate?: boolean,
     email?: string | null
-  ): Observable<boolean | User> {
+  ): Observable<boolean | User | null> {
     const uuid = v4();
     return this._getSteamLoginUrl(uuid).pipe(
       switchMap(url => {
@@ -98,7 +116,7 @@ export class AuthService {
           takeUntil(destroy$),
           timeout(5 * 60 * 1000), // Timeout after 5 minutes
           switchMap(({ token, error, steamid, errorType, idUser }) => {
-            let request$: Observable<boolean | User>;
+            let request$: Observable<boolean | User | null>;
             if (error) {
               windowSteam?.close();
               let content = 'Want to create an account?';
@@ -167,7 +185,7 @@ export class AuthService {
     return this._socketConnection.fromEventOnce<AuthSteamLoginSocketVW>(AuthGatewayEvents.loginSteam + uuid);
   }
 
-  updateToken(token: string): Observable<User> {
+  updateToken(token: string): Observable<User | null> {
     this.authStore.updateState(state => ({ ...state, user: { token } as any }));
     return this.autoLogin();
   }

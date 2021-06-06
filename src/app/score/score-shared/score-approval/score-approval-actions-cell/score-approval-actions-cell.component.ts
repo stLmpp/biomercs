@@ -21,7 +21,8 @@ export interface ScoreApprovalActionsCellState {
 })
 export class ScoreApprovalActionsCellComponent
   extends LocalState<ScoreApprovalActionsCellState>
-  implements TableCell<ScoreVW> {
+  implements TableCell<ScoreVW>
+{
   constructor(private scoreService: ScoreService) {
     super({ loadingApprovalModal: false, loadingRequestChangesModal: false });
   }

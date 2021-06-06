@@ -6,10 +6,11 @@ import { A11yModule } from '@angular/cdk/a11y';
 import { AutocompleteOptionComponent } from './autocomplete-option.component';
 
 const DECLARATIONS = [AutocompleteDirective, AutocompleteComponent, AutocompleteOptionComponent];
+const MODULES = [CommonModule, A11yModule];
 
 @NgModule({
   declarations: [...DECLARATIONS],
-  imports: [CommonModule, A11yModule],
-  exports: [...DECLARATIONS],
+  imports: [...MODULES],
+  exports: [...DECLARATIONS, ...MODULES],
 })
 export class AutocompleteModule {}

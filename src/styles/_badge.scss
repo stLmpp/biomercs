@@ -1,4 +1,5 @@
 @use 'variables' as v;
+@use 'functions' as f;
 
 $overlap-size: -8px;
 
@@ -26,7 +27,7 @@ $overlap-size: -8px;
 .badge-container {
   .badge {
     position: absolute;
-    z-index: 1;
+    z-index: f.get-z-index(header);
     pointer-events: none;
   }
 

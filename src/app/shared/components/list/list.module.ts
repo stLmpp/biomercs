@@ -7,10 +7,11 @@ import { StControlModule } from '@stlmpp/control';
 import { ListItemLineDirective } from '@shared/components/list/list-item-line.directive';
 
 const DECLARATIONS = [ListComponent, ListItemComponent, ListControlValue, ListItemLineDirective, ListSelectable];
+const MODULES = [CommonModule, BioCommonModule, StControlModule];
 
 @NgModule({
   declarations: [...DECLARATIONS],
-  imports: [CommonModule, BioCommonModule, StControlModule],
-  exports: [...DECLARATIONS, BioCommonModule],
+  imports: [...MODULES],
+  exports: [...DECLARATIONS, ...MODULES],
 })
 export class ListModule {}

@@ -44,7 +44,8 @@ export interface TextAreaEvent {
 })
 export class ScoreRequestChangesModalComponent
   extends LocalState<{ saving: boolean }>
-  implements OnInit, AfterViewInit {
+  implements OnInit, AfterViewInit
+{
   constructor(
     @Inject(MODAL_DATA) { score, scoreApprovalComponentState }: ScoreRequestChangesModalData,
     private controlBuilder: ControlBuilder,
@@ -77,9 +78,7 @@ export class ScoreRequestChangesModalComponent
   }
 
   addChange(focus = false): void {
-    this.changesControl.push(
-      this.controlBuilder.control<string>('', [Validators.required])
-    );
+    this.changesControl.push(this.controlBuilder.control<string>('', [Validators.required]));
     if (focus) {
       const index = this.changesControl.length - 1;
       setTimeout(() => {
@@ -106,17 +105,8 @@ export class ScoreRequestChangesModalComponent
       .requestChanges(this.score.idScore, changes)
       .pipe(
         switchMap(() => {
-          const {
-            idMiniGame,
-            idPlatform,
-            idGame,
-            idMode,
-            itemsPerPage,
-            page,
-            orderBy,
-            orderByDirection,
-            idStage,
-          } = this.scoreApprovalComponentState;
+          const { idMiniGame, idPlatform, idGame, idMode, itemsPerPage, page, orderBy, orderByDirection, idStage } =
+            this.scoreApprovalComponentState;
           return this.scoreService.findApproval(
             false,
             idPlatform!,

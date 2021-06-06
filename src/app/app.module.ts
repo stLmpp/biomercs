@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { StUtilsModule } from '@stlmpp/utils';
 import { StStoreModule } from '@stlmpp/store';
 import { CoreModule } from './core/core.module';
 import { HttpClientModule } from '@angular/common/http';
@@ -19,6 +18,8 @@ import { NgProgressRouterModule } from 'ngx-progressbar/router';
 import { TooltipModule } from '@shared/components/tooltip/tooltip.module';
 import { CurrencyMaskModule } from '@shared/currency-mask/currency-mask.module';
 import { MaskModule } from '@shared/mask/mask.module';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { FooterModule } from './footer/footer.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -28,7 +29,6 @@ import { MaskModule } from '@shared/mask/mask.module';
     BrowserAnimationsModule,
     HttpClientModule,
     CoreModule.forRoot(),
-    StUtilsModule.forRoot(),
     StStoreModule.forRoot({ production: environment.production }),
     StRouterModule.forRoot(),
     StControlModule.forRoot(),
@@ -40,6 +40,13 @@ import { MaskModule } from '@shared/mask/mask.module';
     TooltipModule.forRoot(),
     CurrencyMaskModule.forRoot(),
     MaskModule.forRoot(),
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the app is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000',
+    }),
+    FooterModule,
   ],
   bootstrap: [AppComponent],
 })

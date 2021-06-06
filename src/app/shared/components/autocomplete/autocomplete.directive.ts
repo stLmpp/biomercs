@@ -80,9 +80,8 @@ export class AutocompleteDirective extends Destroyable {
       return;
     }
     this._isSubscribed = true;
-    const optionsChanges: Observable<
-      QueryList<AutocompleteOptionComponent>
-    > = this.bioAutocomplete.autocompleteOptions.changes.pipe(startWith(this.bioAutocomplete.autocompleteOptions));
+    const optionsChanges: Observable<QueryList<AutocompleteOptionComponent>> =
+      this.bioAutocomplete.autocompleteOptions.changes.pipe(startWith(this.bioAutocomplete.autocompleteOptions));
     combineLatest([this._onFocus$, optionsChanges])
       .pipe(takeUntil(this.destroy$))
       .subscribe(([focused, changes]) => {

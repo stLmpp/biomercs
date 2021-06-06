@@ -15,7 +15,7 @@ export class SideMenuComponent {
   constructor(public headerQuery: HeaderQuery) {}
 
   @Input() user!: User;
-  @Input() isSmallScreen = false;
+  @Input() isMobile = false;
 
   @Output() readonly menuSelected = new EventEmitter<MouseEvent>();
 

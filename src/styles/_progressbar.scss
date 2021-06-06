@@ -1,6 +1,9 @@
+@use 'variables' as v;
+@use 'functions' as f;
+
 ng-progress {
   > .ng-progress-bar {
-    top: 64px !important;
-    z-index: 998 !important;
+    top: v.$header-height !important;
+    z-index: f.get-z-index(header) - 1 !important;
   }
 }

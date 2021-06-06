@@ -22,6 +22,8 @@ import type {
   ScoreApprovalActionsModalComponent,
   ScoreApprovalActionsModalData,
 } from './score-approval-actions-modal/score-approval-actions-modal.component';
+import { filterNil } from '@shared/operators/filter';
+import { Validators } from '@stlmpp/control';
 
 export interface ScoreApprovalComponentState extends ParamsForm {
   page: number;
@@ -69,7 +71,7 @@ export class ScoreApprovalComponent extends LocalState<ScoreApprovalComponentSta
     );
   }
 
-  private _data$ = this.selectState('data');
+  private _data$ = this.selectState('data').pipe(filterNil());
 
   @Input() playerMode = false;
 
@@ -87,7 +89,7 @@ export class ScoreApprovalComponent extends LocalState<ScoreApprovalComponentSta
 
   paramsConfig: Partial<ParamsConfig> = {
     idCharacterCostume: { show: false },
-    idPlatform: { clearable: false },
+    idPlatform: { clearable: false, validators: [Validators.required] },
   };
 
   colDefs: ColDef<ScoreVW>[] = [

@@ -1,29 +1,18 @@
 :host {
-  display: flex;
-  justify-content: center;
-  > .card {
-    max-width: 599px;
-    width: 100%;
-    .card-subtitle.about-me {
-      white-space: pre;
+  > * {
+    margin-bottom: 1rem;
+  }
+}
+
+.player {
+  .card-title {
+    display: flex;
+    align-items: center;
+    > .flag {
+      margin-right: 0.25rem;
     }
-    .card-title {
-      display: flex;
-      align-items: center;
-      .icon,
-      .button {
-        margin-left: 0.5rem;
-        cursor: pointer;
-      }
-      .icon {
-        opacity: 0;
-        transition: opacity 100ms ease;
-      }
-      &:hover {
-        .icon {
-          opacity: 1;
-        }
-      }
+    > h3 {
+      margin-right: 1rem;
     }
   }
 }

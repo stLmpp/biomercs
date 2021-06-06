@@ -1,9 +1,8 @@
-@import 'variables';
+@use 'variables' as v;
 
 .form-field {
   display: block;
   > .input-wrapper {
-    // z-index: 1; TODO If anything breaks on the form-field, that because of me
     position: relative;
 
     &.has-prefix {
@@ -54,6 +53,7 @@
       align-items: center;
       top: 0;
       height: 100%;
+      color: black;
     }
     > .suffix-wrapper {
       right: 0.1rem;
@@ -74,7 +74,7 @@
       display: flex;
       .hint {
         font-size: 0.65rem;
-        color: $primary-100;
+        color: v.$primary-100;
         display: block;
       }
       > .hint-spacer {

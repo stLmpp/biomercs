@@ -1,6 +1,6 @@
 import { Directive, ElementRef, HostBinding, Input, Optional, Self } from '@angular/core';
 import { AbstractComponent } from '../core/abstract-component';
-import { ControlDirective } from '@stlmpp/control';
+import { Control, ControlDirective, ModelDirective } from '@stlmpp/control';
 import { FocusableOption } from '@angular/cdk/a11y';
 
 @Directive({
@@ -11,7 +11,8 @@ import { FocusableOption } from '@angular/cdk/a11y';
 export class InputDirective extends AbstractComponent implements FocusableOption {
   constructor(
     private elementRef: ElementRef<HTMLInputElement | HTMLTextAreaElement>,
-    @Optional() @Self() public controlDirective?: ControlDirective
+    @Optional() @Self() public controlDirective?: ControlDirective,
+    @Optional() @Self() public modelDirective?: ModelDirective
   ) {
     super();
   }
@@ -23,7 +24,11 @@ export class InputDirective extends AbstractComponent implements FocusableOption
   }
 
   get dangerClass(): boolean {
-    return this.bioType === 'danger' || !!(this.controlDirective?.isTouched && this.controlDirective.isInvalid);
+    return this.bioType === 'danger' || !!(this.control?.touched && this.control.invalid);
+  }
+
+  get control(): Control | undefined {
+    return this.controlDirective?.control ?? this.modelDirective?.control;
   }
 
   focus(): void {

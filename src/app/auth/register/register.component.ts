@@ -90,7 +90,7 @@ export class RegisterComponent extends LocalState<{
       // Can't be here if code is null or undefined
       request$ = this.authService.confirmCode(this._idUser, this.form.get('code').value!).pipe(
         tap(() => {
-          this.router.navigate(['/']).then();
+          this.authService.showRegistrationCompletedModal().then();
         }),
         catchAndThrow(err => {
           this.updateState('errorConfirmationCode', err.message);

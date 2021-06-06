@@ -2,6 +2,7 @@ import {
   ComponentRef,
   Directive,
   ElementRef,
+  HostBinding,
   HostListener,
   Inject,
   Input,
@@ -43,6 +44,12 @@ export class TooltipDirective implements OnDestroy {
   @Input() tooltipHideDelay = 0;
   @Input() tooltipDelay = 0;
   @Input() tooltipScrollStrategy = this.overlay.scrollStrategies.reposition({ autoClose: true, scrollThrottle: 5 });
+  @Input() tooltipAriaLabelDisabled = false;
+
+  @HostBinding('attr.aria-label')
+  get ariaLabel(): number | string | null | undefined {
+    return this.tooltipAriaLabelDisabled ? null : this.tooltip;
+  }
 
   @Input()
   set tooltipPosition(position: TooltipPosition | undefined) {

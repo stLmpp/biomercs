@@ -3,7 +3,6 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnChanges,
   Output,
   TrackByFunction,
   ViewEncapsulation,
@@ -16,6 +15,7 @@ import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { TableCellNotifyChange, TableOrder } from '@shared/components/table/type';
 import { trackByFactory } from '@stlmpp/utils';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 export interface ScoreTableState<T extends Record<any, any>, K extends keyof T = keyof T> {
   colDefs: ColDefInternal<T, K>[];
@@ -30,9 +30,7 @@ export interface ScoreTableState<T extends Record<any, any>, K extends keyof T =
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
 })
-export class TableComponent<T extends Record<any, any>, K extends keyof T>
-  extends LocalState<ScoreTableState<T, K>>
-  implements OnChanges {
+export class TableComponent<T extends Record<any, any>, K extends keyof T> extends LocalState<ScoreTableState<T, K>> {
   constructor() {
     super(
       { colDefs: [], data: [], colDefDefault: {} },
@@ -46,6 +44,7 @@ export class TableComponent<T extends Record<any, any>, K extends keyof T>
     );
   }
 
+  private _collapsable = false;
   private _colDefDefault$ = this.selectState('colDefDefault');
   private _colDefs$ = this.selectState('colDefs');
 
@@ -57,6 +56,15 @@ export class TableComponent<T extends Record<any, any>, K extends keyof T>
   @Input() colDefs: ColDef<T>[] = [];
   @Input() colDefDefault: Partial<ColDef<T>> = {};
   @Input() metadata: any;
+  @Input() title?: string;
+
+  @Input()
+  get collapsable(): boolean {
+    return this._collapsable;
+  }
+  set collapsable(collapsable: boolean) {
+    this._collapsable = coerceBooleanProperty(collapsable);
+  }
 
   @Output() readonly currentPageChange = new EventEmitter<number>();
   @Output() readonly itemsPerPageChange = new EventEmitter<number>();
@@ -84,4 +92,6 @@ export class TableComponent<T extends Record<any, any>, K extends keyof T>
       }
     }
   }
+
+  static ngAcceptInputType_collapsable: BooleanInput;
 }

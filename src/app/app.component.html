@@ -1,8 +1,12 @@
 <header>
   <bio-header></bio-header>
+  <ng-progress></ng-progress>
 </header>
-<ng-progress></ng-progress>
 
 <main>
   <router-outlet></router-outlet>
 </main>
+
+<footer>
+  <bio-footer [mobile]="isMobile$ | async"></bio-footer>
+</footer>

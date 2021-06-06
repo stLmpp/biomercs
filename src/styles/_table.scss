@@ -1,12 +1,12 @@
-@import 'variables';
+@use 'variables' as v;
 
 .flex-table {
   font-size: 0.85rem;
-  background-color: $primary;
-  color: $primary-600;
+  background-color: v.$primary;
+  color: v.$primary-600;
   &.card {
-    background-color: $primary;
-    color: $primary-600;
+    background-color: v.$primary;
+    color: v.$primary-600;
   }
   .header,
   .body > div {

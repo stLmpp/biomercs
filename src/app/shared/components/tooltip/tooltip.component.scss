@@ -1,16 +1,16 @@
-@import 'variables';
-@import 'mixins';
+@use 'variables' as v;
+@use 'mixins' as m;
 
 .tooltip {
   margin: 1rem;
-  border-radius: $radius;
+  border-radius: v.$radius;
   padding: 0.25rem 0.5rem;
   font-size: 0.85rem;
-  background-color: transparentize($dark-overlay, 0.1);
+  background-color: transparentize(v.$dark-overlay, 0.1);
   min-width: 50px;
-  color: $primary-600;
+  color: v.$primary-600;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  @include elevation(2);
+  @include m.elevation(2);
 }

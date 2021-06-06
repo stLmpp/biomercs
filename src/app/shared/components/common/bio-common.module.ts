@@ -4,10 +4,11 @@ import { SuffixDirective } from './suffix.directive';
 import { PrefixDirective } from './prefix.directive';
 
 const DECLARATIONS = [SuffixDirective, PrefixDirective];
+const MODULES = [CommonModule];
 
 @NgModule({
   declarations: [...DECLARATIONS],
-  imports: [CommonModule],
-  exports: [...DECLARATIONS],
+  imports: [...MODULES],
+  exports: [...DECLARATIONS, ...MODULES],
 })
 export class BioCommonModule {}

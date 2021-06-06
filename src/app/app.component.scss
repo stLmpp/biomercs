@@ -1,12 +1,16 @@
-header {
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  z-index: 999;
+@use 'variables' as v;
+@use 'functions' as f;
+
+:host {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+  @media only screen and (max-width: v.$mobile-width) {
+    min-height: stretch;
+  }
 }
 
 main {
-  margin-top: 64px;
+  margin-top: v.$header-height;
   padding: 1rem;
 }

@@ -40,12 +40,13 @@ export class ConfirmationCodeInputDirective implements FocusableOption {
 })
 export class ConfirmationCodeInputComponent
   extends ControlValue
-  implements AfterViewInit, OnInit, OnDestroy, OnChanges {
+  implements AfterViewInit, OnInit, OnDestroy, OnChanges
+{
   constructor(private controlBuilder: ControlBuilder) {
     super();
   }
 
-  private _destroy$ = new Subject();
+  private _destroy$ = new Subject<void>();
 
   @ViewChildren(ConfirmationCodeInputDirective) inputList!: QueryList<ConfirmationCodeInputDirective>;
   @Output() readonly focusoutLastItem = new EventEmitter<void>();

@@ -15,8 +15,12 @@ const routes: Routes = [
     loadChildren: () => import('./score-search/score-search.module').then(m => m.ScoreSearchModule),
   },
   {
-    path: 'world-record',
+    path: 'world-records',
     loadChildren: () => import('./score-world-record/score-world-record.module').then(m => m.ScoreWorldRecordModule),
+  },
+  {
+    path: '**',
+    loadChildren: () => import('../not-found/not-found.module').then(m => m.NotFoundModule),
   },
 ];
 

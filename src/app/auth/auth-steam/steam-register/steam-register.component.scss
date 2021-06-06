@@ -1,8 +1,10 @@
+@use 'variables' as v;
+
 :host {
   display: flex;
   justify-content: center;
   form {
-    max-width: 599px;
+    max-width: v.$mobile-width;
     width: 100%;
   }
 }

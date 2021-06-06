@@ -8,17 +8,20 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
+import { AbstractComponent } from '@shared/components/core/abstract-component';
 
 @Component({
   selector: 'icon[flag]',
   templateUrl: './flag.component.html',
   styleUrls: ['./flag.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'flag-icon' },
+  host: { class: 'flag-icon icon' },
   encapsulation: ViewEncapsulation.None,
 })
-export class FlagComponent {
-  constructor(private elementRef: ElementRef, private renderer2: Renderer2) {}
+export class FlagComponent extends AbstractComponent {
+  constructor(private elementRef: ElementRef, private renderer2: Renderer2) {
+    super();
+  }
 
   private _squared = false;
   private _flag = '';

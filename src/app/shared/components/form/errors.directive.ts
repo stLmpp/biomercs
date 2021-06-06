@@ -1,11 +1,11 @@
-import { AfterContentInit, Directive, forwardRef, Host, KeyValueDiffers, OnInit, Optional } from '@angular/core';
+import { AfterContentInit, Directive, Host, KeyValueDiffers, OnInit, Optional } from '@angular/core';
 import { ControlError, ControlParent } from '@stlmpp/control';
 import { FormFieldComponent } from './form-field.component';
 
 @Directive({
   selector: 'errors',
   host: { class: 'errors' },
-  providers: [{ provide: ControlError, useExisting: forwardRef(() => FormFieldErrorsDirective) }],
+  providers: [{ provide: ControlError, useExisting: FormFieldErrorsDirective }],
 })
 export class FormFieldErrorsDirective extends ControlError implements AfterContentInit, OnInit {
   constructor(
@@ -23,8 +23,8 @@ export class FormFieldErrorsDirective extends ControlError implements AfterConte
   }
 
   ngAfterContentInit(): void {
-    if (this.formFieldComponent.controlDirective?.control && !this.controlError) {
-      this.controlError = this.formFieldComponent.controlDirective.control;
+    if (this.formFieldComponent.control && !this.controlError) {
+      this.controlError = this.formFieldComponent.control;
       super.ngOnInit();
     }
   }

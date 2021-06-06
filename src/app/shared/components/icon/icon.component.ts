@@ -22,6 +22,8 @@ export class IconMdiComponent extends AbstractComponent {
     super();
   }
 
+  private _mdi!: string;
+
   @Input()
   get mdi(): string {
     return `mdi-${this._mdi}`;
@@ -33,5 +35,4 @@ export class IconMdiComponent extends AbstractComponent {
     this._mdi = mdi;
     this.renderer2.addClass(this.elementRef.nativeElement, this.mdi);
   }
-  private _mdi!: string;
 }

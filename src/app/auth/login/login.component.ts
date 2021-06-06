@@ -10,7 +10,7 @@ import { SnackBarService } from '@shared/components/snack-bar/snack-bar.service'
 import { ModalService } from '@shared/components/modal/modal.service';
 import type { LoginConfirmCodeModalComponent } from './login-confirm-code-modal/login-confirm-code-modal.component';
 import { HttpError } from '@model/http-error';
-import { HttpStatusCode } from '@model/enum/http-code';
+import { HttpStatusCode } from '@angular/common/http';
 import { AuthCredentials } from '@model/auth';
 import { LocalState } from '@stlmpp/store';
 
@@ -22,7 +22,8 @@ import { LocalState } from '@stlmpp/store';
 })
 export class LoginComponent
   extends LocalState<{ loadingSteam: boolean; loading: boolean; error: string | null }>
-  implements OnInit {
+  implements OnInit
+{
   constructor(
     private authService: AuthService,
     @Inject(WINDOW) private window: Window,

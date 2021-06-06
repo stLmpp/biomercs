@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Query } from '@stlmpp/store';
 import { AuthStore } from './auth.store';
 import { Auth } from '@model/auth';
-import { map } from 'rxjs/operators';
+import { distinctUntilChanged, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Player } from '@model/player';
 import { User } from '@model/user';
@@ -15,16 +15,16 @@ export class AuthQuery extends Query<Auth> {
     super(authStore);
   }
 
-  isLogged$ = this.select('user').pipe(map(user => !!user?.id && !!user.token));
-  user$ = this.select('user');
-  isAdmin$ = this.user$.pipe(
-    filterNil(),
-    map(user => user.admin)
+  readonly isLogged$ = this.select('user').pipe(
+    map(user => !!user?.id && !!user.token),
+    distinctUntilChanged()
   );
-
-  selectIsAdmin(): Observable<boolean> {
-    return this.user$.pipe(map(user => !!user?.admin));
-  }
+  readonly user$ = this.select('user');
+  readonly isAdmin$ = this.user$.pipe(
+    filterNil(),
+    map(user => user.admin),
+    distinctUntilChanged()
+  );
 
   getToken(): string {
     return this.getUser()?.token ?? '';

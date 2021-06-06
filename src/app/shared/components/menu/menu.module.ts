@@ -5,9 +5,12 @@ import { MenuComponent } from './menu.component';
 import { MenuItemButtonDirective, MenuItemDirective } from './menu-item.directive';
 import { A11yModule } from '@angular/cdk/a11y';
 
+const DECLARATIONS = [MenuTriggerDirective, MenuComponent, MenuItemDirective, MenuItemButtonDirective];
+const MODULES = [CommonModule, A11yModule];
+
 @NgModule({
-  declarations: [MenuTriggerDirective, MenuComponent, MenuItemDirective, MenuItemButtonDirective],
-  imports: [CommonModule, A11yModule],
-  exports: [MenuTriggerDirective, MenuComponent, MenuItemDirective, MenuItemButtonDirective],
+  declarations: [...DECLARATIONS],
+  imports: [...MODULES],
+  exports: [...DECLARATIONS, ...MODULES],
 })
 export class MenuModule {}

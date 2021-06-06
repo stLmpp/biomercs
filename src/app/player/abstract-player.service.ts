@@ -1,15 +1,25 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { PlayerStore } from './player.store';
 import { Observable } from 'rxjs';
 import { Player, PlayerAdd, PlayerUpdate } from '@model/player';
-import { tap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { Pagination } from '@model/pagination';
 import { HttpParams } from '@util/http-params';
+import { WINDOW } from '../core/window.service';
+import { SteamService } from '@shared/services/steam/steam.service';
+import { SteamPlayerLinkedSocketViewModel } from '@model/steam-profile';
+import { DialogService } from '@shared/components/modal/dialog/dialog.service';
 
 @Injectable({ providedIn: 'root' })
 export class AbstractPlayerService {
-  constructor(protected http: HttpClient, protected playerStore: PlayerStore) {}
+  constructor(
+    protected http: HttpClient,
+    protected playerStore: PlayerStore,
+    @Inject(WINDOW) protected window: Window,
+    protected steamService: SteamService,
+    protected dialogService: DialogService
+  ) {}
 
   endPoint = 'player';
 
@@ -47,13 +57,11 @@ export class AbstractPlayerService {
 
   search(personaName: string, page: number, limit: number): Observable<Pagination<Player>> {
     const params = new HttpParams({ personaName, page, limit });
-    return this.http
-      .get<Pagination<Player>>(`${this.endPoint}/search`, { params })
-      .pipe(
-        tap(({ items }) => {
-          this.playerStore.upsert(items);
-        })
-      );
+    return this.http.get<Pagination<Player>>(`${this.endPoint}/search`, { params }).pipe(
+      tap(({ items }) => {
+        this.playerStore.upsert(items);
+      })
+    );
   }
 
   personaNameExists(personaName: string): Observable<boolean> {
@@ -63,5 +71,37 @@ export class AbstractPlayerService {
 
   create(dto: PlayerAdd): Observable<Player> {
     return this.http.post<Player>(this.endPoint, dto);
+  }
+
+  linkSteam(idPlayer: number): Observable<SteamPlayerLinkedSocketViewModel> {
+    const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
+    return this.http
+      .put<string>(`${this.endPoint}/${idPlayer}/link-steam`, undefined, { responseType: 'text' as any, headers })
+      .pipe(
+        switchMap(url => {
+          const windowSteam = this.window.open(url, 'Login Steam', 'width=500,height=500');
+          return this.steamService.playerLinkedSocket(idPlayer).pipe(
+            tap(async ({ error, steamProfile }) => {
+              windowSteam?.close();
+              if (error) {
+                await this.dialogService.info({ title: 'Error', content: error });
+              } else if (steamProfile) {
+                this.playerStore.updateEntity(idPlayer, { steamProfile, idSteamProfile: steamProfile.id });
+              }
+            })
+          );
+        })
+      );
+  }
+
+  updatePersonaName(idPlayer: number, personaName: string): Observable<Date> {
+    return this.http
+      .put<string>(`${this.endPoint}/${idPlayer}/personaName`, { personaName }, { responseType: 'text' as any })
+      .pipe(
+        map(lastUpdatedPersonaNameDate => new Date(lastUpdatedPersonaNameDate)),
+        tap(lastUpdatedPersonaNameDate => {
+          this.playerStore.updateEntity(idPlayer, { personaName, lastUpdatedPersonaNameDate });
+        })
+      );
   }
 }

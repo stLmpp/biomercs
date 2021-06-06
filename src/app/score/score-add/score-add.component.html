@@ -1,3 +1,4 @@
+<h4 bioPageTitle></h4>
 <ng-container *ngLet="{ hasMode: hasIdMode$ | async } as state">
   <bio-card class="params" collapsable>
     <h3 bioCardTitle>Parameters</h3>
@@ -45,7 +46,7 @@
           <errors>
             <error *error="'required'">Max combo is required</error>
             <error *error="'min'">Max combo can't be negative</error>
-            <error *error="'max'">Max combo can surpass 400</error>
+            <error *error="'max'">Max combo can't surpass 400</error>
           </errors>
         </form-field>
         <form-field label="Time" [disabled]="!state.hasMode">

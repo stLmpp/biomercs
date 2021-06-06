@@ -2,14 +2,21 @@
   <ng-content select="label"></ng-content>
 </ng-container>
 <ng-template #noLabelRef>
-  <label *ngIf="label" [for]="id">{{ label }}</label>
+  <label
+    [danger]="inputDirective?.dangerClass"
+    *ngIf="label"
+    [for]="id"
+    [class.required]="forceRequired || (control | hasValidators: ['required'])"
+  >
+    {{ label }}
+  </label>
 </ng-template>
 <div
   class="input-wrapper"
   [ngClass]="{
     'has-prefix': !!prefixDirective,
     'has-suffix': !!sufixDirective,
-    disabled: controlDirective?.isDisabled,
+    disabled: control?.disabled,
     'is-select': !!selectComponent
   }"
 >
@@ -25,7 +32,7 @@
   </div>
 </div>
 <div class="bottom-wrapper">
-  <div class="hints" *ngIf="controlDirective?.isTouched || !(controlDirective?.control?.hasErrors$ | async)" @fadeIn>
+  <div class="hints" *ngIf="!control?.touched || !(control?.hasErrors$ | async)" @fadeIn>
     <ng-content select="hint:not([end]),[hint]:not([end])"></ng-content>
     <div class="hint-spacer"></div>
     <ng-content select="hint[end],[hint][end]"></ng-content>

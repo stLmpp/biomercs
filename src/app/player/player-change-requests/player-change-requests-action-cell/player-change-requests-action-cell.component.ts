@@ -22,7 +22,8 @@ export interface PlayerChangeRequestsActionCellComponentMetadata {
 })
 export class PlayerChangeRequestsActionCellComponent
   extends LocalState<PlayerChangeRequestsActionCellComponentState>
-  implements TableCell<ScoreChangeRequests> {
+  implements TableCell<ScoreChangeRequests>
+{
   constructor(private playerService: PlayerService) {
     super({ loadingModal: false });
   }

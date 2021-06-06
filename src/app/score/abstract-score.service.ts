@@ -18,6 +18,7 @@ import { HeaderState, HeaderStore } from '../header/header.store';
 import { auditTime, tap } from 'rxjs/operators';
 import { SocketIOService } from '@shared/services/socket-io/socket-io.service';
 import { Pagination } from '@model/pagination';
+import { ScoreGroupedByStatus } from '@model/score-grouped-by-status';
 
 export abstract class AbstractScoreService {
   protected constructor(
@@ -156,5 +157,9 @@ export abstract class AbstractScoreService {
   search(dto: ScoreSearch): Observable<Pagination<ScoreVW>> {
     const params = new HttpParams(dto, true);
     return this.http.get<Pagination<ScoreVW>>(`${this.endPoint}/search`, { params });
+  }
+
+  findRejectedAndPendingScoresByIdUser(): Observable<ScoreGroupedByStatus[]> {
+    return this.http.get<ScoreGroupedByStatus[]>(`${this.endPoint}/player/rejected-and-pending`);
   }
 }

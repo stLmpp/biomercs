@@ -4,6 +4,9 @@
     [loading]="loading"
     [itemsPerPageOptions]="itemsPerPageOptions"
     [paginationMeta]="paginationMeta"
+    [title]="title"
+    [collapsable]="collapsable"
+    [disabledProperty]="disabledProperty"
     (currentPageChange)="currentPageChange.emit($event)"
     (itemsPerPageChange)="itemsPerPageChange.emit($event)"
     (scoreClicked)="scoreClicked.emit($event)"
@@ -11,6 +14,7 @@
 </ng-container>
 <ng-template #scoreTable>
   <bio-table
+    [title]="title"
     [colDefs]="colDefs"
     [order]="order"
     [colDefDefault]="colDefDefault"
@@ -19,6 +23,7 @@
     [metadata]="metadata"
     [itemsPerPageOptions]="itemsPerPageOptions"
     [paginationMeta]="paginationMeta"
+    [collapsable]="collapsable"
     (currentPageChange)="currentPageChange.emit($event)"
     (itemsPerPageChange)="itemsPerPageChange.emit($event)"
     (orderChange)="orderChange.emit($event)"

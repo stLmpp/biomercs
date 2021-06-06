@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { PlayerStore } from './player.store';
 import { Player } from '@model/player';
@@ -15,11 +15,21 @@ import type {
   PlayerSearchModalComponentData,
 } from './player-shared/player-search-modal/player-search-modal.component';
 import { ModalConfigLazy } from '@shared/components/modal/modal.config';
+import { WINDOW } from '../core/window.service';
+import { SteamService } from '@shared/services/steam/steam.service';
+import { DialogService } from '@shared/components/modal/dialog/dialog.service';
 
 @Injectable({ providedIn: 'root' })
 export class PlayerService extends AbstractPlayerService {
-  constructor(http: HttpClient, playerStore: PlayerStore, private modalService: ModalService) {
-    super(http, playerStore);
+  constructor(
+    http: HttpClient,
+    playerStore: PlayerStore,
+    @Inject(WINDOW) window: Window,
+    steamService: SteamService,
+    dialogService: DialogService,
+    private modalService: ModalService
+  ) {
+    super(http, playerStore, window, steamService, dialogService);
   }
 
   async openPlayerChangeRequestsModal(

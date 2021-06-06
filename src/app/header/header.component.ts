@@ -2,13 +2,10 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { AuthQuery } from '../auth/auth.query';
 import { AuthService } from '../auth/auth.service';
 import { SnackBarService } from '@shared/components/snack-bar/snack-bar.service';
-import { filter, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
-import {
-  BreakpointObserverService,
-  MediaQueryEnum,
-} from '@shared/services/breakpoint-observer/breakpoint-observer.service';
+import { debounceTime, filter, map, mapTo, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { BreakpointObserverService } from '@shared/services/breakpoint-observer/breakpoint-observer.service';
 import { Router } from '@angular/router';
-import { forkJoin } from 'rxjs';
+import { combineLatest, forkJoin } from 'rxjs';
 import { ScoreService } from '../score/score.service';
 import { LocalState } from '@stlmpp/store';
 import { GlobalListenersService } from '@shared/services/global-listeners/global-listeners.service';
@@ -53,7 +50,7 @@ export class HeaderComponent extends LocalState<HeaderComponentState> implements
   );
   isLogged$ = this.authQuery.isLogged$;
 
-  isSmallScreen$ = this.breakpointObserverService.observe([MediaQueryEnum.sm]);
+  isMobile$ = this.breakpointObserverService.isMobile$;
 
   async logout(): Promise<void> {
     this.authService.logout();
@@ -67,10 +64,10 @@ export class HeaderComponent extends LocalState<HeaderComponentState> implements
   }
 
   ngOnInit(): void {
-    let updateCountApprovals$ = this.scoreService.onUpdateCountApprovals();
-    if (this.authQuery.getIsLogged()) {
-      updateCountApprovals$ = updateCountApprovals$.pipe(startWith(void 0));
-    }
+    const updateCountApprovals$ = combineLatest([
+      this.scoreService.onUpdateCountApprovals().pipe(startWith(void 0)),
+      this.authQuery.isLogged$.pipe(filter(isLogged => isLogged)),
+    ]).pipe(mapTo(void 0), debounceTime(50));
     updateCountApprovals$
       .pipe(
         withLatestFrom(this.user$),

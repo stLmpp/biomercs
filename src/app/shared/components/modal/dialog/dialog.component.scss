@@ -4,6 +4,16 @@
   &.success {
     .modal-title {
       color: v.$success;
+    }
+  }
+  &.error {
+    .modal-title {
+      color: v.$danger;
+    }
+  }
+  &.error,
+  &.success {
+    .modal-title {
       display: flex;
       align-items: center;
       .icon {

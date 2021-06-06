@@ -24,13 +24,11 @@ export class MiniGameService {
 
   findByIdPlatformsGames(idPlatforms: number[], idGames: number[]): Observable<MiniGame[]> {
     const params = new HttpParams({ idPlatforms, idGames });
-    return this.http
-      .get<MiniGame[]>(`${this.endPoint}/platforms/games`, { params })
-      .pipe(
-        httpCache(this.miniGameStore, [...idPlatforms, ...idGames]),
-        tap(miniGames => {
-          this.miniGameStore.upsert(miniGames);
-        })
-      );
+    return this.http.get<MiniGame[]>(`${this.endPoint}/platforms/games`, { params }).pipe(
+      httpCache(this.miniGameStore, [...idPlatforms, ...idGames]),
+      tap(miniGames => {
+        this.miniGameStore.upsert(miniGames);
+      })
+    );
   }
 }

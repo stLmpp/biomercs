@@ -3,7 +3,7 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/c
 import { Observable } from 'rxjs';
 import { environment } from '@environment/environment';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ApiInterceptor implements HttpInterceptor {
   intercept(_req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const req = _req.clone({ url: this.handleUrl(_req.url) });

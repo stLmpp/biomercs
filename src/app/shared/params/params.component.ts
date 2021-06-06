@@ -9,15 +9,15 @@ import {
   SimpleChange,
   SimpleChanges,
 } from '@angular/core';
-import { Control, ControlBuilder, ControlValidator, ValidatorsModel } from '@stlmpp/control';
+import { Control, ControlBuilder, ControlValidator, ValidatorsKeys } from '@stlmpp/control';
 import { Nullable } from '../type/nullable';
 import { PlatformQuery } from '../services/platform/platform.query';
 import { GameService } from '../services/game/game.service';
 import { MiniGameService } from '../services/mini-game/mini-game.service';
 import { ModeService } from '../services/mode/mode.service';
 import { filterNil } from '../operators/filter';
-import { debounceTime, distinctUntilChanged, finalize, map, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { combineLatest } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, finalize, map, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { combineLatest, MonoTypeOperatorFunction, OperatorFunction } from 'rxjs';
 import { StageService } from '../services/stage/stage.service';
 import { trackByFactory } from '@stlmpp/utils';
 import { CharacterService } from '../services/character/character.service';
@@ -29,9 +29,9 @@ import { Character } from '@model/character';
 import { Mode } from '@model/mode';
 import { Stage } from '@model/stage';
 import { MiniGame } from '@model/mini-game';
-import { Platform } from '@model/platform';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { LocalState } from '@stlmpp/store';
+import { isNotNil } from 'st-utils';
 
 export interface ParamsForm {
   idPlatform: Nullable<number>;
@@ -55,7 +55,7 @@ const ids: (keyof ParamsForm)[] = ['idPlatform', 'idGame', 'idMiniGame', 'idMode
 
 export interface ParamConfig {
   validators?: ControlValidator[];
-  errorMessages?: Record<keyof ValidatorsModel, string>;
+  errorMessages?: Record<ValidatorsKeys, string>;
   show?: boolean;
   clearable?: boolean;
 }
@@ -70,6 +70,10 @@ const defaultConfigs: ParamsConfig = {
   idMiniGame: { show: true },
   idGame: { show: true },
 };
+
+function filterNilArray<T>(array: T[]): array is NonNullable<T>[] {
+  return array.every(isNotNil);
+}
 
 @Component({
   selector: 'bio-params',
@@ -86,7 +90,8 @@ export class ParamsComponent
     characterLoading: boolean;
     clearable: boolean;
   }>
-  implements OnChanges, OnInit {
+  implements OnChanges, OnInit
+{
   constructor(
     private controlBuilder: ControlBuilder,
     private platformQuery: PlatformQuery,
@@ -112,6 +117,7 @@ export class ParamsComponent
   }
 
   private _setQueryParamsOnChange = false;
+  private _selectParamIfOne = true;
 
   @Input() idPlatform: number | null = null;
   @Input() idGame: number | null = null;
@@ -138,6 +144,11 @@ export class ParamsComponent
   @Input()
   set setQueryParamsOnChange(setQueryParamsOnChange: boolean) {
     this._setQueryParamsOnChange = coerceBooleanProperty(setQueryParamsOnChange);
+  }
+
+  @Input()
+  set selectParamIfOne(selectParamIfOne: boolean) {
+    this._selectParamIfOne = coerceBooleanProperty(selectParamIfOne);
   }
 
   @Output() readonly idPlatformChange = new EventEmitter<Nullable<number>>();
@@ -206,18 +217,16 @@ export class ParamsComponent
   );
   idStage$ = this.idStageControl.value$.pipe(distinctUntilChanged());
   idCharacterCostume$ = this.idCharacterCostumeControl.value$.pipe(distinctUntilChanged());
-
   idPlatformNotNil$ = this.idPlatform$.pipe(filterNil());
-  idGameNotNil$ = this.idGame$.pipe(filterNil());
-  idMiniGameNotNil$ = this.idMiniGame$.pipe(filterNil());
-  idModeNotNil$ = this.idMode$.pipe(filterNil());
   idModeSelected$ = this.idMode$.pipe(map(idMode => !!idMode));
 
   platforms$ = this.platformQuery.all$.pipe(
-    tap(() => {
+    tap(platforms => {
       const idPlatform = this.idPlatformControl.value;
       if (idPlatform) {
         this.idPlatformControl.setValue(idPlatform);
+      } else if (this._selectParamIfOne && platforms.length === 1) {
+        this.idPlatformControl.setValue(platforms.keysArray[0] as number);
       }
     })
   );
@@ -228,102 +237,48 @@ export class ParamsComponent
         finalize(() => {
           this.updateState('gameLoading', false);
         }),
-        tap(games => {
-          const control = this.idGameControl;
-          const idGame = control.value;
-          if (idGame) {
-            const selected = games.find(game => game.id === idGame);
-            if (selected) {
-              control.setValue(selected.id);
-            } else {
-              control.setValue(null);
-            }
-          }
-        })
+        this._setParamOrNullOperator<Game>(this.idGameControl)
       );
     })
   );
-  miniGames$ = combineLatest([this.idPlatformNotNil$, this.idGameNotNil$]).pipe(
-    debounceTime(0),
+  miniGames$ = combineLatest([this.idPlatform$, this.idGame$]).pipe(
+    this._filterIds(),
     switchMap(([idPlatform, idGame]) => {
       this.updateState('miniGameLoading', true);
       return this.miniGameService.findByIdPlatformGame(idPlatform, idGame).pipe(
         finalize(() => {
           this.updateState('miniGameLoading', false);
         }),
-        tap(miniGames => {
-          const control = this.idMiniGameControl;
-          const idMiniGame = control.value;
-          if (idMiniGame) {
-            const selected = miniGames.find(miniGame => miniGame.id === idMiniGame);
-            if (selected) {
-              control.setValue(selected.id);
-            } else {
-              control.setValue(null);
-            }
-          }
-        })
+        this._setParamOrNullOperator<MiniGame>(this.idMiniGameControl)
       );
     })
   );
-  modes$ = combineLatest([this.idPlatformNotNil$, this.idGameNotNil$, this.idMiniGameNotNil$]).pipe(
-    debounceTime(0),
+  modes$ = combineLatest([this.idPlatform$, this.idGame$, this.idMiniGame$]).pipe(
+    this._filterIds(),
     switchMap(([idPlatform, idGame, idMiniGame]) => {
       this.updateState('modeLoading', true);
       return this.modeService.findByIdPlatformGameMiniGame(idPlatform, idGame, idMiniGame).pipe(
         finalize(() => {
           this.updateState('modeLoading', false);
         }),
-        tap(modes => {
-          const control = this.idModeControl;
-          const idMode = control.value;
-          if (idMode) {
-            const selected = modes.find(mode => mode.id === idMode);
-            if (selected) {
-              control.setValue(selected.id);
-            } else {
-              control.setValue(null);
-            }
-          }
-        })
+        this._setParamOrNullOperator<Mode>(this.idModeControl)
       );
     })
   );
-  stages$ = combineLatest([
-    this.idPlatformNotNil$,
-    this.idGameNotNil$,
-    this.idMiniGameNotNil$,
-    this.idModeNotNil$,
-  ]).pipe(
-    debounceTime(0),
+  stages$ = combineLatest([this.idPlatform$, this.idGame$, this.idMiniGame$, this.idMode$]).pipe(
+    this._filterIds(),
     switchMap(([idPlatform, idGame, idMiniGame, idMode]) => {
       this.updateState('stageLoading', true);
       return this.stageService.findByIdPlatformGameMiniGameMode(idPlatform, idGame, idMiniGame, idMode).pipe(
         finalize(() => {
           this.updateState('stageLoading', false);
         }),
-        tap(stages => {
-          const control = this.idStageControl;
-          const idStage = control.value;
-          if (idStage) {
-            const selected = stages.find(stage => stage.id === idStage);
-            if (selected) {
-              control.setValue(selected.id);
-            } else {
-              control.setValue(null);
-            }
-          }
-        })
+        this._setParamOrNullOperator<Stage>(this.idStageControl)
       );
     })
   );
-  characters$ = combineLatest([
-    this.idPlatformNotNil$,
-    this.idGameNotNil$,
-    this.idMiniGameNotNil$,
-    this.idModeNotNil$,
-  ]).pipe(
-    debounceTime(0),
+  characters$ = combineLatest([this.idPlatform$, this.idGame$, this.idMiniGame$, this.idMode$]).pipe(
+    this._filterIds(),
     switchMap(([idPlatform, idGame, idMiniGame, idMode]) => {
       this.updateState('characterLoading', true);
       return this.characterService.findByIdPlatformGameMiniGameMode(idPlatform, idGame, idMiniGame, idMode).pipe(
@@ -335,16 +290,7 @@ export class ParamsComponent
             (acc, character) => [...acc, ...character.characterCostumes],
             [] as CharacterCostume[]
           );
-          const control = this.idCharacterCostumeControl;
-          const idCharacterCostume = control.value;
-          if (idCharacterCostume) {
-            const selected = characterCostumes.find(characterCostume => characterCostume.id === idCharacterCostume);
-            if (selected) {
-              control.setValue(selected.id);
-            } else {
-              control.setValue(null);
-            }
-          }
+          this._setParamOrNull(this.idCharacterCostumeControl, characterCostumes);
         })
       );
     })
@@ -352,7 +298,7 @@ export class ParamsComponent
 
   state$ = this.selectState();
 
-  trackByPlatform = trackByFactory<Platform>('id');
+  trackByPlatform = this.platformQuery.trackBy;
   trackByGame = trackByFactory<Game>('id');
   trackByMiniGame = trackByFactory<MiniGame>('id');
   trackByMode = trackByFactory<Mode>('id');
@@ -361,9 +307,34 @@ export class ParamsComponent
   trackByCharacterCostume = trackByFactory<CharacterCostume>('id');
   trackByControlValidator = trackByFactory<ControlValidator>('name');
 
+  private _filterIds(): OperatorFunction<Nullable<number>[], NonNullable<number>[]> {
+    return filter(filterNilArray);
+  }
+
   private _getParamOrNull(param: string): number | null {
     const id = this.activatedRoute.snapshot.queryParamMap.get(param);
     return id ? +id : null;
+  }
+
+  private _setParamOrNull<T extends { id: number }>(control: Control<Nullable<number>>, entities: T[]): void {
+    const id = control.value;
+    const exists = entities.some(entity => entity.id === id);
+    if (exists) {
+      return;
+    }
+    let value: number | null = null;
+    if (this._selectParamIfOne && entities.length === 1) {
+      value = entities[0].id;
+    }
+    control.setValue(value);
+  }
+
+  private _setParamOrNullOperator<T extends { id: number }>(
+    control: Control<Nullable<number>>
+  ): MonoTypeOperatorFunction<T[]> {
+    return tap(entities => {
+      this._setParamOrNull(control, entities);
+    });
   }
 
   ngOnInit(): void {
@@ -371,7 +342,7 @@ export class ParamsComponent
       const control = this.form.get(id);
       const formConfig = this.formsConfig[id];
       if (formConfig.show) {
-        control.value$.pipe(takeUntil(this.destroy$)).subscribe(idValue => {
+        control.value$.pipe(takeUntil(this.destroy$), debounceTime(50), distinctUntilChanged()).subscribe(idValue => {
           const keyChange = `${id}Change` as `${keyof ParamsForm}Change`;
           this[keyChange].emit(idValue);
         });
@@ -387,7 +358,8 @@ export class ParamsComponent
           if (this._setQueryParamsOnChange) {
             this.router.navigate([], { queryParamsHandling: 'merge', queryParams: params }).then();
           }
-        })
+        }),
+        debounceTime(50)
       )
       .subscribe(params => {
         this.paramsChange.emit(params);
@@ -408,4 +380,5 @@ export class ParamsComponent
   static ngAcceptInputType_setQueryParamsOnChange: BooleanInput;
   static ngAcceptInputType_getQueryParamsOnInit: BooleanInput;
   static ngAcceptInputType_clearable: BooleanInput;
+  static ngAcceptInputType_selectParamIfOne: BooleanInput;
 }

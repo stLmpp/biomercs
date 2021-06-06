@@ -9,11 +9,10 @@ import { ScoreApprovalMotiveService } from '@shared/services/score-approval-moti
 import { ControlBuilder, Validators } from '@stlmpp/control';
 import { ScoreApprovalMotive, trackByScoreApprovalMotive } from '@model/score-approval-motive';
 import { Observable } from 'rxjs';
-import { StMapView } from '@stlmpp/store/lib/map';
+import { LocalState, StMapView } from '@stlmpp/store';
 import { finalize, switchMap, tap } from 'rxjs/operators';
 import { ScoreApprovalAdd, ScoreApprovalVW } from '@model/score-approval';
 import { ScoreApprovalComponentState } from '../score-approval.component';
-import { LocalState } from '@stlmpp/store';
 
 export interface ScoreApprovalModalData {
   score: ScoreVW;
@@ -68,17 +67,8 @@ export class ScoreApprovalModalComponent extends LocalState<{ saving: boolean }>
       .approveOrReject(this.playerMode, this.score.idScore, this.action, payload)
       .pipe(
         switchMap(() => {
-          const {
-            idMiniGame,
-            idPlatform,
-            idGame,
-            idMode,
-            itemsPerPage,
-            page,
-            orderBy,
-            orderByDirection,
-            idStage,
-          } = this.scoreApprovalComponentState;
+          const { idMiniGame, idPlatform, idGame, idMode, itemsPerPage, page, orderBy, orderByDirection, idStage } =
+            this.scoreApprovalComponentState;
           return this.scoreService.findApproval(
             this.playerMode,
             idPlatform!,

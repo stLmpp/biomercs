@@ -10,12 +10,18 @@ import { FormModule } from '@shared/components/form/form.module';
 import { PasswordStrongComponent } from './password-strong/password-strong.component';
 import { AuthDateFormatPipe } from './auth-date-format.pipe';
 
-const PIPES = [IsSameAsLoggedPipe, AuthDateFormatPipe];
-const DECLARATIONS = [ConfirmationCodeInputComponent, ConfirmationCodeInputDirective, PasswordStrongComponent];
+const DECLARATIONS = [
+  ConfirmationCodeInputComponent,
+  ConfirmationCodeInputDirective,
+  PasswordStrongComponent,
+  IsSameAsLoggedPipe,
+  AuthDateFormatPipe,
+];
+const MODULES = [CommonModule, StControlModule, FormModule];
 
 @NgModule({
-  declarations: [...PIPES, ...DECLARATIONS],
-  imports: [CommonModule, StControlModule, FormModule],
-  exports: [...PIPES, ...DECLARATIONS],
+  declarations: [...DECLARATIONS],
+  imports: [...MODULES],
+  exports: [...DECLARATIONS, ...MODULES],
 })
 export class AuthSharedModule {}

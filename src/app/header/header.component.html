@@ -1,13 +1,13 @@
 <ng-container *ngLet="user$ | async as user">
-  <ng-container *ngLet="isSmallScreen$ | async as isSmallScreen">
+  <ng-container *ngLet="isMobile$ | async as isMobile">
     <bio-side-menu
       *ngIf="(sideMenuOpened$ | async) && user"
       [user]="user"
-      [isSmallScreen]="isSmallScreen"
+      [isMobile]="isMobile"
       (menuSelected)="toggleSideMenu($event)"
     ></bio-side-menu>
     <div class="brand-wrapper">
-      <button bioButton icon type="button" (click)="toggleSideMenu($event)">
+      <button bioButton icon type="button" (click)="toggleSideMenu($event)" *ngIf="user">
         <icon>menu</icon>
       </button>
       <a class="brand" routerLink="/"> Biomercs </a>
@@ -16,15 +16,15 @@
       <ng-container *ngIf="isLogged$ | async; else notLogged">
         <a
           bioButton
-          [icon]="!isSmallScreen"
+          [icon]="isMobile"
           routerLink="/score/add"
           queryParamsHandling="preserve"
           tooltip="Submit score"
           tooltipPosition="bottom"
-          [tooltipDisabled]="isSmallScreen"
+          [tooltipDisabled]="!isMobile"
         >
           <icon>add</icon>
-          <ng-container *ngIf="isSmallScreen">Submit score</ng-container>
+          <ng-container *ngIf="!isMobile">Submit score</ng-container>
         </a>
         <button type="button" bioButton [menuTrigger]="menu">
           <icon>person</icon>

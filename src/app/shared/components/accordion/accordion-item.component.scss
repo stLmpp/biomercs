@@ -1,0 +1,64 @@
+@use 'variables' as v;
+@use 'mixins' as m;
+@use 'functions' as f;
+
+$focus-background-color: lighten(v.$dark-overlay, 5);
+
+.accordion {
+  display: grid;
+  grid-row-gap: 1rem;
+}
+
+.accordion-item {
+  display: block;
+  border-radius: v.$radius;
+  background-color: v.$dark-overlay;
+  @include m.elevation(2);
+  &:not(.disabled) {
+    .accordion-item-header {
+      cursor: pointer;
+    }
+    &:not(.expanded) {
+      .accordion-item-header {
+        &:hover,
+        &:focus {
+          background-color: $focus-background-color;
+          border-radius: v.$radius;
+          outline: none;
+        }
+      }
+    }
+    &.expanded:focus-within {
+      background-color: $focus-background-color;
+      .accordion-item-header {
+        outline: none;
+      }
+    }
+  }
+}
+
+.accordion-item-header,
+.accordion-item-body .accordion-item-content {
+  padding: 1rem;
+}
+.accordion-item-body .accordion-item-content {
+  padding-top: 0;
+  font-size: 0.85rem;
+  color: v.$primary-600;
+}
+
+.accordion-item-title {
+  display: flex;
+  align-items: center;
+}
+
+.accordion-item-header {
+  display: flex;
+  justify-content: space-between;
+  .accordion-item-icon {
+    display: flex;
+    icon {
+      color: f.get-color(v.$primary-type, 600);
+    }
+  }
+}

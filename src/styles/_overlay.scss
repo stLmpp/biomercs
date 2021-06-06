@@ -1,0 +1,8 @@
+@use 'functions' as f;
+@use '~@angular/cdk';
+
+@include cdk.overlay();
+
+.cdk-overlay-container {
+  z-index: f.get-z-index(overlay);
+}

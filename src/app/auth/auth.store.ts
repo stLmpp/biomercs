@@ -3,11 +3,11 @@ import { Auth } from '@model/auth';
 import { Injectable } from '@angular/core';
 
 export class AuthPersistStrategy extends StorePersistLocalStorageStrategy<Auth> {
-  getStore(state: Auth, key: keyof Auth): string | undefined {
+  getStore(state: Auth): string | undefined {
     return state.user?.token;
   }
 
-  setStore(state: Auth, value: string, key: keyof Auth): Auth {
+  setStore(state: Auth, value: string): Auth {
     return { ...state, user: { ...state.user!, token: value } };
   }
 }

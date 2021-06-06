@@ -12,8 +12,11 @@ if (environment.production) {
 platformBrowserDynamic()
   .bootstrapModule(AppModule)
   .then(moduleRef => {
-    const applicationRef = moduleRef.injector.get(ApplicationRef);
-    const componentRef = applicationRef.components[0];
-    enableDebugTools(componentRef);
+    if (!environment.production) {
+      const applicationRef = moduleRef.injector.get(ApplicationRef);
+      const componentRef = applicationRef.components[0];
+      enableDebugTools(componentRef);
+    }
   })
+  // eslint-disable-next-line no-console
   .catch(err => console.error(err));

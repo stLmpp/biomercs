@@ -22,6 +22,7 @@ import { ScoreService } from '../score/score.service';
 import { AbstractScoreService } from '../score/abstract-score.service';
 import { AbstractPlayerService } from '../player/abstract-player.service';
 import { PlayerService } from '../player/player.service';
+import { RetryInterceptor } from './retry.interceptor';
 
 const withInterceptors = (...interceptors: any[]): Provider[] =>
   interceptors.map(useClass => ({
@@ -41,10 +42,7 @@ export class CoreModule {
     return {
       ngModule: CoreModule,
       providers: [
-        {
-          provide: LOCALE_ID,
-          useValue: 'pt-BR',
-        },
+        { provide: LOCALE_ID, useValue: 'pt-BR' },
         ...WINDOW_PROVIDERS,
         ...withInterceptors(
           AuthInterceptor,
@@ -53,11 +51,12 @@ export class CoreModule {
           LoadingInterceptor,
           DateInterceptor,
           HandleErrorDevInterceptor,
+          RetryInterceptor,
           FormatErrorInterceptor
         ),
         {
           provide: APP_INITIALIZER,
-          useFactory: (authService: AuthService) => () => authService.autoLogin().toPromise(),
+          useFactory: (authService: AuthService) => () => authService.autoLogin(),
           deps: [AuthService],
           multi: true,
         },

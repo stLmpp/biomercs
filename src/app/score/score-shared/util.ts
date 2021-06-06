@@ -49,7 +49,7 @@ export function getScoreDefaultColDefs<T extends ScoreVW = ScoreVW>(
       property: 'scorePlayers',
       title: 'Player(s)',
       formatter: scorePlayers =>
-        ((scorePlayers as unknown) as ScorePlayerVW[]).map(scorePlayer => scorePlayer.playerPersonaName).join(' | '),
+        (scorePlayers as unknown as ScorePlayerVW[]).map(scorePlayer => scorePlayer.playerPersonaName).join(' | '),
       tooltip: true,
       tooltipPosition: 'left',
     },

@@ -9,7 +9,7 @@ export class HttpParams extends OriginHttpParams {
         entries = entries.filter(([_, value]) => !isNil(value) && value !== '');
       }
       fromObject = entries.reduce(
-        (obj, [key, value]) => ({ ...obj, [key]: isDate(value) ? value.toISOString() : '' + value }),
+        (obj, [key, value]) => ({ ...obj, [key]: isDate(value) ? value.toISOString() : value }),
         {}
       );
       super({ fromObject });

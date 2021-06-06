@@ -5,10 +5,13 @@ import { SnackBarService } from './snack-bar.service';
 import { SNACK_BAR_DEFAULT_CONFIG, SnackBarConfig } from './snack-bar.config';
 import { ButtonModule } from '../button/button.module';
 
+const DECLARATIONS = [SnackBarComponent];
+const MODULES = [CommonModule, ButtonModule];
+
 @NgModule({
-  declarations: [SnackBarComponent],
-  imports: [CommonModule, ButtonModule],
-  exports: [SnackBarComponent],
+  declarations: [...DECLARATIONS],
+  imports: [...MODULES],
+  exports: [...DECLARATIONS, ...MODULES],
 })
 export class SnackBarModule {
   static forRoot(config?: SnackBarConfig): ModuleWithProviders<SnackBarModule> {

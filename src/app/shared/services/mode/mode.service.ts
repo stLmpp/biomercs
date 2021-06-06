@@ -24,13 +24,11 @@ export class ModeService {
 
   findByIdPlatformsGamesMiniGames(idPlatforms: number[], idGames: number[], idMiniGames: number[]): Observable<Mode[]> {
     const params = new HttpParams({ idPlatforms, idGames, idMiniGames });
-    return this.http
-      .get<Mode[]>(`${this.endPoint}/platforms/games/mini-games`, { params })
-      .pipe(
-        httpCache(this.modeStore, [...idPlatforms, ...idGames, ...idMiniGames]),
-        tap(modes => {
-          this.modeStore.upsert(modes);
-        })
-      );
+    return this.http.get<Mode[]>(`${this.endPoint}/platforms/games/mini-games`, { params }).pipe(
+      httpCache(this.modeStore, [...idPlatforms, ...idGames, ...idMiniGames]),
+      tap(modes => {
+        this.modeStore.upsert(modes);
+      })
+    );
   }
 }

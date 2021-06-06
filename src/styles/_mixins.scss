@@ -1,6 +1,6 @@
-@import 'variables';
-@import '~@material/elevation/elevation-theme';
-@import 'functions';
+@use 'variables' as v;
+@use 'functions' as f;
+@forward '~@material/elevation/elevation-theme';
 
 @mixin actions($margin-top: 1rem) {
   margin-top: $margin-top;
@@ -18,9 +18,9 @@
 }
 
 @mixin form-focus() {
-  @include _form-focus($primary-type);
-  @include _form-focus($accent-type);
-  @include _form-focus($danger-type);
+  @include _form-focus(v.$primary-type);
+  @include _form-focus(v.$accent-type);
+  @include _form-focus(v.$danger-type);
   transition: box-shadow 200ms ease-in-out;
 }
 
@@ -29,10 +29,10 @@
     &:not(.disabled):not([disabled]):not(:disabled) {
       &:focus,
       &.is-open {
-        box-shadow: 0 0 0 2px transparentize(get-color($type, 300), 0.5);
+        box-shadow: 0 0 0 2px transparentize(f.get-color($type, 300), 0.5);
       }
       &:active {
-        box-shadow: 0 0 0 3px transparentize(get-color($type, 300), 0.5);
+        box-shadow: 0 0 0 3px transparentize(f.get-color($type, 300), 0.5);
       }
     }
   }
@@ -45,4 +45,8 @@
     cursor: default;
     color: hsla(0, 0%, 100%, 0.5);
   }
+}
+
+@mixin z-index($name) {
+  z-index: f.get-z-index($name);
 }

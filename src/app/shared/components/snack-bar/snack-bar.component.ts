@@ -27,7 +27,7 @@ import { Animations } from '../../animations/animations';
 export class SnackBarComponent implements OnInit, OnDestroy {
   constructor(private overlayRef: OverlayRef, private snackBarConfig: SnackBarConfig) {}
 
-  private _cancelTimeout$ = new Subject();
+  private _cancelTimeout$ = new Subject<void>();
 
   @Input() message?: string;
   @Input() action?: string | null;
@@ -97,6 +97,7 @@ export class SnackBarComponent implements OnInit, OnDestroy {
     this.overlayRef.detach();
     this.onClose$.next();
     this.onClose$.complete();
+    this.onAction$.complete();
   }
 
   ngOnInit(): void {

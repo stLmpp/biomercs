@@ -1,14 +1,13 @@
-/* You can add global styles to this file, and also import other style files */
-@import 'theme';
+@use 'variables' as v;
+@use 'theme';
 
 html {
-  height: 100vh;
+  height: stretch;
 }
 
 body {
-  background-color: $dark;
+  background-color: v.$dark;
   margin: 0;
-  box-sizing: border-box;
 }
 
 *,
@@ -22,13 +21,13 @@ body {
   height: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: $light;
+  background: v.$light;
 }
 ::-webkit-scrollbar-thumb {
-  background: $dark-weak;
+  background: v.$dark-weak;
 }
 
 hr {
   border: 0;
-  border-bottom: 1px solid $primary-200;
+  border-bottom: 1px solid v.$primary-200;
 }

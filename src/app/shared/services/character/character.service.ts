@@ -36,13 +36,11 @@ export class CharacterService {
     idModes: number[]
   ): Observable<Character[]> {
     const params = new HttpParams({ idPlatforms, idGames, idMiniGames, idModes });
-    return this.http
-      .get<Character[]>(`${this.endPoint}/platforms/games/mini-games/modes`, { params })
-      .pipe(
-        httpCache(this.characterStore, [idPlatforms, idGames, idMiniGames, idModes]),
-        tap(characters => {
-          this.characterStore.upsert(characters);
-        })
-      );
+    return this.http.get<Character[]>(`${this.endPoint}/platforms/games/mini-games/modes`, { params }).pipe(
+      httpCache(this.characterStore, [idPlatforms, idGames, idMiniGames, idModes]),
+      tap(characters => {
+        this.characterStore.upsert(characters);
+      })
+    );
   }
 }

@@ -1,5 +1,6 @@
 import { Region } from './region';
 import { trackByFactory } from '@stlmpp/utils';
+import { SteamProfile } from '@model/steam-profile';
 
 export interface Player {
   id: number;
@@ -11,6 +12,8 @@ export interface Player {
   noUser: boolean;
   idRegion: number;
   region?: Region;
+  steamProfile?: SteamProfile;
+  lastUpdatedPersonaNameDate?: Date;
 }
 
 export interface PlayerAdd {
@@ -24,8 +27,6 @@ export interface PlayerAdd {
 }
 
 export interface PlayerUpdate {
-  personaName?: string;
-  idUser?: number;
   idSteamProfile?: number;
   title?: string;
   aboutMe?: string;

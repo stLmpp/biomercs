@@ -29,7 +29,8 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class TableCellComponent<T extends Record<any, any>, K extends keyof T>
   extends Destroyable
-  implements AfterViewInit, OnChanges {
+  implements AfterViewInit, OnChanges
+{
   constructor(private viewContainerRef: ViewContainerRef) {
     super();
   }

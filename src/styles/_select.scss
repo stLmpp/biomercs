@@ -1,5 +1,5 @@
-@import 'variables';
-@import 'mixins';
+@use 'variables' as v;
+@use 'mixins' as m;
 
 .bio-select {
   background-color: white;
@@ -30,11 +30,11 @@
 }
 
 .select-panel {
-  background-color: $dark-overlay;
+  background-color: v.$dark-overlay;
   display: flex;
   flex-direction: column;
   padding: 0.5rem 0;
-  border-radius: $radius;
+  border-radius: v.$radius;
   outline: none;
   width: 100%;
   min-height: calc(35px + 1rem);
@@ -45,5 +45,5 @@
       height: calc((35px * #{$i}) + 1rem);
     }
   }
-  @include elevation(2);
+  @include m.elevation(2);
 }
