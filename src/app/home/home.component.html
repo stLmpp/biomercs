@@ -1,1 +1,69 @@
-<h1>Welcome to Biomercs</h1>
+<h4>Welcome to biomercs</h4>
+<div class="container">
+  <ng-container *ngIf="isLogged$ | async; else noLogged">
+    <a class="block" #block tabindex="0" routerLink="/score/add">
+      <icon>add</icon>
+      Submit a score
+    </a>
+    <a class="block" tabindex="0" routerLink="/score/leaderboards">
+      <icon>leaderboard</icon>
+      Check the leaderbords
+    </a>
+    <ng-container *ngIf="isAdmin$ | async">
+      <a
+        class="block"
+        tabindex="0"
+        *ngIf="adminApprovalCount$ | async as adminApprovalCount"
+        [bioBadge]="adminApprovalCount"
+        routerLink="/admin/approval"
+      >
+        <icon>checklist</icon>
+        Check the pending scores (Admin)
+      </a>
+    </ng-container>
+    <ng-container *ngIf="idUser$ | async as idUser">
+      <a
+        class="block"
+        tabindex="0"
+        *ngIf="playerApprovalCount$ | async as playerApprovalCount"
+        [bioBadge]="playerApprovalCount"
+        [routerLink]="['/player/u', idUser, 'approval']"
+      >
+        <icon>checklist</icon>
+        Check your approval list
+      </a>
+      <a
+        class="block"
+        tabindex="0"
+        *ngIf="playerRequestChangesCount$ | async as playerRequestChangesCount"
+        [bioBadge]="playerRequestChangesCount"
+        [routerLink]="['/player/u', idUser, 'change-requests']"
+      >
+        <icon>sync_alt</icon>
+        Check your pending changes list
+      </a>
+    </ng-container>
+  </ng-container>
+  <ng-template #noLogged>
+    <a class="block" #block tabindex="0" routerLink="/auth/login">
+      <icon>login</icon>
+      Login
+    </a>
+    <a class="block" tabindex="0" routerLink="/auth/register">
+      <icon>person_add</icon>
+      Register
+    </a>
+  </ng-template>
+  <a class="block" tabindex="0" routerLink="/rules">
+    <icon>article</icon>
+    Read the rules
+  </a>
+  <a class="block" tabindex="0" routerLink="/faq">
+    <icon>quiz</icon>
+    Read our FAQ
+  </a>
+  <a class="block" tabindex="0" routerLink="/contact">
+    <icon>contact_support</icon>
+    Contact support
+  </a>
+</div>

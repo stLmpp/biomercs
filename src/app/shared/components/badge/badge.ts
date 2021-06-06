@@ -4,7 +4,9 @@ import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
 
 @Directive()
 export class BadgeBase {
-  @Input() bioType: BioTypeInput = 'accent';
+  constructor(private bioBadgeConfig?: BioBadgeConfig) {}
+
+  @Input() bioType: BioTypeInput = this.bioBadgeConfig?.bioType ?? 'accent';
 
   @HostBinding('class.badge-primary')
   get primaryClass(): boolean {
@@ -41,4 +43,12 @@ export class BadgeBase {
       this.bioType = 'danger';
     }
   }
+}
+
+export class BioBadgeConfig {
+  constructor(config?: Partial<BioBadgeConfig>) {
+    Object.assign(this, config);
+  }
+
+  bioType: BioTypeInput = 'accent';
 }

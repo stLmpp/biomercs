@@ -1532,37 +1532,37 @@
     "@angular-devkit/schematics" "12.0.3"
     jsonc-parser "3.0.0"
 
-"@stlmpp/control@~7.0.0-next.1":
-  version "7.0.0-next.1"
-  resolved "https://registry.yarnpkg.com/@stlmpp/control/-/control-7.0.0-next.1.tgz#64f8fbfafd0fc4dc1b7320a60ed54650d2a68899"
-  integrity sha512-6+MCU2aSIUjnVIlJebkGF7JdS0l0Q1CbvpFUV8j2PEkWpM0Z7tOVbgUEPsakGR4PPZ8PAbWwf70M7RWUbsFfvw==
+"@stlmpp/control@~7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@stlmpp/control/-/control-7.0.0.tgz#bcb2d1e61a0eba1cbd3ad26a27e08644577adc60"
+  integrity sha512-71lpBKrABLkByVS+ic2pPpSpEsUQkS6UAO6r/XK9sojqlgXwEquOaGxupdxO7QmbqMFt+Q5SFoj0NrjeN3sGQA==
   dependencies:
     date-fns "~2.22.1"
     st-utils "~1.7.0"
     tslib "~2.2.0"
 
-"@stlmpp/router@~7.0.0-next.1":
-  version "7.0.0-next.1"
-  resolved "https://registry.yarnpkg.com/@stlmpp/router/-/router-7.0.0-next.1.tgz#0f4e54c73327397a69f348444bb44dadeef9ad1e"
-  integrity sha512-bJ+PDPCvXwNgfQo7gRFEZlUXYoCn4hGQEQR9y+QaXTggk3mAv6BZoe3stvowu3RY1dQhGyW/2s/1eLCYqrh2nA==
+"@stlmpp/router@~7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@stlmpp/router/-/router-7.0.0.tgz#dda6f6047a807cb806eb419b7daf3564a1d4bd81"
+  integrity sha512-45Cgqd1n5ZNDvYjKuEirg1qYwZ8J1YbbI1EMDhTLjm3gBPugqQ6YiPJ3fhdnJVqUbjkwhNSB30ZaXLGG0/vUhQ==
   dependencies:
     st-utils "~1.8.0"
     tslib "~2.2.0"
 
-"@stlmpp/store@~7.0.0-next.1":
-  version "7.0.0-next.1"
-  resolved "https://registry.yarnpkg.com/@stlmpp/store/-/store-7.0.0-next.1.tgz#6044c7a04e2e657e40f03578edfeb3bb7c20dd8a"
-  integrity sha512-zyGF6iVZBy+0nRuSf2ftRVdqoXioM3qH1p+mG7uTcPHdbK6IRSTZUsP35a6RDLjDfxqdSvcCGJ9xxTuf0AZSjw==
+"@stlmpp/store@~7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@stlmpp/store/-/store-7.0.0.tgz#7b80c5bb5c4d23fbec30c4225b26a6580d5c011e"
+  integrity sha512-Hk2NAyaI3FapJ5yDH5z0WcVtOaKiAU+19jybC0V+NOx17t4hY/7pdhT2k1FqAva08ZxsGnbbU9iKAz79sqafVA==
   dependencies:
     copy-anything "~2.0.3"
     st-utils "~1.8.0"
     tslib "~2.2.0"
     type-fest "~1.2.0"
 
-"@stlmpp/utils@~7.0.0-next.1":
-  version "7.0.0-next.1"
-  resolved "https://registry.yarnpkg.com/@stlmpp/utils/-/utils-7.0.0-next.1.tgz#74ef691aad3062d81d96a4decf17ece980f46a72"
-  integrity sha512-rq4wqOgXvuVsxxpVewJOAZX0zzF3rSTHZowClj23K+WJBAIWjXsYQJ9MyKANxHUk/eDIUS9E+gXXTJ0IalOTWA==
+"@stlmpp/utils@~7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@stlmpp/utils/-/utils-7.0.0.tgz#9ea5a7038e5e0042dea078a9d6bbaafe6bfd8ebd"
+  integrity sha512-Kw7Od+4XRdkcEaXALBPc5qwKijkAwFE9IkXSXOmLZEdcgRsfTcnVleZQyJ+0UZBqR/RWe5eby68qNalU/0Uaww==
   dependencies:
     st-utils "~1.8.0"
     tslib "~2.2.0"
@@ -3906,16 +3906,16 @@ eslint-plugin-import@~2.23.4:
     resolve "^1.20.0"
     tsconfig-paths "^3.9.0"
 
-eslint-plugin-jsdoc@~35.1.2:
-  version "35.1.2"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-jsdoc/-/eslint-plugin-jsdoc-35.1.2.tgz#dbd447f61e9baa6c369eb85d6cd8c2df0e1f63c9"
-  integrity sha512-IPChTbaL9rWe6DCinKOpUdqsBV7r2dKEId1nweSKsjJqZp1VAQyzQJ5N6ogji2AWmrPU1jdjfHA5HIG2RaiRBA==
+eslint-plugin-jsdoc@~35.1.3:
+  version "35.1.3"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jsdoc/-/eslint-plugin-jsdoc-35.1.3.tgz#ee9f8566eeb87a0e96fc52ec55897a2cb93ceea5"
+  integrity sha512-9AVpCssb7+cfEx3GJtnhJ8yLOVsHDKGMgngcfvwFBxdcOVPFhLENReL5aX1R2gNiG3psqIWFVBpSPnPQTrMZUA==
   dependencies:
     "@es-joy/jsdoccomment" "^0.8.0-alpha.2"
     comment-parser "1.1.5"
     debug "^4.3.1"
     esquery "^1.4.0"
-    jsdoc-type-pratt-parser "^1.0.2"
+    jsdoc-type-pratt-parser "^1.0.4"
     lodash "^4.17.21"
     regextras "^0.8.0"
     semver "^7.3.5"
@@ -5475,10 +5475,10 @@ jsdoc-type-pratt-parser@1.0.0-alpha.23:
   resolved "https://registry.yarnpkg.com/jsdoc-type-pratt-parser/-/jsdoc-type-pratt-parser-1.0.0-alpha.23.tgz#01c232d92b99b7e7ef52235ab8c9115137426639"
   integrity sha512-COtimMd97eo5W0h6R9ISFj9ufg/9EiAzVAeQpKBJ1xJs/x8znWE155HGBDR2rwOuZsCes1gBXGmFVfvRZxGrhg==
 
-jsdoc-type-pratt-parser@^1.0.2:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/jsdoc-type-pratt-parser/-/jsdoc-type-pratt-parser-1.0.3.tgz#01493a5220a183d304054fc4e490a8c67751290e"
-  integrity sha512-AGJxvTU6WjdFr1qQ3l+EjtXUgA6vRYowG9L9JMc7wml0ow5xzKnureo36Xtu7YzB8apnTAhFY38AR+WRU+UxwA==
+jsdoc-type-pratt-parser@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/jsdoc-type-pratt-parser/-/jsdoc-type-pratt-parser-1.0.4.tgz#5750d2d32ffb001866537d3baaedea7cf84c7036"
+  integrity sha512-jzmW9gokeq9+bHPDR1nCeidMyFUikdZlbOhKzh9+/nJqB75XhpNKec1/UuxW5c4+O+Pi31Gc/dCboyfSm/pSpQ==
 
 jsesc@^2.5.1:
   version "2.5.2"
