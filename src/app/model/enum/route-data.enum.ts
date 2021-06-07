@@ -4,4 +4,5 @@ export enum RouteDataEnum {
   meta = 'head.meta',
   possiblePaths = 'resolver.possiblePaths',
   rules = 'resolver.rules',
+  mailQueue = 'resolver.mailQueue',
 }

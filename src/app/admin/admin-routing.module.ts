@@ -17,6 +17,10 @@ const routes: Routes = [
     loadChildren: () => import('./admin-create-player/admin-create-player.module').then(m => m.AdminCreatePlayerModule),
   },
   {
+    path: 'mail-queue',
+    loadChildren: () => import('./mail-queue/admin-mail-queue.module').then(m => m.AdminMailQueueModule),
+  },
+  {
     path: 'rules',
     loadChildren: () => import('./admin-rules/admin-rules.module').then(m => m.AdminRulesModule),
   },

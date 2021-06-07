@@ -69,4 +69,8 @@
     <icon prefix>article</icon>
     Edit rules
   </a>
+  <a bioListItem routerLink="/admin/mail-queue" (click)="onMenuSelected($event)" *ngIf="user.admin">
+    <icon prefix mdi="email-sync-outline"></icon>
+    Mail queue
+  </a>
 </bio-list>
