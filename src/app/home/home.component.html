@@ -5,9 +5,9 @@
       <icon>add</icon>
       Submit a score
     </a>
-    <a class="block" tabindex="0" routerLink="/score/leaderboards">
+    <a class="block" tabindex="0" routerLink="/score/leaderboards" *ngIf="isNotMobile$ | async">
       <icon>leaderboard</icon>
-      Check the leaderbords
+      Check the leaderboards
     </a>
     <ng-container *ngIf="isAdmin$ | async">
       <a
