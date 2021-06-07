@@ -5,7 +5,7 @@ import { ParamsComponent, ParamsConfig } from '@shared/params/params.component';
 import { CURRENCY_MASK_CONFIG } from '@shared/currency-mask/currency-mask-config.token';
 import { MaskEnum, MaskEnumPatterns } from '@shared/mask/mask.enum';
 import { combineLatest } from 'rxjs';
-import { debounceTime, finalize, map, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { debounceTime, finalize, map, shareReplay, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { CharacterCostume } from '@model/character-costume';
 import { filterNil } from '@shared/operators/filter';
 import { CharacterService } from '@shared/services/character/character.service';
@@ -126,7 +126,8 @@ export class ScoreAddComponent extends LocalState<ScoreAddState> implements OnIn
           }
         })
       );
-    })
+    }),
+    shareReplay()
   );
 
   trackByScorePlayerControl = trackByFactory<ControlGroup<ScorePlayerAddForm>>('uniqueId');
