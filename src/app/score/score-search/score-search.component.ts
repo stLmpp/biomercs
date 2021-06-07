@@ -10,7 +10,7 @@ import { ScoreStatusEnum } from '@model/enum/score-status.enum';
 import { getScoreDefaultColDefs } from '../score-shared/util';
 import { AuthDateFormatPipe } from '../../auth/shared/auth-date-format.pipe';
 import { PlatformQuery } from '@shared/services/platform/platform.query';
-import { trackByPlaform } from '@model/platform';
+import { trackByPlatform } from '@model/platform';
 import { GameService } from '@shared/services/game/game.service';
 import { filterArrayMinLength, filterNil } from '@shared/operators/filter';
 import { trackByGame } from '@model/game';
@@ -295,7 +295,7 @@ export class ScoreSearchComponent extends LocalState<ScoreSearchComponentState> 
     })
   );
 
-  trackByPlatform = trackByPlaform;
+  trackByPlatform = trackByPlatform;
   trackByGame = trackByGame;
   trackByMiniGame = trackByMiniGame;
   trackByMode = trackByMode;

@@ -45,7 +45,7 @@ import { BooleanInput } from '@angular/cdk/coercion';
   ],
   animations: [Animations.fade.inOut(100), Animations.scale.in(100, 0.8)],
 })
-// I had to do "implements", instead of "extends", so I can use the "Select" abastract class
+// I had to do "implements", instead of "extends", so I can use the "Select" abstract class
 export class SelectComponent extends Select implements ControlValue, AfterContentInit {
   constructor(
     protected changeDetectorRef: ChangeDetectorRef,

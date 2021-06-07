@@ -173,7 +173,7 @@ export class ScoreAddComponent extends LocalState<ScoreAddState> implements OnIn
       tap(async () => {
         await this.dialogService.success(
           {
-            title: 'Score submited successfully!',
+            title: 'Score submitted successfully!',
             content: 'Your score was submitted and will be reviewed by one of ours administrators',
             btnNo: 'Close',
             btnYes: 'Submit another',

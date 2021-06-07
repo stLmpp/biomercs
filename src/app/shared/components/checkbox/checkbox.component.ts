@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { ControlValue } from '@stlmpp/control';
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
-import { HorizontalPosistion } from '@shared/components/common/positions';
+import { HorizontalPosition } from '@shared/components/common/positions';
 
 @Component({
   selector: 'bio-checkbox',
@@ -54,7 +54,7 @@ export class CheckboxComponent extends ControlValue<boolean> {
     this._disabled = coerceBooleanProperty(disabled);
   }
 
-  @Input() labelPosition: HorizontalPosistion = 'right';
+  @Input() labelPosition: HorizontalPosition = 'right';
   @Input() name?: string;
 
   @Output() readonly checkedChange = new EventEmitter<boolean>();

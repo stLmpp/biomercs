@@ -47,7 +47,7 @@
       right: 0.5rem;
     }
     > .suffix-wrapper,
-    > .preffix-wrapper {
+    > .prefix-wrapper {
       position: absolute;
       display: flex;
       align-items: center;
@@ -58,7 +58,7 @@
     > .suffix-wrapper {
       right: 0.1rem;
     }
-    > .preffix-wrapper {
+    > .prefix-wrapper {
       left: 0.1rem;
     }
   }

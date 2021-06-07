@@ -74,7 +74,7 @@ export class ContactComponent extends LocalState<ContactComponentState> {
         }),
         tap(() => {
           this.router.navigate(['/']).then();
-          this.snackBarService.open('Your message was sent succefully!');
+          this.snackBarService.open('Your message was sent successfully!');
         }),
         catchAndThrow(err => {
           if (err.status === HttpStatusCode.TooManyRequests) {

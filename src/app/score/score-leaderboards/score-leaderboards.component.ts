@@ -106,8 +106,8 @@ export class ScoreLeaderboardsComponent extends LocalState<ScoreLeaderboardsStat
     this.selectState('orderByDirection'),
     this.selectState('orderByType'),
   ]).pipe(
-    map(([scoreTable, idStage, orderByDiretion, orderByType]) => {
-      orderByDiretion ??= 'asc';
+    map(([scoreTable, idStage, orderByDirection, orderByType]) => {
+      orderByDirection ??= 'asc';
       switch (orderByType) {
         case 'stage': {
           if (!idStage) {
@@ -118,14 +118,14 @@ export class ScoreLeaderboardsComponent extends LocalState<ScoreLeaderboardsStat
             scoreTables: orderBy(
               scoreTable.scoreTables,
               table => table.scores.find(score => score?.idStage === idStage)?.score ?? 0,
-              orderByDiretion
+              orderByDirection
             ),
           };
         }
         default:
           return {
             ...scoreTable,
-            scoreTables: orderBy(scoreTable.scoreTables, orderByType, orderByDiretion),
+            scoreTables: orderBy(scoreTable.scoreTables, orderByType, orderByDirection),
           };
       }
     })

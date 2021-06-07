@@ -43,7 +43,7 @@ export class AccordionDirective extends Accordion implements AfterContentInit {
   focusItem(id: string): void {
     const index = this.accordionItemComponents
       ?.toArray()
-      .findIndex(accodionItemComponent => accodionItemComponent.id === id);
+      .findIndex(accordionItemComponent => accordionItemComponent.id === id);
     if (index && index > -1) {
       this.focusKeyManager?.setActiveItem(index);
     }
