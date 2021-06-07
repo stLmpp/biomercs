@@ -2,7 +2,8 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, QueryLis
 import { AuthQuery } from '../auth/auth.query';
 import { HeaderQuery } from '../header/header.query';
 import { filterNil } from '@shared/operators/filter';
-import { pluck } from 'rxjs/operators';
+import { map, pluck } from 'rxjs/operators';
+import { BreakpointObserverService } from '@shared/services/breakpoint-observer/breakpoint-observer.service';
 
 @Component({
   selector: 'bio-home',
@@ -11,7 +12,11 @@ import { pluck } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent implements AfterViewInit {
-  constructor(private authQuery: AuthQuery, private headerQuery: HeaderQuery) {}
+  constructor(
+    private authQuery: AuthQuery,
+    private headerQuery: HeaderQuery,
+    private breakpointObserverService: BreakpointObserverService
+  ) {}
 
   @ViewChildren('block') blocks!: QueryList<ElementRef<HTMLAnchorElement>>;
 
@@ -22,6 +27,7 @@ export class HomeComponent implements AfterViewInit {
   playerRequestChangesCount$ = this.headerQuery.playerRequestChangesCount$;
 
   idUser$ = this.authQuery.user$.pipe(filterNil(), pluck('id'));
+  isNotMobile$ = this.breakpointObserverService.isMobile$.pipe(map(isMobile => !isMobile));
 
   ngAfterViewInit(): void {
     this.blocks.first.nativeElement.focus();
