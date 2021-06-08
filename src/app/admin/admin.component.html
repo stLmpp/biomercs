@@ -1,1 +1,23 @@
-<p>WIP</p>
+<h4 bioPageTitle></h4>
+<bio-card-menus bioCardMenuFocusOnFirstItem>
+  <a bioCardMenu routerLink="approval">
+    <icon>checklist</icon>
+    Score approval
+  </a>
+  <a bioCardMenu routerLink="create-player">
+    <icon>person_add_alt_1</icon>
+    Create player
+  </a>
+  <a bioCardMenu routerLink="rules">
+    <icon>article</icon>
+    Edit rules
+  </a>
+  <a bioCardMenu routerLink="mail-queue">
+    <icon [mdi]="mdiEmailSyncOutline"></icon>
+    Mail queue
+  </a>
+  <a bioCardMenu routerLink="ban-user">
+    <icon [mdi]="mdiAccountLock"></icon>
+    Ban user
+  </a>
+</bio-card-menus>

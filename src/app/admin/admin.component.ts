@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { mdiAccountLock, mdiEmailSyncOutline } from '@mdi/js';
 
 @Component({
   selector: 'bio-admin',
@@ -6,4 +7,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrls: ['./admin.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AdminComponent {}
+export class AdminComponent {
+  readonly mdiEmailSyncOutline = mdiEmailSyncOutline;
+  readonly mdiAccountLock = mdiAccountLock;
+}

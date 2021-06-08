@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AuthQuery } from '../auth/auth.query';
 import { HeaderQuery } from '../header/header.query';
 import { filterNil } from '@shared/operators/filter';
@@ -11,14 +11,12 @@ import { BreakpointObserverService } from '@shared/services/breakpoint-observer/
   styleUrls: ['./home.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomeComponent implements AfterViewInit {
+export class HomeComponent {
   constructor(
     private authQuery: AuthQuery,
     private headerQuery: HeaderQuery,
     private breakpointObserverService: BreakpointObserverService
   ) {}
-
-  @ViewChildren('block') blocks!: QueryList<ElementRef<HTMLAnchorElement>>;
 
   isLogged$ = this.authQuery.isLogged$;
   isAdmin$ = this.authQuery.isAdmin$;
@@ -28,8 +26,4 @@ export class HomeComponent implements AfterViewInit {
 
   idUser$ = this.authQuery.user$.pipe(filterNil(), pluck('id'));
   isNotMobile$ = this.breakpointObserverService.isMobile$.pipe(map(isMobile => !isMobile));
-
-  ngAfterViewInit(): void {
-    this.blocks.first.nativeElement.focus();
-  }
 }

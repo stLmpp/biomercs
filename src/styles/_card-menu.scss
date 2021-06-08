@@ -1,0 +1,46 @@
+@use 'variables' as v;
+@use 'mixins' as m;
+
+.card-menus {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 240px);
+  grid-gap: 1rem;
+  justify-content: center;
+}
+
+.card-menu {
+  min-height: 240px;
+  height: 100%;
+  padding: 1rem;
+  border-radius: v.$radius;
+  position: relative;
+  display: grid;
+  place-items: center;
+  background-color: v.$accent-300;
+  text-align: center;
+  cursor: pointer;
+  color: v.$white;
+  text-decoration: none;
+  transition: background-color 200ms ease-in-out;
+  @include m.elevation(3);
+  > .icon {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+  }
+  &:hover,
+  &:focus {
+    background-color: v.$accent-500;
+    text-decoration: none;
+    outline: none;
+  }
+}
+
+@media only screen and (max-width: v.$mobile-width) {
+  .card-menus {
+    grid-template-columns: repeat(auto-fit, 140px);
+  }
+  .card-menu {
+    min-height: 140px;
+  }
+}
