@@ -2,14 +2,14 @@
   <bio-loading *ngIf="loading"></bio-loading>
   <h3 bioCardTitle *ngIf="title">{{ title }}</h3>
   <bio-card-content>
-    <pagination
+    <bio-pagination
       *ngIf="paginationMeta"
       [meta]="paginationMeta"
       [itemsPerPageOptions]="itemsPerPageOptions"
       (currentPageChange)="currentPageChange.emit($event)"
       (itemsPerPageChange)="itemsPerPageChange.emit($event)"
       setQueryParamsOnChange
-    ></pagination>
+    ></bio-pagination>
     <bio-list selectable>
       <bio-list-item
         [disabled]="!!disabledProperty && !!score[disabledProperty]"
@@ -30,13 +30,13 @@
         <bio-list-item-line>No data found</bio-list-item-line>
       </bio-list-item>
     </bio-list>
-    <pagination
+    <bio-pagination
       *ngIf="paginationMeta"
       [meta]="paginationMeta"
       [itemsPerPageOptions]="itemsPerPageOptions"
       (currentPageChange)="currentPageChange.emit($event)"
       (itemsPerPageChange)="itemsPerPageChange.emit($event)"
       setQueryParamsOnChange
-    ></pagination>
+    ></bio-pagination>
   </bio-card-content>
 </bio-card>

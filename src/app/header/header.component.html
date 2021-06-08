@@ -29,7 +29,7 @@
         <button type="button" bioButton [menuTrigger]="menu">
           <icon>person</icon>
           {{ user.username }}
-          <icon class="triangle" mdi="triangle"></icon>
+          <icon class="triangle" [mdi]="mdiTriangle" [size]="8"></icon>
         </button>
         <bio-menu #menu>
           <a bioButton menuItem [routerLink]="pathToProfile$ | async"> <icon>person</icon> Profile </a>

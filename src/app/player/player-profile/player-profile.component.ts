@@ -9,7 +9,7 @@ import { RegionService } from '../../region/region.service';
 import { RegionQuery } from '../../region/region.query';
 import { DynamicLoaderService } from '../../core/dynamic-loader.service';
 import { Player, PlayerUpdate } from '@model/player';
-import { isObjectEmpty } from 'st-utils';
+import { arrayUtil, isObjectEmpty } from 'st-utils';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { LocalState } from '@stlmpp/store';
 import {
@@ -27,6 +27,7 @@ import { ScoreOpenInfoCellComponent } from '../../score/score-shared/score-open-
 import { combineLatest, concat, Observable } from 'rxjs';
 import { isBefore, subDays } from 'date-fns';
 import { filterNil } from '@shared/operators/filter';
+import { mdiSteam } from '@mdi/js';
 
 interface PlayerProfileComponentState {
   loadingRegion: boolean;
@@ -107,6 +108,8 @@ export class PlayerProfileComponent extends LocalState<PlayerProfileComponentSta
 
   todayMinusSevenDate = subDays(new Date(), 7);
 
+  mdiSteam = mdiSteam;
+
   trackByScoreGroupByStatus = trackByScoreGroupedByStatus;
 
   get idPlayer(): number {
@@ -133,20 +136,12 @@ export class PlayerProfileComponent extends LocalState<PlayerProfileComponentSta
     partial: Partial<ScoreScoreGroupedByStatusScoreVW>
   ): void {
     this.updateState('scoreGroupedByStatus', scoreGroupedByStatus =>
-      scoreGroupedByStatus.map(status => {
-        if (status.idScoreStatus === idScoreStatus) {
-          status = {
-            ...status,
-            scores: status.scores.map(score => {
-              if (score.idScore === idScore) {
-                score = { ...score, ...partial };
-              }
-              return score;
-            }),
-          };
-        }
-        return status;
-      })
+      arrayUtil(scoreGroupedByStatus, 'idScoreStatus')
+        .update(idScoreStatus, status => ({
+          ...status,
+          scores: arrayUtil(status.scores, 'idScore').update(idScore, partial).get(),
+        }))
+        .get()
     );
   }
 

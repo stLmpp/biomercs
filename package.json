@@ -24,7 +24,7 @@
     "@angular/router": "~12.0.3",
     "@angular/service-worker": "~12.0.3",
     "@material/elevation": "~11.0.0",
-    "@mdi/font": "~5.9.55",
+    "@mdi/js": "~5.9.55",
     "@stlmpp/control": "~7.0.0",
     "@stlmpp/router": "~7.0.0",
     "@stlmpp/store": "~7.0.0",

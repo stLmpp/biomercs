@@ -29,16 +29,16 @@
     </div>
     <div class="links" id="links" [class.active]="fragment === 'links'" #fragment>
       <a bioButton href="https://github.com/stLmpp">
-        <icon mdi="github"></icon>
+        <icon [mdi]="mdiGithub"></icon>
         Github
       </a>
       <a bioButton href="https://steamcommunity.com/id/stlmpp/">
-        <icon mdi="steam"></icon>
+        <icon [mdi]="mdiSteam"></icon>
         Steam
       </a>
       <a bioButton href="https://youtube.com/stLmpp">
-        <icon mdi="youtube"></icon>
-        YouTube
+        <icon [mdi]="mdiYoutube"></icon>
+        Youtube
       </a>
       <a bioButton routerLink="/player/p/stLmpp">
         <icon>person</icon>

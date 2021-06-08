@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IconComponent, IconMdiComponent } from './icon.component';
+import { IconComponent } from './icon.component';
 import { FlagModule } from './flag/flag.module';
+import { IconMdiComponent } from './mdi/icon-mdi.component';
 
 const DECLARATIONS = [IconComponent, IconMdiComponent];
 const MODULES = [CommonModule];

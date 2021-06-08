@@ -9,6 +9,7 @@ import { combineLatest, forkJoin } from 'rxjs';
 import { ScoreService } from '../score/score.service';
 import { LocalState } from '@stlmpp/store';
 import { GlobalListenersService } from '@shared/services/global-listeners/global-listeners.service';
+import { mdiTriangle } from '@mdi/js';
 
 export interface HeaderComponentState {
   sideMenuOpened: boolean;
@@ -33,11 +34,9 @@ export class HeaderComponent extends LocalState<HeaderComponentState> implements
     super({ sideMenuOpened: false });
   }
 
-  user$ = this.authQuery.user$;
-
-  sideMenuOpened$ = this.selectState('sideMenuOpened');
-
-  pathToProfile$ = this.user$.pipe(
+  readonly user$ = this.authQuery.user$;
+  readonly sideMenuOpened$ = this.selectState('sideMenuOpened');
+  readonly pathToProfile$ = this.user$.pipe(
     map(user => {
       if (!user) {
         return [];
@@ -48,9 +47,9 @@ export class HeaderComponent extends LocalState<HeaderComponentState> implements
       return ['/player/u', user.id];
     })
   );
-  isLogged$ = this.authQuery.isLogged$;
-
-  isMobile$ = this.breakpointObserverService.isMobile$;
+  readonly isLogged$ = this.authQuery.isLogged$;
+  readonly isMobile$ = this.breakpointObserverService.isMobile$;
+  readonly mdiTriangle = mdiTriangle;
 
   async logout(): Promise<void> {
     this.authService.logout();

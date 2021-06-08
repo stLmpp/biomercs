@@ -6,7 +6,7 @@ import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { trackByFactory } from '@stlmpp/utils';
 
 @Component({
-  selector: 'pagination',
+  selector: 'bio-pagination',
   templateUrl: './pagination.component.html',
   styleUrls: ['./pagination.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -31,7 +31,11 @@ export class PaginationComponent implements OnChanges, PaginationMetaVW {
   @Input() itemsPerPageOptions = [5, 10, 25, 50, 100];
 
   @Input()
-  set meta({ totalPages, totalItems, itemsPerPage, itemCount, currentPage }: PaginationMetaVW) {
+  set meta(paginationMeta: PaginationMetaVW | null | undefined) {
+    if (!paginationMeta) {
+      paginationMeta = { currentPage: 1, itemsPerPage: 10, totalItems: 0, totalPages: 0, itemCount: 0 };
+    }
+    const { totalPages, totalItems, itemsPerPage, itemCount, currentPage } = paginationMeta;
     this.currentPage = currentPage;
     this.itemCount = itemCount;
     this.itemsPerPage = itemsPerPage;

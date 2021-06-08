@@ -25,7 +25,7 @@
     (click)="onMenuSelected($event)"
     class="world-records"
   >
-    <icon prefix mdi="trophy"></icon>
+    <icon prefix [mdi]="mdiTrophy"></icon>
     World records
   </a>
   <a
@@ -70,7 +70,7 @@
     Edit rules
   </a>
   <a bioListItem routerLink="/admin/mail-queue" (click)="onMenuSelected($event)" *ngIf="user.admin">
-    <icon prefix mdi="email-sync-outline"></icon>
+    <icon prefix [mdi]="mdiEmailSyncOutline"></icon>
     Mail queue
   </a>
 </bio-list>

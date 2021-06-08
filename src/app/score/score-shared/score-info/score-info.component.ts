@@ -3,6 +3,7 @@ import { ScoreVW } from '@model/score';
 import { trackByScorePlayerVW } from '@model/score-player';
 import { BooleanInput } from 'st-utils';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { mdiAccountStar, mdiTrophy, mdiTrophyAward } from '@mdi/js';
 
 @Component({
   selector: 'bio-score-info',
@@ -32,6 +33,11 @@ export class ScoreInfoComponent {
   set showApprovalDate(showApprovalDate: boolean) {
     this._showApprovalDate = coerceBooleanProperty(showApprovalDate);
   }
+
+  readonly mdiTrophy = mdiTrophy;
+  readonly mdiTrophyAward = mdiTrophyAward;
+  readonly mdiAccountStar = mdiAccountStar;
+
   trackByScorePlayer = trackByScorePlayerVW;
 
   static ngAcceptInputType_showWorldRecord: BooleanInput;

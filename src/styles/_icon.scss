@@ -32,13 +32,34 @@
     font-size: 18px;
     line-height: 18px;
     transform: rotate(0.03deg);
+    &.icon-mdi {
+      svg {
+        width: 18px;
+      }
+    }
   }
   &.medium {
     font-size: 24px;
     line-height: 24px;
+    &.icon-mdi {
+      svg {
+        width: 24px;
+      }
+    }
   }
   &.large {
     font-size: 36px;
     line-height: 36px;
+    &.icon-mdi {
+      svg {
+        width: 36px;
+      }
+    }
+  }
+  &.icon-mdi {
+    display: inline-block;
+    svg {
+      width: 24px;
+    }
   }
 }

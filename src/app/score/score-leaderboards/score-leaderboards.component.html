@@ -68,13 +68,13 @@
     </ng-template>
   </bio-card-content>
   <bio-card-actions end>
-    <pagination
+    <bio-pagination
       *ngIf="paginationMeta$ | async as paginationMeta"
       [meta]="paginationMeta"
       (currentPageChange)="changePage($event)"
       (itemsPerPageChange)="changeItemsPerPage($event)"
       [itemsPerPageOptions]="itemsPerPageOptions"
       setQueryParamsOnChange
-    ></pagination>
+    ></bio-pagination>
   </bio-card-actions>
 </bio-card>

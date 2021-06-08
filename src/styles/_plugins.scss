@@ -1,6 +1,5 @@
 @use '~@angular/cdk';
 @use '~flag-icon-css/sass/flag-icon';
-@use '~@mdi/font/scss/materialdesignicons';
 
 @include cdk.a11y-visually-hidden();
 @include cdk.text-field();

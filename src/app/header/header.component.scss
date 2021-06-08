@@ -32,8 +32,6 @@
   .triangle {
     font-size: 8px;
     line-height: 8px;
-    &::before {
-      transform: rotate(180deg);
-    }
+    transform: rotate(180deg);
   }
 }

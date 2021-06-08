@@ -7,6 +7,10 @@
   display: block;
   color: v.$dark;
   @include m.elevation(2);
+  &.dark {
+    background-color: v.$primary;
+    color: v.$primary-600;
+  }
   &.collapsable {
     > .header {
       position: relative;
