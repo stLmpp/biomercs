@@ -13,6 +13,10 @@ const routes: Routes = [
       import('./admin-score-approval/admin-score-approval.module').then(m => m.AdminScoreApprovalModule),
   },
   {
+    path: 'ban-user',
+    loadChildren: () => import('./admin-ban-user/admin-ban-user.module').then(m => m.AdminBanUserModule),
+  },
+  {
     path: 'create-player',
     loadChildren: () => import('./admin-create-player/admin-create-player.module').then(m => m.AdminCreatePlayerModule),
   },

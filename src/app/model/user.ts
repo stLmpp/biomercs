@@ -1,4 +1,5 @@
 import { Player } from './player';
+import { trackByFactory } from '@stlmpp/utils';
 
 export interface User {
   id: number;
@@ -10,6 +11,7 @@ export interface User {
   token: string;
   player?: Player;
   dateFormat: string;
+  bannedDate?: Date | null;
 }
 
 export interface UserUpdate {
@@ -17,3 +19,5 @@ export interface UserUpdate {
   rememberMe?: boolean;
   dateFormat?: string;
 }
+
+export const trackByUser = trackByFactory<User>('id');
