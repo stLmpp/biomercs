@@ -4,7 +4,7 @@ import { ScoreAdd } from '@model/score';
 
 export function generateScorePlayerControlGroup(controlBuilder: ControlBuilder): ControlGroup<ScorePlayerAddForm> {
   return controlBuilder.group<ScorePlayerAddForm>({
-    bulletKills: [0, [Validators.required, Validators.min(0)]],
+    bulletKills: [0],
     description: ['', [Validators.required]],
     host: [false],
     idPlayer: [null, [Validators.required]],

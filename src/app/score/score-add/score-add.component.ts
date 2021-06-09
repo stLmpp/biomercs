@@ -73,7 +73,7 @@ export class ScoreAddComponent extends LocalState<ScoreAddState> implements OnIn
     time: [`00'00"00`, [Validators.required]],
     scorePlayers: this.controlBuilder.array<ScorePlayerAddForm>([
       {
-        bulletKills: [0, [Validators.required, Validators.min(0)]],
+        bulletKills: [0],
         description: ['', [Validators.required]],
         host: [true],
         // No need to worry here, since it's only possible to access this route with auth and the resolver of the player
