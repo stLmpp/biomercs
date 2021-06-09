@@ -6,9 +6,11 @@ label {
   padding: 0 0.5rem 0.25rem;
   display: inline-block;
   font-weight: 500;
+
   &.accent {
     color: v.$accent;
   }
+
   &.danger {
     color: v.$danger;
   }
@@ -22,18 +24,23 @@ label {
   border: 1px solid v.$primary;
   font-size: 0.75rem;
   font-family: inherit;
+
   &.accent {
     border-color: v.$accent;
   }
+
   &.danger {
     border-color: v.$danger;
   }
+
   &.small {
     font-size: 0.5rem;
   }
+
   &.large {
     font-size: 1.25rem;
   }
+
   @include m.form-focus();
 }
 

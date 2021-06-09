@@ -13,10 +13,12 @@
   box-sizing: border-box;
   position: relative;
   @include m.elevation(5);
+
   .modal-title {
     font-weight: 500;
     margin-bottom: 1rem;
   }
+
   .modal-content {
     display: block;
     max-height: 55vh;
@@ -24,6 +26,7 @@
     margin: 0 -1rem;
     padding: 0 1rem;
   }
+
   .modal-actions {
     @include m.actions();
   }

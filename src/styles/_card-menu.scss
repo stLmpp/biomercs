@@ -22,12 +22,15 @@
   color: v.$white;
   text-decoration: none;
   transition: background-color 200ms ease-in-out;
+
   @include m.elevation(3);
+
   > .icon {
     position: absolute;
     top: 1rem;
     left: 1rem;
   }
+
   &:hover,
   &:focus {
     background-color: v.$accent-500;
@@ -40,6 +43,7 @@
   .card-menus {
     grid-template-columns: repeat(auto-fit, 140px);
   }
+
   .card-menu {
     min-height: 140px;
   }

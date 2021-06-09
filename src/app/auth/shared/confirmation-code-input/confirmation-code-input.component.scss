@@ -5,6 +5,7 @@ div {
 input {
   width: 2rem;
   text-align: center;
+
   &:not(:last-of-type) {
     margin-right: 0.5rem;
   }

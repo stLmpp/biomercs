@@ -6,38 +6,47 @@
   &.#{$type} {
     $color: f.get-color(v.$primary-type, 500);
     $background-color: f.get-color($type);
+
     background-color: $background-color;
     color: $color;
+
     &.fab {
-      icon {
+      .icon {
         color: $color;
       }
     }
+
     &.button-icon {
-      icon {
+      .icon {
         color: $background-color;
       }
     }
+
     &.disabled:not(.loading) {
       $disabled-color: f.get-disabled-color($background-color);
+
       &:not(.button-icon) {
         background-color: $disabled-color;
       }
+
       &.button-icon {
-        icon {
+        .icon {
           color: $disabled-color;
         }
       }
     }
+
     &:not(.disabled) {
       &:hover {
         $hover-color: f.get-color($type, 50);
+
         &:not(.button-icon),
         &.fab {
           background-color: $hover-color;
         }
+
         &.button-icon {
-          icon {
+          .icon {
             color: $hover-color;
           }
         }
@@ -68,16 +77,20 @@
   @include button(v.$accent-type);
   @include button(v.$danger-type);
   @include m.form-focus();
+
   &.block {
     width: 100%;
   }
+
   &:not(.disabled) {
     &:focus {
       box-shadow: 0 0 0 2px transparentize(v.$white, 0.5);
     }
+
     &:active {
       box-shadow: 0 0 0 3px transparentize(v.$white, 0.5);
     }
+
     &:hover {
       background-color: transparentize(v.$white, 0.9);
     }
@@ -85,38 +98,56 @@
 
   &.disabled {
     cursor: default;
+
     &:not(.button-icon) {
       color: hsla(0, 0%, 100%, 0.5);
     }
+
     &.button-icon {
       opacity: 0.5;
     }
   }
+
+  > .button-content-wrapper {
+    opacity: 1;
+    transition: opacity 200ms ease-in-out;
+
+    .icon {
+      vertical-align: middle;
+    }
+  }
+
   &.loading {
     > .button-content-wrapper {
       opacity: 0.1;
     }
+
     cursor: progress;
   }
+
   &.small {
     line-height: 1.75rem;
     font-size: 0.75rem;
     padding: 0 0.75rem;
   }
+
   &.large {
     line-height: 2.25rem;
     font-size: 1.25rem;
   }
+
   &.button-icon,
   &.fab {
     padding: 0.25rem;
     border-radius: 50%;
     line-height: 1;
   }
+
   &.button-icon {
     background-color: transparent;
   }
-  > spinner {
+
+  > .spinner {
     position: absolute;
     left: 0;
     top: 0;
@@ -125,13 +156,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-  > .button-content-wrapper {
-    opacity: 1;
-    transition: opacity 200ms ease-in-out;
-    icon {
-      vertical-align: middle;
-    }
   }
 }
 

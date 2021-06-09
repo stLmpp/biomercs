@@ -1,10 +1,13 @@
 @use 'variables' as v;
+
 @use 'functions' as f;
 
 @mixin icon($type) {
   &.#{$type} {
     $color: f.get-color($type);
+
     color: $color;
+
     &.disabled {
       color: f.get-disabled-color($color);
     }
@@ -12,10 +15,11 @@
 }
 
 .icon {
-  line-height: 24px;
   @include icon(v.$primary-type);
   @include icon(v.$accent-type);
   @include icon(v.$danger-type);
+
+  line-height: 24px;
   fill: currentColor;
   font-weight: normal;
   font-style: normal;
@@ -28,38 +32,46 @@
   direction: ltr;
   -webkit-font-feature-settings: 'liga';
   -webkit-font-smoothing: antialiased;
+
+  &.icon-mdi {
+    display: inline-block;
+
+    svg {
+      width: 24px;
+    }
+  }
+
   &.small {
     font-size: 18px;
     line-height: 18px;
     transform: rotate(0.03deg);
+
     &.icon-mdi {
       svg {
         width: 18px;
       }
     }
   }
+
   &.medium {
     font-size: 24px;
     line-height: 24px;
+
     &.icon-mdi {
       svg {
         width: 24px;
       }
     }
   }
+
   &.large {
     font-size: 36px;
     line-height: 36px;
+
     &.icon-mdi {
       svg {
         width: 36px;
       }
-    }
-  }
-  &.icon-mdi {
-    display: inline-block;
-    svg {
-      width: 24px;
     }
   }
 }

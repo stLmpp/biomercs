@@ -11,18 +11,22 @@
   display: flex;
   cursor: pointer;
   justify-content: space-between;
+
   &.disabled {
     cursor: default;
     background-color: rgba(239, 239, 239, 0.3);
     color: rgb(84, 84, 84);
   }
+
   > .select-value {
     overflow: hidden;
     text-overflow: ellipsis;
+
     &.placeholder {
       color: darkgray;
     }
   }
+
   > .select-icon {
     display: flex;
     align-items: center;
@@ -40,6 +44,7 @@
   min-height: calc(35px + 1rem);
   max-height: calc((35px * 8) + 1rem);
   overflow: auto;
+
   @for $i from 1 through 8 {
     &.height-#{$i} {
       height: calc((35px * #{$i}) + 1rem);

@@ -7,15 +7,22 @@
   display: block;
   color: v.$dark;
   @include m.elevation(2);
+
   &.dark {
     background-color: v.$primary;
     color: v.$primary-600;
   }
+
+  > .header {
+    padding: 1rem;
+  }
+
   &.collapsable {
     > .header {
       position: relative;
       padding-right: 1.5rem;
       cursor: pointer;
+
       .collapse-icon-wrapper {
         display: grid;
         place-items: center;
@@ -27,36 +34,41 @@
       }
     }
   }
-  > .header {
-    padding: 1rem;
-  }
+
   .card-title {
     margin-bottom: 0.25rem;
     font-weight: 500;
   }
+
   .card-subtitle {
     font-size: 0.85rem;
     color: v.$primary-100;
+
     &:not(:last-child) {
       margin-bottom: 0.25rem;
     }
   }
+
   .card-content {
     display: block;
     padding: 1rem;
   }
+
   &.has-header {
     .card-content {
       padding-top: 0;
     }
   }
+
   &.has-actions {
     .card-content {
       padding-bottom: 0;
     }
   }
+
   .card-actions {
     @include m.actions(0);
+
     padding: 1rem;
   }
 }

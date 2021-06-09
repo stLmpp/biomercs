@@ -6,12 +6,15 @@
   margin-top: $margin-top;
   display: flex;
   align-items: center;
+
   button:not(:last-child) {
     margin-right: 1rem;
   }
+
   &.end {
     justify-content: flex-end;
   }
+
   &.start {
     justify-content: flex-start;
   }
@@ -21,6 +24,7 @@
   @include _form-focus(v.$primary-type);
   @include _form-focus(v.$accent-type);
   @include _form-focus(v.$danger-type);
+
   transition: box-shadow 200ms ease-in-out;
 }
 
@@ -31,6 +35,7 @@
       &.is-open {
         box-shadow: 0 0 0 2px transparentize(f.get-color($type, 300), 0.5);
       }
+
       &:active {
         box-shadow: 0 0 0 3px transparentize(f.get-color($type, 300), 0.5);
       }

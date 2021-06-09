@@ -10,28 +10,35 @@
       cursor: pointer;
     }
   }
+
   .header,
   .body > div {
     &.no-data-found {
       justify-content: center;
     }
+
     > div {
       &:first-child {
         flex-grow: 0;
         flex-basis: 25px;
       }
+
       &.player {
         flex-basis: 100px;
       }
+
       &.pos-1 {
         color: v.$gold;
       }
+
       &.pos-2 {
         color: v.$silver;
       }
+
       &.pos-3 {
         color: v.$bronze;
       }
+
       > .order-icon {
         position: absolute;
         right: 0;

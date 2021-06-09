@@ -9,9 +9,11 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
   &.selected {
     font-weight: 500;
   }
+
   &:not(.disabled) {
     &:hover,
     &:focus,
@@ -19,12 +21,15 @@
       background-color: v.$primary-100;
     }
   }
+
   &.disabled {
     cursor: default;
     color: hsla(0, 0%, 100%, 0.5);
   }
+
   &.multiple {
     padding-left: 0.5rem;
+
     > label {
       padding: 0;
     }

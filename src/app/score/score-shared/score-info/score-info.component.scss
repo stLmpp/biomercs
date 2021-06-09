@@ -2,25 +2,30 @@
   display: grid;
   grid-template-columns: max-content 1fr;
   grid-gap: 0.5rem 1rem;
+
   > .title,
   > .value {
     display: flex;
     align-items: center;
     min-height: 28px;
   }
+
   > .title {
     font-weight: 500;
   }
+
   > .value {
     > .icon {
       margin-left: 0.5rem;
     }
+
     &.redirect-icon {
       > .button {
         margin-left: 0.5rem;
         opacity: 0;
         transition: opacity 150ms ease;
       }
+
       &:hover {
         > .button {
           opacity: 1;

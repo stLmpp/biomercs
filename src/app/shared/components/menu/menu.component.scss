@@ -9,25 +9,29 @@
   display: flex;
   flex-direction: column;
   @include m.elevation(3);
+
   .menu-item {
     width: 100%;
     border-radius: 0;
     text-align: start;
+
     &.button:not(.disabled) {
+      &.primary,
+      &.accent,
+      &.danger {
+        background-color: transparent;
+      }
+
       &:focus {
         box-shadow: none;
         background-color: transparentize(v.$white, 0.9);
+
         &.primary,
         &.accent,
         &.danger {
           background-color: transparentize(v.$white, 0.9);
           box-shadow: none;
         }
-      }
-      &.primary,
-      &.accent,
-      &.danger {
-        background-color: transparent;
       }
     }
   }

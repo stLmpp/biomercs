@@ -4,17 +4,21 @@
     color: hsla(0, 0%, 100%, 0.5);
     height: 35px;
   }
+
   > .options {
     display: flex;
     flex-direction: column;
+
     > .bio-option {
       padding-left: 2rem;
     }
   }
+
   &.multiple {
     .checkbox-container {
       width: unset;
     }
+
     > .label {
       display: flex;
     }

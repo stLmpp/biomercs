@@ -2,6 +2,7 @@
 
 .flex-table {
   @include scoreApproval.table-scores();
+
   .header,
   .body {
     .action {
