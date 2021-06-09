@@ -22,8 +22,8 @@ label {
   padding: 0.25rem 0.5rem;
   border-radius: v.$radius;
   border: 1px solid v.$primary;
-  font-size: 0.75rem;
   font-family: inherit;
+  font-size: 1rem;
 
   &.accent {
     border-color: v.$accent;
@@ -34,7 +34,7 @@ label {
   }
 
   &.small {
-    font-size: 0.5rem;
+    font-size: 0.75rem;
   }
 
   &.large {

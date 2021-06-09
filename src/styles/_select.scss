@@ -3,7 +3,6 @@
 
 .bio-select {
   background-color: white;
-  height: 24px;
   color: black;
   white-space: nowrap;
   overflow: hidden;
@@ -41,13 +40,19 @@
   border-radius: v.$radius;
   outline: none;
   width: 100%;
+  overflow: auto;
   min-height: calc(35px + 1rem);
   max-height: calc((35px * 8) + 1rem);
-  overflow: auto;
-
+  @media only screen and (max-width: v.$mobile-width) {
+    min-height: calc(40px + 1rem);
+    max-height: calc((40px * 8) + 1rem);
+  }
   @for $i from 1 through 8 {
     &.height-#{$i} {
       height: calc((35px * #{$i}) + 1rem);
+      @media only screen and (max-width: v.$mobile-width) {
+        height: calc((40px * #{$i}) + 1rem);
+      }
     }
   }
   @include m.elevation(2);
