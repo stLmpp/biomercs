@@ -11,7 +11,8 @@
   "shortcuts": [
     {
       "name": "Submit score",
-      "url": "/score/add"
+      "url": "/score/add",
+      "icons": [{ "src": "assets/icons/icon-96x96.png", "sizes": "96x96", "type": "image/png" }]
     }
   ],
   "icons": [
