@@ -14,8 +14,6 @@ $focus-background-color: lighten(v.$dark-overlay, 5);
   justify-content: space-between;
 
   .accordion-item-icon {
-    display: flex;
-
     .icon {
       color: f.get-color(v.$primary-type, 600);
     }
