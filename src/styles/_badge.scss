@@ -30,7 +30,7 @@ $overlap-size: -8px;
 .badge-container {
   .badge {
     position: absolute;
-    z-index: f.get-z-index(header);
+    z-index: f.get-z-index(badge);
     pointer-events: none;
   }
 
