@@ -43,4 +43,23 @@ export class StageService {
       })
     );
   }
+
+  findApprovalByIdPlatformGameMiniGameMode(
+    idPlatform: number,
+    idGame: number,
+    idMiniGame: number,
+    idMode: number,
+    playerMode = false
+  ): Observable<Stage[]> {
+    const path = playerMode ? 'approval/player' : 'approval/admin';
+    return this.http
+      .get<Stage[]>(
+        `${this.endPoint}/${path}/platform/${idPlatform}/game/${idGame}/mini-game/${idMiniGame}/mode/${idMode}`
+      )
+      .pipe(
+        tap(stages => {
+          this.stageStore.upsert(stages);
+        })
+      );
+  }
 }
