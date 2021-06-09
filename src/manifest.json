@@ -1,11 +1,19 @@
 {
-  "name": "biomercs-ng",
-  "short_name": "biomercs-ng",
+  "name": "Biomercs",
+  "short_name": "Biomercs",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",
   "scope": "./",
   "start_url": "./",
+  "description": "Unofficial site to store scores from the mini game The Mercenaries (Resident Evil)",
+  "author": "stLmpp",
+  "shortcuts": [
+    {
+      "name": "Submit score",
+      "url": "/score/add"
+    }
+  ],
   "icons": [
     {
       "src": "assets/icons/icon-72x72.png",
