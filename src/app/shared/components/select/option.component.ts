@@ -16,7 +16,7 @@ import { FocusableOption } from '@angular/cdk/a11y';
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
 import { OptgroupComponent } from './optgroup.component';
 import { Option } from '@shared/components/select/option';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'bio-option',
@@ -77,7 +77,7 @@ export class OptionComponent extends Option implements FocusableOption {
     }
   }
 
-  @Input() labelFn: (optionComponent: OptionComponent) => string = optionComponent =>
+  @Input() labelFn: (optionComponent: OptionComponent) => string | SafeHtml = optionComponent =>
     this.domSanitizer.sanitize(
       SecurityContext.HTML,
       this.optgroupComponent
@@ -108,7 +108,7 @@ export class OptionComponent extends Option implements FocusableOption {
     this._setValueSelect();
   }
 
-  getViewValue(): string {
+  getViewValue(): string | SafeHtml {
     return this.labelFn(this);
   }
 
