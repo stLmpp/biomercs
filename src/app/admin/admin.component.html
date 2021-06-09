@@ -1,6 +1,6 @@
 <h4 bioPageTitle></h4>
 <bio-card-menus bioCardMenuFocusOnFirstItem>
-  <a bioCardMenu routerLink="approval">
+  <a bioCardMenu routerLink="approval" [bioBadge]="adminApprovalCount$ | async">
     <icon>checklist</icon>
     Score approval
   </a>

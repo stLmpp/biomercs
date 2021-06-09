@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, HostListener, Input, Output, EventE
 import { Animations } from '@shared/animations/animations';
 import { User } from '@model/user';
 import { HeaderQuery } from '../header.query';
-import { mdiEmailSyncOutline, mdiTrophy } from '@mdi/js';
+import { mdiAccountLock, mdiEmailSyncOutline, mdiTrophy } from '@mdi/js';
 
 @Component({
   selector: 'bio-side-menu',
@@ -22,6 +22,7 @@ export class SideMenuComponent {
 
   readonly mdiTrophy = mdiTrophy;
   readonly mdiEmailSyncOutline = mdiEmailSyncOutline;
+  readonly mdiAccountLock = mdiAccountLock;
 
   @HostListener('click', ['$event'])
   onClick($event: MouseEvent): void {
