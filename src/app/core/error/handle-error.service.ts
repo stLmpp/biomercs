@@ -42,10 +42,10 @@ export class HandleErrorService {
           message = 'Too many requests';
           break;
         default:
-          message = 'Internal error';
+          message = httpError.error ?? 'Internal error';
           break;
       }
-      this._snackBar(message, button, httpError, isAdmin);
+      this._snackBar('DEV - ' + message, button, httpError, isAdmin);
     });
   }
 }

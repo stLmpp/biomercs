@@ -120,10 +120,21 @@ export class AuthService {
             if (error) {
               windowSteam?.close();
               let content = 'Want to create an account?';
-              let btnYes = 'Create account';
+              let btnYes: string | null = 'Create account';
               if (errorType === AuthSteamLoginSocketErrorType.userNotConfirmed) {
                 content = 'Want to confirm it?';
                 btnYes = 'Confirm';
+              }
+              if (
+                errorType === AuthSteamLoginSocketErrorType.unknown ||
+                errorType === AuthSteamLoginSocketErrorType.userBanned
+              ) {
+                content = '';
+                btnYes = null;
+              }
+              if (errorType === AuthSteamLoginSocketErrorType.userLocked) {
+                content = '';
+                btnYes = null;
               }
               if (skipConfirmCreate && errorType === AuthSteamLoginSocketErrorType.userNotFound) {
                 request$ = of(true);
@@ -196,7 +207,10 @@ export class AuthService {
 
   forgotPassword(email: string): Observable<void> {
     const params = new HttpParams({ email });
-    return this.http.post<void>(`${this.endPoint}/forgot-password`, undefined, { params });
+    return this.http.post<void>(`${this.endPoint}/forgot-password`, undefined, {
+      params,
+      context: ignoreErrorContext(),
+    });
   }
 
   changeForgottenPassword(confirmationCode: number, password: string): Observable<User> {
