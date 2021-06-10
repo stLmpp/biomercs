@@ -20,13 +20,13 @@
     </bio-list>
   </ng-container>
 
-  <pagination
+  <bio-pagination
     *ngIf="paginationMeta$ | async as paginationMeta"
     [meta]="paginationMeta"
     (itemsPerPageChange)="onItemsPerPageChange($event)"
     (currentPageChange)="onCurrentPageChange($event)"
   >
-  </pagination>
+  </bio-pagination>
 </bio-modal-content>
 <bio-modal-actions end>
   <button bioButton type="button" bioModalClose>Close</button>

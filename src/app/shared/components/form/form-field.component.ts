@@ -47,7 +47,7 @@ export class FormFieldComponent implements AfterContentInit, OnChanges, OnDestro
   @ContentChild(ModelDirective) modelDirective?: ModelDirective;
   @ContentChildren(FormFieldErrorComponent, { descendants: true }) errorComponents!: QueryList<FormFieldErrorComponent>;
   @ContentChild(PrefixDirective) prefixDirective?: PrefixDirective;
-  @ContentChild(SuffixDirective) sufixDirective?: SuffixDirective;
+  @ContentChild(SuffixDirective) suffixDirective?: SuffixDirective;
   @ContentChild(SelectComponent) selectComponent?: SelectComponent;
 
   @Input() label?: string;

@@ -41,12 +41,12 @@
     </div>
   </bio-card-content>
   <bio-card-actions end *ngIf="paginationMeta">
-    <pagination
+    <bio-pagination
       [meta]="paginationMeta"
       [itemsPerPageOptions]="itemsPerPageOptions"
       (currentPageChange)="currentPageChange.emit($event)"
       (itemsPerPageChange)="itemsPerPageChange.emit($event)"
       setQueryParamsOnChange
-    ></pagination>
+    ></bio-pagination>
   </bio-card-actions>
 </bio-card>

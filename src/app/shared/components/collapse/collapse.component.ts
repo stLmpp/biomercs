@@ -48,5 +48,5 @@ export class CollapseComponent {
     this.animationDone.emit($event);
   }
 
-  static ngAcceptInpuType_bioCollapsed: BooleanInput;
+  static ngAcceptInputType_bioCollapsed: BooleanInput;
 }

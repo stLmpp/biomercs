@@ -39,7 +39,7 @@ export class BadgeDirective extends BadgeBase implements AfterViewInit {
   }
 
   @HostBinding('class.badge-container-hidden')
-  get classBadgeContainerHidde(): boolean {
+  get classBadgeContainerHidden(): boolean {
     return this._bioBadgeHidden || !this._bioBadge;
   }
 

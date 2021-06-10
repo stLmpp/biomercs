@@ -1,14 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminScoreApprovalComponent } from './admin-score-approval.component';
-import { PlatformResolver } from '@shared/services/platform/platform.resolver';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
+import { PlatformApprovalResolver } from '@shared/services/platform/platform-approval.resolver';
 
 const routes: Routes = [
   {
     path: '',
     component: AdminScoreApprovalComponent,
-    resolve: [PlatformResolver],
+    resolve: {
+      [RouteDataEnum.platformApproval]: PlatformApprovalResolver,
+    },
     data: {
       [RouteDataEnum.title]: 'Score approval (admin)',
     },

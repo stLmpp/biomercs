@@ -15,17 +15,19 @@ interface ForgotPasswordForm {
   password: string;
 }
 
+interface ForgotPasswordComponentState {
+  loading: boolean;
+  emailSent: boolean;
+  confirmCodeError: null | string;
+}
+
 @Component({
   selector: 'bio-forgot-password',
   templateUrl: './forgot-password.component.html',
   styleUrls: ['./forgot-password.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ForgotPasswordComponent extends LocalState<{
-  loading: boolean;
-  emailSent: boolean;
-  confirmCodeError: null | string;
-}> {
+export class ForgotPasswordComponent extends LocalState<ForgotPasswordComponentState> {
   constructor(private authService: AuthService, private router: Router, private snackBarService: SnackBarService) {
     super({ loading: false, emailSent: false, confirmCodeError: null });
   }

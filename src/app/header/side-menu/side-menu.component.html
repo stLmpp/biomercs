@@ -25,19 +25,8 @@
     (click)="onMenuSelected($event)"
     class="world-records"
   >
-    <icon prefix mdi="trophy"></icon>
+    <icon prefix [mdi]="mdiTrophy"></icon>
     World records
-  </a>
-  <a
-    bioListItem
-    routerLink="/admin/approval"
-    queryParamsHandling="preserve"
-    (click)="onMenuSelected($event)"
-    *ngIf="user.admin"
-  >
-    <icon prefix>checklist</icon>
-    Scores approval (Admin)
-    <bio-badge suffix>{{ headerQuery.adminApprovalCount$ | async }}</bio-badge>
   </a>
   <a
     bioListItem
@@ -61,12 +50,31 @@
     Score change requests
     <bio-badge suffix>{{ headerQuery.playerRequestChangesCount$ | async }}</bio-badge>
   </a>
-  <a bioListItem routerLink="/admin/create-player" (click)="onMenuSelected($event)" *ngIf="user.admin">
-    <icon prefix>person_add_alt_1</icon>
-    Create player
-  </a>
-  <a bioListItem routerLink="/admin/rules" (click)="onMenuSelected($event)" *ngIf="user.admin">
-    <icon prefix>article</icon>
-    Edit rules
-  </a>
+  <ng-container *ngIf="user.admin">
+    <a class="admin-list-item" bioListItem routerLink="/admin" (click)="onMenuSelected($event)">
+      <icon prefix>admin_panel_settings</icon>
+      Admin
+    </a>
+    <a bioListItem routerLink="/admin/approval" queryParamsHandling="preserve" (click)="onMenuSelected($event)">
+      <icon prefix>checklist</icon>
+      Scores approval (Admin)
+      <bio-badge suffix>{{ headerQuery.adminApprovalCount$ | async }}</bio-badge>
+    </a>
+    <a bioListItem routerLink="/admin/create-player" (click)="onMenuSelected($event)">
+      <icon prefix>person_add_alt_1</icon>
+      Create player
+    </a>
+    <a bioListItem routerLink="/admin/rules" (click)="onMenuSelected($event)">
+      <icon prefix>article</icon>
+      Edit rules
+    </a>
+    <a bioListItem routerLink="/admin/mail-queue" (click)="onMenuSelected($event)">
+      <icon prefix [mdi]="mdiEmailSyncOutline"></icon>
+      Mail queue
+    </a>
+    <a bioListItem routerLink="/admin/ban-user" (click)="onMenuSelected($event)">
+      <icon prefix [mdi]="mdiAccountLock"></icon>
+      Ban user
+    </a>
+  </ng-container>
 </bio-list>

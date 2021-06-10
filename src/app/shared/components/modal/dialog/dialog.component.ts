@@ -64,7 +64,7 @@ export class DialogComponent extends LocalState<{ loadingYes: boolean; loadingNo
     this.updateState({ [stateKey]: loading });
   }
 
-  private _proccessObservable(observable: Observable<any>, action: boolean): void {
+  private _processObservable(observable: Observable<any>, action: boolean): void {
     this._setLoading(action, true);
     observable
       .pipe(
@@ -82,11 +82,11 @@ export class DialogComponent extends LocalState<{ loadingYes: boolean; loadingNo
 
   yes(): void {
     if (isObservable(this.data.yesAction)) {
-      this._proccessObservable(this.data.yesAction, true);
+      this._processObservable(this.data.yesAction, true);
     } else if (isFunction(this.data.yesAction)) {
       const result = this.data.yesAction(this.modalRef);
       if (isObservable(result)) {
-        this._proccessObservable(result, true);
+        this._processObservable(result, true);
       }
     } else {
       this.modalRef.close(true);
@@ -95,11 +95,11 @@ export class DialogComponent extends LocalState<{ loadingYes: boolean; loadingNo
 
   no(): void {
     if (isObservable(this.data.noAction)) {
-      this._proccessObservable(this.data.noAction, false);
+      this._processObservable(this.data.noAction, false);
     } else if (isFunction(this.data.noAction)) {
       const result = this.data.noAction(this.modalRef);
       if (isObservable(result)) {
-        this._proccessObservable(result, false);
+        this._processObservable(result, false);
       }
     } else {
       this.modalRef.close(false);

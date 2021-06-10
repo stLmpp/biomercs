@@ -47,8 +47,6 @@ export interface ScoreVW {
   isWorldRecord: boolean;
   isCharacterWorldRecord: boolean;
   isCombinationWorldRecord: boolean;
-  combinationWorldRecordEndDate: Date | null;
-  worldRecordEndDate: Date | null;
 }
 
 export interface ScoreTableVW {

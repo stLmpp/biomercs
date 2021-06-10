@@ -1,18 +1,17 @@
 <h4>Welcome to biomercs</h4>
-<div class="container">
+<bio-card-menus bioCardMenuFocusOnFirstItem>
   <ng-container *ngIf="isLogged$ | async; else noLogged">
-    <a class="block" #block tabindex="0" routerLink="/score/add">
+    <a bioCardMenu routerLink="/score/add">
       <icon>add</icon>
       Submit a score
     </a>
-    <a class="block" tabindex="0" routerLink="/score/leaderboards" *ngIf="isNotMobile$ | async">
+    <a bioCardMenu routerLink="/score/leaderboards" *ngIf="isNotMobile$ | async">
       <icon>leaderboard</icon>
       Check the leaderboards
     </a>
     <ng-container *ngIf="isAdmin$ | async">
       <a
-        class="block"
-        tabindex="0"
+        bioCardMenu
         *ngIf="adminApprovalCount$ | async as adminApprovalCount"
         [bioBadge]="adminApprovalCount"
         routerLink="/admin/approval"
@@ -23,8 +22,7 @@
     </ng-container>
     <ng-container *ngIf="idUser$ | async as idUser">
       <a
-        class="block"
-        tabindex="0"
+        bioCardMenu
         *ngIf="playerApprovalCount$ | async as playerApprovalCount"
         [bioBadge]="playerApprovalCount"
         [routerLink]="['/player/u', idUser, 'approval']"
@@ -33,8 +31,7 @@
         Check your approval list
       </a>
       <a
-        class="block"
-        tabindex="0"
+        bioCardMenu
         *ngIf="playerRequestChangesCount$ | async as playerRequestChangesCount"
         [bioBadge]="playerRequestChangesCount"
         [routerLink]="['/player/u', idUser, 'change-requests']"
@@ -45,25 +42,25 @@
     </ng-container>
   </ng-container>
   <ng-template #noLogged>
-    <a class="block" #block tabindex="0" routerLink="/auth/login">
+    <a bioCardMenu routerLink="/auth/login">
       <icon>login</icon>
       Login
     </a>
-    <a class="block" tabindex="0" routerLink="/auth/register">
+    <a bioCardMenu routerLink="/auth/register">
       <icon>person_add</icon>
       Register
     </a>
   </ng-template>
-  <a class="block" tabindex="0" routerLink="/rules">
+  <a bioCardMenu routerLink="/rules">
     <icon>article</icon>
     Read the rules
   </a>
-  <a class="block" tabindex="0" routerLink="/faq">
+  <a bioCardMenu routerLink="/faq">
     <icon>quiz</icon>
     Read our FAQ
   </a>
-  <a class="block" tabindex="0" routerLink="/contact">
+  <a bioCardMenu routerLink="/contact">
     <icon>contact_support</icon>
     Contact support
   </a>
-</div>
+</bio-card-menus>

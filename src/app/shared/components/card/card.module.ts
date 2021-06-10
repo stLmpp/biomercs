@@ -7,6 +7,8 @@ import { CardActionsDirective } from './card-actions.directive';
 import { CardSubtitleDirective } from './card-subtitle.directive';
 import { IconModule } from '@shared/components/icon/icon.module';
 import { CollapseModule } from '@shared/components/collapse/collapse.module';
+import { CardMenusDirective } from './card-menu/card-menus.directive';
+import { CardMenuDirective } from './card-menu/card-menu.directive';
 
 const DECLARATIONS = [
   CardComponent,
@@ -14,6 +16,8 @@ const DECLARATIONS = [
   CardContentDirective,
   CardActionsDirective,
   CardSubtitleDirective,
+  CardMenusDirective,
+  CardMenuDirective,
 ];
 
 const MODULES = [CommonModule, IconModule, CollapseModule];

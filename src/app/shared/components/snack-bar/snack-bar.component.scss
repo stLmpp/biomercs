@@ -11,9 +11,11 @@
   align-items: center;
   justify-content: space-between;
   @include m.elevation(5);
+
   &.no-action {
     justify-content: flex-start;
   }
+
   > .action {
     margin-left: 1rem;
   }

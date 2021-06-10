@@ -13,12 +13,15 @@ $overlap-size: -8px;
   padding: 0 0.25rem;
   display: grid;
   place-items: center;
+
   &.badge-primary {
     background-color: v.$primary;
   }
+
   &.badge-accent {
     background-color: v.$accent;
   }
+
   &.badge-danger {
     background-color: v.$danger;
   }
@@ -27,8 +30,50 @@ $overlap-size: -8px;
 .badge-container {
   .badge {
     position: absolute;
-    z-index: f.get-z-index(header);
+    z-index: f.get-z-index(badge);
     pointer-events: none;
+  }
+
+  &.badge-container-top {
+    .badge {
+      top: 0;
+    }
+  }
+
+  &.badge-container-bottom {
+    .badge {
+      bottom: 0;
+    }
+  }
+
+  &.badge-container-right {
+    .badge {
+      right: 0;
+    }
+  }
+
+  &.badge-container-left {
+    .badge {
+      left: 0;
+    }
+  }
+
+  &.badge-primary {
+    .badge {
+      background-color: v.$primary;
+    }
+  }
+
+  &.badge-accent {
+    .badge {
+      background-color: v.$accent;
+    }
+  }
+
+  &.badge-danger {
+    .badge {
+      background-color: v.$danger;
+    }
   }
 
   &.badge-container-overlap {
@@ -54,45 +99,6 @@ $overlap-size: -8px;
       .badge {
         left: $overlap-size;
       }
-    }
-  }
-
-  &.badge-container-top {
-    .badge {
-      top: 0;
-    }
-  }
-  &.badge-container-bottom {
-    .badge {
-      bottom: 0;
-    }
-  }
-  &.badge-container-right {
-    .badge {
-      right: 0;
-    }
-  }
-  &.badge-container-left {
-    .badge {
-      left: 0;
-    }
-  }
-
-  &.badge-primary {
-    .badge {
-      background-color: v.$primary;
-    }
-  }
-
-  &.badge-accent {
-    .badge {
-      background-color: v.$accent;
-    }
-  }
-
-  &.badge-danger {
-    .badge {
-      background-color: v.$danger;
     }
   }
 }

@@ -4,6 +4,7 @@ import { shareReplay, take, takeUntil } from 'rxjs/operators';
 import { Destroyable } from '@shared/components/common/destroyable-component';
 import { fromEvent, race, timer } from 'rxjs';
 import { Animations } from '@shared/animations/animations';
+import { mdiGithub, mdiSteam, mdiYoutube } from '@mdi/js';
 
 @Component({
   selector: 'bio-stlmpp',
@@ -23,8 +24,10 @@ export class StlmppComponent extends Destroyable implements AfterViewInit {
   readonly mail2 = 'gui.stlmpp@gmail.com';
   readonly mailTo = encodeURI(`mailto:${this.mail}`);
   readonly mailTo2 = encodeURI(`mailto:${this.mail2}`);
-
   readonly fragment$ = this.activatedRoute.fragment.pipe(shareReplay());
+  readonly mdiSteam = mdiSteam;
+  readonly mdiGithub = mdiGithub;
+  readonly mdiYoutube = mdiYoutube;
 
   private _getFragment(): string | null {
     return this.activatedRoute.snapshot.fragment;

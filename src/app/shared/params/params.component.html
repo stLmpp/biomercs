@@ -1,7 +1,8 @@
 <div [controlGroup]="form" *ngLet="state$ | async as state">
   <!-- <editor-fold desc="Platform"> -->
   <form-field *ngIf="formsConfig.idPlatform.show" label="Platform">
-    <bio-select controlName="idPlatform" placeholder="Platform">
+    <bio-select controlName="idPlatform" placeholder="Platform" *ngLet="platforms$ | async as platforms">
+      <bio-option disabled *ngIf="!platforms?.length">No data found</bio-option>
       <bio-option
         [value]="null"
         *ngIf="(formsConfig.idPlatform.clearable ?? state.clearable) && !!(idPlatform$ | async)"
@@ -10,7 +11,7 @@
       </bio-option>
       <bio-option
         [value]="platform.id"
-        *ngFor="let platform of platforms$ | async; trackBy: trackByPlatform"
+        *ngFor="let platform of platforms; trackBy: trackByPlatform"
         [title]="platform.name"
       >
         {{ platform.name }}
@@ -30,12 +31,13 @@
     *ngIf="formsConfig.idGame.show"
     label="Game"
   >
-    <bio-select controlName="idGame" placeholder="Game">
+    <bio-select controlName="idGame" placeholder="Game" *ngLet="games$ | async as games">
+      <bio-option disabled *ngIf="!games?.length && !state.gameLoading">No data found</bio-option>
       <bio-option disabled *ngIf="state.gameLoading"><spinner [size]="0.1"></spinner> Loading...</bio-option>
       <bio-option [value]="null" *ngIf="(formsConfig.idGame.clearable ?? state.clearable) && !!(idGame$ | async)">
         Clear
       </bio-option>
-      <bio-option [value]="game.id" *ngFor="let game of games$ | async; trackBy: trackByGame" [title]="game.name">
+      <bio-option [value]="game.id" *ngFor="let game of games; trackBy: trackByGame" [title]="game.name">
         {{ game.name }}
       </bio-option>
     </bio-select>
@@ -53,7 +55,8 @@
     *ngIf="formsConfig.idMiniGame.show"
     label="Mini game"
   >
-    <bio-select controlName="idMiniGame" placeholder="Mini Game">
+    <bio-select controlName="idMiniGame" placeholder="Mini Game" *ngLet="miniGames$ | async as miniGames">
+      <bio-option disabled *ngIf="!miniGames?.length && !state.miniGameLoading">No data found</bio-option>
       <bio-option disabled *ngIf="state.miniGameLoading"><spinner [size]="0.1"></spinner> Loading...</bio-option>
       <bio-option
         [value]="null"
@@ -83,12 +86,13 @@
     *ngIf="formsConfig.idMode.show"
     label="Mode"
   >
-    <bio-select controlName="idMode" placeholder="Mode">
+    <bio-select controlName="idMode" placeholder="Mode" *ngLet="modes$ | async as modes">
+      <bio-option disabled *ngIf="!modes?.length && !state.modeLoading">No data found</bio-option>
       <bio-option disabled *ngIf="state.modeLoading"><spinner [size]="0.1"></spinner> Loading...</bio-option>
       <bio-option [value]="null" *ngIf="(formsConfig.idMode.clearable ?? state.clearable) && !!(idMode$ | async)">
         Clear
       </bio-option>
-      <bio-option [value]="mode.id" *ngFor="let mode of modes$ | async; trackBy: trackByMode" [title]="mode.name">
+      <bio-option [value]="mode.id" *ngFor="let mode of modes; trackBy: trackByMode" [title]="mode.name">
         {{ mode.name }}
       </bio-option>
     </bio-select>
@@ -107,16 +111,13 @@
       *ngIf="formsConfig.idStage.show"
       label="Stage"
     >
-      <bio-select controlName="idStage" placeholder="Stage">
+      <bio-select controlName="idStage" placeholder="Stage" *ngLet="stages$ | async as stages">
+        <bio-option disabled *ngIf="!stages?.length && !state.stageLoading">No data found</bio-option>
         <bio-option disabled *ngIf="state.stageLoading"><spinner [size]="0.1"></spinner> Loading...</bio-option>
         <bio-option [value]="null" *ngIf="(formsConfig.idStage.clearable ?? state.clearable) && !!(idStage$ | async)">
           Clear
         </bio-option>
-        <bio-option
-          [value]="stage.id"
-          *ngFor="let stage of stages$ | async; trackBy: trackByStage"
-          [title]="stage.name"
-        >
+        <bio-option [value]="stage.id" *ngFor="let stage of stages; trackBy: trackByStage" [title]="stage.name">
           {{ stage.name }}
         </bio-option>
       </bio-select>
@@ -134,7 +135,8 @@
       *ngIf="formsConfig.idCharacterCostume.show"
       label="Character"
     >
-      <bio-select controlName="idCharacterCostume" placeholder="Character">
+      <bio-select controlName="idCharacterCostume" placeholder="Character" *ngLet="characters$ | async as characters">
+        <bio-option disabled *ngIf="!characters?.length && !state.characterLoading">No data found</bio-option>
         <bio-option disabled *ngIf="state.characterLoading"><spinner [size]="0.1"></spinner> Loading...</bio-option>
         <bio-option
           [value]="null"
@@ -143,7 +145,7 @@
           Clear
         </bio-option>
         <bio-optgroup
-          *ngFor="let character of characters$ | async; trackBy: trackByCharacter"
+          *ngFor="let character of characters; trackBy: trackByCharacter"
           [label]="character.name"
           [title]="character.name"
         >

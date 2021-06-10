@@ -5,12 +5,7 @@
   <input id="search" placeholder="Search" bioInput type="search" [control]="searchControl" autocomplete="off" />
 </div>
 <bio-list bioModalContent [(model)]="idRegion">
-  <cdk-virtual-scroll-viewport
-    itemSize="44"
-    [style.height.px]="10 * 44"
-    (keydown.control.s)="onSave($event)"
-    *ngLet="all$ | async as all"
-  >
+  <cdk-virtual-scroll-viewport itemSize="44" (keydown.control.s)="onSave($event)" *ngLet="all$ | async as all">
     <bio-list-item [value]="region.id" *cdkVirtualFor="let region of all; trackBy: trackByRegion; templateCacheSize: 0">
       <icon prefix [flag]="region.shortName"></icon>
       {{ region.name }}

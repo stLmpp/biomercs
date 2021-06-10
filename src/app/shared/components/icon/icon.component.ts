@@ -1,38 +1,36 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Input, Renderer2, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input, ViewEncapsulation } from '@angular/core';
 import { AbstractComponent } from '../core/abstract-component';
+import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 
 @Component({
   selector: 'icon:not([flag]):not([mdi])',
   templateUrl: './icon.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'material-icons icon' },
+  host: { class: 'icon' },
   encapsulation: ViewEncapsulation.None,
 })
-export class IconComponent extends AbstractComponent {}
-
-@Component({
-  selector: 'icon[mdi]:not([flag])',
-  templateUrl: './icon.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'mdi icon' },
-  encapsulation: ViewEncapsulation.None,
-})
-export class IconMdiComponent extends AbstractComponent {
-  constructor(private elementRef: ElementRef, private renderer2: Renderer2) {
-    super();
-  }
-
-  private _mdi!: string;
+export class IconComponent extends AbstractComponent {
+  private _filled = true;
+  private _outlined = false;
 
   @Input()
-  get mdi(): string {
-    return `mdi-${this._mdi}`;
+  @HostBinding('class.material-icons')
+  get filled(): boolean {
+    return this._filled;
   }
-  set mdi(mdi: string) {
-    if (this._mdi) {
-      this.renderer2.removeClass(this.elementRef.nativeElement, this.mdi);
-    }
-    this._mdi = mdi;
-    this.renderer2.addClass(this.elementRef.nativeElement, this.mdi);
+  set filled(filled: boolean) {
+    this._filled = coerceBooleanProperty(filled);
   }
+
+  @Input()
+  @HostBinding('class.material-icons-outlined')
+  get outlined(): boolean {
+    return this._outlined;
+  }
+  set outlined(outlined: boolean) {
+    this._outlined = coerceBooleanProperty(outlined);
+  }
+
+  static ngAcceptInputType_outlined: BooleanInput;
+  static ngAcceptInputType_filled: BooleanInput;
 }

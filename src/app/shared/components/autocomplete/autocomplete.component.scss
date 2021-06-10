@@ -12,11 +12,13 @@
   max-height: calc((35px * 8) + 1rem);
   overflow: auto;
   @include m.elevation(3);
+
   @for $i from 1 through 8 {
     &.height-#{$i} {
       height: calc((35px * #{$i}) + 1rem);
     }
   }
+
   .autocomplete-option {
     width: 100%;
     text-align: start;
@@ -28,9 +30,11 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+
     &.selected {
       font-weight: 500;
     }
+
     &:not(.disabled) {
       &:hover,
       &:focus,
@@ -39,6 +43,7 @@
         background-color: v.$primary-100;
       }
     }
+
     &.disabled {
       cursor: default;
       color: hsla(0, 0%, 100%, 0.5);

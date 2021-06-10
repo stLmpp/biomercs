@@ -15,7 +15,7 @@
   class="input-wrapper"
   [ngClass]="{
     'has-prefix': !!prefixDirective,
-    'has-suffix': !!sufixDirective,
+    'has-suffix': !!suffixDirective,
     disabled: control?.disabled,
     'is-select': !!selectComponent
   }"
@@ -23,11 +23,11 @@
   <div class="spinner-wrapper">
     <spinner *ngIf="loading" [size]="0.1"></spinner>
   </div>
-  <div class="preffix-wrapper" *ngIf="prefixDirective" (click)="$event.stopPropagation()">
+  <div class="prefix-wrapper" *ngIf="prefixDirective" (click)="$event.stopPropagation()">
     <ng-content select="[prefix]"></ng-content>
   </div>
   <ng-content></ng-content>
-  <div class="suffix-wrapper" *ngIf="sufixDirective" (click)="$event.stopPropagation()">
+  <div class="suffix-wrapper" *ngIf="suffixDirective" (click)="$event.stopPropagation()">
     <ng-content select="[suffix]"></ng-content>
   </div>
 </div>

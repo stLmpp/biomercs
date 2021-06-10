@@ -38,6 +38,7 @@ export class CardComponent extends Destroyable implements AfterContentInit {
   }
 
   private _collapsable = false;
+  private _dark = false;
 
   @ContentChildren(CardTitleDirective) cardTitleDirectives!: QueryList<CardTitleDirective>;
   @ContentChildren(CardSubtitleDirective) cardSubtitleDirective!: QueryList<CardSubtitleDirective>;
@@ -56,6 +57,15 @@ export class CardComponent extends Destroyable implements AfterContentInit {
 
   @Input() collapsed = false;
   @Output() readonly collapsedChange = new EventEmitter<boolean>();
+
+  @Input()
+  @HostBinding('class.dark')
+  set dark(dark: boolean) {
+    this._dark = coerceBooleanProperty(dark);
+  }
+  get dark(): boolean {
+    return this._dark;
+  }
 
   @HostBinding('class.has-header')
   get hasHeaderClass(): boolean {
@@ -83,4 +93,5 @@ export class CardComponent extends Destroyable implements AfterContentInit {
   }
 
   static ngAcceptInputType_collapsable: BooleanInput;
+  static ngAcceptInputType_dark: BooleanInput;
 }

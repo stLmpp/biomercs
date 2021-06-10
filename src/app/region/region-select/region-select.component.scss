@@ -1,10 +1,31 @@
+@use 'variables' as v;
+
+$item-height: 44px;
+$height: $item-height * 10;
+$mobile-height: $item-height * 7;
+
+.cdk-virtual-scroll-viewport {
+  height: $height;
+}
+
 .list.modal-content {
   padding: 0;
-  max-height: 440px;
+  max-height: $height;
+
   .list-item {
     max-height: 44px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+}
+
+@media only screen and (max-width: v.$mobile-width) {
+  .cdk-virtual-scroll-viewport {
+    height: $mobile-height;
+  }
+
+  .list.modal-content {
+    max-height: $mobile-height;
   }
 }

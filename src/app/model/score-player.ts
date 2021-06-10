@@ -25,7 +25,6 @@ export interface ScorePlayerVW {
   bulletKills: number;
   description?: string;
   evidence: string;
-  characterWorldRecordEndDate: Date | null;
 }
 
 export interface ScorePlayerUpdateDto {

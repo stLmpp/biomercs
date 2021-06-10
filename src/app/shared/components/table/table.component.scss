@@ -5,16 +5,19 @@
   background-color: v.$primary;
   color: v.$primary-600;
   position: relative;
+
   &.card {
     background-color: v.$primary;
     color: v.$primary-600;
   }
+
   .header,
   .body > div {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
     min-height: 36px;
+
     > div,
     > .bio-cell {
       position: relative;
@@ -26,6 +29,7 @@
       align-items: center;
       justify-content: center;
       padding: 0 4px;
+
       &.flex-grow-0 {
         flex-grow: 0;
       }

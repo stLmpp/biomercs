@@ -3,15 +3,22 @@
 .bio-option {
   height: 35px;
   min-height: 35px;
+  @media only screen and (max-width: v.$mobile-width) {
+    height: 40px;
+    min-height: 40px;
+  }
+
   padding: 0.5rem 1rem;
   outline: none;
   cursor: pointer;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
   &.selected {
     font-weight: 500;
   }
+
   &:not(.disabled) {
     &:hover,
     &:focus,
@@ -19,12 +26,15 @@
       background-color: v.$primary-100;
     }
   }
+
   &.disabled {
     cursor: default;
     color: hsla(0, 0%, 100%, 0.5);
   }
+
   &.multiple {
     padding-left: 0.5rem;
+
     > label {
       padding: 0;
     }

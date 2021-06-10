@@ -20,4 +20,13 @@ export class PlatformService {
       })
     );
   }
+
+  findApproval(playerMode = false): Observable<Platform[]> {
+    const path = playerMode ? 'approval/player' : 'approval/admin';
+    return this.http.get<Platform[]>(`${this.endPoint}/${path}`).pipe(
+      tap(platforms => {
+        this.platformStore.upsert(platforms);
+      })
+    );
+  }
 }

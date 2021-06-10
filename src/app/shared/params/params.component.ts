@@ -17,7 +17,7 @@ import { MiniGameService } from '../services/mini-game/mini-game.service';
 import { ModeService } from '../services/mode/mode.service';
 import { filterNil } from '../operators/filter';
 import { debounceTime, distinctUntilChanged, filter, finalize, map, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { combineLatest, MonoTypeOperatorFunction, OperatorFunction } from 'rxjs';
+import { combineLatest, MonoTypeOperatorFunction, Observable, OperatorFunction } from 'rxjs';
 import { StageService } from '../services/stage/stage.service';
 import { trackByFactory } from '@stlmpp/utils';
 import { CharacterService } from '../services/character/character.service';
@@ -32,6 +32,8 @@ import { MiniGame } from '@model/mini-game';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { LocalState } from '@stlmpp/store';
 import { isNotNil } from 'st-utils';
+import { Platform } from '@model/platform';
+import { RouteDataEnum } from '@model/enum/route-data.enum';
 
 export interface ParamsForm {
   idPlatform: Nullable<number>;
@@ -75,23 +77,24 @@ function filterNilArray<T>(array: T[]): array is NonNullable<T>[] {
   return array.every(isNotNil);
 }
 
+interface ParamsComponentState {
+  gameLoading: boolean;
+  miniGameLoading: boolean;
+  modeLoading: boolean;
+  stageLoading: boolean;
+  characterLoading: boolean;
+  clearable: boolean;
+  approval: boolean;
+  playerMode: boolean;
+}
+
 @Component({
   selector: 'bio-params',
   templateUrl: './params.component.html',
   styleUrls: ['./params.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ParamsComponent
-  extends LocalState<{
-    gameLoading: boolean;
-    miniGameLoading: boolean;
-    modeLoading: boolean;
-    stageLoading: boolean;
-    characterLoading: boolean;
-    clearable: boolean;
-  }>
-  implements OnChanges, OnInit
-{
+export class ParamsComponent extends LocalState<ParamsComponentState> implements OnChanges, OnInit {
   constructor(
     private controlBuilder: ControlBuilder,
     private platformQuery: PlatformQuery,
@@ -111,13 +114,25 @@ export class ParamsComponent
         stageLoading: false,
         characterLoading: false,
         clearable: false,
+        approval: false,
+        playerMode: false,
       },
-      { inputs: [{ key: 'clearable', transformer: coerceBooleanProperty }] }
+      {
+        inputs: [
+          { key: 'clearable', transformer: coerceBooleanProperty },
+          { key: 'playerMode', transformer: coerceBooleanProperty },
+          { key: 'approval', transformer: coerceBooleanProperty },
+        ],
+      }
     );
   }
 
   private _setQueryParamsOnChange = false;
   private _selectParamIfOne = true;
+  private _approval = false;
+  private _playerMode = false;
+
+  private _approvalPlayerMode$ = this.selectState(['approval', 'playerMode']);
 
   @Input() idPlatform: number | null = null;
   @Input() idGame: number | null = null;
@@ -149,6 +164,16 @@ export class ParamsComponent
   @Input()
   set selectParamIfOne(selectParamIfOne: boolean) {
     this._selectParamIfOne = coerceBooleanProperty(selectParamIfOne);
+  }
+
+  @Input()
+  set approval(approval: boolean) {
+    this._approval = coerceBooleanProperty(approval);
+  }
+
+  @Input()
+  set playerMode(playerMode: boolean) {
+    this._playerMode = coerceBooleanProperty(playerMode);
   }
 
   @Output() readonly idPlatformChange = new EventEmitter<Nullable<number>>();
@@ -189,8 +214,8 @@ export class ParamsComponent
     return this.form.get('idCharacterCostume');
   }
 
-  idPlatform$ = this.idPlatformControl.value$.pipe(distinctUntilChanged());
-  idGame$ = this.idGameControl.value$.pipe(
+  readonly idPlatform$ = this.idPlatformControl.value$.pipe(distinctUntilChanged());
+  readonly idGame$ = this.idGameControl.value$.pipe(
     distinctUntilChanged(),
     tap(idGame => {
       if (!idGame) {
@@ -198,7 +223,7 @@ export class ParamsComponent
       }
     })
   );
-  idMiniGame$ = this.idMiniGameControl.value$.pipe(
+  readonly idMiniGame$ = this.idMiniGameControl.value$.pipe(
     distinctUntilChanged(),
     tap(idMiniGame => {
       if (!idMiniGame) {
@@ -206,7 +231,7 @@ export class ParamsComponent
       }
     })
   );
-  idMode$ = this.idModeControl.value$.pipe(
+  readonly idMode$ = this.idModeControl.value$.pipe(
     distinctUntilChanged(),
     tap(idMode => {
       if (!idMode) {
@@ -215,69 +240,45 @@ export class ParamsComponent
       }
     })
   );
-  idStage$ = this.idStageControl.value$.pipe(distinctUntilChanged());
-  idCharacterCostume$ = this.idCharacterCostumeControl.value$.pipe(distinctUntilChanged());
-  idPlatformNotNil$ = this.idPlatform$.pipe(filterNil());
-  idModeSelected$ = this.idMode$.pipe(map(idMode => !!idMode));
+  readonly idStage$ = this.idStageControl.value$.pipe(distinctUntilChanged());
+  readonly idCharacterCostume$ = this.idCharacterCostumeControl.value$.pipe(distinctUntilChanged());
+  readonly idPlatformNotNil$ = this.idPlatform$.pipe(filterNil());
+  readonly idModeSelected$ = this.idMode$.pipe(map(idMode => !!idMode));
 
-  platforms$ = this.platformQuery.all$.pipe(
+  readonly platforms$ = this._selectPlatforms().pipe(
     tap(platforms => {
       const idPlatform = this.idPlatformControl.value;
       if (idPlatform) {
         this.idPlatformControl.setValue(idPlatform);
       } else if (this._selectParamIfOne && platforms.length === 1) {
-        this.idPlatformControl.setValue(platforms.keysArray[0] as number);
+        this.idPlatformControl.setValue(platforms[0].id);
       }
     })
   );
-  games$ = this.idPlatformNotNil$.pipe(
-    switchMap(idPlatform => {
-      this.updateState('gameLoading', true);
-      return this.gameService.findByIdPlatform(idPlatform).pipe(
-        finalize(() => {
-          this.updateState('gameLoading', false);
-        }),
-        this._setParamOrNullOperator<Game>(this.idGameControl)
-      );
-    })
+  readonly games$ = this.idPlatformNotNil$.pipe(
+    switchMap(idPlatform => this._selectGames(idPlatform).pipe(this._setParamOrNullOperator<Game>(this.idGameControl)))
   );
-  miniGames$ = combineLatest([this.idPlatform$, this.idGame$]).pipe(
+  readonly miniGames$ = combineLatest([this.idPlatform$, this.idGame$]).pipe(
     this._filterIds(),
-    switchMap(([idPlatform, idGame]) => {
-      this.updateState('miniGameLoading', true);
-      return this.miniGameService.findByIdPlatformGame(idPlatform, idGame).pipe(
-        finalize(() => {
-          this.updateState('miniGameLoading', false);
-        }),
-        this._setParamOrNullOperator<MiniGame>(this.idMiniGameControl)
-      );
-    })
+    switchMap(([idPlatform, idGame]) =>
+      this._selectMiniGames(idPlatform, idGame).pipe(this._setParamOrNullOperator<MiniGame>(this.idMiniGameControl))
+    )
   );
-  modes$ = combineLatest([this.idPlatform$, this.idGame$, this.idMiniGame$]).pipe(
+  readonly modes$ = combineLatest([this.idPlatform$, this.idGame$, this.idMiniGame$]).pipe(
     this._filterIds(),
-    switchMap(([idPlatform, idGame, idMiniGame]) => {
-      this.updateState('modeLoading', true);
-      return this.modeService.findByIdPlatformGameMiniGame(idPlatform, idGame, idMiniGame).pipe(
-        finalize(() => {
-          this.updateState('modeLoading', false);
-        }),
-        this._setParamOrNullOperator<Mode>(this.idModeControl)
-      );
-    })
+    switchMap(([idPlatform, idGame, idMiniGame]) =>
+      this._selectModes(idPlatform, idGame, idMiniGame).pipe(this._setParamOrNullOperator<Mode>(this.idModeControl))
+    )
   );
-  stages$ = combineLatest([this.idPlatform$, this.idGame$, this.idMiniGame$, this.idMode$]).pipe(
+  readonly stages$ = combineLatest([this.idPlatform$, this.idGame$, this.idMiniGame$, this.idMode$]).pipe(
     this._filterIds(),
-    switchMap(([idPlatform, idGame, idMiniGame, idMode]) => {
-      this.updateState('stageLoading', true);
-      return this.stageService.findByIdPlatformGameMiniGameMode(idPlatform, idGame, idMiniGame, idMode).pipe(
-        finalize(() => {
-          this.updateState('stageLoading', false);
-        }),
+    switchMap(([idPlatform, idGame, idMiniGame, idMode]) =>
+      this._selectStages(idPlatform, idGame, idMiniGame, idMode).pipe(
         this._setParamOrNullOperator<Stage>(this.idStageControl)
-      );
-    })
+      )
+    )
   );
-  characters$ = combineLatest([this.idPlatform$, this.idGame$, this.idMiniGame$, this.idMode$]).pipe(
+  readonly characters$ = combineLatest([this.idPlatform$, this.idGame$, this.idMiniGame$, this.idMode$]).pipe(
     this._filterIds(),
     switchMap(([idPlatform, idGame, idMiniGame, idMode]) => {
       this.updateState('characterLoading', true);
@@ -296,16 +297,101 @@ export class ParamsComponent
     })
   );
 
-  state$ = this.selectState();
+  readonly state$ = this.selectState();
 
-  trackByPlatform = this.platformQuery.trackBy;
-  trackByGame = trackByFactory<Game>('id');
-  trackByMiniGame = trackByFactory<MiniGame>('id');
-  trackByMode = trackByFactory<Mode>('id');
-  trackByStage = trackByFactory<Stage>('id');
-  trackByCharacter = trackByFactory<Character>('id');
-  trackByCharacterCostume = trackByFactory<CharacterCostume>('id');
-  trackByControlValidator = trackByFactory<ControlValidator>('name');
+  readonly trackByPlatform = this.platformQuery.trackBy;
+  readonly trackByGame = trackByFactory<Game>('id');
+  readonly trackByMiniGame = trackByFactory<MiniGame>('id');
+  readonly trackByMode = trackByFactory<Mode>('id');
+  readonly trackByStage = trackByFactory<Stage>('id');
+  readonly trackByCharacter = trackByFactory<Character>('id');
+  readonly trackByCharacterCostume = trackByFactory<CharacterCostume>('id');
+  readonly trackByControlValidator = trackByFactory<ControlValidator>('name');
+
+  private _selectPlatforms(): Observable<Platform[]> {
+    return this._approvalPlayerMode$.pipe(
+      switchMap(({ approval }) => {
+        if (approval) {
+          return this.activatedRoute.data.pipe(map(data => data[RouteDataEnum.platformApproval]) ?? []);
+        }
+        return this.platformQuery.all$.pipe(map(platforms => [...platforms]));
+      })
+    );
+  }
+
+  private _selectGames(idPlatform: number): Observable<Game[]> {
+    return this._approvalPlayerMode$.pipe(
+      switchMap(({ approval, playerMode }) => {
+        this.updateState('gameLoading', true);
+        let request$ = this.gameService.findByIdPlatform(idPlatform);
+        if (approval) {
+          request$ = this.gameService.findApprovalByIdPlatform(idPlatform, playerMode);
+        }
+        return request$.pipe(
+          finalize(() => {
+            this.updateState('gameLoading', false);
+          })
+        );
+      })
+    );
+  }
+
+  private _selectMiniGames(idPlatform: number, idGame: number): Observable<MiniGame[]> {
+    return this._approvalPlayerMode$.pipe(
+      switchMap(({ approval, playerMode }) => {
+        this.updateState('miniGameLoading', true);
+        let request$ = this.miniGameService.findByIdPlatformGame(idPlatform, idGame);
+        if (approval) {
+          request$ = this.miniGameService.findApprovalByIdPlatformGame(idPlatform, idGame, playerMode);
+        }
+        return request$.pipe(
+          finalize(() => {
+            this.updateState('miniGameLoading', false);
+          })
+        );
+      })
+    );
+  }
+
+  private _selectModes(idPlatform: number, idGame: number, idMiniGame: number): Observable<Mode[]> {
+    return this._approvalPlayerMode$.pipe(
+      switchMap(({ approval, playerMode }) => {
+        this.updateState('modeLoading', true);
+        let request$ = this.modeService.findByIdPlatformGameMiniGame(idPlatform, idGame, idMiniGame);
+        if (approval) {
+          request$ = this.modeService.findApprovalByIdPlatformGameMiniGame(idPlatform, idGame, idMiniGame, playerMode);
+        }
+        return request$.pipe(
+          finalize(() => {
+            this.updateState('modeLoading', false);
+          })
+        );
+      })
+    );
+  }
+
+  private _selectStages(idPlatform: number, idGame: number, idMiniGame: number, idMode: number): Observable<Stage[]> {
+    return this._approvalPlayerMode$.pipe(
+      switchMap(({ approval, playerMode }) => {
+        this.updateState('stageLoading', true);
+        let request$ = this.stageService.findByIdPlatformGameMiniGameMode(idPlatform, idGame, idMiniGame, idMode);
+        if (approval) {
+          request$ = this.stageService.findApprovalByIdPlatformGameMiniGameMode(
+            idPlatform,
+            idGame,
+            idMiniGame,
+            idMode,
+            playerMode
+          );
+        }
+        return request$.pipe(
+          finalize(() => {
+            this.updateState('stageLoading', false);
+          })
+        );
+      })
+    );
+  }
 
   private _filterIds(): OperatorFunction<Nullable<number>[], NonNullable<number>[]> {
     return filter(filterNilArray);
@@ -381,4 +467,6 @@ export class ParamsComponent
   static ngAcceptInputType_getQueryParamsOnInit: BooleanInput;
   static ngAcceptInputType_clearable: BooleanInput;
   static ngAcceptInputType_selectParamIfOne: BooleanInput;
+  static ngAcceptInputType_approval: BooleanInput;
+  static ngAcceptInputType_playerMode: BooleanInput;
 }

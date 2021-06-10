@@ -1,5 +1,12 @@
 @use 'variables' as v;
 
+html {
+  font-size: 16px;
+  @media only screen and (max-width: v.$mobile-width) {
+    font-size: 18px;
+  }
+}
+
 body {
   font-family: Roboto, Helvetica Neue Light, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
   color: white;
@@ -24,11 +31,14 @@ a {
   &:hover {
     text-decoration: underline;
   }
+
   text-decoration: none;
   color: v.$accent;
+
   &.white {
     color: v.$white;
   }
+
   &.inherit {
     color: inherit;
   }

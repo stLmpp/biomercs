@@ -4,20 +4,21 @@
   padding: 1rem 0;
 }
 
+.body {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-gap: 1rem;
+}
+
 .player {
   .title {
     display: flex;
   }
+
   .body {
     .url-preview {
       grid-column: 1/-1;
       max-width: 500px;
     }
   }
-}
-
-.body {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  grid-gap: 1rem;
 }

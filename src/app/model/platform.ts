@@ -6,4 +6,4 @@ export interface Platform extends Base {
   shortName: string;
 }
 
-export const trackByPlaform = trackByFactory<Platform>('id');
+export const trackByPlatform = trackByFactory<Platform>('id');

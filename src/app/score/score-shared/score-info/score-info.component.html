@@ -12,9 +12,9 @@
 <div class="value">
   {{ score.score | number: '1.0-0' }}
   <ng-container *ngIf="showWorldRecord">
-    <icon mdi="trophy" *ngIf="score.isWorldRecord" tooltip="World Record" tooltipPosition="right"></icon>
+    <icon [mdi]="mdiTrophy" *ngIf="score.isWorldRecord" tooltip="World Record" tooltipPosition="right"></icon>
     <icon
-      mdi="trophy-award"
+      [mdi]="mdiTrophyAward"
       *ngIf="score.isCombinationWorldRecord"
       tooltip="Combination World Record"
       tooltipPosition="right"
@@ -38,7 +38,7 @@
   <div class="value">
     {{ player.characterName }} {{ player.characterCostumeName }}
     <icon
-      mdi="account-star"
+      [mdi]="mdiAccountStar"
       *ngIf="showWorldRecord && player.isCharacterWorldRecord"
       tooltip="Character World Record"
       tooltipPosition="right"

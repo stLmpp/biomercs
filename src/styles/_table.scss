@@ -4,16 +4,19 @@
   font-size: 0.85rem;
   background-color: v.$primary;
   color: v.$primary-600;
+
   &.card {
     background-color: v.$primary;
     color: v.$primary-600;
   }
+
   .header,
   .body > div {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
     min-height: 36px;
+
     > div {
       position: relative;
       flex: 1;

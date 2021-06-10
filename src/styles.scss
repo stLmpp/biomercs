@@ -20,9 +20,11 @@ body {
   width: 10px;
   height: 10px;
 }
+
 ::-webkit-scrollbar-track {
   background: v.$light;
 }
+
 ::-webkit-scrollbar-thumb {
   background: v.$dark-weak;
 }
