@@ -1,5 +1,4 @@
 @use 'variables' as v;
-
 @use 'functions' as f;
 
 @mixin icon($type) {
@@ -34,7 +33,7 @@
   -webkit-font-smoothing: antialiased;
 
   &.icon-mdi {
-    display: inline-block;
+    display: inline-flex;
 
     svg {
       width: 24px;
