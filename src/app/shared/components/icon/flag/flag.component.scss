@@ -1,3 +1,4 @@
 .flag-icon-unknown {
-  background-image: url('flag-unknown.svg');
+  background-color: #ccc;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23ccc' d='M0 0h512v512H0z'/%3E%3Ctext fill='%23999' x='256' y='384' style='font: bold 333px sans-serif' text-anchor='middle'%3E%3F%3C/text%3E%3C/svg%3E");
 }
