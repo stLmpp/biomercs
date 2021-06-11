@@ -1,0 +1,20 @@
+$size: 2rem;
+
+:host {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, $size));
+  grid-gap: 0.5rem;
+}
+
+.day,
+.day-name {
+  min-height: $size;
+  height: $size;
+  min-width: $size;
+  width: $size;
+}
+
+.day-name {
+  display: grid;
+  place-items: center;
+}

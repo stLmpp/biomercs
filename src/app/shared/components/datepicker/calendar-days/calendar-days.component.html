@@ -1,0 +1,13 @@
+<div class="day-name" *ngFor="let dayName of dayNames; trackBy: trackByString">
+  {{ dayName }}
+</div>
+<button
+  *ngFor="let day of days; trackBy: trackByDay"
+  bioButton
+  icon
+  type="button"
+  class="day"
+  [disabled]="day.disabled"
+>
+  {{ day.day }}
+</button>

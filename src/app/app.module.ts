@@ -20,6 +20,7 @@ import { CurrencyMaskModule } from '@shared/currency-mask/currency-mask.module';
 import { MaskModule } from '@shared/mask/mask.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { FooterModule } from './footer/footer.module';
+import { DatepickerModule } from '@shared/components/datepicker/datepicker.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -47,6 +48,7 @@ import { FooterModule } from './footer/footer.module';
       registrationStrategy: 'registerWhenStable:30000',
     }),
     FooterModule,
+    DatepickerModule.forRoot(),
   ],
   bootstrap: [AppComponent],
 })
