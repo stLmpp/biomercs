@@ -1,0 +1,22 @@
+@use 'variables' as v;
+@use 'mixins' as m;
+
+:host {
+  display: inline-block;
+  padding: 1rem;
+  border-radius: v.$radius;
+  background-color: v.$primary-50;
+  color: v.$primary-600;
+  &.light {
+    background-color: v.$primary-600;
+    color: v.$primary-50;
+  }
+  @include m.elevation(1);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}

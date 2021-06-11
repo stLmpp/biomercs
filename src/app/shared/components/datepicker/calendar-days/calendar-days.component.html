@@ -2,12 +2,16 @@
   {{ dayName }}
 </div>
 <button
-  *ngFor="let day of days; trackBy: trackByDay"
+  *ngFor="let day of days; trackBy: trackByDay; let $index = index"
   bioButton
-  icon
+  fab
   type="button"
   class="day"
   [disabled]="day.disabled"
+  [class.weekend]="day.weekend"
+  [class.today]="day.date | dateEqual: nowDate"
+  [class.selected]="day.date | dateEqual: value"
+  (click)="onClick(day, $index)"
 >
   {{ day.day }}
 </button>

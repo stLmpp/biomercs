@@ -1,22 +1,27 @@
 <div class="header">
-  <div class="month">{{ month$ | async }}</div>
-  <div class="year">{{ year$ | async }}</div>
-  <button bioButton icon type="button" (click)="previous()">
-    <icon>keyboard_arrow_left</icon>
-  </button>
-  <button bioButton icon type="button" (click)="next()">
-    <icon>keyboard_arrow_right</icon>
-  </button>
+  <div>
+    <div class="month">{{ month$ | async }}</div>
+    <div class="year">{{ year$ | async }}</div>
+  </div>
+  <div class="actions">
+    <button bioButton icon type="button" (click)="previous()">
+      <icon>keyboard_arrow_left</icon>
+    </button>
+    <button bioButton icon type="button" (click)="next()">
+      <icon>keyboard_arrow_right</icon>
+    </button>
+  </div>
 </div>
 <div class="body" [ngSwitch]="viewMode$ | async">
   <ng-container *ngSwitchCase="calendarViewModeEnum.day">
     <ng-container *ngIf="{ days: days$ | async, dayNames: dayNames$ | async } as dayState">
       <bio-calendar-days
-        *ngIf="dayState.days && dayState.dayNames"
-        [days]="dayState.days"
-        [dayNames]="dayState.dayNames"
+        [days]="dayState.days ?? []"
+        [dayNames]="dayState.dayNames ?? []"
         [(value)]="value"
         (valueChange)="valueChange.emit($event)"
+        (nextMonth)="next()"
+        (previousMonth)="previous()"
       ></bio-calendar-days>
     </ng-container>
   </ng-container>

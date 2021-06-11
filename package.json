@@ -13,16 +13,16 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "~12.0.4",
-    "@angular/cdk": "~12.0.4",
-    "@angular/common": "~12.0.4",
-    "@angular/compiler": "~12.0.4",
-    "@angular/core": "~12.0.4",
-    "@angular/forms": "~12.0.4",
-    "@angular/platform-browser": "~12.0.4",
-    "@angular/platform-browser-dynamic": "~12.0.4",
-    "@angular/router": "~12.0.4",
-    "@angular/service-worker": "~12.0.4",
+    "@angular/animations": "~12.1.0-next.5",
+    "@angular/cdk": "~12.1.0-next.0",
+    "@angular/common": "~12.1.0-next.5",
+    "@angular/compiler": "~12.1.0-next.5",
+    "@angular/core": "~12.1.0-next.5",
+    "@angular/forms": "~12.1.0-next.5",
+    "@angular/platform-browser": "~12.1.0-next.5",
+    "@angular/platform-browser-dynamic": "~12.1.0-next.5",
+    "@angular/router": "~12.1.0-next.5",
+    "@angular/service-worker": "~12.1.0-next.5",
     "@material/elevation": "~11.0.0",
     "@mdi/js": "~5.9.55",
     "@stlmpp/control": "~7.0.0",
@@ -43,14 +43,14 @@
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~12.0.4",
+    "@angular-devkit/build-angular": "~12.1.0-next.5",
     "@angular-eslint/builder": "~12.1.0",
     "@angular-eslint/eslint-plugin": "~12.1.0",
     "@angular-eslint/eslint-plugin-template": "~12.1.0",
     "@angular-eslint/schematics": "~12.1.0",
     "@angular-eslint/template-parser": "~12.1.0",
-    "@angular/cli": "~12.0.4",
-    "@angular/compiler-cli": "~12.0.4",
+    "@angular/cli": "~12.1.0-next.5",
+    "@angular/compiler-cli": "~12.1.0-next.5",
     "@types/jasmine": "~3.7.7",
     "@types/node": "~12.11.1",
     "@types/socket.io-client": "~1.4.36",
@@ -74,6 +74,6 @@
     "stylelint-config-standard": "~22.0.0",
     "stylelint-scss": "~3.19.0",
     "ts-node": "~9.1.1",
-    "typescript": "~4.2.4"
+    "typescript": "~4.3.2"
   }
 }

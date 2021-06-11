@@ -3,11 +3,12 @@ import { CalendarComponent } from './calendar/calendar.component';
 import { CalendarDaysComponent } from './calendar-days/calendar-days.component';
 import { ButtonModule } from '@shared/components/button/button.module';
 import { DATEPICKER_LOCALE } from '@shared/components/datepicker/datepicker';
+import { DateModule } from '@shared/date/date.module';
 
 @NgModule({
   declarations: [CalendarComponent, CalendarDaysComponent],
   exports: [CalendarComponent, ButtonModule],
-  imports: [ButtonModule],
+  imports: [ButtonModule, DateModule],
 })
 export class DatepickerModule {
   static forRoot(): ModuleWithProviders<DatepickerModule> {

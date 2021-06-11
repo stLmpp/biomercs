@@ -11,11 +11,10 @@ import {
 } from '@angular/core';
 import { LocalState } from '@stlmpp/store';
 import { addMonths, addYears, subMonths, subYears } from 'date-fns';
-import { distinct, distinctUntilChanged, map } from 'rxjs/operators';
+import { distinctUntilChanged, map } from 'rxjs/operators';
 import { getDayNames, getDaysArray, getMonths } from '@shared/components/datepicker/utils';
 import { CalendarViewModeEnum } from '@shared/components/datepicker/calendar/calendar';
 import { DATEPICKER_LOCALE } from '@shared/components/datepicker/datepicker';
-import { Local } from 'protractor/built/driverProviders';
 import { combineLatest } from 'rxjs';
 
 interface CalendarComponentState {
@@ -59,6 +58,10 @@ export class CalendarComponent extends LocalState<CalendarComponentState> implem
   dayNames$ = this.locale$.pipe(map(getDayNames));
   month$ = combineLatest([this.locale$, this.date$]).pipe(
     map(([locale, date]) => new Intl.DateTimeFormat(locale, { month: 'short' }).format(date)),
+    distinctUntilChanged()
+  );
+  monthNumber$ = this.date$.pipe(
+    map(date => date.getMonth()),
     distinctUntilChanged()
   );
   year$ = this.date$.pipe(

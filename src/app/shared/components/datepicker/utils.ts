@@ -10,46 +10,70 @@ import {
 } from 'date-fns';
 import { DatepickerDay } from '@shared/components/datepicker/datepicker';
 
-const map = new Map<string, DatepickerDay[]>();
+const cacheDaysArrayMap = new Map<string, DatepickerDay[]>();
 
+/**
+ * @description returns an array of days to display in the calendar, including padding days of last month and next month
+ * @param date
+ */
 export function getDaysArray(date: Date): DatepickerDay[] {
   const year = date.getFullYear();
   const month = date.getMonth();
   const key = `${year}-${month}`;
-  if (map.has(key)) {
-    return map.get(key)!;
+  // Check if the return value was cached before, if so, returns it
+  if (cacheDaysArrayMap.has(key)) {
+    return cacheDaysArrayMap.get(key)!;
   }
-  const padStart = startOfMonth(date).getDay();
-  let padEnd = 7 - (endOfMonth(date).getDay() + 1);
+  // Get the padding days of last month
+  let padStart = startOfMonth(date).getDay();
+  // Get the padding days of the next month
+  let padEnd = Math.min(7 - endOfMonth(date).getDay() - 1, daysInWeek - 1);
+  // Get number of days in the month
   const daysInMonth = getDaysInMonth(date);
+  // Create an array of days in the month
   const days: DatepickerDay[] = Array.from({ length: daysInMonth }, (_, index) => {
     const day = index + 1;
-    return new DatepickerDay(day, isWeekend(new Date(year, month, day)));
+    const dayDate = new Date(year, month, day);
+    return new DatepickerDay(dayDate, isWeekend(dayDate));
   });
-  if (padStart && padStart < 6) {
+  // Verify if the total of days has at least 6 weeks
+  if ((days.length + padStart + padEnd) / daysInWeek < 6) {
+    // If the padStart if 0, add padding to the start
+    if (!padStart) {
+      padStart += daysInWeek;
+    } else {
+      padEnd += daysInWeek;
+    }
+  }
+  if (padStart) {
+    // If has padStart simply add the days to the beginning of the array
     const lastMonthDate = endOfMonth(subMonths(date, 1));
     let day = lastMonthDate.getDate();
     days.unshift(
       ...Array.from({ length: padStart }, () => {
         const newDay = day--;
-        return new DatepickerDay(newDay, isWeekend(new Date(lastMonthDate).setDate(newDay)), true);
+        const dayDate = new Date(lastMonthDate);
+        dayDate.setDate(newDay);
+        return new DatepickerDay(dayDate, isWeekend(dayDate), true);
       }).reverse()
+      // Reverse because the days are inserted backwards
     );
   }
-  if (padEnd < 6) {
-    padEnd += 7;
-  }
-  if (padEnd < 12) {
+  if (padEnd) {
+    // If has padEnd add the days to the end of the array
     let day = 1;
     const nextMonth = addMonths(date, 1);
     days.push(
       ...Array.from({ length: padEnd }, () => {
         const newDay = day++;
-        return new DatepickerDay(newDay, isWeekend(new Date(nextMonth).setDate(newDay)), true);
+        const dayDate = new Date(nextMonth);
+        dayDate.setDate(newDay);
+        return new DatepickerDay(dayDate, isWeekend(dayDate), true);
       })
     );
   }
-  map.set(key, days);
+  // Set the cache for future calls
+  cacheDaysArrayMap.set(key, days);
   return days;
 }
 
