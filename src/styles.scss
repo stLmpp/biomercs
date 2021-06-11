@@ -1,10 +1,6 @@
 @use 'variables' as v;
 @use 'theme';
 
-html {
-  height: stretch;
-}
-
 body {
   background-color: v.$dark;
   margin: 0;
