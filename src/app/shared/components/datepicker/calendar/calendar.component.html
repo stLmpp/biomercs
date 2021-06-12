@@ -22,6 +22,8 @@
         (valueChange)="valueChange.emit($event)"
         (nextMonth)="next()"
         (previousMonth)="previous()"
+        (nextYear)="next(calendarViewModeEnum.month)"
+        (previousYear)="previous(calendarViewModeEnum.month)"
       ></bio-calendar-days>
     </ng-container>
   </ng-container>

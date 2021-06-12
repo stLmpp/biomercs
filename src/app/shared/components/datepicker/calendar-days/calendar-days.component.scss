@@ -24,8 +24,8 @@ $size: 2rem;
 .day {
   &.today {
     border: 1px solid transparentize(v.$primary, 0.3);
-    box-shadow: 0 0 1px transparent;
   }
+
   &.selected {
     background-color: v.$accent-300;
   }

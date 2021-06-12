@@ -12,10 +12,10 @@ import {
 import { LocalState } from '@stlmpp/store';
 import { addMonths, addYears, subMonths, subYears } from 'date-fns';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import { getDayNames, getDaysArray, getMonths } from '@shared/components/datepicker/utils';
 import { CalendarViewModeEnum } from '@shared/components/datepicker/calendar/calendar';
 import { DATEPICKER_LOCALE } from '@shared/components/datepicker/datepicker';
 import { combineLatest } from 'rxjs';
+import { CalendarAdapter } from '@shared/components/datepicker/calendar-adapter';
 
 interface CalendarComponentState {
   date: Date;
@@ -30,7 +30,11 @@ interface CalendarComponentState {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CalendarComponent extends LocalState<CalendarComponentState> implements OnInit {
-  constructor(@Inject(LOCALE_ID) localeId: string, @Optional() @Inject(DATEPICKER_LOCALE) locale?: string) {
+  constructor(
+    private calendarAdapter: CalendarAdapter,
+    @Inject(LOCALE_ID) localeId: string,
+    @Optional() @Inject(DATEPICKER_LOCALE) locale?: string
+  ) {
     super(
       { date: new Date(), viewMode: CalendarViewModeEnum.day, locale: locale ?? localeId },
       { inputs: ['viewMode', 'locale'] }
@@ -47,15 +51,15 @@ export class CalendarComponent extends LocalState<CalendarComponentState> implem
   locale$ = this.selectState('locale');
   viewMode$ = this.selectState('viewMode');
   date$ = this.selectState('date');
-  days$ = this.date$.pipe(map(getDaysArray));
+  days$ = this.date$.pipe(map(date => this.calendarAdapter.getDaysCalendar(date)));
   years$ = this.date$.pipe(
     map(date => {
       let year = date.getFullYear();
       return Array.from({ length: 24 }, () => year++);
     })
   );
-  months$ = this.locale$.pipe(map(getMonths));
-  dayNames$ = this.locale$.pipe(map(getDayNames));
+  months$ = this.locale$.pipe(map(locale => this.calendarAdapter.getMonthNames(locale)));
+  dayNames$ = this.locale$.pipe(map(locale => this.calendarAdapter.getDayNames(locale)));
   month$ = combineLatest([this.locale$, this.date$]).pipe(
     map(([locale, date]) => new Intl.DateTimeFormat(locale, { month: 'short' }).format(date)),
     distinctUntilChanged()
@@ -69,9 +73,10 @@ export class CalendarComponent extends LocalState<CalendarComponentState> implem
     distinctUntilChanged()
   );
 
-  next(): void {
+  next(viewMode?: CalendarViewModeEnum): void {
+    viewMode ??= this.viewMode;
     this.updateState('date', date => {
-      switch (this.viewMode) {
+      switch (viewMode) {
         case CalendarViewModeEnum.day:
           return addMonths(date, 1);
         case CalendarViewModeEnum.month:
@@ -82,9 +87,10 @@ export class CalendarComponent extends LocalState<CalendarComponentState> implem
     });
   }
 
-  previous(): void {
+  previous(viewMode?: CalendarViewModeEnum): void {
+    viewMode ??= this.viewMode;
     this.updateState('date', date => {
-      switch (this.viewMode) {
+      switch (viewMode) {
         case CalendarViewModeEnum.day:
           return subMonths(date, 1);
         case CalendarViewModeEnum.month:

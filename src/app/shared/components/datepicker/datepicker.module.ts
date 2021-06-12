@@ -4,6 +4,7 @@ import { CalendarDaysComponent } from './calendar-days/calendar-days.component';
 import { ButtonModule } from '@shared/components/button/button.module';
 import { DATEPICKER_LOCALE } from '@shared/components/datepicker/datepicker';
 import { DateModule } from '@shared/date/date.module';
+import { CalendarAdapter } from '@shared/components/datepicker/calendar-adapter';
 
 @NgModule({
   declarations: [CalendarComponent, CalendarDaysComponent],
@@ -14,7 +15,7 @@ export class DatepickerModule {
   static forRoot(): ModuleWithProviders<DatepickerModule> {
     return {
       ngModule: DatepickerModule,
-      providers: [{ provide: DATEPICKER_LOCALE, useExisting: LOCALE_ID }],
+      providers: [{ provide: DATEPICKER_LOCALE, useExisting: LOCALE_ID }, CalendarAdapter],
     };
   }
 }

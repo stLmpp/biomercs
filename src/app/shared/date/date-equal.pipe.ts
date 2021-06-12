@@ -21,6 +21,18 @@ const dateEqualPipeTransformer: { [K in DateEqualPipeCompareType]: (value: Date)
   year: startOfYear,
 };
 
+export function dateEqual(
+  date1: Date | null | undefined,
+  date2: Date | null | undefined,
+  compare: DateEqualPipeCompareType = 'day'
+): boolean {
+  if (!date1 || !date2 || !isValid(date1) || !isValid(date2)) {
+    return false;
+  }
+  const transformer = dateEqualPipeTransformer[compare];
+  return isEqual(transformer(date1), transformer(date2));
+}
+
 @Pipe({ name: 'dateEqual' })
 export class DateEqualPipe implements PipeTransform {
   transform(
@@ -28,10 +40,6 @@ export class DateEqualPipe implements PipeTransform {
     date2: Date | null | undefined,
     compare: DateEqualPipeCompareType = 'day'
   ): boolean {
-    if (!date1 || !date2 || !isValid(date1) || !isValid(date2)) {
-      return false;
-    }
-    const transformer = dateEqualPipeTransformer[compare];
-    return isEqual(transformer(date1), transformer(date2));
+    return dateEqual(date1, date2, compare);
   }
 }
