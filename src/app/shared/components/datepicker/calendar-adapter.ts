@@ -80,7 +80,7 @@ export class CalendarAdapter {
   }
 
   getMonthNames(locale: string): string[] {
-    const formatter = new Intl.DateTimeFormat(locale, { month: 'short' });
+    const formatter = new Intl.DateTimeFormat(locale, { month: 'long' });
     const date = new Date();
     return Array.from({ length: monthsInYear }).map((_, index) => formatter.format(setMonth(date, index)));
   }

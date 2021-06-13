@@ -21,6 +21,7 @@ interface CalendarComponentState {
   date: Date;
   viewMode: CalendarViewModeEnum;
   locale: string;
+  value: Date | null | undefined;
 }
 
 @Component({
@@ -36,8 +37,8 @@ export class CalendarComponent extends LocalState<CalendarComponentState> implem
     @Optional() @Inject(DATEPICKER_LOCALE) locale?: string
   ) {
     super(
-      { date: new Date(), viewMode: CalendarViewModeEnum.day, locale: locale ?? localeId },
-      { inputs: ['viewMode', 'locale'] }
+      { date: new Date(), viewMode: CalendarViewModeEnum.day, locale: locale ?? localeId, value: null },
+      { inputs: ['viewMode', 'locale', 'value'] }
     );
   }
 
@@ -45,8 +46,11 @@ export class CalendarComponent extends LocalState<CalendarComponentState> implem
   @Input() viewMode: CalendarViewModeEnum = CalendarViewModeEnum.day;
   @Input() locale = this.getState('locale');
   @Output() readonly valueChange = new EventEmitter<Date | null | undefined>();
+  @Output() readonly viewModeChange = new EventEmitter<Date | null | undefined>();
 
-  calendarViewModeEnum = CalendarViewModeEnum;
+  viewModeDay = CalendarViewModeEnum.day;
+  viewModeMonth = CalendarViewModeEnum.month;
+  viewModeYear = CalendarViewModeEnum.year;
 
   locale$ = this.selectState('locale');
   viewMode$ = this.selectState('viewMode');
@@ -60,6 +64,10 @@ export class CalendarComponent extends LocalState<CalendarComponentState> implem
   );
   months$ = this.locale$.pipe(map(locale => this.calendarAdapter.getMonthNames(locale)));
   dayNames$ = this.locale$.pipe(map(locale => this.calendarAdapter.getDayNames(locale)));
+  day$ = combineLatest([this.locale$, this.selectState('value'), this.date$]).pipe(
+    map(([locale, value, date]) => new Intl.DateTimeFormat(locale, { day: '2-digit' }).format(value ?? date)),
+    distinctUntilChanged()
+  );
   month$ = combineLatest([this.locale$, this.date$]).pipe(
     map(([locale, date]) => new Intl.DateTimeFormat(locale, { month: 'short' }).format(date)),
     distinctUntilChanged()
@@ -99,6 +107,10 @@ export class CalendarComponent extends LocalState<CalendarComponentState> implem
           return subYears(date, 23);
       }
     });
+  }
+
+  changeViewModel(viewMode: CalendarViewModeEnum): void {
+    this.updateState({ viewMode });
   }
 
   ngOnInit(): void {

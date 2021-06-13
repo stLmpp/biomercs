@@ -5,11 +5,13 @@ import { ButtonModule } from '@shared/components/button/button.module';
 import { DATEPICKER_LOCALE } from '@shared/components/datepicker/datepicker';
 import { DateModule } from '@shared/date/date.module';
 import { CalendarAdapter } from '@shared/components/datepicker/calendar-adapter';
+import { StUtilsArrayModule } from '@stlmpp/utils';
+import { CalendarMonthsComponent } from './calendar-months/calendar-months.component';
 
 @NgModule({
-  declarations: [CalendarComponent, CalendarDaysComponent],
+  declarations: [CalendarComponent, CalendarDaysComponent, CalendarMonthsComponent],
   exports: [CalendarComponent, ButtonModule],
-  imports: [ButtonModule, DateModule],
+  imports: [ButtonModule, DateModule, StUtilsArrayModule],
 })
 export class DatepickerModule {
   static forRoot(): ModuleWithProviders<DatepickerModule> {
