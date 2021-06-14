@@ -1,3 +1,5 @@
+@use 'variables' as v;
+
 $width: 8rem;
 $height: 2rem;
 
@@ -8,6 +10,13 @@ $height: 2rem;
   width: $width;
   border-radius: $height;
   text-transform: capitalize;
+  &.same-month {
+    border: 1px solid transparentize(v.$primary, 0.3);
+  }
+
+  &.selected {
+    background-color: v.$accent-300;
+  }
 }
 
 :host {

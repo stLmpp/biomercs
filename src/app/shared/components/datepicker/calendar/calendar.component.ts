@@ -10,7 +10,7 @@ import {
   Output,
 } from '@angular/core';
 import { LocalState } from '@stlmpp/store';
-import { addMonths, addYears, subMonths, subYears } from 'date-fns';
+import { addMonths, addYears, setMonth, subMonths, subYears } from 'date-fns';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 import { CalendarViewModeEnum } from '@shared/components/datepicker/calendar/calendar';
 import { DATEPICKER_LOCALE } from '@shared/components/datepicker/datepicker';
@@ -62,7 +62,7 @@ export class CalendarComponent extends LocalState<CalendarComponentState> implem
       return Array.from({ length: 24 }, () => year++);
     })
   );
-  months$ = this.locale$.pipe(map(locale => this.calendarAdapter.getMonthNames(locale)));
+  months$ = this.locale$.pipe(map(locale => this.calendarAdapter.getMonthsCalendar(locale)));
   dayNames$ = this.locale$.pipe(map(locale => this.calendarAdapter.getDayNames(locale)));
   day$ = combineLatest([this.locale$, this.selectState('value'), this.date$]).pipe(
     map(([locale, value, date]) => new Intl.DateTimeFormat(locale, { day: '2-digit' }).format(value ?? date)),
@@ -82,7 +82,7 @@ export class CalendarComponent extends LocalState<CalendarComponentState> implem
   );
 
   next(viewMode?: CalendarViewModeEnum): void {
-    viewMode ??= this.viewMode;
+    viewMode ??= this.getState('viewMode');
     this.updateState('date', date => {
       switch (viewMode) {
         case CalendarViewModeEnum.day:
@@ -96,7 +96,7 @@ export class CalendarComponent extends LocalState<CalendarComponentState> implem
   }
 
   previous(viewMode?: CalendarViewModeEnum): void {
-    viewMode ??= this.viewMode;
+    viewMode ??= this.getState('viewMode');
     this.updateState('date', date => {
       switch (viewMode) {
         case CalendarViewModeEnum.day:
@@ -111,6 +111,16 @@ export class CalendarComponent extends LocalState<CalendarComponentState> implem
 
   changeViewModel(viewMode: CalendarViewModeEnum): void {
     this.updateState({ viewMode });
+  }
+
+  onMonthSelect($event: number): void {
+    const stateUpdate: Partial<CalendarComponentState> = { viewMode: CalendarViewModeEnum.day };
+    if (this.value) {
+      this.value = setMonth(this.value, $event);
+      this.valueChange.emit(this.value);
+      stateUpdate.value = this.value;
+    }
+    this.updateState(state => ({ ...state, ...stateUpdate, date: setMonth(state.date, $event) }));
   }
 
   ngOnInit(): void {

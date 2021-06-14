@@ -1,3 +1,11 @@
-<button bioButton icon type="button" *ngFor="let month of months; trackBy: trackByString">
-  {{ month }}
+<button
+  bioButton
+  icon
+  type="button"
+  *ngFor="let month of months; trackBy: trackBy"
+  [class.same-month]="month.month === todayMonth"
+  [class.selected]="month.date | dateEqual: value:'month'"
+  (click)="monthSelect.emit(month.month)"
+>
+  {{ month.name }}
 </button>

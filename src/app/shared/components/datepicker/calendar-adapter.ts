@@ -11,7 +11,7 @@ import {
   startOfMonth,
   subMonths,
 } from 'date-fns';
-import { DatepickerDay } from '@shared/components/datepicker/datepicker';
+import { DatepickerDay, DatepickerMonth } from '@shared/components/datepicker/datepicker';
 import { dateEqual } from '@shared/date/date-equal.pipe';
 
 @Injectable()
@@ -79,10 +79,13 @@ export class CalendarAdapter {
     return days;
   }
 
-  getMonthNames(locale: string): string[] {
+  getMonthsCalendar(locale: string): DatepickerMonth[] {
     const formatter = new Intl.DateTimeFormat(locale, { month: 'long' });
     const date = new Date();
-    return Array.from({ length: monthsInYear }).map((_, index) => formatter.format(setMonth(date, index)));
+    return Array.from(
+      { length: monthsInYear },
+      (_, index) => new DatepickerMonth(index, formatter.format(setMonth(date, index)))
+    );
   }
 
   getDayNames(locale: string): string[] {

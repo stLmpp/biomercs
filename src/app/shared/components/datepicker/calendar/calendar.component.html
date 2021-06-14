@@ -42,7 +42,12 @@
       </ng-container>
     </ng-container>
     <ng-container *ngSwitchCase="viewModeMonth">
-      <bio-calendar-months *ngIf="months$ | async as months" [months]="months"></bio-calendar-months>
+      <bio-calendar-months
+        *ngIf="months$ | async as months"
+        [months]="months"
+        [value]="value"
+        (monthSelect)="onMonthSelect($event)"
+      ></bio-calendar-months>
     </ng-container>
     <ng-container *ngSwitchCase="viewModeYear"> YEAR </ng-container>
   </div>
