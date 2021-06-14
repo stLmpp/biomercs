@@ -47,6 +47,8 @@
         [months]="months"
         [value]="value"
         (monthSelect)="onMonthSelect($event)"
+        (nextYear)="next(viewModeMonth)"
+        (previousYear)="previous(viewModeMonth)"
       ></bio-calendar-months>
     </ng-container>
     <ng-container *ngSwitchCase="viewModeYear"> YEAR </ng-container>

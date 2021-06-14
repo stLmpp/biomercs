@@ -1,17 +1,6 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  HostListener,
-  Input,
-  Output,
-  QueryList,
-  ViewChildren,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { DatepickerMonth } from '@shared/components/datepicker/datepicker';
-import { ButtonComponent } from '@shared/components/button/button.component';
-import { FocusKeyManager } from '@angular/cdk/a11y';
+import { CalendarKeyboardNavigation } from '@shared/components/datepicker/calendar-keyboard-navigation';
 
 @Component({
   selector: 'bio-calendar-months',
@@ -19,35 +8,71 @@ import { FocusKeyManager } from '@angular/cdk/a11y';
   styleUrls: ['./calendar-months.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CalendarMonthsComponent implements AfterViewInit {
-  @ViewChildren(ButtonComponent) buttons!: QueryList<ButtonComponent>;
-
+export class CalendarMonthsComponent extends CalendarKeyboardNavigation {
   @Input() value: Date | null | undefined;
   @Input() months: DatepickerMonth[] = [];
 
   @Output() readonly monthSelect = new EventEmitter<number>();
+  @Output() readonly nextYear = new EventEmitter<void>();
+  @Output() readonly previousYear = new EventEmitter<void>();
 
   todayMonth = new Date().getMonth();
-  focusKeyManager!: FocusKeyManager<ButtonComponent>;
 
   trackBy = DatepickerMonth.trackBy;
 
-  private _handleArrowRight(): void {}
+  handleArrowDown($event: KeyboardEvent): void {
+    const activeIndex = this.focusKeyManager.activeItemIndex ?? 0;
+    let nextIndex = activeIndex + 2;
+    if (nextIndex > 11) {
+      nextIndex -= 12;
+      this.nextYear.emit();
+    }
+    this.focusKeyManager.setActiveItem(nextIndex);
+  }
 
-  private _handleArrowLeft(): void {}
+  handleArrowUp($event: KeyboardEvent): void {
+    const activeIndex = this.focusKeyManager.activeItemIndex ?? 0;
+    let previousIndex = activeIndex - 2;
+    if (previousIndex < 0) {
+      previousIndex = 12 - Math.abs(previousIndex);
+      this.previousYear.emit();
+    }
+    this.focusKeyManager.setActiveItem(previousIndex);
+  }
 
-  private _handleArrowDown(): void {}
+  handleArrowRight($event: KeyboardEvent): void {
+    const activeIndex = this.focusKeyManager.activeItemIndex ?? 0;
+    let nextIndex = activeIndex + 1;
+    if (nextIndex === 12) {
+      this.nextYear.emit();
+      nextIndex = 0;
+    }
+    this.focusKeyManager.setActiveItem(nextIndex);
+  }
 
-  private _handleArrowUp(): void {}
+  handleArrowLeft($event: KeyboardEvent): void {
+    const activeIndex = this.focusKeyManager.activeItemIndex ?? 0;
+    let previousIndex = activeIndex - 1;
+    if (previousIndex === -1) {
+      this.previousYear.emit();
+      previousIndex = 11;
+    }
+    this.focusKeyManager.setActiveItem(previousIndex);
+  }
 
-  @HostListener('keydown', ['$event'])
-  onKeydown($event: KeyboardEvent): void {
-    switch ($event.key) {
+  handleEnter($event: KeyboardEvent): void {
+    const activeIndex = this.focusKeyManager.activeItemIndex ?? -1;
+    const item = this.months[activeIndex];
+    if (item) {
+      this.monthSelect.emit(item.month);
     }
   }
 
-  ngAfterViewInit(): void {
-    this.focusKeyManager = new FocusKeyManager<ButtonComponent>(this.buttons);
-    this.focusKeyManager.setFirstItemActive();
+  handlePageDown($event: KeyboardEvent): void {
+    this.nextYear.emit();
+  }
+
+  handlePageUp($event: KeyboardEvent): void {
+    this.previousYear.emit();
   }
 }

@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  HostListener,
   Inject,
   Input,
   LOCALE_ID,
@@ -16,6 +17,7 @@ import { CalendarViewModeEnum } from '@shared/components/datepicker/calendar/cal
 import { DATEPICKER_LOCALE } from '@shared/components/datepicker/datepicker';
 import { combineLatest } from 'rxjs';
 import { CalendarAdapter } from '@shared/components/datepicker/calendar-adapter';
+import { Key } from '@model/enum/key';
 
 interface CalendarComponentState {
   date: Date;
@@ -46,7 +48,7 @@ export class CalendarComponent extends LocalState<CalendarComponentState> implem
   @Input() viewMode: CalendarViewModeEnum = CalendarViewModeEnum.day;
   @Input() locale = this.getState('locale');
   @Output() readonly valueChange = new EventEmitter<Date | null | undefined>();
-  @Output() readonly viewModeChange = new EventEmitter<Date | null | undefined>();
+  @Output() readonly viewModeChange = new EventEmitter<CalendarViewModeEnum>();
 
   viewModeDay = CalendarViewModeEnum.day;
   viewModeMonth = CalendarViewModeEnum.month;
@@ -81,6 +83,52 @@ export class CalendarComponent extends LocalState<CalendarComponentState> implem
     distinctUntilChanged()
   );
 
+  private _handleArrowRight(): void {
+    switch (this.getState('viewMode')) {
+      case CalendarViewModeEnum.day:
+        this.changeViewModel(CalendarViewModeEnum.month);
+        break;
+      case CalendarViewModeEnum.month:
+        this.changeViewModel(CalendarViewModeEnum.year);
+        break;
+      case CalendarViewModeEnum.year:
+        this.changeViewModel(CalendarViewModeEnum.day);
+        break;
+    }
+  }
+
+  private _handleArrowLeft(): void {
+    switch (this.getState('viewMode')) {
+      case CalendarViewModeEnum.day:
+        this.changeViewModel(CalendarViewModeEnum.year);
+        break;
+      case CalendarViewModeEnum.month:
+        this.changeViewModel(CalendarViewModeEnum.day);
+        break;
+      case CalendarViewModeEnum.year:
+        this.changeViewModel(CalendarViewModeEnum.month);
+        break;
+    }
+  }
+
+  @HostListener('keydown', ['$event'])
+  onKeydown($event: KeyboardEvent): void {
+    switch ($event.key) {
+      case Key.ArrowLeft: {
+        if ($event.ctrlKey) {
+          this._handleArrowLeft();
+        }
+        break;
+      }
+      case Key.ArrowRight: {
+        if ($event.ctrlKey) {
+          this._handleArrowRight();
+        }
+        break;
+      }
+    }
+  }
+
   next(viewMode?: CalendarViewModeEnum): void {
     viewMode ??= this.getState('viewMode');
     this.updateState('date', date => {
@@ -111,6 +159,7 @@ export class CalendarComponent extends LocalState<CalendarComponentState> implem
 
   changeViewModel(viewMode: CalendarViewModeEnum): void {
     this.updateState({ viewMode });
+    this.viewModeChange.emit(viewMode);
   }
 
   onMonthSelect($event: number): void {
