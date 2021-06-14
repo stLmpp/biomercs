@@ -61,7 +61,7 @@ export class CalendarComponent extends LocalState<CalendarComponentState> implem
   years$ = this.date$.pipe(
     map(date => {
       let year = date.getFullYear();
-      return Array.from({ length: 24 }, () => year++);
+      return this.calendarAdapter.getYearsCalendar(Array.from({ length: 24 }, () => year++));
     })
   );
   months$ = this.locale$.pipe(map(locale => this.calendarAdapter.getMonthsCalendar(locale)));
@@ -138,7 +138,7 @@ export class CalendarComponent extends LocalState<CalendarComponentState> implem
         case CalendarViewModeEnum.month:
           return addYears(date, 1);
         default:
-          return addYears(date, 23);
+          return addYears(date, 24);
       }
     });
   }
@@ -152,7 +152,7 @@ export class CalendarComponent extends LocalState<CalendarComponentState> implem
         case CalendarViewModeEnum.month:
           return subYears(date, 1);
         default:
-          return subYears(date, 23);
+          return subYears(date, 24);
       }
     });
   }

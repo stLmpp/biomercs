@@ -1,0 +1,27 @@
+@use 'variables' as v;
+
+$size: 2rem;
+$width: 4rem;
+
+:host {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, $width));
+  grid-gap: 0.5rem;
+  padding-top: $size;
+}
+
+.button.fab {
+  min-height: $size;
+  height: $size;
+  min-width: $width;
+  width: $width;
+  border-radius: $size;
+
+  &.same-year {
+    border: 1px solid transparentize(v.$primary, 0.3);
+  }
+
+  &.selected {
+    background-color: v.$accent-300;
+  }
+}

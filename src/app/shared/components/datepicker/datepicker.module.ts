@@ -7,9 +7,10 @@ import { DateModule } from '@shared/date/date.module';
 import { CalendarAdapter } from '@shared/components/datepicker/calendar-adapter';
 import { StUtilsArrayModule } from '@stlmpp/utils';
 import { CalendarMonthsComponent } from './calendar-months/calendar-months.component';
+import { CalendarYearsComponent } from './calendar-years/calendar-years.component';
 
 @NgModule({
-  declarations: [CalendarComponent, CalendarDaysComponent, CalendarMonthsComponent],
+  declarations: [CalendarComponent, CalendarDaysComponent, CalendarMonthsComponent, CalendarYearsComponent],
   exports: [CalendarComponent, ButtonModule],
   imports: [ButtonModule, DateModule, StUtilsArrayModule],
 })

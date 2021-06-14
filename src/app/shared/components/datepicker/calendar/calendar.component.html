@@ -51,7 +51,9 @@
         (previousYear)="previous(viewModeMonth)"
       ></bio-calendar-months>
     </ng-container>
-    <ng-container *ngSwitchCase="viewModeYear"> YEAR </ng-container>
+    <ng-container *ngSwitchCase="viewModeYear">
+      <bio-calendar-years *ngIf="years$ | async as years" [value]="value" [years]="years"></bio-calendar-years>
+    </ng-container>
   </div>
   <div class="footer"></div>
 </ng-container>
