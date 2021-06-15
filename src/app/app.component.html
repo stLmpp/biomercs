@@ -4,7 +4,7 @@
 </header>
 
 <main>
-  <bio-calendar [(value)]="date" locale="pt-BR"></bio-calendar>
+  <bio-calendar [(model)]="date" modelUpdateOn="blur"></bio-calendar>
   <hr />
   {{ date | date }}
   <!--<router-outlet></router-outlet>-->

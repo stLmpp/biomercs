@@ -7,6 +7,7 @@ import { trackByFactory } from '@stlmpp/utils';
   templateUrl: './calendar-years.component.html',
   styleUrls: ['./calendar-years.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [{ provide: CalendarKeyboardNavigation, useExisting: CalendarYearsComponent }],
 })
 export class CalendarYearsComponent extends CalendarKeyboardNavigation {
   @Input() years: number[] = [];

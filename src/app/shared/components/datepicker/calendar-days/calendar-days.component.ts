@@ -23,26 +23,27 @@ import { CalendarKeyboardNavigation } from '@shared/components/datepicker/calend
   templateUrl: './calendar-days.component.html',
   styleUrls: ['./calendar-days.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [{ provide: CalendarKeyboardNavigation, useExisting: CalendarDaysComponent }],
 })
 export class CalendarDaysComponent extends CalendarKeyboardNavigation {
-  constructor(private calendarAdapter: CalendarAdapter) {
+  constructor(private readonly calendarAdapter: CalendarAdapter) {
     super();
   }
 
   @Input() value: Date | null | undefined;
-  @Output() readonly valueChange = new EventEmitter<Date | null | undefined>();
   @Input() days: DatepickerDay[] = [];
   @Input() dayNames: string[] = [];
 
+  @Output() readonly valueChange = new EventEmitter<Date | null | undefined>();
   @Output() readonly nextMonth = new EventEmitter<void>();
   @Output() readonly previousMonth = new EventEmitter<void>();
   @Output() readonly nextYear = new EventEmitter<void>();
   @Output() readonly previousYear = new EventEmitter<void>();
 
-  nowDate = new Date();
+  readonly nowDate = new Date();
 
-  trackByString = trackByFactory<string>();
-  trackByDay = DatepickerDay.trackBy;
+  readonly trackByString = trackByFactory<string>();
+  readonly trackByDay = DatepickerDay.trackBy;
 
   private _daySelected(day: DatepickerDay): void {
     this.value = day.date;

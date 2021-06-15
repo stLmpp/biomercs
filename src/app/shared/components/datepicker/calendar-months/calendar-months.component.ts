@@ -7,6 +7,7 @@ import { CalendarKeyboardNavigation } from '@shared/components/datepicker/calend
   templateUrl: './calendar-months.component.html',
   styleUrls: ['./calendar-months.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [{ provide: CalendarKeyboardNavigation, useExisting: CalendarMonthsComponent }],
 })
 export class CalendarMonthsComponent extends CalendarKeyboardNavigation {
   @Input() months: DatepickerMonth[] = [];

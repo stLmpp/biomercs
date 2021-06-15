@@ -7,6 +7,7 @@
   border-radius: v.$radius;
   background-color: v.$primary-50;
   color: v.$primary-600;
+  outline: none;
 
   @include m.elevation(2);
 

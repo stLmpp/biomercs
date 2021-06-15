@@ -23,6 +23,7 @@ export abstract class CalendarKeyboardNavigation implements AfterViewInit {
         }
         break;
       case Key.ArrowDown:
+        $event.stopPropagation();
         this.handleArrowDown($event);
         break;
       case Key.ArrowUp:

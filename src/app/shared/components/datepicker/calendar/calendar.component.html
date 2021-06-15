@@ -33,7 +33,7 @@
           [days]="dayState.days ?? []"
           [dayNames]="dayState.dayNames ?? []"
           [(value)]="value"
-          (valueChange)="valueChange.emit($event)"
+          (valueChange)="onDaySelect($event)"
           (nextMonth)="next()"
           (previousMonth)="previous()"
           (nextYear)="next(viewModeMonth)"

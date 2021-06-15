@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  HostBinding,
   HostListener,
   Inject,
   Input,
@@ -9,15 +10,19 @@ import {
   OnInit,
   Optional,
   Output,
+  ViewChild,
 } from '@angular/core';
 import { LocalState } from '@stlmpp/store';
 import { addMonths, addYears, setMonth, setYear, subMonths, subYears } from 'date-fns';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 import { CalendarViewModeEnum } from '@shared/components/datepicker/calendar/calendar';
 import { DATEPICKER_LOCALE } from '@shared/components/datepicker/datepicker';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Subject } from 'rxjs';
 import { CalendarAdapter } from '@shared/components/datepicker/calendar-adapter';
 import { Key } from '@model/enum/key';
+import { BooleanInput, coerceBooleanProperty } from 'st-utils';
+import { ControlState, ControlValue } from '@stlmpp/control';
+import { CalendarKeyboardNavigation } from '@shared/components/datepicker/calendar-keyboard-navigation';
 
 interface CalendarComponentState {
   date: Date;
@@ -31,8 +36,12 @@ interface CalendarComponentState {
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [{ provide: ControlValue, useExisting: CalendarComponent, multi: true }],
 })
-export class CalendarComponent extends LocalState<CalendarComponentState> implements OnInit {
+export class CalendarComponent
+  extends LocalState<CalendarComponentState>
+  implements OnInit, ControlValue<Date | null | undefined>
+{
   constructor(
     private readonly calendarAdapter: CalendarAdapter,
     @Inject(LOCALE_ID) localeId: string,
@@ -44,11 +53,29 @@ export class CalendarComponent extends LocalState<CalendarComponentState> implem
     );
   }
 
+  private _disabled = false;
+
+  @ViewChild(CalendarKeyboardNavigation) calendarKeyboardNavigation!: CalendarKeyboardNavigation;
+
   @Input() value: Date | null | undefined;
   @Input() viewMode: CalendarViewModeEnum = CalendarViewModeEnum.day;
   @Input() locale = this.getState('locale');
   @Output() readonly valueChange = new EventEmitter<Date | null | undefined>();
   @Output() readonly viewModeChange = new EventEmitter<CalendarViewModeEnum>();
+
+  @Input()
+  @HostBinding('attr.aria-disabled')
+  get disabled(): boolean {
+    return this._disabled;
+  }
+  set disabled(disabled: boolean) {
+    this._disabled = coerceBooleanProperty(disabled);
+  }
+
+  @HostBinding('attr.tabindex')
+  get tabIndex(): number {
+    return this._disabled ? -1 : 0;
+  }
 
   readonly viewModeDay = CalendarViewModeEnum.day;
   readonly viewModeMonth = CalendarViewModeEnum.month;
@@ -73,6 +100,9 @@ export class CalendarComponent extends LocalState<CalendarComponentState> implem
     map(date => date.getFullYear()),
     distinctUntilChanged()
   );
+
+  readonly onChange$ = new Subject<Date | null | undefined>();
+  readonly onTouched$ = new Subject<void>();
 
   private _handleArrowRight(): void {
     switch (this.getState('viewMode')) {
@@ -117,7 +147,18 @@ export class CalendarComponent extends LocalState<CalendarComponentState> implem
         }
         break;
       }
+      case Key.ArrowDown: {
+        this.focus();
+        break;
+      }
     }
+  }
+
+  @HostListener('blur')
+  @HostListener('focusout')
+  onBlur(): void {
+    // TODO figure out way to do the onTouched$
+    this.onTouched$.next();
   }
 
   next(viewMode?: CalendarViewModeEnum): void {
@@ -153,11 +194,18 @@ export class CalendarComponent extends LocalState<CalendarComponentState> implem
     this.viewModeChange.emit(viewMode);
   }
 
+  onDaySelect($event: Date | null | undefined): void {
+    this.valueChange.emit(this.value);
+    this.updateState(state => ({ ...state, date: $event ?? state.date, value: $event }));
+    this.onChange$.next(this.value);
+  }
+
   onMonthSelect($event: number): void {
     const stateUpdate: Partial<CalendarComponentState> = { viewMode: CalendarViewModeEnum.day };
     if (this.value) {
       this.value = setMonth(this.value, $event);
       this.valueChange.emit(this.value);
+      this.onChange$.next(this.value);
       stateUpdate.value = this.value;
     }
     this.updateState(state => ({ ...state, ...stateUpdate, date: setMonth(state.date, $event) }));
@@ -168,14 +216,33 @@ export class CalendarComponent extends LocalState<CalendarComponentState> implem
     if (this.value) {
       this.value = setYear(this.value, $event);
       this.valueChange.emit(this.value);
+      this.onChange$.next(this.value);
       stateUpdate.value = this.value;
     }
     this.updateState(state => ({ ...state, ...stateUpdate, date: setYear(state.date, $event) }));
   }
+
+  setValue(date: Date | null | undefined): void {
+    this.value = date;
+    this.valueChange.emit(this.value);
+    this.updateState(state => ({ ...state, value: date, date: date ?? state.date }));
+  }
+
+  focus(): void {
+    this.calendarKeyboardNavigation.focusKeyManager.setFirstItemActive();
+  }
+
+  setDisabled(disabled: boolean): void {
+    this.disabled = disabled;
+  }
+
+  stateChanged(state: ControlState): void {}
 
   ngOnInit(): void {
     if (this.value) {
       this.updateState({ date: this.value });
     }
   }
+
+  static ngAcceptInputType_disabled: BooleanInput;
 }
