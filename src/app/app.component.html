@@ -4,7 +4,7 @@
 </header>
 
 <main>
-  <bio-calendar [(model)]="date" modelUpdateOn="blur"></bio-calendar>
+  <bio-calendar [(model)]="date" modelUpdateOn="blur" [disabled]="true"></bio-calendar>
   <hr />
   {{ date | date }}
   <!--<router-outlet></router-outlet>-->

@@ -33,6 +33,7 @@ export class CalendarDaysComponent extends CalendarKeyboardNavigation {
   @Input() value: Date | null | undefined;
   @Input() days: CalendarDay[] = [];
   @Input() dayNames: string[] = [];
+  @Input() disabled = false;
 
   @Output() readonly valueChange = new EventEmitter<Date | null | undefined>();
   @Output() readonly nextMonth = new EventEmitter<void>();

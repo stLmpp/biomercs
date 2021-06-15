@@ -1,27 +1,37 @@
 <ng-container *ngIf="viewMode$ | async as viewMode">
   <div class="header">
     <div>
-      <button [disabled]="viewMode === viewModeDay" bioButton type="button" (click)="changeViewModel(viewModeDay)">
+      <button
+        [disabled]="disabled || viewMode === viewModeDay"
+        bioButton
+        type="button"
+        (click)="changeViewModel(viewModeDay)"
+      >
         {{ day$ | async }}
       </button>
       <button
         class="month-button"
-        [disabled]="viewMode === viewModeMonth"
+        [disabled]="disabled || viewMode === viewModeMonth"
         bioButton
         type="button"
         (click)="changeViewModel(viewModeMonth)"
       >
         {{ month$ | async }}
       </button>
-      <button [disabled]="viewMode === viewModeYear" bioButton type="button" (click)="changeViewModel(viewModeYear)">
+      <button
+        [disabled]="disabled || viewMode === viewModeYear"
+        bioButton
+        type="button"
+        (click)="changeViewModel(viewModeYear)"
+      >
         {{ year$ | async }}
       </button>
     </div>
     <div class="actions">
-      <button bioButton icon type="button" (click)="previous()">
+      <button bioButton icon type="button" (click)="previous()" [disabled]="disabled">
         <icon>keyboard_arrow_left</icon>
       </button>
-      <button bioButton icon type="button" (click)="next()">
+      <button bioButton icon type="button" (click)="next()" [disabled]="disabled">
         <icon>keyboard_arrow_right</icon>
       </button>
     </div>
@@ -33,6 +43,7 @@
           [days]="dayState.days ?? []"
           [dayNames]="dayState.dayNames ?? []"
           [(value)]="value"
+          [disabled]="disabled"
           (valueChange)="onDaySelect($event)"
           (nextMonth)="next()"
           (previousMonth)="previous()"
@@ -46,6 +57,7 @@
         *ngIf="months$ | async as months"
         [months]="months"
         [value]="value"
+        [disabled]="disabled"
         (monthSelect)="onMonthSelect($event)"
         (nextYear)="next(viewModeMonth)"
         (previousYear)="previous(viewModeMonth)"
@@ -56,6 +68,7 @@
         *ngIf="years$ | async as years"
         [value]="value"
         [years]="years"
+        [disabled]="disabled"
         (nextYears)="next(viewModeYear)"
         (previousYears)="previous(viewModeYear)"
         (yearSelect)="onYearSelect($event)"

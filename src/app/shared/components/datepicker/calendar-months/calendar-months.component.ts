@@ -17,6 +17,8 @@ export class CalendarMonthsComponent extends CalendarKeyboardNavigation {
     this.valueMonth = (value ?? new Date()).getMonth();
   }
 
+  @Input() disabled = false;
+
   @Output() readonly monthSelect = new EventEmitter<number>();
   @Output() readonly nextYear = new EventEmitter<void>();
   @Output() readonly previousYear = new EventEmitter<void>();

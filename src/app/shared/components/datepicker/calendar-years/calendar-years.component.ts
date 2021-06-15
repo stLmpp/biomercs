@@ -17,6 +17,8 @@ export class CalendarYearsComponent extends CalendarKeyboardNavigation {
     this.valueYear = (value ?? new Date()).getFullYear();
   }
 
+  @Input() disabled = false;
+
   @Output() readonly nextYears = new EventEmitter<void>();
   @Output() readonly previousYears = new EventEmitter<void>();
   @Output() readonly yearSelect = new EventEmitter<number>();

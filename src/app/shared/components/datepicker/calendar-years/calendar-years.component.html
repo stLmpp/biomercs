@@ -5,6 +5,7 @@
   type="button"
   [class.same-year]="year === todayYear"
   [class.selected]="year === valueYear"
+  [disabled]="disabled"
   (click)="yearSelect.emit(year)"
 >
   {{ year }}
