@@ -163,7 +163,10 @@ export class CalendarDaysComponent extends CalendarKeyboardNavigation {
   }
 
   onClick(day: CalendarDay, index: number): void {
-    this.focusKeyManager.setActiveItem(index);
+    if (this.value === day.date) {
+      return;
+    }
     this._daySelected(day);
+    this.focusKeyManager.setActiveItem(index);
   }
 }

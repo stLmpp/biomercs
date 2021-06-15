@@ -208,25 +208,11 @@ export class CalendarComponent
   }
 
   onMonthSelect($event: number): void {
-    const stateUpdate: Partial<CalendarComponentState> = { viewMode: CalendarViewModeEnum.day };
-    if (this.value) {
-      this.value = setMonth(this.value, $event);
-      this.valueChange.emit(this.value);
-      this.onChange$.next(this.value);
-      stateUpdate.value = this.value;
-    }
-    this.updateState(state => ({ ...state, ...stateUpdate, date: setMonth(state.date, $event) }));
+    this.updateState(state => ({ ...state, viewMode: CalendarViewModeEnum.day, date: setMonth(state.date, $event) }));
   }
 
   onYearSelect($event: number): void {
-    const stateUpdate: Partial<CalendarComponentState> = { viewMode: CalendarViewModeEnum.day };
-    if (this.value) {
-      this.value = setYear(this.value, $event);
-      this.valueChange.emit(this.value);
-      this.onChange$.next(this.value);
-      stateUpdate.value = this.value;
-    }
-    this.updateState(state => ({ ...state, ...stateUpdate, date: setYear(state.date, $event) }));
+    this.updateState(state => ({ ...state, viewMode: CalendarViewModeEnum.day, date: setYear(state.date, $event) }));
   }
 
   setValue(date: Date | null | undefined): void {

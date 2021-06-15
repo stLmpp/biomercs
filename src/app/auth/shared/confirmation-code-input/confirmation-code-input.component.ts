@@ -86,7 +86,7 @@ export class ConfirmationCodeInputComponent
             filter(value => !!value)
           )
           .subscribe(value => {
-            if (!/^[0-9]$/.test(value!)) {
+            if (!/^[0-9]$/.test(value)) {
               input.setValue('', { emitChange: false });
             } else if (i === len - 1) {
               this.focusoutLastItem.emit();

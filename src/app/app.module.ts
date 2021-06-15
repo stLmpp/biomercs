@@ -21,6 +21,7 @@ import { MaskModule } from '@shared/mask/mask.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { FooterModule } from './footer/footer.module';
 import { DatepickerModule } from '@shared/components/datepicker/datepicker.module';
+import { FormModule } from '@shared/components/form/form.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -49,6 +50,7 @@ import { DatepickerModule } from '@shared/components/datepicker/datepicker.modul
     }),
     FooterModule,
     DatepickerModule.forRoot(),
+    FormModule,
   ],
   bootstrap: [AppComponent],
 })
