@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { DatepickerDay } from '@shared/components/datepicker/datepicker';
+import { CalendarDay } from '@shared/components/datepicker/calendar-day';
 import { trackByFactory } from '@stlmpp/utils';
 import {
   addDays,
@@ -31,7 +31,7 @@ export class CalendarDaysComponent extends CalendarKeyboardNavigation {
   }
 
   @Input() value: Date | null | undefined;
-  @Input() days: DatepickerDay[] = [];
+  @Input() days: CalendarDay[] = [];
   @Input() dayNames: string[] = [];
 
   @Output() readonly valueChange = new EventEmitter<Date | null | undefined>();
@@ -43,14 +43,14 @@ export class CalendarDaysComponent extends CalendarKeyboardNavigation {
   readonly nowDate = new Date();
 
   readonly trackByString = trackByFactory<string>();
-  readonly trackByDay = DatepickerDay.trackBy;
+  readonly trackByDay = CalendarDay.trackBy;
 
-  private _daySelected(day: DatepickerDay): void {
+  private _daySelected(day: CalendarDay): void {
     this.value = day.date;
     this.valueChange.emit(this.value);
   }
 
-  private _getActiveIndexAndItem(): [number, DatepickerDay] {
+  private _getActiveIndexAndItem(): [number, CalendarDay] {
     const activeItemIndex = this.focusKeyManager.activeItemIndex ?? 0;
     const item = this.days[activeItemIndex];
     return [activeItemIndex, item];
@@ -161,7 +161,7 @@ export class CalendarDaysComponent extends CalendarKeyboardNavigation {
     this._setActiveWithTimeout(item.day, previousDate);
   }
 
-  onClick(day: DatepickerDay, index: number): void {
+  onClick(day: CalendarDay, index: number): void {
     this.focusKeyManager.setActiveItem(index);
     this._daySelected(day);
   }

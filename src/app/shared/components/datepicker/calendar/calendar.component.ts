@@ -15,14 +15,14 @@ import {
 import { LocalState } from '@stlmpp/store';
 import { addMonths, addYears, setMonth, setYear, subMonths, subYears } from 'date-fns';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import { CalendarViewModeEnum } from '@shared/components/datepicker/calendar/calendar';
-import { DATEPICKER_LOCALE } from '@shared/components/datepicker/datepicker';
+import { CalendarViewModeEnum } from '@shared/components/datepicker/calendar-view-mode.enum';
 import { combineLatest, Subject } from 'rxjs';
 import { CalendarAdapter } from '@shared/components/datepicker/calendar-adapter';
 import { Key } from '@model/enum/key';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { ControlState, ControlValue } from '@stlmpp/control';
 import { CalendarKeyboardNavigation } from '@shared/components/datepicker/calendar-keyboard-navigation';
+import { CALENDAR_LOCALE } from '@shared/components/datepicker/calendar-locale.token';
 
 interface CalendarComponentState {
   date: Date;
@@ -45,7 +45,7 @@ export class CalendarComponent
   constructor(
     private readonly calendarAdapter: CalendarAdapter,
     @Inject(LOCALE_ID) localeId: string,
-    @Optional() @Inject(DATEPICKER_LOCALE) locale?: string
+    @Optional() @Inject(CALENDAR_LOCALE) locale?: string
   ) {
     super(
       { date: new Date(), viewMode: CalendarViewModeEnum.day, locale: locale ?? localeId, value: null },

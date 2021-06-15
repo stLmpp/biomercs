@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { DatepickerMonth } from '@shared/components/datepicker/datepicker';
 import { CalendarKeyboardNavigation } from '@shared/components/datepicker/calendar-keyboard-navigation';
+import { CalendarMonth } from '@shared/components/datepicker/calendar-month';
 
 @Component({
   selector: 'bio-calendar-months',
@@ -10,7 +10,7 @@ import { CalendarKeyboardNavigation } from '@shared/components/datepicker/calend
   providers: [{ provide: CalendarKeyboardNavigation, useExisting: CalendarMonthsComponent }],
 })
 export class CalendarMonthsComponent extends CalendarKeyboardNavigation {
-  @Input() months: DatepickerMonth[] = [];
+  @Input() months: CalendarMonth[] = [];
 
   @Input()
   set value(value: Date | null | undefined) {
@@ -22,7 +22,7 @@ export class CalendarMonthsComponent extends CalendarKeyboardNavigation {
   @Output() readonly previousYear = new EventEmitter<void>();
 
   readonly todayMonth = new Date().getMonth();
-  readonly trackBy = DatepickerMonth.trackBy;
+  readonly trackBy = CalendarMonth.trackBy;
 
   valueMonth = -1;
 

@@ -11,14 +11,15 @@ import {
   startOfMonth,
   subMonths,
 } from 'date-fns';
-import { DatepickerDay, DatepickerMonth } from '@shared/components/datepicker/datepicker';
+import { CalendarDay } from '@shared/components/datepicker/calendar-day';
 import { dateEqual } from '@shared/date/date-equal.pipe';
+import { CalendarMonth } from '@shared/components/datepicker/calendar-month';
 
 @Injectable()
 export class CalendarAdapter {
-  private readonly _cacheDaysCalendar = new Map<string, DatepickerDay[]>();
+  private readonly _cacheDaysCalendar = new Map<string, CalendarDay[]>();
 
-  getDaysCalendar(date: Date): DatepickerDay[] {
+  getDaysCalendar(date: Date): CalendarDay[] {
     const year = date.getFullYear();
     const month = date.getMonth();
     const key = `${year}-${month}`;
@@ -33,10 +34,10 @@ export class CalendarAdapter {
     // Get number of days in the month
     const daysInMonth = getDaysInMonth(date);
     // Create an array of days in the month
-    const days: DatepickerDay[] = Array.from({ length: daysInMonth }, (_, index) => {
+    const days: CalendarDay[] = Array.from({ length: daysInMonth }, (_, index) => {
       const day = index + 1;
       const dayDate = new Date(year, month, day);
-      return new DatepickerDay(dayDate, isWeekend(dayDate));
+      return new CalendarDay(dayDate, isWeekend(dayDate));
     });
     // Verify if the total of days has at least 6 weeks
     if ((days.length + padStart + padEnd) / daysInWeek < 6) {
@@ -56,7 +57,7 @@ export class CalendarAdapter {
           const newDay = day--;
           const dayDate = new Date(lastMonthDate);
           dayDate.setDate(newDay);
-          return new DatepickerDay(dayDate, isWeekend(dayDate), true);
+          return new CalendarDay(dayDate, isWeekend(dayDate), true);
         }).reverse()
         // Reverse because the days are inserted backwards
       );
@@ -70,7 +71,7 @@ export class CalendarAdapter {
           const newDay = day++;
           const dayDate = new Date(nextMonth);
           dayDate.setDate(newDay);
-          return new DatepickerDay(dayDate, isWeekend(dayDate), true);
+          return new CalendarDay(dayDate, isWeekend(dayDate), true);
         })
       );
     }
@@ -79,12 +80,12 @@ export class CalendarAdapter {
     return days;
   }
 
-  getMonthsCalendar(locale: string): DatepickerMonth[] {
+  getMonthsCalendar(locale: string): CalendarMonth[] {
     const formatter = new Intl.DateTimeFormat(locale, { month: 'long' });
     const date = new Date();
     return Array.from(
       { length: monthsInYear },
-      (_, index) => new DatepickerMonth(index, formatter.format(setMonth(date, index)))
+      (_, index) => new CalendarMonth(index, formatter.format(setMonth(date, index)))
     );
   }
 
