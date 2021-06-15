@@ -162,7 +162,7 @@ export class CalendarDaysComponent extends CalendarKeyboardNavigation {
   }
 
   onClick(day: DatepickerDay, index: number): void {
-    this._daySelected(day);
     this.focusKeyManager.setActiveItem(index);
+    this._daySelected(day);
   }
 }

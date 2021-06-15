@@ -157,7 +157,7 @@ export class CalendarComponent
   @HostListener('blur')
   @HostListener('focusout')
   onBlur(): void {
-    // TODO figure out way to do the onTouched$
+    // FIXME this is not correct, but will work for now
     this.onTouched$.next();
   }
 
