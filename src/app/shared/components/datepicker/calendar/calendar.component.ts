@@ -11,7 +11,7 @@ import {
   Output,
 } from '@angular/core';
 import { LocalState } from '@stlmpp/store';
-import { addMonths, addYears, setMonth, subMonths, subYears } from 'date-fns';
+import { addMonths, addYears, setMonth, setYear, subMonths, subYears } from 'date-fns';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 import { CalendarViewModeEnum } from '@shared/components/datepicker/calendar/calendar';
 import { DATEPICKER_LOCALE } from '@shared/components/datepicker/datepicker';
@@ -34,7 +34,7 @@ interface CalendarComponentState {
 })
 export class CalendarComponent extends LocalState<CalendarComponentState> implements OnInit {
   constructor(
-    private calendarAdapter: CalendarAdapter,
+    private readonly calendarAdapter: CalendarAdapter,
     @Inject(LOCALE_ID) localeId: string,
     @Optional() @Inject(DATEPICKER_LOCALE) locale?: string
   ) {
@@ -50,35 +50,26 @@ export class CalendarComponent extends LocalState<CalendarComponentState> implem
   @Output() readonly valueChange = new EventEmitter<Date | null | undefined>();
   @Output() readonly viewModeChange = new EventEmitter<CalendarViewModeEnum>();
 
-  viewModeDay = CalendarViewModeEnum.day;
-  viewModeMonth = CalendarViewModeEnum.month;
-  viewModeYear = CalendarViewModeEnum.year;
+  readonly viewModeDay = CalendarViewModeEnum.day;
+  readonly viewModeMonth = CalendarViewModeEnum.month;
+  readonly viewModeYear = CalendarViewModeEnum.year;
 
-  locale$ = this.selectState('locale');
-  viewMode$ = this.selectState('viewMode');
-  date$ = this.selectState('date');
-  days$ = this.date$.pipe(map(date => this.calendarAdapter.getDaysCalendar(date)));
-  years$ = this.date$.pipe(
-    map(date => {
-      let year = date.getFullYear();
-      return this.calendarAdapter.getYearsCalendar(Array.from({ length: 24 }, () => year++));
-    })
-  );
-  months$ = this.locale$.pipe(map(locale => this.calendarAdapter.getMonthsCalendar(locale)));
-  dayNames$ = this.locale$.pipe(map(locale => this.calendarAdapter.getDayNames(locale)));
-  day$ = combineLatest([this.locale$, this.selectState('value'), this.date$]).pipe(
+  readonly locale$ = this.selectState('locale');
+  readonly viewMode$ = this.selectState('viewMode');
+  readonly date$ = this.selectState('date');
+  readonly days$ = this.date$.pipe(map(date => this.calendarAdapter.getDaysCalendar(date)));
+  readonly years$ = this.date$.pipe(map(date => this.calendarAdapter.getYearsCalendar(date)));
+  readonly months$ = this.locale$.pipe(map(locale => this.calendarAdapter.getMonthsCalendar(locale)));
+  readonly dayNames$ = this.locale$.pipe(map(locale => this.calendarAdapter.getDayNames(locale)));
+  readonly day$ = combineLatest([this.locale$, this.selectState('value'), this.date$]).pipe(
     map(([locale, value, date]) => new Intl.DateTimeFormat(locale, { day: '2-digit' }).format(value ?? date)),
     distinctUntilChanged()
   );
-  month$ = combineLatest([this.locale$, this.date$]).pipe(
+  readonly month$ = combineLatest([this.locale$, this.date$]).pipe(
     map(([locale, date]) => new Intl.DateTimeFormat(locale, { month: 'short' }).format(date)),
     distinctUntilChanged()
   );
-  monthNumber$ = this.date$.pipe(
-    map(date => date.getMonth()),
-    distinctUntilChanged()
-  );
-  year$ = this.date$.pipe(
+  readonly year$ = this.date$.pipe(
     map(date => date.getFullYear()),
     distinctUntilChanged()
   );
@@ -170,6 +161,16 @@ export class CalendarComponent extends LocalState<CalendarComponentState> implem
       stateUpdate.value = this.value;
     }
     this.updateState(state => ({ ...state, ...stateUpdate, date: setMonth(state.date, $event) }));
+  }
+
+  onYearSelect($event: number): void {
+    const stateUpdate: Partial<CalendarComponentState> = { viewMode: CalendarViewModeEnum.day };
+    if (this.value) {
+      this.value = setYear(this.value, $event);
+      this.valueChange.emit(this.value);
+      stateUpdate.value = this.value;
+    }
+    this.updateState(state => ({ ...state, ...stateUpdate, date: setYear(state.date, $event) }));
   }
 
   ngOnInit(): void {

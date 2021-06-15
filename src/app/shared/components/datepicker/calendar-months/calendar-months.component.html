@@ -4,7 +4,7 @@
   type="button"
   *ngFor="let month of months; trackBy: trackBy"
   [class.same-month]="month.month === todayMonth"
-  [class.selected]="month.date | dateEqual: value:'month'"
+  [class.selected]="month.month === valueMonth"
   (click)="monthSelect.emit(month.month)"
 >
   {{ month.name }}

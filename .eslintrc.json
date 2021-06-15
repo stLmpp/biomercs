@@ -53,6 +53,7 @@
         "@typescript-eslint/prefer-optional-chain": ["warn"],
         "@typescript-eslint/explicit-module-boundary-types": ["off"],
         "@typescript-eslint/no-shadow": ["error"],
+        "@typescript-eslint/prefer-readonly": ["error"],
         "@typescript-eslint/naming-convention": [
           "error",
           {

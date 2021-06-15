@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { DatepickerYear } from '@shared/components/datepicker/datepicker';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { CalendarKeyboardNavigation } from '@shared/components/datepicker/calendar-keyboard-navigation';
+import { trackByFactory } from '@stlmpp/utils';
 
 @Component({
   selector: 'bio-calendar-years',
@@ -9,23 +9,75 @@ import { CalendarKeyboardNavigation } from '@shared/components/datepicker/calend
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CalendarYearsComponent extends CalendarKeyboardNavigation {
-  @Input() value: Date | null | undefined;
-  @Input() years: DatepickerYear[] = [];
+  @Input() years: number[] = [];
 
-  trackBy = DatepickerYear.trackBy;
-  todayYear = new Date().getFullYear();
+  @Input()
+  set value(value: Date | null | undefined) {
+    this.valueYear = (value ?? new Date()).getFullYear();
+  }
 
-  handleArrowDown($event: KeyboardEvent): void {}
+  @Output() readonly nextYears = new EventEmitter<void>();
+  @Output() readonly previousYears = new EventEmitter<void>();
+  @Output() readonly yearSelect = new EventEmitter<number>();
 
-  handleArrowLeft($event: KeyboardEvent): void {}
+  readonly todayYear = new Date().getFullYear();
+  readonly trackBy = trackByFactory<number>();
 
-  handleArrowRight($event: KeyboardEvent): void {}
+  valueYear = -1;
 
-  handleArrowUp($event: KeyboardEvent): void {}
+  handleArrowDown($event: KeyboardEvent): void {
+    const activeIndex = this.focusKeyManager.activeItemIndex ?? 0;
+    let nextIndex = activeIndex + 4;
+    if (nextIndex > 23) {
+      nextIndex -= 24;
+      this.nextYears.emit();
+    }
+    this.focusKeyManager.setActiveItem(nextIndex);
+  }
 
-  handleEnter($event: KeyboardEvent): void {}
+  handleArrowUp($event: KeyboardEvent): void {
+    const activeIndex = this.focusKeyManager.activeItemIndex ?? 0;
+    let previousIndex = activeIndex - 4;
+    if (previousIndex < 0) {
+      previousIndex = 24 - Math.abs(previousIndex);
+      this.previousYears.emit();
+    }
+    this.focusKeyManager.setActiveItem(previousIndex);
+  }
 
-  handlePageDown($event: KeyboardEvent): void {}
+  handleArrowRight($event: KeyboardEvent): void {
+    const activeIndex = this.focusKeyManager.activeItemIndex ?? 0;
+    let nextIndex = activeIndex + 1;
+    if (nextIndex === 24) {
+      this.nextYears.emit();
+      nextIndex = 0;
+    }
+    this.focusKeyManager.setActiveItem(nextIndex);
+  }
 
-  handlePageUp($event: KeyboardEvent): void {}
+  handleArrowLeft($event: KeyboardEvent): void {
+    const activeIndex = this.focusKeyManager.activeItemIndex ?? 0;
+    let previousIndex = activeIndex - 1;
+    if (previousIndex === -1) {
+      this.previousYears.emit();
+      previousIndex = 23;
+    }
+    this.focusKeyManager.setActiveItem(previousIndex);
+  }
+
+  handleEnter($event: KeyboardEvent): void {
+    const activeIndex = this.focusKeyManager.activeItemIndex ?? -1;
+    const years = this.years[activeIndex];
+    if (years) {
+      this.yearSelect.emit(years);
+    }
+  }
+
+  handlePageDown($event: KeyboardEvent): void {
+    this.nextYears.emit();
+  }
+
+  handlePageUp($event: KeyboardEvent): void {
+    this.previousYears.emit();
+  }
 }

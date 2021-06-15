@@ -3,8 +3,9 @@
   bioButton
   fab
   type="button"
-  [class.same-year]="year.year === todayYear"
-  [class.selected]="year.date | dateEqual: value:'year'"
+  [class.same-year]="year === todayYear"
+  [class.selected]="year === valueYear"
+  (click)="yearSelect.emit(year)"
 >
-  {{ year.year }}
+  {{ year }}
 </button>

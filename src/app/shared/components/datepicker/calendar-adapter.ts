@@ -11,21 +11,20 @@ import {
   startOfMonth,
   subMonths,
 } from 'date-fns';
-import { DatepickerDay, DatepickerMonth, DatepickerYear } from '@shared/components/datepicker/datepicker';
+import { DatepickerDay, DatepickerMonth } from '@shared/components/datepicker/datepicker';
 import { dateEqual } from '@shared/date/date-equal.pipe';
-import { isNil } from 'st-utils';
 
 @Injectable()
 export class CalendarAdapter {
-  private _cacheDaysArrayMap = new Map<string, DatepickerDay[]>();
+  private readonly _cacheDaysCalendar = new Map<string, DatepickerDay[]>();
 
   getDaysCalendar(date: Date): DatepickerDay[] {
     const year = date.getFullYear();
     const month = date.getMonth();
     const key = `${year}-${month}`;
     // Check if the return value was cached before, if so, returns it
-    if (this._cacheDaysArrayMap.has(key)) {
-      return this._cacheDaysArrayMap.get(key)!;
+    if (this._cacheDaysCalendar.has(key)) {
+      return this._cacheDaysCalendar.get(key)!;
     }
     // Get the padding days of last month
     let padStart = startOfMonth(date).getDay();
@@ -76,7 +75,7 @@ export class CalendarAdapter {
       );
     }
     // Set the cache for future calls
-    this._cacheDaysArrayMap.set(key, days);
+    this._cacheDaysCalendar.set(key, days);
     return days;
   }
 
@@ -89,8 +88,11 @@ export class CalendarAdapter {
     );
   }
 
-  getYearsCalendar(years: number[]): DatepickerYear[] {
-    return years.map(year => new DatepickerYear(year));
+  getYearsCalendar(date: Date): number[] {
+    const year = date.getFullYear();
+    const mod = year % 24;
+    let firstYear = year - mod;
+    return Array.from({ length: 24 }, () => firstYear++);
   }
 
   getDayNames(locale: string): string[] {

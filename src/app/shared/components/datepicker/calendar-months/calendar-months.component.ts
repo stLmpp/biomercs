@@ -9,16 +9,21 @@ import { CalendarKeyboardNavigation } from '@shared/components/datepicker/calend
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CalendarMonthsComponent extends CalendarKeyboardNavigation {
-  @Input() value: Date | null | undefined;
   @Input() months: DatepickerMonth[] = [];
+
+  @Input()
+  set value(value: Date | null | undefined) {
+    this.valueMonth = (value ?? new Date()).getMonth();
+  }
 
   @Output() readonly monthSelect = new EventEmitter<number>();
   @Output() readonly nextYear = new EventEmitter<void>();
   @Output() readonly previousYear = new EventEmitter<void>();
 
-  todayMonth = new Date().getMonth();
+  readonly todayMonth = new Date().getMonth();
+  readonly trackBy = DatepickerMonth.trackBy;
 
-  trackBy = DatepickerMonth.trackBy;
+  valueMonth = -1;
 
   handleArrowDown($event: KeyboardEvent): void {
     const activeIndex = this.focusKeyManager.activeItemIndex ?? 0;
