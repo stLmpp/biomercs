@@ -1,7 +1,7 @@
 @use 'variables' as v;
 @use 'mixins' as m;
 
-:host {
+.bio-calendar {
   display: inline-block;
   padding: 1rem;
   border-radius: v.$radius;
@@ -17,14 +17,14 @@
   }
 }
 
-.header {
+.bio-calendar-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
 }
 
-.body {
+.bio-calendar-body {
   $size: calc((2rem * 7) + (0.5rem * 6));
 
   min-width: $size;
@@ -33,6 +33,15 @@
   height: $size;
 }
 
-.month-button {
+.bio-calendar-month-button {
   text-transform: capitalize;
+}
+
+.bio-calendar-footer {
+  padding-top: 1rem;
+  .bio-calendar-footer-directive {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
 }

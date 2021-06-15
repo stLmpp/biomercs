@@ -4,7 +4,12 @@
 </header>
 
 <main>
-  <bio-calendar [(model)]="date" modelUpdateOn="blur" [disabled]="true"></bio-calendar>
+  <bio-calendar [(model)]="date">
+    <bio-calendar-footer>
+      <button bioButton bioCalendarFooterToday>Today</button>
+      <button bioButton bioCalendarFooterClear>Clear</button>
+    </bio-calendar-footer>
+  </bio-calendar>
   <hr />
   {{ date | date }}
   <!--<router-outlet></router-outlet>-->

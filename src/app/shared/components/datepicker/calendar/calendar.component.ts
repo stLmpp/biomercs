@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  ContentChild,
   EventEmitter,
   HostBinding,
   HostListener,
@@ -11,6 +12,7 @@ import {
   Optional,
   Output,
   ViewChild,
+  ViewEncapsulation,
 } from '@angular/core';
 import { LocalState } from '@stlmpp/store';
 import { addMonths, addYears, setMonth, setYear, subMonths, subYears } from 'date-fns';
@@ -23,6 +25,7 @@ import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { ControlState, ControlValue } from '@stlmpp/control';
 import { CalendarKeyboardNavigation } from '@shared/components/datepicker/calendar-keyboard-navigation';
 import { CALENDAR_LOCALE } from '@shared/components/datepicker/calendar-locale.token';
+import { CalendarFooterDirective } from '@shared/components/datepicker/calendar/calendar-footer.directive';
 
 interface CalendarComponentState {
   date: Date;
@@ -36,6 +39,8 @@ interface CalendarComponentState {
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  host: { class: 'bio-calendar' },
   providers: [{ provide: ControlValue, useExisting: CalendarComponent, multi: true }],
 })
 export class CalendarComponent
@@ -56,6 +61,7 @@ export class CalendarComponent
   private _disabled = false;
 
   @ViewChild(CalendarKeyboardNavigation) calendarKeyboardNavigation!: CalendarKeyboardNavigation;
+  @ContentChild(CalendarFooterDirective) calendarFooterDirective?: CalendarFooterDirective;
 
   @Input() value: Date | null | undefined;
   @Input() viewMode: CalendarViewModeEnum = CalendarViewModeEnum.day;
@@ -195,6 +201,7 @@ export class CalendarComponent
   }
 
   onDaySelect($event: Date | null | undefined): void {
+    this.value = $event;
     this.valueChange.emit(this.value);
     this.updateState(state => ({ ...state, date: $event ?? state.date, value: $event }));
     this.onChange$.next(this.value);
