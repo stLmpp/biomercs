@@ -16,12 +16,13 @@ import { Animations } from '@shared/animations/animations';
 import { Overlay, OverlayRef, ScrollStrategyOptions } from '@angular/cdk/overlay';
 import { DatepickerTriggerDirective } from '@shared/components/datepicker/datepicker/datepicker-trigger.directive';
 import { DatepickerDirective } from '@shared/components/datepicker/datepicker/datepicker.directive';
-import { cdkOverlayTransparentBackdrop, overlayPositionsArray } from '@util/overlay';
+import { cdkOverlayTransparentBackdrop } from '@util/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { CALENDAR_LOCALE } from '@shared/components/datepicker/calendar-locale.token';
 import { Destroyable } from '@shared/components/common/destroyable-component';
 import { take, takeUntil } from 'rxjs/operators';
 import { AnimationEvent } from '@angular/animations';
+import { getDatepickerOverlayPositions } from '@shared/components/datepicker/datepicker/datepicker';
 
 @Component({
   selector: 'bio-datepicker',
@@ -92,7 +93,7 @@ export class DatepickerComponent extends Destroyable {
       positionStrategy: this.overlay
         .position()
         .flexibleConnectedTo(element)
-        .withPositions(overlayPositionsArray('bottom')),
+        .withPositions(getDatepickerOverlayPositions()),
       scrollStrategy: this.scrollStrategyOptions.block(),
     });
     const portal = new TemplatePortal(this.templateRef, this.viewContainerRef);
