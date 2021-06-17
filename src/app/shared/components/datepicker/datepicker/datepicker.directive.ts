@@ -45,7 +45,9 @@ export class DatepickerDirective extends ControlValue<Date | null | undefined> i
       inputFormat: this._getDateFormat().toLowerCase(),
       placeholder: this._getDateFormat().toUpperCase(),
       oncomplete: () => {
-        this.onChange$.next(parse(this.elementRef.nativeElement.value, this._getDateFormat(), new Date()));
+        const date = parse(this.elementRef.nativeElement.value, this._getDateFormat(), new Date());
+        this.onChange$.next(date);
+        this.bioDatepicker.value = date;
       },
     });
     mask.mask(this.elementRef.nativeElement);
