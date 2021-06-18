@@ -24,8 +24,6 @@ export class AppComponent extends Destroyable implements OnInit, OnDestroy {
     super();
   }
 
-  date: Date | null | undefined = new Date();
-
   isMobile$ = this.breakpointObserverService.isMobile$;
 
   private _defineHeightPropertyCss(): void {

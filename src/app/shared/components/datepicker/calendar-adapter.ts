@@ -15,7 +15,7 @@ import { CalendarDay } from '@shared/components/datepicker/calendar-day';
 import { dateEqual } from '@shared/date/date-equal.pipe';
 import { CalendarMonth } from '@shared/components/datepicker/calendar-month';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class CalendarAdapter {
   private readonly _cacheDaysCalendar = new Map<string, CalendarDay[]>();
 

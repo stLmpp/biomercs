@@ -4,18 +4,7 @@
 </header>
 
 <main>
-  <form-field style="max-width: 240px">
-    <input [(model)]="date" bioInput [bioDatepicker]="datepicker" />
-    <button bioButton icon suffix type="button" [bioDatepickerTrigger]="datepicker">
-      <icon>calendar_today</icon>
-    </button>
-    <bio-datepicker #datepicker></bio-datepicker>
-  </form-field>
-  <hr />
-  {{ date | date }}
-  <hr />
-  <button id="b" type="button" (click)="date = null">Teste</button>
-  <!--<router-outlet></router-outlet>-->
+  <router-outlet></router-outlet>
 </main>
 
 <footer>
