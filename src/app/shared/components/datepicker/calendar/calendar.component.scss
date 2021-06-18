@@ -1,5 +1,6 @@
 @use 'variables' as v;
 @use 'mixins' as m;
+@use '../calendar' as c;
 
 .bio-calendar {
   display: inline-block;
@@ -25,7 +26,7 @@
 }
 
 .bio-calendar-body {
-  $size: calc((2rem * 7) + (0.5rem * 6));
+  $size: calc((#{c.$base-size} * 7) + (#{c.$grid-gap} * 6));
 
   min-width: $size;
   min-height: $size;

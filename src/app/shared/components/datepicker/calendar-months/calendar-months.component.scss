@@ -20,6 +20,6 @@ $width: c.$base-size * 4;
 :host {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, $width));
-  grid-gap: 0.5rem;
+  grid-gap: c.$grid-gap;
   padding-top: c.$base-size;
 }

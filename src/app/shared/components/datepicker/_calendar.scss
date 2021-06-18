@@ -1,6 +1,7 @@
 @use 'variables' as v;
 
 $base-size: 2rem;
+$grid-gap: 0.5rem;
 
 @mixin size($width: $base-size, $height: $base-size) {
   min-height: $height;
