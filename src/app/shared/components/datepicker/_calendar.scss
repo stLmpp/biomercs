@@ -1,0 +1,19 @@
+@use 'variables' as v;
+
+$base-size: 2rem;
+
+@mixin size($width: $base-size, $height: $base-size) {
+  min-height: $height;
+  height: $height;
+  min-width: $width;
+  width: $width;
+  border-radius: $height;
+}
+
+@mixin same-date-border() {
+  border: 1px solid transparentize(v.$primary, 0.3);
+}
+
+@mixin selected-color() {
+  background-color: v.$accent-300;
+}

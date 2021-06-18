@@ -6,7 +6,6 @@
   bioButton
   fab
   type="button"
-  class="day"
   [disabled]="day.disabled || disabled"
   [class.weekend]="day.weekend"
   [class.today]="day.date | dateEqual: nowDate"
