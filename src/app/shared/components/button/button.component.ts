@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, ViewEncapsulation } from '@angular/core';
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
 import { AbstractComponent } from '../core/abstract-component';
+import { FocusableOption } from '@angular/cdk/a11y';
 
 @Component({
   selector: 'button[bioButton],a[bioButton]',
@@ -10,7 +11,7 @@ import { AbstractComponent } from '../core/abstract-component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'button' },
 })
-export class ButtonComponent extends AbstractComponent {
+export class ButtonComponent extends AbstractComponent implements FocusableOption {
   constructor(private elementRef: ElementRef<HTMLButtonElement>) {
     super();
   }
@@ -71,6 +72,10 @@ export class ButtonComponent extends AbstractComponent {
 
   get nativeElement(): HTMLButtonElement {
     return this.elementRef.nativeElement;
+  }
+
+  focus(): void {
+    this.elementRef.nativeElement.focus();
   }
 
   static ngAcceptInputType_loading: BooleanInput;

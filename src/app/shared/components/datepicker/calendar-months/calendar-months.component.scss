@@ -1,0 +1,25 @@
+@use 'variables' as v;
+@use '../calendar' as c;
+
+$width: c.$base-size * 4;
+
+.button.fab {
+  text-transform: capitalize;
+
+  @include c.size($width);
+
+  &.same-month {
+    @include c.same-date-border();
+  }
+
+  &.selected {
+    @include c.selected-color();
+  }
+}
+
+:host {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, $width));
+  grid-gap: c.$grid-gap;
+  padding-top: c.$base-size;
+}

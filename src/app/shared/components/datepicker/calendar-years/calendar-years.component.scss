@@ -1,0 +1,23 @@
+@use 'variables' as v;
+@use '../calendar' as c;
+
+$width: c.$base-size * 2;
+
+:host {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, $width));
+  grid-gap: c.$grid-gap;
+  padding-top: c.$base-size;
+}
+
+.button.fab {
+  @include c.size($width);
+
+  &.same-year {
+    @include c.same-date-border();
+  }
+
+  &.selected {
+    @include c.selected-color();
+  }
+}

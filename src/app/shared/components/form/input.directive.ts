@@ -10,7 +10,7 @@ import { FocusableOption } from '@angular/cdk/a11y';
 })
 export class InputDirective extends AbstractComponent implements FocusableOption {
   constructor(
-    private elementRef: ElementRef<HTMLInputElement | HTMLTextAreaElement>,
+    public elementRef: ElementRef<HTMLInputElement | HTMLTextAreaElement>,
     @Optional() @Self() public controlDirective?: ControlDirective,
     @Optional() @Self() public modelDirective?: ModelDirective
   ) {

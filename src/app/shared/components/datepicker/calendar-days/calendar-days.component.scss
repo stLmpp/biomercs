@@ -1,0 +1,28 @@
+@use 'variables' as v;
+@use '../calendar' as c;
+
+:host {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, c.$base-size));
+  grid-gap: c.$grid-gap;
+}
+
+.button.fab,
+.day-name {
+  @include c.size();
+}
+
+.button.fab {
+  &.today {
+    @include c.same-date-border();
+  }
+
+  &.selected {
+    @include c.selected-color();
+  }
+}
+
+.day-name {
+  display: grid;
+  place-items: center;
+}

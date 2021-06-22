@@ -1,0 +1,48 @@
+@use 'variables' as v;
+@use 'mixins' as m;
+@use '../calendar' as c;
+
+.bio-calendar {
+  display: inline-block;
+  padding: 1rem;
+  border-radius: v.$radius;
+  background-color: v.$primary-50;
+  color: v.$primary-600;
+  outline: none;
+
+  @include m.elevation(2);
+
+  &.light {
+    background-color: v.$primary-600;
+    color: v.$primary-50;
+  }
+}
+
+.bio-calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.bio-calendar-body {
+  $size: calc((#{c.$base-size} * 7) + (#{c.$grid-gap} * 6));
+
+  min-width: $size;
+  min-height: $size;
+  width: $size;
+  height: $size;
+}
+
+.bio-calendar-month-button {
+  text-transform: capitalize;
+}
+
+.bio-calendar-footer {
+  padding-top: 1rem;
+  .bio-calendar-footer-directive {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+}
