@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable, of, timer } from 'rxjs';
 import { finalize, switchMap, takeUntil, tap, timeout } from 'rxjs/operators';
 import { AuthStore } from './auth.store';
 import { catchAndThrow } from '@util/operators/catch-and-throw';
@@ -15,6 +15,7 @@ import { AuthCredentials, AuthGatewayEvents, AuthRegister, AuthRegisterVW, AuthS
 import { User } from '@model/user';
 import { AuthSteamLoginSocketErrorType } from '@model/enum/auth-steam-login-socket-error-type';
 import { SocketIOService } from '@shared/services/socket-io/socket-io.service';
+import { environment } from '@environment/environment';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -28,6 +29,7 @@ export class AuthService {
     private socketIOService: SocketIOService
   ) {}
 
+  private _autoLoginAttempts = 0;
   private _steamidAuthMap = new Map<string, [string, number?]>();
   private _socketConnection = this.socketIOService.createConnection('auth');
 
@@ -56,17 +58,25 @@ export class AuthService {
   }
 
   autoLogin(): Observable<User | null> {
-    if (!this.authStore.getState().user?.token) {
-      return of(null);
+    const { user } = this.authStore.getState();
+    if (!user?.token) {
+      if (this._autoLoginAttempts > environment.maxAutoLoginAttempts) {
+        return of(null);
+      }
+      this._autoLoginAttempts++;
+      return timer(environment.autoLoginAttemptTimeout).pipe(switchMap(() => this.autoLogin()));
     }
     return this.http.post<User>(`${this.endPoint}/auto-login`, undefined, { context: ignoreErrorContext() }).pipe(
-      tap(user => {
-        this.authStore.updateState({ user });
+      tap(userLogged => {
+        this.authStore.updateState({ user: userLogged });
       }),
       catchAndThrow(() => {
         this.authStore.updateState({ user: null });
         this.router.navigate(['/auth/login']).then();
         return of(null);
+      }),
+      finalize(() => {
+        this._autoLoginAttempts = 0;
       })
     );
   }
