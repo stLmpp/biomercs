@@ -1,0 +1,14 @@
+@use 'variables' as v;
+
+.center-container {
+  display: flex;
+  justify-content: center;
+  > .center-block-mobile {
+    max-width: v.$mobile-width;
+    width: 100%;
+  }
+  > .center-block-medium {
+    max-width: v.$medium-screen-width;
+    width: 100%;
+  }
+}

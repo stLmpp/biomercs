@@ -1,5 +1,5 @@
-<form [controlGroup]="form" (groupSubmit)="submit()" *ngIf="state$ | async as state">
-  <bio-card>
+<form [controlGroup]="form" (groupSubmit)="submit()" *ngIf="state$ | async as state" class="center-container">
+  <bio-card class="center-block-mobile">
     <h3 bioCardTitle>Register Steam</h3>
     <bio-card-content>
       <ng-container *ngIf="state.emailSent; else emailForm">

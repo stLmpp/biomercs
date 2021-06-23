@@ -1,4 +1,4 @@
-<bio-card>
+<bio-card class="center-block-medium">
   <h3 bioCardTitle>Rules</h3>
   <bio-card-content>
     <h5 *ngFor="let rule of rules$ | async; trackBy: trackByRule">{{ rule.order }} - {{ rule.description }}</h5>

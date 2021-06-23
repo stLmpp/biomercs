@@ -9,6 +9,7 @@ import { AuthQuery } from '../auth/auth.query';
   templateUrl: './rules.component.html',
   styleUrls: ['./rules.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'center-container' },
 })
 export class RulesComponent {
   constructor(private ruleService: RuleService, private ruleQuery: RuleQuery, private authQuery: AuthQuery) {}

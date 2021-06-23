@@ -12,6 +12,7 @@ import { mdiGithub, mdiSteam, mdiYoutube } from '@mdi/js';
   styleUrls: ['./stlmpp.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [Animations.fade.inOut()],
+  host: { class: 'center-container' },
 })
 export class StlmppComponent extends Destroyable implements AfterViewInit {
   constructor(private router: Router, private activatedRoute: ActivatedRoute) {

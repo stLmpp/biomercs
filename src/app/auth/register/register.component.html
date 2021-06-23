@@ -1,5 +1,5 @@
-<form [controlGroup]="form" (groupSubmit)="submit()" *ngLet="emailSent$ | async as emailSent">
-  <bio-card>
+<form [controlGroup]="form" (groupSubmit)="submit()" *ngLet="emailSent$ | async as emailSent" class="center-container">
+  <bio-card class="center-block-mobile">
     <h3 bioCardTitle>Register</h3>
     <bio-card-content>
       <ng-container *ngIf="emailSent; else emailNotSent">
