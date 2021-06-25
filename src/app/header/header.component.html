@@ -28,7 +28,7 @@
         </a>
         <button type="button" bioButton [menuTrigger]="menu">
           <icon>person</icon>
-          {{ user.username }}
+          <ng-container *ngIf="!isMobile">{{ user.username }}</ng-container>
           <icon class="triangle" [mdi]="mdiTriangle" [size]="8"></icon>
         </button>
         <bio-menu #menu>
