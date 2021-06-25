@@ -79,7 +79,7 @@ export class PlayerChangeRequestsModalComponent extends LocalState<PlayerChangeR
         scorePlayer =>
           new ControlGroup<ScorePlayerUpdateDto>({
             id: new Control(scorePlayer.idScorePlayer),
-            bulletKills: new Control(scorePlayer.bulletKills, [Validators.required, Validators.min(0)]),
+            bulletKills: new Control(scorePlayer.bulletKills),
             host: new Control(scorePlayer.host),
             description: new Control(scorePlayer.description, [Validators.required]),
             evidence: new Control(scorePlayer.evidence, [Validators.required, Validators.url]),
