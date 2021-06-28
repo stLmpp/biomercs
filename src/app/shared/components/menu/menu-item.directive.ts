@@ -10,15 +10,19 @@ import { ButtonComponent } from '../button/button.component';
   providers: [{ provide: MenuItem, useExisting: forwardRef(() => MenuItemDirective) }],
 })
 export class MenuItemDirective extends MenuItem {
-  constructor(@Host() public menu: MenuComponent, elementRef: ElementRef) {
+  constructor(@Host() menu: MenuComponent, elementRef: ElementRef) {
     super(menu, elementRef);
+    this.menu = menu;
   }
+
+  private _disabled = false;
+
+  override menu: MenuComponent;
 
   @Input()
   set disabled(disabled: boolean) {
     this._disabled = coerceBooleanProperty(disabled);
   }
-  private _disabled = false;
 
   @HostBinding('attr.disabled')
   get disabledAttr(): boolean | null {
@@ -38,13 +42,12 @@ export class MenuItemDirective extends MenuItem {
   providers: [{ provide: MenuItem, useExisting: forwardRef(() => MenuItemButtonDirective) }],
 })
 export class MenuItemButtonDirective extends MenuItem {
-  constructor(
-    @Host() public menu: MenuComponent,
-    elementRef: ElementRef,
-    @Self() private buttonComponent: ButtonComponent
-  ) {
+  constructor(@Host() menu: MenuComponent, elementRef: ElementRef, @Self() private buttonComponent: ButtonComponent) {
     super(menu, elementRef);
+    this.menu = menu;
   }
+
+  override menu: MenuComponent;
 
   isDisabled(): boolean {
     return this.buttonComponent.disabled;

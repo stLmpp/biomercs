@@ -105,7 +105,7 @@ export class ConfirmationCodeInputComponent
     }
   }
 
-  setDisabled(disabled: boolean): void {
+  override setDisabled(disabled: boolean): void {
     this.form.disable(disabled);
   }
 

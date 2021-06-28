@@ -452,7 +452,7 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
       });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  override ngOnChanges(changes: SimpleChanges): void {
     const params: Partial<ParamsForm> = {};
     for (const [key, change] of Object.entries(changes) as [keyof ParamsForm, SimpleChange][]) {
       if (ids.includes(key)) {

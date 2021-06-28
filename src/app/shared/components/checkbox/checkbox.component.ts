@@ -81,7 +81,7 @@ export class CheckboxComponent extends ControlValue<boolean> {
     this.onTouched$.next();
   }
 
-  setDisabled(disabled: boolean): void {
+  override setDisabled(disabled: boolean): void {
     this._disabled = disabled;
     this.changeDetectorRef.markForCheck();
   }

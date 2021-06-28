@@ -120,7 +120,7 @@ export class ScoreAddPlayerComponent extends LocalState<ScoreAddPlayerComponentS
     });
   }
 
-  ngOnChanges(changes: SimpleChangesCustom): void {
+  override ngOnChanges(changes: SimpleChangesCustom): void {
     super.ngOnChanges(changes);
     const characterCostumes: CharacterCostume[] = ((changes.characters?.currentValue ?? []) as Character[]).reduce(
       (acc, character) => [...acc, ...character.characterCostumes],

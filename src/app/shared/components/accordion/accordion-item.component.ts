@@ -91,7 +91,7 @@ export class AccordionItemComponent extends CdkAccordionItem implements OnInit, 
     });
   }
 
-  ngOnDestroy(): void {
+  override ngOnDestroy(): void {
     super.ngOnDestroy();
     this._destroy$.next();
     this._destroy$.complete();

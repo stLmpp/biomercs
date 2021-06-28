@@ -18,9 +18,9 @@ import { auditTime, startWith, takeUntil } from 'rxjs/operators';
   animations: [Animations.fade.inOut(100), Animations.scale.in(100, 0.8)],
 })
 export class SelectMultipleComponent extends SelectComponent implements AfterContentInit {
-  multiple = true;
+  override multiple = true;
 
-  value: any[] = [];
+  override value: any[] = [];
 
   private _setControlValueNoEmit(valueSelected: any): void {
     const indexSelected = this.value.findIndex(value => this.compareWith(value, valueSelected));
@@ -31,13 +31,13 @@ export class SelectMultipleComponent extends SelectComponent implements AfterCon
     }
   }
 
-  setControlValue(valueSelected: any): void {
+  override setControlValue(valueSelected: any): void {
     this._setControlValueNoEmit(valueSelected);
     this.changeDetectorRef.markForCheck();
     this.onChange$.next(this.value);
   }
 
-  setControlValues(values: any[]): void {
+  override setControlValues(values: any[]): void {
     for (const value of values) {
       this._setControlValueNoEmit(value);
     }
@@ -45,16 +45,16 @@ export class SelectMultipleComponent extends SelectComponent implements AfterCon
     this.onChange$.next(this.value);
   }
 
-  isSelected(): boolean {
+  override isSelected(): boolean {
     return false;
   }
 
-  setValue(value: any): void {
+  override setValue(value: any): void {
     this.value = value;
     this.changeDetectorRef.markForCheck();
   }
 
-  ngAfterContentInit(): void {
+  override ngAfterContentInit(): void {
     this.options.changes.pipe(takeUntil(this.destroy$), auditTime(100), startWith(this.options)).subscribe(options => {
       for (const option of options) {
         option.isSelected = this.value.some(value => this.compareWith(value, option.value));

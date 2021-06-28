@@ -73,7 +73,7 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
   isOpen = false;
   value: any;
 
-  get primaryClass(): boolean {
+  override get primaryClass(): boolean {
     return !this.dangerClass && (this.bioType || 'primary') === 'primary';
   }
 

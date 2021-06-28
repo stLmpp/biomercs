@@ -114,7 +114,7 @@ export class SteamRegisterComponent
     }
   }
 
-  ngOnDestroy(): void {
+  override ngOnDestroy(): void {
     const steamid = this.steamid;
     if (steamid) {
       this.authService.removeSteamToken(steamid);

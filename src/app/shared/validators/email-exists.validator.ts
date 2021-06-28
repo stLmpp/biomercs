@@ -11,7 +11,7 @@ export class EmailExistsValidator extends ControlValidator<string, boolean> {
   }
 
   name = 'emailExists';
-  async = true;
+  override async = true;
 
   validate({ value }: Control<string>): Observable<boolean | null> | null {
     if (!value) {

@@ -6,6 +6,7 @@ import { GlobalListenersService } from '@shared/services/global-listeners/global
 import { Destroyable } from '@shared/components/common/destroyable-component';
 import { DOCUMENT } from '@angular/common';
 import { debounceTime, takeUntil } from 'rxjs/operators';
+import { WINDOW } from './core/window.service';
 
 @Component({
   selector: 'bio-root',
@@ -19,7 +20,8 @@ export class AppComponent extends Destroyable implements OnInit, OnDestroy {
     private breakpointObserverService: BreakpointObserverService,
     private metaService: MetaService,
     private globalListenersService: GlobalListenersService,
-    @Inject(DOCUMENT) private document: Document
+    @Inject(DOCUMENT) private document: Document,
+    @Inject(WINDOW) private window: Window
   ) {
     super();
   }
@@ -27,7 +29,7 @@ export class AppComponent extends Destroyable implements OnInit, OnDestroy {
   isMobile$ = this.breakpointObserverService.isMobile$;
 
   private _defineHeightPropertyCss(): void {
-    const vh = window.innerHeight * 0.01;
+    const vh = this.window.innerHeight * 0.01;
     this.document.documentElement.style.setProperty('--vh', `${vh}px`);
   }
 
@@ -44,7 +46,7 @@ export class AppComponent extends Destroyable implements OnInit, OnDestroy {
     this.metaService.init();
   }
 
-  ngOnDestroy(): void {
+  override ngOnDestroy(): void {
     this.titleService.ngOnDestroy();
     this.metaService.ngOnDestroy();
     super.ngOnDestroy();

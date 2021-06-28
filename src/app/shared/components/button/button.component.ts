@@ -20,7 +20,7 @@ export class ButtonComponent extends AbstractComponent implements FocusableOptio
   private _tabindex = 0;
   private _block = false;
 
-  get disabledClass(): boolean | null {
+  override get disabledClass(): boolean | null {
     return this._loading || this._disabled || null;
   }
 

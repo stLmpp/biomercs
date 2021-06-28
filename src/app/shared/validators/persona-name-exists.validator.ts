@@ -11,7 +11,7 @@ export class PersonaNameExistsValidator extends ControlValidator<string, boolean
   }
 
   name = 'personaNameExists';
-  async = true;
+  override async = true;
 
   validate({ value }: Control<string>): Observable<boolean | null> | boolean | null {
     if (!value) {
@@ -35,7 +35,7 @@ export class PersonaNameExistsValidatorDirective extends ControlValidator<string
 
   @Input() personaNameExistsIgnore?: string;
 
-  async = true;
+  override async = true;
   name = 'personaNameExists';
 
   validate(control: Control<string>): Observable<boolean | null> | boolean | null {

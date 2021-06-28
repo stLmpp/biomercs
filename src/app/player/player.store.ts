@@ -19,13 +19,13 @@ export class PlayerStore extends EntityStore<PlayerEntityState> {
     }
   }
 
-  preAddEntity(entity: Player): Player {
+  override preAddEntity(entity: Player): Player {
     entity = super.preAddEntity(entity);
     this._updateUser(entity);
     return entity;
   }
 
-  preUpdateEntity(entity: Player): Player {
+  override preUpdateEntity(entity: Player): Player {
     entity = super.preUpdateEntity(entity);
     this._updateUser(entity);
     return entity;

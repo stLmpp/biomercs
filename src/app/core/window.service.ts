@@ -9,7 +9,7 @@ export abstract class WindowRef {
 }
 @Injectable({ providedIn: 'root' })
 export class BrowserWindowRef extends WindowRef {
-  get nativeWindow(): Window | Record<string, unknown> {
+  override get nativeWindow(): Window | Record<string, unknown> {
     return window;
   }
 }

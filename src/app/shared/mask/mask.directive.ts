@@ -61,7 +61,7 @@ export class MaskDirective extends _MaskDirective implements ControlValue<string
     return super.writeValue(value);
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  override ngOnChanges(changes: SimpleChanges): void {
     if (changes.bioMask) {
       changes.maskExpression = changes.bioMask;
     }
