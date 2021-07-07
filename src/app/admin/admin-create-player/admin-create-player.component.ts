@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Control, ControlGroup } from '@stlmpp/control';
 import { PlayerAdd } from '@model/player';
-import { finalize, map, tap } from 'rxjs/operators';
+import { finalize, map, tap } from 'rxjs';
 import { PlayerService } from '../../player/player.service';
 import { PersonaNameExistsValidator } from '@shared/validators/persona-name-exists.validator';
 import { SteamIdExistsValidator } from '@shared/validators/steam-id-exists.validator';

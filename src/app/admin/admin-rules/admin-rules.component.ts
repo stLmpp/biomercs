@@ -7,7 +7,7 @@ import { LocalState } from '@stlmpp/store';
 import { trackByFactory } from '@stlmpp/utils';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { RuleService } from '../../rules/rule.service';
-import { finalize, tap } from 'rxjs/operators';
+import { finalize, tap } from 'rxjs';
 import { RuleQuery } from '../../rules/rule.query';
 import { SnackBarService } from '@shared/components/snack-bar/snack-bar.service';
 import { UnsavedData, UnsavedDataType } from '@shared/guards/unsaved-data.guard';

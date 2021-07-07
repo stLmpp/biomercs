@@ -16,8 +16,7 @@ import {
 } from '@angular/core';
 import { Control, ControlArray, ControlBuilder, ControlValue, Validators } from '@stlmpp/control';
 import { FocusableOption, FocusKeyManager } from '@angular/cdk/a11y';
-import { Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { filter, Subject, takeUntil } from 'rxjs';
 import { SimpleChangesCustom } from '@util/util';
 import { trackByFactory } from '@stlmpp/utils';
 

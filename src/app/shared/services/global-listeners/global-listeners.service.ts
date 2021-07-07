@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
-import { fromEvent } from 'rxjs';
+import { filter, fromEvent, share } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
-import { filter, share } from 'rxjs/operators';
 import { ActivationEnd, Event, Router } from '@angular/router';
 import { WINDOW } from '../../../core/window.service';
 

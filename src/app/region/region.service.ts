@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { tap } from 'rxjs/operators';
 import { RegionStore } from './region.store';
 import { setLoading, useCache } from '@stlmpp/store';
 import { AbstractRegionService } from './region-service.token';

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Control, ControlValidator } from '@stlmpp/control';
-import { Observable, timer } from 'rxjs';
-import { map, switchMapTo } from 'rxjs/operators';
+import { map, Observable, switchMapTo, timer } from 'rxjs';
 import { SteamService } from '@shared/services/steam/steam.service';
 
 @Injectable({ providedIn: 'root' })

@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { WINDOW } from '../../../core/window.service';
-import { fromEvent, Observable } from 'rxjs';
-import { auditTime, map, shareReplay, startWith } from 'rxjs/operators';
+import { auditTime, fromEvent, map, Observable, shareReplay, startWith } from 'rxjs';
 
 export enum MediaQueryEnum {
   xl = '(min-width: 1920px)',

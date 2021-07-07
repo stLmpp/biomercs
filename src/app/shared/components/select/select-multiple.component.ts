@@ -3,7 +3,7 @@ import { SelectComponent } from '@shared/components/select/select.component';
 import { Select } from '@shared/components/select/select';
 import { ControlValue } from '@stlmpp/control';
 import { Animations } from '@shared/animations/animations';
-import { auditTime, startWith, takeUntil } from 'rxjs/operators';
+import { auditTime, startWith, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'bio-select[multiple]',

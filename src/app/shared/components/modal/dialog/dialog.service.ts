@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { ModalService } from '../modal.service';
 import { ModalRef } from '../modal-ref';
 import { DialogComponent, DialogData, DialogType } from './dialog.component';
-import { from, Observable } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { from, map, Observable, switchMap } from 'rxjs';
 import { DynamicLoaderService } from '../../../../core/dynamic-loader.service';
 import { ModalConfig } from '@shared/components/modal/modal.config';
 

@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, Component, HostBinding, Inject } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { ModalRef } from '../modal-ref';
-import { isObservable, Observable } from 'rxjs';
+import { isObservable, Observable, take, takeUntil } from 'rxjs';
 import { MODAL_DATA } from '../modal.config';
-import { take, takeUntil } from 'rxjs/operators';
 import { catchAndThrow } from '@util/operators/catch-and-throw';
 import { isFunction } from 'st-utils';
 import { LocalState } from '@stlmpp/store';

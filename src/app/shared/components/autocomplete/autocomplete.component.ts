@@ -20,8 +20,7 @@ import { Autocomplete } from '@shared/components/autocomplete/autocomplete';
 import { Control } from '@stlmpp/control';
 import { noop } from 'st-utils';
 import { Key } from '@model/enum/key';
-import { Observable, of } from 'rxjs';
-import { pluck, startWith } from 'rxjs/operators';
+import { Observable, of, pluck, startWith } from 'rxjs';
 
 @Component({
   selector: 'bio-autocomplete',

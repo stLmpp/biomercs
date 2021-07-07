@@ -20,7 +20,7 @@ import { cdkOverlayTransparentBackdrop } from '@util/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { CALENDAR_LOCALE } from '@shared/components/datepicker/calendar-locale.token';
 import { Destroyable } from '@shared/components/common/destroyable-component';
-import { take, takeUntil } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs';
 import { AnimationEvent } from '@angular/animations';
 import { getDatepickerOverlayPositions } from '@shared/components/datepicker/datepicker/datepicker';
 

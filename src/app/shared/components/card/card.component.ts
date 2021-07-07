@@ -5,12 +5,12 @@ import {
   Component,
   ContentChildren,
   ElementRef,
+  EventEmitter,
   HostBinding,
   Input,
   Output,
   QueryList,
   ViewEncapsulation,
-  EventEmitter,
 } from '@angular/core';
 import { CardTitleDirective } from './card-title.directive';
 import { CardContentDirective } from './card-content.directive';
@@ -20,7 +20,7 @@ import { Animations } from '@shared/animations/animations';
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
 import { CardChild } from '@shared/components/card/card-child';
 import { Destroyable } from '@shared/components/common/destroyable-component';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs';
 
 @Component({
   selector: 'bio-card',

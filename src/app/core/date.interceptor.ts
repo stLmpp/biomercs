@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpEvent, HttpEventType, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, Observable } from 'rxjs';
 import { isArray, isObject } from 'st-utils';
 
 // eslint-disable-next-line max-len

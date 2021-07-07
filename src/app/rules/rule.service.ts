@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { Rule, RuleAdd, RuleUpdate, RuleUpsert } from '@model/rule';
-import { tap } from 'rxjs/operators';
 import { RuleStore } from './rule.store';
 import { useCache } from '@stlmpp/store';
 

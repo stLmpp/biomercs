@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of, timer } from 'rxjs';
-import { finalize, switchMap, takeUntil, tap, timeout } from 'rxjs/operators';
+import { finalize, Observable, of, switchMap, takeUntil, tap, timeout, timer } from 'rxjs';
 import { AuthStore } from './auth.store';
 import { catchAndThrow } from '@util/operators/catch-and-throw';
 import { ignoreErrorContext } from './auth-error.interceptor';

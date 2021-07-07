@@ -1,5 +1,4 @@
-import { OperatorFunction } from 'rxjs';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { distinctUntilChanged, OperatorFunction } from 'rxjs';
 
 export function distinctUntilKeysChanged<T extends Record<string, any>, K extends keyof T>(
   keys: K[]

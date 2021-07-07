@@ -3,7 +3,7 @@ import { ControlBuilder, Validators } from '@stlmpp/control';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import { AuthService } from '../../auth.service';
-import { finalize, tap } from 'rxjs/operators';
+import { finalize, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { catchAndThrow } from '@util/operators/catch-and-throw';
 import { LocalState } from '@stlmpp/store';

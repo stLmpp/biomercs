@@ -2,10 +2,20 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { AuthQuery } from '../auth/auth.query';
 import { AuthService } from '../auth/auth.service';
 import { SnackBarService } from '@shared/components/snack-bar/snack-bar.service';
-import { debounceTime, filter, map, mapTo, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
+import {
+  combineLatest,
+  debounceTime,
+  filter,
+  forkJoin,
+  map,
+  mapTo,
+  startWith,
+  switchMap,
+  takeUntil,
+  withLatestFrom,
+} from 'rxjs';
 import { BreakpointObserverService } from '@shared/services/breakpoint-observer/breakpoint-observer.service';
 import { Router } from '@angular/router';
-import { combineLatest, forkJoin } from 'rxjs';
 import { ScoreService } from '../score/score.service';
 import { LocalState } from '@stlmpp/store';
 import { GlobalListenersService } from '@shared/services/global-listeners/global-listeners.service';

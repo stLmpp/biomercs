@@ -14,7 +14,7 @@ import { MaskEnum, MaskEnumPatterns } from '@shared/mask/mask.enum';
 import { CURRENCY_MASK_CONFIG } from '@shared/currency-mask/currency-mask-config.token';
 import { scoreCurrencyMask } from '../../../score/score-shared/util';
 import { ScoreService } from '../../../score/score.service';
-import { finalize, switchMapTo } from 'rxjs/operators';
+import { finalize, switchMapTo } from 'rxjs';
 import { SnackBarService } from '@shared/components/snack-bar/snack-bar.service';
 import { LocalState } from '@stlmpp/store';
 

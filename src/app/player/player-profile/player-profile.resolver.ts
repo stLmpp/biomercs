@@ -4,9 +4,8 @@ import { ScoreGroupedByStatus } from '@model/score-grouped-by-status';
 import { PlayerService } from '../player.service';
 import { ScoreService } from '../../score/score.service';
 import { AuthQuery } from '../../auth/auth.query';
-import { Observable, of } from 'rxjs';
+import { Observable, of, switchMap } from 'rxjs';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
-import { switchMap } from 'rxjs/operators';
 import { orderByOperator } from '@stlmpp/utils';
 
 @Injectable({ providedIn: 'root' })

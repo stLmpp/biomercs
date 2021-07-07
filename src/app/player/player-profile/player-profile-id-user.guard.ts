@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { map, Observable } from 'rxjs';
 import { PlayerService } from '../player.service';
-import { map } from 'rxjs/operators';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 
 @Injectable({

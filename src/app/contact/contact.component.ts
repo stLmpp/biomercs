@@ -3,7 +3,7 @@ import { Control, ControlGroup, Validators } from '@stlmpp/control';
 import { ContactSendMail } from '@model/contact';
 import { LocalState } from '@stlmpp/store';
 import { ContactService } from './contact.service';
-import { finalize, tap } from 'rxjs/operators';
+import { finalize, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { SnackBarService } from '@shared/components/snack-bar/snack-bar.service';
 import { catchAndThrow } from '@util/operators/catch-and-throw';

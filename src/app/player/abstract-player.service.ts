@@ -1,9 +1,8 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { PlayerStore } from './player.store';
-import { Observable } from 'rxjs';
+import { map, Observable, switchMap, tap } from 'rxjs';
 import { Player, PlayerAdd, PlayerUpdate } from '@model/player';
-import { map, switchMap, tap } from 'rxjs/operators';
 import { Pagination } from '@model/pagination';
 import { HttpParams } from '@util/http-params';
 import { WINDOW } from '../core/window.service';

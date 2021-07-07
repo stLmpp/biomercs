@@ -4,7 +4,7 @@ import {
   MediaQueryEnum,
 } from '@shared/services/breakpoint-observer/breakpoint-observer.service';
 import { ScoreVW } from '@model/score';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { BooleanInput } from 'st-utils';
 import { PaginationMetaVW } from '@model/pagination';
 import { TableCellNotifyChange, TableOrder } from '@shared/components/table/type';

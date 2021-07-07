@@ -7,7 +7,7 @@ import {
   ScoreTopTableWorldRecord,
   ScoreVW,
 } from '@model/score';
-import { Observable } from 'rxjs';
+import { auditTime, Observable, tap } from 'rxjs';
 import { OrderByDirection } from 'st-utils';
 import { ScoreApprovalAdd, ScoreApprovalVW } from '@model/score-approval';
 import { HttpParams } from '@util/http-params';
@@ -15,7 +15,6 @@ import { HttpClient } from '@angular/common/http';
 import { ScoreApprovalActionEnum } from '@model/enum/score-approval-action.enum';
 import { ScoreChangeRequest, ScoreChangeRequestsPaginationVW } from '@model/score-change-request';
 import { HeaderState, HeaderStore } from '../header/header.store';
-import { auditTime, tap } from 'rxjs/operators';
 import { SocketIOService } from '@shared/services/socket-io/socket-io.service';
 import { Pagination } from '@model/pagination';
 import { ScoreGroupedByStatus } from '@model/score-grouped-by-status';

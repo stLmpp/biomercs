@@ -16,9 +16,8 @@ import {
 } from '@angular/core';
 import { LocalState } from '@stlmpp/store';
 import { addMonths, addYears, setMonth, setYear, subMonths, subYears } from 'date-fns';
-import { distinctUntilChanged, map } from 'rxjs/operators';
+import { combineLatest, distinctUntilChanged, map, Subject } from 'rxjs';
 import { CalendarViewModeEnum } from '@shared/components/datepicker/calendar-view-mode.enum';
-import { combineLatest, Subject } from 'rxjs';
 import { CalendarAdapter } from '@shared/components/datepicker/calendar-adapter';
 import { Key } from '@model/enum/key';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';

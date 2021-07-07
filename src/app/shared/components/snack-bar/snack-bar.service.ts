@@ -4,7 +4,7 @@ import { SnackBarComponent } from './snack-bar.component';
 import { SNACK_BAR_DEFAULT_CONFIG, SnackBarConfig } from './snack-bar.config';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { coerceArray } from '@angular/cdk/coercion';
-import { take } from 'rxjs/operators';
+import { take } from 'rxjs';
 
 @Injectable()
 export class SnackBarService {

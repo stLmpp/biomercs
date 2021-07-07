@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { Observable, timer } from 'rxjs';
-import { delayWhen, retryWhen, scan } from 'rxjs/operators';
+import { delayWhen, Observable, retryWhen, scan, timer } from 'rxjs';
 
 @Injectable()
 export class RetryInterceptor implements HttpInterceptor {

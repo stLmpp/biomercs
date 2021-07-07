@@ -16,8 +16,20 @@ import { GameService } from '../services/game/game.service';
 import { MiniGameService } from '../services/mini-game/mini-game.service';
 import { ModeService } from '../services/mode/mode.service';
 import { filterNil } from '../operators/filter';
-import { debounceTime, distinctUntilChanged, filter, finalize, map, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { combineLatest, MonoTypeOperatorFunction, Observable, OperatorFunction } from 'rxjs';
+import {
+  combineLatest,
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  finalize,
+  map,
+  MonoTypeOperatorFunction,
+  Observable,
+  OperatorFunction,
+  switchMap,
+  takeUntil,
+  tap,
+} from 'rxjs';
 import { StageService } from '../services/stage/stage.service';
 import { trackByFactory } from '@stlmpp/utils';
 import { CharacterService } from '../services/character/character.service';

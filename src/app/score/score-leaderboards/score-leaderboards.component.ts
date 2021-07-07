@@ -2,9 +2,19 @@ import { ChangeDetectionStrategy, Component, TrackByFunction } from '@angular/co
 import { ParamsConfig, ParamsForm } from '@shared/params/params.component';
 import { Control, ControlBuilder, Validators } from '@stlmpp/control';
 import { ScoreService } from '../score.service';
-import { debounceTime, filter, finalize, map, pluck, shareReplay, switchMap, tap } from 'rxjs/operators';
+import {
+  combineLatest,
+  debounceTime,
+  filter,
+  finalize,
+  map,
+  Observable,
+  pluck,
+  shareReplay,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { trackByFactory } from '@stlmpp/utils';
-import { combineLatest, Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { orderBy, OrderByDirection } from 'st-utils';
 import { RouteParamEnum } from '@model/enum/route-param.enum';

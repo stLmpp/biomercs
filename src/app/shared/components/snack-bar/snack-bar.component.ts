@@ -10,8 +10,7 @@ import {
 } from '@angular/core';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { SnackBarConfig } from './snack-bar.config';
-import { BehaviorSubject, isObservable, Observable, Subject, timer } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, isObservable, Observable, Subject, take, takeUntil, timer } from 'rxjs';
 import { AnimationEvent } from '@angular/animations';
 import { Animations } from '../../animations/animations';
 

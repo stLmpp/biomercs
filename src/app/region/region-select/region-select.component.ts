@@ -1,12 +1,11 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, Inject, ViewChild } from '@angular/core';
 import { RegionQuery } from '../region.query';
-import { debounceTime, delay, finalize, map, startWith, tap } from 'rxjs/operators';
+import { combineLatest, debounceTime, delay, finalize, map, Observable, startWith, tap } from 'rxjs';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import { AbstractRegionService } from '../region-service.token';
 import { Region, trackByRegion } from '@model/region';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { combineLatest, Observable } from 'rxjs';
 import { Control } from '@stlmpp/control';
 import { LocalState, StMapView } from '@stlmpp/store';
 

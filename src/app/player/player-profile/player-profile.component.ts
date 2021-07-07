@@ -1,7 +1,19 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { PlayerQuery } from '../player.query';
 import { RouterQuery } from '@stlmpp/router';
-import { debounceTime, filter, finalize, map, pluck, skip, switchMap, takeUntil } from 'rxjs/operators';
+import {
+  combineLatest,
+  concat,
+  debounceTime,
+  filter,
+  finalize,
+  map,
+  Observable,
+  pluck,
+  skip,
+  switchMap,
+  takeUntil,
+} from 'rxjs';
 import { PlayerService } from '../player.service';
 import { Animations } from '@shared/animations/animations';
 import { AuthQuery } from '../../auth/auth.query';
@@ -24,7 +36,6 @@ import { getScoreDefaultColDefs } from '../../score/score-shared/util';
 import { AuthDateFormatPipe } from '../../auth/shared/auth-date-format.pipe';
 import { ColDef } from '@shared/components/table/col-def';
 import { ScoreOpenInfoCellComponent } from '../../score/score-shared/score-open-info-cell/score-open-info-cell.component';
-import { combineLatest, concat, Observable } from 'rxjs';
 import { isBefore, subDays } from 'date-fns';
 import { filterNil } from '@shared/operators/filter';
 import { mdiSteam } from '@mdi/js';

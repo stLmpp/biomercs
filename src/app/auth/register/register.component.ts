@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Observable } from 'rxjs';
+import { debounceTime, finalize, Observable, tap } from 'rxjs';
 import { AuthService } from '../auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { debounceTime, finalize, tap } from 'rxjs/operators';
 import { Control, ControlBuilder, Validators } from '@stlmpp/control';
 import { catchAndThrow } from '@util/operators/catch-and-throw';
 import { EmailExistsValidator } from '@shared/validators/email-exists.validator';

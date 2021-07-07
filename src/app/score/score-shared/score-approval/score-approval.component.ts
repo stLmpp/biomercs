@@ -2,8 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { PARAMS_FORM_NULL, ParamsConfig, ParamsForm } from '@shared/params/params.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ScoreService } from '../../score.service';
-import { filter, finalize, pluck, skip, switchMap, takeUntil } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { filter, finalize, Observable, pluck, skip, switchMap, takeUntil } from 'rxjs';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { PaginationMetaVW } from '@model/pagination';
 import { ScoreVW } from '@model/score';

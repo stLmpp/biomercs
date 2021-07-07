@@ -8,9 +8,8 @@ import { ScoreApprovalMotiveQuery } from '@shared/services/score-approval-motive
 import { ScoreApprovalMotiveService } from '@shared/services/score-approval-motive/score-approval-motive.service';
 import { ControlBuilder, Validators } from '@stlmpp/control';
 import { ScoreApprovalMotive, trackByScoreApprovalMotive } from '@model/score-approval-motive';
-import { Observable } from 'rxjs';
+import { finalize, Observable, switchMap, tap } from 'rxjs';
 import { LocalState, StMapView } from '@stlmpp/store';
-import { finalize, switchMap, tap } from 'rxjs/operators';
 import { ScoreApprovalAdd, ScoreApprovalVW } from '@model/score-approval';
 import { ScoreApprovalComponentState } from '../score-approval.component';
 

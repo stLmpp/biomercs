@@ -1,13 +1,12 @@
 import { Injectable, Injector, Type } from '@angular/core';
 import { GlobalListenersService } from '@shared/services/global-listeners/global-listeners.service';
 import { Destroyable } from '@shared/components/common/destroyable-component';
-import { distinctUntilChanged, filter, switchMap, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, distinctUntilChanged, filter, isObservable, of, switchMap, takeUntil } from 'rxjs';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { Title } from '@angular/platform-browser';
 import { isFunction } from 'st-utils';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { TitleResolver, TitleType } from '@shared/title/title-resolver';
-import { BehaviorSubject, isObservable, of } from 'rxjs';
 import { filterNil } from '@shared/operators/filter';
 
 function isTitleResolver(type: any): type is Type<TitleResolver> {

@@ -17,12 +17,11 @@ import {
 } from '@angular/core';
 import { ControlValue } from '@stlmpp/control';
 import { Select } from './select';
-import { Subject } from 'rxjs';
+import { auditTime, startWith, Subject, takeUntil } from 'rxjs';
 import { OptionComponent } from './option.component';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { cdkOverlayTransparentBackdrop } from '@util/overlay';
-import { auditTime, startWith, takeUntil } from 'rxjs/operators';
 import { FocusKeyManager } from '@angular/cdk/a11y';
 import { Animations } from '../../animations/animations';
 import { AnimationEvent } from '@angular/animations';

@@ -12,11 +12,10 @@ import {
   ScoreTopTableWorldRecordWithoutUndefined,
   ScoreVW,
 } from '@model/score';
-import { filter, finalize, map, shareReplay, switchMap } from 'rxjs/operators';
+import { combineLatest, filter, finalize, map, Observable, shareReplay, switchMap } from 'rxjs';
 import { orderBy, OrderByDirection, OrderByType } from 'st-utils';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
-import { combineLatest, Observable } from 'rxjs';
 import { isNotNil } from '@shared/operators/filter';
 import { BreakpointObserverService } from '@shared/services/breakpoint-observer/breakpoint-observer.service';
 

@@ -17,7 +17,7 @@ import { CdkPortalOutlet, ComponentPortal } from '@angular/cdk/portal';
 import { TableCell, TableCellNotifyChange } from '@shared/components/table/type';
 import { SimpleChangesCustom } from '@util/util';
 import { Destroyable } from '@shared/components/common/destroyable-component';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs';
 
 @Component({
   selector: 'bio-cell',

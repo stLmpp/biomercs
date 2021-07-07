@@ -9,7 +9,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Control, ControlBuilder } from '@stlmpp/control';
-import { debounceTime, filter, finalize, pluck, switchMap, takeUntil } from 'rxjs/operators';
+import { debounceTime, filter, finalize, Observable, pluck, switchMap, takeUntil } from 'rxjs';
 import { Character } from '@model/character';
 import { trackByFactory } from '@stlmpp/utils';
 import { CharacterCostume } from '@model/character-costume';
@@ -19,7 +19,6 @@ import { AutocompleteDirective } from '@shared/components/autocomplete/autocompl
 import { generateScorePlayerControlGroup, ScorePlayerAddForm } from '../score-add';
 import { LocalState } from '@stlmpp/store';
 import { AuthQuery } from '../../../auth/auth.query';
-import { Observable } from 'rxjs';
 import { BooleanInput } from '@angular/cdk/coercion';
 import { SimpleChangesCustom } from '@util/util';
 

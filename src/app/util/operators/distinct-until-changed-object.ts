@@ -1,5 +1,4 @@
-import { MonoTypeOperatorFunction } from 'rxjs';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { distinctUntilChanged, MonoTypeOperatorFunction } from 'rxjs';
 import { isNil } from 'st-utils';
 
 export function distinctUntilChangedObject<T>(): MonoTypeOperatorFunction<T> {

@@ -5,7 +5,7 @@ import { MetaService } from '@shared/meta/meta.service';
 import { GlobalListenersService } from '@shared/services/global-listeners/global-listeners.service';
 import { Destroyable } from '@shared/components/common/destroyable-component';
 import { DOCUMENT } from '@angular/common';
-import { debounceTime, takeUntil } from 'rxjs/operators';
+import { debounceTime, takeUntil } from 'rxjs';
 import { WINDOW } from './core/window.service';
 
 @Component({

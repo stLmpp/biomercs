@@ -3,8 +3,18 @@ import { UserService } from '@shared/services/user/user.service';
 import { Control, ControlGroup } from '@stlmpp/control';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
-import { debounceTime, distinctUntilChanged, filter, finalize, pluck, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { combineLatest, Observable } from 'rxjs';
+import {
+  combineLatest,
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  finalize,
+  Observable,
+  pluck,
+  switchMap,
+  takeUntil,
+  tap,
+} from 'rxjs';
 import { LocalState } from '@stlmpp/store';
 import { filterNil } from '@shared/operators/filter';
 import { trackByUser, User } from '@model/user';

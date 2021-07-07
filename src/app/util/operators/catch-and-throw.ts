@@ -1,6 +1,5 @@
-import { isObservable, Observable, OperatorFunction, throwError } from 'rxjs';
+import { catchError, isObservable, Observable, OperatorFunction, throwError } from 'rxjs';
 import { HttpError } from '@model/http-error';
-import { catchError } from 'rxjs/operators';
 
 export const catchAndThrow = <T>(callback: (error: HttpError) => any): OperatorFunction<T, T> =>
   catchError((err: HttpError) => {

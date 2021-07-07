@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, tap } from 'rxjs';
 import { GameStore } from './game.store';
 import { httpCache } from '../../operators/http-cache';
 import { Game } from '@model/game';
