@@ -1,7 +1,7 @@
-import { Base } from './base';
 import { trackByFactory } from '@stlmpp/utils';
 
-export interface Game extends Base {
+export interface Game {
+  id: number;
   name: string;
   shortName: string;
 }
