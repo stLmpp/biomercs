@@ -20,12 +20,11 @@ import {
   combineLatest,
   debounceTime,
   distinctUntilChanged,
-  filter,
   finalize,
   map,
   MonoTypeOperatorFunction,
   Observable,
-  OperatorFunction,
+  shareReplay,
   switchMap,
   takeUntil,
   tap,
@@ -43,9 +42,9 @@ import { Stage } from '@model/stage';
 import { MiniGame } from '@model/mini-game';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { LocalState } from '@stlmpp/store';
-import { isNotNil } from 'st-utils';
 import { Platform } from '@model/platform';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
+import { filterNilArrayOperator } from '@util/operators/filter-nil-array';
 
 export interface ParamsForm {
   idPlatform: Nullable<number>;
@@ -84,10 +83,6 @@ const defaultConfigs: ParamsConfig = {
   idMiniGame: { show: true },
   idGame: { show: true },
 };
-
-function filterNilArray<T>(array: T[]): array is NonNullable<T>[] {
-  return array.every(isNotNil);
-}
 
 interface ParamsComponentState {
   gameLoading: boolean;
@@ -232,6 +227,9 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
     tap(idGame => {
       if (!idGame) {
         this.idMiniGameControl.setValue(null);
+        this.idMiniGameControl.disable();
+      } else {
+        this.idMiniGameControl.enable();
       }
     })
   );
@@ -240,6 +238,9 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
     tap(idMiniGame => {
       if (!idMiniGame) {
         this.idModeControl.setValue(null);
+        this.idModeControl.disable();
+      } else {
+        this.idModeControl.enable();
       }
     })
   );
@@ -249,13 +250,17 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
       if (!idMode) {
         this.idStageControl.setValue(null);
         this.idCharacterCostumeControl.setValue(null);
+        this.idStageControl.disable();
+        this.idCharacterCostumeControl.disable();
+      } else {
+        this.idStageControl.enable();
+        this.idCharacterCostumeControl.enable();
       }
     })
   );
   readonly idStage$ = this.idStageControl.value$.pipe(distinctUntilChanged());
   readonly idCharacterCostume$ = this.idCharacterCostumeControl.value$.pipe(distinctUntilChanged());
   readonly idPlatformNotNil$ = this.idPlatform$.pipe(filterNil());
-  readonly idModeSelected$ = this.idMode$.pipe(map(idMode => !!idMode));
 
   readonly platforms$ = this._selectPlatforms().pipe(
     tap(platforms => {
@@ -265,33 +270,38 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
       } else if (this._selectParamIfOne && platforms.length === 1) {
         this.idPlatformControl.setValue(platforms[0].id);
       }
-    })
+    }),
+    shareReplay()
   );
   readonly games$ = this.idPlatformNotNil$.pipe(
-    switchMap(idPlatform => this._selectGames(idPlatform).pipe(this._setParamOrNullOperator<Game>(this.idGameControl)))
+    switchMap(idPlatform => this._selectGames(idPlatform).pipe(this._setParamOrNullOperator<Game>(this.idGameControl))),
+    shareReplay()
   );
   readonly miniGames$ = combineLatest([this.idPlatform$, this.idGame$]).pipe(
-    this._filterIds(),
+    filterNilArrayOperator(),
     switchMap(([idPlatform, idGame]) =>
       this._selectMiniGames(idPlatform, idGame).pipe(this._setParamOrNullOperator<MiniGame>(this.idMiniGameControl))
-    )
+    ),
+    shareReplay()
   );
   readonly modes$ = combineLatest([this.idPlatform$, this.idGame$, this.idMiniGame$]).pipe(
-    this._filterIds(),
+    filterNilArrayOperator(),
     switchMap(([idPlatform, idGame, idMiniGame]) =>
       this._selectModes(idPlatform, idGame, idMiniGame).pipe(this._setParamOrNullOperator<Mode>(this.idModeControl))
-    )
+    ),
+    shareReplay()
   );
   readonly stages$ = combineLatest([this.idPlatform$, this.idGame$, this.idMiniGame$, this.idMode$]).pipe(
-    this._filterIds(),
+    filterNilArrayOperator(),
     switchMap(([idPlatform, idGame, idMiniGame, idMode]) =>
       this._selectStages(idPlatform, idGame, idMiniGame, idMode).pipe(
         this._setParamOrNullOperator<Stage>(this.idStageControl)
       )
-    )
+    ),
+    shareReplay()
   );
   readonly characters$ = combineLatest([this.idPlatform$, this.idGame$, this.idMiniGame$, this.idMode$]).pipe(
-    this._filterIds(),
+    filterNilArrayOperator(),
     switchMap(([idPlatform, idGame, idMiniGame, idMode]) => {
       this.updateState('characterLoading', true);
       return this.characterService.findByIdPlatformGameMiniGameMode(idPlatform, idGame, idMiniGame, idMode).pipe(
@@ -306,7 +316,8 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
           this._setParamOrNull(this.idCharacterCostumeControl, characterCostumes);
         })
       );
-    })
+    }),
+    shareReplay()
   );
 
   readonly state$ = this.selectState();
@@ -403,10 +414,6 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
         );
       })
     );
-  }
-
-  private _filterIds(): OperatorFunction<Nullable<number>[], NonNullable<number>[]> {
-    return filter(filterNilArray);
   }
 
   private _getParamOrNull(param: string): number | null {

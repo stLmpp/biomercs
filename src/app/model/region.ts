@@ -1,7 +1,7 @@
 import { trackByFactory } from '@stlmpp/utils';
-import { Base } from '@model/base';
 
-export interface Region extends Base {
+export interface Region {
+  id: number;
   name: string;
   shortName: string;
 }

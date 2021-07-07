@@ -4,7 +4,7 @@ import { AuthQuery } from '../../auth/auth.query';
 import { ParamsComponent, ParamsConfig } from '@shared/params/params.component';
 import { CURRENCY_MASK_CONFIG } from '@shared/currency-mask/currency-mask-config.token';
 import { MaskEnum, MaskEnumPatterns } from '@shared/mask/mask.enum';
-import { combineLatest, debounceTime, finalize, map, shareReplay, switchMap, takeUntil, tap } from 'rxjs';
+import { combineLatest, distinctUntilChanged, finalize, map, shareReplay, switchMap, takeUntil, tap } from 'rxjs';
 import { CharacterCostume } from '@model/character-costume';
 import { filterNil } from '@shared/operators/filter';
 import { CharacterService } from '@shared/services/character/character.service';
@@ -19,6 +19,7 @@ import { scoreCurrencyMask } from '../score-shared/util';
 import { trackByFactory } from '@stlmpp/utils';
 import { LocalState } from '@stlmpp/store';
 import { Router } from '@angular/router';
+import { filterNilArrayOperator } from '@util/operators/filter-nil-array';
 
 export interface ScoreAddState {
   characterLoading: boolean;
@@ -84,22 +85,17 @@ export class ScoreAddComponent extends LocalState<ScoreAddState> implements OnIn
     ]),
   });
 
-  idPlatformNotNil$ = this.form.get('idPlatform').value$.pipe(filterNil());
-  idGameNotNil$ = this.form.get('idGame').value$.pipe(filterNil());
-  idMiniGameNotNil$ = this.form.get('idMiniGame').value$.pipe(filterNil());
-  idModeNotNil$ = this.form.get('idMode').value$.pipe(filterNil());
+  idPlatform$ = this.form.get('idPlatform').value$.pipe(distinctUntilChanged());
+  idGame$ = this.form.get('idGame').value$.pipe(distinctUntilChanged());
+  idMiniGame$ = this.form.get('idMiniGame').value$.pipe(distinctUntilChanged());
+  idMode$ = this.form.get('idMode').value$.pipe(distinctUntilChanged());
   characterLoading$ = this.selectState('characterLoading');
   submitModalLoading$ = this.selectState('submitModalLoading');
 
   hasIdMode$ = this.form.get('idMode').value$.pipe(map(idMode => !!idMode));
 
-  characters$ = combineLatest([
-    this.idPlatformNotNil$,
-    this.idGameNotNil$,
-    this.idMiniGameNotNil$,
-    this.idModeNotNil$,
-  ]).pipe(
-    debounceTime(0),
+  characters$ = combineLatest([this.idPlatform$, this.idGame$, this.idMiniGame$, this.idMode$]).pipe(
+    filterNilArrayOperator(),
     switchMap(([idPlatform, idGame, idMiniGame, idMode]) => {
       this.updateState('characterLoading', true);
       return this.characterService.findByIdPlatformGameMiniGameMode(idPlatform, idGame, idMiniGame, idMode).pipe(
@@ -243,9 +239,10 @@ export class ScoreAddComponent extends LocalState<ScoreAddState> implements OnIn
   }
 
   ngOnInit(): void {
-    this.idModeNotNil$
+    this.idMode$
       .pipe(
         takeUntil(this.destroy$),
+        filterNil(),
         switchMap(idMode => this.modeQuery.selectEntity(idMode)),
         filterNil()
       )
