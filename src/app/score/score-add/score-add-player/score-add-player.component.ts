@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { Control, ControlBuilder } from '@stlmpp/control';
 import { debounceTime, filter, finalize, Observable, pluck, switchMap, takeUntil } from 'rxjs';
-import { Character } from '@model/character';
+import { CharacterWithCharacterCostumes } from '@model/character';
 import { trackByFactory } from '@stlmpp/utils';
 import { CharacterCostume } from '@model/character-costume';
 import { PlayerService } from '../../../player/player.service';
@@ -46,7 +46,7 @@ export class ScoreAddPlayerComponent extends LocalState<ScoreAddPlayerComponentS
   @Input() disabled = false;
   @Input() first = false;
   @Input() charactersLoading: BooleanInput = false;
-  @Input() characters: Character[] | null = [];
+  @Input() characters: CharacterWithCharacterCostumes[] | null = [];
 
   @Input()
   set player(player: ScorePlayerAddForm) {
@@ -89,7 +89,7 @@ export class ScoreAddPlayerComponent extends LocalState<ScoreAddPlayerComponentS
   playersLoading$ = this.selectState('playersLoading');
   playerSearchModalLoading$ = this.selectState('playerSearchModalLoading');
 
-  trackByCharacter = trackByFactory<Character>('id');
+  trackByCharacter = trackByFactory<CharacterWithCharacterCostumes>('id');
   trackByCharacterCostume = trackByFactory<CharacterCostume>('id');
   trackByPlayer = trackByFactory<Player>('id');
 
@@ -121,10 +121,9 @@ export class ScoreAddPlayerComponent extends LocalState<ScoreAddPlayerComponentS
 
   override ngOnChanges(changes: SimpleChangesCustom): void {
     super.ngOnChanges(changes);
-    const characterCostumes: CharacterCostume[] = ((changes.characters?.currentValue ?? []) as Character[]).reduce(
-      (acc, character) => [...acc, ...character.characterCostumes],
-      [] as CharacterCostume[]
-    );
+    const characterCostumes: CharacterCostume[] = (
+      (changes.characters?.currentValue ?? []) as CharacterWithCharacterCostumes[]
+    ).reduce((acc, character) => [...acc, ...character.characterCostumes], [] as CharacterCostume[]);
     const idCharacterCostumeControl = this.form.get('idCharacterCostume');
     if (characterCostumes?.length === 1 && !idCharacterCostumeControl.value) {
       this.form.get('idCharacterCostume').setValue(characterCostumes[0].id);

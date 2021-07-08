@@ -36,7 +36,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
 import { CharacterCostume } from '@model/character-costume';
 import { Game } from '@model/game';
-import { Character } from '@model/character';
+import { CharacterWithCharacterCostumes } from '@model/character';
 import { Mode } from '@model/mode';
 import { Stage } from '@model/stage';
 import { MiniGame } from '@model/mini-game';
@@ -327,7 +327,7 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
   readonly trackByMiniGame = trackByFactory<MiniGame>('id');
   readonly trackByMode = trackByFactory<Mode>('id');
   readonly trackByStage = trackByFactory<Stage>('id');
-  readonly trackByCharacter = trackByFactory<Character>('id');
+  readonly trackByCharacter = trackByFactory<CharacterWithCharacterCostumes>('id');
   readonly trackByCharacterCostume = trackByFactory<CharacterCostume>('id');
   readonly trackByControlValidator = trackByFactory<ControlValidator>('name');
 
