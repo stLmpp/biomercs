@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { del, get, set } from 'idb-keyval';
 import { isNil } from 'st-utils';
 
-export class AuthPersisStrategy2 implements StorePersistStrategy<Auth> {
+export class AuthPersisStrategy implements StorePersistStrategy<Auth> {
   deserialize(value: string | undefined): string | undefined {
     return value;
   }
@@ -40,7 +40,7 @@ export class AuthStore extends Store<Auth> {
     super({
       name: 'auth',
       initialState: { user: null },
-      persistStrategy: new AuthPersisStrategy2(),
+      persistStrategy: new AuthPersisStrategy(),
     });
   }
 }
