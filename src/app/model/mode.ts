@@ -1,7 +1,7 @@
-import { Base } from './base';
 import { trackByFactory } from '@stlmpp/utils';
 
-export interface Mode extends Base {
+export interface Mode {
+  id: number;
   name: string;
   playerQuantity: number;
 }
