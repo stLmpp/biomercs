@@ -67,9 +67,9 @@ export class PlayerChangeRequestsModalComponent extends LocalState<PlayerChangeR
     score: new Control(this.data.score.score, [Validators.required]),
     idsScoreChangeRequests: new ControlArray<IdChecked>(
       this.data.score.scoreChangeRequests.map(
-        ({ idScoreChangeRequest }) =>
+        ({ id }) =>
           new ControlGroup<IdChecked>({
-            id: new Control(idScoreChangeRequest),
+            id: new Control(id),
             checked: new Control(false),
           })
       )
