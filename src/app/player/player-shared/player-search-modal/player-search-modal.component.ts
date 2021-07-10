@@ -6,7 +6,7 @@ import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import { combineLatest, debounceTime, filter, finalize, Observable, pluck, shareReplay, switchMap } from 'rxjs';
 import { LocalState } from '@stlmpp/store';
 import { PlayerService } from '../../player.service';
-import { PaginationMetaVW } from '@model/pagination';
+import { PaginationMeta } from '@model/pagination';
 
 export interface PlayerSearchModalComponentData {
   idPlayer?: number | null | undefined;
@@ -67,7 +67,7 @@ export class PlayerSearchModalComponent extends LocalState<PlayerSearchModalComp
   );
 
   players$: Observable<Player[]> = this.data$.pipe(pluck('items'));
-  paginationMeta$: Observable<PaginationMetaVW> = this.data$.pipe(pluck('meta'));
+  paginationMeta$: Observable<PaginationMeta> = this.data$.pipe(pluck('meta'));
 
   loading$ = this.selectState('loading');
 

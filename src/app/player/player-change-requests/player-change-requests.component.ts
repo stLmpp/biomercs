@@ -5,7 +5,7 @@ import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { filter, finalize, map, Observable, pluck, shareReplay, skip, switchMap, takeUntil } from 'rxjs';
 import { filterNil } from '@shared/operators/filter';
 import { ScoreChangeRequests, ScoreChangeRequestsPaginationVW } from '@model/score-change-request';
-import { PaginationMetaVW } from '@model/pagination';
+import { PaginationMeta } from '@model/pagination';
 import { PlayerService } from '../player.service';
 import { LocalState } from '@stlmpp/store';
 import { getScoreDefaultColDefs } from '../../score/score-shared/util';
@@ -48,7 +48,7 @@ export class PlayerChangeRequestsComponent extends LocalState<PlayerChangeReques
   private _data$: Observable<ScoreChangeRequestsPaginationVW> = this.selectState('data');
 
   scores$: Observable<ScoreChangeRequests[]> = this._data$.pipe(filterNil(), pluck('scores'));
-  paginationMeta$: Observable<PaginationMetaVW> = this._data$.pipe(filterNil(), pluck('meta'));
+  paginationMeta$: Observable<PaginationMeta> = this._data$.pipe(filterNil(), pluck('meta'));
   metadata$: Observable<PlayerChangeRequestsActionCellComponentMetadata> = this.paginationMeta$.pipe(
     map(paginationMeta => ({ page: paginationMeta.currentPage, itemsPerPage: paginationMeta.itemsPerPage }))
   );
@@ -57,7 +57,7 @@ export class PlayerChangeRequestsComponent extends LocalState<PlayerChangeReques
 
   colDefs: ColDef<ScoreChangeRequests>[] = [
     {
-      property: 'idScore',
+      property: 'id',
       component: PlayerChangeRequestsActionCellComponent,
       width: '100px',
     },

@@ -10,7 +10,7 @@ import {
   ScoreTableWorldRecordWithoutUndefined,
   ScoreTopTableWorldRecord,
   ScoreTopTableWorldRecordWithoutUndefined,
-  ScoreVW,
+  Score,
 } from '@model/score';
 import { combineLatest, filter, finalize, map, Observable, shareReplay, switchMap } from 'rxjs';
 import { orderBy, OrderByDirection, OrderByType } from 'st-utils';
@@ -118,13 +118,13 @@ export class ScoreWorldRecordsComponent extends LocalState<ScoreWorldRecordTable
   trackByScoreTable = trackByFactory<ScoreTableWorldRecord>('idCharacterCostume');
   trackByScoreTableWithoutUndefined = trackByFactory<ScoreTableWorldRecordWithoutUndefined>('idCharacterCostume');
 
-  trackByScore: TrackByFunction<ScoreVW | undefined> = (index, item) => (item ? item.idScore : index);
+  trackByScore: TrackByFunction<Score | undefined> = (index, item) => (item ? item.id : index);
 
   paramsChange($event: ParamsForm): void {
     this.updateState($event);
   }
 
-  async openScoreInfo(score: ScoreVW): Promise<void> {
+  async openScoreInfo(score: Score): Promise<void> {
     this.updateState({ loadingInfoModal: true });
     await this.scoreService.openModalScoreInfo({ score, showWorldRecord: true, showApprovalDate: true });
     this.updateState({ loadingInfoModal: false });

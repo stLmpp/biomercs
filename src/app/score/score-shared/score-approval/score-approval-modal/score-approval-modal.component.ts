@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
-import { ScoreVW } from '@model/score';
+import { Score } from '@model/score';
 import { ScoreApprovalActionEnum } from '@model/enum/score-approval-action.enum';
 import { AbstractScoreService } from '../../../abstract-score.service';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
@@ -10,11 +10,11 @@ import { ControlBuilder, Validators } from '@stlmpp/control';
 import { ScoreApprovalMotive, trackByScoreApprovalMotive } from '@model/score-approval-motive';
 import { finalize, Observable, switchMap, tap } from 'rxjs';
 import { LocalState, StMapView } from '@stlmpp/store';
-import { ScoreApprovalAdd, ScoreApprovalVW } from '@model/score-approval';
+import { ScoreApprovalAdd, ScoreApprovalPagination } from '@model/score-approval';
 import { ScoreApprovalComponentState } from '../score-approval.component';
 
 export interface ScoreApprovalModalData {
-  score: ScoreVW;
+  score: Score;
   action: ScoreApprovalActionEnum;
   scoreApprovalComponentState: ScoreApprovalComponentState;
   playerMode: boolean;
@@ -30,7 +30,7 @@ export class ScoreApprovalModalComponent extends LocalState<{ saving: boolean }>
   constructor(
     @Inject(MODAL_DATA) { action, score, scoreApprovalComponentState, playerMode }: ScoreApprovalModalData,
     private scoreService: AbstractScoreService,
-    public modalRef: ModalRef<ScoreApprovalModalComponent, ScoreApprovalModalData, ScoreApprovalVW>,
+    public modalRef: ModalRef<ScoreApprovalModalComponent, ScoreApprovalModalData, ScoreApprovalPagination>,
     public scoreApprovalMotiveQuery: ScoreApprovalMotiveQuery,
     private scoreApprovalService: ScoreApprovalMotiveService,
     private controlBuilder: ControlBuilder
@@ -45,7 +45,7 @@ export class ScoreApprovalModalComponent extends LocalState<{ saving: boolean }>
 
   scoreApprovalComponentState: ScoreApprovalComponentState;
   scoreApprovalActionEnum = ScoreApprovalActionEnum;
-  score: ScoreVW;
+  score: Score;
   action: ScoreApprovalActionEnum;
   playerMode: boolean;
   saving$ = this.selectState('saving');
@@ -63,7 +63,7 @@ export class ScoreApprovalModalComponent extends LocalState<{ saving: boolean }>
     this.form.disable();
     const payload = this.form.value;
     this.scoreService
-      .approveOrReject(this.playerMode, this.score.idScore, this.action, payload)
+      .approveOrReject(this.playerMode, this.score.id, this.action, payload)
       .pipe(
         switchMap(() => {
           const { idMiniGame, idPlatform, idGame, idMode, itemsPerPage, page, orderBy, orderByDirection, idStage } =

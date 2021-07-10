@@ -8,7 +8,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { BooleanInput } from 'st-utils';
-import { PaginationMetaVW } from '@model/pagination';
+import { PaginationMeta } from '@model/pagination';
 import { LocalState } from '@stlmpp/store';
 import { ColDef, ColDefInternal } from '@shared/components/table/col-def';
 import { combineLatest, map, Observable } from 'rxjs';
@@ -49,7 +49,7 @@ export class TableComponent<T extends Record<any, any>, K extends keyof T> exten
 
   @Input() loading: BooleanInput = false;
   @Input() data: T[] = [];
-  @Input() paginationMeta?: PaginationMetaVW | null;
+  @Input() paginationMeta?: PaginationMeta | null;
   @Input() itemsPerPageOptions: number[] = [];
   @Input() order?: TableOrder<T> | null;
   @Input() colDefs: ColDef<T>[] = [];

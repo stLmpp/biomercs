@@ -9,8 +9,8 @@ export interface ScorePlayerAdd {
   evidence: string;
 }
 
-export interface ScorePlayerVW {
-  idScorePlayer: number;
+export interface ScorePlayer {
+  id: number;
   idScore: number;
   idPlayer: number;
   playerPersonaName: string;
@@ -35,4 +35,4 @@ export interface ScorePlayerUpdateDto {
   evidence?: string;
 }
 
-export const trackByScorePlayerVW = trackByFactory<ScorePlayerVW>('idScorePlayer');
+export const trackByScorePlayerVW = trackByFactory<ScorePlayer>('id');

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { ScoreVW } from '@model/score';
+import { Score } from '@model/score';
 import { trackByScorePlayerVW } from '@model/score-player';
 import { BooleanInput } from 'st-utils';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
@@ -15,7 +15,7 @@ export class ScoreInfoComponent {
   private _showWorldRecord = false;
   private _showApprovalDate = false;
 
-  @Input() score!: ScoreVW;
+  @Input() score!: Score;
 
   @Input()
   get showWorldRecord(): boolean {

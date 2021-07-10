@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import { ScoreInfoComponent } from '../score-info.component';
-import { ScoreVW } from '@model/score';
+import { Score } from '@model/score';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
 
 export interface ScoreInfoModalData {
-  score: ScoreVW;
+  score: Score;
   showWorldRecord?: boolean;
   showApprovalDate?: boolean;
 }
@@ -19,14 +19,14 @@ export interface ScoreInfoModalData {
 export class ScoreInfoModalComponent {
   constructor(
     @Inject(MODAL_DATA) { score, showWorldRecord, showApprovalDate }: ScoreInfoModalData,
-    public modalRef: ModalRef<ScoreInfoComponent, ScoreVW>
+    public modalRef: ModalRef<ScoreInfoComponent, Score>
   ) {
     this.score = score;
     this.showWorldRecord = showWorldRecord ?? false;
     this.showApprovalDate = showApprovalDate ?? false;
   }
 
-  score: ScoreVW;
+  score: Score;
   showWorldRecord: boolean;
   showApprovalDate: boolean;
 }

@@ -78,7 +78,7 @@ export class PlayerChangeRequestsModalComponent extends LocalState<PlayerChangeR
       this.data.score.scorePlayers.map(
         scorePlayer =>
           new ControlGroup<ScorePlayerUpdateDto>({
-            id: new Control(scorePlayer.idScorePlayer),
+            id: new Control(scorePlayer.id),
             bulletKills: new Control(scorePlayer.bulletKills),
             host: new Control(scorePlayer.host),
             description: new Control(scorePlayer.description, [Validators.required]),
@@ -118,7 +118,7 @@ export class PlayerChangeRequestsModalComponent extends LocalState<PlayerChangeR
       idsScoreChangeRequests: formValue.idsScoreChangeRequests.filter(({ checked }) => checked).map(({ id }) => id),
     };
     this.scoreService
-      .fulfilChangeRequests(this.data.score.idScore, dto)
+      .fulfilChangeRequests(this.data.score.id, dto)
       .pipe(
         switchMapTo(this.scoreService.findChangeRequests(this.data.page, this.data.itemsPerPage)),
         finalize(() => {

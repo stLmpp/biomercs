@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
-import { PaginationMetaVW } from '@model/pagination';
+import { PaginationMeta } from '@model/pagination';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { trackByFactory } from '@stlmpp/utils';
 
@@ -12,7 +12,7 @@ import { trackByFactory } from '@stlmpp/utils';
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'pagination' },
 })
-export class PaginationComponent implements OnChanges, PaginationMetaVW {
+export class PaginationComponent implements OnChanges, PaginationMeta {
   constructor(private router: Router) {}
 
   private _setQueryParamsOnChange = false;
@@ -31,7 +31,7 @@ export class PaginationComponent implements OnChanges, PaginationMetaVW {
   @Input() itemsPerPageOptions = [5, 10, 25, 50, 100];
 
   @Input()
-  set meta(paginationMeta: PaginationMetaVW | null | undefined) {
+  set meta(paginationMeta: PaginationMeta | null | undefined) {
     if (!paginationMeta) {
       paginationMeta = { currentPage: 1, itemsPerPage: 10, totalItems: 0, totalPages: 0, itemCount: 0 };
     }

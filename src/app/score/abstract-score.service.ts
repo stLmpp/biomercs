@@ -3,13 +3,13 @@ import {
   ScoreChangeRequestsFulfilDto,
   ScoreGatewayEvents,
   ScoreSearch,
-  ScoreTopTableVW,
+  ScoreTopTable,
   ScoreTopTableWorldRecord,
-  ScoreVW,
+  Score,
 } from '@model/score';
 import { auditTime, Observable, tap } from 'rxjs';
 import { OrderByDirection } from 'st-utils';
-import { ScoreApprovalAdd, ScoreApprovalVW } from '@model/score-approval';
+import { ScoreApprovalAdd, ScoreApprovalPagination } from '@model/score-approval';
 import { HttpParams } from '@util/http-params';
 import { HttpClient } from '@angular/common/http';
 import { ScoreApprovalActionEnum } from '@model/enum/score-approval-action.enum';
@@ -36,12 +36,12 @@ export abstract class AbstractScoreService {
     this.headerStore.updateState(state => ({ ...state, [key]: state[key] - 1 }));
   }
 
-  add(dto: ScoreAdd): Observable<ScoreVW> {
-    return this.http.post<ScoreVW>(this.endPoint, dto);
+  add(dto: ScoreAdd): Observable<Score> {
+    return this.http.post<Score>(this.endPoint, dto);
   }
 
-  findById(idScore: number): Observable<ScoreVW> {
-    return this.http.get<ScoreVW>(`${this.endPoint}/${idScore}`);
+  findById(idScore: number): Observable<Score> {
+    return this.http.get<Score>(`${this.endPoint}/${idScore}`);
   }
 
   findLeaderboards(
@@ -51,9 +51,9 @@ export abstract class AbstractScoreService {
     idMode: number,
     page: number,
     limit?: number
-  ): Observable<ScoreTopTableVW> {
+  ): Observable<ScoreTopTable> {
     const params = new HttpParams({ page, limit }, true);
-    return this.http.get<ScoreTopTableVW>(
+    return this.http.get<ScoreTopTable>(
       `${this.endPoint}/platform/${idPlatform}/game/${idGame}/mini-game/${idMiniGame}/mode/${idMode}/leaderboards`,
       { params }
     );
@@ -81,13 +81,13 @@ export abstract class AbstractScoreService {
     limit?: number,
     orderBy?: string | null,
     orderByDirection?: OrderByDirection | null
-  ): Observable<ScoreApprovalVW> {
+  ): Observable<ScoreApprovalPagination> {
     const params = new HttpParams(
       { idPlatform, page, idGame, idMiniGame, idMode, limit, orderBy, orderByDirection, idStage },
       true
     );
     const path = playerMode ? 'player' : 'admin';
-    return this.http.get<ScoreApprovalVW>(`${this.endPoint}/approval/${path}`, { params });
+    return this.http.get<ScoreApprovalPagination>(`${this.endPoint}/approval/${path}`, { params });
   }
 
   approveOrReject(
@@ -153,9 +153,9 @@ export abstract class AbstractScoreService {
     return this._socketConnection.fromEvent<void>(ScoreGatewayEvents.updateCountApprovals).pipe(auditTime(5000));
   }
 
-  search(dto: ScoreSearch): Observable<Pagination<ScoreVW>> {
+  search(dto: ScoreSearch): Observable<Pagination<Score>> {
     const params = new HttpParams(dto, true);
-    return this.http.get<Pagination<ScoreVW>>(`${this.endPoint}/search`, { params });
+    return this.http.get<Pagination<Score>>(`${this.endPoint}/search`, { params });
   }
 
   findRejectedAndPendingScoresByIdUser(): Observable<ScoreGroupedByStatus[]> {

@@ -7,11 +7,11 @@ import {
   QueryList,
   ViewChildren,
 } from '@angular/core';
-import { ScoreVW } from '@model/score';
+import { Score } from '@model/score';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import { Control, ControlArray, ControlBuilder, Validators } from '@stlmpp/control';
 import { ModalRef } from '@shared/components/modal/modal-ref';
-import { ScoreApprovalVW } from '@model/score-approval';
+import { ScoreApprovalPagination } from '@model/score-approval';
 import { finalize, Subject, switchMap, tap, throttleTime } from 'rxjs';
 import { Key, KeyCode } from '@model/enum/key';
 import { FocusKeyManager } from '@angular/cdk/a11y';
@@ -22,7 +22,7 @@ import { trackByFactory } from '@stlmpp/utils';
 import { LocalState } from '@stlmpp/store';
 
 export interface ScoreRequestChangesModalData {
-  score: ScoreVW;
+  score: Score;
   scoreApprovalComponentState: ScoreApprovalComponentState;
 }
 
@@ -48,7 +48,7 @@ export class ScoreRequestChangesModalComponent
   constructor(
     @Inject(MODAL_DATA) { score, scoreApprovalComponentState }: ScoreRequestChangesModalData,
     private controlBuilder: ControlBuilder,
-    public modalRef: ModalRef<ScoreRequestChangesModalComponent, ScoreRequestChangesModalForm, ScoreApprovalVW>,
+    public modalRef: ModalRef<ScoreRequestChangesModalComponent, ScoreRequestChangesModalForm, ScoreApprovalPagination>,
     private scoreService: AbstractScoreService
   ) {
     super({ saving: false });
@@ -63,7 +63,7 @@ export class ScoreRequestChangesModalComponent
 
   saving$ = this.selectState('saving');
 
-  score: ScoreVW;
+  score: Score;
   scoreApprovalComponentState: ScoreApprovalComponentState;
 
   form = this.controlBuilder.group<ScoreRequestChangesModalForm>({
@@ -101,7 +101,7 @@ export class ScoreRequestChangesModalComponent
     this.form.disable();
     this.updateState({ saving: true });
     this.scoreService
-      .requestChanges(this.score.idScore, changes)
+      .requestChanges(this.score.id, changes)
       .pipe(
         switchMap(() => {
           const { idMiniGame, idPlatform, idGame, idMode, itemsPerPage, page, orderBy, orderByDirection, idStage } =

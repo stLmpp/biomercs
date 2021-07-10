@@ -18,7 +18,7 @@ import {
 import { LocalState } from '@stlmpp/store';
 import { filterNil } from '@shared/operators/filter';
 import { trackByUser, User } from '@model/user';
-import { Pagination, PaginationMetaVW } from '@model/pagination';
+import { Pagination, PaginationMeta } from '@model/pagination';
 import { arrayUtil } from 'st-utils';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
 import { isAfter, subDays } from 'date-fns';
@@ -71,7 +71,7 @@ export class AdminBanUserComponent extends LocalState<AdminBanUserComponentState
 
   readonly data$ = this.selectState('data');
   readonly users$: Observable<User[]> = this.data$.pipe(filterNil(), pluck('items'));
-  readonly paginationMeta$: Observable<PaginationMetaVW> = this.data$.pipe(filterNil(), pluck('meta'));
+  readonly paginationMeta$: Observable<PaginationMeta> = this.data$.pipe(filterNil(), pluck('meta'));
 
   readonly trackByUser = trackByUser;
 

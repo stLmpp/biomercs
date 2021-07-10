@@ -7,8 +7,8 @@ import type {
 } from './score-shared/score-approval/score-approval-modal/score-approval-modal.component';
 import { ModalService } from '@shared/components/modal/modal.service';
 import { HttpClient } from '@angular/common/http';
-import type { ScoreApprovalVW } from '@model/score-approval';
-import type { ScoreVW } from '@model/score';
+import type { ScoreApprovalPagination } from '@model/score-approval';
+import type { Score } from '@model/score';
 import type {
   ScoreInfoModalComponent,
   ScoreInfoModalData,
@@ -40,7 +40,7 @@ export class ScoreService extends AbstractScoreService {
 
   async openModalScoreApproval(
     data: ScoreApprovalModalData
-  ): Promise<ModalRef<ScoreApprovalModalComponent, ScoreApprovalModalData, ScoreApprovalVW>> {
+  ): Promise<ModalRef<ScoreApprovalModalComponent, ScoreApprovalModalData, ScoreApprovalPagination>> {
     return this.modalService.openLazy(
       () =>
         import('./score-shared/score-approval/score-approval-modal/score-approval-modal.component').then(
@@ -50,7 +50,7 @@ export class ScoreService extends AbstractScoreService {
     );
   }
 
-  async openModalScoreInfo(data: ScoreInfoModalData): Promise<ModalRef<ScoreInfoModalComponent, ScoreVW>> {
+  async openModalScoreInfo(data: ScoreInfoModalData): Promise<ModalRef<ScoreInfoModalComponent, Score>> {
     return this.modalService.openLazy(
       () =>
         import('./score-shared/score-info/score-info-modal/score-info-modal.component').then(
@@ -62,7 +62,7 @@ export class ScoreService extends AbstractScoreService {
 
   async openModalRequestChangesScore(
     data: ScoreRequestChangesModalData
-  ): Promise<ModalRef<ScoreRequestChangesModalComponent, ScoreRequestChangesModalData, ScoreApprovalVW>> {
+  ): Promise<ModalRef<ScoreRequestChangesModalComponent, ScoreRequestChangesModalData, ScoreApprovalPagination>> {
     return this.modalService.openLazy(
       () =>
         import('./score-shared/score-approval/score-request-changes-modal/score-request-changes-modal.component').then(

@@ -1,7 +1,7 @@
-import { ScoreVW } from '@model/score';
+import { Score } from '@model/score';
 import { trackByFactory } from '@stlmpp/utils';
 
-export interface ScoreScoreGroupedByStatusScoreVW extends ScoreVW {
+export interface ScoreScoreGroupedByStatusScoreVW extends Score {
   disabled: boolean;
 }
 

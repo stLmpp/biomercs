@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { PaginationMetaVW } from '@model/pagination';
-import { ScoreSearch, ScoreVW } from '@model/score';
+import { PaginationMeta } from '@model/pagination';
+import { ScoreSearch, Score } from '@model/score';
 import { LocalState } from '@stlmpp/store';
 import { combineLatest, debounceTime, finalize, switchMap, takeUntil, tap } from 'rxjs';
 import { Control, ControlGroup } from '@stlmpp/control';
@@ -30,8 +30,8 @@ import { ColDef } from '@shared/components/table/col-def';
 import { ScoreOpenInfoCellComponent } from '../score-shared/score-open-info-cell/score-open-info-cell.component';
 
 export interface ScoreSearchComponentState {
-  scores: ScoreVW[];
-  paginationMeta: PaginationMetaVW;
+  scores: Score[];
+  paginationMeta: PaginationMeta;
   loading: boolean;
   gameLoading: boolean;
   miniGameLoading: boolean;
@@ -106,8 +106,8 @@ export class ScoreSearchComponent extends LocalState<ScoreSearchComponentState> 
     }),
   });
 
-  colDefs: ColDef<ScoreVW>[] = [
-    { property: 'idScore', component: ScoreOpenInfoCellComponent, width: '40px', metadata: { showWorldRecord: true } },
+  colDefs: ColDef<Score>[] = [
+    { property: 'id', component: ScoreOpenInfoCellComponent, width: '40px', metadata: { showWorldRecord: true } },
     ...getScoreDefaultColDefs(this.authDateFormatPipe),
   ];
 
@@ -330,7 +330,7 @@ export class ScoreSearchComponent extends LocalState<ScoreSearchComponentState> 
     this.onSearch();
   }
 
-  async openInfoScore(score: ScoreVW): Promise<void> {
+  async openInfoScore(score: Score): Promise<void> {
     await this.scoreService.openModalScoreInfo({ score, showWorldRecord: true, showApprovalDate: true });
   }
 

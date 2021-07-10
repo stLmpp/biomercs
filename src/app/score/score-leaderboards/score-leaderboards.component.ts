@@ -18,9 +18,9 @@ import { trackByFactory } from '@stlmpp/utils';
 import { ActivatedRoute } from '@angular/router';
 import { orderBy, OrderByDirection } from 'st-utils';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
-import { PaginationMetaVW } from '@model/pagination';
+import { PaginationMeta } from '@model/pagination';
 import { Stage } from '@model/stage';
-import { ScoreTableVW, ScoreTopTableVW, ScoreVW } from '@model/score';
+import { ScoreTable, ScoreTopTable, Score } from '@model/score';
 import { LocalState } from '@stlmpp/store';
 
 interface TopTableForm extends ParamsForm {
@@ -110,7 +110,7 @@ export class ScoreLeaderboardsComponent extends LocalState<ScoreLeaderboardsStat
     shareReplay()
   );
 
-  scoreTopTableOrdered$: Observable<ScoreTopTableVW> = combineLatest([
+  scoreTopTableOrdered$: Observable<ScoreTopTable> = combineLatest([
     this.scoreTopTable$,
     this.selectState('orderBy'),
     this.selectState('orderByDirection'),
@@ -141,7 +141,7 @@ export class ScoreLeaderboardsComponent extends LocalState<ScoreLeaderboardsStat
     })
   );
 
-  paginationMeta$: Observable<PaginationMetaVW> = this.scoreTopTable$.pipe(
+  paginationMeta$: Observable<PaginationMeta> = this.scoreTopTable$.pipe(
     pluck('meta'),
     tap(meta => {
       if (meta.currentPage > meta.totalPages) {
@@ -151,7 +151,7 @@ export class ScoreLeaderboardsComponent extends LocalState<ScoreLeaderboardsStat
   );
 
   trackByStage = trackByFactory<Stage>('id');
-  trackByPlayer = trackByFactory<ScoreTableVW>('idPlayer');
+  trackByPlayer = trackByFactory<ScoreTable>('idPlayer');
 
   private _getItemsPerPageFromRoute(): number {
     const itemsPerPage = +(this.activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.itemsPerPage) ?? 10);
@@ -162,7 +162,7 @@ export class ScoreLeaderboardsComponent extends LocalState<ScoreLeaderboardsStat
     this.updateState('orderByDirection', this.getState('orderByDirection') === 'asc' ? 'desc' : 'asc');
   }
 
-  trackByScore: TrackByFunction<ScoreVW | undefined> = (index, item) => (item ? item.idScore : index);
+  trackByScore: TrackByFunction<Score | undefined> = (index, item) => (item ? item.id : index);
 
   updateOrderByStage(idStage?: number): void {
     if (idStage && idStage === this.getState('orderBy')) {
@@ -205,7 +205,7 @@ export class ScoreLeaderboardsComponent extends LocalState<ScoreLeaderboardsStat
     }
   }
 
-  async openScoreInfo(score: ScoreVW): Promise<void> {
+  async openScoreInfo(score: Score): Promise<void> {
     this.updateState({ loadingInfo: true });
     await this.scoreService.openModalScoreInfo({ score, showWorldRecord: true, showApprovalDate: true });
     this.updateState({ loadingInfo: false });

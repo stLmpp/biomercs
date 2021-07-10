@@ -30,7 +30,7 @@ import {
   trackByScoreGroupedByStatus,
 } from '@model/score-grouped-by-status';
 import { ActivatedRoute } from '@angular/router';
-import { ScoreVW } from '@model/score';
+import { Score } from '@model/score';
 import { ScoreService } from '../../score/score.service';
 import { getScoreDefaultColDefs } from '../../score/score-shared/util';
 import { AuthDateFormatPipe } from '../../auth/shared/auth-date-format.pipe';
@@ -113,7 +113,7 @@ export class PlayerProfileComponent extends LocalState<PlayerProfileComponentSta
   );
 
   colDefs: ColDef<ScoreScoreGroupedByStatusScoreVW>[] = [
-    { property: 'idScore', component: ScoreOpenInfoCellComponent, width: '40px' },
+    { property: 'id', component: ScoreOpenInfoCellComponent, width: '40px' },
     ...getScoreDefaultColDefs<ScoreScoreGroupedByStatusScoreVW>(this.authDateFormatPipe),
   ];
 
@@ -150,7 +150,7 @@ export class PlayerProfileComponent extends LocalState<PlayerProfileComponentSta
       arrayUtil(scoreGroupedByStatus, 'idScoreStatus')
         .update(idScoreStatus, status => ({
           ...status,
-          scores: arrayUtil(status.scores, 'idScore').update(idScore, partial).get(),
+          scores: arrayUtil(status.scores, 'id').update(idScore, partial).get(),
         }))
         .get()
     );
@@ -182,10 +182,10 @@ export class PlayerProfileComponent extends LocalState<PlayerProfileComponentSta
     }
   }
 
-  async openScoreInfo(score: ScoreVW): Promise<void> {
-    this._updateScore(score.idScoreStatus, score.idScore, { disabled: true });
+  async openScoreInfo(score: Score): Promise<void> {
+    this._updateScore(score.idScoreStatus, score.id, { disabled: true });
     await this.scoreService.openModalScoreInfo({ score });
-    this._updateScore(score.idScoreStatus, score.idScore, { disabled: false });
+    this._updateScore(score.idScoreStatus, score.id, { disabled: false });
   }
 
   linkSteam(idPlayer: number): void {
