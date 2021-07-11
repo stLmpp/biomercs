@@ -20,6 +20,7 @@ import { ScoreService } from '../score/score.service';
 import { LocalState } from '@stlmpp/store';
 import { GlobalListenersService } from '@shared/services/global-listeners/global-listeners.service';
 import { mdiTriangle } from '@mdi/js';
+import { filterNil } from '@shared/operators/filter';
 
 export interface HeaderComponentState {
   sideMenuOpened: boolean;
@@ -80,11 +81,12 @@ export class HeaderComponent extends LocalState<HeaderComponentState> implements
     updateCountApprovals$
       .pipe(
         withLatestFrom(this.user$),
-        filter(([, user]) => !!user),
-        switchMap(([, user]) => {
-          const requests$ = [this.scoreService.findApprovalCount(true), this.scoreService.findChangeRequestsCount()];
-          if (user!.admin) {
-            requests$.push(this.scoreService.findApprovalCount(false));
+        map(([, user]) => user),
+        filterNil(),
+        switchMap(user => {
+          const requests$ = [this.scoreService.findChangeRequestsCount()];
+          if (user.admin) {
+            requests$.push(this.scoreService.findApprovalCount());
           }
           return forkJoin(requests$);
         }),

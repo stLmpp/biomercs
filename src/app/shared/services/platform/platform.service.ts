@@ -20,9 +20,8 @@ export class PlatformService {
     );
   }
 
-  findApproval(playerMode = false): Observable<Platform[]> {
-    const path = playerMode ? 'approval/player' : 'approval/admin';
-    return this.http.get<Platform[]>(`${this.endPoint}/${path}`).pipe(
+  findApproval(): Observable<Platform[]> {
+    return this.http.get<Platform[]>(`${this.endPoint}/approval`).pipe(
       tap(platforms => {
         this.platformStore.upsert(platforms);
       })

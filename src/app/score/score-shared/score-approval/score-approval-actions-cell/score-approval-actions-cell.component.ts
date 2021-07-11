@@ -42,7 +42,6 @@ export class ScoreApprovalActionsCellComponent
       score: this.item,
       action,
       scoreApprovalComponentState: this.metadata,
-      playerMode: this.metadata.playerMode,
     });
     modalRef.onClose$.subscribe(data => {
       if (data) {
@@ -53,9 +52,6 @@ export class ScoreApprovalActionsCellComponent
   }
 
   async openModalRequestChanges(): Promise<void> {
-    if (this.metadata.playerMode) {
-      return;
-    }
     this.updateState({ loadingRequestChangesModal: true });
     const modalRef = await this.scoreService.openModalRequestChangesScore({
       score: this.item,

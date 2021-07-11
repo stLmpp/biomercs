@@ -31,15 +31,9 @@ export class ModeService {
     );
   }
 
-  findApprovalByIdPlatformGameMiniGame(
-    idPlatform: number,
-    idGame: number,
-    idMiniGame: number,
-    playerMode = false
-  ): Observable<Mode[]> {
-    const path = playerMode ? 'approval/player' : 'approval/admin';
+  findApprovalByIdPlatformGameMiniGame(idPlatform: number, idGame: number, idMiniGame: number): Observable<Mode[]> {
     return this.http
-      .get<Mode[]>(`${this.endPoint}/${path}/platform/${idPlatform}/game/${idGame}/mini-game/${idMiniGame}`)
+      .get<Mode[]>(`${this.endPoint}/approval/platform/${idPlatform}/game/${idGame}/mini-game/${idMiniGame}`)
       .pipe(
         tap(modes => {
           this.modeStore.upsert(modes);

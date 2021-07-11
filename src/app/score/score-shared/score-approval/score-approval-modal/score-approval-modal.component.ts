@@ -17,7 +17,6 @@ export interface ScoreApprovalModalData {
   score: Score;
   action: ScoreApprovalActionEnum;
   scoreApprovalComponentState: ScoreApprovalComponentState;
-  playerMode: boolean;
 }
 
 @Component({
@@ -28,7 +27,7 @@ export interface ScoreApprovalModalData {
 })
 export class ScoreApprovalModalComponent extends LocalState<{ saving: boolean }> implements OnInit {
   constructor(
-    @Inject(MODAL_DATA) { action, score, scoreApprovalComponentState, playerMode }: ScoreApprovalModalData,
+    @Inject(MODAL_DATA) { action, score, scoreApprovalComponentState }: ScoreApprovalModalData,
     private scoreService: AbstractScoreService,
     public modalRef: ModalRef<ScoreApprovalModalComponent, ScoreApprovalModalData, ScoreApprovalPagination>,
     public scoreApprovalMotiveQuery: ScoreApprovalMotiveQuery,
@@ -39,7 +38,6 @@ export class ScoreApprovalModalComponent extends LocalState<{ saving: boolean }>
     this.score = score;
     this.action = action;
     this.scoreApprovalComponentState = scoreApprovalComponentState;
-    this.playerMode = playerMode;
     this.scoreApprovalMotives$ = this.scoreApprovalMotiveQuery.selectByAction(this.action);
   }
 
@@ -47,7 +45,6 @@ export class ScoreApprovalModalComponent extends LocalState<{ saving: boolean }>
   scoreApprovalActionEnum = ScoreApprovalActionEnum;
   score: Score;
   action: ScoreApprovalActionEnum;
-  playerMode: boolean;
   saving$ = this.selectState('saving');
   scoreApprovalMotives$: Observable<StMapView<ScoreApprovalMotive>>;
 
@@ -63,13 +60,12 @@ export class ScoreApprovalModalComponent extends LocalState<{ saving: boolean }>
     this.form.disable();
     const payload = this.form.value;
     this.scoreService
-      .approveOrReject(this.playerMode, this.score.id, this.action, payload)
+      .approveOrReject(this.score.id, this.action, payload)
       .pipe(
         switchMap(() => {
           const { idMiniGame, idPlatform, idGame, idMode, itemsPerPage, page, orderBy, orderByDirection, idStage } =
             this.scoreApprovalComponentState;
           return this.scoreService.findApproval(
-            this.playerMode,
             idPlatform!,
             page,
             idGame,

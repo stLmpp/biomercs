@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { PARAMS_FORM_NULL, ParamsConfig, ParamsForm } from '@shared/params/params.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ScoreService } from '../../score.service';
@@ -33,7 +33,6 @@ export interface ScoreApprovalComponentState extends ParamsForm {
   data?: ScoreApprovalPagination;
   loadingApprovalModal: boolean;
   loadingRequestChangesModal: boolean;
-  playerMode: boolean;
 }
 
 @Component({
@@ -50,29 +49,23 @@ export class ScoreApprovalComponent extends LocalState<ScoreApprovalComponentSta
     private authDateFormatPipe: AuthDateFormatPipe,
     private modalService: ModalService
   ) {
-    super(
-      {
-        itemsPerPage: PaginationComponent.getItemsPerPageFromRoute(activatedRoute),
-        page: +(activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.page) ?? 1),
-        ...PARAMS_FORM_NULL,
-        tableLoading: false,
-        loadingApprovalModal: false,
-        loadingRequestChangesModal: false,
-        playerMode: false,
-        orderByDirection:
-          (activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.orderByDirection) as
-            | OrderByDirection
-            | undefined
-            | null) ?? 'asc',
-        orderBy: activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.orderBy) ?? 'creationDate',
-      },
-      { inputs: ['playerMode'] }
-    );
+    super({
+      itemsPerPage: PaginationComponent.getItemsPerPageFromRoute(activatedRoute),
+      page: +(activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.page) ?? 1),
+      ...PARAMS_FORM_NULL,
+      tableLoading: false,
+      loadingApprovalModal: false,
+      loadingRequestChangesModal: false,
+      orderByDirection:
+        (activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.orderByDirection) as
+          | OrderByDirection
+          | undefined
+          | null) ?? 'asc',
+      orderBy: activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.orderBy) ?? 'creationDate',
+    });
   }
 
   private _data$ = this.selectState('data').pipe(filterNil());
-
-  @Input() playerMode = false;
 
   scoreApprovalActionEnum = ScoreApprovalActionEnum;
 
@@ -183,7 +176,6 @@ export class ScoreApprovalComponent extends LocalState<ScoreApprovalComponentSta
             this.updateState('tableLoading', true);
             return this.scoreService
               .findApproval(
-                this.playerMode,
                 idPlatform!,
                 page,
                 idGame,

@@ -107,7 +107,6 @@ export class ScoreRequestChangesModalComponent
           const { idMiniGame, idPlatform, idGame, idMode, itemsPerPage, page, orderBy, orderByDirection, idStage } =
             this.scoreApprovalComponentState;
           return this.scoreService.findApproval(
-            false,
             idPlatform!,
             page,
             idGame,

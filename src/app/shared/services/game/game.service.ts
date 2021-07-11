@@ -31,9 +31,8 @@ export class GameService {
     );
   }
 
-  findApprovalByIdPlatform(idPlatform: number, playerMode = false): Observable<Game[]> {
-    const path = playerMode ? 'approval/player' : 'approval/admin';
-    return this.http.get<Game[]>(`${this.endPoint}/${path}/platform/${idPlatform}`).pipe(
+  findApprovalByIdPlatform(idPlatform: number): Observable<Game[]> {
+    return this.http.get<Game[]>(`${this.endPoint}/approval/platform/${idPlatform}`).pipe(
       tap(games => {
         this.gameStore.upsert(games);
       })

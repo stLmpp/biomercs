@@ -92,7 +92,6 @@ interface ParamsComponentState {
   characterLoading: boolean;
   clearable: boolean;
   approval: boolean;
-  playerMode: boolean;
 }
 
 @Component({
@@ -122,12 +121,10 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
         characterLoading: false,
         clearable: false,
         approval: false,
-        playerMode: false,
       },
       {
         inputs: [
           { key: 'clearable', transformer: coerceBooleanProperty },
-          { key: 'playerMode', transformer: coerceBooleanProperty },
           { key: 'approval', transformer: coerceBooleanProperty },
         ],
       }
@@ -137,9 +134,8 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
   private _setQueryParamsOnChange = false;
   private _selectParamIfOne = true;
   private _approval = false;
-  private _playerMode = false;
 
-  private _approvalPlayerMode$ = this.selectState(['approval', 'playerMode']);
+  private _approval$ = this.selectState('approval');
 
   @Input() idPlatform: number | null = null;
   @Input() idGame: number | null = null;
@@ -176,11 +172,6 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
   @Input()
   set approval(approval: boolean) {
     this._approval = coerceBooleanProperty(approval);
-  }
-
-  @Input()
-  set playerMode(playerMode: boolean) {
-    this._playerMode = coerceBooleanProperty(playerMode);
   }
 
   @Output() readonly idPlatformChange = new EventEmitter<Nullable<number>>();
@@ -332,8 +323,8 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
   readonly trackByControlValidator = trackByFactory<ControlValidator>('name');
 
   private _selectPlatforms(): Observable<Platform[]> {
-    return this._approvalPlayerMode$.pipe(
-      switchMap(({ approval }) => {
+    return this._approval$.pipe(
+      switchMap(approval => {
         if (approval) {
           return this.activatedRoute.data.pipe(map(data => data[RouteDataEnum.platformApproval]) ?? []);
         }
@@ -343,12 +334,12 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
   }
 
   private _selectGames(idPlatform: number): Observable<Game[]> {
-    return this._approvalPlayerMode$.pipe(
-      switchMap(({ approval, playerMode }) => {
+    return this._approval$.pipe(
+      switchMap(approval => {
         this.updateState('gameLoading', true);
         let request$ = this.gameService.findByIdPlatform(idPlatform);
         if (approval) {
-          request$ = this.gameService.findApprovalByIdPlatform(idPlatform, playerMode);
+          request$ = this.gameService.findApprovalByIdPlatform(idPlatform);
         }
         return request$.pipe(
           finalize(() => {
@@ -360,12 +351,12 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
   }
 
   private _selectMiniGames(idPlatform: number, idGame: number): Observable<MiniGame[]> {
-    return this._approvalPlayerMode$.pipe(
-      switchMap(({ approval, playerMode }) => {
+    return this._approval$.pipe(
+      switchMap(approval => {
         this.updateState('miniGameLoading', true);
         let request$ = this.miniGameService.findByIdPlatformGame(idPlatform, idGame);
         if (approval) {
-          request$ = this.miniGameService.findApprovalByIdPlatformGame(idPlatform, idGame, playerMode);
+          request$ = this.miniGameService.findApprovalByIdPlatformGame(idPlatform, idGame);
         }
         return request$.pipe(
           finalize(() => {
@@ -377,12 +368,12 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
   }
 
   private _selectModes(idPlatform: number, idGame: number, idMiniGame: number): Observable<Mode[]> {
-    return this._approvalPlayerMode$.pipe(
-      switchMap(({ approval, playerMode }) => {
+    return this._approval$.pipe(
+      switchMap(approval => {
         this.updateState('modeLoading', true);
         let request$ = this.modeService.findByIdPlatformGameMiniGame(idPlatform, idGame, idMiniGame);
         if (approval) {
-          request$ = this.modeService.findApprovalByIdPlatformGameMiniGame(idPlatform, idGame, idMiniGame, playerMode);
+          request$ = this.modeService.findApprovalByIdPlatformGameMiniGame(idPlatform, idGame, idMiniGame);
         }
         return request$.pipe(
           finalize(() => {
@@ -394,18 +385,12 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
   }
 
   private _selectStages(idPlatform: number, idGame: number, idMiniGame: number, idMode: number): Observable<Stage[]> {
-    return this._approvalPlayerMode$.pipe(
-      switchMap(({ approval, playerMode }) => {
+    return this._approval$.pipe(
+      switchMap(approval => {
         this.updateState('stageLoading', true);
         let request$ = this.stageService.findByIdPlatformGameMiniGameMode(idPlatform, idGame, idMiniGame, idMode);
         if (approval) {
-          request$ = this.stageService.findApprovalByIdPlatformGameMiniGameMode(
-            idPlatform,
-            idGame,
-            idMiniGame,
-            idMode,
-            playerMode
-          );
+          request$ = this.stageService.findApprovalByIdPlatformGameMiniGameMode(idPlatform, idGame, idMiniGame, idMode);
         }
         return request$.pipe(
           finalize(() => {
@@ -487,5 +472,4 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
   static ngAcceptInputType_clearable: BooleanInput;
   static ngAcceptInputType_selectParamIfOne: BooleanInput;
   static ngAcceptInputType_approval: BooleanInput;
-  static ngAcceptInputType_playerMode: BooleanInput;
 }

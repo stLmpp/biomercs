@@ -30,16 +30,6 @@
   </a>
   <a
     bioListItem
-    [routerLink]="user.player?.id ? ['player', user.player!.id, 'approval'] : ['/player/u', user.id, 'approval']"
-    queryParamsHandling="preserve"
-    (click)="onMenuSelected($event)"
-  >
-    <icon prefix>checklist</icon>
-    Scores approval
-    <bio-badge suffix>{{ headerQuery.playerApprovalCount$ | async }}</bio-badge>
-  </a>
-  <a
-    bioListItem
     [routerLink]="
       user.player?.id ? ['/player', user.player!.id, 'change-requests'] : ['player/u', user.id, 'change-requests']
     "

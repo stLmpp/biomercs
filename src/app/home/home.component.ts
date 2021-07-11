@@ -21,7 +21,6 @@ export class HomeComponent {
   isLogged$ = this.authQuery.isLogged$;
   isAdmin$ = this.authQuery.isAdmin$;
   adminApprovalCount$ = this.headerQuery.adminApprovalCount$;
-  playerApprovalCount$ = this.headerQuery.playerApprovalCount$;
   playerRequestChangesCount$ = this.headerQuery.playerRequestChangesCount$;
 
   idUser$ = this.authQuery.user$.pipe(filterNil(), pluck('id'));

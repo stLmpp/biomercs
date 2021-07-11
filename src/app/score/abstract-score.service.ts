@@ -1,11 +1,11 @@
 import {
+  Score,
   ScoreAdd,
   ScoreChangeRequestsFulfilDto,
   ScoreGatewayEvents,
   ScoreSearch,
   ScoreTopTable,
   ScoreTopTableWorldRecord,
-  Score,
 } from '@model/score';
 import { auditTime, Observable, tap } from 'rxjs';
 import { OrderByDirection } from 'st-utils';
@@ -14,7 +14,7 @@ import { HttpParams } from '@util/http-params';
 import { HttpClient } from '@angular/common/http';
 import { ScoreApprovalActionEnum } from '@model/enum/score-approval-action.enum';
 import { ScoreChangeRequest, ScoreChangeRequestsPaginationVW } from '@model/score-change-request';
-import { HeaderState, HeaderStore } from '../header/header.store';
+import { HeaderStore } from '../header/header.store';
 import { SocketIOService } from '@shared/services/socket-io/socket-io.service';
 import { Pagination } from '@model/pagination';
 import { ScoreGroupedByStatus } from '@model/score-grouped-by-status';
@@ -29,12 +29,6 @@ export abstract class AbstractScoreService {
   private _socketConnection = this.socketIOService.createConnection('score');
 
   endPoint = 'score';
-
-  private _subtractApprovalCount(playerMode: boolean): void {
-    const path = playerMode ? 'player' : 'admin';
-    const key = `${path}ApprovalCount` as keyof HeaderState;
-    this.headerStore.updateState(state => ({ ...state, [key]: state[key] - 1 }));
-  }
 
   add(dto: ScoreAdd): Observable<Score> {
     return this.http.post<Score>(this.endPoint, dto);
@@ -71,7 +65,6 @@ export abstract class AbstractScoreService {
   }
 
   findApproval(
-    playerMode: boolean,
     idPlatform: number,
     page: number,
     idGame?: number | null,
@@ -86,22 +79,11 @@ export abstract class AbstractScoreService {
       { idPlatform, page, idGame, idMiniGame, idMode, limit, orderBy, orderByDirection, idStage },
       true
     );
-    const path = playerMode ? 'player' : 'admin';
-    return this.http.get<ScoreApprovalPagination>(`${this.endPoint}/approval/${path}`, { params });
+    return this.http.get<ScoreApprovalPagination>(`${this.endPoint}/approval`, { params });
   }
 
-  approveOrReject(
-    playerMode: boolean,
-    idScore: number,
-    action: ScoreApprovalActionEnum,
-    payload: ScoreApprovalAdd
-  ): Observable<void> {
-    const path = playerMode ? 'player' : 'admin';
-    return this.http.post<void>(`${this.endPoint}/${idScore}/${action.toLowerCase()}/${path}`, payload).pipe(
-      tap(() => {
-        this._subtractApprovalCount(playerMode);
-      })
-    );
+  approveOrReject(idScore: number, action: ScoreApprovalActionEnum, payload: ScoreApprovalAdd): Observable<void> {
+    return this.http.post<void>(`${this.endPoint}/${idScore}/${action.toLowerCase()}`, payload);
   }
 
   findChangeRequests(page: number, limit?: number): Observable<ScoreChangeRequestsPaginationVW> {
@@ -110,19 +92,13 @@ export abstract class AbstractScoreService {
   }
 
   requestChanges(idScore: number, changes: string[]): Observable<ScoreChangeRequest[]> {
-    return this.http.post<ScoreChangeRequest[]>(`${this.endPoint}/${idScore}/request-changes`, changes).pipe(
-      tap(() => {
-        this._subtractApprovalCount(false);
-      })
-    );
+    return this.http.post<ScoreChangeRequest[]>(`${this.endPoint}/${idScore}/request-changes`, changes);
   }
 
-  findApprovalCount(playerMode: boolean): Observable<number> {
-    const path = playerMode ? 'player' : 'admin';
-    return this.http.get<number>(`${this.endPoint}/approval/${path}/count`).pipe(
-      tap(count => {
-        const key = `${path}ApprovalCount` as keyof HeaderState;
-        this.headerStore.updateState({ [key]: count });
+  findApprovalCount(): Observable<number> {
+    return this.http.get<number>(`${this.endPoint}/approval/count`).pipe(
+      tap(adminApprovalCount => {
+        this.headerStore.updateState({ adminApprovalCount });
       })
     );
   }

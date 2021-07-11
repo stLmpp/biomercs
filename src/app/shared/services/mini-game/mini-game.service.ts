@@ -31,9 +31,8 @@ export class MiniGameService {
     );
   }
 
-  findApprovalByIdPlatformGame(idPlatform: number, idGame: number, playerMode = false): Observable<MiniGame[]> {
-    const path = playerMode ? 'approval/player' : 'approval/admin';
-    return this.http.get<MiniGame[]>(`${this.endPoint}/${path}/platform/${idPlatform}/game/${idGame}`).pipe(
+  findApprovalByIdPlatformGame(idPlatform: number, idGame: number): Observable<MiniGame[]> {
+    return this.http.get<MiniGame[]>(`${this.endPoint}/approval/platform/${idPlatform}/game/${idGame}`).pipe(
       tap(miniGames => {
         this.miniGameStore.upsert(miniGames);
       })

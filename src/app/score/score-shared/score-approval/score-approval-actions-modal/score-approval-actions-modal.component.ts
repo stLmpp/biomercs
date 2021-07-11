@@ -51,7 +51,6 @@ export class ScoreApprovalActionsModalComponent extends LocalState<ScoreApproval
       score: this.score,
       action,
       scoreApprovalComponentState: this.scoreApprovalComponentState,
-      playerMode: this.scoreApprovalComponentState.playerMode,
     });
     modalRef.onClose$.subscribe(data => {
       this.modalRef.close(data);
@@ -60,9 +59,6 @@ export class ScoreApprovalActionsModalComponent extends LocalState<ScoreApproval
   }
 
   async openModalRequestChanges(): Promise<void> {
-    if (this.scoreApprovalComponentState.playerMode) {
-      return;
-    }
     this.updateState({ loadingModal: true });
     const modalRef = await this.scoreService.openModalRequestChangesScore({
       score: this.score,
