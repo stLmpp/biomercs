@@ -32,67 +32,42 @@
               "includePaths": ["src/styles"]
             },
             "vendorChunk": false,
-            "extractLicenses": false,
-            "buildOptimizer": false,
-            "sourceMap": true,
-            "optimization": false,
-            "namedChunks": true,
             "serviceWorker": true,
-            "ngswConfigPath": "ngsw-config.json"
+            "ngswConfigPath": "ngsw-config.json",
+            "optimization": true,
+            "outputHashing": "all",
+            "sourceMap": false,
+            "namedChunks": false,
+            "extractLicenses": true,
+            "buildOptimizer": true,
+            "budgets": [
+              { "type": "initial", "maximumWarning": "1mb", "maximumError": "3mb" },
+              { "type": "anyComponentStyle", "maximumWarning": "4kb", "maximumError": "6kb" }
+            ]
           },
           "configurations": {
             "production": {
               "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "buildOptimizer": true,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb",
-                  "maximumError": "10kb"
-                }
+                { "replace": "src/environments/environment.ts", "with": "src/environments/environment.prod.ts" }
               ]
             },
             "development": {
               "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.dev.ts"
-                }
+                { "replace": "src/environments/environment.ts", "with": "src/environments/environment.dev.ts" }
               ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "extractLicenses": true,
-              "buildOptimizer": true,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "4mb",
-                  "maximumError": "6mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "5kb",
-                  "maximumError": "8kb"
-                }
-              ]
+              "namedChunks": true
+            },
+            "serve": {
+              "extractLicenses": false,
+              "buildOptimizer": false,
+              "sourceMap": true,
+              "optimization": false,
+              "namedChunks": true,
+              "outputHashing": "none",
+              "budgets": []
             }
-          }
+          },
+          "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -103,8 +78,15 @@
           "configurations": {
             "production": {
               "browserTarget": "biomercs-ng:build:production"
+            },
+            "development": {
+              "browserTarget": "biomercs-ng:build:development"
+            },
+            "serve": {
+              "browserTarget": "biomercs-ng:build:serve"
             }
-          }
+          },
+          "defaultConfiguration": "serve"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
