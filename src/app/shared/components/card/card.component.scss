@@ -35,25 +35,6 @@
     }
   }
 
-  .card-title {
-    margin-bottom: 0.25rem;
-    font-weight: 500;
-  }
-
-  .card-subtitle {
-    font-size: 0.85rem;
-    color: v.$primary-100;
-
-    &:not(:last-child) {
-      margin-bottom: 0.25rem;
-    }
-  }
-
-  .card-content {
-    display: block;
-    padding: 1rem;
-  }
-
   &.has-header {
     .card-content {
       padding-top: 0;
@@ -65,10 +46,29 @@
       padding-bottom: 0;
     }
   }
+}
 
-  .card-actions {
-    @include m.actions(0);
+.card-title {
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+}
 
-    padding: 1rem;
+.card-subtitle {
+  font-size: 0.85rem;
+  color: v.$primary-100;
+
+  &:not(:last-child) {
+    margin-bottom: 0.25rem;
   }
+}
+
+.card-content {
+  display: block;
+  padding: 1rem;
+}
+
+.card-actions {
+  @include m.actions(0);
+
+  padding: 1rem;
 }

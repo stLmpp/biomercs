@@ -1,8 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthNotLoggedGuard } from './auth-not-logged.guard';
+import { AuthLoggedGuard } from './auth-logged.guard';
 
 const routes: Routes = [
+  {
+    path: 'change-password',
+    loadChildren: () => import('./change-password/change-password.module').then(m => m.ChangePasswordModule),
+    canLoad: [AuthLoggedGuard],
+  },
   {
     path: 'login',
     loadChildren: () => import('./login/login.module').then(m => m.LoginModule),
@@ -19,7 +25,7 @@ const routes: Routes = [
     canLoad: [AuthNotLoggedGuard],
   },
   {
-    path: `steam`,
+    path: 'steam',
     loadChildren: () => import('./auth-steam/auth-steam.module').then(m => m.AuthSteamModule),
     canLoad: [AuthNotLoggedGuard],
   },

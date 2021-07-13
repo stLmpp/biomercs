@@ -10,7 +10,14 @@ import { WINDOW } from '../core/window.service';
 import { SnackBarService } from '@shared/components/snack-bar/snack-bar.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { v4 } from 'uuid';
-import { AuthCredentials, AuthGatewayEvents, AuthRegister, AuthRegisterVW, AuthSteamLoginSocketVW } from '@model/auth';
+import {
+  AuthChangePassword,
+  AuthCredentials,
+  AuthGatewayEvents,
+  AuthRegister,
+  AuthRegisterVW,
+  AuthSteamLoginSocketVW,
+} from '@model/auth';
 import { User } from '@model/user';
 import { AuthSteamLoginSocketErrorType } from '@model/enum/auth-steam-login-socket-error-type';
 import { SocketIOService } from '@shared/services/socket-io/socket-io.service';
@@ -262,5 +269,17 @@ export class AuthService {
   emailExists(email: string): Observable<boolean> {
     const params = new HttpParams({ email });
     return this.http.get<boolean>(`${this.endPoint}/user/exists`, { params });
+  }
+
+  sendChangePasswordConfirmationCode(): Observable<void> {
+    return this.http.post<void>(`${this.endPoint}/change-password`, undefined);
+  }
+
+  confirmChangePassword(dto: AuthChangePassword): Observable<User> {
+    return this.http.post<User>(`${this.endPoint}/change-password/confirm`, dto).pipe(
+      tap(user => {
+        this.authStore.updateState({ user });
+      })
+    );
   }
 }

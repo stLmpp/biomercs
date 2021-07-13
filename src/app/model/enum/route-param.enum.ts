@@ -42,4 +42,5 @@ export enum RouteParamEnum {
   combinationWorldRecord = 'combinationWorldRecord',
   onlyMyScores = 'onlyMyScores',
   score = 'score',
+  key = 'key',
 }

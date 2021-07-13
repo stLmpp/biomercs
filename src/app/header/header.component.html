@@ -33,6 +33,7 @@
         </button>
         <bio-menu #menu>
           <a bioButton menuItem [routerLink]="pathToProfile$ | async"> <icon>person</icon> Profile </a>
+          <a bioButton menuItem routerLink="/auth/change-password"> <icon>vpn_key</icon> Change password</a>
           <button type="button" bioButton menuItem (click)="logout()">
             <icon>logout</icon>
             Logout
