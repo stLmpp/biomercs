@@ -9,6 +9,7 @@
       (blur)="onTouched$.next()"
       (focus)="focusManager.setActiveItem($index)"
       (paste)="onPaste($event)"
+      (keydown.backspace)="onKeyupBackspace($event, $index)"
       placeholder="0"
       confirmationCodeInput
       inputmode="numeric"

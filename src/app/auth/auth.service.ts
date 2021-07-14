@@ -282,4 +282,8 @@ export class AuthService {
       })
     );
   }
+
+  changePasswordValidate(key: string): Observable<boolean> {
+    return this.http.get<boolean>(`${this.endPoint}/change-password/validate/${key}`);
+  }
 }
