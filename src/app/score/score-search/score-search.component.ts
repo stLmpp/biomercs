@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { PaginationMeta } from '@model/pagination';
-import { ScoreSearch, Score } from '@model/score';
+import { Score, ScoreSearch } from '@model/score';
 import { LocalState } from '@stlmpp/store';
 import { combineLatest, debounceTime, finalize, switchMap, takeUntil, tap } from 'rxjs';
 import { Control, ControlGroup } from '@stlmpp/control';
@@ -10,24 +10,18 @@ import { ScoreStatusEnum } from '@model/enum/score-status.enum';
 import { getScoreDefaultColDefs } from '../score-shared/util';
 import { AuthDateFormatPipe } from '../../auth/shared/auth-date-format.pipe';
 import { PlatformQuery } from '@shared/services/platform/platform.query';
-import { trackByPlatform } from '@model/platform';
 import { GameService } from '@shared/services/game/game.service';
 import { filterArrayMinLength, filterNil } from '@shared/operators/filter';
-import { trackByGame } from '@model/game';
 import { ModeService } from '@shared/services/mode/mode.service';
 import { MiniGameService } from '@shared/services/mini-game/mini-game.service';
-import { trackByMiniGame } from '@model/mini-game';
-import { trackByMode } from '@model/mode';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { StageService } from '@shared/services/stage/stage.service';
-import { trackByStage } from '@model/stage';
 import { CharacterService } from '@shared/services/character/character.service';
-import { trackByCharacter } from '@model/character';
-import { trackByCharacterCostume } from '@model/character-costume';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { ColDef } from '@shared/components/table/col-def';
 import { ScoreOpenInfoCellComponent } from '../score-shared/score-open-info-cell/score-open-info-cell.component';
+import { trackById } from '@util/track-by';
 
 export interface ScoreSearchComponentState {
   scores: Score[];
@@ -78,16 +72,16 @@ export class ScoreSearchComponent extends LocalState<ScoreSearchComponentState> 
     });
   }
 
-  scores$ = this.selectState('scores');
-  paginationMeta$ = this.selectState('paginationMeta');
-  loading$ = this.selectState('loading');
-  gameLoading$ = this.selectState('gameLoading');
-  miniGameLoading$ = this.selectState('miniGameLoading');
-  modeLoading$ = this.selectState('modeLoading');
-  stageLoading$ = this.selectState('stageLoading');
-  characterLoading$ = this.selectState('characterLoading');
+  readonly scores$ = this.selectState('scores');
+  readonly paginationMeta$ = this.selectState('paginationMeta');
+  readonly loading$ = this.selectState('loading');
+  readonly gameLoading$ = this.selectState('gameLoading');
+  readonly miniGameLoading$ = this.selectState('miniGameLoading');
+  readonly modeLoading$ = this.selectState('modeLoading');
+  readonly stageLoading$ = this.selectState('stageLoading');
+  readonly characterLoading$ = this.selectState('characterLoading');
 
-  form = new ControlGroup<ScoreSearch>({
+  readonly form = new ControlGroup<ScoreSearch>({
     limit: new Control<number>(this._getParamNumberFromRoute(RouteParamEnum.limit) ?? 10),
     page: new Control<number>(this._getParamNumberFromRoute(RouteParamEnum.page) ?? 1),
     worldRecord: new Control<boolean>(this._getParamBooleanFromRoute(RouteParamEnum.worldRecord)),
@@ -106,7 +100,7 @@ export class ScoreSearchComponent extends LocalState<ScoreSearchComponentState> 
     }),
   });
 
-  colDefs: ColDef<Score>[] = [
+  readonly colDefs: ColDef<Score>[] = [
     { property: 'id', component: ScoreOpenInfoCellComponent, width: '40px', metadata: { showWorldRecord: true } },
     ...getScoreDefaultColDefs(this.authDateFormatPipe),
   ];
@@ -135,7 +129,7 @@ export class ScoreSearchComponent extends LocalState<ScoreSearchComponentState> 
     return this.form.get('idCharacterCostumes');
   }
 
-  idPlatforms$ = this.idPlatformsControl.value$.pipe(
+  readonly idPlatforms$ = this.idPlatformsControl.value$.pipe(
     tap(idPlatforms => {
       if (!idPlatforms?.length) {
         this.idGamesControl.setValue([]);
@@ -145,7 +139,7 @@ export class ScoreSearchComponent extends LocalState<ScoreSearchComponentState> 
       }
     })
   );
-  idGames$ = this.idGamesControl.value$.pipe(
+  readonly idGames$ = this.idGamesControl.value$.pipe(
     tap(idGames => {
       if (!idGames?.length) {
         this.idMiniGamesControl.setValue([]);
@@ -155,7 +149,7 @@ export class ScoreSearchComponent extends LocalState<ScoreSearchComponentState> 
       }
     })
   );
-  idMiniGames$ = this.idMiniGamesControl.value$.pipe(
+  readonly idMiniGames$ = this.idMiniGamesControl.value$.pipe(
     tap(idMiniGames => {
       if (!idMiniGames?.length) {
         this.idModesControl.setValue([]);
@@ -165,7 +159,7 @@ export class ScoreSearchComponent extends LocalState<ScoreSearchComponentState> 
       }
     })
   );
-  idModes$ = this.idModesControl.value$.pipe(
+  readonly idModes$ = this.idModesControl.value$.pipe(
     tap(idModes => {
       if (!idModes?.length) {
         this.idStagesControl.setValue([]);
@@ -179,14 +173,14 @@ export class ScoreSearchComponent extends LocalState<ScoreSearchComponentState> 
     })
   );
 
-  idPlatformsNotNil$ = this.idPlatforms$.pipe(filterNil(), filterArrayMinLength());
-  idGamesNotNil$ = this.idGames$.pipe(filterNil(), filterArrayMinLength());
-  idMiniGamesNotNil$ = this.idMiniGames$.pipe(filterNil(), filterArrayMinLength());
-  idModesNotNil$ = this.idModes$.pipe(filterNil(), filterArrayMinLength());
+  readonly idPlatformsNotNil$ = this.idPlatforms$.pipe(filterNil(), filterArrayMinLength());
+  readonly idGamesNotNil$ = this.idGames$.pipe(filterNil(), filterArrayMinLength());
+  readonly idMiniGamesNotNil$ = this.idMiniGames$.pipe(filterNil(), filterArrayMinLength());
+  readonly idModesNotNil$ = this.idModes$.pipe(filterNil(), filterArrayMinLength());
 
-  platforms$ = this.platformQuery.all$;
+  readonly platforms$ = this.platformQuery.all$;
 
-  games$ = this.idPlatformsNotNil$.pipe(
+  readonly games$ = this.idPlatformsNotNil$.pipe(
     switchMap(idPlatforms => {
       this.updateState({ gameLoading: true });
       return this.gameService.findByIdPlatforms(idPlatforms).pipe(
@@ -204,7 +198,7 @@ export class ScoreSearchComponent extends LocalState<ScoreSearchComponentState> 
     })
   );
 
-  miniGames$ = combineLatest([this.idPlatformsNotNil$, this.idGamesNotNil$]).pipe(
+  readonly miniGames$ = combineLatest([this.idPlatformsNotNil$, this.idGamesNotNil$]).pipe(
     switchMap(([idPlatforms, idGames]) => {
       this.updateState({ miniGameLoading: true });
       return this.miniGameService.findByIdPlatformsGames(idPlatforms, idGames).pipe(
@@ -222,7 +216,7 @@ export class ScoreSearchComponent extends LocalState<ScoreSearchComponentState> 
     })
   );
 
-  modes$ = combineLatest([this.idPlatformsNotNil$, this.idGamesNotNil$, this.idMiniGamesNotNil$]).pipe(
+  readonly modes$ = combineLatest([this.idPlatformsNotNil$, this.idGamesNotNil$, this.idMiniGamesNotNil$]).pipe(
     switchMap(([idPlatforms, idGames, idMiniGames]) => {
       this.updateState({ modeLoading: true });
       return this.modeService.findByIdPlatformsGamesMiniGames(idPlatforms, idGames, idMiniGames).pipe(
@@ -240,7 +234,7 @@ export class ScoreSearchComponent extends LocalState<ScoreSearchComponentState> 
     })
   );
 
-  stages$ = combineLatest([
+  readonly stages$ = combineLatest([
     this.idPlatformsNotNil$,
     this.idGamesNotNil$,
     this.idMiniGamesNotNil$,
@@ -263,7 +257,7 @@ export class ScoreSearchComponent extends LocalState<ScoreSearchComponentState> 
     })
   );
 
-  characters$ = combineLatest([
+  readonly characters$ = combineLatest([
     this.idPlatformsNotNil$,
     this.idGamesNotNil$,
     this.idMiniGamesNotNil$,
@@ -294,13 +288,7 @@ export class ScoreSearchComponent extends LocalState<ScoreSearchComponentState> 
     })
   );
 
-  trackByPlatform = trackByPlatform;
-  trackByGame = trackByGame;
-  trackByMiniGame = trackByMiniGame;
-  trackByMode = trackByMode;
-  trackByStage = trackByStage;
-  trackByCharacter = trackByCharacter;
-  trackByCharacterCostume = trackByCharacterCostume;
+  readonly trackById = trackById;
 
   private _getParamsArrayFromRoute(param: string): number[] {
     const ids = this.activatedRoute.snapshot.queryParamMap.getAll(param) ?? [];

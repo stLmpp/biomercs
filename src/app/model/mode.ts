@@ -1,4 +1,4 @@
-import { trackByFactory } from '@stlmpp/utils';
+import { trackById } from '@util/track-by';
 
 export interface Mode {
   id: number;
@@ -6,4 +6,4 @@ export interface Mode {
   playerQuantity: number;
 }
 
-export const trackByMode = trackByFactory<Mode>('id');
+export const trackByMode = trackById;

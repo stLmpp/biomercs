@@ -2,9 +2,7 @@
   <h4 bioModalTitle>Update score</h4>
   <bio-modal-content>
     <div controlArrayName="scorePlayers">
-      <ng-container
-        *ngFor="let scorePlayer of data.score.scorePlayers; trackBy: trackByScorePlayer; let $index = index"
-      >
+      <ng-container *ngFor="let scorePlayer of data.score.scorePlayers; trackBy: trackById; let $index = index">
         <div [controlGroupName]="$index" class="player">
           <div class="title">
             <h5>Player {{ $index + 1 }} ({{ scorePlayer.idPlayer }})</h5>
@@ -80,11 +78,7 @@
     <h5>Changes Requested</h5>
     <div class="score-changes" controlArrayName="idsScoreChangeRequests">
       <div
-        *ngFor="
-          let scoreChangeRequest of data.score.scoreChangeRequests;
-          trackBy: trackByScoreChangeRequest;
-          let $index = index
-        "
+        *ngFor="let scoreChangeRequest of data.score.scoreChangeRequests; trackBy: trackById; let $index = index"
         [controlGroupName]="$index"
       >
         <bio-checkbox controlName="checked">{{ scoreChangeRequest.description }}</bio-checkbox>

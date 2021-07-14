@@ -13,7 +13,7 @@ import { ScoreApprovalAdd, ScoreApprovalPagination } from '@model/score-approval
 import { HttpParams } from '@util/http-params';
 import { HttpClient } from '@angular/common/http';
 import { ScoreApprovalActionEnum } from '@model/enum/score-approval-action.enum';
-import { ScoreChangeRequest, ScoreChangeRequestsPaginationVW } from '@model/score-change-request';
+import { ScoreChangeRequest, ScoreChangeRequestsPagination } from '@model/score-change-request';
 import { HeaderStore } from '../header/header.store';
 import { SocketIOService } from '@shared/services/socket-io/socket-io.service';
 import { Pagination } from '@model/pagination';
@@ -26,9 +26,9 @@ export abstract class AbstractScoreService {
     private socketIOService: SocketIOService
   ) {}
 
-  private _socketConnection = this.socketIOService.createConnection('score');
+  private readonly _socketConnection = this.socketIOService.createConnection('score');
 
-  endPoint = 'score';
+  readonly endPoint = 'score';
 
   add(dto: ScoreAdd): Observable<Score> {
     return this.http.post<Score>(this.endPoint, dto);
@@ -86,9 +86,9 @@ export abstract class AbstractScoreService {
     return this.http.post<void>(`${this.endPoint}/${idScore}/${action.toLowerCase()}`, payload);
   }
 
-  findChangeRequests(page: number, limit?: number): Observable<ScoreChangeRequestsPaginationVW> {
+  findChangeRequests(page: number, limit?: number): Observable<ScoreChangeRequestsPagination> {
     const params = new HttpParams({ page, limit }, true);
-    return this.http.get<ScoreChangeRequestsPaginationVW>(`${this.endPoint}/player/change-requests`, { params });
+    return this.http.get<ScoreChangeRequestsPagination>(`${this.endPoint}/player/change-requests`, { params });
   }
 
   requestChanges(idScore: number, changes: string[]): Observable<ScoreChangeRequest[]> {

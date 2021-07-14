@@ -19,7 +19,7 @@ export class DatepickerDirective extends ControlValue<Date | null | undefined> i
     super();
   }
 
-  private _mask = this.inputmaskService.createMask('datetime', {
+  private readonly _mask = this.inputmaskService.createMask('datetime', {
     inputFormat: this._getDateFormat().toLowerCase(),
     placeholder: this._getDateFormat().toUpperCase(),
     oncomplete: () => {
@@ -45,7 +45,7 @@ export class DatepickerDirective extends ControlValue<Date | null | undefined> i
     this.renderer2.setProperty(this.elementRef.nativeElement, 'value', value);
   }
 
-  setDisabled(disabled: boolean): void {
+  override setDisabled(disabled: boolean): void {
     this.bioDatepicker.disabled = disabled;
     this.renderer2.setProperty(this.elementRef.nativeElement, 'disabled', disabled);
   }

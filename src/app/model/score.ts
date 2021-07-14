@@ -1,8 +1,7 @@
-import { ScorePlayerAdd, ScorePlayerUpdateDto, ScorePlayer } from './score-player';
+import { ScorePlayer, ScorePlayerAdd, ScorePlayerUpdateDto } from './score-player';
 import { ScoreStatusEnum } from '@model/enum/score-status.enum';
 import { Stage } from '@model/stage';
 import { PaginationMeta } from '@model/pagination';
-import { trackByFactory } from '@stlmpp/utils';
 
 export interface ScoreAdd {
   idPlatform: number;
@@ -92,8 +91,6 @@ export interface ScoreTableWorldRecordWithoutUndefined extends ScoreTableWorldRe
 export interface ScoreTopTableWorldRecordWithoutUndefined extends ScoreTopTableWorldRecord {
   scoreTables: ScoreTableWorldRecordWithoutUndefined[];
 }
-
-export const trackByScore = trackByFactory<Score>('id');
 
 export enum ScoreGatewayEvents {
   updateCountApprovals = 'updateCountApprovals',

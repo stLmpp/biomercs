@@ -8,7 +8,7 @@ import type {
   PlayerChangeRequestsModalData,
 } from './player-change-requests/player-change-requests-modal/player-change-requests-modal.component';
 import { ModalService } from '@shared/components/modal/modal.service';
-import { ScoreChangeRequestsPaginationVW } from '@model/score-change-request';
+import { ScoreChangeRequestsPagination } from '@model/score-change-request';
 import { AbstractPlayerService } from './abstract-player.service';
 import type {
   PlayerSearchModalComponent,
@@ -35,7 +35,7 @@ export class PlayerService extends AbstractPlayerService {
   async openPlayerChangeRequestsModal(
     data: PlayerChangeRequestsModalData
   ): Promise<
-    ModalRef<PlayerChangeRequestsModalComponent, PlayerChangeRequestsModalData, ScoreChangeRequestsPaginationVW>
+    ModalRef<PlayerChangeRequestsModalComponent, PlayerChangeRequestsModalData, ScoreChangeRequestsPagination>
   > {
     return this.modalService.openLazy(
       () =>

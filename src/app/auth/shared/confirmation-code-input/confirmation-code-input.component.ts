@@ -14,12 +14,12 @@ import {
   QueryList,
   ViewChildren,
 } from '@angular/core';
-import { Control, ControlArray, ControlBuilder, ControlValue, Validators } from '@stlmpp/control';
+import { ControlArray, ControlBuilder, ControlValue, Validators } from '@stlmpp/control';
 import { FocusableOption, FocusKeyManager } from '@angular/cdk/a11y';
 import { filter, Subject, takeUntil } from 'rxjs';
 import { SimpleChangesCustom } from '@util/util';
-import { trackByFactory } from '@stlmpp/utils';
 import { isNil } from 'st-utils';
+import { trackByControl } from '@util/track-by';
 
 @Directive({ selector: 'input[confirmationCodeInput]' })
 export class ConfirmationCodeInputDirective implements FocusableOption {
@@ -65,7 +65,7 @@ export class ConfirmationCodeInputComponent
     ),
   });
 
-  trackByControl = trackByFactory<Control<string>>('uniqueId');
+  readonly trackByControl = trackByControl;
 
   get arrayControl(): ControlArray<string> {
     return this.form.get('array');

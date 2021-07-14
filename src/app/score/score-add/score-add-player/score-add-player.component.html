@@ -35,7 +35,7 @@
       />
       <bio-autocomplete #autocomplete>
         <bio-autocomplete-option
-          *ngFor="let player of players$ | async; trackBy: trackByPlayer"
+          *ngFor="let player of players$ | async; trackBy: trackById"
           [value]="player.personaName"
           (autocompleteSelect)="idPlayerControl.setValue(player.id)"
         >
@@ -62,12 +62,12 @@
       <bio-select controlName="idCharacterCostume" placeholder="Character" #select>
         <bio-option disabled *ngIf="charactersLoading"><spinner [size]="0.1"></spinner> Loading...</bio-option>
         <bio-optgroup
-          *ngFor="let character of characters; trackBy: trackByCharacter"
+          *ngFor="let character of characters; trackBy: trackById"
           [label]="character.name"
           [title]="character.name"
         >
           <bio-option
-            *ngFor="let characterCostume of character.characterCostumes; trackBy: trackByCharacterCostume"
+            *ngFor="let characterCostume of character.characterCostumes; trackBy: trackById"
             [value]="characterCostume.id"
             title="{{ character.name }} {{ characterCostume.name }}"
           >

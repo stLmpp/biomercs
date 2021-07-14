@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { ModalRef } from '@shared/components/modal/modal-ref';
-import { Player, trackByPlayer } from '@model/player';
+import { Player } from '@model/player';
 import { Control, ControlGroup } from '@stlmpp/control';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import { combineLatest, debounceTime, filter, finalize, Observable, pluck, shareReplay, switchMap } from 'rxjs';
 import { LocalState } from '@stlmpp/store';
 import { PlayerService } from '../../player.service';
 import { PaginationMeta } from '@model/pagination';
+import { trackById } from '@util/track-by';
 
 export interface PlayerSearchModalComponentData {
   idPlayer?: number | null | undefined;
@@ -38,23 +39,21 @@ export class PlayerSearchModalComponent extends LocalState<PlayerSearchModalComp
     this.idPlayer = idPlayer;
   }
 
-  form = new ControlGroup<PlayerSearchModalComponentForm>({
+  idPlayer?: number | null | undefined;
+
+  readonly form = new ControlGroup<PlayerSearchModalComponentForm>({
     limit: new Control(10),
     page: new Control(1),
     term: new Control(''),
   });
-
-  term$ = this.form.get('term').value$;
-  termDebounce$ = this.term$.pipe(
+  readonly term$ = this.form.get('term').value$;
+  readonly termDebounce$ = this.term$.pipe(
     debounceTime(500),
     filter(term => !!term.length)
   );
-  page$ = this.form.get('page').value$;
-  limit$ = this.form.get('limit').value$;
-
-  idPlayer?: number | null | undefined;
-
-  data$ = combineLatest([this.termDebounce$, this.page$, this.limit$]).pipe(
+  readonly page$ = this.form.get('page').value$;
+  readonly limit$ = this.form.get('limit').value$;
+  readonly data$ = combineLatest([this.termDebounce$, this.page$, this.limit$]).pipe(
     switchMap(([term, page, limit]) => {
       this.updateState({ loading: true });
       return this.playerService.search(term, page, limit).pipe(
@@ -65,13 +64,10 @@ export class PlayerSearchModalComponent extends LocalState<PlayerSearchModalComp
     }),
     shareReplay()
   );
-
-  players$: Observable<Player[]> = this.data$.pipe(pluck('items'));
-  paginationMeta$: Observable<PaginationMeta> = this.data$.pipe(pluck('meta'));
-
-  loading$ = this.selectState('loading');
-
-  trackByPlayer = trackByPlayer;
+  readonly players$: Observable<Player[]> = this.data$.pipe(pluck('items'));
+  readonly paginationMeta$: Observable<PaginationMeta> = this.data$.pipe(pluck('meta'));
+  readonly loading$ = this.selectState('loading');
+  readonly trackByPlayer = trackById;
 
   onCurrentPageChange($event: number): void {
     this.form.get('page').setValue($event);
@@ -79,9 +75,5 @@ export class PlayerSearchModalComponent extends LocalState<PlayerSearchModalComp
 
   onItemsPerPageChange($event: number): void {
     this.form.get('limit').setValue($event);
-  }
-
-  onPlayerSelect(player: Player): void {
-    this.modalRef.close(player);
   }
 }

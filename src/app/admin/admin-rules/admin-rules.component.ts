@@ -4,13 +4,13 @@ import { Rule, RuleUpsert } from '@model/rule';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { ControlArray, ControlBuilder, ControlGroup, Validators } from '@stlmpp/control';
 import { LocalState } from '@stlmpp/store';
-import { trackByFactory } from '@stlmpp/utils';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { RuleService } from '../../rules/rule.service';
 import { finalize, tap } from 'rxjs';
 import { RuleQuery } from '../../rules/rule.query';
 import { SnackBarService } from '@shared/components/snack-bar/snack-bar.service';
 import { UnsavedData, UnsavedDataType } from '@shared/guards/unsaved-data.guard';
+import { trackByControl } from '@util/track-by';
 
 type RuleUpsertForm = Omit<RuleUpsert, 'deleted'>;
 
@@ -41,7 +41,7 @@ export class AdminRulesComponent extends LocalState<AdminRulesComponentState> im
   }
 
   private _rules: Rule[] = this.activatedRoute.snapshot.data[RouteDataEnum.rules] ?? [];
-  saving$ = this.selectState('saving');
+  readonly saving$ = this.selectState('saving');
 
   form = this._createForm();
 
@@ -53,7 +53,7 @@ export class AdminRulesComponent extends LocalState<AdminRulesComponentState> im
     return this.form.get('deleted');
   }
 
-  trackByControlGroup = trackByFactory<ControlGroup<RuleUpsertForm>>('uniqueId');
+  readonly trackByControl = trackByControl;
 
   @HostListener('window:unload')
   private _createForm(): ControlGroup<RulesForm> {

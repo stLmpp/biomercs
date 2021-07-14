@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { filter, finalize, map, Observable, pluck, shareReplay, skip, switchMap, takeUntil } from 'rxjs';
 import { filterNil } from '@shared/operators/filter';
-import { ScoreChangeRequests, ScoreChangeRequestsPaginationVW } from '@model/score-change-request';
+import { ScoreWithScoreChangeRequests, ScoreChangeRequestsPagination } from '@model/score-change-request';
 import { PaginationMeta } from '@model/pagination';
 import { PlayerService } from '../player.service';
 import { LocalState } from '@stlmpp/store';
@@ -21,7 +21,7 @@ export interface PlayerChangeRequestsState {
   page: number;
   itemsPerPage: number;
   loading: boolean;
-  data: ScoreChangeRequestsPaginationVW;
+  data: ScoreChangeRequestsPagination;
 }
 
 @Component({
@@ -45,26 +45,24 @@ export class PlayerChangeRequestsComponent extends LocalState<PlayerChangeReques
     });
   }
 
-  private _data$: Observable<ScoreChangeRequestsPaginationVW> = this.selectState('data');
+  private readonly _data$: Observable<ScoreChangeRequestsPagination> = this.selectState('data');
 
-  scores$: Observable<ScoreChangeRequests[]> = this._data$.pipe(filterNil(), pluck('scores'));
-  paginationMeta$: Observable<PaginationMeta> = this._data$.pipe(filterNil(), pluck('meta'));
-  metadata$: Observable<PlayerChangeRequestsActionCellComponentMetadata> = this.paginationMeta$.pipe(
+  readonly scores$: Observable<ScoreWithScoreChangeRequests[]> = this._data$.pipe(filterNil(), pluck('scores'));
+  readonly paginationMeta$: Observable<PaginationMeta> = this._data$.pipe(filterNil(), pluck('meta'));
+  readonly metadata$: Observable<PlayerChangeRequestsActionCellComponentMetadata> = this.paginationMeta$.pipe(
     map(paginationMeta => ({ page: paginationMeta.currentPage, itemsPerPage: paginationMeta.itemsPerPage }))
   );
-
-  loading$ = this.selectState('loading');
-
-  colDefs: ColDef<ScoreChangeRequests>[] = [
+  readonly loading$ = this.selectState('loading');
+  readonly colDefs: ColDef<ScoreWithScoreChangeRequests>[] = [
     {
       property: 'id',
       component: PlayerChangeRequestsActionCellComponent,
       width: '100px',
     },
-    ...getScoreDefaultColDefs<ScoreChangeRequests>(this.authDateFormatPipe),
+    ...getScoreDefaultColDefs<ScoreWithScoreChangeRequests>(this.authDateFormatPipe),
   ];
 
-  async openModalChangeRequests(score: ScoreChangeRequests): Promise<void> {
+  async openModalChangeRequests(score: ScoreWithScoreChangeRequests): Promise<void> {
     const { page, itemsPerPage } = this.getState();
     const modalRef = await this.playerService.openPlayerChangeRequestsModal({ score, page, itemsPerPage });
     modalRef.onClose$.subscribe(data => {
@@ -82,7 +80,7 @@ export class PlayerChangeRequestsComponent extends LocalState<PlayerChangeReques
     this.updateState({ itemsPerPage: $event });
   }
 
-  onNotifyChange($event: TableCellNotifyChange<ScoreChangeRequestsPaginationVW, ScoreChangeRequests>): void {
+  onNotifyChange($event: TableCellNotifyChange<ScoreChangeRequestsPagination, ScoreWithScoreChangeRequests>): void {
     if ($event.data) {
       this.updateState({ data: $event.data });
     }

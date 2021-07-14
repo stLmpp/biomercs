@@ -1,5 +1,3 @@
-import { trackByFactory } from '@stlmpp/utils';
-
 export interface Rule {
   id: number;
   description: string;
@@ -17,5 +15,3 @@ export interface RuleUpsert extends RuleAdd {
   id?: number;
   deleted: boolean;
 }
-
-export const trackByRule = trackByFactory<Rule>('id');

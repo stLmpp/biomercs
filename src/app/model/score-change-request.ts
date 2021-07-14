@@ -1,4 +1,3 @@
-import { trackByFactory } from '@stlmpp/utils';
 import { Score } from '@model/score';
 import { PaginationMeta } from '@model/pagination';
 
@@ -9,14 +8,11 @@ export interface ScoreChangeRequest {
   dateFulfilled?: Date;
 }
 
-export interface ScoreChangeRequests extends Score {
+export interface ScoreWithScoreChangeRequests extends Score {
   scoreChangeRequests: ScoreChangeRequest[];
 }
 
-export interface ScoreChangeRequestsPaginationVW {
+export interface ScoreChangeRequestsPagination {
   meta: PaginationMeta;
-  scores: ScoreChangeRequests[];
+  scores: ScoreWithScoreChangeRequests[];
 }
-
-export const trackByScoreChangeRequest = trackByFactory<ScoreChangeRequest>('id');
-export const trackByScoreChangeRequests = trackByFactory<ScoreChangeRequests>('id');

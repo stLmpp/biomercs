@@ -1,13 +1,9 @@
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
-import {
-  ScoreChangeRequests,
-  ScoreChangeRequestsPaginationVW,
-  trackByScoreChangeRequest,
-} from '@model/score-change-request';
+import { ScoreChangeRequestsPagination, ScoreWithScoreChangeRequests } from '@model/score-change-request';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import { Control, ControlArray, ControlGroup, Validators } from '@stlmpp/control';
 import { ScoreChangeRequestsFulfilDto } from '@model/score';
-import { ScorePlayerUpdateDto, trackByScorePlayerVW } from '@model/score-player';
+import { ScorePlayerUpdateDto } from '@model/score-player';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import { IdChecked } from '@shared/type/id-checked';
 import { MaskEnum, MaskEnumPatterns } from '@shared/mask/mask.enum';
@@ -17,9 +13,10 @@ import { ScoreService } from '../../../score/score.service';
 import { finalize, switchMapTo } from 'rxjs';
 import { SnackBarService } from '@shared/components/snack-bar/snack-bar.service';
 import { LocalState } from '@stlmpp/store';
+import { trackById } from '@util/track-by';
 
 export interface PlayerChangeRequestsModalData {
-  score: ScoreChangeRequests;
+  score: ScoreWithScoreChangeRequests;
   page: number;
   itemsPerPage: number;
 }
@@ -50,7 +47,7 @@ export class PlayerChangeRequestsModalComponent extends LocalState<PlayerChangeR
     public modalRef: ModalRef<
       PlayerChangeRequestsModalComponent,
       PlayerChangeRequestsModalData,
-      ScoreChangeRequestsPaginationVW
+      ScoreChangeRequestsPagination
     >,
     private scoreService: ScoreService,
     private snackBarService: SnackBarService
@@ -58,12 +55,11 @@ export class PlayerChangeRequestsModalComponent extends LocalState<PlayerChangeR
     super({ loading: false });
   }
 
-  loading$ = this.selectState('loading');
+  readonly loading$ = this.selectState('loading');
+  readonly maskEnum = MaskEnum;
+  readonly maskTimePattern = MaskEnumPatterns[MaskEnum.time]!;
 
-  maskEnum = MaskEnum;
-  maskTimePattern = MaskEnumPatterns[MaskEnum.time]!;
-
-  form = new ControlGroup<ScoreChangeRequestsFulfilForm>({
+  readonly form = new ControlGroup<ScoreChangeRequestsFulfilForm>({
     score: new Control(this.data.score.score, [Validators.required]),
     idsScoreChangeRequests: new ControlArray<IdChecked>(
       this.data.score.scoreChangeRequests.map(
@@ -94,8 +90,7 @@ export class PlayerChangeRequestsModalComponent extends LocalState<PlayerChangeR
     return this.form.get('scorePlayers');
   }
 
-  trackByScoreChangeRequest = trackByScoreChangeRequest;
-  trackByScorePlayer = trackByScorePlayerVW;
+  readonly trackById = trackById;
 
   hostChange($index: number): void {
     const scorePlayersControl = this.form.get('scorePlayers');

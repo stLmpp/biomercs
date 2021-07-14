@@ -26,7 +26,7 @@
 <div class="title">Creation date:</div>
 <div class="value">{{ score.creationDate | authDateFormat }}</div>
 
-<ng-container *ngFor="let player of score.scorePlayers; let $index = index; trackBy: trackByScorePlayer">
+<ng-container *ngFor="let player of score.scorePlayers; let $index = index; trackBy: trackById">
   <div class="title">Player {{ $index + 1 }}:</div>
   <div class="value redirect-icon">
     {{ player.playerPersonaName }}

@@ -128,11 +128,11 @@ export class CalendarDaysComponent extends CalendarKeyboardNavigation {
     }
   }
 
-  handleEnd(): void {
+  override handleEnd(): void {
     this.focusKeyManager.setLastItemActive();
   }
 
-  handleHome(): void {
+  override handleHome(): void {
     this.focusKeyManager.setFirstItemActive();
   }
 

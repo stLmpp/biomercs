@@ -11,10 +11,7 @@
     </form-field>
     <form-field [loading]="scoreApprovalMotiveQuery.loading$ | async" label="Motive">
       <bio-select controlName="idScoreApprovalMotive" placeholder="Motive">
-        <bio-option
-          *ngFor="let motive of scoreApprovalMotives$ | async; trackBy: trackByScoreApprovalMotive"
-          [value]="motive.id"
-        >
+        <bio-option *ngFor="let motive of scoreApprovalMotives$ | async; trackBy: trackById" [value]="motive.id">
           {{ motive.description }}
         </bio-option>
       </bio-select>

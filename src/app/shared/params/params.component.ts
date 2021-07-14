@@ -36,7 +36,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
 import { CharacterCostume } from '@model/character-costume';
 import { Game } from '@model/game';
-import { CharacterWithCharacterCostumes } from '@model/character';
 import { Mode } from '@model/mode';
 import { Stage } from '@model/stage';
 import { MiniGame } from '@model/mini-game';
@@ -45,6 +44,7 @@ import { LocalState } from '@stlmpp/store';
 import { Platform } from '@model/platform';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { filterNilArrayOperator } from '@util/operators/filter-nil-array';
+import { trackById } from '@util/track-by';
 
 export interface ParamsForm {
   idPlatform: Nullable<number>;
@@ -135,7 +135,7 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
   private _selectParamIfOne = true;
   private _approval = false;
 
-  private _approval$ = this.selectState('approval');
+  private readonly _approval$ = this.selectState('approval');
 
   @Input() idPlatform: number | null = null;
   @Input() idGame: number | null = null;
@@ -184,7 +184,7 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
 
   formsConfig = defaultConfigs;
 
-  form = this.controlBuilder.group<ParamsForm>({
+  readonly form = this.controlBuilder.group<ParamsForm>({
     idPlatform: this._getParamOrNull(RouteParamEnum.idPlatform),
     idGame: this._getParamOrNull(RouteParamEnum.idGame),
     idMiniGame: this._getParamOrNull(RouteParamEnum.idMiniGame),
@@ -314,12 +314,7 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
   readonly state$ = this.selectState();
 
   readonly trackByPlatform = this.platformQuery.trackBy;
-  readonly trackByGame = trackByFactory<Game>('id');
-  readonly trackByMiniGame = trackByFactory<MiniGame>('id');
-  readonly trackByMode = trackByFactory<Mode>('id');
-  readonly trackByStage = trackByFactory<Stage>('id');
-  readonly trackByCharacter = trackByFactory<CharacterWithCharacterCostumes>('id');
-  readonly trackByCharacterCostume = trackByFactory<CharacterCostume>('id');
+  readonly trackById = trackById;
   readonly trackByControlValidator = trackByFactory<ControlValidator>('name');
 
   private _selectPlatforms(): Observable<Platform[]> {

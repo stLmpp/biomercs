@@ -32,7 +32,7 @@
       <bio-option [value]="null" *ngIf="(formsConfig.idGame.clearable ?? state.clearable) && !!(idGame$ | async)">
         Clear
       </bio-option>
-      <bio-option [value]="game.id" *ngFor="let game of games; trackBy: trackByGame" [title]="game.name">
+      <bio-option [value]="game.id" *ngFor="let game of games; trackBy: trackById" [title]="game.name">
         {{ game.name }}
       </bio-option>
     </bio-select>
@@ -56,7 +56,7 @@
       </bio-option>
       <bio-option
         [value]="miniGame.id"
-        *ngFor="let miniGame of miniGames$ | async; trackBy: trackByMiniGame"
+        *ngFor="let miniGame of miniGames$ | async; trackBy: trackById"
         [title]="miniGame.name"
       >
         {{ miniGame.name }}
@@ -77,7 +77,7 @@
       <bio-option [value]="null" *ngIf="(formsConfig.idMode.clearable ?? state.clearable) && !!(idMode$ | async)">
         Clear
       </bio-option>
-      <bio-option [value]="mode.id" *ngFor="let mode of modes; trackBy: trackByMode" [title]="mode.name">
+      <bio-option [value]="mode.id" *ngFor="let mode of modes; trackBy: trackById" [title]="mode.name">
         {{ mode.name }}
       </bio-option>
     </bio-select>
@@ -96,7 +96,7 @@
       <bio-option [value]="null" *ngIf="(formsConfig.idStage.clearable ?? state.clearable) && !!(idStage$ | async)">
         Clear
       </bio-option>
-      <bio-option [value]="stage.id" *ngFor="let stage of stages; trackBy: trackByStage" [title]="stage.name">
+      <bio-option [value]="stage.id" *ngFor="let stage of stages; trackBy: trackById" [title]="stage.name">
         {{ stage.name }}
       </bio-option>
     </bio-select>
@@ -119,12 +119,12 @@
         Clear
       </bio-option>
       <bio-optgroup
-        *ngFor="let character of characters; trackBy: trackByCharacter"
+        *ngFor="let character of characters; trackBy: trackById"
         [label]="character.name"
         [title]="character.name"
       >
         <bio-option
-          *ngFor="let characterCostume of character.characterCostumes; trackBy: trackByCharacterCostume"
+          *ngFor="let characterCostume of character.characterCostumes; trackBy: trackById"
           [value]="characterCostume.id"
           title="{{ character.name }} {{ characterCostume.name }}"
         >

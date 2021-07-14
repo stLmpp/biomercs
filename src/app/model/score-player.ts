@@ -1,5 +1,3 @@
-import { trackByFactory } from '@stlmpp/utils';
-
 export interface ScorePlayerAdd {
   idPlayer: number;
   idCharacterCostume: number;
@@ -34,5 +32,3 @@ export interface ScorePlayerUpdateDto {
   description?: string;
   evidence?: string;
 }
-
-export const trackByScorePlayerVW = trackByFactory<ScorePlayer>('id');

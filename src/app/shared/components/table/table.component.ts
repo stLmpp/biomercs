@@ -13,8 +13,8 @@ import { LocalState } from '@stlmpp/store';
 import { ColDef, ColDefInternal } from '@shared/components/table/col-def';
 import { combineLatest, map, Observable } from 'rxjs';
 import { TableCellNotifyChange, TableOrder } from '@shared/components/table/type';
-import { trackByFactory } from '@stlmpp/utils';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { trackById } from '@util/track-by';
 
 export interface ScoreTableState<T extends Record<any, any>, K extends keyof T = keyof T> {
   colDefs: ColDefInternal<T, K>[];
@@ -44,8 +44,8 @@ export class TableComponent<T extends Record<any, any>, K extends keyof T> exten
   }
 
   private _collapsable = false;
-  private _colDefDefault$ = this.selectState('colDefDefault');
-  private _colDefs$ = this.selectState('colDefs');
+  private readonly _colDefDefault$ = this.selectState('colDefDefault');
+  private readonly _colDefs$ = this.selectState('colDefs');
 
   @Input() loading: BooleanInput = false;
   @Input() data: T[] = [];
@@ -70,12 +70,12 @@ export class TableComponent<T extends Record<any, any>, K extends keyof T> exten
   @Output() readonly orderChange = new EventEmitter<TableOrder<T>>();
   @Output() readonly notifyChange = new EventEmitter<TableCellNotifyChange<any, T, K>>();
 
-  colDefs$: Observable<ColDefInternal<T, K>[]> = combineLatest([this._colDefs$, this._colDefDefault$]).pipe(
+  readonly colDefs$: Observable<ColDefInternal<T, K>[]> = combineLatest([this._colDefs$, this._colDefDefault$]).pipe(
     map(([colDefs, colDefDefault]) => colDefs.map(colDef => ({ ...colDefDefault, ...colDef })))
   );
-  data$ = this.selectState('data');
+  readonly data$ = this.selectState('data');
 
-  trackByColDef = trackByFactory<ColDefInternal<T, K>>('id');
+  readonly trackByColDef = trackById;
 
   @Input() trackBy: TrackByFunction<T> = index => index;
 

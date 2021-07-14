@@ -7,11 +7,12 @@ import { ModalRef } from '@shared/components/modal/modal-ref';
 import { ScoreApprovalMotiveQuery } from '@shared/services/score-approval-motive/score-approval-motive.query';
 import { ScoreApprovalMotiveService } from '@shared/services/score-approval-motive/score-approval-motive.service';
 import { ControlBuilder, Validators } from '@stlmpp/control';
-import { ScoreApprovalMotive, trackByScoreApprovalMotive } from '@model/score-approval-motive';
+import { ScoreApprovalMotive } from '@model/score-approval-motive';
 import { finalize, Observable, switchMap, tap } from 'rxjs';
 import { LocalState, StMapView } from '@stlmpp/store';
 import { ScoreApprovalAdd, ScoreApprovalPagination } from '@model/score-approval';
 import { ScoreApprovalComponentState } from '../score-approval.component';
+import { trackById } from '@util/track-by';
 
 export interface ScoreApprovalModalData {
   score: Score;
@@ -41,19 +42,20 @@ export class ScoreApprovalModalComponent extends LocalState<{ saving: boolean }>
     this.scoreApprovalMotives$ = this.scoreApprovalMotiveQuery.selectByAction(this.action);
   }
 
+  readonly scoreApprovalActionEnum = ScoreApprovalActionEnum;
+  readonly saving$ = this.selectState('saving');
+
   scoreApprovalComponentState: ScoreApprovalComponentState;
-  scoreApprovalActionEnum = ScoreApprovalActionEnum;
   score: Score;
   action: ScoreApprovalActionEnum;
-  saving$ = this.selectState('saving');
   scoreApprovalMotives$: Observable<StMapView<ScoreApprovalMotive>>;
 
-  form = this.controlBuilder.group<ScoreApprovalAdd>({
+  readonly form = this.controlBuilder.group<ScoreApprovalAdd>({
     idScoreApprovalMotive: [-1, [Validators.required, Validators.min(1)]],
     description: ['', [Validators.required]],
   });
 
-  trackByScoreApprovalMotive = trackByScoreApprovalMotive;
+  readonly trackById = trackById;
 
   save(): void {
     this.updateState({ saving: true });

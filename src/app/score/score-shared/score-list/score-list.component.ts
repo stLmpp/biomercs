@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Score } from '@model/score';
-import { trackByScorePlayerVW } from '@model/score-player';
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
 import { PaginationMeta } from '@model/pagination';
+import { trackById } from '@util/track-by';
 import { trackByFactory } from '@stlmpp/utils';
 
 @Component({
@@ -33,8 +33,8 @@ export class ScoreListComponent<T extends Score = Score> {
   @Output() readonly itemsPerPageChange = new EventEmitter<number>();
   @Output() readonly scoreClicked = new EventEmitter<T>();
 
-  trackByScore = trackByFactory<T>('id');
-  trackByScorePlayerVW = trackByScorePlayerVW;
+  readonly trackByScore = trackByFactory<T>('id');
+  readonly trackById = trackById;
 
   onClick(score: T): void {
     if (this.disabledProperty && score[this.disabledProperty]) {

@@ -4,10 +4,11 @@ import { combineLatest, debounceTime, delay, finalize, map, Observable, startWit
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import { AbstractRegionService } from '../region-service.token';
-import { Region, trackByRegion } from '@model/region';
+import { Region } from '@model/region';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { Control } from '@stlmpp/control';
 import { LocalState, StMapView } from '@stlmpp/store';
+import { trackById } from '@util/track-by';
 
 export interface RegionSelectData {
   idRegion: number;
@@ -42,16 +43,17 @@ export class RegionSelectComponent extends LocalState<{ loading: boolean; saving
   idRegionOrigin: number;
   idRegion: number;
   onSelect: (idRegion: number) => Observable<any>;
-  loading$ = this.selectState('loading');
-  saving$ = this.selectState('saving');
+  readonly loading$ = this.selectState('loading');
+  readonly saving$ = this.selectState('saving');
 
-  searchControl = new Control<string>('');
-  search$ = this.searchControl.value$.pipe(debounceTime(400));
-  all$: Observable<StMapView<Region>> = combineLatest([this.regionQuery.all$, this.search$.pipe(startWith(''))]).pipe(
-    map(([regions, term]) => regions.search('name', term))
-  );
+  readonly searchControl = new Control<string>('');
+  readonly search$ = this.searchControl.value$.pipe(debounceTime(400));
+  readonly all$: Observable<StMapView<Region>> = combineLatest([
+    this.regionQuery.all$,
+    this.search$.pipe(startWith('')),
+  ]).pipe(map(([regions, term]) => regions.search('name', term)));
 
-  trackByRegion = trackByRegion;
+  readonly trackByRegion = trackById;
 
   onSave($event?: Event): void {
     $event?.preventDefault();

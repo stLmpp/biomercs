@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { Score } from '@model/score';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
-import { Control, ControlArray, ControlBuilder, Validators } from '@stlmpp/control';
+import { ControlArray, ControlBuilder, Validators } from '@stlmpp/control';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import { ScoreApprovalPagination } from '@model/score-approval';
 import { finalize, Subject, switchMap, tap, throttleTime } from 'rxjs';
@@ -18,8 +18,8 @@ import { FocusKeyManager } from '@angular/cdk/a11y';
 import { InputDirective } from '@shared/components/form/input.directive';
 import { AbstractScoreService } from '../../../abstract-score.service';
 import { ScoreApprovalComponentState } from '../score-approval.component';
-import { trackByFactory } from '@stlmpp/utils';
 import { LocalState } from '@stlmpp/store';
+import { trackByControl } from '@util/track-by';
 
 export interface ScoreRequestChangesModalData {
   score: Score;
@@ -56,21 +56,21 @@ export class ScoreRequestChangesModalComponent
     this.scoreApprovalComponentState = scoreApprovalComponentState;
   }
 
-  private _keydownTextArea$ = new Subject<TextAreaEvent>();
+  private readonly _keydownTextArea$ = new Subject<TextAreaEvent>();
   private _focusKeyManager!: FocusKeyManager<InputDirective>;
 
-  @ViewChildren('change') changesRef!: QueryList<InputDirective>;
+  @ViewChildren('change') readonly changesRef!: QueryList<InputDirective>;
 
-  saving$ = this.selectState('saving');
+  readonly saving$ = this.selectState('saving');
 
   score: Score;
   scoreApprovalComponentState: ScoreApprovalComponentState;
 
-  form = this.controlBuilder.group<ScoreRequestChangesModalForm>({
+  readonly form = this.controlBuilder.group<ScoreRequestChangesModalForm>({
     changes: this.controlBuilder.array<string>([['', [Validators.required]]]),
   });
 
-  trackByControl = trackByFactory<Control<string>>('uniqueId');
+  readonly trackByControl = trackByControl;
 
   get changesControl(): ControlArray<string> {
     return this.form.get('changes');
