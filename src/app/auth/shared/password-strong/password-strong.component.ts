@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
+import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 
 type ValidationFn = (password: string) => boolean;
 
@@ -9,6 +10,8 @@ type ValidationFn = (password: string) => boolean;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PasswordStrongComponent {
+  private _dark = false;
+
   private _validations: ValidationFn[] = [
     password => /[A-Z]/.test(password),
     password => /[a-z]/.test(password),
@@ -27,11 +30,22 @@ export class PasswordStrongComponent {
   private _validatePassword(password: string): void {
     const score = this._validations.reduce((acc, validation) => (validation(password) ? acc + 1 : acc), 0);
     const totalValidations = this._validations.length;
-    this.validationScore = Math.round((score / totalValidations) * 100);
+    this.validationScore = 100 - Math.round((score / totalValidations) * 100);
   }
 
   @Input()
   set password(password: string | null | undefined) {
     this._validatePassword(password ?? '');
   }
+
+  @HostBinding('class.dark')
+  @Input()
+  get dark(): boolean {
+    return this._dark;
+  }
+  set dark(dark: boolean) {
+    this._dark = coerceBooleanProperty(dark);
+  }
+
+  static ngAcceptInputType_dark: BooleanInput;
 }

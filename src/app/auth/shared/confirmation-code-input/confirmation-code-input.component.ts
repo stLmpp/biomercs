@@ -19,6 +19,7 @@ import { FocusableOption, FocusKeyManager } from '@angular/cdk/a11y';
 import { filter, Subject, takeUntil } from 'rxjs';
 import { SimpleChangesCustom } from '@util/util';
 import { trackByFactory } from '@stlmpp/utils';
+import { isNil } from 'st-utils';
 
 @Directive({ selector: 'input[confirmationCodeInput]' })
 export class ConfirmationCodeInputDirective implements FocusableOption {
@@ -112,7 +113,16 @@ export class ConfirmationCodeInputComponent
     const clipboardData = $event.clipboardData;
     const pastedText = clipboardData?.getData('text');
     if (pastedText?.length === 6) {
+      $event.preventDefault();
       this.arrayControl.setValue(pastedText.split(''));
+    }
+  }
+
+  onKeyupBackspace($event: Event, $index: number): void {
+    const value = this.arrayControl.get($index)?.value;
+    if (isNil(value) || value === '') {
+      $event.preventDefault();
+      this.focusManager.setPreviousItemActive();
     }
   }
 
