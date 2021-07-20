@@ -62,6 +62,19 @@
             <error *error="'required'">Time is required</error>
           </errors>
         </form-field>
+        <form-field label="Achieved date" [disabled]="!state.hasMode">
+          <input
+            bioInput
+            controlName="achievedDate"
+            autocomplete="off"
+            [bioDatepicker]="datepicker"
+            placeholder="Achieved date"
+          />
+          <button bioButton icon suffix [bioDatepickerTrigger]="datepicker">
+            <icon>calendar_today</icon>
+          </button>
+          <bio-datepicker #datepicker></bio-datepicker>
+        </form-field>
       </bio-card-content>
       <bio-card-actions>
         <button bioButton type="button" primary (click)="onReset()">Reset</button>

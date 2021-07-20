@@ -42,7 +42,7 @@ export class DatepickerDirective extends ControlValue<Date | null | undefined> i
 
   setValue(value: Date | null | undefined): void {
     this.bioDatepicker.value = value;
-    this.renderer2.setProperty(this.elementRef.nativeElement, 'value', value);
+    this.renderer2.setProperty(this.elementRef.nativeElement, 'value', value ?? '');
   }
 
   override setDisabled(disabled: boolean): void {

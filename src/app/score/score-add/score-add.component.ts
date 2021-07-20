@@ -71,6 +71,7 @@ export class ScoreAddComponent extends LocalState<ScoreAddState> implements OnIn
     score: [0, [Validators.required]],
     maxCombo: [0, [Validators.required, Validators.min(0), Validators.max(400)]],
     time: [`00'00"00`, [Validators.required]],
+    achievedDate: [undefined],
     scorePlayers: this.controlBuilder.array<ScorePlayerAddForm>([
       {
         bulletKills: [0],

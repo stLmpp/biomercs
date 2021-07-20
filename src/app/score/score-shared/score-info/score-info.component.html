@@ -25,6 +25,10 @@
 <div class="value" *ngIf="showApprovalDate">{{ score.approvalDate | authDateFormat }}</div>
 <div class="title">Creation date:</div>
 <div class="value">{{ score.creationDate | authDateFormat }}</div>
+<ng-container *ngIf="score.achievedDate">
+  <div class="title">Achieved date:</div>
+  <div class="value">{{ score.achievedDate | authDateFormat }}</div>
+</ng-container>
 
 <ng-container *ngFor="let player of score.scorePlayers; let $index = index; trackBy: trackById">
   <div class="title">Player {{ $index + 1 }}:</div>

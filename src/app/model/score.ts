@@ -13,6 +13,7 @@ export interface ScoreAdd {
   maxCombo: number;
   time: string;
   scorePlayers: ScorePlayerAdd[];
+  achievedDate?: Date;
 }
 
 export interface Score {
@@ -46,6 +47,7 @@ export interface Score {
   isWorldRecord: boolean;
   isCharacterWorldRecord: boolean;
   isCombinationWorldRecord: boolean;
+  achievedDate?: Date;
 }
 
 export interface ScoreTable {
