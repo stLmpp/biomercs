@@ -66,5 +66,9 @@
       <icon prefix [mdi]="mdiAccountLock"></icon>
       Ban user
     </a>
+    <a bioListItem routerLink="/admin/errors" (click)="onMenuSelected($event)">
+      <icon prefix outlined>error_outline</icon>
+      Errors
+    </a>
   </ng-container>
 </bio-list>

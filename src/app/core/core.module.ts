@@ -10,19 +10,19 @@ import { HandleErrorDevInterceptor } from './error/handle-error-dev.interceptor'
 import { ModalModule } from '@shared/components/modal/modal.module';
 import { ButtonModule } from '@shared/components/button/button.module';
 import { SnackBarModule } from '@shared/components/snack-bar/snack-bar.module';
-import { CommonModule } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import { AuthService } from '../auth/auth.service';
 import { AuthInterceptor } from '../auth/auth.interceptor';
 import { AuthErrorInterceptor } from '../auth/auth-error.interceptor';
 import { AbstractRegionService } from '../region/region-service.token';
 import { RegionService } from '../region/region.service';
-import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
 import { ScoreService } from '../score/score.service';
 import { AbstractScoreService } from '../score/abstract-score.service';
 import { AbstractPlayerService } from '../player/abstract-player.service';
 import { PlayerService } from '../player/player.service';
 import { RetryInterceptor } from './retry.interceptor';
+import { HighlightModule } from '@shared/highlight/highlight.module';
 
 const withInterceptors = (...interceptors: any[]): Provider[] =>
   interceptors.map(useClass => ({
@@ -35,7 +35,13 @@ registerLocaleData(localePt);
 
 @NgModule({
   declarations: [ErrorComponent],
-  imports: [CommonModule, ModalModule, ButtonModule, SnackBarModule],
+  imports: [
+    CommonModule,
+    ModalModule,
+    ButtonModule,
+    SnackBarModule,
+    HighlightModule.forRoot({ sql: () => import('highlight.js/lib/languages/sql') }),
+  ],
 })
 export class CoreModule {
   static forRoot(): ModuleWithProviders<CoreModule> {
