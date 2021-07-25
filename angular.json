@@ -34,7 +34,7 @@
             "vendorChunk": false,
             "serviceWorker": true,
             "ngswConfigPath": "ngsw-config.json",
-            "optimization": true,
+            "optimization": { "fonts": { "inline": false }, "styles": { "inlineCritical": false } },
             "outputHashing": "all",
             "sourceMap": false,
             "namedChunks": false,
