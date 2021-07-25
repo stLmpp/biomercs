@@ -10,7 +10,7 @@ import { FocusableOption } from '@angular/cdk/a11y';
 })
 export class InputDirective extends AbstractComponent implements FocusableOption {
   constructor(
-    private elementRef: ElementRef<HTMLInputElement | HTMLTextAreaElement>,
+    public elementRef: ElementRef<HTMLInputElement | HTMLTextAreaElement>,
     @Optional() @Self() public controlDirective?: ControlDirective,
     @Optional() @Self() public modelDirective?: ModelDirective
   ) {
@@ -19,11 +19,11 @@ export class InputDirective extends AbstractComponent implements FocusableOption
 
   @Input() @HostBinding('attr.id') id?: number | string;
 
-  get primaryClass(): boolean {
+  override get primaryClass(): boolean {
     return !this.dangerClass && (this.bioType || 'primary') === 'primary';
   }
 
-  get dangerClass(): boolean {
+  override get dangerClass(): boolean {
     return this.bioType === 'danger' || !!(this.control?.touched && this.control.invalid);
   }
 

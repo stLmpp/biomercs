@@ -1,8 +1,7 @@
-import { ScorePlayerAdd, ScorePlayerUpdateDto, ScorePlayerVW } from './score-player';
+import { ScorePlayer, ScorePlayerAdd, ScorePlayerUpdateDto } from './score-player';
 import { ScoreStatusEnum } from '@model/enum/score-status.enum';
 import { Stage } from '@model/stage';
-import { PaginationMetaVW } from '@model/pagination';
-import { trackByFactory } from '@stlmpp/utils';
+import { PaginationMeta } from '@model/pagination';
 
 export interface ScoreAdd {
   idPlatform: number;
@@ -14,9 +13,10 @@ export interface ScoreAdd {
   maxCombo: number;
   time: string;
   scorePlayers: ScorePlayerAdd[];
+  achievedDate?: Date;
 }
 
-export interface ScoreVW {
+export interface Score {
   idPlatformGameMiniGameModeStage: number;
   idPlatformGameMiniGameMode: number;
   idPlatformGameMiniGame: number;
@@ -29,7 +29,7 @@ export interface ScoreVW {
   gameShortName: string;
   idMiniGame: number;
   miniGameName: string;
-  idScore: number;
+  id: number;
   idStage: number;
   stageName: string;
   stageShortName: string;
@@ -41,26 +41,27 @@ export interface ScoreVW {
   approvalDate?: Date;
   scoreStatusDescription: string;
   idScoreStatus: number;
-  scorePlayers: ScorePlayerVW[];
+  scorePlayers: ScorePlayer[];
   creationDate: Date;
   lastUpdatedDate: Date | null;
   isWorldRecord: boolean;
   isCharacterWorldRecord: boolean;
   isCombinationWorldRecord: boolean;
+  achievedDate?: Date;
 }
 
-export interface ScoreTableVW {
+export interface ScoreTable {
   idPlayer: number;
   personaName: string;
   total: number;
   position: number;
-  scores: (ScoreVW | undefined)[];
+  scores: (Score | undefined)[];
 }
 
-export interface ScoreTopTableVW {
+export interface ScoreTopTable {
   stages: Stage[];
-  scoreTables: ScoreTableVW[];
-  meta: PaginationMetaVW;
+  scoreTables: ScoreTable[];
+  meta: PaginationMeta;
 }
 
 export interface ScoreChangeRequestsFulfilDto {
@@ -82,18 +83,16 @@ export interface ScoreTableWorldRecord {
   characterName: string;
   characterCostumeName: string;
   characterCostumeShortName: string;
-  scores: (ScoreVW | undefined)[];
+  scores: (Score | undefined)[];
 }
 
 export interface ScoreTableWorldRecordWithoutUndefined extends ScoreTableWorldRecord {
-  scores: ScoreVW[];
+  scores: Score[];
 }
 
 export interface ScoreTopTableWorldRecordWithoutUndefined extends ScoreTopTableWorldRecord {
   scoreTables: ScoreTableWorldRecordWithoutUndefined[];
 }
-
-export const trackByScoreVW = trackByFactory<ScoreVW>('idScore');
 
 export enum ScoreGatewayEvents {
   updateCountApprovals = 'updateCountApprovals',

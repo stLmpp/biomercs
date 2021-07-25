@@ -1,7 +1,19 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { PlayerQuery } from '../player.query';
 import { RouterQuery } from '@stlmpp/router';
-import { debounceTime, filter, finalize, map, pluck, skip, switchMap, takeUntil } from 'rxjs/operators';
+import {
+  combineLatest,
+  concat,
+  debounceTime,
+  filter,
+  finalize,
+  map,
+  Observable,
+  pluck,
+  skip,
+  switchMap,
+  takeUntil,
+} from 'rxjs';
 import { PlayerService } from '../player.service';
 import { Animations } from '@shared/animations/animations';
 import { AuthQuery } from '../../auth/auth.query';
@@ -18,13 +30,12 @@ import {
   trackByScoreGroupedByStatus,
 } from '@model/score-grouped-by-status';
 import { ActivatedRoute } from '@angular/router';
-import { ScoreVW } from '@model/score';
+import { Score } from '@model/score';
 import { ScoreService } from '../../score/score.service';
 import { getScoreDefaultColDefs } from '../../score/score-shared/util';
 import { AuthDateFormatPipe } from '../../auth/shared/auth-date-format.pipe';
 import { ColDef } from '@shared/components/table/col-def';
 import { ScoreOpenInfoCellComponent } from '../../score/score-shared/score-open-info-cell/score-open-info-cell.component';
-import { combineLatest, concat, Observable } from 'rxjs';
 import { isBefore, subDays } from 'date-fns';
 import { filterNil } from '@shared/operators/filter';
 import { mdiSteam } from '@mdi/js';
@@ -102,7 +113,7 @@ export class PlayerProfileComponent extends LocalState<PlayerProfileComponentSta
   );
 
   colDefs: ColDef<ScoreScoreGroupedByStatusScoreVW>[] = [
-    { property: 'idScore', component: ScoreOpenInfoCellComponent, width: '40px' },
+    { property: 'id', component: ScoreOpenInfoCellComponent, width: '40px' },
     ...getScoreDefaultColDefs<ScoreScoreGroupedByStatusScoreVW>(this.authDateFormatPipe),
   ];
 
@@ -139,7 +150,7 @@ export class PlayerProfileComponent extends LocalState<PlayerProfileComponentSta
       arrayUtil(scoreGroupedByStatus, 'idScoreStatus')
         .update(idScoreStatus, status => ({
           ...status,
-          scores: arrayUtil(status.scores, 'idScore').update(idScore, partial).get(),
+          scores: arrayUtil(status.scores, 'id').update(idScore, partial).get(),
         }))
         .get()
     );
@@ -171,10 +182,10 @@ export class PlayerProfileComponent extends LocalState<PlayerProfileComponentSta
     }
   }
 
-  async openScoreInfo(score: ScoreVW): Promise<void> {
-    this._updateScore(score.idScoreStatus, score.idScore, { disabled: true });
+  async openScoreInfo(score: Score): Promise<void> {
+    this._updateScore(score.idScoreStatus, score.id, { disabled: true });
     await this.scoreService.openModalScoreInfo({ score });
-    this._updateScore(score.idScoreStatus, score.idScore, { disabled: false });
+    this._updateScore(score.idScoreStatus, score.id, { disabled: false });
   }
 
   linkSteam(idPlayer: number): void {

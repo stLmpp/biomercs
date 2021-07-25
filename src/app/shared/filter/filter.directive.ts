@@ -1,8 +1,7 @@
-import { AfterContentInit, ContentChildren, Directive, Input, Output, QueryList, EventEmitter } from '@angular/core';
+import { AfterContentInit, ContentChildren, Directive, EventEmitter, Input, Output, QueryList } from '@angular/core';
 import { FilterItemDirective } from '@shared/filter/filter-item.directive';
 import { LocalState } from '@stlmpp/store';
-import { combineLatest, Observable } from 'rxjs';
-import { map, startWith, takeUntil } from 'rxjs/operators';
+import { combineLatest, map, Observable, startWith, takeUntil } from 'rxjs';
 import { normalizeString } from 'st-utils';
 
 interface FilterDirectiveState {

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, tap } from 'rxjs';
 import { GameStore } from './game.store';
 import { httpCache } from '../../operators/http-cache';
 import { Game } from '@model/game';
@@ -32,9 +31,8 @@ export class GameService {
     );
   }
 
-  findApprovalByIdPlatform(idPlatform: number, playerMode = false): Observable<Game[]> {
-    const path = playerMode ? 'approval/player' : 'approval/admin';
-    return this.http.get<Game[]>(`${this.endPoint}/${path}/platform/${idPlatform}`).pipe(
+  findApprovalByIdPlatform(idPlatform: number): Observable<Game[]> {
+    return this.http.get<Game[]>(`${this.endPoint}/approval/platform/${idPlatform}`).pipe(
       tap(games => {
         this.gameStore.upsert(games);
       })

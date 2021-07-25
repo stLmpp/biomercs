@@ -7,7 +7,7 @@ export class TableCellTooltipPipe implements PipeTransform {
       if (tooltip === true) {
         return value;
       } else {
-        return item[tooltip as K];
+        return item[tooltip];
       }
     }
     return '';

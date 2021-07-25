@@ -3,10 +3,10 @@ import {
   BreakpointObserverService,
   MediaQueryEnum,
 } from '@shared/services/breakpoint-observer/breakpoint-observer.service';
-import { ScoreVW } from '@model/score';
-import { map } from 'rxjs/operators';
+import { Score } from '@model/score';
+import { map } from 'rxjs';
 import { BooleanInput } from 'st-utils';
-import { PaginationMetaVW } from '@model/pagination';
+import { PaginationMeta } from '@model/pagination';
 import { TableCellNotifyChange, TableOrder } from '@shared/components/table/type';
 import { ColDef } from '@shared/components/table/col-def';
 import { PaginationComponent } from '@shared/components/pagination/pagination.component';
@@ -18,7 +18,7 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
   styleUrls: ['./score-list-responsive.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ScoreListResponsiveComponent<T extends ScoreVW = ScoreVW> {
+export class ScoreListResponsiveComponent<T extends Score = Score> {
   constructor(private breakpointObserverService: BreakpointObserverService) {}
 
   private _collapsable = false;
@@ -26,7 +26,7 @@ export class ScoreListResponsiveComponent<T extends ScoreVW = ScoreVW> {
   @Input() scores: T[] = [];
 
   @Input() loading: BooleanInput = false;
-  @Input() paginationMeta?: PaginationMetaVW | null;
+  @Input() paginationMeta?: PaginationMeta | null;
   @Input() itemsPerPageOptions: number[] = PaginationComponent.defaultItemsPerPageOptions;
   @Input() order?: TableOrder<T> | null;
   @Input() colDefs!: ColDef<T>[];

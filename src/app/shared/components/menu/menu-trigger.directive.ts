@@ -4,7 +4,7 @@ import { Overlay } from '@angular/cdk/overlay';
 import { cdkOverlayTransparentBackdrop } from '@util/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Destroyable } from '../common/destroyable-component';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 import { getOverlayPositionMenu } from '@shared/components/menu/util';
 

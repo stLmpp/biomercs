@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, tap } from 'rxjs';
 import { ModeStore } from './mode.store';
 import { httpCache } from '../../operators/http-cache';
 import { Mode } from '@model/mode';
@@ -32,15 +31,9 @@ export class ModeService {
     );
   }
 
-  findApprovalByIdPlatformGameMiniGame(
-    idPlatform: number,
-    idGame: number,
-    idMiniGame: number,
-    playerMode = false
-  ): Observable<Mode[]> {
-    const path = playerMode ? 'approval/player' : 'approval/admin';
+  findApprovalByIdPlatformGameMiniGame(idPlatform: number, idGame: number, idMiniGame: number): Observable<Mode[]> {
     return this.http
-      .get<Mode[]>(`${this.endPoint}/${path}/platform/${idPlatform}/game/${idGame}/mini-game/${idMiniGame}`)
+      .get<Mode[]>(`${this.endPoint}/approval/platform/${idPlatform}/game/${idGame}/mini-game/${idMiniGame}`)
       .pipe(
         tap(modes => {
           this.modeStore.upsert(modes);

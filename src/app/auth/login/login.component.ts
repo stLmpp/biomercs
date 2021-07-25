@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/cor
 import { Control, ControlGroup, Validators } from '@stlmpp/control';
 import { AuthService } from '../auth.service';
 import { WINDOW } from '../../core/window.service';
-import { filter, finalize, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { filter, finalize, takeUntil, withLatestFrom } from 'rxjs';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchAndThrow } from '@util/operators/catch-and-throw';

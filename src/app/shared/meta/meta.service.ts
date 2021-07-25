@@ -1,7 +1,7 @@
 import { Injectable, KeyValueDiffers } from '@angular/core';
 import { Meta } from '@angular/platform-browser';
 import { Destroyable } from '@shared/components/common/destroyable-component';
-import { distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, map, takeUntil } from 'rxjs';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { RouterQuery } from '@stlmpp/router';
 import { isMap } from 'st-utils';

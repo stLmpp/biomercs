@@ -12,6 +12,7 @@ import { ParamsModule } from '@shared/params/params.module';
 import { ButtonModule } from '@shared/components/button/button.module';
 import { TooltipModule } from '@shared/components/tooltip/tooltip.module';
 import { TitleModule } from '@shared/title/title.module';
+import { DatepickerModule } from '@shared/components/datepicker/datepicker.module';
 
 @NgModule({
   declarations: [ScoreAddComponent, ScoreAddPlayerComponent],
@@ -27,6 +28,7 @@ import { TitleModule } from '@shared/title/title.module';
     AutocompleteModule,
     ButtonModule,
     TooltipModule,
+    DatepickerModule,
   ],
 })
 export class ScoreAddModule {}

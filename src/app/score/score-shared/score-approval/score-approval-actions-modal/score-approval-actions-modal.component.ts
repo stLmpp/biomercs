@@ -1,15 +1,15 @@
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { LocalState } from '@stlmpp/store';
 import { ScoreApprovalActionEnum } from '@model/enum/score-approval-action.enum';
-import { ScoreVW } from '@model/score';
+import { Score } from '@model/score';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import { ScoreApprovalComponentState } from '../score-approval.component';
 import { ScoreService } from '../../../score.service';
 import { ModalRef } from '@shared/components/modal/modal-ref';
-import { ScoreApprovalVW } from '@model/score-approval';
+import { ScoreApprovalPagination } from '@model/score-approval';
 
 export interface ScoreApprovalActionsModalData {
-  score: ScoreVW;
+  score: Score;
   scoreApprovalComponentState: ScoreApprovalComponentState;
 }
 
@@ -30,7 +30,7 @@ export class ScoreApprovalActionsModalComponent extends LocalState<ScoreApproval
     private modalRef: ModalRef<
       ScoreApprovalActionsModalComponent,
       ScoreApprovalActionsModalData,
-      ScoreApprovalVW | null
+      ScoreApprovalPagination | null
     >
   ) {
     super({ loadingModal: false });
@@ -38,7 +38,7 @@ export class ScoreApprovalActionsModalComponent extends LocalState<ScoreApproval
     this.scoreApprovalComponentState = scoreApprovalComponentState;
   }
 
-  score: ScoreVW;
+  score: Score;
   scoreApprovalComponentState: ScoreApprovalComponentState;
 
   scoreApprovalActionEnum = ScoreApprovalActionEnum;
@@ -51,7 +51,6 @@ export class ScoreApprovalActionsModalComponent extends LocalState<ScoreApproval
       score: this.score,
       action,
       scoreApprovalComponentState: this.scoreApprovalComponentState,
-      playerMode: this.scoreApprovalComponentState.playerMode,
     });
     modalRef.onClose$.subscribe(data => {
       this.modalRef.close(data);
@@ -60,9 +59,6 @@ export class ScoreApprovalActionsModalComponent extends LocalState<ScoreApproval
   }
 
   async openModalRequestChanges(): Promise<void> {
-    if (this.scoreApprovalComponentState.playerMode) {
-      return;
-    }
     this.updateState({ loadingModal: true });
     const modalRef = await this.scoreService.openModalRequestChangesScore({
       score: this.score,

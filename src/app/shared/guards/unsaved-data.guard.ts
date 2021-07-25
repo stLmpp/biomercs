@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { isObservable, Observable, of } from 'rxjs';
-import { switchMap, take } from 'rxjs/operators';
+import { isObservable, Observable, of, switchMap, take } from 'rxjs';
 import { isNil, isObject, isString } from 'st-utils';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
 import { DialogData } from '@shared/components/modal/dialog/dialog.component';

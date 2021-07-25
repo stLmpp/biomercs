@@ -19,8 +19,7 @@ import { AccordionItemTitleDirective } from '@shared/components/accordion/accord
 import { Animations } from '@shared/animations/animations';
 import { UniqueSelectionDispatcher } from '@angular/cdk/collections';
 import { Accordion } from '@shared/components/accordion/accordion';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject, takeUntil } from 'rxjs';
 import { FocusableOption } from '@angular/cdk/a11y';
 import { Key } from '@model/enum/key';
 
@@ -91,7 +90,7 @@ export class AccordionItemComponent extends CdkAccordionItem implements OnInit, 
     });
   }
 
-  ngOnDestroy(): void {
+  override ngOnDestroy(): void {
     super.ngOnDestroy();
     this._destroy$.next();
     this._destroy$.complete();

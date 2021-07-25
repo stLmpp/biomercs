@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AuthQuery } from '../auth/auth.query';
 import { HeaderQuery } from '../header/header.query';
 import { filterNil } from '@shared/operators/filter';
-import { map, pluck } from 'rxjs/operators';
+import { map, pluck } from 'rxjs';
 import { BreakpointObserverService } from '@shared/services/breakpoint-observer/breakpoint-observer.service';
 
 @Component({
@@ -21,7 +21,6 @@ export class HomeComponent {
   isLogged$ = this.authQuery.isLogged$;
   isAdmin$ = this.authQuery.isAdmin$;
   adminApprovalCount$ = this.headerQuery.adminApprovalCount$;
-  playerApprovalCount$ = this.headerQuery.playerApprovalCount$;
   playerRequestChangesCount$ = this.headerQuery.playerRequestChangesCount$;
 
   idUser$ = this.authQuery.user$.pipe(filterNil(), pluck('id'));

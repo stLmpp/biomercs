@@ -21,7 +21,7 @@
         <bio-list-item-line>
           {{ score.stageName }}
         </bio-list-item-line>
-        <bio-list-item-line *ngFor="let scorePlayer of score.scorePlayers; trackBy: trackByScorePlayerVW">
+        <bio-list-item-line *ngFor="let scorePlayer of score.scorePlayers; trackBy: trackById">
           {{ scorePlayer.characterName }} {{ scorePlayer.characterCostumeName }} ({{ scorePlayer.playerPersonaName }})
         </bio-list-item-line>
         <div suffix [tooltip]="score.score | number: '1.0-0'">{{ score.score | scoreFormat }}</div>

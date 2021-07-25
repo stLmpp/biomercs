@@ -30,6 +30,13 @@
     display: flex;
     align-items: center;
   }
+
+  &.multiple {
+    > .select-value {
+      display: flex;
+      align-items: center;
+    }
+  }
 }
 
 .select-panel {
@@ -43,13 +50,16 @@
   overflow: auto;
   min-height: calc(35px + 1rem);
   max-height: calc((35px * 8) + 1rem);
+
   @media only screen and (max-width: v.$mobile-width) {
     min-height: calc(40px + 1rem);
     max-height: calc((40px * 8) + 1rem);
   }
+
   @for $i from 1 through 8 {
     &.height-#{$i} {
       height: calc((35px * #{$i}) + 1rem);
+
       @media only screen and (max-width: v.$mobile-width) {
         height: calc((40px * #{$i}) + 1rem);
       }

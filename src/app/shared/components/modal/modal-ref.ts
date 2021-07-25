@@ -1,6 +1,5 @@
 import { OverlayRef } from '@angular/cdk/overlay';
-import { Subject } from 'rxjs';
-import { filter, take } from 'rxjs/operators';
+import { filter, Subject, take } from 'rxjs';
 import { hasModifierKey } from '@angular/cdk/keycodes';
 import { ModalConfig } from './modal.config';
 import { Key } from '@model/enum/key';

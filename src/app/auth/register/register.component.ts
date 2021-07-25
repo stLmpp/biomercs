@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Observable } from 'rxjs';
+import { debounceTime, finalize, Observable, tap } from 'rxjs';
 import { AuthService } from '../auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { debounceTime, finalize, tap } from 'rxjs/operators';
 import { Control, ControlBuilder, Validators } from '@stlmpp/control';
 import { catchAndThrow } from '@util/operators/catch-and-throw';
 import { EmailExistsValidator } from '@shared/validators/email-exists.validator';
@@ -50,9 +49,9 @@ export class RegisterComponent extends LocalState<{
 
   form = this.controlBuilder.group<AuthRegisterForm>({
     username: ['', [Validators.required, Validators.minLength(3), this.usernameExistsValidator]],
-    password: ['', [Validators.required, Validators.minLength(6), Validators.sibblingEquals('confirmPassword')]],
+    password: ['', [Validators.required, Validators.minLength(6), Validators.siblingEquals('confirmPassword')]],
     email: ['', [Validators.required, Validators.email, this.emailExistsValidator]],
-    confirmPassword: ['', [Validators.required, Validators.minLength(6), Validators.sibblingEquals('password')]],
+    confirmPassword: ['', [Validators.required, Validators.minLength(6), Validators.siblingEquals('password')]],
     code: [null],
   });
 

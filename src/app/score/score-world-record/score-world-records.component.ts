@@ -4,21 +4,20 @@ import { ControlBuilder, Validators } from '@stlmpp/control';
 import { ParamsConfig, ParamsForm } from '@shared/params/params.component';
 import { LocalState } from '@stlmpp/store';
 import { trackByFactory } from '@stlmpp/utils';
-import { Stage } from '@model/stage';
 import {
+  Score,
   ScoreTableWorldRecord,
   ScoreTableWorldRecordWithoutUndefined,
   ScoreTopTableWorldRecord,
   ScoreTopTableWorldRecordWithoutUndefined,
-  ScoreVW,
 } from '@model/score';
-import { filter, finalize, map, shareReplay, switchMap } from 'rxjs/operators';
+import { combineLatest, filter, finalize, map, Observable, shareReplay, switchMap } from 'rxjs';
 import { orderBy, OrderByDirection, OrderByType } from 'st-utils';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
-import { combineLatest, Observable } from 'rxjs';
 import { isNotNil } from '@shared/operators/filter';
 import { BreakpointObserverService } from '@shared/services/breakpoint-observer/breakpoint-observer.service';
+import { trackById } from '@util/track-by';
 
 export interface ScoreWorldRecordTableState {
   tableLoading: boolean;
@@ -59,7 +58,7 @@ export class ScoreWorldRecordsComponent extends LocalState<ScoreWorldRecordTable
     });
   }
 
-  private _scoreTopTable$ = this.selectState(['idPlatform', 'idGame', 'idMiniGame', 'idMode']).pipe(
+  private readonly _scoreTopTable$ = this.selectState(['idPlatform', 'idGame', 'idMiniGame', 'idMode']).pipe(
     filter(params => !!params.idPlatform && !!params.idGame && !!params.idMiniGame && !!params.idMode),
     switchMap(params => {
       this.updateState({ tableLoading: true });
@@ -74,11 +73,11 @@ export class ScoreWorldRecordsComponent extends LocalState<ScoreWorldRecordTable
     shareReplay()
   );
 
-  tableLoading$ = this.selectState('tableLoading');
-  loadingInfoModal$ = this.selectState('loadingInfoModal');
-  orderBy$ = this.selectState(['orderByStage', 'orderByDirection', 'orderByCharacter']);
+  readonly tableLoading$ = this.selectState('tableLoading');
+  readonly loadingInfoModal$ = this.selectState('loadingInfoModal');
+  readonly orderBy$ = this.selectState(['orderByStage', 'orderByDirection', 'orderByCharacter']);
 
-  paramsConfig: Partial<ParamsConfig> = {
+  readonly paramsConfig: Partial<ParamsConfig> = {
     idStage: { show: false },
     idCharacterCostume: { show: false },
     idPlatform: { validators: [Validators.required] },
@@ -87,7 +86,10 @@ export class ScoreWorldRecordsComponent extends LocalState<ScoreWorldRecordTable
     idMiniGame: { validators: [Validators.required] },
   };
 
-  scoreTopTable$: Observable<ScoreTopTableWorldRecord> = combineLatest([this._scoreTopTable$, this.orderBy$]).pipe(
+  readonly scoreTopTable$: Observable<ScoreTopTableWorldRecord> = combineLatest([
+    this._scoreTopTable$,
+    this.orderBy$,
+  ]).pipe(
     map(([scoreTopTable, { orderByStage, orderByDirection, orderByCharacter }]) => {
       if (!orderByStage && !orderByCharacter) {
         return scoreTopTable;
@@ -104,7 +106,7 @@ export class ScoreWorldRecordsComponent extends LocalState<ScoreWorldRecordTable
       };
     })
   );
-  scoreTopTableList$: Observable<ScoreTopTableWorldRecordWithoutUndefined> = this.scoreTopTable$.pipe(
+  readonly scoreTopTableList$: Observable<ScoreTopTableWorldRecordWithoutUndefined> = this.scoreTopTable$.pipe(
     map(scoreTopTable => ({
       ...scoreTopTable,
       scoreTables: scoreTopTable.scoreTables
@@ -113,19 +115,19 @@ export class ScoreWorldRecordsComponent extends LocalState<ScoreWorldRecordTable
     }))
   );
 
-  isMobile$ = this.breakpointObserverService.isMobile$;
+  readonly isMobile$ = this.breakpointObserverService.isMobile$;
 
-  trackByStage = trackByFactory<Stage>('id');
-  trackByScoreTable = trackByFactory<ScoreTableWorldRecord>('idCharacterCostume');
-  trackByScoreTableWithoutUndefined = trackByFactory<ScoreTableWorldRecordWithoutUndefined>('idCharacterCostume');
-
-  trackByScore: TrackByFunction<ScoreVW | undefined> = (index, item) => (item ? item.idScore : index);
+  readonly trackById = trackById;
+  readonly trackByScoreTable = trackByFactory<ScoreTableWorldRecord>('idCharacterCostume');
+  readonly trackByScoreTableWithoutUndefined =
+    trackByFactory<ScoreTableWorldRecordWithoutUndefined>('idCharacterCostume');
+  readonly trackByScore: TrackByFunction<Score | undefined> = (index, item) => (item ? item.id : index);
 
   paramsChange($event: ParamsForm): void {
     this.updateState($event);
   }
 
-  async openScoreInfo(score: ScoreVW): Promise<void> {
+  async openScoreInfo(score: Score): Promise<void> {
     this.updateState({ loadingInfoModal: true });
     await this.scoreService.openModalScoreInfo({ score, showWorldRecord: true, showApprovalDate: true });
     this.updateState({ loadingInfoModal: false });

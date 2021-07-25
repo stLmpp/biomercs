@@ -8,7 +8,7 @@
       <h5 *ngIf="!rulesControl.length">No rules found</h5>
       <div
         class="item"
-        *ngFor="let ruleControl of rulesControl; trackBy: trackByControlGroup; let $index = index"
+        *ngFor="let ruleControl of rulesControl; trackBy: trackByControl; let $index = index"
         [controlGroupName]="$index"
         cdkDrag
       >

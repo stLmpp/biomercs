@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import * as io from 'socket.io-client';
-import { Observable, Subject } from 'rxjs';
+import { Manager, Socket } from 'socket.io-client';
+import { finalize, Observable, Subject, take } from 'rxjs';
 import { environment } from '@environment/environment';
-import { finalize, take } from 'rxjs/operators';
 
 export class SocketIOConnection {
-  constructor(private connection: typeof io.Socket) {}
+  constructor(private connection: Socket) {}
 
   private _events = new Map<string, Subject<any>>();
 
@@ -52,7 +51,7 @@ export class SocketIOConnection {
 
 @Injectable({ providedIn: 'root' })
 export class SocketIOService {
-  private _manager = new io.Manager(environment.socketIOHost, {
+  private _manager = new Manager(environment.socketIOHost, {
     path: environment.socketIOPath,
     transports: ['websocket', 'polling'],
   });

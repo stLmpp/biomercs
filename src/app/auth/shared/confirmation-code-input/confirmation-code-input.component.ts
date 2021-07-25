@@ -14,12 +14,12 @@ import {
   QueryList,
   ViewChildren,
 } from '@angular/core';
-import { Control, ControlArray, ControlBuilder, ControlValue, Validators } from '@stlmpp/control';
+import { ControlArray, ControlBuilder, ControlValue, Validators } from '@stlmpp/control';
 import { FocusableOption, FocusKeyManager } from '@angular/cdk/a11y';
-import { Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { filter, Subject, takeUntil } from 'rxjs';
 import { SimpleChangesCustom } from '@util/util';
-import { trackByFactory } from '@stlmpp/utils';
+import { isNil } from 'st-utils';
+import { trackByControl } from '@util/track-by';
 
 @Directive({ selector: 'input[confirmationCodeInput]' })
 export class ConfirmationCodeInputDirective implements FocusableOption {
@@ -65,7 +65,7 @@ export class ConfirmationCodeInputComponent
     ),
   });
 
-  trackByControl = trackByFactory<Control<string>>('uniqueId');
+  readonly trackByControl = trackByControl;
 
   get arrayControl(): ControlArray<string> {
     return this.form.get('array');
@@ -86,7 +86,7 @@ export class ConfirmationCodeInputComponent
             filter(value => !!value)
           )
           .subscribe(value => {
-            if (!/^[0-9]$/.test(value!)) {
+            if (!/^[0-9]$/.test(value)) {
               input.setValue('', { emitChange: false });
             } else if (i === len - 1) {
               this.focusoutLastItem.emit();
@@ -105,7 +105,7 @@ export class ConfirmationCodeInputComponent
     }
   }
 
-  setDisabled(disabled: boolean): void {
+  override setDisabled(disabled: boolean): void {
     this.form.disable(disabled);
   }
 
@@ -113,7 +113,16 @@ export class ConfirmationCodeInputComponent
     const clipboardData = $event.clipboardData;
     const pastedText = clipboardData?.getData('text');
     if (pastedText?.length === 6) {
+      $event.preventDefault();
       this.arrayControl.setValue(pastedText.split(''));
+    }
+  }
+
+  onKeyupBackspace($event: Event, $index: number): void {
+    const value = this.arrayControl.get($index)?.value;
+    if (isNil(value) || value === '') {
+      $event.preventDefault();
+      this.focusManager.setPreviousItemActive();
     }
   }
 

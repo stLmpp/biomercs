@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ScoreApprovalActionEnum } from '@model/enum/score-approval-action.enum';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { ScoreApprovalMotive } from '@model/score-approval-motive';
 import { ScoreApprovalMotiveStore } from '@shared/services/score-approval-motive/score-approval-motive.store';
 import { HttpParams } from '@util/http-params';
-import { tap } from 'rxjs/operators';
 import { setLoading } from '@stlmpp/store';
 import { httpCache } from '@shared/operators/http-cache';
 

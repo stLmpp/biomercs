@@ -1,0 +1,12 @@
+<button
+  *ngFor="let year of years; trackBy: trackBy"
+  bioButton
+  fab
+  type="button"
+  [class.same-year]="year === todayYear"
+  [class.selected]="year === valueYear"
+  [disabled]="disabled"
+  (click)="yearSelect.emit(year)"
+>
+  {{ year }}
+</button>

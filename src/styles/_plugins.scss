@@ -1,5 +1,6 @@
 @use '~@angular/cdk';
 @use '~flag-icon-css/sass/flag-icon';
+@use '~highlight.js/scss/base16/darcula';
 
 @include cdk.a11y-visually-hidden();
 @include cdk.text-field();

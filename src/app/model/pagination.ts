@@ -1,10 +1,10 @@
 export interface Pagination<T> {
   items: T[];
-  meta: PaginationMetaVW;
-  links?: PaginationLinksVW;
+  meta: PaginationMeta;
+  links?: PaginationLinks;
 }
 
-export interface PaginationMetaVW {
+export interface PaginationMeta {
   itemCount: number;
   totalItems: number;
   itemsPerPage: number;
@@ -12,7 +12,7 @@ export interface PaginationMetaVW {
   currentPage: number;
 }
 
-export interface PaginationLinksVW {
+export interface PaginationLinks {
   first?: string;
   previous?: string;
   next?: string;

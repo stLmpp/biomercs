@@ -12,7 +12,7 @@ const routes: Routes = [
       [RouteDataEnum.platformApproval]: PlatformApprovalResolver,
     },
     data: {
-      [RouteDataEnum.title]: 'Score approval (admin)',
+      [RouteDataEnum.title]: 'Score approval',
     },
   },
 ];

@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 import { TableCell } from '@shared/components/table/type';
-import { ScoreVW } from '@model/score';
+import { Score } from '@model/score';
 import { ScoreApprovalActionEnum } from '@model/enum/score-approval-action.enum';
 import { ColDefInternal } from '@shared/components/table/col-def';
 import { LocalState } from '@stlmpp/store';
 import { ScoreService } from '../../../score.service';
 import { ScoreApprovalComponentState } from '../score-approval.component';
-import { ScoreApprovalVW } from '@model/score-approval';
+import { ScoreApprovalPagination } from '@model/score-approval';
 
 export interface ScoreApprovalActionsCellState {
   loadingApprovalModal: boolean;
@@ -21,16 +21,16 @@ export interface ScoreApprovalActionsCellState {
 })
 export class ScoreApprovalActionsCellComponent
   extends LocalState<ScoreApprovalActionsCellState>
-  implements TableCell<ScoreVW>
+  implements TableCell<Score>
 {
   constructor(private scoreService: ScoreService) {
     super({ loadingApprovalModal: false, loadingRequestChangesModal: false });
   }
 
-  @Output() readonly notifyChange = new EventEmitter<ScoreApprovalVW>();
+  @Output() readonly notifyChange = new EventEmitter<ScoreApprovalPagination>();
 
-  colDef!: ColDefInternal<ScoreVW, keyof ScoreVW>;
-  item!: ScoreVW;
+  colDef!: ColDefInternal<Score, keyof Score>;
+  item!: Score;
   metadata!: ScoreApprovalComponentState;
   scoreApprovalActionEnum = ScoreApprovalActionEnum;
 
@@ -42,7 +42,6 @@ export class ScoreApprovalActionsCellComponent
       score: this.item,
       action,
       scoreApprovalComponentState: this.metadata,
-      playerMode: this.metadata.playerMode,
     });
     modalRef.onClose$.subscribe(data => {
       if (data) {
@@ -53,9 +52,6 @@ export class ScoreApprovalActionsCellComponent
   }
 
   async openModalRequestChanges(): Promise<void> {
-    if (this.metadata.playerMode) {
-      return;
-    }
     this.updateState({ loadingRequestChangesModal: true });
     const modalRef = await this.scoreService.openModalRequestChangesScore({
       score: this.item,

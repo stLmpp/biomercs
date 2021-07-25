@@ -48,15 +48,15 @@ export class CurrencyMaskDirective extends _CurrencyMaskDirective implements Con
     this.writeValue(value);
   }
 
-  registerOnChange(): void {
+  override registerOnChange(): void {
     super.registerOnChange((value: number) => this.onChange$.next(value));
   }
 
-  registerOnTouched(): void {
+  override registerOnTouched(): void {
     super.registerOnTouched(() => this.onTouched$.next());
   }
 
-  ngOnInit(): void {
+  override ngOnInit(): void {
     super.ngOnInit();
     this.registerOnChange();
     this.registerOnTouched();

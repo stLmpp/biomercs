@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, tap } from 'rxjs';
 import { PlatformStore } from './platform.store';
 import { useCache } from '@stlmpp/store';
 import { Platform } from '@model/platform';
@@ -21,9 +20,8 @@ export class PlatformService {
     );
   }
 
-  findApproval(playerMode = false): Observable<Platform[]> {
-    const path = playerMode ? 'approval/player' : 'approval/admin';
-    return this.http.get<Platform[]>(`${this.endPoint}/${path}`).pipe(
+  findApproval(): Observable<Platform[]> {
+    return this.http.get<Platform[]>(`${this.endPoint}/approval`).pipe(
       tap(platforms => {
         this.platformStore.upsert(platforms);
       })

@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { ScoreVW } from '@model/score';
-import { trackByScorePlayerVW } from '@model/score-player';
+import { Score } from '@model/score';
 import { BooleanInput } from 'st-utils';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { mdiAccountStar, mdiTrophy, mdiTrophyAward } from '@mdi/js';
+import { trackById } from '@util/track-by';
 
 @Component({
   selector: 'bio-score-info',
@@ -15,7 +15,7 @@ export class ScoreInfoComponent {
   private _showWorldRecord = false;
   private _showApprovalDate = false;
 
-  @Input() score!: ScoreVW;
+  @Input() score!: Score;
 
   @Input()
   get showWorldRecord(): boolean {
@@ -38,7 +38,7 @@ export class ScoreInfoComponent {
   readonly mdiTrophyAward = mdiTrophyAward;
   readonly mdiAccountStar = mdiAccountStar;
 
-  trackByScorePlayer = trackByScorePlayerVW;
+  readonly trackById = trackById;
 
   static ngAcceptInputType_showWorldRecord: BooleanInput;
   static ngAcceptInputType_showApprovalDate: BooleanInput;

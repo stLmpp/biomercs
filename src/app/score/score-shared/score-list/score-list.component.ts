@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { ScoreVW } from '@model/score';
-import { trackByScorePlayerVW } from '@model/score-player';
+import { Score } from '@model/score';
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
-import { PaginationMetaVW } from '@model/pagination';
+import { PaginationMeta } from '@model/pagination';
+import { trackById } from '@util/track-by';
 import { trackByFactory } from '@stlmpp/utils';
 
 @Component({
@@ -11,12 +11,12 @@ import { trackByFactory } from '@stlmpp/utils';
   styleUrls: ['./score-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ScoreListComponent<T extends ScoreVW = ScoreVW> {
+export class ScoreListComponent<T extends Score = Score> {
   private _collapsable = false;
 
   @Input() scores: T[] = [];
   @Input() loading: BooleanInput = false;
-  @Input() paginationMeta?: PaginationMetaVW | null;
+  @Input() paginationMeta?: PaginationMeta | null;
   @Input() itemsPerPageOptions: number[] = [];
   @Input() title?: string;
   @Input() disabledProperty?: keyof T;
@@ -33,8 +33,8 @@ export class ScoreListComponent<T extends ScoreVW = ScoreVW> {
   @Output() readonly itemsPerPageChange = new EventEmitter<number>();
   @Output() readonly scoreClicked = new EventEmitter<T>();
 
-  trackByScore = trackByFactory<T>('idScore');
-  trackByScorePlayerVW = trackByScorePlayerVW;
+  readonly trackByScore = trackByFactory<T>('id');
+  readonly trackById = trackById;
 
   onClick(score: T): void {
     if (this.disabledProperty && score[this.disabledProperty]) {

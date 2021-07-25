@@ -1,12 +1,12 @@
-import { PaginationMetaVW } from '@model/pagination';
-import { ScoreVW } from '@model/score';
+import { PaginationMeta } from '@model/pagination';
+import { Score } from '@model/score';
 
 export interface ScoreApprovalAdd {
   description: string;
   idScoreApprovalMotive: number;
 }
 
-export interface ScoreApprovalVW {
-  meta: PaginationMetaVW;
-  scores: ScoreVW[];
+export interface ScoreApprovalPagination {
+  meta: PaginationMeta;
+  scores: Score[];
 }

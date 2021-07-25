@@ -2,16 +2,26 @@ import { ChangeDetectionStrategy, Component, TrackByFunction } from '@angular/co
 import { ParamsConfig, ParamsForm } from '@shared/params/params.component';
 import { Control, ControlBuilder, Validators } from '@stlmpp/control';
 import { ScoreService } from '../score.service';
-import { debounceTime, filter, finalize, map, pluck, shareReplay, switchMap, tap } from 'rxjs/operators';
+import {
+  combineLatest,
+  debounceTime,
+  filter,
+  finalize,
+  map,
+  Observable,
+  pluck,
+  shareReplay,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { trackByFactory } from '@stlmpp/utils';
-import { combineLatest, Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { orderBy, OrderByDirection } from 'st-utils';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
-import { PaginationMetaVW } from '@model/pagination';
-import { Stage } from '@model/stage';
-import { ScoreTableVW, ScoreTopTableVW, ScoreVW } from '@model/score';
+import { PaginationMeta } from '@model/pagination';
+import { Score, ScoreTable, ScoreTopTable } from '@model/score';
 import { LocalState } from '@stlmpp/store';
+import { trackById } from '@util/track-by';
 
 interface TopTableForm extends ParamsForm {
   page: number;
@@ -43,7 +53,7 @@ export class ScoreLeaderboardsComponent extends LocalState<ScoreLeaderboardsStat
 
   private _firstParamsChange = true;
 
-  paramsConfig: Partial<ParamsConfig> = {
+  readonly paramsConfig: Partial<ParamsConfig> = {
     idStage: { show: false },
     idCharacterCostume: { show: false },
     idPlatform: { validators: [Validators.required] },
@@ -51,10 +61,8 @@ export class ScoreLeaderboardsComponent extends LocalState<ScoreLeaderboardsStat
     idMode: { validators: [Validators.required] },
     idMiniGame: { validators: [Validators.required] },
   };
-
-  itemsPerPageOptions = [5, 10, 25, 50, 100];
-
-  form = this.controlBuilder.group<TopTableForm>({
+  readonly itemsPerPageOptions = [5, 10, 25, 50, 100];
+  readonly form = this.controlBuilder.group<TopTableForm>({
     idPlatform: null,
     idGame: null,
     idMiniGame: null,
@@ -73,11 +81,11 @@ export class ScoreLeaderboardsComponent extends LocalState<ScoreLeaderboardsStat
     return this.form.get('itemsPerPage');
   }
 
-  tableLoading$ = this.selectState('tableLoading');
-  order$ = this.selectState(['orderBy', 'orderByDirection', 'orderByType']);
-  loadingInfo$ = this.selectState('loadingInfo');
+  readonly tableLoading$ = this.selectState('tableLoading');
+  readonly order$ = this.selectState(['orderBy', 'orderByDirection', 'orderByType']);
+  readonly loadingInfo$ = this.selectState('loadingInfo');
 
-  scoreTopTable$ = this.form.value$.pipe(
+  readonly scoreTopTable$ = this.form.value$.pipe(
     debounceTime(100),
     filter(params => !!params.idPlatform && !!params.idGame && !!params.idMiniGame && !!params.idMode && !!params.page),
     switchMap(params => {
@@ -100,7 +108,7 @@ export class ScoreLeaderboardsComponent extends LocalState<ScoreLeaderboardsStat
     shareReplay()
   );
 
-  scoreTopTableOrdered$: Observable<ScoreTopTableVW> = combineLatest([
+  readonly scoreTopTableOrdered$: Observable<ScoreTopTable> = combineLatest([
     this.scoreTopTable$,
     this.selectState('orderBy'),
     this.selectState('orderByDirection'),
@@ -131,7 +139,7 @@ export class ScoreLeaderboardsComponent extends LocalState<ScoreLeaderboardsStat
     })
   );
 
-  paginationMeta$: Observable<PaginationMetaVW> = this.scoreTopTable$.pipe(
+  readonly paginationMeta$: Observable<PaginationMeta> = this.scoreTopTable$.pipe(
     pluck('meta'),
     tap(meta => {
       if (meta.currentPage > meta.totalPages) {
@@ -140,8 +148,8 @@ export class ScoreLeaderboardsComponent extends LocalState<ScoreLeaderboardsStat
     })
   );
 
-  trackByStage = trackByFactory<Stage>('id');
-  trackByPlayer = trackByFactory<ScoreTableVW>('idPlayer');
+  readonly trackById = trackById;
+  readonly trackByPlayer = trackByFactory<ScoreTable>('idPlayer');
 
   private _getItemsPerPageFromRoute(): number {
     const itemsPerPage = +(this.activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.itemsPerPage) ?? 10);
@@ -152,7 +160,7 @@ export class ScoreLeaderboardsComponent extends LocalState<ScoreLeaderboardsStat
     this.updateState('orderByDirection', this.getState('orderByDirection') === 'asc' ? 'desc' : 'asc');
   }
 
-  trackByScore: TrackByFunction<ScoreVW | undefined> = (index, item) => (item ? item.idScore : index);
+  readonly trackByScore: TrackByFunction<Score | undefined> = (index, item) => (item ? item.id : index);
 
   updateOrderByStage(idStage?: number): void {
     if (idStage && idStage === this.getState('orderBy')) {
@@ -195,7 +203,7 @@ export class ScoreLeaderboardsComponent extends LocalState<ScoreLeaderboardsStat
     }
   }
 
-  async openScoreInfo(score: ScoreVW): Promise<void> {
+  async openScoreInfo(score: Score): Promise<void> {
     this.updateState({ loadingInfo: true });
     await this.scoreService.openModalScoreInfo({ score, showWorldRecord: true, showApprovalDate: true });
     this.updateState({ loadingInfo: false });

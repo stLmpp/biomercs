@@ -1,9 +1,9 @@
-import { Base } from './base';
-import { trackByFactory } from '@stlmpp/utils';
+import { trackById } from '@util/track-by';
 
-export interface Mode extends Base {
+export interface Mode {
+  id: number;
   name: string;
   playerQuantity: number;
 }
 
-export const trackByMode = trackByFactory<Mode>('id');
+export const trackByMode = trackById;

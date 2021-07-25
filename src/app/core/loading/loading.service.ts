@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { debounceTime, map } from 'rxjs/operators';
+import { BehaviorSubject, debounceTime, map } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class LoadingService {

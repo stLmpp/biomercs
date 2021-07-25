@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Control, ControlGroup, Validators } from '@stlmpp/control';
-import { Observable } from 'rxjs';
+import { debounceTime, finalize, Observable, tap } from 'rxjs';
 import { AuthService } from '../auth.service';
-import { debounceTime, finalize, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { catchAndThrow } from '@util/operators/catch-and-throw';
 import { SnackBarService } from '@shared/components/snack-bar/snack-bar.service';

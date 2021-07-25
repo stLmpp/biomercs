@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, tap } from 'rxjs';
 import { CharacterStore } from './character.store';
 import { httpCache } from '../../operators/http-cache';
-import { Character } from '@model/character';
+import { CharacterWithCharacterCostumes } from '@model/character';
 import { HttpParams } from '@util/http-params';
 
 @Injectable({ providedIn: 'root' })
@@ -18,9 +17,11 @@ export class CharacterService {
     idGame: number,
     idMiniGame: number,
     idMode: number
-  ): Observable<Character[]> {
+  ): Observable<CharacterWithCharacterCostumes[]> {
     return this.http
-      .get<Character[]>(`${this.endPoint}/platform/${idPlatform}/game/${idGame}/mini-game/${idMiniGame}/mode/${idMode}`)
+      .get<CharacterWithCharacterCostumes[]>(
+        `${this.endPoint}/platform/${idPlatform}/game/${idGame}/mini-game/${idMiniGame}/mode/${idMode}`
+      )
       .pipe(
         httpCache(this.characterStore, [idPlatform, idGame, idMiniGame, idMode]),
         tap(characters => {
@@ -34,13 +35,15 @@ export class CharacterService {
     idGames: number[],
     idMiniGames: number[],
     idModes: number[]
-  ): Observable<Character[]> {
+  ): Observable<CharacterWithCharacterCostumes[]> {
     const params = new HttpParams({ idPlatforms, idGames, idMiniGames, idModes });
-    return this.http.get<Character[]>(`${this.endPoint}/platforms/games/mini-games/modes`, { params }).pipe(
-      httpCache(this.characterStore, [idPlatforms, idGames, idMiniGames, idModes]),
-      tap(characters => {
-        this.characterStore.upsert(characters);
-      })
-    );
+    return this.http
+      .get<CharacterWithCharacterCostumes[]>(`${this.endPoint}/platforms/games/mini-games/modes`, { params })
+      .pipe(
+        httpCache(this.characterStore, [idPlatforms, idGames, idMiniGames, idModes]),
+        tap(characters => {
+          this.characterStore.upsert(characters);
+        })
+      );
   }
 }

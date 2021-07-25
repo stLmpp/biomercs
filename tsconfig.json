@@ -24,7 +24,8 @@
       "@environment/*": ["./src/environments/*"]
     },
     "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "noImplicitOverride": true
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

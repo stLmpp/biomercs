@@ -1,20 +1,18 @@
-import { trackByFactory } from '@stlmpp/utils';
-import { ScoreVW } from '@model/score';
-import { PaginationMetaVW } from '@model/pagination';
+import { Score } from '@model/score';
+import { PaginationMeta } from '@model/pagination';
 
 export interface ScoreChangeRequest {
-  idScoreChangeRequest: number;
+  id: number;
+  idScore: number;
   description: string;
+  dateFulfilled?: Date;
 }
 
-export interface ScoreChangeRequests extends ScoreVW {
+export interface ScoreWithScoreChangeRequests extends Score {
   scoreChangeRequests: ScoreChangeRequest[];
 }
 
-export interface ScoreChangeRequestsPaginationVW {
-  meta: PaginationMetaVW;
-  scores: ScoreChangeRequests[];
+export interface ScoreChangeRequestsPagination {
+  meta: PaginationMeta;
+  scores: ScoreWithScoreChangeRequests[];
 }
-
-export const trackByScoreChangeRequest = trackByFactory<ScoreChangeRequest>('idScoreChangeRequest');
-export const trackByScoreChangeRequests = trackByFactory<ScoreChangeRequests>('idScore');

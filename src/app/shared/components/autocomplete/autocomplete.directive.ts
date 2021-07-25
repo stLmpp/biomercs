@@ -12,12 +12,11 @@ import {
 import { Overlay } from '@angular/cdk/overlay';
 import { DOCUMENT } from '@angular/common';
 import { cdkOverlayTransparentBackdrop } from '@util/overlay';
-import { filter, startWith, takeUntil } from 'rxjs/operators';
+import { combineLatest, filter, fromEvent, Observable, startWith, Subject, takeUntil } from 'rxjs';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Destroyable } from '@shared/components/common/destroyable-component';
 import { AutocompleteComponent } from '@shared/components/autocomplete/autocomplete.component';
 import { getOverlayPositionMenu } from '@shared/components/menu/util';
-import { combineLatest, fromEvent, Observable, Subject } from 'rxjs';
 import { ControlDirective } from '@stlmpp/control';
 import { AutocompleteOptionComponent } from '@shared/components/autocomplete/autocomplete-option.component';
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';

@@ -23,7 +23,7 @@
             </icon>
           </div>
           <div
-            *ngFor="let stage of scores.stages; trackBy: trackByStage"
+            *ngFor="let stage of scores.stages; trackBy: trackById"
             (click)="updateOrderByStage(stage.id)"
             [tooltip]="stage.name"
           >

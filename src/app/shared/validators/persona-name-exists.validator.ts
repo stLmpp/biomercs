@@ -1,8 +1,7 @@
 import { Directive, Injectable, Input } from '@angular/core';
 import { Control, ControlValidator } from '@stlmpp/control';
-import { Observable, timer } from 'rxjs';
+import { map, Observable, switchMapTo, timer } from 'rxjs';
 import { PlayerService } from '../../player/player.service';
-import { map, switchMapTo } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class PersonaNameExistsValidator extends ControlValidator<string, boolean> {
@@ -11,7 +10,7 @@ export class PersonaNameExistsValidator extends ControlValidator<string, boolean
   }
 
   name = 'personaNameExists';
-  async = true;
+  override async = true;
 
   validate({ value }: Control<string>): Observable<boolean | null> | boolean | null {
     if (!value) {
@@ -35,7 +34,7 @@ export class PersonaNameExistsValidatorDirective extends ControlValidator<string
 
   @Input() personaNameExistsIgnore?: string;
 
-  async = true;
+  override async = true;
   name = 'personaNameExists';
 
   validate(control: Control<string>): Observable<boolean | null> | boolean | null {

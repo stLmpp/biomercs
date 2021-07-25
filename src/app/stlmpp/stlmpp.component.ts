@@ -1,8 +1,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { shareReplay, take, takeUntil } from 'rxjs/operators';
+import { fromEvent, race, shareReplay, take, takeUntil, timer } from 'rxjs';
 import { Destroyable } from '@shared/components/common/destroyable-component';
-import { fromEvent, race, timer } from 'rxjs';
 import { Animations } from '@shared/animations/animations';
 import { mdiGithub, mdiSteam, mdiYoutube } from '@mdi/js';
 
@@ -12,6 +11,7 @@ import { mdiGithub, mdiSteam, mdiYoutube } from '@mdi/js';
   styleUrls: ['./stlmpp.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [Animations.fade.inOut()],
+  host: { class: 'center-container' },
 })
 export class StlmppComponent extends Destroyable implements AfterViewInit {
   constructor(private router: Router, private activatedRoute: ActivatedRoute) {

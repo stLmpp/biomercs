@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 import { TableCell } from '@shared/components/table/type';
 import { ColDefInternal } from '@shared/components/table/col-def';
-import { ScoreChangeRequests } from '@model/score-change-request';
+import { ScoreWithScoreChangeRequests } from '@model/score-change-request';
 import { LocalState } from '@stlmpp/store';
 import { PlayerService } from '../../player.service';
 
@@ -22,7 +22,7 @@ export interface PlayerChangeRequestsActionCellComponentMetadata {
 })
 export class PlayerChangeRequestsActionCellComponent
   extends LocalState<PlayerChangeRequestsActionCellComponentState>
-  implements TableCell<ScoreChangeRequests>
+  implements TableCell<ScoreWithScoreChangeRequests>
 {
   constructor(private playerService: PlayerService) {
     super({ loadingModal: false });
@@ -30,11 +30,11 @@ export class PlayerChangeRequestsActionCellComponent
 
   @Output() readonly notifyChange = new EventEmitter<any>();
 
-  colDef!: ColDefInternal<ScoreChangeRequests, keyof ScoreChangeRequests>;
-  item!: ScoreChangeRequests;
+  colDef!: ColDefInternal<ScoreWithScoreChangeRequests, keyof ScoreWithScoreChangeRequests>;
+  item!: ScoreWithScoreChangeRequests;
   metadata!: PlayerChangeRequestsActionCellComponentMetadata;
 
-  loadingModal$ = this.selectState('loadingModal');
+  readonly loadingModal$ = this.selectState('loadingModal');
 
   async openModalChangeRequests(): Promise<void> {
     this.updateState({ loadingModal: true });

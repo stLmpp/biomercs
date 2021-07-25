@@ -1,8 +1,8 @@
 import { CurrencyMaskConfig, CurrencyMaskInputMode } from 'ngx-currency';
 import { ColDef } from '@shared/components/table/col-def';
-import { ScoreVW } from '@model/score';
+import { Score } from '@model/score';
 import { formatNumber } from '@angular/common';
-import { ScorePlayerVW } from '@model/score-player';
+import { ScorePlayer } from '@model/score-player';
 import { AuthDateFormatPipe } from '../../auth/shared/auth-date-format.pipe';
 
 export const scoreCurrencyMask: Partial<CurrencyMaskConfig> = {
@@ -14,9 +14,7 @@ export const scoreCurrencyMask: Partial<CurrencyMaskConfig> = {
   precision: 0,
 };
 
-export function getScoreDefaultColDefs<T extends ScoreVW = ScoreVW>(
-  authDateFormatPipe: AuthDateFormatPipe
-): ColDef<T>[] {
+export function getScoreDefaultColDefs<T extends Score = Score>(authDateFormatPipe: AuthDateFormatPipe): ColDef<T>[] {
   return [
     { property: 'platformShortName', title: 'Platform', tooltip: 'platformName', width: '80px' },
     { property: 'gameShortName', title: 'Game', tooltip: 'gameName', width: '80px', orderBy: true },
@@ -49,7 +47,7 @@ export function getScoreDefaultColDefs<T extends ScoreVW = ScoreVW>(
       property: 'scorePlayers',
       title: 'Player(s)',
       formatter: scorePlayers =>
-        (scorePlayers as unknown as ScorePlayerVW[]).map(scorePlayer => scorePlayer.playerPersonaName).join(' | '),
+        (scorePlayers as unknown as ScorePlayer[]).map(scorePlayer => scorePlayer.playerPersonaName).join(' | '),
       tooltip: true,
       tooltipPosition: 'left',
     },

@@ -17,16 +17,6 @@ export interface AuthCredentials {
   rememberMe?: boolean;
 }
 
-export interface AuthChangePassword {
-  password: string;
-  confirmationCode: number;
-}
-
-export interface AuthRegisterSteam {
-  email: string;
-  steamid: string;
-}
-
 export interface AuthRegisterVW {
   email: string;
   message: string;
@@ -44,4 +34,11 @@ export interface AuthSteamLoginSocketVW {
 
 export enum AuthGatewayEvents {
   loginSteam = 'login-steam',
+}
+
+export interface AuthChangePassword {
+  key: string;
+  oldPassword: string;
+  newPassword: string;
+  confirmationCode: number;
 }

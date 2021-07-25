@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Control, ControlValidator } from '@stlmpp/control';
 import { AuthService } from '../../auth/auth.service';
-import { Observable, timer } from 'rxjs';
-import { map, switchMapTo } from 'rxjs/operators';
+import { map, Observable, switchMapTo, timer } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class EmailExistsValidator extends ControlValidator<string, boolean> {
@@ -11,7 +10,7 @@ export class EmailExistsValidator extends ControlValidator<string, boolean> {
   }
 
   name = 'emailExists';
-  async = true;
+  override async = true;
 
   validate({ value }: Control<string>): Observable<boolean | null> | null {
     if (!value) {

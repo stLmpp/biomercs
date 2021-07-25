@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import { UrlMetadata } from '@model/url-metadata';
 import { HttpParams } from '@util/http-params';
-import { map, tap } from 'rxjs/operators';
 import { UrlMetadataStore } from '@shared/services/url-metadata/url-metadata.store';
 import { Injectable } from '@angular/core';
 import { useEntityCache } from '@util/operators/entity-cache';

@@ -1,14 +1,7 @@
 @use 'variables' as v;
 @use 'functions' as f;
 
-:host {
-  display: flex;
-  justify-content: center;
-}
-
 .card {
-  max-width: v.$mobile-width;
-  width: 100%;
   position: relative;
 }
 

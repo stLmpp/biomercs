@@ -29,5 +29,6 @@
 
   .modal-actions {
     @include m.actions();
+    padding: 0;
   }
 }

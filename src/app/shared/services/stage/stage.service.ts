@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, tap } from 'rxjs';
 import { StageStore } from './stage.store';
 import { httpCache } from '../../operators/http-cache';
 import { Stage } from '@model/stage';
@@ -48,13 +47,11 @@ export class StageService {
     idPlatform: number,
     idGame: number,
     idMiniGame: number,
-    idMode: number,
-    playerMode = false
+    idMode: number
   ): Observable<Stage[]> {
-    const path = playerMode ? 'approval/player' : 'approval/admin';
     return this.http
       .get<Stage[]>(
-        `${this.endPoint}/${path}/platform/${idPlatform}/game/${idGame}/mini-game/${idMiniGame}/mode/${idMode}`
+        `${this.endPoint}/approval/platform/${idPlatform}/game/${idGame}/mini-game/${idMiniGame}/mode/${idMode}`
       )
       .pipe(
         tap(stages => {

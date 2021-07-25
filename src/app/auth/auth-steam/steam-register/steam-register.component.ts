@@ -3,8 +3,7 @@ import { AuthService } from '../../auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { ControlBuilder, Validators } from '@stlmpp/control';
-import { Observable } from 'rxjs';
-import { finalize, tap } from 'rxjs/operators';
+import { finalize, Observable, tap } from 'rxjs';
 import { catchAndThrow } from '@util/operators/catch-and-throw';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { User } from '@model/user';
@@ -114,7 +113,7 @@ export class SteamRegisterComponent
     }
   }
 
-  ngOnDestroy(): void {
+  override ngOnDestroy(): void {
     const steamid = this.steamid;
     if (steamid) {
       this.authService.removeSteamToken(steamid);

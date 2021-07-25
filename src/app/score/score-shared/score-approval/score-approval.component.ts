@@ -1,15 +1,14 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { PARAMS_FORM_NULL, ParamsConfig, ParamsForm } from '@shared/params/params.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ScoreService } from '../../score.service';
-import { filter, finalize, pluck, skip, switchMap, takeUntil } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { filter, finalize, Observable, pluck, skip, switchMap, takeUntil } from 'rxjs';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
-import { PaginationMetaVW } from '@model/pagination';
-import { ScoreVW } from '@model/score';
+import { PaginationMeta } from '@model/pagination';
+import { Score } from '@model/score';
 import { OrderByDirection } from 'st-utils';
 import { ScoreApprovalActionEnum } from '@model/enum/score-approval-action.enum';
-import { ScoreApprovalVW } from '@model/score-approval';
+import { ScoreApprovalPagination } from '@model/score-approval';
 import { LocalState } from '@stlmpp/store';
 import { getScoreDefaultColDefs } from '../util';
 import { AuthDateFormatPipe } from '../../../auth/shared/auth-date-format.pipe';
@@ -31,10 +30,9 @@ export interface ScoreApprovalComponentState extends ParamsForm {
   tableLoading: boolean;
   orderBy?: string | null;
   orderByDirection: OrderByDirection;
-  data?: ScoreApprovalVW;
+  data?: ScoreApprovalPagination;
   loadingApprovalModal: boolean;
   loadingRequestChangesModal: boolean;
-  playerMode: boolean;
 }
 
 @Component({
@@ -51,35 +49,29 @@ export class ScoreApprovalComponent extends LocalState<ScoreApprovalComponentSta
     private authDateFormatPipe: AuthDateFormatPipe,
     private modalService: ModalService
   ) {
-    super(
-      {
-        itemsPerPage: PaginationComponent.getItemsPerPageFromRoute(activatedRoute),
-        page: +(activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.page) ?? 1),
-        ...PARAMS_FORM_NULL,
-        tableLoading: false,
-        loadingApprovalModal: false,
-        loadingRequestChangesModal: false,
-        playerMode: false,
-        orderByDirection:
-          (activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.orderByDirection) as
-            | OrderByDirection
-            | undefined
-            | null) ?? 'asc',
-        orderBy: activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.orderBy) ?? 'creationDate',
-      },
-      { inputs: ['playerMode'] }
-    );
+    super({
+      itemsPerPage: PaginationComponent.getItemsPerPageFromRoute(activatedRoute),
+      page: +(activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.page) ?? 1),
+      ...PARAMS_FORM_NULL,
+      tableLoading: false,
+      loadingApprovalModal: false,
+      loadingRequestChangesModal: false,
+      orderByDirection:
+        (activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.orderByDirection) as
+          | OrderByDirection
+          | undefined
+          | null) ?? 'asc',
+      orderBy: activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.orderBy) ?? 'creationDate',
+    });
   }
 
   private _data$ = this.selectState('data').pipe(filterNil());
 
-  @Input() playerMode = false;
-
   scoreApprovalActionEnum = ScoreApprovalActionEnum;
 
   tableLoading$ = this.selectState('tableLoading');
-  scores$: Observable<ScoreVW[]> = this._data$.pipe(pluck('scores'));
-  meta$: Observable<PaginationMetaVW> = this._data$.pipe(pluck('meta'));
+  scores$: Observable<Score[]> = this._data$.pipe(pluck('scores'));
+  meta$: Observable<PaginationMeta> = this._data$.pipe(pluck('meta'));
   order$ = this.selectState(['orderBy', 'orderByDirection']);
 
   itemsPerPageOptions = [5, 10, 25, 50, 100];
@@ -92,8 +84,8 @@ export class ScoreApprovalComponent extends LocalState<ScoreApprovalComponentSta
     idPlatform: { clearable: false, validators: [Validators.required] },
   };
 
-  colDefs: ColDef<ScoreVW>[] = [
-    { property: 'idScore', component: ScoreApprovalActionsCellComponent, width: '100px' } as ColDef<ScoreVW>,
+  colDefs: ColDef<Score>[] = [
+    { property: 'id', component: ScoreApprovalActionsCellComponent, width: '100px' } as ColDef<Score>,
     ...getScoreDefaultColDefs(this.authDateFormatPipe),
   ].map(colDef => {
     let orderByKey: string | undefined;
@@ -126,7 +118,7 @@ export class ScoreApprovalComponent extends LocalState<ScoreApprovalComponentSta
     this.updateState({ itemsPerPage });
   }
 
-  changeOrder(order: TableOrder<ScoreVW>): void {
+  changeOrder(order: TableOrder<Score>): void {
     this.updateState(order);
     this.router
       .navigate([], {
@@ -140,15 +132,15 @@ export class ScoreApprovalComponent extends LocalState<ScoreApprovalComponentSta
       .then();
   }
 
-  onNotifyChange({ data }: TableCellNotifyChange<ScoreApprovalVW, ScoreVW>): void {
+  onNotifyChange({ data }: TableCellNotifyChange<ScoreApprovalPagination, Score>): void {
     this.updateState({ data });
   }
 
-  async openModalSelectApprovalType(score: ScoreVW): Promise<void> {
+  async openModalSelectApprovalType(score: Score): Promise<void> {
     const modalRef = await this.modalService.openLazy<
       ScoreApprovalActionsModalComponent,
       ScoreApprovalActionsModalData,
-      ScoreApprovalVW
+      ScoreApprovalPagination
     >(
       () =>
         import('./score-approval-actions-modal/score-approval-actions-modal.component').then(
@@ -184,7 +176,6 @@ export class ScoreApprovalComponent extends LocalState<ScoreApprovalComponentSta
             this.updateState('tableLoading', true);
             return this.scoreService
               .findApproval(
-                this.playerMode,
                 idPlatform!,
                 page,
                 idGame,

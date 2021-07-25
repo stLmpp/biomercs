@@ -1,5 +1,4 @@
-import { OperatorFunction } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter, OperatorFunction } from 'rxjs';
 import { isNil } from 'st-utils';
 
 export function isNotNil<T>(value: T): value is NonNullable<T> {

@@ -1,25 +1,22 @@
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
-import {
-  ScoreChangeRequests,
-  ScoreChangeRequestsPaginationVW,
-  trackByScoreChangeRequest,
-} from '@model/score-change-request';
+import { ScoreChangeRequestsPagination, ScoreWithScoreChangeRequests } from '@model/score-change-request';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import { Control, ControlArray, ControlGroup, Validators } from '@stlmpp/control';
 import { ScoreChangeRequestsFulfilDto } from '@model/score';
-import { ScorePlayerUpdateDto, trackByScorePlayerVW } from '@model/score-player';
+import { ScorePlayerUpdateDto } from '@model/score-player';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import { IdChecked } from '@shared/type/id-checked';
 import { MaskEnum, MaskEnumPatterns } from '@shared/mask/mask.enum';
 import { CURRENCY_MASK_CONFIG } from '@shared/currency-mask/currency-mask-config.token';
 import { scoreCurrencyMask } from '../../../score/score-shared/util';
 import { ScoreService } from '../../../score/score.service';
-import { finalize, switchMapTo } from 'rxjs/operators';
+import { finalize, switchMapTo } from 'rxjs';
 import { SnackBarService } from '@shared/components/snack-bar/snack-bar.service';
 import { LocalState } from '@stlmpp/store';
+import { trackById } from '@util/track-by';
 
 export interface PlayerChangeRequestsModalData {
-  score: ScoreChangeRequests;
+  score: ScoreWithScoreChangeRequests;
   page: number;
   itemsPerPage: number;
 }
@@ -50,7 +47,7 @@ export class PlayerChangeRequestsModalComponent extends LocalState<PlayerChangeR
     public modalRef: ModalRef<
       PlayerChangeRequestsModalComponent,
       PlayerChangeRequestsModalData,
-      ScoreChangeRequestsPaginationVW
+      ScoreChangeRequestsPagination
     >,
     private scoreService: ScoreService,
     private snackBarService: SnackBarService
@@ -58,18 +55,17 @@ export class PlayerChangeRequestsModalComponent extends LocalState<PlayerChangeR
     super({ loading: false });
   }
 
-  loading$ = this.selectState('loading');
+  readonly loading$ = this.selectState('loading');
+  readonly maskEnum = MaskEnum;
+  readonly maskTimePattern = MaskEnumPatterns[MaskEnum.time]!;
 
-  maskEnum = MaskEnum;
-  maskTimePattern = MaskEnumPatterns[MaskEnum.time]!;
-
-  form = new ControlGroup<ScoreChangeRequestsFulfilForm>({
+  readonly form = new ControlGroup<ScoreChangeRequestsFulfilForm>({
     score: new Control(this.data.score.score, [Validators.required]),
     idsScoreChangeRequests: new ControlArray<IdChecked>(
       this.data.score.scoreChangeRequests.map(
-        ({ idScoreChangeRequest }) =>
+        ({ id }) =>
           new ControlGroup<IdChecked>({
-            id: new Control(idScoreChangeRequest),
+            id: new Control(id),
             checked: new Control(false),
           })
       )
@@ -78,8 +74,8 @@ export class PlayerChangeRequestsModalComponent extends LocalState<PlayerChangeR
       this.data.score.scorePlayers.map(
         scorePlayer =>
           new ControlGroup<ScorePlayerUpdateDto>({
-            id: new Control(scorePlayer.idScorePlayer),
-            bulletKills: new Control(scorePlayer.bulletKills, [Validators.required, Validators.min(0)]),
+            id: new Control(scorePlayer.id),
+            bulletKills: new Control(scorePlayer.bulletKills),
             host: new Control(scorePlayer.host),
             description: new Control(scorePlayer.description, [Validators.required]),
             evidence: new Control(scorePlayer.evidence, [Validators.required, Validators.url]),
@@ -94,8 +90,7 @@ export class PlayerChangeRequestsModalComponent extends LocalState<PlayerChangeR
     return this.form.get('scorePlayers');
   }
 
-  trackByScoreChangeRequest = trackByScoreChangeRequest;
-  trackByScorePlayer = trackByScorePlayerVW;
+  readonly trackById = trackById;
 
   hostChange($index: number): void {
     const scorePlayersControl = this.form.get('scorePlayers');
@@ -118,7 +113,7 @@ export class PlayerChangeRequestsModalComponent extends LocalState<PlayerChangeR
       idsScoreChangeRequests: formValue.idsScoreChangeRequests.filter(({ checked }) => checked).map(({ id }) => id),
     };
     this.scoreService
-      .fulfilChangeRequests(this.data.score.idScore, dto)
+      .fulfilChangeRequests(this.data.score.id, dto)
       .pipe(
         switchMapTo(this.scoreService.findChangeRequests(this.data.page, this.data.itemsPerPage)),
         finalize(() => {

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TableCell } from '@shared/components/table/type';
-import { ScoreVW } from '@model/score';
+import { Score } from '@model/score';
 import { ScoreService } from '../../score.service';
 import { BehaviorSubject } from 'rxjs';
 import { ScoreInfoModalData } from '../score-info/score-info-modal/score-info-modal.component';
@@ -11,7 +11,7 @@ import { ScoreInfoModalData } from '../score-info/score-info-modal/score-info-mo
   styleUrls: ['./score-open-info-cell.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ScoreOpenInfoCellComponent extends TableCell<ScoreVW> {
+export class ScoreOpenInfoCellComponent extends TableCell<Score> {
   constructor(private scoreService: ScoreService) {
     super();
   }

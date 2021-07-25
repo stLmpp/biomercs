@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, tap } from 'rxjs';
 import { MiniGameStore } from './mini-game.store';
 import { httpCache } from '../../operators/http-cache';
 import { MiniGame } from '@model/mini-game';
@@ -32,9 +31,8 @@ export class MiniGameService {
     );
   }
 
-  findApprovalByIdPlatformGame(idPlatform: number, idGame: number, playerMode = false): Observable<MiniGame[]> {
-    const path = playerMode ? 'approval/player' : 'approval/admin';
-    return this.http.get<MiniGame[]>(`${this.endPoint}/${path}/platform/${idPlatform}/game/${idGame}`).pipe(
+  findApprovalByIdPlatformGame(idPlatform: number, idGame: number): Observable<MiniGame[]> {
+    return this.http.get<MiniGame[]>(`${this.endPoint}/approval/platform/${idPlatform}/game/${idGame}`).pipe(
       tap(miniGames => {
         this.miniGameStore.upsert(miniGames);
       })

@@ -8,7 +8,6 @@ export class HeaderQuery extends Query<HeaderState> {
     super(headerStore);
   }
 
-  playerApprovalCount$ = this.select('playerApprovalCount');
   adminApprovalCount$ = this.select('adminApprovalCount');
   playerRequestChangesCount$ = this.select('playerRequestChangesCount');
 }

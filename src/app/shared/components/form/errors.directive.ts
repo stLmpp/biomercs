@@ -16,7 +16,7 @@ export class FormFieldErrorsDirective extends ControlError implements AfterConte
     super(keyValueDiffers, _controlParent);
   }
 
-  ngOnInit(): void {
+  override ngOnInit(): void {
     if (this.controlError) {
       super.ngOnInit();
     }

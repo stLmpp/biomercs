@@ -4,7 +4,7 @@ import { MailStatusQueue } from '@model/mail';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { LocalState } from '@stlmpp/store';
 import { MailService } from '@shared/services/mail/mail.service';
-import { tap } from 'rxjs/operators';
+import { tap } from 'rxjs';
 import { catchAndThrow } from '@util/operators/catch-and-throw';
 
 interface AdminMailQueueComponentState {

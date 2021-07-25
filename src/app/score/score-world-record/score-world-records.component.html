@@ -38,7 +38,7 @@
                 </icon>
               </div>
               <div
-                *ngFor="let stage of scoreTopTable.stages; trackBy: trackByStage"
+                *ngFor="let stage of scoreTopTable.stages; trackBy: trackById"
                 [tooltip]="stage.name"
                 (click)="updateOrderByIdStage(stage.id)"
                 class="stage"

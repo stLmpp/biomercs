@@ -7,23 +7,22 @@ import {
   QueryList,
   ViewChildren,
 } from '@angular/core';
-import { ScoreVW } from '@model/score';
+import { Score } from '@model/score';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
-import { Control, ControlArray, ControlBuilder, Validators } from '@stlmpp/control';
+import { ControlArray, ControlBuilder, Validators } from '@stlmpp/control';
 import { ModalRef } from '@shared/components/modal/modal-ref';
-import { ScoreApprovalVW } from '@model/score-approval';
-import { Subject } from 'rxjs';
-import { finalize, switchMap, tap, throttleTime } from 'rxjs/operators';
+import { ScoreApprovalPagination } from '@model/score-approval';
+import { finalize, Subject, switchMap, tap, throttleTime } from 'rxjs';
 import { Key, KeyCode } from '@model/enum/key';
 import { FocusKeyManager } from '@angular/cdk/a11y';
 import { InputDirective } from '@shared/components/form/input.directive';
 import { AbstractScoreService } from '../../../abstract-score.service';
 import { ScoreApprovalComponentState } from '../score-approval.component';
-import { trackByFactory } from '@stlmpp/utils';
 import { LocalState } from '@stlmpp/store';
+import { trackByControl } from '@util/track-by';
 
 export interface ScoreRequestChangesModalData {
-  score: ScoreVW;
+  score: Score;
   scoreApprovalComponentState: ScoreApprovalComponentState;
 }
 
@@ -49,7 +48,7 @@ export class ScoreRequestChangesModalComponent
   constructor(
     @Inject(MODAL_DATA) { score, scoreApprovalComponentState }: ScoreRequestChangesModalData,
     private controlBuilder: ControlBuilder,
-    public modalRef: ModalRef<ScoreRequestChangesModalComponent, ScoreRequestChangesModalForm, ScoreApprovalVW>,
+    public modalRef: ModalRef<ScoreRequestChangesModalComponent, ScoreRequestChangesModalForm, ScoreApprovalPagination>,
     private scoreService: AbstractScoreService
   ) {
     super({ saving: false });
@@ -57,21 +56,21 @@ export class ScoreRequestChangesModalComponent
     this.scoreApprovalComponentState = scoreApprovalComponentState;
   }
 
-  private _keydownTextArea$ = new Subject<TextAreaEvent>();
+  private readonly _keydownTextArea$ = new Subject<TextAreaEvent>();
   private _focusKeyManager!: FocusKeyManager<InputDirective>;
 
-  @ViewChildren('change') changesRef!: QueryList<InputDirective>;
+  @ViewChildren('change') readonly changesRef!: QueryList<InputDirective>;
 
-  saving$ = this.selectState('saving');
+  readonly saving$ = this.selectState('saving');
 
-  score: ScoreVW;
+  score: Score;
   scoreApprovalComponentState: ScoreApprovalComponentState;
 
-  form = this.controlBuilder.group<ScoreRequestChangesModalForm>({
+  readonly form = this.controlBuilder.group<ScoreRequestChangesModalForm>({
     changes: this.controlBuilder.array<string>([['', [Validators.required]]]),
   });
 
-  trackByControl = trackByFactory<Control<string>>('uniqueId');
+  readonly trackByControl = trackByControl;
 
   get changesControl(): ControlArray<string> {
     return this.form.get('changes');
@@ -102,13 +101,12 @@ export class ScoreRequestChangesModalComponent
     this.form.disable();
     this.updateState({ saving: true });
     this.scoreService
-      .requestChanges(this.score.idScore, changes)
+      .requestChanges(this.score.id, changes)
       .pipe(
         switchMap(() => {
           const { idMiniGame, idPlatform, idGame, idMode, itemsPerPage, page, orderBy, orderByDirection, idStage } =
             this.scoreApprovalComponentState;
           return this.scoreService.findApproval(
-            false,
             idPlatform!,
             page,
             idGame,

@@ -3,16 +3,27 @@ import { UserService } from '@shared/services/user/user.service';
 import { Control, ControlGroup } from '@stlmpp/control';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
-import { debounceTime, distinctUntilChanged, filter, finalize, pluck, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { combineLatest, Observable } from 'rxjs';
+import {
+  combineLatest,
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  finalize,
+  Observable,
+  pluck,
+  switchMap,
+  takeUntil,
+  tap,
+} from 'rxjs';
 import { LocalState } from '@stlmpp/store';
 import { filterNil } from '@shared/operators/filter';
-import { trackByUser, User } from '@model/user';
-import { Pagination, PaginationMetaVW } from '@model/pagination';
+import { User } from '@model/user';
+import { Pagination, PaginationMeta } from '@model/pagination';
 import { arrayUtil } from 'st-utils';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
 import { isAfter, subDays } from 'date-fns';
 import { mdiShieldAccount } from '@mdi/js';
+import { trackById } from '@util/track-by';
 
 interface UserSearchForm {
   term: string;
@@ -61,9 +72,9 @@ export class AdminBanUserComponent extends LocalState<AdminBanUserComponentState
 
   readonly data$ = this.selectState('data');
   readonly users$: Observable<User[]> = this.data$.pipe(filterNil(), pluck('items'));
-  readonly paginationMeta$: Observable<PaginationMetaVW> = this.data$.pipe(filterNil(), pluck('meta'));
+  readonly paginationMeta$: Observable<PaginationMeta> = this.data$.pipe(filterNil(), pluck('meta'));
 
-  readonly trackByUser = trackByUser;
+  readonly trackByUser = trackById;
 
   private _getNumberParamOrNull(param: string): number | null {
     return this.activatedRoute.snapshot.queryParamMap.has(param)

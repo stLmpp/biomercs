@@ -1,5 +1,4 @@
 import { Region } from './region';
-import { trackByFactory } from '@stlmpp/utils';
 import { SteamProfile } from '@model/steam-profile';
 
 export interface Player {
@@ -32,5 +31,3 @@ export interface PlayerUpdate {
   aboutMe?: string;
   idRegion?: number;
 }
-
-export const trackByPlayer = trackByFactory<Player>('id');

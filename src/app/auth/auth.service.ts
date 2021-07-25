@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { finalize, switchMap, takeUntil, tap, timeout } from 'rxjs/operators';
+import { finalize, Observable, of, switchMap, takeUntil, tap, timeout, timer } from 'rxjs';
 import { AuthStore } from './auth.store';
 import { catchAndThrow } from '@util/operators/catch-and-throw';
 import { ignoreErrorContext } from './auth-error.interceptor';
@@ -11,10 +10,18 @@ import { WINDOW } from '../core/window.service';
 import { SnackBarService } from '@shared/components/snack-bar/snack-bar.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { v4 } from 'uuid';
-import { AuthCredentials, AuthGatewayEvents, AuthRegister, AuthRegisterVW, AuthSteamLoginSocketVW } from '@model/auth';
+import {
+  AuthChangePassword,
+  AuthCredentials,
+  AuthGatewayEvents,
+  AuthRegister,
+  AuthRegisterVW,
+  AuthSteamLoginSocketVW,
+} from '@model/auth';
 import { User } from '@model/user';
 import { AuthSteamLoginSocketErrorType } from '@model/enum/auth-steam-login-socket-error-type';
 import { SocketIOService } from '@shared/services/socket-io/socket-io.service';
+import { environment } from '@environment/environment';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -28,6 +35,7 @@ export class AuthService {
     private socketIOService: SocketIOService
   ) {}
 
+  private _autoLoginAttempts = 0;
   private _steamidAuthMap = new Map<string, [string, number?]>();
   private _socketConnection = this.socketIOService.createConnection('auth');
 
@@ -56,17 +64,25 @@ export class AuthService {
   }
 
   autoLogin(): Observable<User | null> {
-    if (!this.authStore.getState().user?.token) {
-      return of(null);
+    const { user } = this.authStore.getState();
+    if (!user?.token) {
+      if (this._autoLoginAttempts > environment.maxAutoLoginAttempts) {
+        return of(null);
+      }
+      this._autoLoginAttempts++;
+      return timer(environment.autoLoginAttemptTimeout).pipe(switchMap(() => this.autoLogin()));
     }
     return this.http.post<User>(`${this.endPoint}/auto-login`, undefined, { context: ignoreErrorContext() }).pipe(
-      tap(user => {
-        this.authStore.updateState({ user });
+      tap(userLogged => {
+        this.authStore.updateState({ user: userLogged });
       }),
       catchAndThrow(() => {
         this.authStore.updateState({ user: null });
         this.router.navigate(['/auth/login']).then();
         return of(null);
+      }),
+      finalize(() => {
+        this._autoLoginAttempts = 0;
       })
     );
   }
@@ -253,5 +269,21 @@ export class AuthService {
   emailExists(email: string): Observable<boolean> {
     const params = new HttpParams({ email });
     return this.http.get<boolean>(`${this.endPoint}/user/exists`, { params });
+  }
+
+  sendChangePasswordConfirmationCode(): Observable<void> {
+    return this.http.post<void>(`${this.endPoint}/change-password`, undefined);
+  }
+
+  confirmChangePassword(dto: AuthChangePassword): Observable<User> {
+    return this.http.post<User>(`${this.endPoint}/change-password/confirm`, dto).pipe(
+      tap(user => {
+        this.authStore.updateState({ user });
+      })
+    );
+  }
+
+  changePasswordValidate(key: string): Observable<boolean> {
+    return this.http.get<boolean>(`${this.endPoint}/change-password/validate/${key}`);
   }
 }

@@ -23,15 +23,6 @@
     <ng-container *ngIf="idUser$ | async as idUser">
       <a
         bioCardMenu
-        *ngIf="playerApprovalCount$ | async as playerApprovalCount"
-        [bioBadge]="playerApprovalCount"
-        [routerLink]="['/player/u', idUser, 'approval']"
-      >
-        <icon>checklist</icon>
-        Check your approval list
-      </a>
-      <a
-        bioCardMenu
         *ngIf="playerRequestChangesCount$ | async as playerRequestChangesCount"
         [bioBadge]="playerRequestChangesCount"
         [routerLink]="['/player/u', idUser, 'change-requests']"
