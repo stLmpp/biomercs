@@ -16,7 +16,7 @@ export class ScoreOpenInfoCellComponent extends TableCell<Score> {
     super();
   }
 
-  loading$ = new BehaviorSubject(false);
+  readonly loading$ = new BehaviorSubject(false);
 
   async openScoreInfo(): Promise<void> {
     this.loading$.next(true);

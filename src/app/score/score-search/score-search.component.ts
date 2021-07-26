@@ -105,29 +105,12 @@ export class ScoreSearchComponent extends LocalState<ScoreSearchComponentState> 
     ...getScoreDefaultColDefs(this.authDateFormatPipe),
   ];
 
-  get idPlatformsControl(): Control<number[] | null | undefined> {
-    return this.form.get('idPlatforms');
-  }
-
-  get idGamesControl(): Control<number[] | null | undefined> {
-    return this.form.get('idGames');
-  }
-
-  get idMiniGamesControl(): Control<number[] | null | undefined> {
-    return this.form.get('idMiniGames');
-  }
-
-  get idModesControl(): Control<number[] | null | undefined> {
-    return this.form.get('idModes');
-  }
-
-  get idStagesControl(): Control<number[] | null | undefined> {
-    return this.form.get('idStages');
-  }
-
-  get idCharacterCostumesControl(): Control<number[] | null | undefined> {
-    return this.form.get('idCharacterCostumes');
-  }
+  readonly idPlatformsControl = this.form.get('idPlatforms');
+  readonly idGamesControl = this.form.get('idGames');
+  readonly idMiniGamesControl = this.form.get('idMiniGames');
+  readonly idModesControl = this.form.get('idModes');
+  readonly idStagesControl = this.form.get('idStages');
+  readonly idCharacterCostumesControl = this.form.get('idCharacterCostumes');
 
   readonly idPlatforms$ = this.idPlatformsControl.value$.pipe(
     tap(idPlatforms => {

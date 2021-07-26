@@ -41,9 +41,9 @@ export class ScoreApprovalActionsModalComponent extends LocalState<ScoreApproval
   score: Score;
   scoreApprovalComponentState: ScoreApprovalComponentState;
 
-  scoreApprovalActionEnum = ScoreApprovalActionEnum;
+  readonly scoreApprovalActionEnum = ScoreApprovalActionEnum;
 
-  loading$ = this.selectState('loadingModal');
+  readonly loading$ = this.selectState('loadingModal');
 
   async openModalApproval(action: ScoreApprovalActionEnum): Promise<void> {
     this.updateState({ loadingModal: true });

@@ -23,11 +23,11 @@ export class FaqComponent extends Destroyable implements AfterViewInit {
     super();
   }
 
-  @ViewChild(AccordionDirective) accordionDirective!: AccordionDirective;
+  @ViewChild(AccordionDirective) readonly accordionDirective!: AccordionDirective;
 
-  isMobile$ = this.breakpointObserverService.isMobile$;
-  searchControl = new Control<string>('', { initialFocus: true });
-  search$ = this.searchControl.value$.pipe(debounceTime(400), distinctUntilChanged());
+  readonly isMobile$ = this.breakpointObserverService.isMobile$;
+  readonly searchControl = new Control<string>('', { initialFocus: true });
+  readonly search$ = this.searchControl.value$.pipe(debounceTime(400), distinctUntilChanged());
 
   onItemExpanded($event: string): void {
     this.router.navigate([], { relativeTo: this.activatedRoute, fragment: $event }).then();

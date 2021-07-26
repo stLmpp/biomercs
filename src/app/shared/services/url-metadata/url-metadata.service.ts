@@ -10,7 +10,7 @@ import { useEntityCache } from '@util/operators/entity-cache';
 export class UrlMetadataService {
   constructor(private http: HttpClient, private urlMetadataStore: UrlMetadataStore) {}
 
-  endPoint = 'url-metadata';
+  readonly endPoint = 'url-metadata';
 
   get(url: string): Observable<UrlMetadata> {
     const params = new HttpParams({ url });

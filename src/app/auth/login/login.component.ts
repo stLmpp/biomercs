@@ -36,15 +36,15 @@ export class LoginComponent
     super({ error: null, loading: false, loadingSteam: false });
   }
 
-  loading$ = this.selectState(['loading', 'loadingSteam']);
-  typePassword = 'password';
-  error$ = this.selectState('error');
-
-  form = new ControlGroup<AuthCredentials>({
+  readonly loading$ = this.selectState(['loading', 'loadingSteam']);
+  readonly error$ = this.selectState('error');
+  readonly form = new ControlGroup<AuthCredentials>({
     rememberMe: new Control(true),
     password: new Control('', [Validators.required]),
     username: new Control('', [Validators.required]),
   });
+
+  typePassword = 'password';
 
   loginSteam(): void {
     this.updateState('loadingSteam', true);

@@ -32,7 +32,7 @@ export class AdminCreatePlayerComponent extends LocalState<AdminCreatePlayerComp
     super({ loading: false });
   }
 
-  form = new ControlGroup<PlayerAdd>({
+  readonly form = new ControlGroup<PlayerAdd>({
     aboutMe: new Control<string | undefined>(''),
     idRegion: new Control<number | undefined>(undefined),
     idUser: new Control<number | undefined>(undefined),
@@ -41,12 +41,11 @@ export class AdminCreatePlayerComponent extends LocalState<AdminCreatePlayerComp
     personaName: new Control('', [this.personaNameExistsValidator]),
     steamid: new Control('', [this.steamIdExistsValidator]),
   });
+  readonly loading$ = this.selectState('loading');
+  readonly regions$ = this.regionQuery.all$;
+  readonly trackByRegion = this.regionQuery.trackBy;
 
-  loading$ = this.selectState('loading');
-  regions$ = this.regionQuery.all$;
-  trackByRegion = this.regionQuery.trackBy;
-
-  isInvalid$ = this.form.value$.pipe(map(dto => dto.personaName.length < 3 && !dto.steamid?.length));
+  readonly isInvalid$ = this.form.value$.pipe(map(dto => dto.personaName.length < 3 && !dto.steamid?.length));
 
   onSubmit(): void {
     if (this.form.invalid) {

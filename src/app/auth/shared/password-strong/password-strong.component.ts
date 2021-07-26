@@ -12,7 +12,7 @@ type ValidationFn = (password: string) => boolean;
 export class PasswordStrongComponent {
   private _dark = false;
 
-  private _validations: ValidationFn[] = [
+  private readonly _validations: ValidationFn[] = [
     password => /[A-Z]/.test(password),
     password => /[a-z]/.test(password),
     password => /[a-zA-Z]{2}/.test(password),

@@ -14,7 +14,8 @@ export class FilterDirective extends LocalState<FilterDirectiveState> implements
     super({ bioFilter: null }, { inputs: ['bioFilter'] });
   }
 
-  @ContentChildren(FilterItemDirective, { descendants: true }) filterItemDirectives!: QueryList<FilterItemDirective>;
+  @ContentChildren(FilterItemDirective, { descendants: true })
+  readonly filterItemDirectives!: QueryList<FilterItemDirective>;
 
   @Input() bioFilter: string | null | undefined = null;
 

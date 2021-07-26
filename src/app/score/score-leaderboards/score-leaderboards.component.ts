@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, TrackByFunction } from '@angular/core';
 import { ParamsConfig, ParamsForm } from '@shared/params/params.component';
-import { Control, ControlBuilder, Validators } from '@stlmpp/control';
+import { ControlBuilder, Validators } from '@stlmpp/control';
 import { ScoreService } from '../score.service';
 import {
   combineLatest,
@@ -73,14 +73,8 @@ export class ScoreLeaderboardsComponent extends LocalState<ScoreLeaderboardsStat
     page: +(this.activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.page) ?? 1),
   });
 
-  get pageControl(): Control<number> {
-    return this.form.get('page');
-  }
-
-  get itemsPerPageControl(): Control<number> {
-    return this.form.get('itemsPerPage');
-  }
-
+  readonly pageControl = this.form.get('page');
+  readonly itemsPerPageControl = this.form.get('itemsPerPage');
   readonly tableLoading$ = this.selectState('tableLoading');
   readonly order$ = this.selectState(['orderBy', 'orderByDirection', 'orderByType']);
   readonly loadingInfo$ = this.selectState('loadingInfo');

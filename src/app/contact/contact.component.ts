@@ -32,12 +32,12 @@ export class ContactComponent extends LocalState<ContactComponentState> {
     super({ sending: false });
   }
 
-  mail = 'support@biomercs.net';
-  subject = 'Give me a good subject';
-  body = 'Describe your question(s) or suggestion(s)';
-  mailto = encodeURI(`mailto:${this.mail}?subject=${this.subject}&body=${this.body}`);
+  readonly mail = 'support@biomercs.net';
+  readonly subject = 'Give me a good subject';
+  readonly body = 'Describe your question(s) or suggestion(s)';
+  readonly mailto = encodeURI(`mailto:${this.mail}?subject=${this.subject}&body=${this.body}`);
 
-  form = new ControlGroup<ContactSendMail>({
+  readonly form = new ControlGroup<ContactSendMail>({
     body: new Control('', [
       Validators.required,
       Validators.maxLength(2000),
@@ -54,9 +54,9 @@ export class ContactComponent extends LocalState<ContactComponentState> {
     }),
   });
 
-  subjectControlValue$ = this.form.get('subject').value$;
-  bodyControlValue$ = this.form.get('body').value$;
-  sending$ = this.selectState('sending');
+  readonly subjectControlValue$ = this.form.get('subject').value$;
+  readonly bodyControlValue$ = this.form.get('body').value$;
+  readonly sending$ = this.selectState('sending');
 
   onSubmit(): void {
     if (this.form.invalid) {

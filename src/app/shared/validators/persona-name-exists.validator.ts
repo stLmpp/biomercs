@@ -9,8 +9,8 @@ export class PersonaNameExistsValidator extends ControlValidator<string, boolean
     super();
   }
 
-  name = 'personaNameExists';
-  override async = true;
+  readonly name = 'personaNameExists';
+  override readonly async = true;
 
   validate({ value }: Control<string>): Observable<boolean | null> | boolean | null {
     if (!value) {

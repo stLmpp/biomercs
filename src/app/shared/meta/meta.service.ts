@@ -12,7 +12,7 @@ export class MetaService extends Destroyable {
     super();
   }
 
-  keyValueDiffer = this.keyValueDiffers.find(new Map<string, string>()).create<string, string>();
+  readonly keyValueDiffer = this.keyValueDiffers.find(new Map<string, string>()).create<string, string>();
 
   init(): void {
     this.routerQuery

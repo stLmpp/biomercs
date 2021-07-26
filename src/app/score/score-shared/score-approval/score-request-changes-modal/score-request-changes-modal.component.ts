@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { Score } from '@model/score';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
-import { ControlArray, ControlBuilder, Validators } from '@stlmpp/control';
+import { ControlBuilder, Validators } from '@stlmpp/control';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import { ScoreApprovalPagination } from '@model/score-approval';
 import { finalize, Subject, switchMap, tap, throttleTime } from 'rxjs';
@@ -69,12 +69,8 @@ export class ScoreRequestChangesModalComponent
   readonly form = this.controlBuilder.group<ScoreRequestChangesModalForm>({
     changes: this.controlBuilder.array<string>([['', [Validators.required]]]),
   });
-
   readonly trackByControl = trackByControl;
-
-  get changesControl(): ControlArray<string> {
-    return this.form.get('changes');
-  }
+  readonly changesControl = this.form.get('changes');
 
   addChange(focus = false): void {
     this.changesControl.push(this.controlBuilder.control<string>('', [Validators.required]));

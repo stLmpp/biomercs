@@ -11,8 +11,7 @@ import { HeaderQuery } from '../header/header.query';
 export class AdminComponent {
   constructor(private headerQuery: HeaderQuery) {}
 
-  adminApprovalCount$ = this.headerQuery.adminApprovalCount$;
-
+  readonly adminApprovalCount$ = this.headerQuery.adminApprovalCount$;
   readonly mdiEmailSyncOutline = mdiEmailSyncOutline;
   readonly mdiAccountLock = mdiAccountLock;
 }

@@ -36,9 +36,9 @@ export class AutocompleteComponent extends Autocomplete implements AfterContentI
     super();
   }
 
-  @ViewChild(TemplateRef) templateRef!: TemplateRef<any>;
+  @ViewChild(TemplateRef) readonly templateRef!: TemplateRef<any>;
   @ContentChildren(AutocompleteOptionComponent, { descendants: true })
-  autocompleteOptions!: QueryList<AutocompleteOptionComponent>;
+  readonly autocompleteOptions!: QueryList<AutocompleteOptionComponent>;
 
   overlayRef?: OverlayRef;
   focusManager?: FocusKeyManager<AutocompleteOptionComponent>;

@@ -1,7 +1,6 @@
 import { APP_INITIALIZER, LOCALE_ID, ModuleWithProviders, NgModule, Provider } from '@angular/core';
 import { NAVIGATOR, WINDOW, WINDOW_PROVIDERS } from './window.service';
 import { ApiInterceptor } from './api.interceptor';
-import { LoadingInterceptor } from './loading/loading.interceptor';
 import { DateInterceptor } from './date.interceptor';
 import { FormatErrorInterceptor } from './error/format-error.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -54,7 +53,6 @@ export class CoreModule {
           AuthInterceptor,
           AuthErrorInterceptor,
           ApiInterceptor,
-          LoadingInterceptor,
           DateInterceptor,
           HandleErrorDevInterceptor,
           RetryInterceptor,

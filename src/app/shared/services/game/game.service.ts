@@ -10,7 +10,7 @@ import { HttpParams } from '@util/http-params';
 export class GameService {
   constructor(private http: HttpClient, private gameStore: GameStore) {}
 
-  endPoint = 'game';
+  readonly endPoint = 'game';
 
   findByIdPlatform(idPlatform: number): Observable<Game[]> {
     return this.http.get<Game[]>(`${this.endPoint}/platform/${idPlatform}`).pipe(

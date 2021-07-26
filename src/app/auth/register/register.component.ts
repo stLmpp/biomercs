@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { debounceTime, finalize, Observable, tap } from 'rxjs';
 import { AuthService } from '../auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Control, ControlBuilder, Validators } from '@stlmpp/control';
+import { ControlBuilder, Validators } from '@stlmpp/control';
 import { catchAndThrow } from '@util/operators/catch-and-throw';
 import { EmailExistsValidator } from '@shared/validators/email-exists.validator';
 import { UsernameExistsValidator } from '@shared/validators/username-exists.validator';
@@ -40,30 +40,23 @@ export class RegisterComponent extends LocalState<{
 
   private _idUser = 0;
 
-  loading$ = this.selectState(['loading', 'loadingSteam']);
-
-  hidePassword = true;
-  hideConfirmPassword = true;
-  emailSent$ = this.selectState('emailSent');
-  errorConfirmationCode$ = this.selectState('errorConfirmationCode');
-
-  form = this.controlBuilder.group<AuthRegisterForm>({
+  readonly loading$ = this.selectState(['loading', 'loadingSteam']);
+  readonly emailSent$ = this.selectState('emailSent');
+  readonly errorConfirmationCode$ = this.selectState('errorConfirmationCode');
+  readonly form = this.controlBuilder.group<AuthRegisterForm>({
     username: ['', [Validators.required, Validators.minLength(3), this.usernameExistsValidator]],
     password: ['', [Validators.required, Validators.minLength(6), Validators.siblingEquals('confirmPassword')]],
     email: ['', [Validators.required, Validators.email, this.emailExistsValidator]],
     confirmPassword: ['', [Validators.required, Validators.minLength(6), Validators.siblingEquals('password')]],
     code: [null],
   });
+  readonly password$ = this.form.get('password').value$.pipe(debounceTime(300));
 
-  password$ = this.form.get('password').value$.pipe(debounceTime(300));
+  readonly usernameControl = this.form.get('username');
+  readonly emailControl = this.form.get('email');
 
-  get usernameControl(): Control<string> {
-    return this.form.get('username');
-  }
-
-  get emailControl(): Control<string> {
-    return this.form.get('email');
-  }
+  hidePassword = true;
+  hideConfirmPassword = true;
 
   registerSteam(): void {
     this.updateState('loadingSteam', true);

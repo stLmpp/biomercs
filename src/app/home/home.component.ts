@@ -18,11 +18,10 @@ export class HomeComponent {
     private breakpointObserverService: BreakpointObserverService
   ) {}
 
-  isLogged$ = this.authQuery.isLogged$;
-  isAdmin$ = this.authQuery.isAdmin$;
-  adminApprovalCount$ = this.headerQuery.adminApprovalCount$;
-  playerRequestChangesCount$ = this.headerQuery.playerRequestChangesCount$;
-
-  idUser$ = this.authQuery.user$.pipe(filterNil(), pluck('id'));
-  isNotMobile$ = this.breakpointObserverService.isMobile$.pipe(map(isMobile => !isMobile));
+  readonly isLogged$ = this.authQuery.isLogged$;
+  readonly isAdmin$ = this.authQuery.isAdmin$;
+  readonly adminApprovalCount$ = this.headerQuery.adminApprovalCount$;
+  readonly playerRequestChangesCount$ = this.headerQuery.playerRequestChangesCount$;
+  readonly idUser$ = this.authQuery.user$.pipe(filterNil(), pluck('id'));
+  readonly isNotMobile$ = this.breakpointObserverService.isMobile$.pipe(map(isMobile => !isMobile));
 }

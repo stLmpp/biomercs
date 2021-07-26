@@ -81,47 +81,44 @@ export class PlayerProfileComponent extends LocalState<PlayerProfileComponentSta
     });
   }
 
-  private _idPlayer$ = this.routerQuery.selectParams(RouteParamEnum.idPlayer).pipe(
+  private readonly _idPlayer$ = this.routerQuery.selectParams(RouteParamEnum.idPlayer).pipe(
     filter(idPlayer => !!idPlayer),
     map(Number)
   );
 
-  saving$ = this.selectState('saving');
-  player$ = this._idPlayer$.pipe(
+  readonly saving$ = this.selectState('saving');
+  readonly player$ = this._idPlayer$.pipe(
     switchMap(idPlayer => this.playerQuery.selectEntity(idPlayer)),
     filterNil()
   );
-  isSameAsLogged$ = this._idPlayer$.pipe(switchMap(idPlayer => this.authQuery.selectIsSameAsLogged(idPlayer)));
-  loadingRegion$ = this.selectState('loadingRegion');
-  scoreGroupedByStatus$ = this.selectState('scoreGroupedByStatus');
-  loadingLinkSteam$ = this.selectState('loadingLinkSteam');
-  editMode$ = this.selectState('editMode');
-  canSave$ = combineLatest([this.selectState(['update', 'newPersonaName']), this.player$]).pipe(
+  readonly isSameAsLogged$ = this._idPlayer$.pipe(switchMap(idPlayer => this.authQuery.selectIsSameAsLogged(idPlayer)));
+  readonly loadingRegion$ = this.selectState('loadingRegion');
+  readonly scoreGroupedByStatus$ = this.selectState('scoreGroupedByStatus');
+  readonly loadingLinkSteam$ = this.selectState('loadingLinkSteam');
+  readonly editMode$ = this.selectState('editMode');
+  readonly canSave$ = combineLatest([this.selectState(['update', 'newPersonaName']), this.player$]).pipe(
     debounceTime(100),
     map(
       ([{ update, newPersonaName }, player]) =>
         !isObjectEmpty(update) || this._validatePersonaName(player, newPersonaName)
     )
   );
-  state$: Observable<{ editMode: boolean; isSameAsLogged: boolean; saving: boolean; canSave: boolean }> = combineLatest(
-    {
+  readonly state$: Observable<{ editMode: boolean; isSameAsLogged: boolean; saving: boolean; canSave: boolean }> =
+    combineLatest({
       editMode: this.editMode$,
       isSameAsLogged: this.isSameAsLogged$,
       saving: this.saving$,
       canSave: this.canSave$,
-    }
-  );
+    });
 
-  colDefs: ColDef<ScoreScoreGroupedByStatusScoreVW>[] = [
+  readonly colDefs: ColDef<ScoreScoreGroupedByStatusScoreVW>[] = [
     { property: 'id', component: ScoreOpenInfoCellComponent, width: '40px' },
     ...getScoreDefaultColDefs<ScoreScoreGroupedByStatusScoreVW>(this.authDateFormatPipe),
   ];
 
-  todayMinusSevenDate = subDays(new Date(), 7);
-
-  mdiSteam = mdiSteam;
-
-  trackByScoreGroupByStatus = trackByScoreGroupedByStatus;
+  readonly todayMinusSevenDate = subDays(new Date(), 7);
+  readonly mdiSteam = mdiSteam;
+  readonly trackByScoreGroupByStatus = trackByScoreGroupedByStatus;
 
   get idPlayer(): number {
     // idPlayer is required to access this component

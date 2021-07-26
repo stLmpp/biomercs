@@ -32,9 +32,9 @@ export class ScoreApprovalActionsCellComponent
   colDef!: ColDefInternal<Score, keyof Score>;
   item!: Score;
   metadata!: ScoreApprovalComponentState;
-  scoreApprovalActionEnum = ScoreApprovalActionEnum;
+  readonly scoreApprovalActionEnum = ScoreApprovalActionEnum;
 
-  state$ = this.selectState();
+  readonly state$ = this.selectState();
 
   async openModalApproval(action: ScoreApprovalActionEnum): Promise<void> {
     this.updateState({ loadingApprovalModal: true });

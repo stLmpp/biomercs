@@ -23,8 +23,8 @@ export class AdminMailQueueComponent extends LocalState<AdminMailQueueComponentS
     super({ restartingQueue: false, statusQueue: activatedRoute.snapshot.data[RouteDataEnum.mailQueue] });
   }
 
-  restartingQueue$ = this.selectState('restartingQueue');
-  statusQueue$ = this.selectState('statusQueue');
+  readonly restartingQueue$ = this.selectState('restartingQueue');
+  readonly statusQueue$ = this.selectState('statusQueue');
 
   restartQueue(): void {
     this.updateState({ restartingQueue: true });

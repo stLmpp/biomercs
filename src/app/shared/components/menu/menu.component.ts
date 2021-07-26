@@ -26,9 +26,9 @@ import { Menu } from './menu';
   providers: [{ provide: Menu, useExisting: forwardRef(() => MenuComponent) }],
 })
 export class MenuComponent extends Menu {
-  @ViewChild(TemplateRef) templateRef!: TemplateRef<any>;
+  @ViewChild(TemplateRef) readonly templateRef!: TemplateRef<any>;
 
-  @ContentChildren(MenuItem, { descendants: true }) menuItems!: QueryList<MenuItem>;
+  @ContentChildren(MenuItem, { descendants: true }) readonly menuItems!: QueryList<MenuItem>;
 
   overlayRef?: OverlayRef;
   trigger?: 'hover' | 'click';

@@ -49,11 +49,11 @@ export class ChangePasswordConfirmComponent extends LocalState<AuthChangePasswor
     super(initialState);
   }
 
-  state$ = this.selectState(['hideOldPassword', 'hideConfirmPassword', 'hidePassword']);
-  error$ = this.selectState('error');
-  confirming$ = this.selectState('confirming');
+  readonly state$ = this.selectState(['hideOldPassword', 'hideConfirmPassword', 'hidePassword']);
+  readonly error$ = this.selectState('error');
+  readonly confirming$ = this.selectState('confirming');
 
-  form = new ControlGroup<AuthChangePasswordForm>({
+  readonly form = new ControlGroup<AuthChangePasswordForm>({
     code: new Control(null, [Validators.required]),
     oldPassword: new Control('', [Validators.required, Validators.siblingNotEquals('confirmNewPassword')]),
     newPassword: new Control('', [
@@ -69,7 +69,7 @@ export class ChangePasswordConfirmComponent extends LocalState<AuthChangePasswor
     ]),
   });
 
-  password$ = this.form.get('newPassword').value$.pipe(debounceTime(250));
+  readonly password$ = this.form.get('newPassword').value$.pipe(debounceTime(250));
 
   toggleHideOldPassword(): void {
     this.updateState('hideOldPassword', hideOldPassword => !hideOldPassword);

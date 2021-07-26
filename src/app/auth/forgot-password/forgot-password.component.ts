@@ -31,15 +31,15 @@ export class ForgotPasswordComponent extends LocalState<ForgotPasswordComponentS
     super({ loading: false, emailSent: false, confirmCodeError: null });
   }
 
-  emailForm = new ControlGroup<ForgotPasswordForm>({
+  readonly emailForm = new ControlGroup<ForgotPasswordForm>({
     email: new Control('', [Validators.required, Validators.email]),
     password: new Control(''),
     code: new Control(null),
   });
 
-  state$ = this.selectState(['loading', 'emailSent']);
-  confirmCodeError$ = this.selectState('confirmCodeError');
-  password$ = this.emailForm.get('password').value$.pipe(debounceTime(300));
+  readonly state$ = this.selectState(['loading', 'emailSent']);
+  readonly confirmCodeError$ = this.selectState('confirmCodeError');
+  readonly password$ = this.emailForm.get('password').value$.pipe(debounceTime(300));
 
   submit(): void {
     this.updateState('loading', true);

@@ -33,7 +33,7 @@ export class ListItemComponent implements OnInit, FocusableOption {
 
   private _disabled = false;
 
-  @ViewChild('control') controlInput?: ElementRef<HTMLInputElement>;
+  @ViewChild('control') readonly controlInput?: ElementRef<HTMLInputElement>;
 
   @Input() value: any;
 

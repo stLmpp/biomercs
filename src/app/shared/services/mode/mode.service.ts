@@ -10,7 +10,7 @@ import { HttpParams } from '@util/http-params';
 export class ModeService {
   constructor(private http: HttpClient, private modeStore: ModeStore) {}
 
-  endPoint = 'mode';
+  readonly endPoint = 'mode';
 
   findByIdPlatformGameMiniGame(idPlatform: number, idGame: number, idMiniGame: number): Observable<Mode[]> {
     return this.http.get<Mode[]>(`${this.endPoint}/platform/${idPlatform}/game/${idGame}/mini-game/${idMiniGame}`).pipe(

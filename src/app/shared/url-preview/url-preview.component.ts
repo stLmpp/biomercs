@@ -21,9 +21,9 @@ export class UrlPreviewComponent extends LocalState<{ url: string | null; loadin
   @Input()
   url: string | null = null;
 
-  loading$ = this.selectState('loading');
+  readonly loading$ = this.selectState('loading');
 
-  urlMetadata$ = this.selectState('url').pipe(
+  readonly urlMetadata$ = this.selectState('url').pipe(
     debounceTime(300),
     filterNil(),
     switchMap(url => {

@@ -36,10 +36,10 @@ export class AuthService {
   ) {}
 
   private _autoLoginAttempts = 0;
-  private _steamidAuthMap = new Map<string, [string, number?]>();
-  private _socketConnection = this.socketIOService.createConnection('auth');
+  private readonly _steamidAuthMap = new Map<string, [string, number?]>();
+  private readonly _socketConnection = this.socketIOService.createConnection('auth');
 
-  endPoint = 'auth';
+  readonly endPoint = 'auth';
 
   private _getSteamLoginUrl(uuid: string): Observable<string> {
     const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');

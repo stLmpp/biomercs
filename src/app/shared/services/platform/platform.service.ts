@@ -9,7 +9,7 @@ import { Platform } from '@model/platform';
 export class PlatformService {
   constructor(private http: HttpClient, private platformStore: PlatformStore) {}
 
-  endPoint = 'platform';
+  readonly endPoint = 'platform';
 
   findAll(): Observable<Platform[]> {
     return this.http.get<Platform[]>(this.endPoint).pipe(

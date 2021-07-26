@@ -58,7 +58,6 @@ export class PlayerChangeRequestsModalComponent extends LocalState<PlayerChangeR
   readonly loading$ = this.selectState('loading');
   readonly maskEnum = MaskEnum;
   readonly maskTimePattern = MaskEnumPatterns[MaskEnum.time]!;
-
   readonly form = new ControlGroup<ScoreChangeRequestsFulfilForm>({
     score: new Control(this.data.score.score, [Validators.required]),
     idsScoreChangeRequests: new ControlArray<IdChecked>(
@@ -85,10 +84,7 @@ export class PlayerChangeRequestsModalComponent extends LocalState<PlayerChangeR
     time: new Control(this.data.score.time, [Validators.required]),
     maxCombo: new Control(this.data.score.maxCombo, [Validators.required, Validators.min(0), Validators.max(400)]),
   });
-
-  get scorePlayersControl(): ControlArray<ScorePlayerUpdateDto> {
-    return this.form.get('scorePlayers');
-  }
+  readonly scorePlayersControl = this.form.get('scorePlayers');
 
   readonly trackById = trackById;
 

@@ -9,7 +9,7 @@ import { CardMenuDirective } from '@shared/components/card/card-menu/card-menu.d
 export class CardMenusDirective implements AfterContentInit {
   private _bioCardMenuFocusOnFirstItem = false;
 
-  @ContentChildren(CardMenuDirective) cardMenuDirectives!: QueryList<CardMenuDirective>;
+  @ContentChildren(CardMenuDirective) readonly cardMenuDirectives!: QueryList<CardMenuDirective>;
 
   @Input()
   set bioCardMenuFocusOnFirstItem(bioCardMenuFocusOnFirstItem: boolean) {

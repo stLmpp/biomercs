@@ -10,7 +10,7 @@ import { HttpParams } from '@util/http-params';
 export class CharacterService {
   constructor(private http: HttpClient, private characterStore: CharacterStore) {}
 
-  endPoint = 'character';
+  readonly endPoint = 'character';
 
   findByIdPlatformGameMiniGameMode(
     idPlatform: number,

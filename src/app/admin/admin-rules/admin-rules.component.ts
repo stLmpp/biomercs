@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostListener } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Rule, RuleUpsert } from '@model/rule';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
@@ -55,7 +55,6 @@ export class AdminRulesComponent extends LocalState<AdminRulesComponentState> im
 
   readonly trackByControl = trackByControl;
 
-  @HostListener('window:unload')
   private _createForm(): ControlGroup<RulesForm> {
     return this.controlBuilder.group<RulesForm>({
       rules: this.controlBuilder.array<RuleUpsertForm>(this._rules.map(rule => this._createControlGroup(rule))),

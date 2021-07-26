@@ -8,7 +8,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { Control, ControlBuilder } from '@stlmpp/control';
+import { ControlBuilder } from '@stlmpp/control';
 import { debounceTime, filter, finalize, Observable, pluck, switchMap, takeUntil } from 'rxjs';
 import { CharacterWithCharacterCostumes } from '@model/character';
 import { CharacterCostume } from '@model/character-costume';
@@ -60,16 +60,9 @@ export class ScoreAddPlayerComponent extends LocalState<ScoreAddPlayerComponentS
 
   readonly isAdmin$ = this.authQuery.isAdmin$;
 
-  get idPlayerControl(): Control<number | null> {
-    return this.form.get('idPlayer');
-  }
-
-  get evidenceControl(): Control<string> {
-    return this.form.get('evidence');
-  }
-
   readonly form = generateScorePlayerControlGroup(this.controlBuilder);
-
+  readonly idPlayerControl = this.form.get('idPlayer');
+  readonly evidenceControl = this.form.get('evidence');
   readonly idPlayer$ = this.idPlayerControl.value$;
   readonly evidence$ = this.evidenceControl.value$.pipe(debounceTime(400));
   readonly players$: Observable<Player[]> = this.form.get('personaName').value$.pipe(

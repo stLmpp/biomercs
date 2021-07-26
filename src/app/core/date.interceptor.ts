@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpEvent, HttpEventType, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
-import { isArray, isObject } from 'st-utils';
-
-// eslint-disable-next-line max-len
-export const isoDateReg =
-  /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/;
+import { isArray, isObject, isString } from 'st-utils';
 
 @Injectable()
 export class DateInterceptor implements HttpInterceptor {
+  private readonly _dateRegexp =
+    /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/;
+
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
       map(resp => {
@@ -29,35 +28,30 @@ export class DateInterceptor implements HttpInterceptor {
     return value;
   }
 
-  handleObject(value: Record<any, any>): any {
-    return Object.keys(value).reduce((newObject, key) => {
-      let property = (value as any)[key];
-      if (isArray(property)) {
-        property = this.handleArray(property);
-      } else if (isObject(property)) {
-        property = this.handleObject(property);
-      } else if (this.isIsoDate(key, property)) {
-        property = new Date(property);
+  handleObject(object: Record<any, any>): any {
+    return Object.entries(object).reduce((newObject, [key, value]) => {
+      if (isArray(value)) {
+        value = this.handleArray(value);
+      } else if (isObject(value)) {
+        value = this.handleObject(value);
+      } else if (this.isIsoDate(key, value)) {
+        value = new Date(value);
       }
-      return {
-        ...newObject,
-        [key]: property,
-      };
+      return { ...newObject, [key]: value };
     }, {});
   }
 
   handleArray(value: any[]): any {
-    return value.reduce((newArray, item) => {
+    return value.map(item => {
       if (isArray(item)) {
-        item = this.handleArray(item);
+        return this.handleArray(item);
       } else if (isObject(item)) {
-        item = this.handleObject(item);
+        return this.handleObject(item);
       }
-      return [...newArray, item];
-    }, []);
+    });
   }
 
   isIsoDate(key: string, value: any): boolean {
-    return key && value && isoDateReg.test(value);
+    return key && value && isString(value) && this._dateRegexp.test(value);
   }
 }

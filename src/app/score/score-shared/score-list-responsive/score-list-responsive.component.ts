@@ -49,7 +49,7 @@ export class ScoreListResponsiveComponent<T extends Score = Score> {
   @Output() readonly notifyChange = new EventEmitter<TableCellNotifyChange<any, T>>();
   @Output() readonly scoreClicked = new EventEmitter<T>();
 
-  isSmall$ = this.breakpointObserverService.observe([MediaQueryEnum.md]).pipe(map(isMd => !isMd));
+  readonly isSmall$ = this.breakpointObserverService.observe([MediaQueryEnum.md]).pipe(map(isMd => !isMd));
 
   static ngAcceptInputType_collapsable: BooleanInput;
 }

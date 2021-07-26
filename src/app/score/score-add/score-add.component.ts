@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { ControlArray, ControlBuilder, ControlGroup, Validators } from '@stlmpp/control';
+import { ControlBuilder, ControlGroup, Validators } from '@stlmpp/control';
 import { AuthQuery } from '../../auth/auth.query';
 import { ParamsComponent, ParamsConfig } from '@shared/params/params.component';
 import { CURRENCY_MASK_CONFIG } from '@shared/currency-mask/currency-mask-config.token';
@@ -47,8 +47,8 @@ export class ScoreAddComponent extends LocalState<ScoreAddState> implements OnIn
     super({ characterLoading: false, submitting: false, submitModalLoading: false });
   }
 
-  @ViewChildren(ScoreAddPlayerComponent) scoreAddPlayerComponents!: QueryList<ScoreAddPlayerComponent>;
-  @ViewChild(ParamsComponent) paramsComponent!: ParamsComponent;
+  @ViewChildren(ScoreAddPlayerComponent) readonly scoreAddPlayerComponents!: QueryList<ScoreAddPlayerComponent>;
+  @ViewChild(ParamsComponent) readonly paramsComponent!: ParamsComponent;
 
   readonly maskEnum = MaskEnum;
   readonly maskTimePattern = MaskEnumPatterns[MaskEnum.time]!;
@@ -128,9 +128,7 @@ export class ScoreAddComponent extends LocalState<ScoreAddState> implements OnIn
 
   readonly trackByScorePlayerControl = trackByControl;
 
-  get scorePlayersControl(): ControlArray<ScorePlayerAddForm> {
-    return this.form.get('scorePlayers');
-  }
+  readonly scorePlayersControl = this.form.get('scorePlayers');
 
   private _getCurrentMode(): Mode | undefined {
     return this.modeQuery.getEntity(this.form.get('idMode').value ?? -1);

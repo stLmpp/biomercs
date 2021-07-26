@@ -9,7 +9,7 @@ import { useCache } from '@stlmpp/store';
 export class RuleService {
   constructor(private http: HttpClient, private ruleStore: RuleStore) {}
 
-  endPoint = 'rule';
+  readonly endPoint = 'rule';
 
   add(dto: RuleAdd): Observable<Rule> {
     return this.http.post<Rule>(this.endPoint, dto).pipe(

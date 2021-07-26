@@ -192,25 +192,12 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
     idStage: this._getParamOrNull(RouteParamEnum.idStage),
     idCharacterCostume: this._getParamOrNull(RouteParamEnum.idCharacterCostume),
   });
-
-  get idPlatformControl(): Control<Nullable<number>> {
-    return this.form.get('idPlatform');
-  }
-  get idGameControl(): Control<Nullable<number>> {
-    return this.form.get('idGame');
-  }
-  get idMiniGameControl(): Control<Nullable<number>> {
-    return this.form.get('idMiniGame');
-  }
-  get idModeControl(): Control<Nullable<number>> {
-    return this.form.get('idMode');
-  }
-  get idStageControl(): Control<Nullable<number>> {
-    return this.form.get('idStage');
-  }
-  get idCharacterCostumeControl(): Control<Nullable<number>> {
-    return this.form.get('idCharacterCostume');
-  }
+  readonly idPlatformControl = this.form.get('idPlatform');
+  readonly idGameControl = this.form.get('idGame');
+  readonly idMiniGameControl = this.form.get('idMiniGame');
+  readonly idModeControl = this.form.get('idMode');
+  readonly idStageControl = this.form.get('idStage');
+  readonly idCharacterCostumeControl = this.form.get('idCharacterCostume');
 
   readonly idPlatform$ = this.idPlatformControl.value$.pipe(distinctUntilChanged());
   readonly idGame$ = this.idGameControl.value$.pipe(

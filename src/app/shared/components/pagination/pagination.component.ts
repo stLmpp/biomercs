@@ -50,7 +50,7 @@ export class PaginationComponent implements OnChanges, PaginationMeta {
   @Output() readonly itemsPerPageChange = new EventEmitter<number>();
   @Output() readonly currentPageChange = new EventEmitter<number>();
 
-  trackByNumber = trackByFactory<number>();
+  readonly trackByNumber = trackByFactory<number>();
 
   private _setQueryParams(): void {
     if (!this._setQueryParamsOnChange) {

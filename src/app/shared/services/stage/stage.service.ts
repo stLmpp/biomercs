@@ -10,7 +10,7 @@ import { HttpParams } from '@util/http-params';
 export class StageService {
   constructor(private http: HttpClient, private stageStore: StageStore) {}
 
-  endPoint = 'stage';
+  readonly endPoint = 'stage';
 
   findByIdPlatformGameMiniGameMode(
     idPlatform: number,

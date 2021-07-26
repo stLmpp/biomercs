@@ -29,9 +29,9 @@ export class LoginConfirmCodeModalComponent extends LocalState<{ loading: boolea
     super({ loading: false, error: null });
   }
 
-  form = this.controlBuilder.group<LoginConfirmationForm>({ code: [null, [Validators.required]] });
-  loading$ = this.selectState('loading');
-  error$ = this.selectState('error');
+  readonly form = this.controlBuilder.group<LoginConfirmationForm>({ code: [null, [Validators.required]] });
+  readonly loading$ = this.selectState('loading');
+  readonly error$ = this.selectState('error');
 
   submit(): void {
     if (this.form.invalid) {

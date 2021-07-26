@@ -12,7 +12,7 @@ import { httpCache } from '@shared/operators/http-cache';
 export class ScoreApprovalMotiveService {
   constructor(private http: HttpClient, private scoreApprovalMotiveStore: ScoreApprovalMotiveStore) {}
 
-  endPoint = 'score-approval-motive';
+  readonly endPoint = 'score-approval-motive';
 
   getByAction(action: ScoreApprovalActionEnum): Observable<ScoreApprovalMotive[]> {
     const params = new HttpParams({ action });

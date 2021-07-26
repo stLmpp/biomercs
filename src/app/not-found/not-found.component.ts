@@ -14,7 +14,7 @@ import { PossiblePath } from './not-found.resolver';
 export class NotFoundComponent {
   constructor(private activatedRoute: ActivatedRoute) {}
 
-  possiblePaths$: Observable<PossiblePath[]> = this.activatedRoute.data.pipe(
+  readonly possiblePaths$: Observable<PossiblePath[]> = this.activatedRoute.data.pipe(
     pluck(RouteDataEnum.possiblePaths),
     map(possiblePaths => possiblePaths ?? []),
     shareReplay()

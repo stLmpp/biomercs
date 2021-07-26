@@ -8,8 +8,8 @@ export type LazyFn = () => Promise<Type<any>>;
 export class DynamicLoaderService {
   constructor(private compiler: Compiler, @Inject(NAVIGATOR) private navigator: Navigator) {}
 
-  private _loaded = new Set<Type<any>>();
-  private _loading = new Map<Type<any>, boolean>();
+  private readonly _loaded = new Set<Type<any>>();
+  private readonly _loading = new Map<Type<any>, boolean>();
 
   private _isSlowConnection(): boolean {
     const connection: { effectiveType: string; saveData: boolean } | undefined = (this.navigator as any).connection;

@@ -6,7 +6,7 @@ import { environment } from '@environment/environment';
 export class SocketIOConnection {
   constructor(private connection: Socket) {}
 
-  private _events = new Map<string, Subject<any>>();
+  private readonly _events = new Map<string, Subject<any>>();
 
   private _createEventSubject<T>(event: string): Subject<T> {
     if (this._events.has(event)) {
@@ -51,7 +51,7 @@ export class SocketIOConnection {
 
 @Injectable({ providedIn: 'root' })
 export class SocketIOService {
-  private _manager = new Manager(environment.socketIOHost, {
+  private readonly _manager = new Manager(environment.socketIOHost, {
     path: environment.socketIOPath,
     transports: ['websocket', 'polling'],
   });

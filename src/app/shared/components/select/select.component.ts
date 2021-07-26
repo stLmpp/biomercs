@@ -58,9 +58,9 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
   private _overlayRef?: OverlayRef;
   private _focusManager?: FocusKeyManager<OptionComponent>;
 
-  @ViewChild('panel', { read: TemplateRef }) panelTemplateRef!: TemplateRef<any>;
-  @ContentChildren(OptionComponent, { descendants: true }) options!: QueryList<OptionComponent>;
-  @ContentChildren(OptgroupComponent, { descendants: true }) optgroups!: QueryList<OptgroupComponent>;
+  @ViewChild('panel', { read: TemplateRef }) readonly panelTemplateRef!: TemplateRef<any>;
+  @ContentChildren(OptionComponent, { descendants: true }) readonly options!: QueryList<OptionComponent>;
+  @ContentChildren(OptgroupComponent, { descendants: true }) readonly optgroups!: QueryList<OptgroupComponent>;
 
   @Input() compareWith: (valueA: any, valueB: any) => boolean = Object.is;
   @Input() placeholder?: string;

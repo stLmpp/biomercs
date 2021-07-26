@@ -20,7 +20,7 @@ export class AbstractPlayerService {
     protected dialogService: DialogService
   ) {}
 
-  endPoint = 'player';
+  readonly endPoint = 'player';
 
   getById(idPlayer: number): Observable<Player> {
     return this.http.get<Player>(`${this.endPoint}/${idPlayer}`).pipe(

@@ -21,7 +21,7 @@ export class ChangePasswordComponent extends LocalState<ChangePasswordComponentS
     super({ sendingEmail: false, sentEmail: false });
   }
 
-  state$ = this.selectState();
+  readonly state$ = this.selectState();
 
   sendEmail(): void {
     this.updateState({ sendingEmail: true });

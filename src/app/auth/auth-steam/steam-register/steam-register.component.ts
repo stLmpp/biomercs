@@ -47,14 +47,14 @@ export class SteamRegisterComponent
     return this.authService.getSteamToken(this.steamid)!;
   }
 
-  form = this.controlBuilder.group<SteamRegisterForm>({
+  readonly form = this.controlBuilder.group<SteamRegisterForm>({
     code: [null],
     email: ['', [Validators.required, Validators.email]],
   });
 
-  state$ = this.selectState(['emailSent', 'loading']);
+  readonly state$ = this.selectState(['emailSent', 'loading']);
 
-  confirmCodeError$ = this.selectState('confirmCodeError');
+  readonly confirmCodeError$ = this.selectState('confirmCodeError');
 
   idUser = 0;
 

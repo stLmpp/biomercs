@@ -37,8 +37,8 @@ export class CurrencyMaskDirective extends _CurrencyMaskDirective implements Con
     );
   }
 
-  onChange$ = new Subject<number>();
-  onTouched$ = new Subject<void>();
+  readonly onChange$ = new Subject<number>();
+  readonly onTouched$ = new Subject<void>();
 
   setDisabled(disabled: boolean): void {
     this.setDisabledState(disabled);

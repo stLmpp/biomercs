@@ -38,16 +38,17 @@ let uniqueId = 0;
 export class FormFieldComponent implements AfterContentInit, OnChanges, OnDestroy {
   constructor(private changeDetectorRef: ChangeDetectorRef) {}
 
-  private _destroy$ = new Subject<void>();
+  private readonly _destroy$ = new Subject<void>();
 
-  @ContentChild(LabelDirective) labelDirective?: LabelDirective;
-  @ContentChild(InputDirective) inputDirective?: InputDirective;
-  @ContentChild(ControlDirective) controlDirective?: ControlDirective;
-  @ContentChild(ModelDirective) modelDirective?: ModelDirective;
-  @ContentChildren(FormFieldErrorComponent, { descendants: true }) errorComponents!: QueryList<FormFieldErrorComponent>;
-  @ContentChild(PrefixDirective) prefixDirective?: PrefixDirective;
-  @ContentChild(SuffixDirective) suffixDirective?: SuffixDirective;
-  @ContentChild(SelectComponent) selectComponent?: SelectComponent;
+  @ContentChild(LabelDirective) readonly labelDirective?: LabelDirective;
+  @ContentChild(InputDirective) readonly inputDirective?: InputDirective;
+  @ContentChild(ControlDirective) readonly controlDirective?: ControlDirective;
+  @ContentChild(ModelDirective) readonly modelDirective?: ModelDirective;
+  @ContentChildren(FormFieldErrorComponent, { descendants: true })
+  readonly errorComponents!: QueryList<FormFieldErrorComponent>;
+  @ContentChild(PrefixDirective) readonly prefixDirective?: PrefixDirective;
+  @ContentChild(SuffixDirective) readonly suffixDirective?: SuffixDirective;
+  @ContentChild(SelectComponent) readonly selectComponent?: SelectComponent;
 
   @Input() label?: string;
   @Input() id: string | number = uniqueId++;

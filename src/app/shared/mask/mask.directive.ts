@@ -50,8 +50,8 @@ export class MaskDirective extends _MaskDirective implements ControlValue<string
     this.maskExpression = mask;
   }
 
-  onChange$ = new Subject<string>();
-  onTouched$ = new Subject<void>();
+  readonly onChange$ = new Subject<string>();
+  readonly onTouched$ = new Subject<void>();
 
   setDisabled(disabled: boolean): void {
     super.setDisabledState(disabled);

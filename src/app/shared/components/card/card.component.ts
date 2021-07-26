@@ -40,11 +40,11 @@ export class CardComponent extends Destroyable implements AfterContentInit {
   private _collapsable = false;
   private _dark = false;
 
-  @ContentChildren(CardTitleDirective) cardTitleDirectives!: QueryList<CardTitleDirective>;
-  @ContentChildren(CardSubtitleDirective) cardSubtitleDirective!: QueryList<CardSubtitleDirective>;
-  @ContentChildren(CardContentDirective) cardContentDirectives!: QueryList<CardContentDirective>;
-  @ContentChildren(CardActionsDirective) cardActionsDirective!: QueryList<CardActionsDirective>;
-  @ContentChildren(CardChild) cardChildren!: QueryList<CardChild>;
+  @ContentChildren(CardTitleDirective) readonly cardTitleDirectives!: QueryList<CardTitleDirective>;
+  @ContentChildren(CardSubtitleDirective) readonly cardSubtitleDirective!: QueryList<CardSubtitleDirective>;
+  @ContentChildren(CardContentDirective) readonly cardContentDirectives!: QueryList<CardContentDirective>;
+  @ContentChildren(CardActionsDirective) readonly cardActionsDirective!: QueryList<CardActionsDirective>;
+  @ContentChildren(CardChild) readonly cardChildren!: QueryList<CardChild>;
 
   @Input()
   @HostBinding('class.collapsable')

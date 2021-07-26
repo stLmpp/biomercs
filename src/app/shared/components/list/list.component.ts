@@ -38,9 +38,9 @@ export class ListSelectable {}
   host: { class: 'control' },
 })
 export class ListControlValue extends ListParentControl implements OnDestroy, AfterContentInit {
-  private _destroy$ = new Subject<void>();
+  private readonly _destroy$ = new Subject<void>();
 
-  @ContentChildren(ListItemComponent, { descendants: true }) listItemComponents!: QueryList<ListItemComponent>;
+  @ContentChildren(ListItemComponent, { descendants: true }) readonly listItemComponents!: QueryList<ListItemComponent>;
 
   focusManager?: FocusKeyManager<ListItemComponent>;
 

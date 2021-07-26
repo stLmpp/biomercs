@@ -16,7 +16,7 @@ import { AnimationEvent } from '@angular/animations';
 export class TooltipComponent {
   @Input() content!: Nullable<string | number>;
 
-  onAnimationEnd$ = new Subject<void>();
+  readonly onAnimationEnd$ = new Subject<void>();
 
   @HostListener('@fadeInOut.done', ['$event'])
   onFadeInOutDone($event: AnimationEvent): void {

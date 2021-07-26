@@ -38,10 +38,10 @@ export class DialogComponent extends LocalState<{ loadingYes: boolean; loadingNo
     super({ loadingNo: false, loadingYes: false });
   }
 
-  state$ = this.selectState();
+  readonly state$ = this.selectState();
 
-  dialogType = DialogType;
-  typesWithoutIcon = [DialogType.confirm, DialogType.info];
+  readonly dialogType = DialogType;
+  readonly typesWithoutIcon = [DialogType.confirm, DialogType.info];
 
   @HostBinding('class.success')
   get successClass(): boolean {
