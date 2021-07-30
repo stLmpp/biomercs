@@ -137,4 +137,8 @@ export abstract class AbstractScoreService {
   findRejectedAndPendingScoresByIdUser(): Observable<ScoreGroupedByStatus[]> {
     return this.http.get<ScoreGroupedByStatus[]>(`${this.endPoint}/player/rejected-and-pending`);
   }
+
+  cancel(idScore: number): Observable<void> {
+    return this.http.put<void>(`${this.endPoint}/${idScore}/cancel`, undefined);
+  }
 }

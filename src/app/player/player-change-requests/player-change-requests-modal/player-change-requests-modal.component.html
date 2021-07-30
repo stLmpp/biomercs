@@ -88,6 +88,16 @@
   </bio-modal-content>
   <bio-modal-actions end *ngLet="loading$ | async as loading">
     <button bioButton type="submit" [disabled]="form.invalid" [loading]="loading" primary>Submit</button>
+    <button
+      bioButton
+      type="button"
+      [disabled]="loading"
+      danger
+      (click)="onCancelScore()"
+      [loading]="loadingCancelScore$ | async"
+    >
+      Cancel score
+    </button>
     <button bioButton type="button" (click)="modalRef.close()" [disabled]="loading">Close</button>
   </bio-modal-actions>
 </form>

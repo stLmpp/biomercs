@@ -10,10 +10,11 @@ import { MaskEnum, MaskEnumPatterns } from '@shared/mask/mask.enum';
 import { CURRENCY_MASK_CONFIG } from '@shared/currency-mask/currency-mask-config.token';
 import { scoreCurrencyMask } from '../../../score/score-shared/util';
 import { ScoreService } from '../../../score/score.service';
-import { finalize, switchMapTo } from 'rxjs';
+import { finalize, switchMapTo, tap } from 'rxjs';
 import { SnackBarService } from '@shared/components/snack-bar/snack-bar.service';
 import { LocalState } from '@stlmpp/store';
 import { trackById } from '@util/track-by';
+import { DialogService } from '@shared/components/modal/dialog/dialog.service';
 
 export interface PlayerChangeRequestsModalData {
   score: ScoreWithScoreChangeRequests;
@@ -27,6 +28,7 @@ interface ScoreChangeRequestsFulfilForm extends Omit<ScoreChangeRequestsFulfilDt
 
 interface PlayerChangeRequestsModalState {
   loading: boolean;
+  loadingCancelScore: boolean;
 }
 
 @Component({
@@ -50,11 +52,13 @@ export class PlayerChangeRequestsModalComponent extends LocalState<PlayerChangeR
       ScoreChangeRequestsPagination
     >,
     private scoreService: ScoreService,
-    private snackBarService: SnackBarService
+    private snackBarService: SnackBarService,
+    private dialogService: DialogService
   ) {
-    super({ loading: false });
+    super({ loading: false, loadingCancelScore: false });
   }
 
+  readonly loadingCancelScore$ = this.selectState('loadingCancelScore');
   readonly loading$ = this.selectState('loading');
   readonly maskEnum = MaskEnum;
   readonly maskTimePattern = MaskEnumPatterns[MaskEnum.time]!;
@@ -121,5 +125,30 @@ export class PlayerChangeRequestsModalComponent extends LocalState<PlayerChangeR
         this.modalRef.close(data);
         this.snackBarService.open('Score updated successfully!');
       });
+  }
+
+  onCancelScore(): void {
+    this.updateState({ loadingCancelScore: true });
+    this.dialogService.confirm({
+      btnNo: 'Close',
+      btnYes: 'Cancel Score',
+      title: 'Cancel score?',
+      content: `This score will no longer appear in the list of scores, <br> and you won't be able to submit it again for approval`,
+      yesAction: modalRef =>
+        this.scoreService.cancel(this.data.score.id).pipe(
+          switchMapTo(this.scoreService.findChangeRequests(this.data.page, this.data.itemsPerPage)),
+          tap(data => {
+            modalRef.close();
+            this.modalRef.close(data);
+          }),
+          finalize(() => {
+            this.updateState({ loadingCancelScore: false });
+          })
+        ),
+      noAction: modalRef => {
+        this.updateState({ loadingCancelScore: false });
+        modalRef.close();
+      },
+    });
   }
 }
