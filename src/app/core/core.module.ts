@@ -1,5 +1,5 @@
 import { APP_INITIALIZER, LOCALE_ID, ModuleWithProviders, NgModule, Provider } from '@angular/core';
-import { NAVIGATOR, WINDOW, WINDOW_PROVIDERS } from './window.service';
+import { WINDOW, WINDOW_PROVIDERS } from './window.service';
 import { ApiInterceptor } from './api.interceptor';
 import { DateInterceptor } from './date.interceptor';
 import { FormatErrorInterceptor } from './error/format-error.interceptor';
@@ -22,6 +22,7 @@ import { AbstractPlayerService } from '../player/abstract-player.service';
 import { PlayerService } from '../player/player.service';
 import { RetryInterceptor } from './retry.interceptor';
 import { HighlightModule } from '@shared/highlight/highlight.module';
+import { NAVIGATOR } from './navigator.token';
 
 const withInterceptors = (...interceptors: any[]): Provider[] =>
   interceptors.map(useClass => ({
@@ -66,8 +67,8 @@ export class CoreModule {
         },
         { provide: AbstractRegionService, useExisting: RegionService },
         { provide: NAVIGATOR, useFactory: (window: Window) => window.navigator ?? {}, deps: [WINDOW] },
-        { provide: AbstractScoreService, useExisting: ScoreService },
-        { provide: AbstractPlayerService, useExisting: PlayerService },
+        { provide: AbstractScoreService, useExisting: ScoreService }, // TODO transform in a service to open modals (ScoreModalService)
+        { provide: AbstractPlayerService, useExisting: PlayerService }, // TODO transform in a service to open modals (PlayerModalService)
       ],
     };
   }

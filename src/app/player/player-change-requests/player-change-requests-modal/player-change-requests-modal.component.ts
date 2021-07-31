@@ -130,25 +130,32 @@ export class PlayerChangeRequestsModalComponent extends LocalState<PlayerChangeR
   onCancelScore(): void {
     this.updateState({ loadingCancelScore: true });
     this.dialogService.confirm({
-      btnNo: 'Close',
-      btnYes: 'Cancel Score',
       title: 'Cancel score?',
       content: `This score will no longer appear in the list of scores, <br> and you won't be able to submit it again for approval`,
-      yesAction: modalRef =>
-        this.scoreService.cancel(this.data.score.id).pipe(
-          switchMapTo(this.scoreService.findChangeRequests(this.data.page, this.data.itemsPerPage)),
-          tap(data => {
-            modalRef.close();
-            this.modalRef.close(data);
-          }),
-          finalize(() => {
+      buttons: [
+        {
+          title: 'Close',
+          action: modalRef => {
             this.updateState({ loadingCancelScore: false });
-          })
-        ),
-      noAction: modalRef => {
-        this.updateState({ loadingCancelScore: false });
-        modalRef.close();
-      },
+            modalRef.close();
+          },
+        },
+        {
+          title: 'Cancel Score',
+          type: 'danger',
+          action: modalRef =>
+            this.scoreService.cancel(this.data.score.id).pipe(
+              switchMapTo(this.scoreService.findChangeRequests(this.data.page, this.data.itemsPerPage)),
+              tap(data => {
+                modalRef.close();
+                this.modalRef.close(data);
+              }),
+              finalize(() => {
+                this.updateState({ loadingCancelScore: false });
+              })
+            ),
+        },
+      ],
     });
   }
 }

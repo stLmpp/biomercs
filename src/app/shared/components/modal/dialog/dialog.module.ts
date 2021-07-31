@@ -4,7 +4,7 @@ import { DialogComponent } from './dialog.component';
 import { ButtonModule } from '../../button/button.module';
 import { CommonModule } from '@angular/common';
 import { IconModule } from '@shared/components/icon/icon.module';
-import { StUtilsArrayModule } from '@stlmpp/utils';
+import { NgLetModule, StUtilsArrayModule } from '@stlmpp/utils';
 
 const DECLARATIONS = [DialogComponent];
 const MODULES = [
@@ -21,7 +21,7 @@ const EXPORTS = [ModalModule, ButtonModule, IconModule, StUtilsArrayModule];
 
 @NgModule({
   declarations: [...DECLARATIONS],
-  imports: [...MODULES],
+  imports: [...MODULES, NgLetModule],
   exports: [...DECLARATIONS, ...EXPORTS],
 })
 export class DialogModule {}

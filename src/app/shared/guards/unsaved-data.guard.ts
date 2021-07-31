@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot, UrlTree } f
 import { isObservable, Observable, of, switchMap, take } from 'rxjs';
 import { isNil, isObject, isString } from 'st-utils';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
-import { DialogData } from '@shared/components/modal/dialog/dialog.component';
+import { DialogData, DialogDataButtonType } from '@shared/components/modal/dialog/dialog-data';
 
 export type UnsavedDataType = string | boolean | DialogData | null;
 
@@ -23,13 +23,14 @@ export class UnsavedDataGuard<T extends UnsavedData = any> implements CanDeactiv
     if (isNil(data) || data === false) {
       return of(true);
     }
+    const buttons: DialogDataButtonType[] = ['No', { title: 'Yes', action: true }];
     if (isString(data)) {
-      return this.dialogService.confirm({ content: data });
+      return this.dialogService.confirm({ content: data, buttons });
     }
     if (isObject(data)) {
-      return this.dialogService.confirm(data);
+      return this.dialogService.confirm({ buttons, ...data });
     }
-    return this.dialogService.confirm({ title: 'Leave page', content: 'There might be unsaved data' });
+    return this.dialogService.confirm({ title: 'Leave page', content: 'There might be unsaved data', buttons });
   }
 
   canDeactivate(

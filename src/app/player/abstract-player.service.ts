@@ -83,7 +83,7 @@ export class AbstractPlayerService {
             tap(async ({ error, steamProfile }) => {
               windowSteam?.close();
               if (error) {
-                await this.dialogService.info({ title: 'Error', content: error });
+                await this.dialogService.info({ title: 'Error', content: error, buttons: ['Close'] });
               } else if (steamProfile) {
                 this.playerStore.updateEntity(idPlayer, { steamProfile, idSteamProfile: steamProfile.id });
               }

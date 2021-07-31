@@ -169,17 +169,24 @@ export class ScoreAddComponent extends LocalState<ScoreAddState> implements OnIn
           {
             title: 'Score submitted successfully!',
             content: 'Your score was submitted and will be reviewed by one of ours administrators',
-            btnNo: 'Close',
-            btnYes: 'Submit another',
-            yesAction: modalRef => {
-              this._changeAllForms(form => form.enable());
-              this.onReset();
-              modalRef.close();
-            },
-            noAction: modalRef => {
-              this.router.navigate(['/']).then();
-              modalRef.close();
-            },
+            buttons: [
+              {
+                title: 'Close',
+                action: modalRef => {
+                  this.router.navigate(['/']).then();
+                  modalRef.close();
+                },
+              },
+              {
+                title: 'Submit another',
+                action: modalRef => {
+                  this._changeAllForms(form => form.enable());
+                  this.onReset();
+                  modalRef.close();
+                },
+                backdropAction: true,
+              },
+            ],
           },
           { width: 500, disableClose: true }
         );
@@ -188,15 +195,19 @@ export class ScoreAddComponent extends LocalState<ScoreAddState> implements OnIn
     this.updateState({ submitModalLoading: true });
     await this.dialogService.info(
       {
-        btnNo: 'Cancel',
-        btnYes: 'Submit',
         title: 'Submit the score?',
         content: `Before your score reach the leaderboards there will be a review by one of ours administrators. If your score is approved you'll receive a notification.`,
-        yesAction: request$,
-        noAction: modalRef => {
-          this._changeAllForms(form => form.enable());
-          modalRef.close();
-        },
+        buttons: [
+          {
+            title: 'Cancel',
+            action: modalRef => {
+              this._changeAllForms(form => form.enable());
+              modalRef.close();
+            },
+            backdropAction: true,
+          },
+          { title: 'Submit', action: request$ },
+        ],
       },
       { width: 500, disableClose: true }
     );

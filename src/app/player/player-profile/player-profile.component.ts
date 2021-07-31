@@ -147,9 +147,9 @@ export class PlayerProfileComponent extends LocalState<PlayerProfileComponentSta
       arrayUtil(scoreGroupedByStatus, 'idScoreStatus')
         .update(idScoreStatus, status => ({
           ...status,
-          scores: arrayUtil(status.scores, 'id').update(idScore, partial).get(),
+          scores: arrayUtil(status.scores, 'id').update(idScore, partial).toArray(),
         }))
-        .get()
+        .toArray()
     );
   }
 

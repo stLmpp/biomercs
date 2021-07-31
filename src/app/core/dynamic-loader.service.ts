@@ -1,19 +1,18 @@
-import { Compiler, Inject, Injectable, Type } from '@angular/core';
+import { Compiler, Injectable, Type } from '@angular/core';
 import { EMPTY, Observable, Subscription } from 'rxjs';
-import { NAVIGATOR } from './window.service';
+import { NavigatorConnection } from './navigator-connection';
 
 export type LazyFn = () => Promise<Type<any>>;
 
 @Injectable({ providedIn: 'root' })
 export class DynamicLoaderService {
-  constructor(private compiler: Compiler, @Inject(NAVIGATOR) private navigator: Navigator) {}
+  constructor(private compiler: Compiler, private navigatorConnection: NavigatorConnection) {}
 
   private readonly _loaded = new Set<Type<any>>();
   private readonly _loading = new Map<Type<any>, boolean>();
 
   private _isSlowConnection(): boolean {
-    const connection: { effectiveType: string; saveData: boolean } | undefined = (this.navigator as any).connection;
-    return connection?.effectiveType !== '4g' || connection?.saveData;
+    return this.navigatorConnection.effectiveType !== '4g' || !!this.navigatorConnection.saveData;
   }
 
   async loadModule(moduleFn: LazyFn): Promise<void> {

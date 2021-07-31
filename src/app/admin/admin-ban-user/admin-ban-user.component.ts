@@ -83,7 +83,10 @@ export class AdminBanUserComponent extends LocalState<AdminBanUserComponentState
   }
 
   private _updateUser(idUser: number, partial: Partial<User>): void {
-    this.updateState('data', data => ({ ...data, items: arrayUtil(data.items, 'id').update(idUser, partial).get() }));
+    this.updateState('data', data => ({
+      ...data,
+      items: arrayUtil(data.items, 'id').update(idUser, partial).toArray(),
+    }));
   }
 
   pageChange($event: number): void {
@@ -114,7 +117,7 @@ export class AdminBanUserComponent extends LocalState<AdminBanUserComponentState
         })
       );
     }
-    this.dialogService.confirm({ title, content, yesAction: request$, btnNo: 'Cancel', btnYes: 'Ban' }).subscribe();
+    this.dialogService.confirm({ title, content, buttons: ['Cancel', { title: 'Ban', action: request$ }] }).subscribe();
   }
 
   ngOnInit(): void {

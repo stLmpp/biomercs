@@ -8,6 +8,4 @@ export const environment = {
   cacheTimeout: 450_000,
   socketIOPath: '/api/socket',
   socketIOHost: '',
-  maxAutoLoginAttempts: 3,
-  autoLoginAttemptTimeout: 50,
 };

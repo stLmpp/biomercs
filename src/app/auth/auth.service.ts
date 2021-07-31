@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { finalize, Observable, of, switchMap, takeUntil, tap, timeout, timer } from 'rxjs';
+import { finalize, Observable, of, switchMap, switchMapTo, takeUntil, tap, timeout } from 'rxjs';
 import { AuthStore } from './auth.store';
 import { catchAndThrow } from '@util/operators/catch-and-throw';
 import { ignoreErrorContext } from './auth-error.interceptor';
@@ -21,7 +21,7 @@ import {
 import { User } from '@model/user';
 import { AuthSteamLoginSocketErrorType } from '@model/enum/auth-steam-login-socket-error-type';
 import { SocketIOService } from '@shared/services/socket-io/socket-io.service';
-import { environment } from '@environment/environment';
+import { DialogDataButtonType } from '@shared/components/modal/dialog/dialog-data';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -35,7 +35,6 @@ export class AuthService {
     private socketIOService: SocketIOService
   ) {}
 
-  private _autoLoginAttempts = 0;
   private readonly _steamidAuthMap = new Map<string, [string, number?]>();
   private readonly _socketConnection = this.socketIOService.createConnection('auth');
 
@@ -64,25 +63,17 @@ export class AuthService {
   }
 
   autoLogin(): Observable<User | null> {
-    const { user } = this.authStore.getState();
-    if (!user?.token) {
-      if (this._autoLoginAttempts > environment.maxAutoLoginAttempts) {
-        return of(null);
-      }
-      this._autoLoginAttempts++;
-      return timer(environment.autoLoginAttemptTimeout).pipe(switchMap(() => this.autoLogin()));
-    }
-    return this.http.post<User>(`${this.endPoint}/auto-login`, undefined, { context: ignoreErrorContext() }).pipe(
+    const autoLogin$ = this.http.post<User>(`${this.endPoint}/auto-login`, undefined, {
+      context: ignoreErrorContext(),
+    });
+    return this.authStore.waitForPersistedValue().pipe(
+      switchMapTo(autoLogin$),
       tap(userLogged => {
         this.authStore.updateState({ user: userLogged });
       }),
       catchAndThrow(() => {
         this.authStore.updateState({ user: null });
         this.router.navigate(['/auth/login']).then();
-        return of(null);
-      }),
-      finalize(() => {
-        this._autoLoginAttempts = 0;
       })
     );
   }
@@ -104,16 +95,22 @@ export class AuthService {
     await this.dialogService.success({
       title: 'Welcome to the family, son',
       content: 'What now?',
-      btnYes: 'Submit your first score',
-      btnNo: 'Close',
-      yesAction: modalRef => {
-        modalRef.close();
-        this.router.navigate(['/score/add']).then();
-      },
-      noAction: modalRef => {
-        modalRef.close();
-        this.router.navigate(['/']).then();
-      },
+      buttons: [
+        {
+          title: 'Close',
+          action: modalRef => {
+            modalRef.close();
+            this.router.navigate(['/']).then();
+          },
+        },
+        {
+          title: 'Submit your first score',
+          action: modalRef => {
+            modalRef.close();
+            this.router.navigate(['/score/add']).then();
+          },
+        },
+      ],
     });
   }
 
@@ -155,11 +152,14 @@ export class AuthService {
               if (skipConfirmCreate && errorType === AuthSteamLoginSocketErrorType.userNotFound) {
                 request$ = of(true);
               } else {
+                const buttons: DialogDataButtonType[] = ['Close'];
+                if (btnYes) {
+                  buttons.push({ title: btnYes, action: bsModalRef => bsModalRef.close(true) });
+                }
                 request$ = this.dialogService.confirm({
                   title: error,
                   content,
-                  btnYes,
-                  btnNo: 'Close',
+                  buttons,
                 });
               }
               request$ = request$.pipe(

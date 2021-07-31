@@ -78,7 +78,7 @@ export class ContactComponent extends LocalState<ContactComponentState> {
         }),
         catchAndThrow(err => {
           if (err.status === HttpStatusCode.TooManyRequests) {
-            this.dialogService.error({ title: 'Sorry', content: err.message, btnNo: null, btnYes: 'Ok' }).then();
+            this.dialogService.error({ title: 'Sorry', content: err.message, buttons: ['Ok'] }).then();
           }
         })
       )

@@ -15,23 +15,26 @@ export class ModalRef<T = any, D = any, R = any> {
 
   componentInstance?: T;
   data!: D | null;
+  disableClose = this.modalConfig.disableClose;
 
-  onClose$ = new Subject<R | null | undefined>();
+  readonly onClose$ = new Subject<R | null | undefined>();
+  readonly onBackdropClick$ = new Subject<MouseEvent>();
 
   private _init(): void {
-    if (this.modalConfig.disableClose) {
-      return;
-    }
     this.overlayRef
       .backdropClick()
       .pipe(take(1))
-      .subscribe(() => {
-        this.close();
+      .subscribe($event => {
+        if (!this.disableClose) {
+          this.close();
+        }
+        this.onBackdropClick$.next($event);
+        this.onBackdropClick$.complete();
       });
     this.overlayRef
       .keydownEvents()
       .pipe(
-        filter(event => event.key === Key.Escape && !hasModifierKey(event)),
+        filter(event => !this.disableClose && event.key === Key.Escape && !hasModifierKey(event)),
         take(1)
       )
       .subscribe(() => {

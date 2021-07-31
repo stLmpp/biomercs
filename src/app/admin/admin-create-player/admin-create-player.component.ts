@@ -68,23 +68,30 @@ export class AdminCreatePlayerComponent extends LocalState<AdminCreatePlayerComp
           await this.dialogService.success({
             title: 'Player created with success',
             content: 'Now you can submit scores with this player',
-            btnYes: 'Create another',
-            btnNo: 'Close',
-            yesAction: modalRef => {
-              this.form.patchValue({
-                personaName: '',
-                steamid: '',
-                title: '',
-                aboutMe: '',
-                idRegion: undefined,
-              });
-              this.form.markAsTouched(false);
-              modalRef.close();
-            },
-            noAction: modalRef => {
-              this.router.navigate(['/']).then();
-              modalRef.close();
-            },
+            buttons: [
+              {
+                title: 'Close',
+                action: modalRef => {
+                  this.router.navigate(['/']).then();
+                  modalRef.close();
+                },
+              },
+              {
+                title: 'Create another',
+                action: modalRef => {
+                  this.form.patchValue({
+                    personaName: '',
+                    steamid: '',
+                    title: '',
+                    aboutMe: '',
+                    idRegion: undefined,
+                  });
+                  this.form.markAsTouched(false);
+                  modalRef.close();
+                },
+                backdropAction: true,
+              },
+            ],
           });
         })
       )
