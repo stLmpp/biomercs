@@ -14,10 +14,6 @@ export class ScoreApprovalMotiveQuery extends EntityQuery<ScoreApprovalMotiveSta
     super(scoreApprovalMotiveStore);
   }
 
-  getByAction(action: ScoreApprovalActionEnum): StMapView<ScoreApprovalMotive> {
-    return this.getAll().filter(scoreApprovalMotive => scoreApprovalMotive.action === action);
-  }
-
   selectByAction(action: ScoreApprovalActionEnum): Observable<StMapView<ScoreApprovalMotive>> {
     return this.selectAll({ filterBy: ['action', action] });
   }

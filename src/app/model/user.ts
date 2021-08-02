@@ -12,9 +12,3 @@ export interface User {
   dateFormat: string;
   bannedDate?: Date | null;
 }
-
-export interface UserUpdate {
-  lastOnline?: Date;
-  rememberMe?: boolean;
-  dateFormat?: string;
-}

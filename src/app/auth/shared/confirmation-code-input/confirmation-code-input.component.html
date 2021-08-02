@@ -1,6 +1,6 @@
 <form [controlGroup]="form">
   <label *ngIf="label" (click)="focusManager.setFirstItemActive()">{{ label }}</label>
-  <div controlArrayName="array" #arrayRef="controlArrayName" (keydown)="focusManager.onKeydown($event)">
+  <div controlArrayName="array" (keydown)="focusManager.onKeydown($event)">
     <input
       class="no-arrows"
       bioInput
