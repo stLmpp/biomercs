@@ -21,6 +21,7 @@ import { AuthQuery } from '../../../auth/auth.query';
 import { BooleanInput } from '@angular/cdk/coercion';
 import { SimpleChangesCustom } from '@util/util';
 import { trackById } from '@util/track-by';
+import { PlayerModalService } from '../../../player/player-modal.service';
 
 interface ScoreAddPlayerComponentState {
   playersLoading: boolean;
@@ -37,7 +38,8 @@ export class ScoreAddPlayerComponent extends LocalState<ScoreAddPlayerComponentS
   constructor(
     private controlBuilder: ControlBuilder,
     private playerService: PlayerService,
-    private authQuery: AuthQuery
+    private authQuery: AuthQuery,
+    private playerModalService: PlayerModalService
   ) {
     super({ playersLoading: false, playerSearchModalLoading: false });
   }
@@ -87,7 +89,7 @@ export class ScoreAddPlayerComponent extends LocalState<ScoreAddPlayerComponentS
   async openPlayerSearchModal(): Promise<void> {
     this.updateState({ playerSearchModalLoading: true });
     const idPlayer = this.idPlayerControl.value;
-    const modalRef = await this.playerService.openPlayerSearchModal({ idPlayer });
+    const modalRef = await this.playerModalService.openPlayerSearchModal({ idPlayer });
     modalRef.onClose$.subscribe(player => {
       if (player && player.id !== idPlayer) {
         this.form.patchValue({

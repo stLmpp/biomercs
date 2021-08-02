@@ -18,8 +18,6 @@ import { RegionService } from '../region/region.service';
 import localePt from '@angular/common/locales/pt';
 import { ScoreService } from '../score/score.service';
 import { AbstractScoreService } from '../score/abstract-score.service';
-import { AbstractPlayerService } from '../player/abstract-player.service';
-import { PlayerService } from '../player/player.service';
 import { RetryInterceptor } from './retry.interceptor';
 import { HighlightModule } from '@shared/highlight/highlight.module';
 import { NAVIGATOR } from './navigator.token';
@@ -68,7 +66,6 @@ export class CoreModule {
         { provide: AbstractRegionService, useExisting: RegionService },
         { provide: NAVIGATOR, useFactory: (window: Window) => window.navigator ?? {}, deps: [WINDOW] },
         { provide: AbstractScoreService, useExisting: ScoreService }, // TODO transform in a service to open modals (ScoreModalService)
-        { provide: AbstractPlayerService, useExisting: PlayerService }, // TODO transform in a service to open modals (PlayerModalService)
       ],
     };
   }

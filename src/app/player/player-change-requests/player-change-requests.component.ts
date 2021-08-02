@@ -4,9 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { filter, finalize, map, Observable, pluck, shareReplay, skip, switchMap, takeUntil } from 'rxjs';
 import { filterNil } from '@shared/operators/filter';
-import { ScoreWithScoreChangeRequests, ScoreChangeRequestsPagination } from '@model/score-change-request';
+import { ScoreChangeRequestsPagination, ScoreWithScoreChangeRequests } from '@model/score-change-request';
 import { PaginationMeta } from '@model/pagination';
-import { PlayerService } from '../player.service';
 import { LocalState } from '@stlmpp/store';
 import { getScoreDefaultColDefs } from '../../score/score-shared/util';
 import { AuthDateFormatPipe } from '../../auth/shared/auth-date-format.pipe';
@@ -16,6 +15,7 @@ import {
   PlayerChangeRequestsActionCellComponentMetadata,
 } from './player-change-requests-action-cell/player-change-requests-action-cell.component';
 import { TableCellNotifyChange } from '@shared/components/table/type';
+import { PlayerModalService } from '../player-modal.service';
 
 export interface PlayerChangeRequestsState {
   page: number;
@@ -34,8 +34,8 @@ export class PlayerChangeRequestsComponent extends LocalState<PlayerChangeReques
   constructor(
     private scoreService: ScoreService,
     private activatedRoute: ActivatedRoute,
-    private playerService: PlayerService,
-    private authDateFormatPipe: AuthDateFormatPipe
+    private authDateFormatPipe: AuthDateFormatPipe,
+    private playerModalService: PlayerModalService
   ) {
     super({
       page: +(activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.page) ?? 1),
@@ -64,7 +64,7 @@ export class PlayerChangeRequestsComponent extends LocalState<PlayerChangeReques
 
   async openModalChangeRequests(score: ScoreWithScoreChangeRequests): Promise<void> {
     const { page, itemsPerPage } = this.getState();
-    const modalRef = await this.playerService.openPlayerChangeRequestsModal({ score, page, itemsPerPage });
+    const modalRef = await this.playerModalService.openPlayerChangeRequestsModal({ score, page, itemsPerPage });
     modalRef.onClose$.subscribe(data => {
       if (data) {
         this.updateState({ data });
