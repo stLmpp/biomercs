@@ -22,6 +22,7 @@ import { PaginationMeta } from '@model/pagination';
 import { Score, ScoreTable, ScoreTopTable } from '@model/score';
 import { LocalState } from '@stlmpp/store';
 import { trackById } from '@util/track-by';
+import { ScoreModalService } from '../score-modal.service';
 
 interface TopTableForm extends ParamsForm {
   page: number;
@@ -46,7 +47,8 @@ export class ScoreLeaderboardsComponent extends LocalState<ScoreLeaderboardsStat
   constructor(
     private controlBuilder: ControlBuilder,
     private scoreService: ScoreService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private scoreModalService: ScoreModalService
   ) {
     super({ tableLoading: false, orderByDirection: 'desc', orderByType: 'total', loadingInfo: false });
   }
@@ -199,7 +201,7 @@ export class ScoreLeaderboardsComponent extends LocalState<ScoreLeaderboardsStat
 
   async openScoreInfo(score: Score): Promise<void> {
     this.updateState({ loadingInfo: true });
-    await this.scoreService.openModalScoreInfo({ score, showWorldRecord: true, showApprovalDate: true });
+    await this.scoreModalService.openModalScoreInfo({ score, showWorldRecord: true, showApprovalDate: true });
     this.updateState({ loadingInfo: false });
   }
 }

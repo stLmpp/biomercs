@@ -4,20 +4,12 @@ import { ApiInterceptor } from './api.interceptor';
 import { DateInterceptor } from './date.interceptor';
 import { FormatErrorInterceptor } from './error/format-error.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { ErrorComponent } from './error/error.component';
 import { HandleErrorDevInterceptor } from './error/handle-error-dev.interceptor';
-import { ModalModule } from '@shared/components/modal/modal.module';
-import { ButtonModule } from '@shared/components/button/button.module';
-import { SnackBarModule } from '@shared/components/snack-bar/snack-bar.module';
-import { CommonModule, registerLocaleData } from '@angular/common';
-import { AuthService } from '../auth/auth.service';
+import { registerLocaleData } from '@angular/common';
+import { AuthAutoLoginService } from '../auth/auth-auto-login.service';
 import { AuthInterceptor } from '../auth/auth.interceptor';
 import { AuthErrorInterceptor } from '../auth/auth-error.interceptor';
-import { AbstractRegionService } from '../region/region-service.token';
-import { RegionService } from '../region/region.service';
 import localePt from '@angular/common/locales/pt';
-import { ScoreService } from '../score/score.service';
-import { AbstractScoreService } from '../score/abstract-score.service';
 import { RetryInterceptor } from './retry.interceptor';
 import { HighlightModule } from '@shared/highlight/highlight.module';
 import { NAVIGATOR } from './navigator.token';
@@ -32,14 +24,7 @@ const withInterceptors = (...interceptors: any[]): Provider[] =>
 registerLocaleData(localePt);
 
 @NgModule({
-  declarations: [ErrorComponent],
-  imports: [
-    CommonModule,
-    ModalModule,
-    ButtonModule,
-    SnackBarModule,
-    HighlightModule.forRoot({ sql: () => import('highlight.js/lib/languages/sql') }),
-  ],
+  imports: [HighlightModule.forRoot({ sql: () => import('highlight.js/lib/languages/sql') })],
 })
 export class CoreModule {
   static forRoot(): ModuleWithProviders<CoreModule> {
@@ -59,13 +44,11 @@ export class CoreModule {
         ),
         {
           provide: APP_INITIALIZER,
-          useFactory: (authService: AuthService) => () => authService.autoLogin(),
-          deps: [AuthService],
+          useFactory: (authAutoLoginService: AuthAutoLoginService) => () => authAutoLoginService.autoLogin(),
+          deps: [AuthAutoLoginService],
           multi: true,
         },
-        { provide: AbstractRegionService, useExisting: RegionService },
         { provide: NAVIGATOR, useFactory: (window: Window) => window.navigator ?? {}, deps: [WINDOW] },
-        { provide: AbstractScoreService, useExisting: ScoreService }, // TODO transform in a service to open modals (ScoreModalService)
       ],
     };
   }

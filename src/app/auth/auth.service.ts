@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { finalize, Observable, of, switchMap, switchMapTo, takeUntil, tap, timeout } from 'rxjs';
+import { finalize, Observable, of, switchMap, takeUntil, tap, timeout } from 'rxjs';
 import { AuthStore } from './auth.store';
 import { catchAndThrow } from '@util/operators/catch-and-throw';
 import { ignoreErrorContext } from './auth-error.interceptor';
@@ -22,6 +22,7 @@ import { User } from '@model/user';
 import { AuthSteamLoginSocketErrorType } from '@model/enum/auth-steam-login-socket-error-type';
 import { SocketIOService } from '@shared/services/socket-io/socket-io.service';
 import { DialogDataButtonType } from '@shared/components/modal/dialog/dialog-data';
+import { AuthAutoLoginService } from './auth-auto-login.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -32,7 +33,8 @@ export class AuthService {
     @Inject(WINDOW) private window: Window,
     private snackBarService: SnackBarService,
     private router: Router,
-    private socketIOService: SocketIOService
+    private socketIOService: SocketIOService,
+    private authAutoLoginService: AuthAutoLoginService
   ) {}
 
   private readonly _steamidAuthMap = new Map<string, [string, number?]>();
@@ -58,22 +60,6 @@ export class AuthService {
     return this.http.post<User>(`${this.endPoint}/login`, dto, { context: ignoreErrorContext() }).pipe(
       tap(user => {
         this.authStore.updateState({ user });
-      })
-    );
-  }
-
-  autoLogin(): Observable<User | null> {
-    const autoLogin$ = this.http.post<User>(`${this.endPoint}/auto-login`, undefined, {
-      context: ignoreErrorContext(),
-    });
-    return this.authStore.waitForPersistedValue().pipe(
-      switchMapTo(autoLogin$),
-      tap(userLogged => {
-        this.authStore.updateState({ user: userLogged });
-      }),
-      catchAndThrow(() => {
-        this.authStore.updateState({ user: null });
-        this.router.navigate(['/auth/login']).then();
       })
     );
   }
@@ -214,7 +200,7 @@ export class AuthService {
 
   updateToken(token: string): Observable<User | null> {
     this.authStore.updateState(state => ({ ...state, user: { token } as any }));
-    return this.autoLogin();
+    return this.authAutoLoginService.autoLogin();
   }
 
   logout(): void {

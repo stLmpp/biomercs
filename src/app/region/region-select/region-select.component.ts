@@ -3,12 +3,12 @@ import { RegionQuery } from '../region.query';
 import { combineLatest, debounceTime, delay, finalize, map, Observable, startWith, tap } from 'rxjs';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
-import { AbstractRegionService } from '../region-service.token';
 import { Region } from '@model/region';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { Control } from '@stlmpp/control';
 import { LocalState, StMapView } from '@stlmpp/store';
 import { trackById } from '@util/track-by';
+import { RegionService } from '../region.service';
 
 export interface RegionSelectData {
   idRegion: number;
@@ -25,11 +25,7 @@ export class RegionSelectComponent extends LocalState<{ loading: boolean; saving
   constructor(
     private modalRef: ModalRef,
     @Inject(MODAL_DATA) { idRegion, onSelect }: RegionSelectData,
-    /*
-     * Need to do this to avoid circular dependency, since there's a method in the
-     * service to open this component as a modal
-     */
-    private regionService: AbstractRegionService,
+    private regionService: RegionService,
     private regionQuery: RegionQuery
   ) {
     super({ loading: false, saving: false });

@@ -18,6 +18,7 @@ import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { isNotNil } from '@shared/operators/filter';
 import { BreakpointObserverService } from '@shared/services/breakpoint-observer/breakpoint-observer.service';
 import { trackById } from '@util/track-by';
+import { ScoreModalService } from '../score-modal.service';
 
 export interface ScoreWorldRecordTableState {
   tableLoading: boolean;
@@ -43,7 +44,8 @@ export class ScoreWorldRecordsComponent extends LocalState<ScoreWorldRecordTable
     private controlBuilder: ControlBuilder,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private breakpointObserverService: BreakpointObserverService
+    private breakpointObserverService: BreakpointObserverService,
+    private scoreModalService: ScoreModalService
   ) {
     super({
       tableLoading: false,
@@ -129,7 +131,7 @@ export class ScoreWorldRecordsComponent extends LocalState<ScoreWorldRecordTable
 
   async openScoreInfo(score: Score): Promise<void> {
     this.updateState({ loadingInfoModal: true });
-    await this.scoreService.openModalScoreInfo({ score, showWorldRecord: true, showApprovalDate: true });
+    await this.scoreModalService.openModalScoreInfo({ score, showWorldRecord: true, showApprovalDate: true });
     this.updateState({ loadingInfoModal: false });
   }
 

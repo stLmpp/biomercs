@@ -4,9 +4,9 @@ import { Score } from '@model/score';
 import { ScoreApprovalActionEnum } from '@model/enum/score-approval-action.enum';
 import { ColDefInternal } from '@shared/components/table/col-def';
 import { LocalState } from '@stlmpp/store';
-import { ScoreService } from '../../../score.service';
 import { ScoreApprovalComponentState } from '../score-approval.component';
 import { ScoreApprovalPagination } from '@model/score-approval';
+import { ScoreModalService } from '../../../score-modal.service';
 
 export interface ScoreApprovalActionsCellState {
   loadingApprovalModal: boolean;
@@ -23,7 +23,7 @@ export class ScoreApprovalActionsCellComponent
   extends LocalState<ScoreApprovalActionsCellState>
   implements TableCell<Score>
 {
-  constructor(private scoreService: ScoreService) {
+  constructor(private scoreModalService: ScoreModalService) {
     super({ loadingApprovalModal: false, loadingRequestChangesModal: false });
   }
 
@@ -38,7 +38,7 @@ export class ScoreApprovalActionsCellComponent
 
   async openModalApproval(action: ScoreApprovalActionEnum): Promise<void> {
     this.updateState({ loadingApprovalModal: true });
-    const modalRef = await this.scoreService.openModalScoreApproval({
+    const modalRef = await this.scoreModalService.openModalScoreApproval({
       score: this.item,
       action,
       scoreApprovalComponentState: this.metadata,
@@ -53,7 +53,7 @@ export class ScoreApprovalActionsCellComponent
 
   async openModalRequestChanges(): Promise<void> {
     this.updateState({ loadingRequestChangesModal: true });
-    const modalRef = await this.scoreService.openModalRequestChangesScore({
+    const modalRef = await this.scoreModalService.openModalRequestChangesScore({
       score: this.item,
       scoreApprovalComponentState: this.metadata,
     });

@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { Score } from '@model/score';
 import { ScoreApprovalActionEnum } from '@model/enum/score-approval-action.enum';
-import { AbstractScoreService } from '../../../abstract-score.service';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import { ScoreApprovalMotiveQuery } from '@shared/services/score-approval-motive/score-approval-motive.query';
@@ -13,6 +12,7 @@ import { LocalState, StMapView } from '@stlmpp/store';
 import { ScoreApprovalAdd, ScoreApprovalPagination } from '@model/score-approval';
 import { ScoreApprovalComponentState } from '../score-approval.component';
 import { trackById } from '@util/track-by';
+import { ScoreService } from '../../../score.service';
 
 export interface ScoreApprovalModalData {
   score: Score;
@@ -29,7 +29,7 @@ export interface ScoreApprovalModalData {
 export class ScoreApprovalModalComponent extends LocalState<{ saving: boolean }> implements OnInit {
   constructor(
     @Inject(MODAL_DATA) { action, score, scoreApprovalComponentState }: ScoreApprovalModalData,
-    private scoreService: AbstractScoreService,
+    private scoreService: ScoreService,
     public modalRef: ModalRef<ScoreApprovalModalComponent, ScoreApprovalModalData, ScoreApprovalPagination>,
     public scoreApprovalMotiveQuery: ScoreApprovalMotiveQuery,
     private scoreApprovalService: ScoreApprovalMotiveService,

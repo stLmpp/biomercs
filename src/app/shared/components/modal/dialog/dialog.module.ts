@@ -16,12 +16,13 @@ const MODULES = [
   ButtonModule,
   IconModule,
   StUtilsArrayModule,
+  NgLetModule,
 ];
-const EXPORTS = [ModalModule, ButtonModule, IconModule, StUtilsArrayModule];
+const EXPORTS = [ModalModule, ButtonModule, IconModule, StUtilsArrayModule, NgLetModule];
 
 @NgModule({
   declarations: [...DECLARATIONS],
-  imports: [...MODULES, NgLetModule],
+  imports: [...MODULES],
   exports: [...DECLARATIONS, ...EXPORTS],
 })
 export class DialogModule {}

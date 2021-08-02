@@ -21,6 +21,7 @@ export class HandleErrorService {
       snack.onAction$.subscribe(async () => {
         await this.modalService.openLazy(() => import('../error/error.component').then(c => c.ErrorComponent), {
           data,
+          module: () => import('./error.module').then(m => m.ErrorModule),
         });
       });
     }

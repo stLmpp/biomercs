@@ -3,17 +3,11 @@ import { Observable, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { RegionStore } from './region.store';
 import { setLoading, useCache } from '@stlmpp/store';
-import { AbstractRegionService } from './region-service.token';
-import { ModalRef } from '@shared/components/modal/modal-ref';
-import { RegionSelectComponent, RegionSelectData } from './region-select/region-select.component';
-import { ModalService } from '@shared/components/modal/modal.service';
 import { Region } from '@model/region';
 
 @Injectable({ providedIn: 'root' })
-export class RegionService extends AbstractRegionService {
-  constructor(private http: HttpClient, private regionStore: RegionStore, private modalService: ModalService) {
-    super();
-  }
+export class RegionService {
+  constructor(private http: HttpClient, private regionStore: RegionStore) {}
 
   endPoint = 'region';
 
@@ -24,20 +18,6 @@ export class RegionService extends AbstractRegionService {
       tap(regions => {
         this.regionStore.setEntities(regions);
       })
-    );
-  }
-
-  async showSelectModal(
-    idRegion: number,
-    onSelect: (idRegion: number) => Observable<any>
-  ): Promise<ModalRef<RegionSelectComponent, RegionSelectData>> {
-    return this.modalService.openLazy<RegionSelectComponent, RegionSelectData>(
-      () => import('./region-select/region-select.component').then(c => c.RegionSelectComponent),
-      {
-        data: { idRegion, onSelect },
-        width: 500,
-        module: () => import('./region.module').then(m => m.RegionModule),
-      }
     );
   }
 }

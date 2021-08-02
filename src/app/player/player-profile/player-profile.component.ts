@@ -31,7 +31,6 @@ import {
 } from '@model/score-grouped-by-status';
 import { ActivatedRoute } from '@angular/router';
 import { Score } from '@model/score';
-import { ScoreService } from '../../score/score.service';
 import { getScoreDefaultColDefs } from '../../score/score-shared/util';
 import { AuthDateFormatPipe } from '../../auth/shared/auth-date-format.pipe';
 import { ColDef } from '@shared/components/table/col-def';
@@ -39,6 +38,8 @@ import { ScoreOpenInfoCellComponent } from '../../score/score-shared/score-open-
 import { isBefore, subDays } from 'date-fns';
 import { filterNil } from '@shared/operators/filter';
 import { mdiSteam } from '@mdi/js';
+import { RegionModalService } from '../../region/region-modal.service';
+import { ScoreModalService } from '../../score/score-modal.service';
 
 interface PlayerProfileComponentState {
   loadingRegion: boolean;
@@ -67,8 +68,9 @@ export class PlayerProfileComponent extends LocalState<PlayerProfileComponentSta
     private regionQuery: RegionQuery,
     private dynamicLoaderService: DynamicLoaderService,
     private activatedRoute: ActivatedRoute,
-    private scoreService: ScoreService,
-    private authDateFormatPipe: AuthDateFormatPipe
+    private authDateFormatPipe: AuthDateFormatPipe,
+    private regionModalService: RegionModalService,
+    private scoreModalService: ScoreModalService
   ) {
     super({
       loadingRegion: false,
@@ -163,7 +165,7 @@ export class PlayerProfileComponent extends LocalState<PlayerProfileComponentSta
     }
     const idRegionPlayer = this.player.region?.id ?? -1;
     this.updateState('loadingRegion', true);
-    await this.regionService.showSelectModal(idRegionPlayer, idRegion =>
+    await this.regionModalService.showSelectModal(idRegionPlayer, idRegion =>
       this.playerService.update(this.idPlayer, { idRegion })
     );
     this.updateState('loadingRegion', false);
@@ -181,7 +183,7 @@ export class PlayerProfileComponent extends LocalState<PlayerProfileComponentSta
 
   async openScoreInfo(score: Score): Promise<void> {
     this._updateScore(score.idScoreStatus, score.id, { disabled: true });
-    await this.scoreService.openModalScoreInfo({ score });
+    await this.scoreModalService.openModalScoreInfo({ score });
     this._updateScore(score.idScoreStatus, score.id, { disabled: false });
   }
 
