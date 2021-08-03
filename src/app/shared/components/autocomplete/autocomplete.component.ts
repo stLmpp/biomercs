@@ -4,7 +4,6 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChildren,
-  forwardRef,
   QueryList,
   Renderer2,
   TemplateRef,
@@ -29,7 +28,7 @@ import { Observable, of, pluck, startWith } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [Animations.fade.inOut(100), Animations.scale.in(100, 0.8)],
   encapsulation: ViewEncapsulation.None,
-  providers: [{ provide: Autocomplete, useExisting: forwardRef(() => AutocompleteComponent) }],
+  providers: [{ provide: Autocomplete, useExisting: AutocompleteComponent }],
 })
 export class AutocompleteComponent extends Autocomplete implements AfterContentInit {
   constructor(private renderer2: Renderer2, public changeDetectorRef: ChangeDetectorRef) {

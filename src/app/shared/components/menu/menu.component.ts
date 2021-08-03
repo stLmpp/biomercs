@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   ContentChildren,
-  forwardRef,
   QueryList,
   TemplateRef,
   ViewChild,
@@ -23,7 +22,7 @@ import { Menu } from './menu';
   exportAs: 'bio-menu',
   encapsulation: ViewEncapsulation.None,
   animations: [Animations.fade.inOut(100), Animations.scale.in(100, 0.8)],
-  providers: [{ provide: Menu, useExisting: forwardRef(() => MenuComponent) }],
+  providers: [{ provide: Menu, useExisting: MenuComponent }],
 })
 export class MenuComponent extends Menu {
   @ViewChild(TemplateRef) readonly templateRef!: TemplateRef<any>;
