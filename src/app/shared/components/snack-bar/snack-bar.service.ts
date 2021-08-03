@@ -6,7 +6,7 @@ import { ComponentPortal } from '@angular/cdk/portal';
 import { coerceArray } from '@angular/cdk/coercion';
 import { take } from 'rxjs';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class SnackBarService {
   constructor(
     private overlay: Overlay,

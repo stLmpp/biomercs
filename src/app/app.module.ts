@@ -7,7 +7,6 @@ import { CoreModule } from './core/core.module';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from '@environment/environment';
-import { SnackBarModule } from '@shared/components/snack-bar/snack-bar.module';
 import { HeaderModule } from './header/header.module';
 import { NgProgressModule } from 'ngx-progressbar';
 import { NgProgressRouterModule } from 'ngx-progressbar/router';
@@ -22,7 +21,6 @@ import { FooterModule } from './footer/footer.module';
     BrowserAnimationsModule,
     HttpClientModule,
     CoreModule.forRoot(),
-    SnackBarModule.forRoot(),
     HeaderModule,
     NgProgressModule.withConfig({ color: '#00acff', spinner: false, debounceTime: 100 }),
     NgProgressRouterModule,

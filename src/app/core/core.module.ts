@@ -17,6 +17,8 @@ import { DEFAULT_TOOLTIP_CONFIG, TOOLTIP_DEFAULT_CONFIG } from '@shared/componen
 import { MASK_CONFIG } from '@shared/mask/mask-config.token';
 import { CURRENCY_MASK_CONFIG } from '@shared/currency-mask/currency-mask-config.token';
 import { MODAL_DEFAULT_CONFIG, ModalConfig } from '@shared/components/modal/modal.config';
+import { SNACK_BAR_DEFAULT_CONFIG, SnackBarConfig } from '@shared/components/snack-bar/snack-bar.config';
+import { SnackBarModule } from '@shared/components/snack-bar/snack-bar.module';
 
 const withInterceptors = (...interceptors: any[]): Provider[] =>
   interceptors.map(useClass => ({
@@ -28,7 +30,7 @@ const withInterceptors = (...interceptors: any[]): Provider[] =>
 registerLocaleData(localePt);
 
 @NgModule({
-  imports: [HighlightModule.forRoot({ sql: () => import('highlight.js/lib/languages/sql') })],
+  imports: [HighlightModule.forRoot({ sql: () => import('highlight.js/lib/languages/sql') }), SnackBarModule],
 })
 export class CoreModule {
   static forRoot(): ModuleWithProviders<CoreModule> {
@@ -57,6 +59,7 @@ export class CoreModule {
         { provide: MASK_CONFIG, useValue: {} },
         { provide: CURRENCY_MASK_CONFIG, useValue: {} },
         { provide: MODAL_DEFAULT_CONFIG, useValue: new ModalConfig<any>() },
+        { provide: SNACK_BAR_DEFAULT_CONFIG, useValue: new SnackBarConfig() },
       ],
     };
   }
