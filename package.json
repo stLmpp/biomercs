@@ -9,7 +9,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "build-dev": "ng build --configuration development",
-    "build-prod": "ng build --configuration production"
+    "build-prod": "ng build --configuration production",
+    "build-analyze": "ng build --configuration analyze --stats-json && webpack-bundle-analyzer dist/biomercs-ng/stats.json"
   },
   "private": true,
   "dependencies": {
@@ -78,6 +79,7 @@
     "stylelint-config-standard": "~22.0.0",
     "stylelint-scss": "~3.20.1",
     "ts-node": "~10.1.0",
-    "typescript": "~4.3.5"
+    "typescript": "~4.3.5",
+    "webpack-bundle-analyzer": "~4.4.2"
   }
 }
