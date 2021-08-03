@@ -13,7 +13,6 @@ import { HeaderModule } from './header/header.module';
 import { NgProgressModule } from 'ngx-progressbar';
 import { NgProgressRouterModule } from 'ngx-progressbar/router';
 import { CurrencyMaskModule } from '@shared/currency-mask/currency-mask.module';
-import { MaskModule } from '@shared/mask/mask.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { FooterModule } from './footer/footer.module';
 
@@ -31,7 +30,6 @@ import { FooterModule } from './footer/footer.module';
     NgProgressModule.withConfig({ color: '#00acff', spinner: false, debounceTime: 100 }),
     NgProgressRouterModule,
     CurrencyMaskModule.forRoot(),
-    MaskModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the app is stable

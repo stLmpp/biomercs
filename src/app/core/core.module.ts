@@ -14,6 +14,7 @@ import { RetryInterceptor } from './retry.interceptor';
 import { HighlightModule } from '@shared/highlight/highlight.module';
 import { NAVIGATOR } from './navigator.token';
 import { DEFAULT_TOOLTIP_CONFIG, TOOLTIP_DEFAULT_CONFIG } from '@shared/components/tooltip/tooltip-token';
+import { MASK_CONFIG } from '@shared/mask/mask-config.token';
 
 const withInterceptors = (...interceptors: any[]): Provider[] =>
   interceptors.map(useClass => ({
@@ -51,6 +52,7 @@ export class CoreModule {
         },
         { provide: NAVIGATOR, useFactory: (window: Window) => window.navigator ?? {}, deps: [WINDOW] },
         { provide: TOOLTIP_DEFAULT_CONFIG, useValue: DEFAULT_TOOLTIP_CONFIG },
+        { provide: MASK_CONFIG, useValue: {} },
       ],
     };
   }

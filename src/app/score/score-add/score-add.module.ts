@@ -20,7 +20,7 @@ import { DatepickerModule } from '@shared/components/datepicker/datepicker.modul
     CommonModule,
     ScoreAddRoutingModule,
     CurrencyMaskModule.forChild(),
-    MaskModule.forChild(),
+    MaskModule.forFeature(),
     ParamsModule,
     TitleModule,
     UrlPreviewModule,
