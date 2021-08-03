@@ -6,9 +6,19 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { ButtonModule } from '@shared/components/button/button.module';
 import { NgLetModule } from '@stlmpp/utils';
 import { FormModule } from '@shared/components/form/form.module';
+import { StControlModelModule, StControlModule } from '@stlmpp/control';
 
 @NgModule({
   declarations: [RegionSelectComponent],
-  imports: [ListModule, ScrollingModule, ButtonModule, ModalModule, NgLetModule, FormModule],
+  imports: [
+    ListModule,
+    ScrollingModule,
+    ButtonModule,
+    ModalModule,
+    NgLetModule,
+    FormModule,
+    StControlModule,
+    StControlModelModule,
+  ],
 })
 export class RegionModule {}

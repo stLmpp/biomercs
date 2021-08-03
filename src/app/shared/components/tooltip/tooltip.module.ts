@@ -3,14 +3,16 @@ import { CommonModule } from '@angular/common';
 import { TooltipComponent } from './tooltip.component';
 import { TooltipDirective } from './tooltip.directive';
 import { DEFAULT_TOOLTIP_CONFIG, TOOLTIP_DEFAULT_CONFIG, TooltipConfig } from './tooltip-token';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 const DECLARATIONS = [TooltipComponent, TooltipDirective];
-const MODULES = [CommonModule];
+const MODULES = [CommonModule, OverlayModule];
+const EXPORTS = [CommonModule];
 
 @NgModule({
   declarations: [...DECLARATIONS],
   imports: [...MODULES],
-  exports: [...DECLARATIONS, ...MODULES],
+  exports: [...DECLARATIONS, ...EXPORTS],
 })
 export class TooltipModule {
   static forRoot(config?: Partial<TooltipConfig>): ModuleWithProviders<TooltipModule> {
