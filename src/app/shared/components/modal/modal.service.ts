@@ -23,7 +23,7 @@ import { ModalComponent } from './modal.component';
 import { DOCUMENT } from '@angular/common';
 import { DynamicLoaderService, LazyFn } from '../../../core/dynamic-loader.service';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ModalService implements OnDestroy {
   constructor(
     @Inject(MODAL_DEFAULT_CONFIG) private modalDefaultConfig: ModalConfig,

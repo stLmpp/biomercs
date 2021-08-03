@@ -1452,37 +1452,37 @@
     "@angular-devkit/schematics" "12.1.4"
     jsonc-parser "3.0.0"
 
-"@stlmpp/control@~8.0.1":
-  version "8.0.1"
-  resolved "https://registry.yarnpkg.com/@stlmpp/control/-/control-8.0.1.tgz#9f67e60db2f1fd315629d47e18de8b0c49370bd3"
-  integrity sha512-zlTVhtFFkcRKUksJ67HPb3piwOrZN9oUeAKYEaGXdolJtWovWhXWYLqLc9MLH2DubogcxJfxrCPb8C29f3OP3g==
+"@stlmpp/control@~8.0.2":
+  version "8.0.2"
+  resolved "https://registry.yarnpkg.com/@stlmpp/control/-/control-8.0.2.tgz#e3681aeed4ec9a7756ec0a93d6fc8a83dfdb33bf"
+  integrity sha512-7ECNTjd+xB5EtmFKzNAfLR5bdKUcUIauA2IBdpAs/q4xy6afXxbpGr4tIs96f3zk3lM9UnbCMhCa0g+0Q9NODw==
   dependencies:
     date-fns "~2.23.0"
     st-utils "~2.0.0"
     tslib "~2.3.0"
 
-"@stlmpp/router@~8.0.1":
-  version "8.0.1"
-  resolved "https://registry.yarnpkg.com/@stlmpp/router/-/router-8.0.1.tgz#e7ea46188b48853d6225b2bc6b7ee5e347489a16"
-  integrity sha512-JZdfSQioejlE+Dy0hzAQk4Vi2hwsgWVzGT1jGEzhmRyR5s5jtDA5v9m1idrJ8qxzULFYPGEU029vsb2zUgsK/g==
+"@stlmpp/router@~8.0.2":
+  version "8.0.2"
+  resolved "https://registry.yarnpkg.com/@stlmpp/router/-/router-8.0.2.tgz#324ff67ae3ef27af81e6202c3fb724e88dd662fa"
+  integrity sha512-gv5FcuNU+eLa3EDBXqRJhB2kOC9QCoJucRBCn+qZU1KeX2UvIY2vUtGwulbihOFBNUAvbkZ1pX1dS8YFgl+djg==
   dependencies:
     st-utils "~2.0.0"
     tslib "~2.3.0"
 
-"@stlmpp/store@~8.0.1":
-  version "8.0.1"
-  resolved "https://registry.yarnpkg.com/@stlmpp/store/-/store-8.0.1.tgz#a9d0d7f6b5c669f4ffa7a87f79b539cedcbbbedf"
-  integrity sha512-3KzOHk/KBjLRprFkHuFb8SdzQ+F3Cm7e4TsGBKD2CCosVB3qFO0N+m1f5LSoR4naSlp+FaKMLBZfetKMsVREpw==
+"@stlmpp/store@~8.0.2":
+  version "8.0.2"
+  resolved "https://registry.yarnpkg.com/@stlmpp/store/-/store-8.0.2.tgz#0c1f339dd18ab384637c1b9cc48ad25b95825697"
+  integrity sha512-VBmuNG4BMG1fQvlYaATnB3R1JhuZkv9i+N3RUmVZz9QFbEQGak3YSIprl898p41k4Z5+cksI92FXoZvXU9T7Rw==
   dependencies:
     copy-anything "~2.0.3"
     st-utils "~2.0.0"
     tslib "~2.3.0"
     type-fest "~1.3.0"
 
-"@stlmpp/utils@~8.0.1":
-  version "8.0.1"
-  resolved "https://registry.yarnpkg.com/@stlmpp/utils/-/utils-8.0.1.tgz#95f76f98a0472d0ca4207187445894ce19b52ab8"
-  integrity sha512-pN4c9SIeAk9gJrPIuXo2GRg0iH6WR1qf5ZQf87LSvYbJtojeq8v+pAwpyOCllvafqUu/7eaZ8QXCSLdXpT9ppQ==
+"@stlmpp/utils@~8.0.2":
+  version "8.0.2"
+  resolved "https://registry.yarnpkg.com/@stlmpp/utils/-/utils-8.0.2.tgz#4f87d7ee438f6949e1c466e8b9c9ba0891f7df17"
+  integrity sha512-GTOxveQ/bwP/j5cxTQBBibcC/oTZNH1VJl4tCbkbyQ8OELBv6bLmttwqSwbXSvTnECu+6eMMEYQRXnAX9dxEdQ==
   dependencies:
     st-utils "~2.0.0"
     tslib "~2.3.0"

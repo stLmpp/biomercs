@@ -9,7 +9,7 @@ import { NgLetModule, StUtilsArrayModule } from '@stlmpp/utils';
 const DECLARATIONS = [DialogComponent];
 const MODULES = [
   CommonModule,
-  ModalModule.forChild({
+  ModalModule.forFeature({
     disableClose: true,
     width: 500,
   }),
