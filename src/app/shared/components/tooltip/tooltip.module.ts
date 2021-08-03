@@ -7,12 +7,11 @@ import { OverlayModule } from '@angular/cdk/overlay';
 
 const DECLARATIONS = [TooltipComponent, TooltipDirective];
 const MODULES = [CommonModule, OverlayModule];
-const EXPORTS = [CommonModule];
 
 @NgModule({
   declarations: [...DECLARATIONS],
   imports: [...MODULES],
-  exports: [...DECLARATIONS, ...EXPORTS],
+  exports: [...DECLARATIONS, ...MODULES],
 })
 export class TooltipModule {
   static forFeature(config?: Partial<TooltipConfig>): ModuleWithProviders<TooltipModule> {
