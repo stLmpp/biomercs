@@ -1,11 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { PlayerQuery } from '../player.query';
-import { RouterQuery } from '@stlmpp/router';
 import {
   combineLatest,
   concat,
   debounceTime,
-  filter,
   finalize,
   map,
   Observable,
@@ -40,6 +38,7 @@ import { filterNil } from '@shared/operators/filter';
 import { mdiSteam } from '@mdi/js';
 import { RegionModalService } from '../../region/region-modal.service';
 import { ScoreModalService } from '../../score/score-modal.service';
+import { mapToParam } from '@util/operators/map-to-param';
 
 interface PlayerProfileComponentState {
   loadingRegion: boolean;
@@ -61,7 +60,6 @@ interface PlayerProfileComponentState {
 export class PlayerProfileComponent extends LocalState<PlayerProfileComponentState> implements OnInit {
   constructor(
     private playerQuery: PlayerQuery,
-    private routerQuery: RouterQuery,
     private playerService: PlayerService,
     private authQuery: AuthQuery,
     private regionService: RegionService,
@@ -83,8 +81,9 @@ export class PlayerProfileComponent extends LocalState<PlayerProfileComponentSta
     });
   }
 
-  private readonly _idPlayer$ = this.routerQuery.selectParams(RouteParamEnum.idPlayer).pipe(
-    filter(idPlayer => !!idPlayer),
+  private readonly _idPlayer$ = this.activatedRoute.paramMap.pipe(
+    mapToParam(RouteParamEnum.idPlayer),
+    filterNil(),
     map(Number)
   );
 
@@ -124,7 +123,7 @@ export class PlayerProfileComponent extends LocalState<PlayerProfileComponentSta
 
   get idPlayer(): number {
     // idPlayer is required to access this component
-    return +this.routerQuery.getParams(RouteParamEnum.idPlayer)!;
+    return +this.activatedRoute.snapshot.paramMap.get(RouteParamEnum.idPlayer)!;
   }
 
   get player(): Player {
