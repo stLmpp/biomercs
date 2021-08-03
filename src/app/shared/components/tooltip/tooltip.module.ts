@@ -15,14 +15,7 @@ const EXPORTS = [CommonModule];
   exports: [...DECLARATIONS, ...EXPORTS],
 })
 export class TooltipModule {
-  static forRoot(config?: Partial<TooltipConfig>): ModuleWithProviders<TooltipModule> {
-    return {
-      ngModule: TooltipModule,
-      providers: [{ provide: TOOLTIP_DEFAULT_CONFIG, useValue: { ...DEFAULT_TOOLTIP_CONFIG, ...config } }],
-    };
-  }
-
-  static forChild(config?: Partial<TooltipConfig>): ModuleWithProviders<TooltipModule> {
+  static forFeature(config?: Partial<TooltipConfig>): ModuleWithProviders<TooltipModule> {
     return {
       ngModule: TooltipModule,
       providers: [

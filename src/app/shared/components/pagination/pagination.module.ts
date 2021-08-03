@@ -10,7 +10,7 @@ import { StUtilsNumberModule } from '@stlmpp/utils';
 const DECLARATIONS = [PaginationComponent];
 const MODULES = [
   CommonModule,
-  TooltipModule.forChild({ delay: 300 }),
+  TooltipModule.forFeature({ delay: 300 }),
   SelectModule,
   StControlModelModule,
   ButtonModule,

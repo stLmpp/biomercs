@@ -12,7 +12,6 @@ import { SnackBarModule } from '@shared/components/snack-bar/snack-bar.module';
 import { HeaderModule } from './header/header.module';
 import { NgProgressModule } from 'ngx-progressbar';
 import { NgProgressRouterModule } from 'ngx-progressbar/router';
-import { TooltipModule } from '@shared/components/tooltip/tooltip.module';
 import { CurrencyMaskModule } from '@shared/currency-mask/currency-mask.module';
 import { MaskModule } from '@shared/mask/mask.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -31,7 +30,6 @@ import { FooterModule } from './footer/footer.module';
     HeaderModule,
     NgProgressModule.withConfig({ color: '#00acff', spinner: false, debounceTime: 100 }),
     NgProgressRouterModule,
-    TooltipModule.forRoot(),
     CurrencyMaskModule.forRoot(),
     MaskModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', {
