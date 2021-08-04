@@ -8,6 +8,7 @@ import { auditTime, startWith, takeUntil } from 'rxjs';
 @Component({
   selector: 'bio-select[multiple]',
   templateUrl: './select-multiple.component.html',
+  styleUrls: ['./select.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: { class: 'multiple' },

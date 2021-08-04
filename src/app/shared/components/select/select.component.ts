@@ -33,7 +33,7 @@ import { BooleanInput } from '@angular/cdk/coercion';
 @Component({
   selector: 'bio-select:not([multiple])',
   templateUrl: './select.component.html',
-  styleUrls: ['./select.component.scss'],
+  styleUrls: ['./select.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: { class: 'bio-select input' },
