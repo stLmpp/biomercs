@@ -7,6 +7,7 @@ import { ButtonModule } from '@shared/components/button/button.module';
 import { NgLetModule } from '@stlmpp/utils';
 import { FormModule } from '@shared/components/form/form.module';
 import { StControlModelModule, StControlModule } from '@stlmpp/control';
+import { FlagModule } from '@shared/components/icon/flag/flag.module';
 
 @NgModule({
   declarations: [RegionSelectComponent],
@@ -19,6 +20,7 @@ import { StControlModelModule, StControlModule } from '@stlmpp/control';
     FormModule,
     StControlModule,
     StControlModelModule,
+    FlagModule,
   ],
 })
 export class RegionModule {}
