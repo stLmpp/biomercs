@@ -8,7 +8,7 @@
 
     &.has-prefix {
       > .input {
-        padding-left: 1.25rem;
+        padding-left: 1.75rem;
       }
     }
 
@@ -24,11 +24,11 @@
 
     &.has-suffix {
       > .input {
-        padding-right: 1.25rem;
+        padding-right: 1.75rem;
       }
 
       > .spinner-wrapper {
-        right: calc(0.5rem + 18px);
+        right: 1.75rem;
       }
     }
 
@@ -66,11 +66,11 @@
     }
 
     > .suffix-wrapper {
-      right: 0.1rem;
+      right: 0.5rem;
     }
 
     > .prefix-wrapper {
-      left: 0.1rem;
+      left: 0.5rem;
     }
   }
 
