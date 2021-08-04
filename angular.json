@@ -65,6 +65,13 @@
               "namedChunks": true,
               "outputHashing": "none",
               "budgets": []
+            },
+            "analyze": {
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "outputHashing": "none",
+              "budgets": []
             }
           },
           "defaultConfiguration": "production"

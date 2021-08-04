@@ -4,7 +4,7 @@ import { catchError, Observable, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@model/http-error';
 import { isObject, isString } from 'st-utils';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class FormatErrorInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(

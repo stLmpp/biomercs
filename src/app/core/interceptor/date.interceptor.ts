@@ -3,7 +3,7 @@ import { HttpEvent, HttpEventType, HttpHandler, HttpInterceptor, HttpRequest } f
 import { map, Observable } from 'rxjs';
 import { isArray, isObject, isString } from 'st-utils';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class DateInterceptor implements HttpInterceptor {
   private readonly _dateRegexp =
     /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/;
@@ -47,6 +47,8 @@ export class DateInterceptor implements HttpInterceptor {
         return this.handleArray(item);
       } else if (isObject(item)) {
         return this.handleObject(item);
+      } else {
+        return item;
       }
     });
   }

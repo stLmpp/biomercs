@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpStatusCode } from '@angular/common/http';
+import { Observable, OperatorFunction } from 'rxjs';
+import { environment } from '@environment/environment';
 import { HttpError } from '@model/http-error';
-import { OperatorFunction } from 'rxjs';
 import { catchAndThrow } from '@util/operators/catch-and-throw';
 import { SnackBarService } from '@shared/components/snack-bar/snack-bar.service';
 import { ModalService } from '@shared/components/modal/modal.service';
 import { AuthQuery } from '../../auth/auth.query';
-import { HttpStatusCode } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
-export class HandleErrorService {
+export class HandleErrorDevInterceptor implements HttpInterceptor {
   constructor(
     private snackBarService: SnackBarService,
     private modalService: ModalService,
@@ -21,12 +22,13 @@ export class HandleErrorService {
       snack.onAction$.subscribe(async () => {
         await this.modalService.openLazy(() => import('../error/error.component').then(c => c.ErrorComponent), {
           data,
+          module: () => import('../error/error.module').then(m => m.ErrorModule),
         });
       });
     }
   }
 
-  handleErrorOperator<T>(): OperatorFunction<T, T> {
+  private _handleErrorOperator<T>(): OperatorFunction<T, T> {
     return catchAndThrow(httpError => {
       const isAdmin = this.authQuery.getIsAdmin();
       let message: string;
@@ -47,5 +49,13 @@ export class HandleErrorService {
       }
       this._snackBar('DEV - ' + message, button, httpError, isAdmin);
     });
+  }
+
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    const req$ = next.handle(req);
+    if (!environment.production) {
+      return req$.pipe(this._handleErrorOperator());
+    }
+    return req$;
   }
 }

@@ -13,7 +13,7 @@ const MODULES = [CommonModule];
   exports: [...DECLARATIONS, ...MODULES],
 })
 export class BadgeModule {
-  static forChild(config?: Partial<BioBadgeConfig>): ModuleWithProviders<BadgeModule> {
+  static forFeature(config?: Partial<BioBadgeConfig>): ModuleWithProviders<BadgeModule> {
     return {
       ngModule: BadgeModule,
       providers: [{ provide: BioBadgeConfig, useValue: new BioBadgeConfig(config) }],

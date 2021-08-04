@@ -5,9 +5,10 @@ import { ListModule } from '@shared/components/list/list.module';
 import { FormModule } from '@shared/components/form/form.module';
 import { PaginationModule } from '@shared/components/pagination/pagination.module';
 import { NgLetModule } from '@stlmpp/utils';
+import { StControlModule } from '@stlmpp/control';
 
 const DECLARATIONS = [PlayerSearchModalComponent];
-const MODULES = [ListModule, PaginationModule, ModalModule, FormModule];
+const MODULES = [ListModule, PaginationModule, ModalModule, FormModule, StControlModule];
 
 @NgModule({
   declarations: [...DECLARATIONS],

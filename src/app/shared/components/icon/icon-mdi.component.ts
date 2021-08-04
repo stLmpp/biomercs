@@ -4,7 +4,7 @@ import { AbstractComponent } from '@shared/components/core/abstract-component';
 @Component({
   selector: 'icon[mdi]:not([flag])',
   templateUrl: './icon-mdi.component.html',
-  styleUrls: ['./icon-mdi.component.scss'],
+  styleUrls: ['./icon.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: { class: 'icon icon-mdi' },

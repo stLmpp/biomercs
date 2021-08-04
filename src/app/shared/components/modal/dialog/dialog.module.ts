@@ -9,19 +9,20 @@ import { NgLetModule, StUtilsArrayModule } from '@stlmpp/utils';
 const DECLARATIONS = [DialogComponent];
 const MODULES = [
   CommonModule,
-  ModalModule.forChild({
+  ModalModule.forFeature({
     disableClose: true,
     width: 500,
   }),
   ButtonModule,
   IconModule,
   StUtilsArrayModule,
+  NgLetModule,
 ];
-const EXPORTS = [ModalModule, ButtonModule, IconModule, StUtilsArrayModule];
+const EXPORTS = [ModalModule, ButtonModule, IconModule, StUtilsArrayModule, NgLetModule];
 
 @NgModule({
   declarations: [...DECLARATIONS],
-  imports: [...MODULES, NgLetModule],
+  imports: [...MODULES],
   exports: [...DECLARATIONS, ...EXPORTS],
 })
 export class DialogModule {}

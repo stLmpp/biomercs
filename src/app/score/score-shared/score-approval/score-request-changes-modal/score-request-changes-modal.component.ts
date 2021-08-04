@@ -16,10 +16,10 @@ import { finalize, Subject, switchMap, tap, throttleTime } from 'rxjs';
 import { Key, KeyCode } from '@model/enum/key';
 import { FocusKeyManager } from '@angular/cdk/a11y';
 import { InputDirective } from '@shared/components/form/input.directive';
-import { AbstractScoreService } from '../../../abstract-score.service';
 import { ScoreApprovalComponentState } from '../score-approval.component';
 import { LocalState } from '@stlmpp/store';
 import { trackByControl } from '@util/track-by';
+import { ScoreService } from '../../../score.service';
 
 export interface ScoreRequestChangesModalData {
   score: Score;
@@ -49,7 +49,7 @@ export class ScoreRequestChangesModalComponent
     @Inject(MODAL_DATA) { score, scoreApprovalComponentState }: ScoreRequestChangesModalData,
     private controlBuilder: ControlBuilder,
     public modalRef: ModalRef<ScoreRequestChangesModalComponent, ScoreRequestChangesModalForm, ScoreApprovalPagination>,
-    private scoreService: AbstractScoreService
+    private scoreService: ScoreService
   ) {
     super({ saving: false });
     this.score = score;

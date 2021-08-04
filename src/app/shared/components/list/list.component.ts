@@ -4,7 +4,6 @@ import {
   Component,
   ContentChildren,
   Directive,
-  forwardRef,
   HostListener,
   OnDestroy,
   QueryList,
@@ -32,8 +31,8 @@ export class ListSelectable {}
 @Directive({
   selector: 'bio-list[model],bio-list[control],bio-list[controlName]',
   providers: [
-    { provide: ControlValue, useExisting: forwardRef(() => ListControlValue), multi: true },
-    { provide: ListParentControl, useExisting: forwardRef(() => ListControlValue) },
+    { provide: ControlValue, useExisting: ListControlValue, multi: true },
+    { provide: ListParentControl, useExisting: ListControlValue },
   ],
   host: { class: 'control' },
 })

@@ -5,7 +5,6 @@ import {
   Component,
   ContentChildren,
   ElementRef,
-  forwardRef,
   HostBinding,
   HostListener,
   Input,
@@ -34,13 +33,13 @@ import { BooleanInput } from '@angular/cdk/coercion';
 @Component({
   selector: 'bio-select:not([multiple])',
   templateUrl: './select.component.html',
-  styleUrls: ['./select.component.scss'],
+  styleUrls: ['./select.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: { class: 'bio-select input' },
   providers: [
-    { provide: Select, useExisting: forwardRef(() => SelectComponent) },
-    { provide: ControlValue, useExisting: forwardRef(() => SelectComponent), multi: true },
+    { provide: Select, useExisting: SelectComponent },
+    { provide: ControlValue, useExisting: SelectComponent, multi: true },
   ],
   animations: [Animations.fade.inOut(100), Animations.scale.in(100, 0.8)],
 })

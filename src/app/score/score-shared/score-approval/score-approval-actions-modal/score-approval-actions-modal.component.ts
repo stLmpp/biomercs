@@ -4,9 +4,9 @@ import { ScoreApprovalActionEnum } from '@model/enum/score-approval-action.enum'
 import { Score } from '@model/score';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import { ScoreApprovalComponentState } from '../score-approval.component';
-import { ScoreService } from '../../../score.service';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import { ScoreApprovalPagination } from '@model/score-approval';
+import { ScoreModalService } from '../../../score-modal.service';
 
 export interface ScoreApprovalActionsModalData {
   score: Score;
@@ -26,12 +26,12 @@ interface ScoreApprovalActionsComponentState {
 export class ScoreApprovalActionsModalComponent extends LocalState<ScoreApprovalActionsComponentState> {
   constructor(
     @Inject(MODAL_DATA) { score, scoreApprovalComponentState }: ScoreApprovalActionsModalData,
-    private scoreService: ScoreService,
     private modalRef: ModalRef<
       ScoreApprovalActionsModalComponent,
       ScoreApprovalActionsModalData,
       ScoreApprovalPagination | null
-    >
+    >,
+    private scoreModalService: ScoreModalService
   ) {
     super({ loadingModal: false });
     this.score = score;
@@ -47,7 +47,7 @@ export class ScoreApprovalActionsModalComponent extends LocalState<ScoreApproval
 
   async openModalApproval(action: ScoreApprovalActionEnum): Promise<void> {
     this.updateState({ loadingModal: true });
-    const modalRef = await this.scoreService.openModalScoreApproval({
+    const modalRef = await this.scoreModalService.openModalScoreApproval({
       score: this.score,
       action,
       scoreApprovalComponentState: this.scoreApprovalComponentState,
@@ -60,7 +60,7 @@ export class ScoreApprovalActionsModalComponent extends LocalState<ScoreApproval
 
   async openModalRequestChanges(): Promise<void> {
     this.updateState({ loadingModal: true });
-    const modalRef = await this.scoreService.openModalRequestChangesScore({
+    const modalRef = await this.scoreModalService.openModalRequestChangesScore({
       score: this.score,
       scoreApprovalComponentState: this.scoreApprovalComponentState,
     });

@@ -22,6 +22,7 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { ColDef } from '@shared/components/table/col-def';
 import { ScoreOpenInfoCellComponent } from '../score-shared/score-open-info-cell/score-open-info-cell.component';
 import { trackById } from '@util/track-by';
+import { ScoreModalService } from '../score-modal.service';
 
 export interface ScoreSearchComponentState {
   scores: Score[];
@@ -52,7 +53,8 @@ export class ScoreSearchComponent extends LocalState<ScoreSearchComponentState> 
     private stageService: StageService,
     private characterService: CharacterService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private scoreModalService: ScoreModalService
   ) {
     super({
       scores: [],
@@ -302,7 +304,7 @@ export class ScoreSearchComponent extends LocalState<ScoreSearchComponentState> 
   }
 
   async openInfoScore(score: Score): Promise<void> {
-    await this.scoreService.openModalScoreInfo({ score, showWorldRecord: true, showApprovalDate: true });
+    await this.scoreModalService.openModalScoreInfo({ score, showWorldRecord: true, showApprovalDate: true });
   }
 
   onSearch(): void {

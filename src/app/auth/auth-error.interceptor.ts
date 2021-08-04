@@ -16,7 +16,7 @@ import { DialogService } from '@shared/components/modal/dialog/dialog.service';
 export const IgnoreErrorContextToken = new HttpContextToken(() => false);
 export const ignoreErrorContext = (): HttpContext => new HttpContext().set(IgnoreErrorContextToken, true);
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AuthErrorInterceptor implements HttpInterceptor {
   constructor(private router: Router, private dialogService: DialogService) {}
 

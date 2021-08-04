@@ -1,7 +1,7 @@
 <ng-container *ngLet="user$ | async as user">
   <ng-container *ngLet="isMobile$ | async as isMobile">
     <bio-side-menu
-      *ngIf="(sideMenuOpened$ | async) && user"
+      *ngIf="sideMenuOpened && user"
       [user]="user"
       [isMobile]="isMobile"
       (menuSelected)="toggleSideMenu($event)"

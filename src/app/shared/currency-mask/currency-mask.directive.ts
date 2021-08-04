@@ -3,14 +3,14 @@ import {
   CurrencyMaskDirective as _CurrencyMaskDirective,
   CurrencyMaskInputMode,
 } from 'ngx-currency';
-import { Directive, ElementRef, forwardRef, Inject, KeyValueDiffers, OnInit, Optional } from '@angular/core';
+import { Directive, ElementRef, Inject, KeyValueDiffers, OnInit, Optional } from '@angular/core';
 import { ControlValue } from '@stlmpp/control';
 import { Subject } from 'rxjs';
 import { CURRENCY_MASK_CONFIG } from '@shared/currency-mask/currency-mask-config.token';
 
 @Directive({
   selector: 'input[bioCurrencyMask]',
-  providers: [{ provide: ControlValue, useExisting: forwardRef(() => CurrencyMaskDirective), multi: false }],
+  providers: [{ provide: ControlValue, useExisting: CurrencyMaskDirective, multi: false }],
 })
 export class CurrencyMaskDirective extends _CurrencyMaskDirective implements ControlValue<number>, OnInit {
   constructor(

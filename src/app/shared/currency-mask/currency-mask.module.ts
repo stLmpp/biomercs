@@ -10,14 +10,7 @@ import { CURRENCY_MASK_CONFIG } from '@shared/currency-mask/currency-mask-config
   imports: [CommonModule],
 })
 export class CurrencyMaskModule {
-  static forRoot(config?: Partial<CurrencyMaskConfig>): ModuleWithProviders<CurrencyMaskModule> {
-    return {
-      ngModule: CurrencyMaskModule,
-      providers: [{ provide: CURRENCY_MASK_CONFIG, useValue: config ?? {} }],
-    };
-  }
-
-  static forChild(config?: Partial<CurrencyMaskConfig>): ModuleWithProviders<CurrencyMaskModule> {
+  static forFeature(config?: Partial<CurrencyMaskConfig>): ModuleWithProviders<CurrencyMaskModule> {
     return {
       ngModule: CurrencyMaskModule,
       providers: [

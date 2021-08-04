@@ -24,9 +24,12 @@
         </button>
         <pre><code [highlight]="error.sqlQuery" [languages]="['sql']"></code></pre>
       </div>
-      <p *ngIf="error.sqlParameters && error.sqlParameters.length">
-        Parameters: {{ error.sqlParameters | join: '.':', ' }}
-      </p>
+      <ng-container *ngIf="error.sqlParametersFormatted">
+        Parameters:
+        <pre class="sql-parameters">
+          <code [highlight]="error.sqlParametersFormatted" [languages]="['yaml']"></code>
+        </pre>
+      </ng-container>
     </ng-container>
   </bio-accordion-item>
 </bio-accordion>

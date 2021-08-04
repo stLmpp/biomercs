@@ -1,7 +1,6 @@
 import {
   Directive,
   ElementRef,
-  forwardRef,
   Inject,
   Injectable,
   Input,
@@ -30,7 +29,7 @@ export class MaskService extends _MaskService {
 
 @Directive({
   selector: 'input[bioMask]',
-  providers: [{ provide: ControlValue, useExisting: forwardRef(() => MaskDirective), multi: false }, MaskService],
+  providers: [{ provide: ControlValue, useExisting: MaskDirective, multi: false }, MaskService],
 })
 export class MaskDirective extends _MaskDirective implements ControlValue<string>, OnChanges {
   constructor(

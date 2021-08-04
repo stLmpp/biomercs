@@ -3,9 +3,10 @@ import { CommonModule } from '@angular/common';
 import { TooltipComponent } from './tooltip.component';
 import { TooltipDirective } from './tooltip.directive';
 import { DEFAULT_TOOLTIP_CONFIG, TOOLTIP_DEFAULT_CONFIG, TooltipConfig } from './tooltip-token';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 const DECLARATIONS = [TooltipComponent, TooltipDirective];
-const MODULES = [CommonModule];
+const MODULES = [CommonModule, OverlayModule];
 
 @NgModule({
   declarations: [...DECLARATIONS],
@@ -13,14 +14,7 @@ const MODULES = [CommonModule];
   exports: [...DECLARATIONS, ...MODULES],
 })
 export class TooltipModule {
-  static forRoot(config?: Partial<TooltipConfig>): ModuleWithProviders<TooltipModule> {
-    return {
-      ngModule: TooltipModule,
-      providers: [{ provide: TOOLTIP_DEFAULT_CONFIG, useValue: { ...DEFAULT_TOOLTIP_CONFIG, ...config } }],
-    };
-  }
-
-  static forChild(config?: Partial<TooltipConfig>): ModuleWithProviders<TooltipModule> {
+  static forFeature(config?: Partial<TooltipConfig>): ModuleWithProviders<TooltipModule> {
     return {
       ngModule: TooltipModule,
       providers: [
