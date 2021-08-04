@@ -1,60 +1,28 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  ElementRef,
-  HostBinding,
-  Input,
-  Renderer2,
-  ViewEncapsulation,
-} from '@angular/core';
-import { BooleanInput, coerceBooleanProperty } from 'st-utils';
+import { ChangeDetectionStrategy, Component, HostBinding, Input, ViewEncapsulation } from '@angular/core';
 import { AbstractComponent } from '@shared/components/core/abstract-component';
-import { RegionService } from '../../../../region/region.service';
 
 @Component({
   selector: 'icon[flag]',
   templateUrl: './flag.component.html',
   styleUrls: ['./flag.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'flag-icon icon' },
   encapsulation: ViewEncapsulation.None,
 })
 export class FlagComponent extends AbstractComponent {
-  constructor(private elementRef: ElementRef, private renderer2: Renderer2, private regionService: RegionService) {
-    super();
-  }
-
-  private _squared = false;
   private _flag = '';
 
   @Input()
-  get flag(): string | undefined {
-    return this._flag;
-  }
-  set flag(flag: string | undefined) {
-    if (this._flag) {
-      this.renderer2.removeClass(this.elementRef.nativeElement, 'flag-icon-' + this._flag);
-    }
-    if (flag) {
-      this._flag = flag.toLowerCase();
-      this.renderer2.addClass(this.elementRef.nativeElement, 'flag-icon-' + this._flag);
-      this.renderer2.setStyle(
-        this.elementRef.nativeElement,
-        'background-image',
-        `url('${this.regionService.getFlagSvgUrl(this._flag)}')`
-      );
-      this.regionService.getFlagSvg(this._flag).subscribe(console.log);
-    }
+  set flag(flag: string | null | undefined) {
+    this._flag = (flag ?? '').toLowerCase();
   }
 
-  @Input()
-  @HostBinding('class.flag-icon-squared')
-  get squared(): boolean {
-    return this._squared;
-  }
-  set squared(squared: boolean) {
-    this._squared = coerceBooleanProperty(squared);
+  @HostBinding('class')
+  get class(): string {
+    return `icon flag-icon flag-icon-${this._flag.toLowerCase()}`;
   }
 
-  static ngAcceptInputType_squared: BooleanInput;
+  @HostBinding('style.background-image')
+  get backgroundImage(): string {
+    return `url(/assets/flag/${this._flag.toLowerCase()}.svg)`;
+  }
 }
