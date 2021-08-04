@@ -21,11 +21,7 @@ import { SNACK_BAR_DEFAULT_CONFIG, SnackBarConfig } from '@shared/components/sna
 import { SnackBarModule } from '@shared/components/snack-bar/snack-bar.module';
 
 const withInterceptors = (...interceptors: any[]): Provider[] =>
-  interceptors.map(useClass => ({
-    provide: HTTP_INTERCEPTORS,
-    useExisting: useClass,
-    multi: true,
-  }));
+  interceptors.map(useExisting => ({ provide: HTTP_INTERCEPTORS, useExisting, multi: true }));
 
 registerLocaleData(localePt);
 
