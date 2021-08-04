@@ -11,3 +11,8 @@ p {
 .sql-query {
   position: relative;
 }
+
+.sql-parameters {
+  word-break: break-all;
+  white-space: pre-line;
+}

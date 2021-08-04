@@ -30,7 +30,13 @@ const withInterceptors = (...interceptors: any[]): Provider[] =>
 registerLocaleData(localePt);
 
 @NgModule({
-  imports: [HighlightModule.forRoot({ sql: () => import('highlight.js/lib/languages/sql') }), SnackBarModule],
+  imports: [
+    HighlightModule.forRoot({
+      sql: () => import('highlight.js/lib/languages/sql'),
+      yaml: () => import('highlight.js/lib/languages/yaml'),
+    }),
+    SnackBarModule,
+  ],
 })
 export class CoreModule {
   static forRoot(): ModuleWithProviders<CoreModule> {

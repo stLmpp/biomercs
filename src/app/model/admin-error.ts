@@ -11,4 +11,6 @@ export interface AdminError {
   createdBy: number;
   createdByUsername?: string;
   creationDate: Date;
+
+  sqlParametersFormatted?: string;
 }

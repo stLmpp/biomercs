@@ -47,6 +47,8 @@ export class DateInterceptor implements HttpInterceptor {
         return this.handleArray(item);
       } else if (isObject(item)) {
         return this.handleObject(item);
+      } else {
+        return item;
       }
     });
   }
