@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { AbstractComponent } from '@shared/components/core/abstract-component';
+import { RegionService } from '../../../../region/region.service';
 
 @Component({
   selector: 'icon[flag]',
@@ -19,7 +20,7 @@ import { AbstractComponent } from '@shared/components/core/abstract-component';
   encapsulation: ViewEncapsulation.None,
 })
 export class FlagComponent extends AbstractComponent {
-  constructor(private elementRef: ElementRef, private renderer2: Renderer2) {
+  constructor(private elementRef: ElementRef, private renderer2: Renderer2, private regionService: RegionService) {
     super();
   }
 
@@ -37,6 +38,12 @@ export class FlagComponent extends AbstractComponent {
     if (flag) {
       this._flag = flag.toLowerCase();
       this.renderer2.addClass(this.elementRef.nativeElement, 'flag-icon-' + this._flag);
+      this.renderer2.setStyle(
+        this.elementRef.nativeElement,
+        'background-image',
+        `url('${this.regionService.getFlagSvgUrl(this._flag)}')`
+      );
+      this.regionService.getFlagSvg(this._flag).subscribe(console.log);
     }
   }
 
