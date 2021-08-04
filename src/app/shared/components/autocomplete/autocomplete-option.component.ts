@@ -10,7 +10,7 @@ import {
   Output,
 } from '@angular/core';
 import { FocusableOption } from '@angular/cdk/a11y';
-import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
+import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { Autocomplete } from '@shared/components/autocomplete/autocomplete';
 
 @Component({

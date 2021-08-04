@@ -18,7 +18,7 @@ import { AutocompleteDirective } from '@shared/components/autocomplete/autocompl
 import { generateScorePlayerControlGroup, ScorePlayerAddForm } from '../score-add';
 import { LocalState } from '@stlmpp/store';
 import { AuthQuery } from '../../../auth/auth.query';
-import { BooleanInput } from '@angular/cdk/coercion';
+import { BooleanInput } from 'st-utils';
 import { SimpleChangesCustom } from '@util/util';
 import { trackById } from '@util/track-by';
 import { PlayerModalService } from '../../../player/player-modal.service';

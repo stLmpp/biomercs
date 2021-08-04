@@ -13,7 +13,7 @@ import {
 } from '@angular/core';
 import { Select } from './select';
 import { FocusableOption } from '@angular/cdk/a11y';
-import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
+import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { OptgroupComponent } from './optgroup.component';
 import { Option } from '@shared/components/select/option';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';

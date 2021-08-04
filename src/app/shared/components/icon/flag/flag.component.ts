@@ -7,7 +7,7 @@ import {
   Renderer2,
   ViewEncapsulation,
 } from '@angular/core';
-import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
+import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { AbstractComponent } from '@shared/components/core/abstract-component';
 
 @Component({

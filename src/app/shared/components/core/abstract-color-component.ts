@@ -1,6 +1,6 @@
 import { Directive, HostBinding, Input } from '@angular/core';
 import { Destroyable } from '@shared/components/common/destroyable-component';
-import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
+import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { BioTypeInput } from '@shared/components/core/types';
 
 @Directive()

@@ -21,8 +21,7 @@ import { PrefixDirective } from '../common/prefix.directive';
 import { SuffixDirective } from '../common/suffix.directive';
 import { Control, ControlDirective, ModelDirective } from '@stlmpp/control';
 import { SelectComponent } from '../select/select.component';
-import { BooleanInput } from '@angular/cdk/coercion';
-import { isNil } from 'st-utils';
+import { BooleanInput, isNil } from 'st-utils';
 
 let uniqueId = 0;
 

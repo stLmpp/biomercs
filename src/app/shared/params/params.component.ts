@@ -33,7 +33,7 @@ import { StageService } from '../services/stage/stage.service';
 import { trackByFactory } from '@stlmpp/utils';
 import { CharacterService } from '../services/character/character.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
+import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { CharacterCostume } from '@model/character-costume';
 import { Game } from '@model/game';
 import { Mode } from '@model/mode';

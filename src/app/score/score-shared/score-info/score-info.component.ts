@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Score } from '@model/score';
-import { BooleanInput } from 'st-utils';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { mdiAccountStar, mdiTrophy, mdiTrophyAward } from '@mdi/js';
 import { trackById } from '@util/track-by';
 

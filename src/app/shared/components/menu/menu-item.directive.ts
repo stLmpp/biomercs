@@ -1,7 +1,7 @@
 import { Directive, ElementRef, Host, HostBinding, Input, Self } from '@angular/core';
 import { MenuComponent } from './menu.component';
 import { MenuItem } from './menu-item';
-import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
+import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { ButtonComponent } from '../button/button.component';
 
 @Directive({

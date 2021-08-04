@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular
 import { UrlMetadataService } from '@shared/services/url-metadata/url-metadata.service';
 import { filterNil } from '@shared/operators/filter';
 import { debounceTime, finalize, switchMap } from 'rxjs';
-import { BooleanInput } from '@angular/cdk/coercion';
+import { BooleanInput } from 'st-utils';
 import { LocalState } from '@stlmpp/store';
 
 @Component({

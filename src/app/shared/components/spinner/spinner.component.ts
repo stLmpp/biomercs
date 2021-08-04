@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, ViewEncapsulation } from '@angular/core';
-import { BooleanInput, coerceBooleanProperty, coerceNumberProperty, NumberInput } from '@angular/cdk/coercion';
+import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { Animations } from '../../animations/animations';
 import { SimpleChangesCustom } from '@util/util';
+import { coerceNumberProperty, NumberInput } from '@angular/cdk/coercion';
 
 @Component({
   selector: 'spinner',

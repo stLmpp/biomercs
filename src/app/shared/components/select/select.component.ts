@@ -25,10 +25,9 @@ import { FocusKeyManager } from '@angular/cdk/a11y';
 import { Animations } from '../../animations/animations';
 import { AnimationEvent } from '@angular/animations';
 import { OptgroupComponent } from './optgroup.component';
-import { isNil } from 'st-utils';
+import { BooleanInput, isNil } from 'st-utils';
 import { Key } from '@model/enum/key';
 import { getOverlayPositionMenu } from '@shared/components/menu/util';
-import { BooleanInput } from '@angular/cdk/coercion';
 
 @Component({
   selector: 'bio-select:not([multiple])',

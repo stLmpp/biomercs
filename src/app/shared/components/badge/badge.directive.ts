@@ -1,6 +1,5 @@
 import { AfterViewInit, Directive, ElementRef, HostBinding, Input, Optional, Renderer2 } from '@angular/core';
-import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
-import { isNil } from 'st-utils';
+import { BooleanInput, coerceBooleanProperty, isNil } from 'st-utils';
 import { BadgeBase, BioBadgeConfig } from '@shared/components/badge/badge';
 import { VerticalHorizontalPosition } from '@shared/components/common/positions';
 

@@ -10,12 +10,13 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { Nullable } from '../../type/nullable';
-import { BooleanInput, coerceBooleanProperty, NumberInput } from '@angular/cdk/coercion';
+import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { ConnectedPosition, Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { overlayPositionsArray } from '@util/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { TooltipComponent } from './tooltip.component';
 import { TOOLTIP_DEFAULT_CONFIG, TooltipConfig } from './tooltip-token';
+import { coerceNumberProperty, NumberInput } from '@angular/cdk/coercion';
 
 export type TooltipPosition = 'top' | 'right' | 'bottom' | 'left';
 
@@ -70,20 +71,20 @@ export class TooltipDirective implements OnDestroy {
   isOpen = false;
 
   private _getShowDelay(): number {
-    return (
+    return coerceNumberProperty(
       this.tooltipShowDelay ||
-      this.tooltipDelay ||
-      this.tooltipDefaultConfig.showDelay ||
-      this.tooltipDefaultConfig.delay
+        this.tooltipDelay ||
+        this.tooltipDefaultConfig.showDelay ||
+        this.tooltipDefaultConfig.delay
     );
   }
 
   private _getHideDelay(): number {
-    return (
+    return coerceNumberProperty(
       this.tooltipHideDelay ||
-      this.tooltipDelay ||
-      this.tooltipDefaultConfig.hideDelay ||
-      this.tooltipDefaultConfig.delay
+        this.tooltipDelay ||
+        this.tooltipDefaultConfig.hideDelay ||
+        this.tooltipDefaultConfig.delay
     );
   }
 

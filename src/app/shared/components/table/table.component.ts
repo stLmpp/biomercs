@@ -7,13 +7,12 @@ import {
   TrackByFunction,
   ViewEncapsulation,
 } from '@angular/core';
-import { BooleanInput } from 'st-utils';
+import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { PaginationMeta } from '@model/pagination';
 import { LocalState } from '@stlmpp/store';
 import { ColDef, ColDefInternal } from '@shared/components/table/col-def';
 import { combineLatest, map, Observable } from 'rxjs';
 import { TableCellNotifyChange, TableOrder } from '@shared/components/table/type';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { trackById } from '@util/track-by';
 
 export interface ScoreTableState<T extends Record<any, any>, K extends keyof T = keyof T> {

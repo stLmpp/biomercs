@@ -1,15 +1,15 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
+  EventEmitter,
+  HostListener,
   Input,
   Output,
   ViewEncapsulation,
-  EventEmitter,
-  ChangeDetectorRef,
-  HostListener,
 } from '@angular/core';
 import { ControlValue } from '@stlmpp/control';
-import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
+import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { HorizontalPosition } from '@shared/components/common/positions';
 
 @Component({

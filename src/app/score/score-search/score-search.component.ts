@@ -18,7 +18,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { StageService } from '@shared/services/stage/stage.service';
 import { CharacterService } from '@shared/services/character/character.service';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { coerceBooleanProperty } from 'st-utils';
 import { ColDef } from '@shared/components/table/col-def';
 import { ScoreOpenInfoCellComponent } from '../score-shared/score-open-info-cell/score-open-info-cell.component';
 import { trackById } from '@util/track-by';

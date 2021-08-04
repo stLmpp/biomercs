@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
-import { BooleanInput } from '@angular/cdk/coercion';
+import { BooleanInput } from 'st-utils';
 import packageJson from '../../../package.json';
 
 @Component({

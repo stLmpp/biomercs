@@ -17,7 +17,7 @@ import {
   ModalConfig,
   ModalConfigLazy,
 } from './modal.config';
-import { coerceArray } from '@angular/cdk/coercion';
+import { coerceArray } from 'st-utils';
 import { ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
 import { ModalComponent } from './modal.component';
 import { DOCUMENT } from '@angular/common';

@@ -5,12 +5,11 @@ import {
 } from '@shared/services/breakpoint-observer/breakpoint-observer.service';
 import { Score } from '@model/score';
 import { map } from 'rxjs';
-import { BooleanInput } from 'st-utils';
+import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { PaginationMeta } from '@model/pagination';
 import { TableCellNotifyChange, TableOrder } from '@shared/components/table/type';
 import { ColDef } from '@shared/components/table/col-def';
 import { PaginationComponent } from '@shared/components/pagination/pagination.component';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 @Component({
   selector: 'bio-score-list-responsive',

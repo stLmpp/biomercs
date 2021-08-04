@@ -19,7 +19,7 @@ import { AutocompleteComponent } from '@shared/components/autocomplete/autocompl
 import { getOverlayPositionMenu } from '@shared/components/menu/util';
 import { ControlDirective } from '@stlmpp/control';
 import { AutocompleteOptionComponent } from '@shared/components/autocomplete/autocomplete-option.component';
-import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
+import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 
 @Directive({
   selector: 'input[bioAutocomplete],textarea[bioAutocomplete]',
