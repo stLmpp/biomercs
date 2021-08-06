@@ -1,16 +1,16 @@
-import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject } from '@angular/core';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import { Player } from '@model/player';
 import { Control, ControlGroup } from '@stlmpp/control';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import { combineLatest, debounceTime, filter, finalize, Observable, pluck, shareReplay, switchMap } from 'rxjs';
-import { LocalState } from '@stlmpp/store';
 import { PlayerService } from '../../player.service';
 import { PaginationMeta } from '@model/pagination';
 import { trackById } from '@util/track-by';
 
 export interface PlayerSearchModalComponentData {
   idPlayer?: number | null | undefined;
+  idPlayersSelected: number[];
 }
 
 interface PlayerSearchModalComponentForm {
@@ -19,27 +19,25 @@ interface PlayerSearchModalComponentForm {
   term: string;
 }
 
-interface PlayerSearchModalComponentState {
-  loading: boolean;
-}
-
 @Component({
   selector: 'bio-player-search-modal',
   templateUrl: './player-search-modal.component.html',
   styleUrls: ['./player-search-modal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PlayerSearchModalComponent extends LocalState<PlayerSearchModalComponentState> {
+export class PlayerSearchModalComponent {
   constructor(
     private modalRef: ModalRef<PlayerSearchModalComponent, PlayerSearchModalComponentData, Player | undefined>,
-    @Inject(MODAL_DATA) { idPlayer }: PlayerSearchModalComponentData,
-    private playerService: PlayerService
+    @Inject(MODAL_DATA) { idPlayer, idPlayersSelected }: PlayerSearchModalComponentData,
+    private playerService: PlayerService,
+    private changeDetectorRef: ChangeDetectorRef
   ) {
-    super({ loading: false });
     this.idPlayer = idPlayer;
+    this.idPlayersSelected = idPlayersSelected;
   }
 
-  idPlayer?: number | null | undefined;
+  readonly idPlayer?: number | null | undefined;
+  readonly idPlayersSelected: number[];
 
   readonly form = new ControlGroup<PlayerSearchModalComponentForm>({
     limit: new Control(10),
@@ -55,10 +53,12 @@ export class PlayerSearchModalComponent extends LocalState<PlayerSearchModalComp
   readonly limit$ = this.form.get('limit').value$;
   readonly data$ = combineLatest([this.termDebounce$, this.page$, this.limit$]).pipe(
     switchMap(([term, page, limit]) => {
-      this.updateState({ loading: true });
-      return this.playerService.search(term, page, limit).pipe(
+      this.loading = true;
+      this.changeDetectorRef.markForCheck();
+      return this.playerService.search(term, page, limit, this.idPlayersSelected).pipe(
         finalize(() => {
-          this.updateState({ loading: false });
+          this.loading = false;
+          this.changeDetectorRef.markForCheck();
         })
       );
     }),
@@ -66,7 +66,9 @@ export class PlayerSearchModalComponent extends LocalState<PlayerSearchModalComp
   );
   readonly players$: Observable<Player[]> = this.data$.pipe(pluck('items'));
   readonly paginationMeta$: Observable<PaginationMeta> = this.data$.pipe(pluck('meta'));
-  readonly loading$ = this.selectState('loading');
+
+  loading = false;
+
   readonly trackByPlayer = trackById;
 
   onCurrentPageChange($event: number): void {

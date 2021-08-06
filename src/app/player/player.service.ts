@@ -54,8 +54,13 @@ export class PlayerService {
     );
   }
 
-  search(personaName: string, page: number, limit: number): Observable<Pagination<Player>> {
-    const params = new HttpParams({ personaName, page, limit });
+  search(
+    personaName: string,
+    page: number,
+    limit: number,
+    idPlayersSelected: number[] = []
+  ): Observable<Pagination<Player>> {
+    const params = new HttpParams({ personaName, page, limit, idPlayersSelected });
     return this.http.get<Pagination<Player>>(`${this.endPoint}/search`, { params }).pipe(
       tap(({ items }) => {
         this.playerStore.upsert(items);

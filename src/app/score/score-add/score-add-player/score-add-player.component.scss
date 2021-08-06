@@ -2,3 +2,13 @@
   grid-column: 1/-1;
   max-width: 500px;
 }
+
+.card-title {
+  display: flex;
+  align-items: center;
+}
+
+.remove-player {
+  margin-left: 0.5rem;
+  cursor: pointer;
+}

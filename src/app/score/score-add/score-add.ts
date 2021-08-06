@@ -1,22 +1,26 @@
-import { ControlBuilder, ControlGroup, Validators } from '@stlmpp/control';
+import { Control, ControlGroup, Validators } from '@stlmpp/control';
 import { ScorePlayerAdd } from '@model/score-player';
 import { ScoreAdd } from '@model/score';
 
-export function generateScorePlayerControlGroup(controlBuilder: ControlBuilder): ControlGroup<ScorePlayerAddForm> {
-  return controlBuilder.group<ScorePlayerAddForm>({
-    bulletKills: [0],
-    description: ['', [Validators.required]],
-    host: [false],
-    idPlayer: [null, [Validators.required]],
-    personaName: [''],
-    evidence: ['', [Validators.required, Validators.url]],
-    idCharacterCostume: [null, [Validators.required]],
+export function generateScorePlayerControlGroup(
+  partial?: Partial<ScorePlayerAddForm>
+): ControlGroup<ScorePlayerAddForm> {
+  return new ControlGroup<ScorePlayerAddForm>({
+    bulletKills: new Control(partial?.bulletKills ?? 0),
+    description: new Control(partial?.description ?? '', [Validators.required]),
+    host: new Control(partial?.host ?? false),
+    idPlayer: new Control(partial?.idPlayer ?? null, [Validators.required]),
+    idPlayerPersonaName: new Control(partial?.idPlayerPersonaName ?? null),
+    personaName: new Control(partial?.personaName ?? ''),
+    evidence: new Control(partial?.evidence ?? '', [Validators.required, Validators.url]),
+    idCharacterCostume: new Control(partial?.idCharacterCostume ?? null, [Validators.required]),
   });
 }
 
 export interface ScorePlayerAddForm extends Omit<ScorePlayerAdd, 'idPlayer' | 'idCharacterCostume'> {
   personaName: string;
   idPlayer: number | null;
+  idPlayerPersonaName: string | null;
   idCharacterCostume: number | null;
 }
 

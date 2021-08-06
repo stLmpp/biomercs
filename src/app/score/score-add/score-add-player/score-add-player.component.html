@@ -1,7 +1,20 @@
 <bio-card class="player" [controlGroup]="form" collapsable>
   <h3 bioCardTitle>
     Player {{ playerNumber }}
-    <ng-container *ngIf="idPlayer$ | async as idPlayer">({{ idPlayer }})</ng-container>
+    <ng-container *ngIf="idPlayerPersonaName$ | async as idPlayerPersonaName">
+      (
+      {{ idPlayerPersonaName }}
+      <icon
+        small
+        danger
+        class="remove-player"
+        tooltip="Remove player selected"
+        tabindex="0"
+        (click)="onRemovePlayerSelected($event)"
+        >close</icon
+      >
+      )
+    </ng-container>
     <label class="host">
       <input
         [disabled]="disabled"
@@ -15,13 +28,8 @@
     </label>
   </h3>
   <bio-card-content>
-    <form-field
-      label="Player"
-      *ngIf="!first || (isAdmin$ | async)"
-      [loading]="playersLoading$ | async"
-      [disabled]="disabled"
-      [forceRequired]="true"
-    >
+    <form-field *ngIf="!first || (isAdmin$ | async)" [loading]="playersLoading$ | async" [disabled]="disabled">
+      <label class="required">Player</label>
       <input
         bioInput
         controlName="personaName"
@@ -30,14 +38,14 @@
         [bioAutocompleteNext]="select"
         bioAutocompleteSelectFirstOptionOnEnter
         #bioAutocomplete="bio-autocomplete"
-        (blur)="idPlayerControl.markAsTouched()"
+        (blur)="onPersonaNameBlur()"
         [bioType]="idPlayerControl.invalid && idPlayerControl.touched ? 'danger' : null"
       />
       <bio-autocomplete #autocomplete>
         <bio-autocomplete-option
           *ngFor="let player of players$ | async; trackBy: trackById"
           [value]="player.personaName"
-          (autocompleteSelect)="idPlayerControl.setValue(player.id)"
+          (autocompleteSelect)="onPersonaNameAutocompleteSelect(player)"
         >
           {{ player.personaName }}
         </bio-autocomplete-option>
@@ -56,6 +64,9 @@
       >
         <icon>search</icon>
       </button>
+      <hint *ngIf="!(idPlayerControl.hasErrors$ | async)">
+        You need to select a player, just typing its name doesn't work
+      </hint>
     </form-field>
     <!--<editor-fold desc="Character">-->
     <form-field [loading]="charactersLoading" [disabled]="disabled" label="Character">

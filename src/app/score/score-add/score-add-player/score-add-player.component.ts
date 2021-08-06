@@ -8,7 +8,6 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { ControlBuilder } from '@stlmpp/control';
 import { debounceTime, filter, finalize, Observable, pluck, switchMap, takeUntil } from 'rxjs';
 import { CharacterWithCharacterCostumes } from '@model/character';
 import { CharacterCostume } from '@model/character-costume';
@@ -22,6 +21,7 @@ import { BooleanInput } from 'st-utils';
 import { SimpleChangesCustom } from '@util/util';
 import { trackById } from '@util/track-by';
 import { PlayerModalService } from '../../../player/player-modal.service';
+import { Control } from '@stlmpp/control';
 
 interface ScoreAddPlayerComponentState {
   playersLoading: boolean;
@@ -36,7 +36,6 @@ interface ScoreAddPlayerComponentState {
 })
 export class ScoreAddPlayerComponent extends LocalState<ScoreAddPlayerComponentState> implements OnInit, OnChanges {
   constructor(
-    private controlBuilder: ControlBuilder,
     private playerService: PlayerService,
     private authQuery: AuthQuery,
     private playerModalService: PlayerModalService
@@ -44,6 +43,7 @@ export class ScoreAddPlayerComponent extends LocalState<ScoreAddPlayerComponentS
     super({ playersLoading: false, playerSearchModalLoading: false });
   }
 
+  @Input() idPlayersSelected: number[] = [];
   @Input() playerNumber!: number;
   @Input() disabled = false;
   @Input() first = false;
@@ -62,17 +62,19 @@ export class ScoreAddPlayerComponent extends LocalState<ScoreAddPlayerComponentS
 
   readonly isAdmin$ = this.authQuery.isAdmin$;
 
-  readonly form = generateScorePlayerControlGroup(this.controlBuilder);
-  readonly idPlayerControl = this.form.get('idPlayer');
+  readonly form = generateScorePlayerControlGroup();
+  readonly idPlayerControl: Control<number | null> = this.form.get('idPlayer');
   readonly evidenceControl = this.form.get('evidence');
-  readonly idPlayer$ = this.idPlayerControl.value$;
+  readonly idPlayerPersonaNameControl = this.form.get('idPlayerPersonaName');
+  readonly personaNameControl = this.form.get('personaName');
+  readonly idPlayerPersonaName$ = this.idPlayerPersonaNameControl.value$;
   readonly evidence$ = this.evidenceControl.value$.pipe(debounceTime(400));
-  readonly players$: Observable<Player[]> = this.form.get('personaName').value$.pipe(
+  readonly players$: Observable<Player[]> = this.personaNameControl.value$.pipe(
     debounceTime(500),
     filter(personaName => !!personaName && !!this.bioAutocomplete?.hasFocus),
     switchMap(personaName => {
       this.updateState({ playersLoading: true });
-      return this.playerService.search(personaName, 1, 8).pipe(
+      return this.playerService.search(personaName, 1, 8, this.idPlayersSelected).pipe(
         finalize(() => {
           this.updateState({ playersLoading: false });
         })
@@ -89,7 +91,10 @@ export class ScoreAddPlayerComponent extends LocalState<ScoreAddPlayerComponentS
   async openPlayerSearchModal(): Promise<void> {
     this.updateState({ playerSearchModalLoading: true });
     const idPlayer = this.idPlayerControl.value;
-    const modalRef = await this.playerModalService.openPlayerSearchModal({ idPlayer });
+    const modalRef = await this.playerModalService.openPlayerSearchModal({
+      idPlayer,
+      idPlayersSelected: this.idPlayersSelected,
+    });
     modalRef.onClose$.subscribe(player => {
       if (player && player.id !== idPlayer) {
         this.form.patchValue({
@@ -104,6 +109,26 @@ export class ScoreAddPlayerComponent extends LocalState<ScoreAddPlayerComponentS
   onHostChange($event: Event): void {
     $event.stopPropagation();
     this.hostChange.emit();
+  }
+
+  onPersonaNameBlur(): void {
+    this.idPlayerControl.markAsTouched();
+    const idPlayerPersonaName = this.idPlayerPersonaNameControl.value;
+    const personaName = this.personaNameControl.value;
+    if (!personaName) {
+      this.onRemovePlayerSelected();
+    } else if (idPlayerPersonaName !== personaName) {
+      this.personaNameControl.setValue(idPlayerPersonaName ?? '');
+    }
+  }
+
+  onPersonaNameAutocompleteSelect(player: Player): void {
+    this.form.patchValue({ idPlayerPersonaName: player.personaName, idPlayer: player.id });
+  }
+
+  onRemovePlayerSelected($event?: MouseEvent): void {
+    $event?.stopPropagation();
+    this.form.patchValue({ idPlayer: null, idPlayerPersonaName: null, personaName: '' });
   }
 
   ngOnInit(): void {

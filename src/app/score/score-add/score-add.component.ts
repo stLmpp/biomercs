@@ -1,10 +1,20 @@
 import { ChangeDetectionStrategy, Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { ControlBuilder, ControlGroup, Validators } from '@stlmpp/control';
+import { Control, ControlArray, ControlGroup, Validators } from '@stlmpp/control';
 import { AuthQuery } from '../../auth/auth.query';
 import { ParamsComponent, ParamsConfig } from '@shared/params/params.component';
 import { CURRENCY_MASK_CONFIG } from '@shared/currency-mask/currency-mask-config.token';
 import { MaskEnum, MaskEnumPatterns } from '@shared/mask/mask.enum';
-import { combineLatest, distinctUntilChanged, finalize, map, shareReplay, switchMap, takeUntil, tap } from 'rxjs';
+import {
+  combineLatest,
+  distinctUntilChanged,
+  finalize,
+  map,
+  Observable,
+  shareReplay,
+  switchMap,
+  takeUntil,
+  tap,
+} from 'rxjs';
 import { CharacterCostume } from '@model/character-costume';
 import { filterNil } from '@shared/operators/filter';
 import { CharacterService } from '@shared/services/character/character.service';
@@ -20,6 +30,7 @@ import { LocalState } from '@stlmpp/store';
 import { Router } from '@angular/router';
 import { filterNilArrayOperator } from '@util/operators/filter-nil-array';
 import { trackByControl } from '@util/track-by';
+import { isNotNil } from 'st-utils';
 
 export interface ScoreAddState {
   characterLoading: boolean;
@@ -36,7 +47,6 @@ export interface ScoreAddState {
 })
 export class ScoreAddComponent extends LocalState<ScoreAddState> implements OnInit {
   constructor(
-    private controlBuilder: ControlBuilder,
     private authQuery: AuthQuery,
     private characterService: CharacterService,
     private modeQuery: ModeQuery,
@@ -62,29 +72,7 @@ export class ScoreAddComponent extends LocalState<ScoreAddState> implements OnIn
     idStage: { show: true, validators: [Validators.required], errorMessages: { required: 'Stage is required' } },
   };
 
-  readonly form = this.controlBuilder.group<ScoreAddForm>({
-    idGame: [null, [Validators.required]],
-    idMiniGame: [null, [Validators.required]],
-    idMode: [null, [Validators.required]],
-    idPlatform: [null, [Validators.required]],
-    idStage: [null, [Validators.required]],
-    score: [0, [Validators.required]],
-    maxCombo: [0, [Validators.required, Validators.min(0), Validators.max(400)]],
-    time: [`00'00"00`, [Validators.required]],
-    achievedDate: [undefined],
-    scorePlayers: this.controlBuilder.array<ScorePlayerAddForm>([
-      {
-        bulletKills: [0],
-        description: ['', [Validators.required]],
-        host: [true],
-        // No need to worry here, since it's only possible to access this route with auth and the resolver of the player
-        idPlayer: [this.authQuery.getUser()!.player!.id, [Validators.required]],
-        personaName: [this.authQuery.getUser()!.player!.personaName],
-        evidence: ['', [Validators.required, Validators.url]],
-        idCharacterCostume: [null, [Validators.required]],
-      },
-    ]),
-  });
+  readonly form = this._getControlGroup();
 
   readonly idPlatform$ = this.form.get('idPlatform').value$.pipe(distinctUntilChanged());
   readonly idGame$ = this.form.get('idGame').value$.pipe(distinctUntilChanged());
@@ -129,6 +117,32 @@ export class ScoreAddComponent extends LocalState<ScoreAddState> implements OnIn
   readonly trackByScorePlayerControl = trackByControl;
 
   readonly scorePlayersControl = this.form.get('scorePlayers');
+
+  readonly idPlayersSelected$: Observable<number[]> = this.scorePlayersControl.value$.pipe(
+    map(scorePlayers => scorePlayers.map(scorePlayer => scorePlayer.idPlayer).filter(isNotNil))
+  );
+
+  private _getControlGroup(): ControlGroup<ScoreAddForm> {
+    const player = this.authQuery.getUser()!.player!;
+    return new ControlGroup<ScoreAddForm>({
+      idGame: new Control(null, [Validators.required]),
+      idMiniGame: new Control(null, [Validators.required]),
+      idMode: new Control(null, [Validators.required]),
+      idPlatform: new Control(null, [Validators.required]),
+      idStage: new Control(null, [Validators.required]),
+      score: new Control(0, [Validators.required]),
+      maxCombo: new Control(0, [Validators.required, Validators.min(0), Validators.max(400)]),
+      time: new Control(`00'00"00`, [Validators.required]),
+      achievedDate: new Control(undefined),
+      scorePlayers: new ControlArray<ScorePlayerAddForm>([
+        generateScorePlayerControlGroup({
+          idPlayer: player.id,
+          idPlayerPersonaName: player.personaName,
+          personaName: player.personaName,
+        }),
+      ]),
+    });
+  }
 
   private _getCurrentMode(): Mode | undefined {
     return this.modeQuery.getEntity(this.form.get('idMode').value ?? -1);
@@ -261,7 +275,7 @@ export class ScoreAddComponent extends LocalState<ScoreAddState> implements OnIn
         if (mode.playerQuantity > playersControl.length) {
           const diff = mode.playerQuantity - playersControl.length;
           for (let i = 0; i < diff; i++) {
-            playersControl.push(generateScorePlayerControlGroup(this.controlBuilder));
+            playersControl.push(generateScorePlayerControlGroup());
           }
         } else if (mode.playerQuantity < playersControl.length) {
           const len = playersControl.length;

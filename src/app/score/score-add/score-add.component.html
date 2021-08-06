@@ -30,6 +30,7 @@
         [charactersLoading]="characterLoading$ | async"
         [first]="$first"
         [playerNumber]="$index + 1"
+        [idPlayersSelected]="(idPlayersSelected$ | async) ?? []"
       ></bio-score-add-player>
     </ng-container>
     <bio-card class="score-params" collapsable>
