@@ -15,14 +15,14 @@
       >
       )
     </ng-container>
-    <label class="host">
+    <label class="host" (click)="$event.stopPropagation()">
       <input
         [disabled]="disabled"
         type="radio"
         name="host"
         [value]="true"
         controlName="host"
-        (change)="onHostChange($event)"
+        (change)="onHostChange()"
       />
       Host
     </label>

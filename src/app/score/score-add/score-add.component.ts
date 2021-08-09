@@ -139,6 +139,7 @@ export class ScoreAddComponent extends LocalState<ScoreAddState> implements OnIn
           idPlayer: player.id,
           idPlayerPersonaName: player.personaName,
           personaName: player.personaName,
+          host: true,
         }),
       ]),
     });

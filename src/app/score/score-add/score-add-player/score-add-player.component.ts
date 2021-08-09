@@ -106,8 +106,7 @@ export class ScoreAddPlayerComponent extends LocalState<ScoreAddPlayerComponentS
     this.updateState({ playerSearchModalLoading: false });
   }
 
-  onHostChange($event: Event): void {
-    $event.stopPropagation();
+  onHostChange(): void {
     this.hostChange.emit();
   }
 
