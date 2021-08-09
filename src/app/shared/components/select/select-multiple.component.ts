@@ -4,6 +4,7 @@ import { Select } from '@shared/components/select/select';
 import { ControlValue } from '@stlmpp/control';
 import { Animations } from '@shared/animations/animations';
 import { auditTime, startWith, takeUntil } from 'rxjs';
+import { FormFieldChild } from '@shared/components/form/form-field-child';
 
 @Component({
   selector: 'bio-select[multiple]',
@@ -15,6 +16,7 @@ import { auditTime, startWith, takeUntil } from 'rxjs';
   providers: [
     { provide: Select, useExisting: SelectMultipleComponent },
     { provide: ControlValue, useExisting: SelectMultipleComponent, multi: true },
+    { provide: FormFieldChild, useExisting: SelectMultipleComponent },
   ],
   animations: [Animations.fade.inOut(100), Animations.scale.in(100, 0.8)],
 })

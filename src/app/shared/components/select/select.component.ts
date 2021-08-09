@@ -28,6 +28,8 @@ import { OptgroupComponent } from './optgroup.component';
 import { BooleanInput, isNil } from 'st-utils';
 import { Key } from '@model/enum/key';
 import { getOverlayPositionMenu } from '@shared/components/menu/util';
+import { ControlState } from '@stlmpp/control/lib/control/control';
+import { FormFieldChild } from '@shared/components/form/form-field-child';
 
 @Component({
   selector: 'bio-select:not([multiple])',
@@ -39,6 +41,7 @@ import { getOverlayPositionMenu } from '@shared/components/menu/util';
   providers: [
     { provide: Select, useExisting: SelectComponent },
     { provide: ControlValue, useExisting: SelectComponent, multi: true },
+    { provide: FormFieldChild, useExisting: SelectComponent },
   ],
   animations: [Animations.fade.inOut(100), Animations.scale.in(100, 0.8)],
 })
@@ -53,6 +56,8 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
     super();
   }
 
+  private _isInvalid = false;
+  private _isTouched = false;
   private _overlayRef?: OverlayRef;
   private _focusManager?: FocusKeyManager<OptionComponent>;
 
@@ -65,13 +70,17 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
 
   @HostBinding('attr.title') viewValue = '';
 
-  onChange$ = new Subject<any>();
-  onTouched$ = new Subject<void>();
+  readonly onChange$ = new Subject<any>();
+  readonly onTouched$ = new Subject<void>();
   isOpen = false;
   value: any;
 
   override get primaryClass(): boolean {
     return !this.dangerClass && (this.bioType || 'primary') === 'primary';
+  }
+
+  override get dangerClass(): boolean {
+    return super.dangerClass || (this._isTouched && this._isInvalid);
   }
 
   @HostBinding('attr.tabindex')
@@ -193,8 +202,11 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
     this.disabled = isDisabled;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  stateChanged(): void {}
+  stateChanged(state: ControlState): void {
+    this._isInvalid = state.invalid;
+    this._isTouched = state.touched;
+    this.changeDetectorRef.markForCheck();
+  }
 
   ngAfterContentInit(): void {
     this.options.changes.pipe(takeUntil(this.destroy$), auditTime(100), startWith(this.options)).subscribe(() => {

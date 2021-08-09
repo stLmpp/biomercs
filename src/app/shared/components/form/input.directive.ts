@@ -2,11 +2,13 @@ import { Directive, ElementRef, HostBinding, Input, Optional, Self } from '@angu
 import { AbstractComponent } from '../core/abstract-component';
 import { Control, ControlDirective, ModelDirective } from '@stlmpp/control';
 import { FocusableOption } from '@angular/cdk/a11y';
+import { FormFieldChild } from '@shared/components/form/form-field-child';
 
 @Directive({
   selector: 'input[bioInput]:not([type=checkbox]):not([type=radio]),textarea[bioInput]',
   host: { class: 'input' },
   exportAs: 'bio-input',
+  providers: [{ provide: FormFieldChild, useExisting: InputDirective }],
 })
 export class InputDirective extends AbstractComponent implements FocusableOption {
   constructor(

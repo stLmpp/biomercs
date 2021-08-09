@@ -3,7 +3,7 @@
 </ng-container>
 <ng-template #noLabelRef>
   <label
-    [danger]="inputDirective?.dangerClass"
+    [danger]="inputDirective?.dangerClass || select?.dangerClass"
     *ngIf="label"
     [for]="id"
     [class.required]="forceRequired || (control | hasValidators: ['required'])"
@@ -17,10 +17,9 @@
     'has-prefix': !!prefixDirective,
     'has-suffix': !!suffixDirective,
     disabled: control?.disabled,
-    'is-select': !!selectComponent
+    'is-select': !!select
   }"
 >
-  <!--TODO https://github.com/stLmpp/biomercs-ng/issues/64-->
   <div class="spinner-wrapper">
     <spinner *ngIf="loading" [size]="0.1"></spinner>
   </div>

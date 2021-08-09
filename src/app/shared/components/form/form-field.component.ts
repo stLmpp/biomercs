@@ -20,8 +20,9 @@ import { FormFieldErrorComponent } from './error.component';
 import { PrefixDirective } from '../common/prefix.directive';
 import { SuffixDirective } from '../common/suffix.directive';
 import { Control, ControlDirective, ModelDirective } from '@stlmpp/control';
-import { SelectComponent } from '../select/select.component';
 import { BooleanInput, isNil } from 'st-utils';
+import { Select } from '@shared/components/select/select';
+import { FormFieldChild } from '@shared/components/form/form-field-child';
 
 let uniqueId = 0;
 
@@ -47,7 +48,8 @@ export class FormFieldComponent implements AfterContentInit, OnChanges, OnDestro
   readonly errorComponents!: QueryList<FormFieldErrorComponent>;
   @ContentChild(PrefixDirective) readonly prefixDirective?: PrefixDirective;
   @ContentChild(SuffixDirective) readonly suffixDirective?: SuffixDirective;
-  @ContentChild(SelectComponent) readonly selectComponent?: SelectComponent;
+  @ContentChild(Select) readonly select?: Select;
+  @ContentChildren(FormFieldChild, { descendants: true }) readonly formFieldChildren!: QueryList<FormFieldChild>;
 
   @Input() label?: string;
   @Input() id: string | number = uniqueId++;
@@ -80,6 +82,9 @@ export class FormFieldComponent implements AfterContentInit, OnChanges, OnDestro
         this.control.disable(!!this.disabled);
       }
     }
+    this.formFieldChildren.changes.pipe(takeUntil(this._destroy$), auditTime(50)).subscribe(() => {
+      this.changeDetectorRef.markForCheck();
+    });
   }
 
   ngOnChanges(changes: SimpleChangesCustom<FormFieldComponent>): void {
