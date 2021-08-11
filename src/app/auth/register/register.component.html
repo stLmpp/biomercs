@@ -1,4 +1,4 @@
-<form [controlGroup]="form" (groupSubmit)="submit()" *ngLet="emailSent$ | async as emailSent" class="center-container">
+<form [controlGroup]="form" (groupSubmit)="submit()" class="center-container">
   <bio-card class="center-block-mobile">
     <h3 bioCardTitle>Register</h3>
     <bio-card-content>
@@ -7,7 +7,7 @@
         <bio-confirmation-code-input
           controlName="code"
           label="Confirmation code"
-          [codeError]="errorConfirmationCode$ | async"
+          [codeError]="errorConfirmationCode"
           (focusoutLastItem)="submit()"
         ></bio-confirmation-code-input>
       </ng-container>
@@ -19,6 +19,7 @@
             <error *error="'minLength'; let error">Username must have at least {{ error.required }} characters</error>
             <error *error="'usernameExists'">Username already exists</error>
           </errors>
+          <hint end> {{ usernameControl.value.length }} / 100 </hint>
         </form-field>
         <form-field label="E-mail" [loading]="emailControl.pending">
           <input bioInput placeholder="E-mail" controlName="email" type="email" autocomplete="email" />
@@ -64,14 +65,14 @@
         </form-field>
       </ng-template>
     </bio-card-content>
-    <bio-card-actions end *ngLet="loading$ | async as state">
+    <bio-card-actions end>
       <button
         bioButton
         primary
         type="button"
         (click)="registerSteam()"
-        [loading]="state.loadingSteam"
-        [disabled]="state.loading"
+        [loading]="loadingSteam"
+        [disabled]="loading"
         *ngIf="!emailSent"
       >
         Register with Steam
@@ -80,8 +81,8 @@
         bioButton
         primary
         type="submit"
-        [disabled]="state.loadingSteam || form.invalid || form.pending"
-        [loading]="state.loading"
+        [disabled]="loadingSteam || form.invalid || form.pending"
+        [loading]="loading"
       >
         {{ emailSent ? 'Confirm code' : 'Register' }}
       </button>
