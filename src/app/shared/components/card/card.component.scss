@@ -56,6 +56,7 @@
 .card-subtitle {
   font-size: 0.85rem;
   color: v.$primary-100;
+  word-break: break-word;
 
   &:not(:last-child) {
     margin-bottom: 0.25rem;

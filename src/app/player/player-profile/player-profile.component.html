@@ -41,6 +41,7 @@
             bioInput
             #model="model"
             [model]="player.personaName"
+            [maxLength]="100"
             placeholder="Persona name"
             personaNameExists
             [personaNameExistsIgnore]="player.personaName"
@@ -56,6 +57,7 @@
               {{ player.lastUpdatedPersonaNameDate | dateDifference: todayMinusSevenDate:['days', 'hours'] }}
             </ng-template>
           </hint>
+          <hint end>{{ model.model?.length }} / 100</hint>
           <errors>
             <error *error="'personaNameExists'">Player name already exists</error>
           </errors>
@@ -65,9 +67,12 @@
             bioInput
             [model]="player.title"
             placeholder="Title"
+            [maxLength]="250"
             (modelChange)="update('title', $event)"
             [disabled]="state.saving"
+            #titleModel="model"
           />
+          <hint end>{{ titleModel.model?.length }} / 250</hint>
         </form-field>
         <form-field label="About me">
           <textarea
@@ -75,10 +80,13 @@
             resize="vertical"
             rows="3"
             [model]="player.aboutMe"
+            #aboutMeModel="model"
             placeholder="About me"
+            [maxLength]="2000"
             (modelChange)="update('aboutMe', $event)"
             [disabled]="state.saving"
           ></textarea>
+          <hint end> {{ aboutMeModel.model?.length }} / 2000 </hint>
         </form-field>
       </div>
     </bio-card-content>
