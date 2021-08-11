@@ -7,12 +7,12 @@ export function generateScorePlayerControlGroup(
 ): ControlGroup<ScorePlayerAddForm> {
   return new ControlGroup<ScorePlayerAddForm>({
     bulletKills: new Control(partial?.bulletKills ?? 0),
-    description: new Control(partial?.description ?? '', [Validators.required]),
+    description: new Control(partial?.description ?? '', [Validators.required, Validators.maxLength(1000)]),
     host: new Control(partial?.host ?? false),
     idPlayer: new Control(partial?.idPlayer ?? null, [Validators.required]),
     idPlayerPersonaName: new Control(partial?.idPlayerPersonaName ?? null),
     personaName: new Control(partial?.personaName ?? ''),
-    evidence: new Control(partial?.evidence ?? '', [Validators.required, Validators.url]),
+    evidence: new Control(partial?.evidence ?? '', [Validators.required, Validators.url, Validators.maxLength(1000)]),
     idCharacterCostume: new Control(partial?.idCharacterCostume ?? null, [Validators.required]),
   });
 }
