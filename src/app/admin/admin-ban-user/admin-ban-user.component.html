@@ -20,12 +20,10 @@
       <bio-list selectable *ngLet="users$ | async as users">
         <bio-list-item *ngIf="!users?.length">No data found</bio-list-item>
         <bio-list-item
-          [disabled]="!!user.bannedDate"
-          *ngFor="let user of users; trackBy: trackByUser"
-          tooltip="User will be available to unban in {{
-            user.bannedDate | dateDifference: dateMinus7:['days', 'hours']
-          }}"
-          [tooltipDisabled]="!user.bannedDate"
+          [disabled]="user.disabled"
+          *ngFor="let user of users; trackBy: trackById"
+          [tooltip]="user.tooltip"
+          [tooltipDisabled]="user.tooltipDisabled"
           (click)="action(user)"
         >
           <icon prefix outlined>{{ user.bannedDate ? 'lock' : 'lock_open' }}</icon>

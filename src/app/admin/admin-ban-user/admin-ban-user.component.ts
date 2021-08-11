@@ -9,6 +9,7 @@ import {
   distinctUntilChanged,
   filter,
   finalize,
+  map,
   Observable,
   pluck,
   switchMap,
@@ -21,9 +22,10 @@ import { User } from '@model/user';
 import { Pagination, PaginationMeta } from '@model/pagination';
 import { arrayUtil } from 'st-utils';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
-import { isAfter, subDays } from 'date-fns';
+import { differenceInHours, subDays } from 'date-fns';
 import { mdiShieldAccount } from '@mdi/js';
 import { trackById } from '@util/track-by';
+import { dateDifference } from '@shared/date/date-difference.pipe';
 
 interface UserSearchForm {
   term: string;
@@ -34,6 +36,12 @@ interface UserSearchForm {
 interface AdminBanUserComponentState {
   loading: boolean;
   data: Pagination<User>;
+}
+
+interface UserBan extends User {
+  disabled: boolean;
+  tooltip: string;
+  tooltipDisabled: boolean;
 }
 
 @Component({
@@ -71,10 +79,31 @@ export class AdminBanUserComponent extends LocalState<AdminBanUserComponentState
   readonly limit$ = this.form.get('limit').value$.pipe(distinctUntilChanged());
 
   readonly data$ = this.selectState('data');
-  readonly users$: Observable<User[]> = this.data$.pipe(filterNil(), pluck('items'));
+  readonly users$: Observable<UserBan[]> = this.data$.pipe(
+    filterNil(),
+    pluck('items'),
+    map(users =>
+      users.map(user => {
+        let hoursDifference = 0;
+        if (user.bannedDate) {
+          hoursDifference = differenceInHours(user.bannedDate, this.dateMinus7);
+        }
+        const userBan: UserBan = {
+          ...user,
+          disabled: hoursDifference > 0,
+          tooltipDisabled: hoursDifference <= 0,
+          tooltip: `User will be available to unban in ${dateDifference(user.bannedDate, this.dateMinus7, [
+            'days',
+            'hours',
+          ])}`,
+        };
+        return userBan;
+      })
+    )
+  );
   readonly paginationMeta$: Observable<PaginationMeta> = this.data$.pipe(filterNil(), pluck('meta'));
 
-  readonly trackByUser = trackById;
+  readonly trackById = trackById;
 
   private _getNumberParamOrNull(param: string): number | null {
     return this.activatedRoute.snapshot.queryParamMap.has(param)
@@ -97,8 +126,9 @@ export class AdminBanUserComponent extends LocalState<AdminBanUserComponentState
     this.form.patchValue({ page: 1, limit: $event });
   }
 
-  action(user: User): void {
-    let title = `Ban ${user.username}`;
+  action(user: UserBan): void {
+    let buttonTitle = 'Ban';
+    let title = `${buttonTitle} ${user.username}`;
     let content = `${user.username} will not be able to login. <br> There'll be a cooldown of 7 days to do an unban.`;
     let request$ = this.userService.banUser(user.id).pipe(
       tap(() => {
@@ -106,10 +136,11 @@ export class AdminBanUserComponent extends LocalState<AdminBanUserComponentState
       })
     );
     if (user.bannedDate) {
-      if (isAfter(user.bannedDate, subDays(new Date(), 7))) {
+      if (user.disabled) {
         return;
       }
-      title = 'Un' + title.substring(1);
+      buttonTitle = 'Unban';
+      title = `${buttonTitle} ${user.username}`;
       content = `${user.username} will be able to login.`;
       request$ = this.userService.unbanUser(user.id).pipe(
         tap(() => {
@@ -117,7 +148,9 @@ export class AdminBanUserComponent extends LocalState<AdminBanUserComponentState
         })
       );
     }
-    this.dialogService.confirm({ title, content, buttons: ['Cancel', { title: 'Ban', action: request$ }] }).subscribe();
+    this.dialogService
+      .confirm({ title, content, buttons: ['Cancel', { title: buttonTitle, action: request$ }] })
+      .subscribe();
   }
 
   ngOnInit(): void {
