@@ -19,7 +19,7 @@
             <error *error="'minLength'; let error">Username must have at least {{ error.required }} characters</error>
             <error *error="'usernameExists'">Username already exists</error>
           </errors>
-          <hint end> {{ usernameControl.value.length }} / 100 </hint>
+          <hint end> {{ usernameLength$ | async }} / 100 </hint>
         </form-field>
         <form-field label="E-mail" [loading]="emailControl.pending">
           <input bioInput placeholder="E-mail" controlName="email" type="email" autocomplete="email" />

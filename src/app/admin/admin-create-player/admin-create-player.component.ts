@@ -1,18 +1,13 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Control, ControlGroup } from '@stlmpp/control';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { Control, ControlGroup, Validators } from '@stlmpp/control';
 import { PlayerAdd } from '@model/player';
-import { finalize, map, tap } from 'rxjs';
+import { finalize, map, pluck, tap } from 'rxjs';
 import { PlayerService } from '../../player/player.service';
 import { PersonaNameExistsValidator } from '@shared/validators/persona-name-exists.validator';
 import { SteamIdExistsValidator } from '@shared/validators/steam-id-exists.validator';
 import { RegionQuery } from '../../region/region.query';
-import { LocalState } from '@stlmpp/store';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
 import { Router } from '@angular/router';
-
-interface AdminCreatePlayerComponentState {
-  loading: boolean;
-}
 
 @Component({
   selector: 'bio-admin-create-player',
@@ -20,32 +15,35 @@ interface AdminCreatePlayerComponentState {
   styleUrls: ['./admin-create-player.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AdminCreatePlayerComponent extends LocalState<AdminCreatePlayerComponentState> {
+export class AdminCreatePlayerComponent {
   constructor(
     private playerService: PlayerService,
     private personaNameExistsValidator: PersonaNameExistsValidator,
     private steamIdExistsValidator: SteamIdExistsValidator,
     private regionQuery: RegionQuery,
     private dialogService: DialogService,
-    private router: Router
-  ) {
-    super({ loading: false });
-  }
+    private router: Router,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {}
+
+  loading = false;
 
   readonly form = new ControlGroup<PlayerAdd>({
-    aboutMe: new Control<string | undefined>(''),
+    aboutMe: new Control<string | undefined>('', [Validators.maxLength(2000)]),
     idRegion: new Control<number | undefined>(undefined),
     idUser: new Control<number | undefined>(undefined),
     idSteamProfile: new Control<number | undefined>(undefined),
-    title: new Control<string | undefined>(undefined),
-    personaName: new Control('', [this.personaNameExistsValidator]),
+    title: new Control<string | undefined>('', [Validators.maxLength(250)]),
+    personaName: new Control('', [this.personaNameExistsValidator, Validators.maxLength(100)]),
     steamid: new Control('', [this.steamIdExistsValidator]),
   });
-  readonly loading$ = this.selectState('loading');
   readonly regions$ = this.regionQuery.all$;
   readonly trackByRegion = this.regionQuery.trackBy;
 
   readonly isInvalid$ = this.form.value$.pipe(map(dto => dto.personaName.length < 3 && !dto.steamid?.length));
+  readonly personaNameLength$ = this.form.get('personaName').value$.pipe(pluck('length'));
+  readonly aboutMeLength$ = this.form.get('aboutMe')!.value$.pipe(pluck('length'));
+  readonly titleLength$ = this.form.get('title')!.value$.pipe(pluck('length'));
 
   onSubmit(): void {
     if (this.form.invalid) {
@@ -55,13 +53,14 @@ export class AdminCreatePlayerComponent extends LocalState<AdminCreatePlayerComp
     if (!dto.steamid?.length && dto.personaName.length < 3) {
       return;
     }
-    this.updateState({ loading: true });
+    this.loading = true;
     this.form.disable();
     this.playerService
       .create(dto)
       .pipe(
         finalize(() => {
-          this.updateState({ loading: false });
+          this.loading = false;
+          this.changeDetectorRef.markForCheck();
           this.form.enable();
         }),
         tap(async () => {

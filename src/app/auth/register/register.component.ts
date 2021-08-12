@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
-import { debounceTime, finalize, Observable, tap } from 'rxjs';
+import { debounceTime, finalize, Observable, pluck, tap } from 'rxjs';
 import { AuthService } from '../auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ControlBuilder, Validators } from '@stlmpp/control';
@@ -54,6 +54,7 @@ export class RegisterComponent extends Destroyable {
   readonly password$ = this.form.get('password').value$.pipe(debounceTime(300));
 
   readonly usernameControl = this.form.get('username');
+  readonly usernameLength$ = this.usernameControl.value$.pipe(pluck('length'));
   readonly emailControl = this.form.get('email');
 
   hidePassword = true;

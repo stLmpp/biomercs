@@ -15,12 +15,15 @@
           <errors>
             <error *error="'personaNameExists'">Player name already exists</error>
           </errors>
+          <hint end> {{ personaNameLength$ | async }} / 100 </hint>
         </form-field>
         <form-field label="Title">
           <input bioInput type="text" controlName="title" placeholder="Title" />
+          <hint end> {{ titleLength$ | async }} / 250 </hint>
         </form-field>
         <form-field label="About me">
           <input bioInput type="text" controlName="aboutMe" placeholder="About me" />
+          <hint end> {{ aboutMeLength$ | async }} / 2000 </hint>
         </form-field>
         <form-field label="Region">
           <bio-select controlName="idRegion" placeholder="Region">
@@ -38,7 +41,7 @@
         [disabled]="isInvalid || form.invalid || form.pending"
         type="submit"
         primary
-        [loading]="loading$ | async"
+        [loading]="loading"
       >
         Create
       </button>
