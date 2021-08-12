@@ -9,7 +9,7 @@
         <error *error="'required'">Description is required</error>
       </errors>
     </form-field>
-    <form-field [loading]="scoreApprovalMotiveQuery.loading$ | async" label="Motive">
+    <form-field [loading]="loadingMotives" label="Motive">
       <bio-select controlName="idScoreApprovalMotive" placeholder="Motive">
         <bio-option *ngFor="let motive of scoreApprovalMotives$ | async; trackBy: trackById" [value]="motive.id">
           {{ motive.description }}
@@ -20,7 +20,7 @@
       </errors>
     </form-field>
   </bio-modal-content>
-  <bio-modal-actions end *ngLet="saving$ | async as saving">
+  <bio-modal-actions end>
     <button
       [disabled]="form.invalid"
       [loading]="saving"
