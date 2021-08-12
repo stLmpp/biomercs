@@ -6,7 +6,7 @@
       <bio-card-content>
         <form-field label="Platforms">
           <bio-select placeholder="Platforms" multiple controlName="idPlatforms">
-            <bio-option *ngFor="let platform of platforms$ | async; trackBy: trackById" [value]="platform.id">
+            <bio-option *ngFor="let platform of platforms; trackBy: trackById" [value]="platform.id">
               {{ platform.name }}
             </bio-option>
           </bio-select>

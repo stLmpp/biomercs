@@ -8,4 +8,5 @@ export enum RouteDataEnum {
   platformApproval = 'resolver.platformApproval',
   errors = 'resolver.errors',
   regions = 'resolver.region',
+  platforms = 'resolver.platforms',
 }

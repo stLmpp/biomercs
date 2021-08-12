@@ -9,7 +9,6 @@ import { ScoreService } from '../score.service';
 import { ScoreStatusEnum } from '@model/enum/score-status.enum';
 import { getScoreDefaultColDefs } from '../score-shared/util';
 import { AuthDateFormatPipe } from '../../auth/shared/auth-date-format.pipe';
-import { PlatformQuery } from '@shared/services/platform/platform.query';
 import { GameService } from '@shared/services/game/game.service';
 import { filterArrayMinLength, filterNil } from '@shared/operators/filter';
 import { ModeService } from '@shared/services/mode/mode.service';
@@ -23,6 +22,8 @@ import { ColDef } from '@shared/components/table/col-def';
 import { ScoreOpenInfoCellComponent } from '../score-shared/score-open-info-cell/score-open-info-cell.component';
 import { trackById } from '@util/track-by';
 import { ScoreModalService } from '../score-modal.service';
+import { RouteDataEnum } from '@model/enum/route-data.enum';
+import { Platform } from '@model/platform';
 
 export interface ScoreSearchComponentState {
   scores: Score[];
@@ -35,6 +36,7 @@ export interface ScoreSearchComponentState {
   characterLoading: boolean;
 }
 
+// TODO remove LocalState
 @Component({
   selector: 'bio-score-search',
   templateUrl: './score-search.component.html',
@@ -46,7 +48,6 @@ export class ScoreSearchComponent extends LocalState<ScoreSearchComponentState> 
     private authQuery: AuthQuery,
     private scoreService: ScoreService,
     private authDateFormatPipe: AuthDateFormatPipe,
-    private platformQuery: PlatformQuery,
     private gameService: GameService,
     private miniGameService: MiniGameService,
     private modeService: ModeService,
@@ -163,7 +164,7 @@ export class ScoreSearchComponent extends LocalState<ScoreSearchComponentState> 
   readonly idMiniGamesNotNil$ = this.idMiniGames$.pipe(filterNil(), filterArrayMinLength());
   readonly idModesNotNil$ = this.idModes$.pipe(filterNil(), filterArrayMinLength());
 
-  readonly platforms$ = this.platformQuery.all$;
+  readonly platforms: Platform[] = this.activatedRoute.snapshot.data[RouteDataEnum.platforms];
 
   readonly games$ = this.idPlatformsNotNil$.pipe(
     switchMap(idPlatforms => {
