@@ -27,7 +27,7 @@
         </form-field>
         <form-field label="Region">
           <bio-select controlName="idRegion" placeholder="Region">
-            <bio-option *ngFor="let region of regions$ | async; trackBy: trackByRegion" [value]="region.id">
+            <bio-option *ngFor="let region of regions; trackBy: trackByRegion" [value]="region.id">
               <icon [flag]="region.shortName"></icon> {{ region.name }}
             </bio-option>
           </bio-select>

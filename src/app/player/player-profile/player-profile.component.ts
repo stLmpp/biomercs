@@ -16,7 +16,6 @@ import { PlayerService } from '../player.service';
 import { Animations } from '@shared/animations/animations';
 import { AuthQuery } from '../../auth/auth.query';
 import { RegionService } from '../../region/region.service';
-import { RegionQuery } from '../../region/region.query';
 import { DynamicLoaderService } from '../../core/dynamic-loader.service';
 import { Player, PlayerUpdate } from '@model/player';
 import { arrayUtil, isObjectEmpty } from 'st-utils';
@@ -63,7 +62,6 @@ export class PlayerProfileComponent extends LocalState<PlayerProfileComponentSta
     private playerService: PlayerService,
     private authQuery: AuthQuery,
     private regionService: RegionService,
-    private regionQuery: RegionQuery,
     private dynamicLoaderService: DynamicLoaderService,
     private activatedRoute: ActivatedRoute,
     private authDateFormatPipe: AuthDateFormatPipe,
@@ -171,11 +169,7 @@ export class PlayerProfileComponent extends LocalState<PlayerProfileComponentSta
   }
 
   preloadRegions(): void {
-    if (
-      this.authQuery.getIsSameAsLogged(this.idPlayer) &&
-      !this.regionQuery.getLoading() &&
-      !this.regionQuery.getAll().length
-    ) {
+    if (this.authQuery.getIsSameAsLogged(this.idPlayer)) {
       this.dynamicLoaderService.preloadRequest(this.regionService.get());
     }
   }

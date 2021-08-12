@@ -1452,40 +1452,40 @@
     "@angular-devkit/schematics" "12.2.0"
     jsonc-parser "3.0.0"
 
-"@stlmpp/control@~8.1.0":
-  version "8.1.0"
-  resolved "https://registry.yarnpkg.com/@stlmpp/control/-/control-8.1.0.tgz#dc4b7e1c11d6f6aa7565173a220eea385b29c463"
-  integrity sha512-/rd9iquXWql1XvK8vDc3yU9N+fSoMx+nPfYL+P7QzDlXbba8OG30Y3l8oLNP5nk51fo2ck2wOnfSvmTeXanICQ==
+"@stlmpp/control@~8.2.1":
+  version "8.2.1"
+  resolved "https://registry.yarnpkg.com/@stlmpp/control/-/control-8.2.1.tgz#a11c2d4a9c5274083b5f8e698f1dd54ba5c11d82"
+  integrity sha512-e0Bjo0Pd0hCR1dLQJk/3FNvtavIQNtDY+11hhvYgER/K1Y3LIK4fYuht/ZapnmE0mA+0sIhxea5AvHIe0L2oNw==
   dependencies:
     date-fns "~2.23.0"
-    st-utils "~2.0.0"
-    tslib "~2.3.0"
+    st-utils "~2.1.1"
+    tslib "~2.3.1"
 
-"@stlmpp/router@~8.1.0":
-  version "8.1.0"
-  resolved "https://registry.yarnpkg.com/@stlmpp/router/-/router-8.1.0.tgz#f1784456a04283e60c87ab1e49b9fc501910fc04"
-  integrity sha512-m6m/iCN0ftMkZ0wQFLpe40ns2AhhFbpcbqz9wed6CLtGGaHSdyFCfBQ7y18mcWoxH01cVPzr5/4d0/N/hZ2pnA==
+"@stlmpp/router@~8.2.1":
+  version "8.2.1"
+  resolved "https://registry.yarnpkg.com/@stlmpp/router/-/router-8.2.1.tgz#df96a9190939aa8b84ec62cbe81d759d00e9fba5"
+  integrity sha512-khjpwziTlXCazmeArsEUay0aAyV0CTq22Gl5zUDhCP7QR8fvgPOklx6JPufhLoMXi2E2+gNXyxQPzxS5GFZmKQ==
   dependencies:
-    st-utils "~2.0.0"
-    tslib "~2.3.0"
+    st-utils "~2.1.1"
+    tslib "~2.3.1"
 
-"@stlmpp/store@~8.1.0":
-  version "8.1.0"
-  resolved "https://registry.yarnpkg.com/@stlmpp/store/-/store-8.1.0.tgz#6f9273a842dcec563f9cc4852e80bf458bfb3629"
-  integrity sha512-GA8JoUsteBv0SLNzWteDXhD1QPdZJrxHC1ahkSKDPffALyckDsQrP8dmzdOwMDwnJWqhmhq1catnyQ4nvzzxLQ==
+"@stlmpp/store@~8.2.1":
+  version "8.2.1"
+  resolved "https://registry.yarnpkg.com/@stlmpp/store/-/store-8.2.1.tgz#e96d45b7f8708ea8edead01948afda996abdafae"
+  integrity sha512-AoqDgmB9PSLXconbJ21A/fWQuwtxI3FxQXYMBNJljEmoUAuyJRdvg151HcU/D+QgU6p1sCtSzHp9Jr224HYBBA==
   dependencies:
     copy-anything "~2.0.3"
-    st-utils "~2.0.0"
-    tslib "~2.3.0"
+    st-utils "~2.1.1"
+    tslib "~2.3.1"
     type-fest "~2.0.0"
 
-"@stlmpp/utils@~8.1.0":
-  version "8.1.0"
-  resolved "https://registry.yarnpkg.com/@stlmpp/utils/-/utils-8.1.0.tgz#739555f89f29084f66c05e9f9c86d81c5e394c84"
-  integrity sha512-y2MxVJFZZxCTc2Sg40HWUaFqq3prFl4LPb1ZYT+Tf/EmThj+oncGlu1U02qIdcIn/h+5s/LztbtxCf5NkMg/XQ==
+"@stlmpp/utils@~8.2.1":
+  version "8.2.1"
+  resolved "https://registry.yarnpkg.com/@stlmpp/utils/-/utils-8.2.1.tgz#9f9ce4f3fc90c3c88e396710a00eddd610444623"
+  integrity sha512-GvaHbWDSwW16vjQTNMx1MoZ/uATo8hXIOtoGUo9U/PavBsfXLMUMCm3RZ/V7Py22CMwaYYDZuzbHWY4KR08fEg==
   dependencies:
-    st-utils "~2.0.0"
-    tslib "~2.3.0"
+    st-utils "~2.1.1"
+    tslib "~2.3.1"
     type-fest "~2.0.0"
 
 "@stylelint/postcss-css-in-js@^0.37.2":
@@ -8943,13 +8943,13 @@ ssri@^8.0.0, ssri@^8.0.1:
   dependencies:
     minipass "^3.1.1"
 
-st-utils@~2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/st-utils/-/st-utils-2.0.0.tgz#fd71a5106218d56abf249d838dbcc75ffd3f8d3f"
-  integrity sha512-7EyqsHcIDoVa+6pXAVjunBj5plSUKZOhpj3ALLOo93Ggapbt2FSKuE7aGohZhfVk/Z+llJsMTZXuGdC3sJqbSg==
+st-utils@~2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/st-utils/-/st-utils-2.1.1.tgz#b51c10496179cf292481b0a0a4b8df8b69483913"
+  integrity sha512-LLbHcAr0xR74RVDKB2bJPSCoq6K76dcyu0EHuymp0HcVgqLWsTnlVaRdW0Y7uVQqlYif4duLYkOZCmBD0naUtQ==
   dependencies:
     fast-sort "~3.0.2"
-    type-fest "~1.2.3"
+    type-fest "~2.0.0"
 
 stable@^0.1.8:
   version "0.1.8"
@@ -9482,6 +9482,11 @@ tslib@~2.1.0:
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.1.0.tgz#da60860f1c2ecaa5703ab7d39bc05b6bf988b97a"
   integrity sha512-hcVC3wYEziELGGmEEXue7D75zbwIIVUMWAVbHItGPx0ziyXxrOMQx4rQEVEV45Ut/1IotuEvwqPopzIOkDMf0A==
 
+tslib@~2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.3.1.tgz#e8a335add5ceae51aa261d32a490158ef042ef01"
+  integrity sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==
+
 tsutils@^3.21.0:
   version "3.21.0"
   resolved "https://registry.yarnpkg.com/tsutils/-/tsutils-3.21.0.tgz#b48717d394cea6c1e096983eed58e9d61715b623"
@@ -9532,11 +9537,6 @@ type-fest@^0.8.1:
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-0.8.1.tgz#09e249ebde851d3b1e48d27c105444667f17b83d"
   integrity sha512-4dbzIzqvjtgiM5rw1k5rEHtBANKmdudhGyBEajN01fEyhaAIhsoKNy6y7+IN93IfpFtwY9iqi7kD+xwKhQsNJA==
-
-type-fest@~1.2.3:
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-1.2.3.tgz#0f01bd89ca65ba5f3ebbb1646b314e2138d1f460"
-  integrity sha512-w81kTuuq5V8j7aZamYO9TJ+LYqhw11mkHyMISJIRl2+uMYmgOj3yhSLk2qH6lznyTicBOdMrudxrrVvCQzK1tQ==
 
 type-fest@~2.0.0:
   version "2.0.0"

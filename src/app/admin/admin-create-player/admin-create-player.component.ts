@@ -5,9 +5,11 @@ import { finalize, map, pluck, tap } from 'rxjs';
 import { PlayerService } from '../../player/player.service';
 import { PersonaNameExistsValidator } from '@shared/validators/persona-name-exists.validator';
 import { SteamIdExistsValidator } from '@shared/validators/steam-id-exists.validator';
-import { RegionQuery } from '../../region/region.query';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { trackById } from '@util/track-by';
+import { Region } from '@model/region';
+import { RouteDataEnum } from '@model/enum/route-data.enum';
 
 @Component({
   selector: 'bio-admin-create-player',
@@ -20,10 +22,10 @@ export class AdminCreatePlayerComponent {
     private playerService: PlayerService,
     private personaNameExistsValidator: PersonaNameExistsValidator,
     private steamIdExistsValidator: SteamIdExistsValidator,
-    private regionQuery: RegionQuery,
     private dialogService: DialogService,
     private router: Router,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   loading = false;
@@ -37,8 +39,8 @@ export class AdminCreatePlayerComponent {
     personaName: new Control('', [this.personaNameExistsValidator, Validators.maxLength(100)]),
     steamid: new Control('', [this.steamIdExistsValidator]),
   });
-  readonly regions$ = this.regionQuery.all$;
-  readonly trackByRegion = this.regionQuery.trackBy;
+  readonly regions: Region[] = this.activatedRoute.snapshot.data[RouteDataEnum.regions];
+  readonly trackByRegion = trackById;
 
   readonly isInvalid$ = this.form.value$.pipe(map(dto => dto.personaName.length < 3 && !dto.steamid?.length));
   readonly personaNameLength$ = this.form.get('personaName').value$.pipe(pluck('length'));

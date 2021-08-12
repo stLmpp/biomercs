@@ -1,12 +1,18 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, Inject, ViewChild } from '@angular/core';
-import { RegionQuery } from '../region.query';
-import { combineLatest, debounceTime, delay, finalize, map, Observable, startWith, tap } from 'rxjs';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { debounceTime, finalize, Observable, tap } from 'rxjs';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import { Region } from '@model/region';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { Control } from '@stlmpp/control';
-import { LocalState, StMapView } from '@stlmpp/store';
 import { trackById } from '@util/track-by';
 import { RegionService } from '../region.service';
 
@@ -21,44 +27,52 @@ export interface RegionSelectData {
   styleUrls: ['./region-select.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RegionSelectComponent extends LocalState<{ loading: boolean; saving: boolean }> implements AfterViewInit {
+export class RegionSelectComponent implements OnInit, AfterViewInit {
   constructor(
     private modalRef: ModalRef,
     @Inject(MODAL_DATA) { idRegion, onSelect }: RegionSelectData,
     private regionService: RegionService,
-    private regionQuery: RegionQuery
+    private changeDetectorRef: ChangeDetectorRef
   ) {
-    super({ loading: false, saving: false });
     this.idRegion = idRegion;
     this.idRegionOrigin = idRegion;
     this.onSelect = onSelect;
   }
 
-  @ViewChild(CdkVirtualScrollViewport) cdkVirtualScrollViewport!: CdkVirtualScrollViewport;
+  private _viewInitialized = false;
+  private _scrolled = false;
+  @ViewChild(CdkVirtualScrollViewport) cdkVirtualScrollViewport?: CdkVirtualScrollViewport;
+
+  regions: Region[] = [];
 
   idRegionOrigin: number;
   idRegion: number;
   onSelect: (idRegion: number) => Observable<any>;
-  readonly loading$ = this.selectState('loading');
-  readonly saving$ = this.selectState('saving');
+  loading = true;
+  saving = false;
 
   readonly searchControl = new Control<string>('');
   readonly search$ = this.searchControl.value$.pipe(debounceTime(400));
-  readonly all$: Observable<StMapView<Region>> = combineLatest([
-    this.regionQuery.all$,
-    this.search$.pipe(startWith('')),
-  ]).pipe(map(([regions, term]) => regions.search('name', term)));
 
   readonly trackByRegion = trackById;
+
+  private _scrollToIdRegionSelected(): void {
+    const index = this.regions.findIndex(region => region.id === this.idRegion);
+    if (index > -1 && this.cdkVirtualScrollViewport) {
+      this.cdkVirtualScrollViewport.scrollToIndex(index);
+    }
+    this._scrolled = true;
+  }
 
   onSave($event?: Event): void {
     $event?.preventDefault();
     if (this.idRegionOrigin !== this.idRegion) {
-      this.updateState('saving', true);
+      this.saving = true;
       this.onSelect(this.idRegion)
         .pipe(
           finalize(() => {
-            this.updateState('saving', false);
+            this.saving = false;
+            this.changeDetectorRef.markForCheck();
           }),
           tap(() => {
             this.modalRef.close();
@@ -74,22 +88,31 @@ export class RegionSelectComponent extends LocalState<{ loading: boolean; saving
     this.modalRef.close();
   }
 
-  ngAfterViewInit(): void {
-    this.updateState('loading', true);
+  ngOnInit(): void {
     this.regionService
       .get()
       .pipe(
         finalize(() => {
-          this.updateState('loading', false);
-        }),
-        // Give time to angular render the items just fetched
-        delay(0)
+          this.loading = false;
+          this.changeDetectorRef.markForCheck();
+        })
       )
       .subscribe(regions => {
-        const index = regions.findIndex(region => region.id === this.idRegion);
-        if (index > -1) {
-          this.cdkVirtualScrollViewport.scrollToIndex(index);
+        this.regions = regions;
+        if (this._scrolled || !this._viewInitialized) {
+          return;
         }
+        this._scrollToIdRegionSelected();
       });
+  }
+
+  ngAfterViewInit(): void {
+    this._viewInitialized = true;
+    if (this._scrolled) {
+      return;
+    }
+    setTimeout(() => {
+      this._scrollToIdRegionSelected();
+    });
   }
 }
