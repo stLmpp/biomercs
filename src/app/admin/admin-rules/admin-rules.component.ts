@@ -1,13 +1,11 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Rule, RuleUpsert } from '@model/rule';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { ControlArray, ControlBuilder, ControlGroup, Validators } from '@stlmpp/control';
-import { LocalState } from '@stlmpp/store';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { RuleService } from '../../rules/rule.service';
 import { finalize, tap } from 'rxjs';
-import { RuleQuery } from '../../rules/rule.query';
 import { SnackBarService } from '@shared/components/snack-bar/snack-bar.service';
 import { UnsavedData, UnsavedDataType } from '@shared/guards/unsaved-data.guard';
 import { trackByControl } from '@util/track-by';
@@ -19,29 +17,23 @@ interface RulesForm {
   deleted: RuleUpsert[];
 }
 
-interface AdminRulesComponentState {
-  saving: boolean;
-}
-
 @Component({
   selector: 'bio-admin-rules',
   templateUrl: './admin-rules.component.html',
   styleUrls: ['./admin-rules.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AdminRulesComponent extends LocalState<AdminRulesComponentState> implements UnsavedData {
+export class AdminRulesComponent implements UnsavedData {
   constructor(
     private activatedRoute: ActivatedRoute,
     private ruleService: RuleService,
-    private ruleQuery: RuleQuery,
     private controlBuilder: ControlBuilder,
-    private snackBarService: SnackBarService
-  ) {
-    super({ saving: false });
-  }
+    private snackBarService: SnackBarService,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {}
 
   private _rules: Rule[] = this.activatedRoute.snapshot.data[RouteDataEnum.rules] ?? [];
-  readonly saving$ = this.selectState('saving');
+  saving = false;
 
   form = this._createForm();
 
@@ -121,19 +113,20 @@ export class AdminRulesComponent extends LocalState<AdminRulesComponentState> im
     if (this.form.invalid) {
       return;
     }
-    this.updateState({ saving: true });
+    this.saving = true;
     const { deleted, rules } = this.form.disable().value;
     const dtos: RuleUpsert[] = [...deleted, ...rules.map(dto => ({ ...dto, deleted: false }))];
     this.ruleService
       .upsert(dtos)
       .pipe(
-        tap(() => {
-          this._rules = [...this.ruleQuery.getAll()];
+        tap(_rules => {
+          this._rules = _rules;
           this.form = this._createForm();
           this.snackBarService.open('Rules saved successfully!');
         }),
         finalize(() => {
-          this.updateState({ saving: false });
+          this.saving = false;
+          this.changeDetectorRef.markForCheck();
           this.form.enable();
         })
       )

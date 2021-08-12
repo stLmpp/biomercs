@@ -41,7 +41,7 @@
         primary
         type="submit"
         [disabled]="(form.invalid || form.pristine) && !deletedValue.length"
-        [loading]="saving$ | async"
+        [loading]="saving"
       >
         Save
       </button>

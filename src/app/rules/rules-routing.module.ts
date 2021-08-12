@@ -13,7 +13,9 @@ const routes: Routes = [
       [RouteDataEnum.title]: 'Rules',
       [RouteDataEnum.meta]: createMeta({ title: 'Rules', description: 'Rules' }),
     },
-    resolve: [RuleResolver],
+    resolve: {
+      [RouteDataEnum.rules]: RuleResolver,
+    },
   },
 ];
 
