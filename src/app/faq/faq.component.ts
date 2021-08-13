@@ -23,7 +23,7 @@ export class FaqComponent extends Destroyable implements AfterViewInit {
     super();
   }
 
-  @ViewChild(AccordionDirective) readonly accordionDirective!: AccordionDirective;
+  @ViewChild(AccordionDirective) readonly accordionDirective?: AccordionDirective;
 
   readonly isMobile$ = this.breakpointObserverService.isMobile$;
   readonly searchControl = new Control<string>('', { initialFocus: true });
@@ -34,7 +34,7 @@ export class FaqComponent extends Destroyable implements AfterViewInit {
   }
 
   onFilterChange($event: FilterItemDirective[]): void {
-    if ($event.length === 1) {
+    if ($event.length === 1 && this.accordionDirective) {
       this.accordionDirective.expandItem($event[0].id + '');
     }
   }
@@ -45,9 +45,9 @@ export class FaqComponent extends Destroyable implements AfterViewInit {
       .pipe(observeOn(asyncScheduler), takeUntil(this.destroy$), filterNil(), distinctUntilChanged())
       .subscribe(fragment => {
         if (isFirstChange) {
-          this.accordionDirective.focusItem(fragment);
+          this.accordionDirective?.focusItem(fragment);
         }
-        this.accordionDirective.expandItem(fragment);
+        this.accordionDirective?.expandItem(fragment);
         isFirstChange = false;
       });
   }
