@@ -1,5 +1,5 @@
 <ng-container *ngLet="urlMetadata$ | async as urlMetadata">
-  <ng-container *ngIf="!(loading$ | async) && urlMetadata; else skeleton">
+  <ng-container *ngIf="!loading && urlMetadata; else skeleton">
     <img class="img" [src]="urlMetadata.image" [alt]="urlMetadata.title" *ngIf="urlMetadata.image; else noImage" />
     <ng-template #noImage>
       <div class="img no-image">
