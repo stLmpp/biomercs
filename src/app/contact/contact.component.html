@@ -44,9 +44,7 @@
       </form-field>
     </bio-card-content>
     <bio-card-actions>
-      <button bioButton primary type="submit" [disabled]="form.invalid" [loading]="sending$ | async">
-        Send message
-      </button>
+      <button bioButton primary type="submit" [disabled]="form.invalid" [loading]="sending">Send message</button>
     </bio-card-actions>
   </bio-card>
 </form>

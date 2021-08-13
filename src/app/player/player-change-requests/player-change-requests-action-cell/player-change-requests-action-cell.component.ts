@@ -1,13 +1,8 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Output } from '@angular/core';
 import { TableCell } from '@shared/components/table/type';
 import { ColDefInternal } from '@shared/components/table/col-def';
 import { ScoreWithScoreChangeRequests } from '@model/score-change-request';
-import { LocalState } from '@stlmpp/store';
 import { PlayerModalService } from '../../player-modal.service';
-
-interface PlayerChangeRequestsActionCellComponentState {
-  loadingModal: boolean;
-}
 
 export interface PlayerChangeRequestsActionCellComponentMetadata {
   page: number;
@@ -20,13 +15,8 @@ export interface PlayerChangeRequestsActionCellComponentMetadata {
   styleUrls: ['./player-change-requests-action-cell.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PlayerChangeRequestsActionCellComponent
-  extends LocalState<PlayerChangeRequestsActionCellComponentState>
-  implements TableCell<ScoreWithScoreChangeRequests>
-{
-  constructor(private playerModalService: PlayerModalService) {
-    super({ loadingModal: false });
-  }
+export class PlayerChangeRequestsActionCellComponent implements TableCell<ScoreWithScoreChangeRequests> {
+  constructor(private playerModalService: PlayerModalService, private changeDetectorRef: ChangeDetectorRef) {}
 
   @Output() readonly notifyChange = new EventEmitter<any>();
 
@@ -34,10 +24,10 @@ export class PlayerChangeRequestsActionCellComponent
   item!: ScoreWithScoreChangeRequests;
   metadata!: PlayerChangeRequestsActionCellComponentMetadata;
 
-  readonly loadingModal$ = this.selectState('loadingModal');
+  loadingModal = false;
 
   async openModalChangeRequests(): Promise<void> {
-    this.updateState({ loadingModal: true });
+    this.loadingModal = true;
     const { page, itemsPerPage } = this.metadata;
     const modalRef = await this.playerModalService.openPlayerChangeRequestsModal({
       score: this.item,
@@ -49,6 +39,7 @@ export class PlayerChangeRequestsActionCellComponent
         this.notifyChange.emit(data);
       }
     });
-    this.updateState({ loadingModal: false });
+    this.loadingModal = false;
+    this.changeDetectorRef.markForCheck();
   }
 }

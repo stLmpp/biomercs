@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { Control, ControlGroup, Validators } from '@stlmpp/control';
 import { ContactSendMail } from '@model/contact';
-import { LocalState } from '@stlmpp/store';
 import { ContactService } from './contact.service';
 import { finalize, tap } from 'rxjs';
 import { Router } from '@angular/router';
@@ -11,26 +10,21 @@ import { HttpStatusCode } from '@angular/common/http';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
 import { AuthQuery } from '../auth/auth.query';
 
-interface ContactComponentState {
-  sending: boolean;
-}
-
 @Component({
   selector: 'bio-contact',
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ContactComponent extends LocalState<ContactComponentState> {
+export class ContactComponent {
   constructor(
     private contactService: ContactService,
     private router: Router,
     private snackBarService: SnackBarService,
     private dialogService: DialogService,
-    private authQuery: AuthQuery
-  ) {
-    super({ sending: false });
-  }
+    private authQuery: AuthQuery,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {}
 
   readonly mail = 'support@biomercs.net';
   readonly subject = 'Give me a good subject';
@@ -56,20 +50,21 @@ export class ContactComponent extends LocalState<ContactComponentState> {
 
   readonly subjectControlValue$ = this.form.get('subject').value$;
   readonly bodyControlValue$ = this.form.get('body').value$;
-  readonly sending$ = this.selectState('sending');
+  sending = false;
 
   onSubmit(): void {
     if (this.form.invalid) {
       return;
     }
-    this.updateState({ sending: true });
+    this.sending = true;
     const dto = this.form.value;
     this.form.disable();
     this.contactService
       .sendMail(dto)
       .pipe(
         finalize(() => {
-          this.updateState({ sending: false });
+          this.sending = false;
+          this.changeDetectorRef.markForCheck();
           this.form.enable();
         }),
         tap(() => {
