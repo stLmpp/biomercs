@@ -1,82 +1,79 @@
 <h4 bioPageTitle></h4>
-<ng-container *ngLet="{ loading: loading$ | async } as state">
-  <form [controlGroup]="form" (groupSubmit)="onSearch()">
-    <bio-card collapsable class="params">
-      <h3 bioCardTitle>Parameters</h3>
-      <bio-card-content>
-        <form-field label="Platforms">
-          <bio-select placeholder="Platforms" multiple controlName="idPlatforms">
-            <bio-option *ngFor="let platform of platforms; trackBy: trackById" [value]="platform.id">
-              {{ platform.name }}
-            </bio-option>
-          </bio-select>
-        </form-field>
-        <form-field label="Games" [loading]="gameLoading$ | async">
-          <bio-select placeholder="Games" multiple controlName="idGames">
-            <bio-option *ngFor="let game of games$ | async; trackBy: trackById" [value]="game.id">
-              {{ game.name }}
-            </bio-option>
-          </bio-select>
-        </form-field>
-        <form-field label="Mini games" [loading]="miniGameLoading$ | async">
-          <bio-select placeholder="Mini games" multiple controlName="idMiniGames">
-            <bio-option *ngFor="let miniGame of miniGames$ | async; trackBy: trackById" [value]="miniGame.id">
-              {{ miniGame.name }}
-            </bio-option>
-          </bio-select>
-        </form-field>
-        <form-field label="Modes" [loading]="modeLoading$ | async">
-          <bio-select placeholder="Modes" multiple controlName="idModes">
-            <bio-option *ngFor="let mode of modes$ | async; trackBy: trackById" [value]="mode.id">
-              {{ mode.name }}
-            </bio-option>
-          </bio-select>
-        </form-field>
-        <form-field label="Stages" [loading]="stageLoading$ | async">
-          <bio-select placeholder="Stages" multiple controlName="idStages">
-            <bio-option *ngFor="let stage of stages$ | async; trackBy: trackById" [value]="stage.id">
-              {{ stage.name }}
-            </bio-option>
-          </bio-select>
-        </form-field>
-        <form-field [loading]="characterLoading$ | async" label="Characters">
-          <bio-select placeholder="Characters" multiple controlName="idCharacterCostumes">
-            <bio-optgroup
-              *ngFor="let character of characters$ | async; trackBy: trackById"
-              [label]="character.name"
-              [title]="character.name"
+<form [controlGroup]="form" (groupSubmit)="onSearch()">
+  <bio-card collapsable class="params">
+    <h3 bioCardTitle>Parameters</h3>
+    <bio-card-content>
+      <form-field label="Platforms">
+        <bio-select placeholder="Platforms" multiple controlName="idPlatforms">
+          <bio-option *ngFor="let platform of platforms; trackBy: trackById" [value]="platform.id">
+            {{ platform.name }}
+          </bio-option>
+        </bio-select>
+      </form-field>
+      <form-field label="Games" [loading]="gameLoading">
+        <bio-select placeholder="Games" multiple controlName="idGames">
+          <bio-option *ngFor="let game of games$ | async; trackBy: trackById" [value]="game.id">
+            {{ game.name }}
+          </bio-option>
+        </bio-select>
+      </form-field>
+      <form-field label="Mini games" [loading]="miniGameLoading">
+        <bio-select placeholder="Mini games" multiple controlName="idMiniGames">
+          <bio-option *ngFor="let miniGame of miniGames$ | async; trackBy: trackById" [value]="miniGame.id">
+            {{ miniGame.name }}
+          </bio-option>
+        </bio-select>
+      </form-field>
+      <form-field label="Modes" [loading]="modeLoading">
+        <bio-select placeholder="Modes" multiple controlName="idModes">
+          <bio-option *ngFor="let mode of modes$ | async; trackBy: trackById" [value]="mode.id">
+            {{ mode.name }}
+          </bio-option>
+        </bio-select>
+      </form-field>
+      <form-field label="Stages" [loading]="stageLoading">
+        <bio-select placeholder="Stages" multiple controlName="idStages">
+          <bio-option *ngFor="let stage of stages$ | async; trackBy: trackById" [value]="stage.id">
+            {{ stage.name }}
+          </bio-option>
+        </bio-select>
+      </form-field>
+      <form-field [loading]="characterLoading" label="Characters">
+        <bio-select placeholder="Characters" multiple controlName="idCharacterCostumes">
+          <bio-optgroup
+            *ngFor="let character of characters$ | async; trackBy: trackById"
+            [label]="character.name"
+            [title]="character.name"
+          >
+            <bio-option
+              *ngFor="let characterCostume of character.characterCostumes; trackBy: trackById"
+              [value]="characterCostume.id"
             >
-              <bio-option
-                *ngFor="let characterCostume of character.characterCostumes; trackBy: trackById"
-                [value]="characterCostume.id"
-              >
-                {{ characterCostume.name }}
-              </bio-option>
-            </bio-optgroup>
-          </bio-select>
-        </form-field>
-        <form-field label="Score">
-          <input bioInput controlName="score" type="text" autocomplete="off" placeholder="E.g. 750k or 750.000" />
-        </form-field>
-        <bio-checkbox controlName="worldRecord">World record</bio-checkbox>
-        <bio-checkbox controlName="characterWorldRecord">Character world record</bio-checkbox>
-        <bio-checkbox controlName="combinationWorldRecord">Combination World Record</bio-checkbox>
-        <bio-checkbox controlName="onlyMyScores">Only my scores</bio-checkbox>
-      </bio-card-content>
-      <bio-card-actions>
-        <button bioButton primary type="submit" [loading]="state.loading">Search</button>
-      </bio-card-actions>
-    </bio-card>
-  </form>
-  <bio-score-list-responsive
-    *ngIf="scores$ | async as scores"
-    [scores]="scores"
-    [colDefs]="colDefs"
-    [paginationMeta]="paginationMeta$ | async"
-    [loading]="state.loading"
-    (currentPageChange)="onCurrentPageChange($event)"
-    (itemsPerPageChange)="onItemsPerPageChange($event)"
-    (scoreClicked)="openInfoScore($event)"
-  >
-  </bio-score-list-responsive>
-</ng-container>
+              {{ characterCostume.name }}
+            </bio-option>
+          </bio-optgroup>
+        </bio-select>
+      </form-field>
+      <form-field label="Score">
+        <input bioInput controlName="score" type="text" autocomplete="off" placeholder="E.g. 750k or 750.000" />
+      </form-field>
+      <bio-checkbox controlName="worldRecord">World record</bio-checkbox>
+      <bio-checkbox controlName="characterWorldRecord">Character world record</bio-checkbox>
+      <bio-checkbox controlName="combinationWorldRecord">Combination World Record</bio-checkbox>
+      <bio-checkbox controlName="onlyMyScores">Only my scores</bio-checkbox>
+    </bio-card-content>
+    <bio-card-actions>
+      <button bioButton primary type="submit" [loading]="loading">Search</button>
+    </bio-card-actions>
+  </bio-card>
+</form>
+<bio-score-list-responsive
+  [scores]="scores"
+  [colDefs]="colDefs"
+  [paginationMeta]="paginationMeta"
+  [loading]="loading"
+  (currentPageChange)="onCurrentPageChange($event)"
+  (itemsPerPageChange)="onItemsPerPageChange($event)"
+  (scoreClicked)="openInfoScore($event)"
+>
+</bio-score-list-responsive>

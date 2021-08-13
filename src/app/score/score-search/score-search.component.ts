@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { PaginationMeta } from '@model/pagination';
 import { Score, ScoreSearch } from '@model/score';
-import { LocalState } from '@stlmpp/store';
 import { combineLatest, debounceTime, finalize, switchMap, takeUntil, tap } from 'rxjs';
 import { Control, ControlGroup } from '@stlmpp/control';
 import { AuthQuery } from '../../auth/auth.query';
@@ -24,26 +23,15 @@ import { trackById } from '@util/track-by';
 import { ScoreModalService } from '../score-modal.service';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { Platform } from '@model/platform';
+import { Destroyable } from '@shared/components/common/destroyable-component';
 
-export interface ScoreSearchComponentState {
-  scores: Score[];
-  paginationMeta: PaginationMeta;
-  loading: boolean;
-  gameLoading: boolean;
-  miniGameLoading: boolean;
-  modeLoading: boolean;
-  stageLoading: boolean;
-  characterLoading: boolean;
-}
-
-// TODO remove LocalState
 @Component({
   selector: 'bio-score-search',
   templateUrl: './score-search.component.html',
   styleUrls: ['./score-search.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ScoreSearchComponent extends LocalState<ScoreSearchComponentState> implements OnInit {
+export class ScoreSearchComponent extends Destroyable implements OnInit {
   constructor(
     private authQuery: AuthQuery,
     private scoreService: ScoreService,
@@ -55,34 +43,20 @@ export class ScoreSearchComponent extends LocalState<ScoreSearchComponentState> 
     private characterService: CharacterService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private scoreModalService: ScoreModalService
+    private scoreModalService: ScoreModalService,
+    private changeDetectorRef: ChangeDetectorRef
   ) {
-    super({
-      scores: [],
-      paginationMeta: {
-        itemCount: 0,
-        totalPages: 0,
-        totalItems: 0,
-        currentPage: 1,
-        itemsPerPage: 10,
-      },
-      loading: false,
-      gameLoading: false,
-      miniGameLoading: false,
-      modeLoading: false,
-      stageLoading: false,
-      characterLoading: false,
-    });
+    super();
   }
 
-  readonly scores$ = this.selectState('scores');
-  readonly paginationMeta$ = this.selectState('paginationMeta');
-  readonly loading$ = this.selectState('loading');
-  readonly gameLoading$ = this.selectState('gameLoading');
-  readonly miniGameLoading$ = this.selectState('miniGameLoading');
-  readonly modeLoading$ = this.selectState('modeLoading');
-  readonly stageLoading$ = this.selectState('stageLoading');
-  readonly characterLoading$ = this.selectState('characterLoading');
+  gameLoading = false;
+  miniGameLoading = false;
+  modeLoading = false;
+  stageLoading = false;
+  characterLoading = false;
+  loading = false;
+  scores: Score[] = [];
+  paginationMeta: PaginationMeta | null = null;
 
   readonly form = new ControlGroup<ScoreSearch>({
     limit: new Control<number>(this._getParamNumberFromRoute(RouteParamEnum.limit) ?? 10),
@@ -168,10 +142,12 @@ export class ScoreSearchComponent extends LocalState<ScoreSearchComponentState> 
 
   readonly games$ = this.idPlatformsNotNil$.pipe(
     switchMap(idPlatforms => {
-      this.updateState({ gameLoading: true });
+      this.gameLoading = true;
+      this.changeDetectorRef.markForCheck();
       return this.gameService.findByIdPlatforms(idPlatforms).pipe(
         finalize(() => {
-          this.updateState({ gameLoading: false });
+          this.gameLoading = false;
+          this.changeDetectorRef.markForCheck();
         }),
         tap(games => {
           const control = this.idGamesControl;
@@ -186,10 +162,12 @@ export class ScoreSearchComponent extends LocalState<ScoreSearchComponentState> 
 
   readonly miniGames$ = combineLatest([this.idPlatformsNotNil$, this.idGamesNotNil$]).pipe(
     switchMap(([idPlatforms, idGames]) => {
-      this.updateState({ miniGameLoading: true });
+      this.miniGameLoading = true;
+      this.changeDetectorRef.markForCheck();
       return this.miniGameService.findByIdPlatformsGames(idPlatforms, idGames).pipe(
         finalize(() => {
-          this.updateState({ miniGameLoading: false });
+          this.miniGameLoading = false;
+          this.changeDetectorRef.markForCheck();
         })
       );
     }),
@@ -204,10 +182,12 @@ export class ScoreSearchComponent extends LocalState<ScoreSearchComponentState> 
 
   readonly modes$ = combineLatest([this.idPlatformsNotNil$, this.idGamesNotNil$, this.idMiniGamesNotNil$]).pipe(
     switchMap(([idPlatforms, idGames, idMiniGames]) => {
-      this.updateState({ modeLoading: true });
+      this.modeLoading = true;
+      this.changeDetectorRef.markForCheck();
       return this.modeService.findByIdPlatformsGamesMiniGames(idPlatforms, idGames, idMiniGames).pipe(
         finalize(() => {
-          this.updateState({ modeLoading: false });
+          this.modeLoading = false;
+          this.changeDetectorRef.markForCheck();
         })
       );
     }),
@@ -227,10 +207,12 @@ export class ScoreSearchComponent extends LocalState<ScoreSearchComponentState> 
     this.idModesNotNil$,
   ]).pipe(
     switchMap(([idPlatforms, idGames, idMiniGames, idModes]) => {
-      this.updateState({ stageLoading: true });
+      this.stageLoading = true;
+      this.changeDetectorRef.markForCheck();
       return this.stageService.findByIdPlatformsGamesMiniGamesModes(idPlatforms, idGames, idMiniGames, idModes).pipe(
         finalize(() => {
-          this.updateState({ stageLoading: false });
+          this.stageLoading = false;
+          this.changeDetectorRef.markForCheck();
         })
       );
     }),
@@ -250,12 +232,14 @@ export class ScoreSearchComponent extends LocalState<ScoreSearchComponentState> 
     this.idModesNotNil$,
   ]).pipe(
     switchMap(([idPlatforms, idGames, idMiniGames, idModes]) => {
-      this.updateState({ characterLoading: true });
+      this.characterLoading = true;
+      this.changeDetectorRef.markForCheck();
       return this.characterService
         .findByIdPlatformsGamesMiniGamesModes(idPlatforms, idGames, idMiniGames, idModes)
         .pipe(
           finalize(() => {
-            this.updateState({ characterLoading: false });
+            this.characterLoading = false;
+            this.changeDetectorRef.markForCheck();
           })
         );
     }),
@@ -319,16 +303,18 @@ export class ScoreSearchComponent extends LocalState<ScoreSearchComponentState> 
         params = { ...params, [key]: null };
       }
     }
-    this.updateState({ loading: true });
+    this.loading = true;
     this.scoreService
       .search(params)
       .pipe(
         finalize(() => {
-          this.updateState({ loading: false });
+          this.loading = false;
+          this.changeDetectorRef.markForCheck();
         })
       )
       .subscribe(({ items, meta }) => {
-        this.updateState({ paginationMeta: meta, scores: items });
+        this.scores = items;
+        this.paginationMeta = meta;
       });
   }
 
