@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject } from '@angular/core';
 import { ControlBuilder, Validators } from '@stlmpp/control';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
@@ -6,7 +6,6 @@ import { AuthService } from '../../auth.service';
 import { finalize, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { catchAndThrow } from '@util/operators/catch-and-throw';
-import { LocalState } from '@stlmpp/store';
 
 interface LoginConfirmationForm {
   code: number | null;
@@ -18,42 +17,43 @@ interface LoginConfirmationForm {
   styleUrls: ['./login-confirm-code-modal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginConfirmCodeModalComponent extends LocalState<{ loading: boolean; error: string | null }> {
+export class LoginConfirmCodeModalComponent {
   constructor(
     public modalRef: ModalRef<LoginConfirmCodeModalComponent, number>,
     private controlBuilder: ControlBuilder,
     @Inject(MODAL_DATA) private idUser: number,
     private authService: AuthService,
-    private router: Router
-  ) {
-    super({ loading: false, error: null });
-  }
+    private router: Router,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {}
 
   readonly form = this.controlBuilder.group<LoginConfirmationForm>({ code: [null, [Validators.required]] });
-  readonly loading$ = this.selectState('loading');
-  readonly error$ = this.selectState('error');
+  loading = false;
+  error: string | null = null;
 
   submit(): void {
     if (this.form.invalid) {
       return;
     }
-    this.updateState({ error: null, loading: true });
+    this.error = null;
+    this.loading = true;
     this.form.disable();
     const { code } = this.form.value;
     // Code has to be set at this point because of validations
     this.authService
       .confirmCode(this.idUser, code!)
       .pipe(
-        finalize(() => {
-          this.updateState('loading', false);
-          this.form.enable();
-        }),
         tap(() => {
           this.modalRef.close();
           this.router.navigate(['/']).then();
         }),
         catchAndThrow(err => {
-          this.updateState('error', err.message);
+          this.error = err.message;
+        }),
+        finalize(() => {
+          this.loading = false;
+          this.changeDetectorRef.markForCheck();
+          this.form.enable();
         })
       )
       .subscribe();

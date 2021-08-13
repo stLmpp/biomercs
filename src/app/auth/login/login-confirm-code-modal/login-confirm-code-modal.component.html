@@ -1,11 +1,11 @@
-<form [controlGroup]="form" (groupSubmit)="submit()" *ngLet="loading$ | async as loading">
+<form [controlGroup]="form" (groupSubmit)="submit()">
   <h3 bioModalTitle>Code confirmation</h3>
   <bio-modal-content>
     <bio-confirmation-code-input
       controlName="code"
       (focusoutLastItem)="submit()"
       label="Confirmation code"
-      [codeError]="error$ | async"
+      [codeError]="error"
     ></bio-confirmation-code-input>
   </bio-modal-content>
   <bio-modal-actions end>
