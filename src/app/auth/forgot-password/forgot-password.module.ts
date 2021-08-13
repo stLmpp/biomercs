@@ -5,10 +5,9 @@ import { ForgotPasswordComponent } from './forgot-password.component';
 import { CardModule } from '@shared/components/card/card.module';
 import { AuthSharedModule } from '../shared/auth-shared.module';
 import { ButtonModule } from '@shared/components/button/button.module';
-import { NgLetModule } from '@stlmpp/utils';
 
 @NgModule({
   declarations: [ForgotPasswordComponent],
-  imports: [CommonModule, ForgotPasswordRoutingModule, AuthSharedModule, CardModule, NgLetModule, ButtonModule],
+  imports: [CommonModule, ForgotPasswordRoutingModule, AuthSharedModule, CardModule, ButtonModule],
 })
 export class ForgotPasswordModule {}
