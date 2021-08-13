@@ -1,13 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { LocalState } from '@stlmpp/store';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { AuthService } from '../../auth.service';
-import { tap } from 'rxjs';
-import { catchAndThrow } from '@util/operators/catch-and-throw';
-
-export interface ChangePasswordComponentState {
-  sentEmail: boolean;
-  sendingEmail: boolean;
-}
+import { finalize, tap } from 'rxjs';
 
 @Component({
   selector: 'bio-change-password',
@@ -16,23 +9,23 @@ export interface ChangePasswordComponentState {
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'center-container' },
 })
-export class ChangePasswordComponent extends LocalState<ChangePasswordComponentState> {
-  constructor(private authService: AuthService) {
-    super({ sendingEmail: false, sentEmail: false });
-  }
+export class ChangePasswordComponent {
+  constructor(private authService: AuthService, private changeDetectorRef: ChangeDetectorRef) {}
 
-  readonly state$ = this.selectState();
+  sendingEmail = false;
+  sentEmail = false;
 
   sendEmail(): void {
-    this.updateState({ sendingEmail: true });
+    this.sendingEmail = true;
     this.authService
       .sendChangePasswordConfirmationCode()
       .pipe(
         tap(() => {
-          this.updateState({ sendingEmail: false, sentEmail: true });
+          this.sentEmail = true;
         }),
-        catchAndThrow(() => {
-          this.updateState({ sendingEmail: false });
+        finalize(() => {
+          this.sendingEmail = false;
+          this.changeDetectorRef.markForCheck();
         })
       )
       .subscribe();
