@@ -9,7 +9,9 @@ const routes: Routes = [
   {
     path: '',
     component: ScoreWorldRecordsComponent,
-    resolve: [PlatformResolver],
+    resolve: {
+      [RouteDataEnum.platforms]: PlatformResolver,
+    },
     data: {
       [RouteDataEnum.title]: 'World records',
       [RouteDataEnum.meta]: createMeta({ title: 'World records', description: 'Table with all world records' }),

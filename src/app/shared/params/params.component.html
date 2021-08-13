@@ -9,11 +9,7 @@
       >
         Clear
       </bio-option>
-      <bio-option
-        [value]="platform.id"
-        *ngFor="let platform of platforms; trackBy: trackByPlatform"
-        [title]="platform.name"
-      >
+      <bio-option [value]="platform.id" *ngFor="let platform of platforms; trackBy: trackById" [title]="platform.name">
         {{ platform.name }}
       </bio-option>
     </bio-select>

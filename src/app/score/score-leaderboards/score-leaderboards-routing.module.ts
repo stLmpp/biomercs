@@ -9,7 +9,9 @@ const routes: Routes = [
   {
     path: '',
     component: ScoreLeaderboardsComponent,
-    resolve: [PlatformResolver],
+    resolve: {
+      [RouteDataEnum.platforms]: PlatformResolver,
+    },
     data: {
       [RouteDataEnum.title]: 'Leaderboards',
       [RouteDataEnum.meta]: createMeta({ title: 'Leaderboards', description: 'Leaderboards' }),

@@ -11,7 +11,6 @@ import {
 } from '@angular/core';
 import { Control, ControlBuilder, ControlValidator, ValidatorsKeys } from '@stlmpp/control';
 import { Nullable } from '../type/nullable';
-import { PlatformQuery } from '../services/platform/platform.query';
 import { GameService } from '../services/game/game.service';
 import { MiniGameService } from '../services/mini-game/mini-game.service';
 import { ModeService } from '../services/mode/mode.service';
@@ -103,7 +102,6 @@ interface ParamsComponentState {
 export class ParamsComponent extends LocalState<ParamsComponentState> implements OnChanges, OnInit {
   constructor(
     private controlBuilder: ControlBuilder,
-    private platformQuery: PlatformQuery,
     private gameService: GameService,
     private miniGameService: MiniGameService,
     private modeService: ModeService,
@@ -300,17 +298,14 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
 
   readonly state$ = this.selectState();
 
-  readonly trackByPlatform = this.platformQuery.trackBy;
   readonly trackById = trackById;
   readonly trackByControlValidator = trackByFactory<ControlValidator>('name');
 
   private _selectPlatforms(): Observable<Platform[]> {
     return this._approval$.pipe(
       switchMap(approval => {
-        if (approval) {
-          return this.activatedRoute.data.pipe(map(data => data[RouteDataEnum.platformApproval]) ?? []);
-        }
-        return this.platformQuery.all$.pipe(map(platforms => [...platforms]));
+        const key: RouteDataEnum = approval ? RouteDataEnum.platformApproval : RouteDataEnum.platforms;
+        return this.activatedRoute.data.pipe(map(data => data[key] ?? []));
       })
     );
   }
