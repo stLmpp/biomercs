@@ -9,7 +9,6 @@ import {
   OnDestroy,
   ViewContainerRef,
 } from '@angular/core';
-import { Nullable } from '../../type/nullable';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { ConnectedPosition, Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { overlayPositionsArray } from '@util/overlay';
@@ -39,7 +38,7 @@ export class TooltipDirective implements OnDestroy {
   private _hideTimeout: any;
   private _hasShown = false;
 
-  @Input() tooltip!: Nullable<string | number>;
+  @Input() tooltip!: string | number | null | undefined;
   @Input() tooltipPositions: ConnectedPosition[] = overlayPositionsArray('top');
   @Input() tooltipShowDelay = 0;
   @Input() tooltipHideDelay = 0;

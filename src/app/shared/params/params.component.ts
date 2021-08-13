@@ -10,7 +10,6 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { Control, ControlBuilder, ControlValidator, ValidatorsKeys } from '@stlmpp/control';
-import { Nullable } from '../type/nullable';
 import { GameService } from '../services/game/game.service';
 import { MiniGameService } from '../services/mini-game/mini-game.service';
 import { ModeService } from '../services/mode/mode.service';
@@ -46,12 +45,12 @@ import { filterNilArrayOperator } from '@util/operators/filter-nil-array';
 import { trackById } from '@util/track-by';
 
 export interface ParamsForm {
-  idPlatform: Nullable<number>;
-  idGame: Nullable<number>;
-  idMiniGame: Nullable<number>;
-  idMode: Nullable<number>;
-  idStage: Nullable<number>;
-  idCharacterCostume: Nullable<number>;
+  idPlatform: number | null | undefined;
+  idGame: number | null | undefined;
+  idMiniGame: number | null | undefined;
+  idMode: number | null | undefined;
+  idStage: number | null | undefined;
+  idCharacterCostume: number | null | undefined;
 }
 
 export const PARAMS_FORM_NULL: ParamsForm = {
@@ -172,19 +171,19 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
     this._approval = coerceBooleanProperty(approval);
   }
 
-  @Output() readonly idPlatformChange = new EventEmitter<Nullable<number>>();
-  @Output() readonly idGameChange = new EventEmitter<Nullable<number>>();
-  @Output() readonly idMiniGameChange = new EventEmitter<Nullable<number>>();
-  @Output() readonly idModeChange = new EventEmitter<Nullable<number>>();
-  @Output() readonly idStageChange = new EventEmitter<Nullable<number>>();
-  @Output() readonly idCharacterCostumeChange = new EventEmitter<Nullable<number>>();
+  @Output() readonly idPlatformChange = new EventEmitter<number | null | undefined>();
+  @Output() readonly idGameChange = new EventEmitter<number | null | undefined>();
+  @Output() readonly idMiniGameChange = new EventEmitter<number | null | undefined>();
+  @Output() readonly idModeChange = new EventEmitter<number | null | undefined>();
+  @Output() readonly idStageChange = new EventEmitter<number | null | undefined>();
+  @Output() readonly idCharacterCostumeChange = new EventEmitter<number | null | undefined>();
 
-  @Output() readonly platformChange = new EventEmitter<Nullable<Platform>>();
-  @Output() readonly gameChange = new EventEmitter<Nullable<Game>>();
-  @Output() readonly miniGameChange = new EventEmitter<Nullable<MiniGame>>();
-  @Output() readonly modeChange = new EventEmitter<Nullable<Mode>>();
-  @Output() readonly stageChange = new EventEmitter<Nullable<Stage>>();
-  @Output() readonly characterCostumeChange = new EventEmitter<Nullable<CharacterCostume>>();
+  @Output() readonly platformChange = new EventEmitter<Platform | null | undefined>();
+  @Output() readonly gameChange = new EventEmitter<Game | null | undefined>();
+  @Output() readonly miniGameChange = new EventEmitter<MiniGame | null | undefined>();
+  @Output() readonly modeChange = new EventEmitter<Mode | null | undefined>();
+  @Output() readonly stageChange = new EventEmitter<Stage | null | undefined>();
+  @Output() readonly characterCostumeChange = new EventEmitter<CharacterCostume | null | undefined>();
 
   @Output() readonly paramsChange = new EventEmitter<ParamsForm>();
 
@@ -421,7 +420,7 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
     return id ? +id : null;
   }
 
-  private _setParamOrNull<T extends { id: number }>(control: Control<Nullable<number>>, entities: T[]): void {
+  private _setParamOrNull<T extends { id: number }>(control: Control<number | null | undefined>, entities: T[]): void {
     const id = control.value;
     const exists = entities.some(entity => entity.id === id);
     if (exists) {
@@ -435,7 +434,7 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
   }
 
   private _setParamOrNullOperator<T extends { id: number }>(
-    control: Control<Nullable<number>>
+    control: Control<number | null | undefined>
   ): MonoTypeOperatorFunction<T[]> {
     return tap(entities => {
       this._setParamOrNull(control, entities);

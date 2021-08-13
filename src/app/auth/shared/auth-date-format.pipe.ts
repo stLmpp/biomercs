@@ -1,7 +1,6 @@
 import { Inject, Injectable, LOCALE_ID, Pipe, PipeTransform } from '@angular/core';
 import { AuthQuery } from '../auth.query';
 import { DatePipe } from '@angular/common';
-import { Nullable } from '@shared/type/nullable';
 
 @Pipe({ name: 'authDateFormat' })
 @Injectable({ providedIn: 'root' })
@@ -12,7 +11,7 @@ export class AuthDateFormatPipe implements PipeTransform {
 
   datePipe: DatePipe;
 
-  transform(value: Nullable<string | Date>): string | null {
+  transform(value: string | Date | null | undefined): string | null {
     return this.datePipe.transform(value, this.authQuery.getUser()?.dateFormat ?? 'dd/MM/yyyy');
   }
 }
