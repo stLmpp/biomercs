@@ -178,6 +178,14 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
   @Output() readonly idModeChange = new EventEmitter<Nullable<number>>();
   @Output() readonly idStageChange = new EventEmitter<Nullable<number>>();
   @Output() readonly idCharacterCostumeChange = new EventEmitter<Nullable<number>>();
+
+  @Output() readonly platformChange = new EventEmitter<Nullable<Platform>>();
+  @Output() readonly gameChange = new EventEmitter<Nullable<Game>>();
+  @Output() readonly miniGameChange = new EventEmitter<Nullable<MiniGame>>();
+  @Output() readonly modeChange = new EventEmitter<Nullable<Mode>>();
+  @Output() readonly stageChange = new EventEmitter<Nullable<Stage>>();
+  @Output() readonly characterCostumeChange = new EventEmitter<Nullable<CharacterCostume>>();
+
   @Output() readonly paramsChange = new EventEmitter<ParamsForm>();
 
   formsConfig = defaultConfigs;
@@ -306,6 +314,12 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
       switchMap(approval => {
         const key: RouteDataEnum = approval ? RouteDataEnum.platformApproval : RouteDataEnum.platforms;
         return this.activatedRoute.data.pipe(map(data => data[key] ?? []));
+      }),
+      tap(platforms => {
+        const idPlatform = this.idPlatformControl.value;
+        if (idPlatform) {
+          this.platformChange.emit(platforms.find(platform => platform.id === idPlatform));
+        }
       })
     );
   }
@@ -321,6 +335,12 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
         return request$.pipe(
           finalize(() => {
             this.updateState('gameLoading', false);
+          }),
+          tap(games => {
+            const idGame = this.idGameControl.value;
+            if (idGame) {
+              this.gameChange.emit(games.find(game => game.id === idGame));
+            }
           })
         );
       })
@@ -338,6 +358,12 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
         return request$.pipe(
           finalize(() => {
             this.updateState('miniGameLoading', false);
+          }),
+          tap(miniGames => {
+            const idMiniGame = this.idMiniGameControl.value;
+            if (idMiniGame) {
+              this.miniGameChange.emit(miniGames.find(miniGame => miniGame.id === idMiniGame));
+            }
           })
         );
       })
@@ -355,6 +381,12 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
         return request$.pipe(
           finalize(() => {
             this.updateState('modeLoading', false);
+          }),
+          tap(modes => {
+            const idMode = this.idModeControl.value;
+            if (idMode) {
+              this.modeChange.emit(modes.find(mode => mode.id === idMode));
+            }
           })
         );
       })
@@ -372,6 +404,12 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
         return request$.pipe(
           finalize(() => {
             this.updateState('stageLoading', false);
+          }),
+          tap(stages => {
+            const idStage = this.idStageControl.value;
+            if (idStage) {
+              this.stageChange.emit(stages.find(stage => stage.id === idStage));
+            }
           })
         );
       })

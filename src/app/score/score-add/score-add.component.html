@@ -8,6 +8,7 @@
         (paramsChange)="form.patchValue($event)"
         [config]="paramsConfig"
         setQueryParamsOnChange
+        (modeChange)="onModeChange($event)"
       ></bio-params>
     </bio-card-content>
   </bio-card>
@@ -27,7 +28,7 @@
         (playerChange)="scorePlayerControl.setValue($event)"
         [player]="player"
         [characters]="characters$ | async"
-        [charactersLoading]="characterLoading$ | async"
+        [charactersLoading]="characterLoading"
         [first]="$first"
         [playerNumber]="$index + 1"
         [idPlayersSelected]="(idPlayersSelected$ | async) ?? []"
@@ -80,9 +81,7 @@
       <bio-card-actions>
         <button bioButton type="button" primary (click)="onReset()">Reset</button>
         <div class="submit-wrapper" (mouseenter)="onMouseenterCardActions()">
-          <button bioButton type="submit" primary [disabled]="form.invalid || (submitModalLoading$ | async)">
-            Submit
-          </button>
+          <button bioButton type="submit" primary [disabled]="form.invalid || submitModalLoading">Submit</button>
         </div>
       </bio-card-actions>
     </bio-card>

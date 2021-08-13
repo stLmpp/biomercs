@@ -1,24 +1,19 @@
-import { ChangeDetectionStrategy, Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
 import { Control, ControlArray, ControlGroup, Validators } from '@stlmpp/control';
 import { AuthQuery } from '../../auth/auth.query';
 import { ParamsComponent, ParamsConfig } from '@shared/params/params.component';
 import { CURRENCY_MASK_CONFIG } from '@shared/currency-mask/currency-mask-config.token';
 import { MaskEnum, MaskEnumPatterns } from '@shared/mask/mask.enum';
-import {
-  combineLatest,
-  distinctUntilChanged,
-  finalize,
-  map,
-  Observable,
-  shareReplay,
-  switchMap,
-  takeUntil,
-  tap,
-} from 'rxjs';
+import { combineLatest, distinctUntilChanged, finalize, map, Observable, shareReplay, switchMap, tap } from 'rxjs';
 import { CharacterCostume } from '@model/character-costume';
-import { filterNil } from '@shared/operators/filter';
 import { CharacterService } from '@shared/services/character/character.service';
-import { ModeQuery } from '@shared/services/mode/mode.query';
 import { ScoreAddPlayerComponent } from './score-add-player/score-add-player.component';
 import { generateScorePlayerControlGroup, ScoreAddForm, ScorePlayerAddForm } from './score-add';
 import { ScoreService } from '../score.service';
@@ -26,17 +21,10 @@ import { ScoreAdd } from '@model/score';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
 import { Mode } from '@model/mode';
 import { scoreCurrencyMask } from '../score-shared/util';
-import { LocalState } from '@stlmpp/store';
 import { Router } from '@angular/router';
 import { filterNilArrayOperator } from '@util/operators/filter-nil-array';
 import { trackByControl } from '@util/track-by';
 import { isNotNil } from 'st-utils';
-
-export interface ScoreAddState {
-  characterLoading: boolean;
-  submitting: boolean;
-  submitModalLoading: boolean;
-}
 
 @Component({
   selector: 'bio-score-add',
@@ -45,17 +33,15 @@ export interface ScoreAddState {
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [{ provide: CURRENCY_MASK_CONFIG, useValue: scoreCurrencyMask }],
 })
-export class ScoreAddComponent extends LocalState<ScoreAddState> implements OnInit {
+export class ScoreAddComponent {
   constructor(
     private authQuery: AuthQuery,
     private characterService: CharacterService,
-    private modeQuery: ModeQuery,
     private scoreService: ScoreService,
     private dialogService: DialogService,
-    private router: Router
-  ) {
-    super({ characterLoading: false, submitting: false, submitModalLoading: false });
-  }
+    private router: Router,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {}
 
   @ViewChildren(ScoreAddPlayerComponent) readonly scoreAddPlayerComponents!: QueryList<ScoreAddPlayerComponent>;
   @ViewChild(ParamsComponent) readonly paramsComponent!: ParamsComponent;
@@ -78,18 +64,20 @@ export class ScoreAddComponent extends LocalState<ScoreAddState> implements OnIn
   readonly idGame$ = this.form.get('idGame').value$.pipe(distinctUntilChanged());
   readonly idMiniGame$ = this.form.get('idMiniGame').value$.pipe(distinctUntilChanged());
   readonly idMode$ = this.form.get('idMode').value$.pipe(distinctUntilChanged());
-  readonly characterLoading$ = this.selectState('characterLoading');
-  readonly submitModalLoading$ = this.selectState('submitModalLoading');
+  characterLoading = false;
+  submitModalLoading = false;
 
   readonly hasIdMode$ = this.form.get('idMode').value$.pipe(map(idMode => !!idMode));
 
   readonly characters$ = combineLatest([this.idPlatform$, this.idGame$, this.idMiniGame$, this.idMode$]).pipe(
     filterNilArrayOperator(),
     switchMap(([idPlatform, idGame, idMiniGame, idMode]) => {
-      this.updateState('characterLoading', true);
+      this.characterLoading = true;
+      this.changeDetectorRef.markForCheck();
       return this.characterService.findByIdPlatformGameMiniGameMode(idPlatform, idGame, idMiniGame, idMode).pipe(
         finalize(() => {
-          this.updateState('characterLoading', false);
+          this.characterLoading = false;
+          this.changeDetectorRef.markForCheck();
         }),
         tap(characters => {
           const characterCostumes = characters.reduce(
@@ -122,6 +110,8 @@ export class ScoreAddComponent extends LocalState<ScoreAddState> implements OnIn
     map(scorePlayers => scorePlayers.map(scorePlayer => scorePlayer.idPlayer).filter(isNotNil))
   );
 
+  currentMode?: Mode;
+
   private _getControlGroup(): ControlGroup<ScoreAddForm> {
     const player = this.authQuery.getUser()!.player!;
     return new ControlGroup<ScoreAddForm>({
@@ -143,10 +133,6 @@ export class ScoreAddComponent extends LocalState<ScoreAddState> implements OnIn
         }),
       ]),
     });
-  }
-
-  private _getCurrentMode(): Mode | undefined {
-    return this.modeQuery.getEntity(this.form.get('idMode').value ?? -1);
   }
 
   private _changeAllForms(callback: (form: ControlGroup<any>) => void): void {
@@ -174,7 +160,6 @@ export class ScoreAddComponent extends LocalState<ScoreAddState> implements OnIn
     if (this.form.invalid) {
       return;
     }
-    this.updateState({ submitting: true });
     // Casting because all fields must be valid, which means all fields were fulfilled
     const dto = this.form.value as ScoreAdd;
     this._changeAllForms(form => form.disable());
@@ -207,7 +192,7 @@ export class ScoreAddComponent extends LocalState<ScoreAddState> implements OnIn
         );
       })
     );
-    this.updateState({ submitModalLoading: true });
+    this.submitModalLoading = true;
     await this.dialogService.info(
       {
         title: 'Submit the score?',
@@ -226,7 +211,8 @@ export class ScoreAddComponent extends LocalState<ScoreAddState> implements OnIn
       },
       { width: 500, disableClose: true }
     );
-    this.updateState({ submitModalLoading: false });
+    this.submitModalLoading = false;
+    this.changeDetectorRef.markForCheck();
   }
 
   onReset(): void {
@@ -239,8 +225,7 @@ export class ScoreAddComponent extends LocalState<ScoreAddState> implements OnIn
         bulletKills: 0,
       },
     ];
-    const mode = this._getCurrentMode();
-    if (mode && mode.playerQuantity > 1) {
+    if (this.currentMode && this.currentMode.playerQuantity > 1) {
       const playerCount = this.form.get('scorePlayers').length - 1;
       for (let i = 0; i < playerCount; i++) {
         scorePlayers.push({
@@ -263,27 +248,21 @@ export class ScoreAddComponent extends LocalState<ScoreAddState> implements OnIn
     this._changeAllForms(form => form.markAsTouched(false));
   }
 
-  ngOnInit(): void {
-    this.idMode$
-      .pipe(
-        takeUntil(this.destroy$),
-        filterNil(),
-        switchMap(idMode => this.modeQuery.selectEntity(idMode)),
-        filterNil()
-      )
-      .subscribe(mode => {
-        const playersControl = this.form.get('scorePlayers');
-        if (mode.playerQuantity > playersControl.length) {
-          const diff = mode.playerQuantity - playersControl.length;
-          for (let i = 0; i < diff; i++) {
-            playersControl.push(generateScorePlayerControlGroup());
-          }
-        } else if (mode.playerQuantity < playersControl.length) {
-          const len = playersControl.length;
-          for (let i = mode.playerQuantity; i < len; i++) {
-            playersControl.removeAt(i);
-          }
-        }
-      });
+  onModeChange(mode: Mode | null | undefined): void {
+    if (!mode) {
+      return;
+    }
+    const playersControl = this.form.get('scorePlayers');
+    if (mode.playerQuantity > playersControl.length) {
+      const diff = mode.playerQuantity - playersControl.length;
+      for (let i = 0; i < diff; i++) {
+        playersControl.push(generateScorePlayerControlGroup());
+      }
+    } else if (mode.playerQuantity < playersControl.length) {
+      const len = playersControl.length;
+      for (let i = mode.playerQuantity; i < len; i++) {
+        playersControl.removeAt(i);
+      }
+    }
   }
 }

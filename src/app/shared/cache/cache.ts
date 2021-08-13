@@ -12,7 +12,7 @@ class Cache {
 
   private _cache = new Map<string, CacheStore>();
 
-  private _serializeKey(params: any = ''): string {
+  private _serializeKey(params: any): string {
     return JSON.stringify(params);
   }
 
@@ -23,7 +23,7 @@ class Cache {
     this._cache.set(key, { timeout: () => clearTimeout(timeout), value });
   }
 
-  burstCache(params: any = ''): void {
+  burstCache(...params: any): void {
     const key = this._serializeKey(params);
     if (this._cache.has(key)) {
       const { timeout } = this._cache.get(key)!;
@@ -39,7 +39,7 @@ class Cache {
     this._cache.clear();
   }
 
-  use<T>(params: any = ''): MonoTypeOperatorFunction<T> {
+  use<T>(...params: any): MonoTypeOperatorFunction<T> {
     const key = this._serializeKey(params);
     return source => {
       if (!this._cache.has(key)) {
@@ -56,7 +56,7 @@ class Cache {
     };
   }
 
-  burst<T>(params: any = ''): MonoTypeOperatorFunction<T> {
+  burst<T>(...params: any): MonoTypeOperatorFunction<T> {
     return finalize(() => {
       this.burstCache(params);
     });
