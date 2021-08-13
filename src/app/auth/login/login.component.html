@@ -27,26 +27,13 @@
         </button>
       </form-field>
       <bio-checkbox controlName="rememberMe"> Remember me </bio-checkbox>
-      <p *ngIf="error$ | async as error" class="text-danger">{{ error }}</p>
+      <p *ngIf="error" class="text-danger">{{ error }}</p>
     </bio-card-content>
-    <bio-card-actions end *ngLet="loading$ | async as loading">
-      <button
-        bioButton
-        primary
-        type="button"
-        (click)="loginSteam()"
-        [loading]="loading.loadingSteam"
-        [disabled]="loading.loading"
-      >
+    <bio-card-actions end>
+      <button bioButton primary type="button" (click)="loginSteam()" [loading]="loadingSteam" [disabled]="loading">
         Login Steam
       </button>
-      <button
-        bioButton
-        primary
-        type="submit"
-        [disabled]="form.invalid || loading.loadingSteam"
-        [loading]="loading.loading"
-      >
+      <button bioButton primary type="submit" [disabled]="form.invalid || loadingSteam" [loading]="loading">
         Login
       </button>
     </bio-card-actions>

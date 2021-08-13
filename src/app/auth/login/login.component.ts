@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { Control, ControlGroup, Validators } from '@stlmpp/control';
 import { AuthService } from '../auth.service';
 import { WINDOW } from '../../core/window.service';
-import { filter, finalize, takeUntil, withLatestFrom } from 'rxjs';
+import { finalize, map, takeUntil } from 'rxjs';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchAndThrow } from '@util/operators/catch-and-throw';
@@ -12,7 +12,8 @@ import type { LoginConfirmCodeModalComponent } from './login-confirm-code-modal/
 import { HttpError } from '@model/http-error';
 import { HttpStatusCode } from '@angular/common/http';
 import { AuthCredentials } from '@model/auth';
-import { LocalState } from '@stlmpp/store';
+import { filterNil } from '@shared/operators/filter';
+import { Destroyable } from '@shared/components/common/destroyable-component';
 
 @Component({
   selector: 'bio-login',
@@ -20,10 +21,7 @@ import { LocalState } from '@stlmpp/store';
   styleUrls: ['./login.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginComponent
-  extends LocalState<{ loadingSteam: boolean; loading: boolean; error: string | null }>
-  implements OnInit
-{
+export class LoginComponent extends Destroyable implements OnInit {
   constructor(
     private authService: AuthService,
     @Inject(WINDOW) private window: Window,
@@ -31,13 +29,16 @@ export class LoginComponent
     private router: Router,
     private snackBarService: SnackBarService,
     private activatedRoute: ActivatedRoute,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private changeDetectorRef: ChangeDetectorRef
   ) {
-    super({ error: null, loading: false, loadingSteam: false });
+    super();
   }
 
-  readonly loading$ = this.selectState(['loading', 'loadingSteam']);
-  readonly error$ = this.selectState('error');
+  loading = false;
+  loadingSteam = false;
+  error: string | null = null;
+
   readonly form = new ControlGroup<AuthCredentials>({
     rememberMe: new Control(true),
     password: new Control('', [Validators.required]),
@@ -47,30 +48,32 @@ export class LoginComponent
   typePassword = 'password';
 
   loginSteam(): void {
-    this.updateState('loadingSteam', true);
+    this.loadingSteam = true;
     this.authService
       .loginSteam(['../', 'steam'], this.activatedRoute, this.destroy$)
       .pipe(
         finalize(() => {
-          this.updateState('loadingSteam', false);
+          this.loadingSteam = false;
+          this.changeDetectorRef.markForCheck();
         })
       )
       .subscribe();
   }
 
   login(): void {
-    this.updateState('loading', true);
+    this.loading = true;
     const credentials = this.form.value;
     this.form.disable();
     this.authService
       .login(credentials)
       .pipe(
         finalize(() => {
-          this.updateState('loading', false);
+          this.loading = false;
+          this.changeDetectorRef.markForCheck();
           this.form.enable();
         }),
         catchAndThrow(async (error: HttpError<number>) => {
-          this.updateState('error', error.message);
+          this.error = error.message;
           if (error.status === HttpStatusCode.PreconditionFailed) {
             await this.modalService.openLazy<LoginConfirmCodeModalComponent, number>(
               () =>
@@ -94,12 +97,13 @@ export class LoginComponent
   ngOnInit(): void {
     this.form.value$
       .pipe(
-        withLatestFrom(this.error$),
+        map(() => this.error),
         takeUntil(this.destroy$),
-        filter(([_, error]) => !!error)
+        filterNil()
       )
       .subscribe(() => {
-        this.updateState('error', null);
+        this.error = null;
+        this.changeDetectorRef.markForCheck();
       });
   }
 }
