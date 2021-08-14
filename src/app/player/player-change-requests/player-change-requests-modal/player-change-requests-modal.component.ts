@@ -97,6 +97,7 @@ export class PlayerChangeRequestsModalComponent {
       return;
     }
     this.loading = true;
+    this.modalRef.disableClose = true;
     this.form.disable();
     const formValue = this.form.value;
     const dto: ScoreChangeRequestsFulfilDto = {
@@ -110,6 +111,7 @@ export class PlayerChangeRequestsModalComponent {
         finalize(() => {
           this.form.enable();
           this.loading = false;
+          this.modalRef.disableClose = false;
           this.changeDetectorRef.markForCheck();
         })
       )

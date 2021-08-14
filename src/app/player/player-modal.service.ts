@@ -27,7 +27,7 @@ export class PlayerModalService {
         import('./player-change-requests/player-change-requests-modal/player-change-requests-modal.component').then(
           m => m.PlayerChangeRequestsModalComponent
         ),
-      { data, disableClose: true, minWidth: '60vw' }
+      { data, minWidth: '60vw' }
     );
   }
 
