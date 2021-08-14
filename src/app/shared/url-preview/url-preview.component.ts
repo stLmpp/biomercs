@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, Renderer2 } from '@angular/core';
 import { UrlMetadataService } from '@shared/services/url-metadata/url-metadata.service';
 import { filterNil } from '@shared/operators/filter';
-import { debounceTime, finalize, Subject, switchMap } from 'rxjs';
+import { debounceTime, finalize, ReplaySubject, switchMap } from 'rxjs';
 
 @Component({
   selector: 'a[bio-url-preview]',
@@ -18,7 +18,7 @@ export class UrlPreviewComponent {
     private elementRef: ElementRef<HTMLAnchorElement>
   ) {}
 
-  private readonly _url$ = new Subject<string | null>();
+  private readonly _url$ = new ReplaySubject<string | null>();
 
   @Input()
   set url(url: string | null) {

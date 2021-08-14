@@ -1,25 +1,23 @@
-<ng-container *ngLet="loading$ | async as loading">
-  <bio-loading *ngIf="loading"></bio-loading>
-  <h5 bioModalTitle *ngIf="data.title">
-    <icon *ngIf="!(data.type | any: typesWithoutIcon)" [ngSwitch]="data.type">
-      <ng-container *ngSwitchCase="dialogType.success">check_circle_outline</ng-container>
-      <ng-container *ngSwitchCase="dialogType.error">highlight_off</ng-container>
-    </icon>
-    {{ data.title }}
-  </h5>
-  <bio-modal-content [innerHTML]="data.content"></bio-modal-content>
-  <bio-modal-actions end *ngIf="buttons$ | async as buttons">
-    <button
-      *ngFor="let button of buttons; trackBy: trackById"
-      type="button"
-      bioButton
-      [bioSize]="button.size"
-      [bioType]="button.type"
-      (click)="btnAction(button)"
-      [disabled]="button.disabled || loading"
-      [loading]="button.loading"
-    >
-      {{ button.title }}
-    </button>
-  </bio-modal-actions>
-</ng-container>
+<bio-loading *ngIf="loading"></bio-loading>
+<h5 bioModalTitle *ngIf="data.title">
+  <icon *ngIf="!(data.type | any: typesWithoutIcon)" [ngSwitch]="data.type">
+    <ng-container *ngSwitchCase="dialogType.success">check_circle_outline</ng-container>
+    <ng-container *ngSwitchCase="dialogType.error">highlight_off</ng-container>
+  </icon>
+  {{ data.title }}
+</h5>
+<bio-modal-content [innerHTML]="data.content"></bio-modal-content>
+<bio-modal-actions end *ngIf="buttons.length">
+  <button
+    *ngFor="let button of buttons; trackBy: trackById"
+    type="button"
+    bioButton
+    [bioSize]="button.size"
+    [bioType]="button.type"
+    (click)="btnAction(button)"
+    [disabled]="button.disabled || loading"
+    [loading]="button.loading"
+  >
+    {{ button.title }}
+  </button>
+</bio-modal-actions>

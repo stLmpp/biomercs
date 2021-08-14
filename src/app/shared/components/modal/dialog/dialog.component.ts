@@ -1,23 +1,18 @@
-import { ChangeDetectionStrategy, Component, HostBinding, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding, Inject, OnInit } from '@angular/core';
 import { ModalRef } from '../modal-ref';
-import { finalize, isObservable, Observable, take, takeUntil, tap } from 'rxjs';
+import { filter, finalize, isObservable, Observable, take, takeUntil, tap } from 'rxjs';
 import { MODAL_DATA } from '../modal.config';
 import { isBoolean, isFunction, isNotNil, isString } from 'st-utils';
-import { LocalState } from '@stlmpp/store';
 import { DialogData, DialogDataButton, DialogDataButtonType } from '@shared/components/modal/dialog/dialog-data';
 import { DialogType } from '@shared/components/modal/dialog/dialog-type.enum';
 import { trackById } from '@util/track-by';
+import { Destroyable } from '@shared/components/common/destroyable-component';
 
 let uid = 1;
 
 interface DialogDataButtonInternal extends DialogDataButton {
   id: number;
   disabled: boolean;
-  loading: boolean;
-}
-
-interface DialogComponentState {
-  buttons: DialogDataButtonInternal[];
   loading: boolean;
 }
 
@@ -41,16 +36,18 @@ function mapDialogDataButtonToInternal(buttons: DialogDataButtonType[] | undefin
   styleUrls: ['./dialog.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DialogComponent extends LocalState<DialogComponentState> implements OnInit {
+export class DialogComponent extends Destroyable implements OnInit {
   constructor(
     private modalRef: ModalRef<DialogComponent, DialogData, boolean>,
-    @Inject(MODAL_DATA) public data: DialogData
+    @Inject(MODAL_DATA) public data: DialogData,
+    private changeDetectorRef: ChangeDetectorRef
   ) {
-    super({ buttons: mapDialogDataButtonToInternal(data.buttons), loading: false });
+    super();
+    this.buttons = mapDialogDataButtonToInternal(data.buttons);
   }
 
-  readonly loading$ = this.selectState('loading');
-  readonly buttons$ = this.selectState('buttons');
+  buttons: DialogDataButtonInternal[];
+  loading = false;
   readonly dialogType = DialogType;
   readonly typesWithoutIcon = [DialogType.confirm, DialogType.info];
   readonly trackById = trackById;
@@ -70,25 +67,29 @@ export class DialogComponent extends LocalState<DialogComponentState> implements
     return this.data.type === DialogType.error;
   }
 
+  private _isAnyButtonLoading(): boolean {
+    return this.buttons.some(button => button.loading);
+  }
+
   private _setLoading(id: number, loading: boolean): void {
-    this.updateState(state => ({
-      ...state,
-      buttons: state.buttons.map(button => {
-        const key: keyof Pick<DialogDataButtonInternal, 'loading' | 'disabled'> =
-          button.id === id ? 'loading' : 'disabled';
-        return { ...button, [key]: loading };
-      }),
-    }));
+    this.buttons = this.buttons.map(button => {
+      const key: keyof Pick<DialogDataButtonInternal, 'loading' | 'disabled'> =
+        button.id === id ? 'loading' : 'disabled';
+      return { ...button, [key]: loading };
+    });
+    this.changeDetectorRef.markForCheck();
   }
 
   private _processBackdropObservable(observable: Observable<any>): void {
-    this.updateState({ loading: true });
+    this.loading = true;
+    this.changeDetectorRef.markForCheck();
     observable
       .pipe(
         take(1),
         takeUntil(this.destroy$),
         finalize(() => {
-          this.updateState({ loading: false });
+          this.loading = false;
+          this.changeDetectorRef.markForCheck();
         }),
         tap(() => {
           this.modalRef.close();
@@ -127,29 +128,33 @@ export class DialogComponent extends LocalState<DialogComponentState> implements
   }
 
   ngOnInit(): void {
-    this.modalRef.onBackdropClick$.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      const backdropAction = isFunction(this.data.backdropAction)
-        ? this.data.backdropAction(this.modalRef)
-        : this.data.backdropAction;
-      if (isNotNil(backdropAction)) {
-        if (isObservable(backdropAction)) {
-          this._processBackdropObservable(backdropAction);
-        } else if (isBoolean(backdropAction)) {
-          this.modalRef.close(backdropAction);
-        }
-      } else {
-        const buttons = this.getState('buttons');
-        const buttonWithBackdropAction = buttons.find(button => button.backdropAction);
-        if (buttonWithBackdropAction) {
-          this.btnAction(buttonWithBackdropAction);
-        } else if (!this.data.disableDefaultBackdropAction) {
-          if (buttons.length) {
-            this.btnAction(buttons[0]);
-          } else {
-            this.modalRef.close();
+    this.modalRef.onBackdropClick$
+      .pipe(
+        takeUntil(this.destroy$),
+        filter(() => !this._isAnyButtonLoading())
+      )
+      .subscribe(() => {
+        const backdropAction = isFunction(this.data.backdropAction)
+          ? this.data.backdropAction(this.modalRef)
+          : this.data.backdropAction;
+        if (isNotNil(backdropAction)) {
+          if (isObservable(backdropAction)) {
+            this._processBackdropObservable(backdropAction);
+          } else if (isBoolean(backdropAction)) {
+            this.modalRef.close(backdropAction);
+          }
+        } else {
+          const buttonWithBackdropAction = this.buttons.find(button => button.backdropAction);
+          if (buttonWithBackdropAction) {
+            this.btnAction(buttonWithBackdropAction);
+          } else if (!this.data.disableDefaultBackdropAction) {
+            if (this.buttons.length) {
+              this.btnAction(this.buttons[0]);
+            } else {
+              this.modalRef.close();
+            }
           }
         }
-      }
-    });
+      });
   }
 }

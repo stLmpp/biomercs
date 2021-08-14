@@ -1,12 +1,12 @@
 import { AfterContentInit, ContentChildren, Directive, EventEmitter, Input, Output, QueryList } from '@angular/core';
 import { FilterItemDirective } from '@shared/filter/filter-item.directive';
-import { combineLatest, map, Observable, startWith, Subject, takeUntil } from 'rxjs';
+import { combineLatest, map, Observable, ReplaySubject, startWith, takeUntil } from 'rxjs';
 import { normalizeString } from 'st-utils';
 import { Destroyable } from '@shared/components/common/destroyable-component';
 
 @Directive({ selector: '[bioFilter]' })
 export class FilterDirective extends Destroyable implements AfterContentInit {
-  private readonly _bioFilter$ = new Subject<string | null | undefined>();
+  private readonly _bioFilter$ = new ReplaySubject<string | null | undefined>();
 
   @ContentChildren(FilterItemDirective, { descendants: true })
   readonly filterItemDirectives!: QueryList<FilterItemDirective>;
