@@ -37,6 +37,7 @@ export class LoginConfirmCodeModalComponent {
     }
     this.error = null;
     this.loading = true;
+    this.modalRef.disableClose = true;
     this.form.disable();
     const { code } = this.form.value;
     // Code has to be set at this point because of validations
@@ -52,6 +53,7 @@ export class LoginConfirmCodeModalComponent {
         }),
         finalize(() => {
           this.loading = false;
+          this.modalRef.disableClose = false;
           this.changeDetectorRef.markForCheck();
           this.form.enable();
         })

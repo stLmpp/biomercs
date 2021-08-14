@@ -82,7 +82,6 @@ export class LoginComponent extends Destroyable implements OnInit {
                 ),
               {
                 data: error.extra,
-                disableClose: true,
               }
             );
           }
