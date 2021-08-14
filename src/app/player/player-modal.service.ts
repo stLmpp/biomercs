@@ -43,7 +43,6 @@ export class PlayerModalService {
       {
         ...modalConfig,
         data,
-        disableClose: true,
         module: () => import('./player-shared/player-shared.module').then(m => m.PlayerSharedModule),
         panelClass: 'player-search-modal',
       }
