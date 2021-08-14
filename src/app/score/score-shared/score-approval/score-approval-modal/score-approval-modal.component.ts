@@ -61,6 +61,7 @@ export class ScoreApprovalModalComponent {
   readonly trackById = trackById;
 
   save(): void {
+    this.modalRef.disableClose = true;
     this.saving = true;
     this.form.disable();
     const payload = this.form.value;
@@ -87,6 +88,7 @@ export class ScoreApprovalModalComponent {
         }),
         finalize(() => {
           this.saving = false;
+          this.modalRef.disableClose = false;
           this.changeDetectorRef.markForCheck();
           this.form.enable();
         })

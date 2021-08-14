@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   Inject,
   OnInit,
@@ -17,7 +18,6 @@ import { Key, KeyCode } from '@model/enum/key';
 import { FocusKeyManager } from '@angular/cdk/a11y';
 import { InputDirective } from '@shared/components/form/input.directive';
 import { ScoreApprovalComponentState } from '../score-approval.component';
-import { LocalState } from '@stlmpp/store';
 import { trackByControl } from '@util/track-by';
 import { ScoreService } from '../../../score.service';
 
@@ -41,17 +41,14 @@ export interface TextAreaEvent {
   styleUrls: ['./score-request-changes-modal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ScoreRequestChangesModalComponent
-  extends LocalState<{ saving: boolean }>
-  implements OnInit, AfterViewInit
-{
+export class ScoreRequestChangesModalComponent implements OnInit, AfterViewInit {
   constructor(
     @Inject(MODAL_DATA) { score, scoreApprovalComponentState }: ScoreRequestChangesModalData,
     private controlBuilder: ControlBuilder,
     public modalRef: ModalRef<ScoreRequestChangesModalComponent, ScoreRequestChangesModalForm, ScoreApprovalPagination>,
-    private scoreService: ScoreService
+    private scoreService: ScoreService,
+    private changeDetectorRef: ChangeDetectorRef
   ) {
-    super({ saving: false });
     this.score = score;
     this.scoreApprovalComponentState = scoreApprovalComponentState;
   }
@@ -61,7 +58,7 @@ export class ScoreRequestChangesModalComponent
 
   @ViewChildren('change') readonly changesRef!: QueryList<InputDirective>;
 
-  readonly saving$ = this.selectState('saving');
+  saving = false;
 
   score: Score;
   scoreApprovalComponentState: ScoreApprovalComponentState;
@@ -95,7 +92,8 @@ export class ScoreRequestChangesModalComponent
     }
     const changes = this.changesControl.value;
     this.form.disable();
-    this.updateState({ saving: true });
+    this.modalRef.disableClose = true;
+    this.saving = true;
     this.scoreService
       .requestChanges(this.score.id, changes)
       .pipe(
@@ -118,8 +116,10 @@ export class ScoreRequestChangesModalComponent
           this.modalRef.close(data);
         }),
         finalize(() => {
-          this.updateState({ saving: false });
+          this.saving = false;
+          this.modalRef.disableClose = false;
           this.form.enable();
+          this.changeDetectorRef.markForCheck();
         })
       )
       .subscribe();

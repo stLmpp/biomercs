@@ -1,4 +1,4 @@
-<form [controlGroup]="form" (groupSubmit)="onSubmit()" *ngLet="saving$ | async as saving">
+<form [controlGroup]="form" (groupSubmit)="onSubmit()">
   <h4 bioModalTitle>Request changes</h4>
   <bio-modal-content controlArrayName="changes">
     <bio-score-info [score]="score"></bio-score-info>

@@ -188,7 +188,7 @@ export class ScoreAddComponent {
               },
             ],
           },
-          { width: 500, disableClose: true }
+          { width: 500 }
         );
       })
     );
@@ -209,7 +209,7 @@ export class ScoreAddComponent {
           { title: 'Submit', action: request$ },
         ],
       },
-      { width: 500, disableClose: true }
+      { width: 500 }
     );
     this.submitModalLoading = false;
     this.changeDetectorRef.markForCheck();

@@ -20,7 +20,6 @@ import { Score } from '@model/score';
 const scoreModalDefaults: ModalConfigLazy = {
   minWidth: '30vw',
   module: () => import('./score-shared/score-shared.module').then(m => m.ScoreSharedModule),
-  disableClose: true,
 };
 
 @Injectable({ providedIn: 'root' })
