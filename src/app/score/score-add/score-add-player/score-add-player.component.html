@@ -28,7 +28,7 @@
     </label>
   </h3>
   <bio-card-content>
-    <form-field *ngIf="!first || (isAdmin$ | async)" [loading]="playersLoading$ | async" [disabled]="disabled">
+    <form-field *ngIf="!first || (isAdmin$ | async)" [loading]="playersLoading" [disabled]="disabled">
       <label class="required">Player</label>
       <input
         bioInput
@@ -60,7 +60,7 @@
         suffix
         tooltip="Advanced search"
         (click)="openPlayerSearchModal()"
-        [disabled]="playerSearchModalLoading$ | async"
+        [disabled]="playerSearchModalLoading"
       >
         <icon>search</icon>
       </button>

@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -15,18 +16,13 @@ import { PlayerService } from '../../../player/player.service';
 import { Player } from '@model/player';
 import { AutocompleteDirective } from '@shared/components/autocomplete/autocomplete.directive';
 import { generateScorePlayerControlGroup, ScorePlayerAddForm } from '../score-add';
-import { LocalState } from '@stlmpp/store';
 import { AuthQuery } from '../../../auth/auth.query';
 import { BooleanInput } from 'st-utils';
 import { SimpleChangesCustom } from '@util/util';
 import { trackById } from '@util/track-by';
 import { PlayerModalService } from '../../../player/player-modal.service';
 import { Control } from '@stlmpp/control';
-
-interface ScoreAddPlayerComponentState {
-  playersLoading: boolean;
-  playerSearchModalLoading: boolean;
-}
+import { Destroyable } from '@shared/components/common/destroyable-component';
 
 @Component({
   selector: 'bio-score-add-player',
@@ -34,13 +30,14 @@ interface ScoreAddPlayerComponentState {
   styleUrls: ['./score-add-player.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ScoreAddPlayerComponent extends LocalState<ScoreAddPlayerComponentState> implements OnInit, OnChanges {
+export class ScoreAddPlayerComponent extends Destroyable implements OnInit, OnChanges {
   constructor(
     private playerService: PlayerService,
     private authQuery: AuthQuery,
-    private playerModalService: PlayerModalService
+    private playerModalService: PlayerModalService,
+    private changeDetectorRef: ChangeDetectorRef
   ) {
-    super({ playersLoading: false, playerSearchModalLoading: false });
+    super();
   }
 
   @Input() idPlayersSelected: number[] = [];
@@ -73,23 +70,25 @@ export class ScoreAddPlayerComponent extends LocalState<ScoreAddPlayerComponentS
     debounceTime(500),
     filter(personaName => !!personaName && !!this.bioAutocomplete?.hasFocus),
     switchMap(personaName => {
-      this.updateState({ playersLoading: true });
+      this.playersLoading = true;
+      this.changeDetectorRef.markForCheck();
       return this.playerService.search(personaName, 1, 8, this.idPlayersSelected).pipe(
         finalize(() => {
-          this.updateState({ playersLoading: false });
+          this.playersLoading = false;
+          this.changeDetectorRef.markForCheck();
         })
       );
     }),
     pluck('items')
   );
 
-  readonly playersLoading$ = this.selectState('playersLoading');
-  readonly playerSearchModalLoading$ = this.selectState('playerSearchModalLoading');
+  playersLoading = false;
+  playerSearchModalLoading = false;
 
   readonly trackById = trackById;
 
   async openPlayerSearchModal(): Promise<void> {
-    this.updateState({ playerSearchModalLoading: true });
+    this.playerSearchModalLoading = true;
     const idPlayer = this.idPlayerControl.value;
     const modalRef = await this.playerModalService.openPlayerSearchModal({
       idPlayer,
@@ -103,7 +102,8 @@ export class ScoreAddPlayerComponent extends LocalState<ScoreAddPlayerComponentS
         });
       }
     });
-    this.updateState({ playerSearchModalLoading: false });
+    this.playerSearchModalLoading = false;
+    this.changeDetectorRef.markForCheck();
   }
 
   onHostChange(): void {
@@ -136,8 +136,7 @@ export class ScoreAddPlayerComponent extends LocalState<ScoreAddPlayerComponentS
     });
   }
 
-  override ngOnChanges(changes: SimpleChangesCustom): void {
-    super.ngOnChanges(changes);
+  ngOnChanges(changes: SimpleChangesCustom): void {
     const characterCostumes: CharacterCostume[] = (
       (changes.characters?.currentValue ?? []) as CharacterWithCharacterCostumes[]
     ).reduce((acc, character) => [...acc, ...character.characterCostumes], [] as CharacterCostume[]);
