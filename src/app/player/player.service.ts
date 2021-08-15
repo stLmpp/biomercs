@@ -79,28 +79,27 @@ export class PlayerService {
 
   linkSteam(idPlayer: number): Observable<SteamPlayerLinkedSocketViewModel> {
     const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
-    return this.http
-      .put<string>(`${this.endPoint}/${idPlayer}/link-steam`, undefined, { responseType: 'text' as any, headers })
-      .pipe(
-        switchMap(url => {
-          const windowSteam = this.window.open(url, 'Login Steam', 'width=500,height=500');
-          return this.steamService.playerLinkedSocket(idPlayer).pipe(
-            tap(async ({ error, steamProfile }) => {
-              windowSteam?.close();
-              if (error) {
-                await this.dialogService.info({ title: 'Error', content: error, buttons: ['Close'] });
-              } else if (steamProfile) {
-                this.playerStore.updateEntity(idPlayer, { steamProfile, idSteamProfile: steamProfile.id });
-              }
-            })
-          );
-        })
-      );
+    return this.http.put(`${this.endPoint}/${idPlayer}/link-steam`, undefined, { responseType: 'text', headers }).pipe(
+      switchMap(url => {
+        const windowSteam = this.window.open(url, 'Login Steam', 'width=500,height=500');
+        return this.steamService.playerLinkedSocket(idPlayer).pipe(
+          tap(async ({ error, steamProfile }) => {
+            windowSteam?.close();
+            if (error) {
+              await this.dialogService.info({ title: 'Error', content: error, buttons: ['Close'] });
+            } else if (steamProfile) {
+              this.playerStore.updateEntity(idPlayer, { steamProfile, idSteamProfile: steamProfile.id });
+            }
+          })
+        );
+      })
+    );
   }
 
   updatePersonaName(idPlayer: number, personaName: string): Observable<Date> {
+    const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
     return this.http
-      .put<string>(`${this.endPoint}/${idPlayer}/personaName`, { personaName }, { responseType: 'text' as any })
+      .put(`${this.endPoint}/${idPlayer}/personaName`, { personaName }, { responseType: 'text', headers })
       .pipe(
         map(lastUpdatedPersonaNameDate => new Date(lastUpdatedPersonaNameDate)),
         tap(lastUpdatedPersonaNameDate => {

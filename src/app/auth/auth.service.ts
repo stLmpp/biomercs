@@ -44,10 +44,7 @@ export class AuthService {
 
   private _getSteamLoginUrl(uuid: string): Observable<string> {
     const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
-    return this.http.post<string>(`${this.endPoint}/steam/login/${uuid}`, undefined, {
-      responseType: 'text' as any,
-      headers,
-    });
+    return this.http.post(`${this.endPoint}/steam/login/${uuid}`, undefined, { responseType: 'text', headers });
   }
 
   register(dto: AuthRegister): Observable<AuthRegisterVW> {
