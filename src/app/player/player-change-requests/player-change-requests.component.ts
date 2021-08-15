@@ -3,7 +3,7 @@ import { ScoreService } from '../../score/score.service';
 import { ActivatedRoute } from '@angular/router';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { filter, finalize, map, Observable, pluck, shareReplay, skip, switchMap, takeUntil } from 'rxjs';
-import { filterNil } from '@shared/operators/filter';
+import { filterNil } from '@util/operators/filter';
 import { ScoreChangeRequestsPagination, ScoreWithScoreChangeRequests } from '@model/score-change-request';
 import { PaginationMeta } from '@model/pagination';
 import { LocalState } from '@stlmpp/store';

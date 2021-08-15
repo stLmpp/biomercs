@@ -12,7 +12,7 @@ import type { LoginConfirmCodeModalComponent } from './login-confirm-code-modal/
 import { HttpError } from '@model/http-error';
 import { HttpStatusCode } from '@angular/common/http';
 import { AuthCredentials } from '@model/auth';
-import { filterNil } from '@shared/operators/filter';
+import { filterNil } from '@util/operators/filter';
 import { Destroyable } from '@shared/components/common/destroyable-component';
 
 @Component({

@@ -6,7 +6,7 @@ import { distinctUntilChanged, map, Observable } from 'rxjs';
 import { Player } from '@model/player';
 import { User } from '@model/user';
 import { isNumber } from 'st-utils';
-import { filterNil } from '@shared/operators/filter';
+import { filterNil } from '@util/operators/filter';
 
 @Injectable({ providedIn: 'root' })
 export class AuthQuery extends Query<Auth> {

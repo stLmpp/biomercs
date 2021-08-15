@@ -13,7 +13,7 @@ import { Control, ControlBuilder, ControlValidator, ValidatorsKeys } from '@stlm
 import { GameService } from '../services/game/game.service';
 import { MiniGameService } from '../services/mini-game/mini-game.service';
 import { ModeService } from '../services/mode/mode.service';
-import { filterNil } from '../operators/filter';
+import { filterNil } from '@util/operators/filter';
 import {
   combineLatest,
   debounceTime,

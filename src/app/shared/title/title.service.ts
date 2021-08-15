@@ -6,7 +6,7 @@ import { Title } from '@angular/platform-browser';
 import { isFunction } from 'st-utils';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { TitleResolver, TitleType } from '@shared/title/title-resolver';
-import { filterNil } from '@shared/operators/filter';
+import { filterNil } from '@util/operators/filter';
 
 function isTitleResolver(type: any): type is Type<TitleResolver> {
   return isFunction(type);

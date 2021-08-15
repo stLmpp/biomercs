@@ -17,7 +17,7 @@ import {
   tap,
 } from 'rxjs';
 import { LocalState } from '@stlmpp/store';
-import { filterNil } from '@shared/operators/filter';
+import { filterNil } from '@util/operators/filter';
 import { User } from '@model/user';
 import { Pagination, PaginationMeta } from '@model/pagination';
 import { arrayUtil } from 'st-utils';

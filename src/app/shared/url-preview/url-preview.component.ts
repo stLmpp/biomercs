@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, Renderer2 } from '@angular/core';
 import { UrlMetadataService } from '@shared/services/url-metadata/url-metadata.service';
-import { filterNil } from '@shared/operators/filter';
+import { filterNil } from '@util/operators/filter';
 import { debounceTime, finalize, ReplaySubject, switchMap } from 'rxjs';
 
 @Component({

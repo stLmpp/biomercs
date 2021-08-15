@@ -21,7 +21,7 @@ import type {
   ScoreApprovalActionsModalComponent,
   ScoreApprovalActionsModalData,
 } from './score-approval-actions-modal/score-approval-actions-modal.component';
-import { filterNil } from '@shared/operators/filter';
+import { filterNil } from '@util/operators/filter';
 import { Validators } from '@stlmpp/control';
 
 export interface ScoreApprovalComponentState extends ParamsForm {

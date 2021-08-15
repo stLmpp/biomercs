@@ -4,7 +4,7 @@ import { AccordionDirective } from '@shared/components/accordion/accordion.direc
 import { Destroyable } from '@shared/components/common/destroyable-component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { asyncScheduler, debounceTime, distinctUntilChanged, observeOn, takeUntil } from 'rxjs';
-import { filterNil } from '@shared/operators/filter';
+import { filterNil } from '@util/operators/filter';
 import { Control } from '@stlmpp/control';
 import { FilterItemDirective } from '@shared/filter/filter-item.directive';
 

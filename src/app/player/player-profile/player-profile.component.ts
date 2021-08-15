@@ -33,7 +33,7 @@ import { AuthDateFormatPipe } from '../../auth/shared/auth-date-format.pipe';
 import { ColDef } from '@shared/components/table/col-def';
 import { ScoreOpenInfoCellComponent } from '../../score/score-shared/score-open-info-cell/score-open-info-cell.component';
 import { isBefore, subDays } from 'date-fns';
-import { filterNil } from '@shared/operators/filter';
+import { filterNil } from '@util/operators/filter';
 import { mdiSteam } from '@mdi/js';
 import { RegionModalService } from '../../region/region-modal.service';
 import { ScoreModalService } from '../../score/score-modal.service';

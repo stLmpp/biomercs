@@ -15,7 +15,7 @@ import { combineLatest, filter, finalize, map, Observable, shareReplay, switchMa
 import { orderBy, OrderByDirection, OrderByType } from 'st-utils';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
-import { isNotNil } from '@shared/operators/filter';
+import { isNotNil } from '@util/operators/filter';
 import { BreakpointObserverService } from '@shared/services/breakpoint-observer/breakpoint-observer.service';
 import { trackById } from '@util/track-by';
 import { ScoreModalService } from '../score-modal.service';

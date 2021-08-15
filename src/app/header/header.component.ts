@@ -19,7 +19,7 @@ import { Router } from '@angular/router';
 import { ScoreService } from '../score/score.service';
 import { GlobalListenersService } from '@shared/services/global-listeners/global-listeners.service';
 import { mdiTriangle } from '@mdi/js';
-import { filterNil } from '@shared/operators/filter';
+import { filterNil } from '@util/operators/filter';
 import { Destroyable } from '@shared/components/common/destroyable-component';
 
 @Component({

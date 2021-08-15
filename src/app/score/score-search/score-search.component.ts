@@ -9,7 +9,7 @@ import { ScoreStatusEnum } from '@model/enum/score-status.enum';
 import { getScoreDefaultColDefs } from '../score-shared/util';
 import { AuthDateFormatPipe } from '../../auth/shared/auth-date-format.pipe';
 import { GameService } from '@shared/services/game/game.service';
-import { filterArrayMinLength, filterNil } from '@shared/operators/filter';
+import { filterArrayMinLength, filterNil } from '@util/operators/filter';
 import { ModeService } from '@shared/services/mode/mode.service';
 import { MiniGameService } from '@shared/services/mini-game/mini-game.service';
 import { ActivatedRoute, Router } from '@angular/router';
