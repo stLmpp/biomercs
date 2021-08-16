@@ -1,7 +1,8 @@
+<bio-loading *ngIf="loading"></bio-loading>
 <h4 bioPageTitle></h4>
 <bio-accordion>
   <bio-accordion-item
-    *ngFor="let error of errors$ | async; trackBy: trackBy"
+    *ngFor="let error of errors; trackBy: trackBy"
     accordionTitle="[ {{ error.creationDate | date: 'dd/MM/yyyy HH:mm:ss' }} ] {{ error.id }} - {{ error.name }}"
   >
     <p>User: {{ error.createdByUsername ?? 'Not logged' }}</p>
@@ -34,7 +35,7 @@
   </bio-accordion-item>
 </bio-accordion>
 <bio-pagination
-  [meta]="meta$ | async"
+  [meta]="meta"
   setQueryParamsOnChange
   (itemsPerPageChange)="onItemsPerPage($event)"
   (currentPageChange)="onCurrentPageChange($event)"

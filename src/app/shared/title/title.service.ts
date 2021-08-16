@@ -1,6 +1,6 @@
 import { Injectable, Injector, Type } from '@angular/core';
 import { GlobalListenersService } from '@shared/services/global-listeners/global-listeners.service';
-import { distinctUntilChanged, filter, isObservable, of, share, switchMap, tap } from 'rxjs';
+import { distinctUntilChanged, filter, isObservable, of, shareReplay, switchMap, tap } from 'rxjs';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { Title } from '@angular/platform-browser';
 import { isFunction } from 'st-utils';
@@ -46,7 +46,7 @@ export class TitleService {
     }),
     filterNil(),
     distinctUntilChanged(),
-    share(),
+    shareReplay(),
     tap(title => {
       this.title.setTitle('Biomercs - ' + title);
     })
