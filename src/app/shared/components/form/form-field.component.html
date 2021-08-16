@@ -24,11 +24,11 @@
     <spinner *ngIf="loading" [size]="0.1"></spinner>
   </div>
   <div class="prefix-wrapper" *ngIf="prefixDirective" (click)="$event.stopPropagation()">
-    <ng-content select="[prefix]"></ng-content>
+    <ng-content select="[bioPrefix]"></ng-content>
   </div>
   <ng-content></ng-content>
   <div class="suffix-wrapper" *ngIf="suffixDirective" (click)="$event.stopPropagation()">
-    <ng-content select="[suffix]"></ng-content>
+    <ng-content select="[bioSuffix]"></ng-content>
   </div>
 </div>
 <div class="bottom-wrapper">

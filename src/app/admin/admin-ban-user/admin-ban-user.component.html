@@ -26,13 +26,13 @@
           [tooltipDisabled]="user.tooltipDisabled"
           (click)="action(user)"
         >
-          <bio-icon prefix outlined>{{ user.bannedDate ? 'lock' : 'lock_open' }}</bio-icon>
+          <bio-icon bioPrefix outlined>{{ user.bannedDate ? 'lock' : 'lock_open' }}</bio-icon>
           <bio-list-item-line>
             {{ user.username }}
             <bio-icon [mdi]="mdiShieldAccount" *ngIf="user.admin" small></bio-icon>
           </bio-list-item-line>
           <bio-list-item-line>{{ user.email }}</bio-list-item-line>
-          <span suffix *ngIf="user.bannedDate">Banned: {{ user.bannedDate | authDateFormat }}</span>
+          <span bioSuffix *ngIf="user.bannedDate">Banned: {{ user.bannedDate | authDateFormat }}</span>
         </bio-list-item>
       </bio-list>
     </bio-card-content>
