@@ -52,15 +52,15 @@ export class TooltipDirective implements OnDestroy {
   }
 
   @Input()
-  set tooltipPosition(position: TooltipPosition | undefined) {
+  set bioTooltipPosition(position: TooltipPosition | undefined) {
     this.bioTooltipPositions = overlayPositionsArray(position);
   }
 
   @Input()
-  get tooltipDisabled(): boolean {
+  get bioTooltipDisabled(): boolean {
     return this._disabled;
   }
-  set tooltipDisabled(disabled: boolean) {
+  set bioTooltipDisabled(disabled: boolean) {
     this._disabled = coerceBooleanProperty(disabled);
     if (this._disabled && this.isOpen) {
       this._overlayRef?.dispose();

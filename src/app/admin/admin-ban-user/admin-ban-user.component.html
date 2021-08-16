@@ -23,7 +23,7 @@
           [disabled]="user.disabled"
           *ngFor="let user of users; trackBy: trackById"
           [bioTooltip]="user.tooltip"
-          [tooltipDisabled]="user.tooltipDisabled"
+          [bioTooltipDisabled]="user.tooltipDisabled"
           (click)="action(user)"
         >
           <bio-icon bioPrefix outlined>{{ user.bannedDate ? 'lock' : 'lock_open' }}</bio-icon>

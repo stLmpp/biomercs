@@ -9,8 +9,8 @@
     <span
       *ngLet="item[colDef.property] | tableCellFormatter: colDef.formatter as value"
       [bioTooltip]="item | tableCellTooltip: colDef.tooltip:value"
-      [tooltipPosition]="colDef.tooltipPosition"
-      [tooltipDisabled]="!colDef.tooltip"
+      [bioTooltipPosition]="colDef.tooltipPosition"
+      [bioTooltipDisabled]="!colDef.tooltip"
     >
       {{ value }}
     </span>
