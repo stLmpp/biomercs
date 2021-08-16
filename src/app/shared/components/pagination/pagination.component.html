@@ -21,7 +21,7 @@
     type="button"
     (click)="onFirstPage()"
     [disabled]="!itemCount || currentPage === 1"
-    tooltip="First page"
+    bioTooltip="First page"
   >
     <bio-icon>first_page</bio-icon>
   </button>
@@ -31,7 +31,7 @@
     type="button"
     (click)="onPreviousPage()"
     [disabled]="!itemCount || currentPage === 1"
-    tooltip="Previous page"
+    bioTooltip="Previous page"
   >
     <bio-icon>chevron_left</bio-icon>
   </button>
@@ -41,7 +41,7 @@
     type="button"
     (click)="onNextPage()"
     [disabled]="!itemCount || currentPage === totalPages"
-    tooltip="Next page"
+    bioTooltip="Next page"
   >
     <bio-icon>chevron_right</bio-icon>
   </button>
@@ -51,7 +51,7 @@
     type="button"
     (click)="onLastPage()"
     [disabled]="!itemCount || currentPage === totalPages"
-    tooltip="Last page"
+    bioTooltip="Last page"
   >
     <bio-icon>last_page</bio-icon>
   </button>

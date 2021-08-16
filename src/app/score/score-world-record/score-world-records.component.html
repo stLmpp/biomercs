@@ -39,7 +39,7 @@
               </div>
               <div
                 *ngFor="let stage of scoreTopTable.stages; trackBy: trackById"
-                [tooltip]="stage.name"
+                [bioTooltip]="stage.name"
                 (click)="updateOrderByIdStage(stage.id)"
                 class="stage"
               >

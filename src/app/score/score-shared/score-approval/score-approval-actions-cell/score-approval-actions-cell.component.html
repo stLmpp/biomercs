@@ -2,7 +2,7 @@
   bioButton
   icon
   small
-  tooltip="Approve"
+  bioTooltip="Approve"
   tooltipPosition="right"
   (click)="openModalApproval(scoreApprovalActionEnum.Approve)"
   [disabled]="loadingApprovalModal"
@@ -14,7 +14,7 @@
   bioButton
   icon
   small
-  tooltip="Reject"
+  bioTooltip="Reject"
   tooltipPosition="right"
   (click)="openModalApproval(scoreApprovalActionEnum.Reject)"
   [disabled]="loadingApprovalModal"
@@ -26,7 +26,7 @@
   bioButton
   icon
   small
-  tooltip="Request changes"
+  bioTooltip="Request changes"
   tooltipPosition="right"
   type="button"
   (click)="openModalRequestChanges()"

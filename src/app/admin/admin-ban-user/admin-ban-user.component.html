@@ -22,7 +22,7 @@
         <bio-list-item
           [disabled]="user.disabled"
           *ngFor="let user of users; trackBy: trackById"
-          [tooltip]="user.tooltip"
+          [bioTooltip]="user.tooltip"
           [tooltipDisabled]="user.tooltipDisabled"
           (click)="action(user)"
         >

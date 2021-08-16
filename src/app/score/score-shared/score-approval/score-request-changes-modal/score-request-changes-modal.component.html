@@ -4,7 +4,7 @@
     <bio-score-info [score]="score"></bio-score-info>
     <hr />
     <div class="actions">
-      <button bioButton icon tooltip="Add change" type="button" (click)="addChange()" [disabled]="saving">
+      <button bioButton icon bioTooltip="Add change" type="button" (click)="addChange()" [disabled]="saving">
         <bio-icon>add_circle</bio-icon>
       </button>
     </div>
@@ -27,7 +27,7 @@
           type="button"
           icon
           (click)="removeChange($index)"
-          tooltip="Delete change (CTRL + D)"
+          bioTooltip="Delete change (CTRL + D)"
           [disabled]="saving"
         >
           <bio-icon>delete</bio-icon>

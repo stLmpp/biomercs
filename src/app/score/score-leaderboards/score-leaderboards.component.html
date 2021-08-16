@@ -25,7 +25,7 @@
           <div
             *ngFor="let stage of scores.stages; trackBy: trackById"
             (click)="updateOrderByStage(stage.id)"
-            [tooltip]="stage.name"
+            [bioTooltip]="stage.name"
           >
             {{ stage.shortName }}
             <bio-icon class="order-icon" *ngIf="order.orderBy === stage.id" small>

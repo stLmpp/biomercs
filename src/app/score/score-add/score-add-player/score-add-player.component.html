@@ -8,7 +8,7 @@
         small
         danger
         class="remove-player"
-        tooltip="Remove player selected"
+        bioTooltip="Remove player selected"
         tabindex="0"
         (click)="onRemovePlayerSelected($event)"
         >close</bio-icon
@@ -58,7 +58,7 @@
         bioButton
         icon
         bioSuffix
-        tooltip="Advanced search"
+        bioTooltip="Advanced search"
         (click)="openPlayerSearchModal()"
         [disabled]="playerSearchModalLoading"
       >
