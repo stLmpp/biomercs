@@ -1,27 +1,27 @@
 <h4 bioPageTitle></h4>
 <bio-card-menus bioCardMenuFocusOnFirstItem>
   <a bioCardMenu routerLink="approval" [bioBadge]="adminApprovalCount$ | async">
-    <icon>checklist</icon>
+    <bio-icon>checklist</bio-icon>
     Score approval
   </a>
   <a bioCardMenu routerLink="create-player">
-    <icon>person_add_alt_1</icon>
+    <bio-icon>person_add_alt_1</bio-icon>
     Create player
   </a>
   <a bioCardMenu routerLink="rules">
-    <icon>article</icon>
+    <bio-icon>article</bio-icon>
     Edit rules
   </a>
   <a bioCardMenu routerLink="mail-queue">
-    <icon [mdi]="mdiEmailSyncOutline"></icon>
+    <bio-icon [mdi]="mdiEmailSyncOutline"></bio-icon>
     Mail queue
   </a>
   <a bioCardMenu routerLink="ban-user">
-    <icon [mdi]="mdiAccountLock"></icon>
+    <bio-icon [mdi]="mdiAccountLock"></bio-icon>
     Ban user
   </a>
   <a bioCardMenu routerLink="errors">
-    <icon>error_outline</icon>
+    <bio-icon>error_outline</bio-icon>
     Errors
   </a>
 </bio-card-menus>

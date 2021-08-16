@@ -9,7 +9,7 @@
     autocomplete="off"
     (keydown.arrowDown)="accordionDirective?.focusKeyManager?.setFirstItemActive()"
   />
-  <icon prefix>search</icon>
+  <bio-icon prefix>search</bio-icon>
 </form-field>
 
 <bio-accordion
@@ -34,7 +34,7 @@
       small
       [tooltipDisabled]="!isMobile"
     >
-      <icon small>add</icon>
+      <bio-icon small>add</bio-icon>
       <ng-container *ngIf="!isMobile">Submit score</ng-container>
     </a>
     ), that redirects you to the page of score submission.<br />

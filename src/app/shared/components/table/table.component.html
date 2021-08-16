@@ -16,9 +16,9 @@
         (click)="changeOrder(colDef.orderByKey)"
       >
         {{ colDef.title }}
-        <icon class="order-icon" *ngIf="colDef.orderBy && order?.orderBy === colDef.orderByKey" small>
+        <bio-icon class="order-icon" *ngIf="colDef.orderBy && order?.orderBy === colDef.orderByKey" small>
           {{ arrow }}
-        </icon>
+        </bio-icon>
       </div>
     </div>
     <hr />

@@ -18,9 +18,9 @@
           <div></div>
           <div class="player" (click)="updateOrderByPlayer()">
             Player
-            <icon class="order-icon" *ngIf="order.orderByType === 'personaName'" small>
+            <bio-icon class="order-icon" *ngIf="order.orderByType === 'personaName'" small>
               {{ arrow }}
-            </icon>
+            </bio-icon>
           </div>
           <div
             *ngFor="let stage of scores.stages; trackBy: trackById"
@@ -28,15 +28,15 @@
             [tooltip]="stage.name"
           >
             {{ stage.shortName }}
-            <icon class="order-icon" *ngIf="order.orderBy === stage.id" small>
+            <bio-icon class="order-icon" *ngIf="order.orderBy === stage.id" small>
               {{ arrow }}
-            </icon>
+            </bio-icon>
           </div>
           <div (click)="updateOrderByTotal()">
             Total
-            <icon class="order-icon" *ngIf="order.orderByType === 'total'" small>
+            <bio-icon class="order-icon" *ngIf="order.orderByType === 'total'" small>
               {{ arrow }}
-            </icon>
+            </bio-icon>
           </div>
         </div>
       </ng-container>

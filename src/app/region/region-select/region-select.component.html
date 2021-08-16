@@ -11,7 +11,7 @@
     *ngIf="regions | search: 'name':(search$ | async) as all"
   >
     <bio-list-item [value]="region.id" *cdkVirtualFor="let region of all; trackBy: trackByRegion; templateCacheSize: 0">
-      <icon prefix [flag]="region.shortName"></icon>
+      <bio-icon prefix [flag]="region.shortName"></bio-icon>
       {{ region.name }}
     </bio-list-item>
     <bio-list-item *ngIf="!all.length"> No data found </bio-list-item>

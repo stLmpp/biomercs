@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, HostBinding, Input, ViewEncapsulati
 import { AbstractComponent } from '@shared/components/core/abstract-component';
 
 @Component({
-  selector: 'icon[flag]',
+  selector: 'bio-icon[flag]',
   templateUrl: './flag.component.html',
   styleUrls: ['./flag.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

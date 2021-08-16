@@ -5,7 +5,7 @@
     <hr />
     <div class="actions">
       <button bioButton icon tooltip="Add change" type="button" (click)="addChange()" [disabled]="saving">
-        <icon>add_circle</icon>
+        <bio-icon>add_circle</bio-icon>
       </button>
     </div>
     <div class="change" *ngFor="let change of changesControl; trackBy: trackByControl; let $index = index">
@@ -30,7 +30,7 @@
           tooltip="Delete change (CTRL + D)"
           [disabled]="saving"
         >
-          <icon>delete</icon>
+          <bio-icon>delete</bio-icon>
         </button>
       </div>
     </div>

@@ -3,14 +3,14 @@
     <img class="img" [src]="urlMetadata.image" [alt]="urlMetadata.title" *ngIf="urlMetadata.image; else noImage" />
     <ng-template #noImage>
       <div class="img no-image">
-        <icon>broken_image</icon>
+        <bio-icon>broken_image</bio-icon>
       </div>
     </ng-template>
     <div class="body">
       <div class="title">{{ urlMetadata.title }}</div>
       <div class="description">{{ urlMetadata.description }}</div>
       <div class="domain">
-        <icon small>link</icon>
+        <bio-icon small>link</bio-icon>
         {{ urlMetadata.domain }}
       </div>
     </div>

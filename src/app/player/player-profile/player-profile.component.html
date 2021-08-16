@@ -14,7 +14,7 @@
         <ng-container *ngTemplateOutlet="flagTemplate"></ng-container>
       </button>
       <ng-template #flagTemplate>
-        <icon small [flag]="player.region?.shortName" [tooltip]="player.region?.name"></icon>
+        <bio-icon small [flag]="player.region?.shortName" [tooltip]="player.region?.name"></bio-icon>
       </ng-template>
       <h3>{{ player.personaName }}</h3>
       <a
@@ -25,7 +25,7 @@
         [href]="player.steamProfile.profileurl"
         tooltip="Steam profile"
       >
-        <icon [mdi]="mdiSteam"></icon>
+        <bio-icon [mdi]="mdiSteam"></bio-icon>
       </a>
     </div>
     <div bioCardSubtitle>{{ player.title }}</div>

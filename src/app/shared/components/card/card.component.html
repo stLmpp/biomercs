@@ -2,7 +2,7 @@
   <ng-content select="[bioCardTitle]"></ng-content>
   <ng-content select="[bioCardSubtitle]"></ng-content>
   <div class="collapse-icon-wrapper" *ngIf="collapsable">
-    <icon [@collapseIcon]="collapsed ? 'collapsed' : 'expanded'">expand_less</icon>
+    <bio-icon [@collapseIcon]="collapsed ? 'collapsed' : 'expanded'">expand_less</bio-icon>
   </div>
 </div>
 <ng-container *ngIf="collapsable; else cardContent">

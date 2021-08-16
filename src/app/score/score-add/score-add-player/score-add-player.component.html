@@ -4,14 +4,14 @@
     <ng-container *ngIf="idPlayerPersonaName$ | async as idPlayerPersonaName">
       (
       {{ idPlayerPersonaName }}
-      <icon
+      <bio-icon
         small
         danger
         class="remove-player"
         tooltip="Remove player selected"
         tabindex="0"
         (click)="onRemovePlayerSelected($event)"
-        >close</icon
+        >close</bio-icon
       >
       )
     </ng-container>
@@ -62,7 +62,7 @@
         (click)="openPlayerSearchModal()"
         [disabled]="playerSearchModalLoading"
       >
-        <icon>search</icon>
+        <bio-icon>search</bio-icon>
       </button>
       <hint *ngIf="!(idPlayerControl.hasErrors$ | async)">
         You need to select a player, just typing its name doesn't work

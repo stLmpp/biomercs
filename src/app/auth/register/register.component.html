@@ -38,7 +38,7 @@
             autocomplete="new-password"
           />
           <button suffix bioButton icon type="button" (click)="hidePassword = !hidePassword">
-            <icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</icon>
+            <bio-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</bio-icon>
           </button>
           <errors>
             <error *error="'required'">Password is required</error>
@@ -55,7 +55,7 @@
             autocomplete="off"
           />
           <button suffix bioButton icon type="button" (click)="hideConfirmPassword = !hideConfirmPassword">
-            <icon>{{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}</icon>
+            <bio-icon>{{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}</bio-icon>
           </button>
           <errors>
             <error *error="'required'">Password is required</error>

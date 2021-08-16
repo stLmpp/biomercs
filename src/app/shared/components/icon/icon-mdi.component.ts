@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@a
 import { AbstractComponent } from '@shared/components/core/abstract-component';
 
 @Component({
-  selector: 'icon[mdi]:not([flag])',
+  selector: 'bio-icon[mdi]:not([flag])',
   templateUrl: './icon-mdi.component.html',
   styleUrls: ['./icon.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

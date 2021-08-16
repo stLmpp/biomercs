@@ -12,13 +12,13 @@
 <div class="value">
   {{ score.score | number: '1.0-0' }}
   <ng-container *ngIf="showWorldRecord">
-    <icon [mdi]="mdiTrophy" *ngIf="score.isWorldRecord" tooltip="World Record" tooltipPosition="right"></icon>
-    <icon
+    <bio-icon [mdi]="mdiTrophy" *ngIf="score.isWorldRecord" tooltip="World Record" tooltipPosition="right"></bio-icon>
+    <bio-icon
       [mdi]="mdiTrophyAward"
       *ngIf="score.isCombinationWorldRecord"
       tooltip="Combination World Record"
       tooltipPosition="right"
-    ></icon>
+    ></bio-icon>
   </ng-container>
 </div>
 <div class="title" *ngIf="showApprovalDate">Approval date:</div>
@@ -35,18 +35,18 @@
   <div class="value redirect-icon">
     {{ player.playerPersonaName }}
     <a [tabindex]="-1" bioButton icon small [routerLink]="['/player', player.idPlayer]" target="_blank">
-      <icon small>launch</icon>
+      <bio-icon small>launch</bio-icon>
     </a>
   </div>
   <div class="title">Character {{ $index + 1 }}:</div>
   <div class="value">
     {{ player.characterName }} {{ player.characterCostumeName }}
-    <icon
+    <bio-icon
       [mdi]="mdiAccountStar"
       *ngIf="showWorldRecord && player.isCharacterWorldRecord"
       tooltip="Character World Record"
       tooltipPosition="right"
-    ></icon>
+    ></bio-icon>
   </div>
   <a bio-url-preview [url]="player.evidence"></a>
 </ng-container>

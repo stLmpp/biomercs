@@ -13,7 +13,7 @@
         cdkDrag
       >
         <div class="icon-wrapper drag">
-          <icon cdkDragHandle>drag_handle</icon>
+          <bio-icon cdkDragHandle>drag_handle</bio-icon>
         </div>
         <form-field *ngIf="ruleControl.value$ | async as ruleValue" label="{{ ruleValue.order }}">
           <textarea
@@ -30,7 +30,7 @@
         </form-field>
         <div class="icon-wrapper delete">
           <button bioButton icon type="button" (click)="deleteRule($index)">
-            <icon>delete</icon>
+            <bio-icon>delete</bio-icon>
           </button>
         </div>
       </div>
