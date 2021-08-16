@@ -8,9 +8,7 @@ import { takeUntil } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 import { getOverlayPositionMenu } from '@shared/components/menu/util';
 
-@Directive({
-  selector: '[menuTrigger]',
-})
+@Directive({ selector: '[bioMenuTrigger]' })
 export class MenuTriggerDirective extends Destroyable {
   constructor(
     private overlay: Overlay,
@@ -23,13 +21,13 @@ export class MenuTriggerDirective extends Destroyable {
 
   private _lastFocusedElement?: Element | null;
 
-  @Input() menuTrigger!: MenuComponent;
-  @Input() trigger: 'hover' | 'click' = 'click';
+  @Input() bioMenuTrigger!: MenuComponent;
+  @Input() bioMenuTriggerOn: 'hover' | 'click' = 'click';
 
   opened = false;
 
   private _isClick(): boolean {
-    return this.trigger === 'click';
+    return this.bioMenuTriggerOn === 'click';
   }
 
   private _createOverlay(): void {
@@ -60,11 +58,11 @@ export class MenuTriggerDirective extends Destroyable {
         this.opened = false;
         overlayRef?.detach();
       });
-    this.menuTrigger.overlayRef = overlayRef;
-    this.menuTrigger.trigger = this.trigger;
-    const templatePortal = new TemplatePortal(this.menuTrigger.templateRef, this.viewContainerRef);
+    this.bioMenuTrigger.overlayRef = overlayRef;
+    this.bioMenuTrigger.trigger = this.bioMenuTriggerOn;
+    const templatePortal = new TemplatePortal(this.bioMenuTrigger.templateRef, this.viewContainerRef);
     overlayRef.attach(templatePortal);
-    this.menuTrigger.initFocus();
+    this.bioMenuTrigger.initFocus();
     this.opened = true;
   }
 

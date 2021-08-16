@@ -71,7 +71,7 @@
     <!--<editor-fold desc="Character">-->
     <bio-form-field [loading]="charactersLoading" [disabled]="disabled" label="Character">
       <bio-select controlName="idCharacterCostume" placeholder="Character" #select>
-        <bio-option disabled *ngIf="charactersLoading"><spinner [size]="0.1"></spinner> Loading...</bio-option>
+        <bio-option disabled *ngIf="charactersLoading"><bio-spinner [size]="0.1"></bio-spinner> Loading...</bio-option>
         <bio-optgroup
           *ngFor="let character of characters; trackBy: trackById"
           [label]="character.name"

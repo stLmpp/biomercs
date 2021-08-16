@@ -15,7 +15,7 @@ import { AnimationEvent } from '@angular/animations';
 import { Animations } from '../../animations/animations';
 
 @Component({
-  selector: 'snack-bar',
+  selector: 'bio-snack-bar',
   templateUrl: './snack-bar.component.html',
   styleUrls: ['./snack-bar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

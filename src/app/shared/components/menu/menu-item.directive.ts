@@ -5,7 +5,7 @@ import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { ButtonComponent } from '../button/button.component';
 
 @Directive({
-  selector: '[menuItem]:not([bioButton])',
+  selector: '[bioMenuItem]:not([bioButton])',
   host: { class: 'menu-item', tabindex: '0' },
   providers: [{ provide: MenuItem, useExisting: MenuItemDirective }],
 })
@@ -37,7 +37,7 @@ export class MenuItemDirective extends MenuItem {
 }
 
 @Directive({
-  selector: '[bioButton][menuItem]',
+  selector: '[bioButton][bioMenuItem]',
   host: { class: 'menu-item' },
   providers: [{ provide: MenuItem, useExisting: MenuItemButtonDirective }],
 })

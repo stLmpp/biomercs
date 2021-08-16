@@ -29,7 +29,7 @@
   <bio-form-field [loading]="state.gameLoading" *ngIf="formsConfig.idGame.show" label="Game">
     <bio-select controlName="idGame" placeholder="Game" *ngLet="games$ | async as games">
       <bio-option disabled *ngIf="!games?.length && !state.gameLoading">No data found</bio-option>
-      <bio-option disabled *ngIf="state.gameLoading"><spinner [size]="0.1"></spinner> Loading...</bio-option>
+      <bio-option disabled *ngIf="state.gameLoading"><bio-spinner [size]="0.1"></bio-spinner> Loading...</bio-option>
       <bio-option [value]="null" *ngIf="(formsConfig.idGame.clearable ?? state.clearable) && !!(idGame$ | async)">
         Clear
       </bio-option>
@@ -48,7 +48,9 @@
   <bio-form-field [loading]="state.miniGameLoading" *ngIf="formsConfig.idMiniGame.show" label="Mini game">
     <bio-select controlName="idMiniGame" placeholder="Mini Game" *ngLet="miniGames$ | async as miniGames">
       <bio-option disabled *ngIf="!miniGames?.length && !state.miniGameLoading">No data found</bio-option>
-      <bio-option disabled *ngIf="state.miniGameLoading"><spinner [size]="0.1"></spinner> Loading...</bio-option>
+      <bio-option disabled *ngIf="state.miniGameLoading"
+        ><bio-spinner [size]="0.1"></bio-spinner> Loading...</bio-option
+      >
       <bio-option
         [value]="null"
         *ngIf="(formsConfig.idMiniGame.clearable ?? state.clearable) && !!(idMiniGame$ | async)"
@@ -74,7 +76,7 @@
   <bio-form-field [loading]="state.modeLoading" *ngIf="formsConfig.idMode.show" label="Mode">
     <bio-select controlName="idMode" placeholder="Mode" *ngLet="modes$ | async as modes">
       <bio-option disabled *ngIf="!modes?.length && !state.modeLoading">No data found</bio-option>
-      <bio-option disabled *ngIf="state.modeLoading"><spinner [size]="0.1"></spinner> Loading...</bio-option>
+      <bio-option disabled *ngIf="state.modeLoading"><bio-spinner [size]="0.1"></bio-spinner> Loading...</bio-option>
       <bio-option [value]="null" *ngIf="(formsConfig.idMode.clearable ?? state.clearable) && !!(idMode$ | async)">
         Clear
       </bio-option>
@@ -93,7 +95,7 @@
   <bio-form-field [loading]="state.stageLoading" *ngIf="formsConfig.idStage.show" label="Stage">
     <bio-select controlName="idStage" placeholder="Stage" *ngLet="stages$ | async as stages">
       <bio-option disabled *ngIf="!stages?.length && !state.stageLoading">No data found</bio-option>
-      <bio-option disabled *ngIf="state.stageLoading"><spinner [size]="0.1"></spinner> Loading...</bio-option>
+      <bio-option disabled *ngIf="state.stageLoading"><bio-spinner [size]="0.1"></bio-spinner> Loading...</bio-option>
       <bio-option [value]="null" *ngIf="(formsConfig.idStage.clearable ?? state.clearable) && !!(idStage$ | async)">
         Clear
       </bio-option>
@@ -112,7 +114,9 @@
   <bio-form-field [loading]="state.characterLoading" *ngIf="formsConfig.idCharacterCostume.show" label="Character">
     <bio-select controlName="idCharacterCostume" placeholder="Character" *ngLet="characters$ | async as characters">
       <bio-option disabled *ngIf="!characters?.length && !state.characterLoading">No data found</bio-option>
-      <bio-option disabled *ngIf="state.characterLoading"><spinner [size]="0.1"></spinner> Loading...</bio-option>
+      <bio-option disabled *ngIf="state.characterLoading"
+        ><bio-spinner [size]="0.1"></bio-spinner> Loading...</bio-option
+      >
       <bio-option
         [value]="null"
         *ngIf="(formsConfig.idCharacterCostume.clearable ?? state.clearable) && !!(idCharacterCostume$ | async)"

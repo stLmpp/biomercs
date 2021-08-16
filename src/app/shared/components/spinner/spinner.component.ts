@@ -5,7 +5,7 @@ import { SimpleChangesCustom } from '@util/util';
 import { coerceNumberProperty, NumberInput } from '@angular/cdk/coercion';
 
 @Component({
-  selector: 'spinner',
+  selector: 'bio-spinner',
   templateUrl: './spinner.component.html',
   styleUrls: ['./spinner.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

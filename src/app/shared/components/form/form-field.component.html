@@ -21,7 +21,7 @@
   }"
 >
   <div class="spinner-wrapper">
-    <spinner *ngIf="loading" [size]="0.1"></spinner>
+    <bio-spinner *ngIf="loading" [size]="0.1"></bio-spinner>
   </div>
   <div class="prefix-wrapper" *ngIf="prefixDirective" (click)="$event.stopPropagation()">
     <ng-content select="[bioPrefix]"></ng-content>
