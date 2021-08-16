@@ -3,42 +3,42 @@
   <bio-card collapsable class="params">
     <h3 bioCardTitle>Parameters</h3>
     <bio-card-content>
-      <form-field label="Platforms">
+      <bio-form-field label="Platforms">
         <bio-select placeholder="Platforms" multiple controlName="idPlatforms">
           <bio-option *ngFor="let platform of platforms; trackBy: trackById" [value]="platform.id">
             {{ platform.name }}
           </bio-option>
         </bio-select>
-      </form-field>
-      <form-field label="Games" [loading]="gameLoading">
+      </bio-form-field>
+      <bio-form-field label="Games" [loading]="gameLoading">
         <bio-select placeholder="Games" multiple controlName="idGames">
           <bio-option *ngFor="let game of games$ | async; trackBy: trackById" [value]="game.id">
             {{ game.name }}
           </bio-option>
         </bio-select>
-      </form-field>
-      <form-field label="Mini games" [loading]="miniGameLoading">
+      </bio-form-field>
+      <bio-form-field label="Mini games" [loading]="miniGameLoading">
         <bio-select placeholder="Mini games" multiple controlName="idMiniGames">
           <bio-option *ngFor="let miniGame of miniGames$ | async; trackBy: trackById" [value]="miniGame.id">
             {{ miniGame.name }}
           </bio-option>
         </bio-select>
-      </form-field>
-      <form-field label="Modes" [loading]="modeLoading">
+      </bio-form-field>
+      <bio-form-field label="Modes" [loading]="modeLoading">
         <bio-select placeholder="Modes" multiple controlName="idModes">
           <bio-option *ngFor="let mode of modes$ | async; trackBy: trackById" [value]="mode.id">
             {{ mode.name }}
           </bio-option>
         </bio-select>
-      </form-field>
-      <form-field label="Stages" [loading]="stageLoading">
+      </bio-form-field>
+      <bio-form-field label="Stages" [loading]="stageLoading">
         <bio-select placeholder="Stages" multiple controlName="idStages">
           <bio-option *ngFor="let stage of stages$ | async; trackBy: trackById" [value]="stage.id">
             {{ stage.name }}
           </bio-option>
         </bio-select>
-      </form-field>
-      <form-field [loading]="characterLoading" label="Characters">
+      </bio-form-field>
+      <bio-form-field [loading]="characterLoading" label="Characters">
         <bio-select placeholder="Characters" multiple controlName="idCharacterCostumes">
           <bio-optgroup
             *ngFor="let character of characters$ | async; trackBy: trackById"
@@ -53,10 +53,10 @@
             </bio-option>
           </bio-optgroup>
         </bio-select>
-      </form-field>
-      <form-field label="Score">
+      </bio-form-field>
+      <bio-form-field label="Score">
         <input bioInput controlName="score" type="text" autocomplete="off" placeholder="E.g. 750k or 750.000" />
-      </form-field>
+      </bio-form-field>
       <bio-checkbox controlName="worldRecord">World record</bio-checkbox>
       <bio-checkbox controlName="characterWorldRecord">Character world record</bio-checkbox>
       <bio-checkbox controlName="combinationWorldRecord">Combination World Record</bio-checkbox>

@@ -16,7 +16,7 @@
     />
   </div>
   <div class="errors">
-    <error *ngIf="arrayControl.invalid && isTouched">Invalid code</error>
+    <bio-error *ngIf="arrayControl.invalid && isTouched">Invalid code</bio-error>
     <span class="error" *ngIf="codeError">{{ codeError }}</span>
   </div>
 </form>

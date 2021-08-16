@@ -3,22 +3,22 @@
   <bio-modal-content>
     <bio-score-info [score]="score"></bio-score-info>
     <hr />
-    <form-field label="Description">
+    <bio-form-field label="Description">
       <textarea placeholder="Description" resize="vertical" bioInput controlName="description"></textarea>
-      <errors>
-        <error *error="'required'">Description is required</error>
-      </errors>
-    </form-field>
-    <form-field [loading]="loadingMotives" label="Motive">
+      <bio-errors>
+        <bio-error *error="'required'">Description is required</bio-error>
+      </bio-errors>
+    </bio-form-field>
+    <bio-form-field [loading]="loadingMotives" label="Motive">
       <bio-select controlName="idScoreApprovalMotive" placeholder="Motive">
         <bio-option *ngFor="let motive of scoreApprovalMotives$ | async; trackBy: trackById" [value]="motive.id">
           {{ motive.description }}
         </bio-option>
       </bio-select>
-      <errors>
-        <error *error="'required'">Motive is required</error>
-      </errors>
-    </form-field>
+      <bio-errors>
+        <bio-error *error="'required'">Motive is required</bio-error>
+      </bio-errors>
+    </bio-form-field>
   </bio-modal-content>
   <bio-modal-actions end>
     <button

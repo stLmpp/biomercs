@@ -32,7 +32,7 @@
     <div bioCardSubtitle class="about-me">{{ player.aboutMe }}</div>
     <bio-card-content>
       <div *ngIf="state.isSameAsLogged && state.editMode" @fadeInOut>
-        <form-field
+        <bio-form-field
           label="Persona name"
           [loading]="model.isPending"
           *ngLet="player.lastUpdatedPersonaNameDate | playerCanUpdatePersonaName as canUpdatePersonaName"
@@ -48,7 +48,7 @@
             [disabled]="!canUpdatePersonaName || state.saving"
             (modelChange)="updatePersonaName($event)"
           />
-          <hint>
+          <bio-hint>
             <ng-container *ngIf="canUpdatePersonaName; else cantUpdatePersonaName">
               The persona name can be updated one time per week
             </ng-container>
@@ -56,13 +56,13 @@
               Persona name will be available again in
               {{ player.lastUpdatedPersonaNameDate | dateDifference: todayMinusSevenDate:['days', 'hours'] }}
             </ng-template>
-          </hint>
-          <hint end>{{ model.model?.length }} / 100</hint>
-          <errors>
-            <error *error="'personaNameExists'">Player name already exists</error>
-          </errors>
-        </form-field>
-        <form-field label="Title">
+          </bio-hint>
+          <bio-hint end>{{ model.model?.length }} / 100</bio-hint>
+          <bio-errors>
+            <bio-error *error="'personaNameExists'">Player name already exists</bio-error>
+          </bio-errors>
+        </bio-form-field>
+        <bio-form-field label="Title">
           <input
             bioInput
             [model]="player.title"
@@ -72,9 +72,9 @@
             [disabled]="state.saving"
             #titleModel="model"
           />
-          <hint end>{{ titleModel.model?.length }} / 250</hint>
-        </form-field>
-        <form-field label="About me">
+          <bio-hint end>{{ titleModel.model?.length }} / 250</bio-hint>
+        </bio-form-field>
+        <bio-form-field label="About me">
           <textarea
             bioInput
             resize="vertical"
@@ -86,8 +86,8 @@
             (modelChange)="update('aboutMe', $event)"
             [disabled]="state.saving"
           ></textarea>
-          <hint end> {{ aboutMeModel.model?.length }} / 2000 </hint>
-        </form-field>
+          <bio-hint end> {{ aboutMeModel.model?.length }} / 2000 </bio-hint>
+        </bio-form-field>
       </div>
     </bio-card-content>
     <bio-card-actions *ngIf="state.isSameAsLogged">

@@ -9,7 +9,7 @@
       </button>
     </div>
     <div class="change" *ngFor="let change of changesControl; trackBy: trackByControl; let $index = index">
-      <form-field label="Change {{ $index + 1 }}">
+      <bio-form-field label="Change {{ $index + 1 }}">
         <textarea
           bioInput
           cdkTextareaAutosize
@@ -20,7 +20,7 @@
           placeholder="Describe what needs to be changed"
           #change="bio-input"
         ></textarea>
-      </form-field>
+      </bio-form-field>
       <div class="icon-wrapper">
         <button
           bioButton

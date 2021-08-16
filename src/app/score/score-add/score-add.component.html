@@ -37,21 +37,21 @@
     <bio-card class="score-params" collapsable>
       <h3 bioCardTitle>Score info</h3>
       <bio-card-content>
-        <form-field label="Score" [disabled]="!state.hasMode">
+        <bio-form-field label="Score" [disabled]="!state.hasMode">
           <input bioInput controlName="score" bioCurrencyMask placeholder="Score" autocomplete="off" />
-          <errors>
-            <error *error="'required'">Score is required</error>
-          </errors>
-        </form-field>
-        <form-field label="Max combo" [disabled]="!state.hasMode">
+          <bio-errors>
+            <bio-error *error="'required'">Score is required</bio-error>
+          </bio-errors>
+        </bio-form-field>
+        <bio-form-field label="Max combo" [disabled]="!state.hasMode">
           <input bioInput controlName="maxCombo" type="number" autocomplete="off" />
-          <errors>
-            <error *error="'required'">Max combo is required</error>
-            <error *error="'min'">Max combo can't be negative</error>
-            <error *error="'max'">Max combo can't surpass 400</error>
-          </errors>
-        </form-field>
-        <form-field label="Time" [disabled]="!state.hasMode">
+          <bio-errors>
+            <bio-error *error="'required'">Max combo is required</bio-error>
+            <bio-error *error="'min'">Max combo can't be negative</bio-error>
+            <bio-error *error="'max'">Max combo can't surpass 400</bio-error>
+          </bio-errors>
+        </bio-form-field>
+        <bio-form-field label="Time" [disabled]="!state.hasMode">
           <input
             bioInput
             controlName="time"
@@ -60,11 +60,11 @@
             [patterns]="maskTimePattern"
             autocomplete="off"
           />
-          <errors>
-            <error *error="'required'">Time is required</error>
-          </errors>
-        </form-field>
-        <form-field label="Achieved date" [disabled]="!state.hasMode">
+          <bio-errors>
+            <bio-error *error="'required'">Time is required</bio-error>
+          </bio-errors>
+        </bio-form-field>
+        <bio-form-field label="Achieved date" [disabled]="!state.hasMode">
           <input
             bioInput
             controlName="achievedDate"
@@ -76,7 +76,7 @@
             <bio-icon>calendar_today</bio-icon>
           </button>
           <bio-datepicker #datepicker></bio-datepicker>
-        </form-field>
+        </bio-form-field>
       </bio-card-content>
       <bio-card-actions>
         <button bioButton type="button" primary (click)="onReset()">Reset</button>

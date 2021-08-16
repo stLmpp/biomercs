@@ -3,7 +3,7 @@ import { ControlError, ControlParent } from '@stlmpp/control';
 import { FormFieldComponent } from './form-field.component';
 
 @Directive({
-  selector: 'errors',
+  selector: 'bio-errors, [bioErrors]',
   host: { class: 'errors' },
   providers: [{ provide: ControlError, useExisting: FormFieldErrorsDirective }],
 })

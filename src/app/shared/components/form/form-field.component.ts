@@ -27,7 +27,7 @@ import { FormFieldChild } from '@shared/components/form/form-field-child';
 let uniqueId = 0;
 
 @Component({
-  selector: 'form-field',
+  selector: 'bio-form-field',
   templateUrl: './form-field.component.html',
   styleUrls: ['./form-field.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

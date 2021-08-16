@@ -33,9 +33,9 @@
 </div>
 <div class="bottom-wrapper">
   <div class="hints" *ngIf="!control?.touched || !(control?.hasErrors$ | async)" @fadeIn>
-    <ng-content select="hint:not([end]),[hint]:not([end])"></ng-content>
+    <ng-content select="bio-hint:not([end]),[bioHint]:not([end])"></ng-content>
     <div class="hint-spacer"></div>
-    <ng-content select="hint[end],[hint][end]"></ng-content>
+    <ng-content select="bio-hint[end],[bioHint][end]"></ng-content>
   </div>
-  <ng-content select="errors,[errors]"></ng-content>
+  <ng-content select="bio-errors,[bioErrors]"></ng-content>
 </div>

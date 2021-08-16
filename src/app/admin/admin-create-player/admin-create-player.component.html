@@ -4,34 +4,34 @@
     <h3 bioCardTitle>Create player</h3>
     <bio-card-content>
       <div class="fields">
-        <form-field label="Steam ID">
+        <bio-form-field label="Steam ID">
           <input bioInput type="text" controlName="steamid" placeholder="Steam ID" />
-          <errors>
-            <error *error="'steamIdExists'">Steam ID already exists</error>
-          </errors>
-        </form-field>
-        <form-field label="Player name">
+          <bio-errors>
+            <bio-error *error="'steamIdExists'">Steam ID already exists</bio-error>
+          </bio-errors>
+        </bio-form-field>
+        <bio-form-field label="Player name">
           <input bioInput type="text" controlName="personaName" placeholder="Player name" />
-          <errors>
-            <error *error="'personaNameExists'">Player name already exists</error>
-          </errors>
-          <hint end> {{ personaNameLength$ | async }} / 100 </hint>
-        </form-field>
-        <form-field label="Title">
+          <bio-errors>
+            <bio-error *error="'personaNameExists'">Player name already exists</bio-error>
+          </bio-errors>
+          <bio-hint end> {{ personaNameLength$ | async }} / 100 </bio-hint>
+        </bio-form-field>
+        <bio-form-field label="Title">
           <input bioInput type="text" controlName="title" placeholder="Title" />
-          <hint end> {{ titleLength$ | async }} / 250 </hint>
-        </form-field>
-        <form-field label="About me">
+          <bio-hint end> {{ titleLength$ | async }} / 250 </bio-hint>
+        </bio-form-field>
+        <bio-form-field label="About me">
           <input bioInput type="text" controlName="aboutMe" placeholder="About me" />
-          <hint end> {{ aboutMeLength$ | async }} / 2000 </hint>
-        </form-field>
-        <form-field label="Region">
+          <bio-hint end> {{ aboutMeLength$ | async }} / 2000 </bio-hint>
+        </bio-form-field>
+        <bio-form-field label="Region">
           <bio-select controlName="idRegion" placeholder="Region">
             <bio-option *ngFor="let region of regions; trackBy: trackByRegion" [value]="region.id">
               <bio-icon [flag]="region.shortName"></bio-icon> {{ region.name }}
             </bio-option>
           </bio-select>
-        </form-field>
+        </bio-form-field>
       </div>
       <p class="text-danger" *ngIf="isInvalid && form.touched">Either Steam ID or Player name must be fulfilled</p>
     </bio-card-content>

@@ -1,6 +1,6 @@
 <h4 bioPageTitle></h4>
 
-<form-field label="Search">
+<bio-form-field label="Search">
   <input
     bioInput
     type="search"
@@ -10,7 +10,7 @@
     (keydown.arrowDown)="accordionDirective?.focusKeyManager?.setFirstItemActive()"
   />
   <bio-icon bioPrefix>search</bio-icon>
-</form-field>
+</bio-form-field>
 
 <bio-accordion
   (itemExpanded)="onItemExpanded($event)"
