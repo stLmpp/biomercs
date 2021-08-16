@@ -78,6 +78,7 @@ export class ScoreWorldRecordsComponent extends LocalState<ScoreWorldRecordTable
   readonly tableLoading$ = this.selectState('tableLoading');
   readonly loadingInfoModal$ = this.selectState('loadingInfoModal');
   readonly orderBy$ = this.selectState(['orderByStage', 'orderByDirection', 'orderByCharacter']);
+  readonly isMobile$ = this.breakpointObserverService.isMobile$;
 
   readonly paramsConfig: Partial<ParamsConfig> = {
     idStage: { show: false },
@@ -91,9 +92,10 @@ export class ScoreWorldRecordsComponent extends LocalState<ScoreWorldRecordTable
   readonly scoreTopTable$: Observable<ScoreTopTableWorldRecord> = combineLatest([
     this._scoreTopTable$,
     this.orderBy$,
+    this.isMobile$,
   ]).pipe(
-    map(([scoreTopTable, { orderByStage, orderByDirection, orderByCharacter }]) => {
-      if (!orderByStage && !orderByCharacter) {
+    map(([scoreTopTable, { orderByStage, orderByDirection, orderByCharacter }, isMobile]) => {
+      if ((!orderByStage && !orderByCharacter) || isMobile) {
         return scoreTopTable;
       }
       let orderByValue: OrderByType<ScoreTableWorldRecord>;
@@ -116,8 +118,6 @@ export class ScoreWorldRecordsComponent extends LocalState<ScoreWorldRecordTable
         .filter(scoreTable => scoreTable.scores.length),
     }))
   );
-
-  readonly isMobile$ = this.breakpointObserverService.isMobile$;
 
   readonly trackById = trackById;
   readonly trackByScoreTable = trackByFactory<ScoreTableWorldRecord>('idCharacterCostume');
