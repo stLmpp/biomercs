@@ -9,4 +9,6 @@ export enum RouteDataEnum {
   errors = 'resolver.errors',
   regions = 'resolver.region',
   platforms = 'resolver.platforms',
+  player = 'resolver.player',
+  scoreGroupedByStatus = 'resolver.scoreGroupedByStatus',
 }

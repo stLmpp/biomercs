@@ -3,15 +3,17 @@ import { RouterModule, Routes } from '@angular/router';
 import { PlayerProfileComponent } from './player-profile.component';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { PlayerProfileTitleResolver } from './player-profile.title-resolver';
-import { PlayerProfileResolver } from './player-profile.resolver';
+import { PlayerRejectedPendingScoresResolver } from './player-rejected-pending-scores.resolver';
 import { createMeta } from '@shared/meta/meta';
+import { PlayerResolver } from '../player.resolver';
 
 const routes: Routes = [
   {
     path: '',
     component: PlayerProfileComponent,
     resolve: {
-      scoreGroupedByStatus: PlayerProfileResolver,
+      [RouteDataEnum.scoreGroupedByStatus]: PlayerRejectedPendingScoresResolver,
+      [RouteDataEnum.player]: PlayerResolver,
     },
     data: {
       [RouteDataEnum.title]: PlayerProfileTitleResolver,
