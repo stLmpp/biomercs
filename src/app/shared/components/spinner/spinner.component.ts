@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, ViewEncapsulation } from '@angular/core';
-import { BooleanInput, coerceBooleanProperty } from 'st-utils';
+import { BooleanInput, coerceBooleanProperty, coerceNumberProperty, NumberInput } from 'st-utils';
 import { Animations } from '../../animations/animations';
 import { SimpleChangesCustom } from '@util/util';
-import { coerceNumberProperty, NumberInput } from '@angular/cdk/coercion';
 
 @Component({
   selector: 'bio-spinner',
