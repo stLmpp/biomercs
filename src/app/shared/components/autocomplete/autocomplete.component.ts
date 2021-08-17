@@ -13,7 +13,7 @@ import {
 import { Animations } from '@shared/animations/animations';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { AnimationEvent } from '@angular/animations';
-import { AutocompleteOptionComponent } from '@shared/components/autocomplete/autocomplete-option.component';
+import { AutocompleteOptionDirective } from '@shared/components/autocomplete/autocomplete-option.directive';
 import { FocusKeyManager } from '@angular/cdk/a11y';
 import { Autocomplete } from '@shared/components/autocomplete/autocomplete';
 import { Control } from '@stlmpp/control';
@@ -36,11 +36,11 @@ export class AutocompleteComponent extends Autocomplete implements AfterContentI
   }
 
   @ViewChild(TemplateRef) readonly templateRef!: TemplateRef<any>;
-  @ContentChildren(AutocompleteOptionComponent, { descendants: true })
-  readonly autocompleteOptions!: QueryList<AutocompleteOptionComponent>;
+  @ContentChildren(AutocompleteOptionDirective, { descendants: true })
+  readonly autocompleteOptions!: QueryList<AutocompleteOptionDirective>;
 
   overlayRef?: OverlayRef;
-  focusManager?: FocusKeyManager<AutocompleteOptionComponent>;
+  focusManager?: FocusKeyManager<AutocompleteOptionDirective>;
   control?: Control<string>;
   origin?: HTMLInputElement;
   setFocusOnOrigin = noop;
@@ -88,7 +88,7 @@ export class AutocompleteComponent extends Autocomplete implements AfterContentI
   }
 
   ngAfterContentInit(): void {
-    const optionsChanges: Observable<QueryList<AutocompleteOptionComponent>> = this.autocompleteOptions.changes.pipe(
+    const optionsChanges: Observable<QueryList<AutocompleteOptionDirective>> = this.autocompleteOptions.changes.pipe(
       startWith(this.autocompleteOptions)
     );
     this.optionsCount$ = optionsChanges.pipe(pluck('length'));
