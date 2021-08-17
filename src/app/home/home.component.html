@@ -20,12 +20,12 @@
         Check the pending scores (Admin)
       </a>
     </ng-container>
-    <ng-container *ngIf="idUser$ | async as idUser">
+    <ng-container *ngIf="idPlayer$ | async as idPlayer">
       <a
         bioCardMenu
         *ngIf="playerRequestChangesCount$ | async as playerRequestChangesCount"
         [bioBadge]="playerRequestChangesCount"
-        [routerLink]="['/player/u', idUser, 'change-requests']"
+        [routerLink]="['/player', idPlayer, 'change-requests']"
       >
         <bio-icon>sync_alt</bio-icon>
         Check your pending changes list

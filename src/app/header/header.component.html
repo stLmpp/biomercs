@@ -32,7 +32,9 @@
           <bio-icon class="triangle" [mdi]="mdiTriangle" [size]="8"></bio-icon>
         </button>
         <bio-menu #menu>
-          <a bioButton bioMenuItem [routerLink]="pathToProfile$ | async"> <bio-icon>person</bio-icon> Profile </a>
+          <a *ngIf="user.idPlayer" bioButton bioMenuItem [routerLink]="['/player', user.idPlayer]">
+            <bio-icon>person</bio-icon> Profile
+          </a>
           <a bioButton bioMenuItem routerLink="/auth/change-password"> <bio-icon>vpn_key</bio-icon> Change password</a>
           <button type="button" bioButton bioMenuItem (click)="logout()">
             <bio-icon>logout</bio-icon>

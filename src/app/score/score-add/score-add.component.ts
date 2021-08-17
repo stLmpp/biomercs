@@ -113,7 +113,7 @@ export class ScoreAddComponent {
   currentMode?: Mode;
 
   private _getControlGroup(): ControlGroup<ScoreAddForm> {
-    const player = this.authQuery.getUser()!.player!;
+    const user = this.authQuery.getUser()!;
     return new ControlGroup<ScoreAddForm>({
       idGame: new Control(null, [Validators.required]),
       idMiniGame: new Control(null, [Validators.required]),
@@ -126,9 +126,9 @@ export class ScoreAddComponent {
       achievedDate: new Control(undefined),
       scorePlayers: new ControlArray<ScorePlayerAddForm>([
         generateScorePlayerControlGroup({
-          idPlayer: player.id,
-          idPlayerPersonaName: player.personaName,
-          personaName: player.personaName,
+          idPlayer: user.idPlayer,
+          idPlayerPersonaName: user.playerPersonaName,
+          personaName: user.playerPersonaName,
           host: true,
         }),
       ]),

@@ -1,5 +1,3 @@
-import { Player } from './player';
-
 export interface User {
   id: number;
   username: string;
@@ -8,7 +6,8 @@ export interface User {
   rememberMe?: boolean;
   admin: boolean;
   token: string;
-  player?: Player;
   dateFormat: string;
   bannedDate?: Date | null;
+  idPlayer?: number;
+  playerPersonaName?: string;
 }

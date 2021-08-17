@@ -29,10 +29,9 @@
     World records
   </a>
   <a
+    *ngIf="user.idPlayer"
     bioListItem
-    [routerLink]="
-      user.player?.id ? ['/player', user.player!.id, 'change-requests'] : ['player/u', user.id, 'change-requests']
-    "
+    [routerLink]="['/player', user.idPlayer, 'change-requests']"
     queryParamsHandling="preserve"
     (click)="onMenuSelected($event)"
   >

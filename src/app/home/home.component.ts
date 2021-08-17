@@ -22,6 +22,6 @@ export class HomeComponent {
   readonly isAdmin$ = this.authQuery.isAdmin$;
   readonly adminApprovalCount$ = this.headerQuery.adminApprovalCount$;
   readonly playerRequestChangesCount$ = this.headerQuery.playerRequestChangesCount$;
-  readonly idUser$ = this.authQuery.user$.pipe(filterNil(), pluck('id'));
+  readonly idPlayer$ = this.authQuery.user$.pipe(filterNil(), pluck('idPlayer'), filterNil());
   readonly isNotMobile$ = this.breakpointObserverService.isMobile$.pipe(map(isMobile => !isMobile));
 }

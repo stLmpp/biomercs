@@ -43,17 +43,6 @@ export class HeaderComponent extends Destroyable implements OnInit {
   }
 
   readonly user$ = this.authQuery.user$;
-  readonly pathToProfile$ = this.user$.pipe(
-    map(user => {
-      if (!user) {
-        return [];
-      }
-      if (user.player?.id) {
-        return ['/player', user.player.id];
-      }
-      return ['/player/u', user.id];
-    })
-  );
   readonly isLogged$ = this.authQuery.isLogged$;
   readonly isMobile$ = this.breakpointObserverService.isMobile$;
   readonly mdiTriangle = mdiTriangle;
