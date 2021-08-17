@@ -1,41 +1,23 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { UserService } from '@shared/services/user/user.service';
 import { Control, ControlGroup } from '@stlmpp/control';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
-import {
-  combineLatest,
-  debounceTime,
-  distinctUntilChanged,
-  filter,
-  finalize,
-  map,
-  Observable,
-  pluck,
-  switchMap,
-  takeUntil,
-  tap,
-} from 'rxjs';
-import { LocalState } from '@stlmpp/store';
-import { filterNil } from '@util/operators/filter';
+import { combineLatest, debounceTime, distinctUntilChanged, filter, finalize, switchMap, takeUntil, tap } from 'rxjs';
 import { User } from '@model/user';
-import { Pagination, PaginationMeta } from '@model/pagination';
+import { PaginationMeta } from '@model/pagination';
 import { arrayUtil } from 'st-utils';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
 import { differenceInHours, subDays } from 'date-fns';
 import { mdiShieldAccount } from '@mdi/js';
 import { trackById } from '@util/track-by';
 import { dateDifference } from '@shared/date/date-difference.pipe';
+import { Destroyable } from '@shared/components/common/destroyable-component';
 
 interface UserSearchForm {
   term: string;
   page: number;
   limit: number;
-}
-
-interface AdminBanUserComponentState {
-  loading: boolean;
-  data: Pagination<User>;
 }
 
 interface UserBan extends User {
@@ -50,17 +32,15 @@ interface UserBan extends User {
   styleUrls: ['./admin-ban-user.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AdminBanUserComponent extends LocalState<AdminBanUserComponentState> implements OnInit {
+export class AdminBanUserComponent extends Destroyable implements OnInit {
   constructor(
     private userService: UserService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private changeDetectorRef: ChangeDetectorRef
   ) {
-    super({
-      loading: false,
-      data: { items: [], meta: { itemCount: 0, totalItems: 0, totalPages: 0, itemsPerPage: 10, currentPage: 1 } },
-    });
+    super();
   }
 
   readonly dateMinus7 = subDays(new Date(), 7);
@@ -72,36 +52,13 @@ export class AdminBanUserComponent extends LocalState<AdminBanUserComponentState
     term: new Control(this.activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.term) ?? ''),
   });
 
-  readonly loading$ = this.selectState('loading');
-
   readonly term$ = this.form.get('term').value$.pipe(debounceTime(400), distinctUntilChanged());
   readonly page$ = this.form.get('page').value$.pipe(distinctUntilChanged(), debounceTime(100));
   readonly limit$ = this.form.get('limit').value$.pipe(distinctUntilChanged());
 
-  readonly data$ = this.selectState('data');
-  readonly users$: Observable<UserBan[]> = this.data$.pipe(
-    filterNil(),
-    pluck('items'),
-    map(users =>
-      users.map(user => {
-        let hoursDifference = 0;
-        if (user.bannedDate) {
-          hoursDifference = differenceInHours(user.bannedDate, this.dateMinus7);
-        }
-        const userBan: UserBan = {
-          ...user,
-          disabled: hoursDifference > 0,
-          tooltipDisabled: hoursDifference <= 0,
-          tooltip: `User will be available to unban in ${dateDifference(user.bannedDate, this.dateMinus7, [
-            'days',
-            'hours',
-          ])}`,
-        };
-        return userBan;
-      })
-    )
-  );
-  readonly paginationMeta$: Observable<PaginationMeta> = this.data$.pipe(filterNil(), pluck('meta'));
+  loading = false;
+  paginationMeta: PaginationMeta | null = null;
+  users: UserBan[] = [];
 
   readonly trackById = trackById;
 
@@ -112,10 +69,27 @@ export class AdminBanUserComponent extends LocalState<AdminBanUserComponentState
   }
 
   private _updateUser(idUser: number, partial: Partial<User>): void {
-    this.updateState('data', data => ({
-      ...data,
-      items: arrayUtil(data.items, 'id').update(idUser, partial).toArray(),
-    }));
+    this._setUsers(users => arrayUtil(users, 'id').update(idUser, partial).toArray());
+  }
+
+  private _setUsers(callback: (users: Array<User | UserBan>) => Array<User | UserBan>): void {
+    this.users = callback(this.users).map(user => {
+      let hoursDifference = 0;
+      if (user.bannedDate) {
+        hoursDifference = differenceInHours(user.bannedDate, this.dateMinus7);
+      }
+      const userBan: UserBan = {
+        ...user,
+        disabled: hoursDifference > 0,
+        tooltipDisabled: hoursDifference <= 0,
+        tooltip: `User will be available to unban in ${dateDifference(user.bannedDate, this.dateMinus7, [
+          'days',
+          'hours',
+        ])}`,
+      };
+      return userBan;
+    });
+    this.changeDetectorRef.markForCheck();
   }
 
   pageChange($event: number): void {
@@ -169,19 +143,23 @@ export class AdminBanUserComponent extends LocalState<AdminBanUserComponentState
       });
     combineLatest([this.term$, this.page$, this.limit$])
       .pipe(
+        takeUntil(this.destroy$),
         debounceTime(50),
         filter(([term]) => term.length >= 3),
         switchMap(([term, page, limit]) => {
-          this.updateState({ loading: true });
+          this.loading = true;
+          this.changeDetectorRef.markForCheck();
           return this.userService.search(term, page, limit).pipe(
             finalize(() => {
-              this.updateState({ loading: false });
+              this.loading = false;
+              this.changeDetectorRef.markForCheck();
             })
           );
         })
       )
       .subscribe(data => {
-        this.updateState({ data });
+        this._setUsers(() => data.items);
+        this.paginationMeta = data.meta;
       });
   }
 }

@@ -15,9 +15,9 @@
   </bio-card>
 
   <bio-card dark class="users">
-    <bio-loading *ngIf="loading$ | async"></bio-loading>
+    <bio-loading *ngIf="loading"></bio-loading>
     <bio-card-content>
-      <bio-list selectable *ngLet="users$ | async as users">
+      <bio-list selectable>
         <bio-list-item *ngIf="!users?.length">No data found</bio-list-item>
         <bio-list-item
           [disabled]="user.disabled"
@@ -38,7 +38,7 @@
     </bio-card-content>
     <bio-card-actions end>
       <bio-pagination
-        [meta]="paginationMeta$ | async"
+        [meta]="paginationMeta"
         (currentPageChange)="pageChange($event)"
         (itemsPerPageChange)="itemPerPageChange($event)"
         setQueryParamsOnChange
