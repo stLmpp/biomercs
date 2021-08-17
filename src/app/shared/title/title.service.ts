@@ -1,6 +1,6 @@
 import { Injectable, Injector, Type } from '@angular/core';
 import { GlobalListenersService } from '@shared/services/global-listeners/global-listeners.service';
-import { distinctUntilChanged, filter, isObservable, of, shareReplay, switchMap, tap } from 'rxjs';
+import { distinctUntilChanged, filter, isObservable, shareReplay, switchMap, tap } from 'rxjs';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { Title } from '@angular/platform-browser';
 import { isFunction } from 'st-utils';
@@ -22,10 +22,11 @@ export class TitleService {
 
   readonly title$ = this.globalListenersService.routerActivationEnd$.pipe(
     filter(event => !!event.snapshot.data[RouteDataEnum.title]),
-    distinctUntilChanged(
-      ({ snapshot: { data: dataA } }, { snapshot: { data: dataB } }) =>
-        dataA[RouteDataEnum.title] === dataB[RouteDataEnum.title]
-    ),
+    distinctUntilChanged(({ snapshot: { data: dataA } }, { snapshot: { data: dataB } }) => {
+      const titleA = dataA[RouteDataEnum.title];
+      const titleB = dataB[RouteDataEnum.title];
+      return !isTitleResolver(titleA) && !isTitleResolver(titleB) && titleA === titleB;
+    }),
     switchMap(({ snapshot }) => {
       const title: TitleType = snapshot.data[RouteDataEnum.title];
       if (isTitleResolver(title)) {
@@ -41,7 +42,7 @@ export class TitleService {
           return Promise.resolve(resolved);
         }
       } else {
-        return of(title);
+        return Promise.resolve(title);
       }
     }),
     filterNil(),
