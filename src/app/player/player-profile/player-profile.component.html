@@ -129,7 +129,7 @@
 <bio-score-list-responsive
   *ngFor="let status of scoreGroupedByStatus; trackBy: trackByScoreGroupByStatus"
   [scores]="status.scores"
-  [title]="status.description"
+  title="{{ status.description }} ({{ status.scores.length }})"
   [colDefs]="colDefs"
   [disabledProperty]="'disabled'"
   (scoreClicked)="openScoreInfo($event)"

@@ -5,7 +5,6 @@ import { ScoreService } from '../../score/score.service';
 import { AuthQuery } from '../../auth/auth.query';
 import { Observable } from 'rxjs';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
-import { orderByOperator } from '@stlmpp/utils';
 
 @Injectable({ providedIn: 'root' })
 export class PlayerRejectedPendingScoresResolver implements Resolve<ScoreGroupedByStatus[]> {
@@ -17,9 +16,7 @@ export class PlayerRejectedPendingScoresResolver implements Resolve<ScoreGrouped
   ): Observable<ScoreGroupedByStatus[]> | Promise<ScoreGroupedByStatus[]> | ScoreGroupedByStatus[] {
     const idPlayer = +route.paramMap.get(RouteParamEnum.idPlayer)!;
     if (this.authQuery.getIsSameAsLogged(idPlayer)) {
-      return this.scoreService
-        .findRejectedAndPendingScoresByIdUser()
-        .pipe(orderByOperator(status => status.scores.length, 'desc'));
+      return this.scoreService.findRejectedAndPendingScoresByIdUser();
     } else {
       return [];
     }
