@@ -38,7 +38,7 @@ export class AuthService {
   ) {}
 
   private readonly _steamidAuthMap = new Map<string, [string, number?]>();
-  private readonly _socketConnection = this.socketIOService.createConnection('auth');
+  private readonly _socketConnection = this.socketIOService.createConnection('auth', false);
 
   readonly endPoint = 'auth';
 
