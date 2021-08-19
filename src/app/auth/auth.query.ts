@@ -24,6 +24,7 @@ export class AuthQuery extends Query<Auth> {
     map(user => user.admin),
     distinctUntilChanged()
   );
+  readonly token$ = this.user$.pipe(map(user => user?.token));
 
   getToken(): string {
     return this.getUser()?.token ?? '';
