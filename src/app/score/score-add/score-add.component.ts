@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { Control, ControlArray, ControlGroup, Validators } from '@stlmpp/control';
 import { AuthQuery } from '../../auth/auth.query';
-import { ParamsComponent, ParamsConfig } from '@shared/params/params.component';
+import { ParamsComponent, ParamsConfig, ParamsForm } from '@shared/params/params.component';
 import { CURRENCY_MASK_CONFIG } from '@shared/currency-mask/currency-mask-config.token';
 import { MaskEnum, MaskEnumPatterns } from '@shared/mask/mask.enum';
 import { combineLatest, distinctUntilChanged, finalize, map, Observable, shareReplay, switchMap, tap } from 'rxjs';
@@ -24,7 +24,7 @@ import { scoreCurrencyMask } from '../score-shared/util';
 import { Router } from '@angular/router';
 import { filterNilArrayOperator } from '@util/operators/filter-nil-array';
 import { trackByControl } from '@util/track-by';
-import { isNotNil } from 'st-utils';
+import { isNotNil, isObjectEqualShallow } from 'st-utils';
 
 @Component({
   selector: 'bio-score-add',
@@ -59,6 +59,20 @@ export class ScoreAddComponent {
   };
 
   readonly form = this._getControlGroup();
+  readonly params$: Observable<Partial<ParamsForm>> = this.form.valueChanges$.pipe(
+    map(form => {
+      const params: Partial<ParamsForm> = {
+        idPlatform: form.idPlatform,
+        idGame: form.idGame,
+        idMiniGame: form.idMiniGame,
+        idMode: form.idMode,
+        idStage: form.idStage,
+      };
+
+      return params;
+    }),
+    distinctUntilChanged(isObjectEqualShallow)
+  );
 
   readonly idPlatform$ = this.form.get('idPlatform').value$.pipe(distinctUntilChanged());
   readonly idGame$ = this.form.get('idGame').value$.pipe(distinctUntilChanged());

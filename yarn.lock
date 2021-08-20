@@ -8956,6 +8956,14 @@ st-utils@~2.1.1:
     fast-sort "~3.0.2"
     type-fest "~2.0.0"
 
+st-utils@~2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/st-utils/-/st-utils-2.1.2.tgz#a3e0cd09ce4105057b59f506f89e0e6eb3edc449"
+  integrity sha512-RZH+W2ywn9M+9NE9Qi8E1sJ8E9dThBfeH+EiDhKqrwqmySeRPluOOIYlMj3klUXPmJJYnHxGeqBM9oiZvduWsQ==
+  dependencies:
+    fast-sort "~3.0.2"
+    type-fest "~2.0.0"
+
 stable@^0.1.8:
   version "0.1.8"
   resolved "https://registry.yarnpkg.com/stable/-/stable-0.1.8.tgz#836eb3c8382fe2936feaf544631017ce7d47a3cf"
