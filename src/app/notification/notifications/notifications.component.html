@@ -1,8 +1,13 @@
-<div class="actions">
+<div class="actions" *ngIf="notifications.length">
   <button bioButton type="button" (click)="readAll()" [loading]="readAllLoading" primary>Read all</button>
 </div>
 <bio-list selectable [bioLoading]="loading">
-  <cdk-virtual-scroll-viewport itemSize="90" (scrolledIndexChange)="onScrolledIndexChange($event)">
+  <cdk-virtual-scroll-viewport
+    itemSize="90"
+    (scrolledIndexChange)="onScrolledIndexChange($event)"
+    [class.viewport-no-data-found]="!notifications.length && !loading"
+  >
+    <div class="no-data-found" *ngIf="!notifications.length && !loading">Nothing here to see</div>
     <bio-list-item
       *cdkVirtualFor="let notification of notifications; trackBy: trackById"
       [disabled]="notification.loading"

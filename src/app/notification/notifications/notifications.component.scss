@@ -7,6 +7,7 @@ $height-mobile: $item-height * 5;
 .list-item {
   height: $item-height;
   font-size: 0.9rem;
+
   .list-item-line {
     white-space: pre-line;
     display: -webkit-box;
@@ -14,6 +15,7 @@ $height-mobile: $item-height * 5;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
+
   &.unread {
     background-color: v.$primary-100;
   }
@@ -33,4 +35,15 @@ $height-mobile: $item-height * 5;
   .cdk-virtual-scroll-viewport {
     height: $height-mobile;
   }
+}
+
+:host .viewport-no-data-found ::ng-deep .cdk-virtual-scroll-content-wrapper {
+  bottom: 0;
+}
+
+.no-data-found {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
