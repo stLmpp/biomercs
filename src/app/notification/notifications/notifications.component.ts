@@ -1,9 +1,186 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
+import { NotificationService } from '../notification.service';
+import { Destroyable } from '@shared/components/common/destroyable-component';
+import { Notification } from '@model/notification';
+import { finalize, lastValueFrom, Observable, of, switchMap, tap } from 'rxjs';
+import { trackById } from '@util/track-by';
+import { ScoreService } from '../../score/score.service';
+import { ScoreModalService } from '../../score/score-modal.service';
+import { PaginationMeta } from '@model/pagination';
+import { refreshMap } from '@util/operators/refresh-map';
+import { DialogService } from '@shared/components/modal/dialog/dialog.service';
+import { NotificationTypeEnum } from '@model/enum/notification-type-enum';
+import { ScoreStatusEnum } from '@model/enum/score-status.enum';
+import { PlayerModalService } from '../../player/player-modal.service';
+import { arrayUtil } from 'st-utils';
+
+interface NotificationCustom extends Notification {
+  loading?: boolean;
+  readLoading?: boolean;
+}
 
 @Component({
   selector: 'bio-notifications',
   templateUrl: './notifications.component.html',
   styleUrls: ['./notifications.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'notifications' },
 })
-export class NotificationsComponent {}
+export class NotificationsComponent extends Destroyable implements OnInit {
+  constructor(
+    private notificationService: NotificationService,
+    private changeDetectorRef: ChangeDetectorRef,
+    private scoreService: ScoreService,
+    private scoreModalService: ScoreModalService,
+    private dialogService: DialogService,
+    private playerModalService: PlayerModalService
+  ) {
+    super();
+  }
+
+  @Input() notifications: NotificationCustom[] = [];
+  @Output() readonly notificationsChange = new EventEmitter<NotificationCustom[]>();
+  @Input() page = 1;
+  @Input() meta!: PaginationMeta;
+  @Output() readonly pageChange = new EventEmitter<number>();
+  @Input() loading = false;
+  @Input() loadingMore = false;
+
+  readAllLoading = false;
+
+  readonly trackById = trackById;
+
+  private _setNotifications(callback: (notifications: NotificationCustom[]) => NotificationCustom[]): void {
+    this.notifications = callback(this.notifications);
+    this.notificationsChange.emit(this.notifications);
+    this.changeDetectorRef.markForCheck();
+  }
+
+  private _updateNotification(
+    idNotification: number | ((entity: NotificationCustom) => boolean),
+    partial: Partial<NotificationCustom> | ((notification: NotificationCustom) => NotificationCustom)
+  ): void {
+    this._setNotifications(notifications => arrayUtil(notifications, 'id').update(idNotification, partial).toArray());
+  }
+
+  private _maskAsRead(notification: NotificationCustom): Observable<number | null> {
+    if (notification.read) {
+      return of(null);
+    }
+    return this.notificationService.read(notification.id).pipe(
+      tap(() => {
+        this._updateNotification(notification.id, { read: true });
+      })
+    );
+  }
+
+  async openModal(notification: NotificationCustom): Promise<void> {
+    if (notification.idScore) {
+      if (
+        notification.idNotificationType === NotificationTypeEnum.ScoreRequestedChanges &&
+        notification.idScoreStatus === ScoreStatusEnum.ChangesRequested
+      ) {
+        this.openModalChangeRequests(notification);
+      } else {
+        this.openModalScore(notification);
+      }
+    } else {
+      this._updateNotification(notification.id, { loading: true });
+      await Promise.all([
+        lastValueFrom(this._maskAsRead(notification)),
+        this.dialogService.info({ content: notification.content, buttons: ['Close'] }, { width: 300, minHeight: 100 }),
+      ]);
+      this._updateNotification(notification.id, { loading: false });
+    }
+  }
+
+  openModalScore(notification: NotificationCustom): void {
+    const { idScore, loading, id } = notification;
+    if (!idScore || loading) {
+      return;
+    }
+    this._updateNotification(id, { loading: true });
+    this.scoreService
+      .findById(idScore)
+      .pipe(
+        refreshMap(() => this._maskAsRead(notification)),
+        switchMap(score =>
+          this.scoreModalService.openModalScoreInfo({ score, showWorldRecord: true, showApprovalDate: true })
+        ),
+        finalize(() => {
+          this._updateNotification(id, { loading: false });
+        })
+      )
+      .subscribe();
+  }
+
+  openModalChangeRequests(notification: NotificationCustom): void {
+    const { idScore, loading, id } = notification;
+    if (!idScore || loading) {
+      return;
+    }
+    this._updateNotification(id, { loading: true });
+    this.scoreService
+      .findByIdWithChangeRequests(idScore)
+      .pipe(
+        refreshMap(() => this._maskAsRead(notification)),
+        switchMap(score => this.playerModalService.openPlayerChangeRequestsModal({ score })),
+        finalize(() => {
+          this._updateNotification(id, { loading: false });
+        })
+      )
+      .subscribe();
+  }
+
+  onScrolledIndexChange($event: number): void {
+    if ($event + 12 === this.notifications.length && this.page < this.meta.totalPages) {
+      this.pageChange.emit(this.page + 1);
+    }
+  }
+
+  toggleRead($event: MouseEvent, notification: NotificationCustom): void {
+    $event.stopPropagation();
+    if (notification.readLoading) {
+      return;
+    }
+    this._updateNotification(notification.id, { readLoading: true });
+    const request$: Observable<void | number> = notification.read
+      ? this.notificationService.unread(notification.id)
+      : this.notificationService.read(notification.id);
+    request$
+      .pipe(
+        finalize(() => {
+          this._updateNotification(notification.id, { read: !notification.read, readLoading: false });
+        })
+      )
+      .subscribe();
+  }
+
+  readAll(): void {
+    this.readAllLoading = true;
+    this.notificationService
+      .readAll()
+      .pipe(
+        tap(() => {
+          this._updateNotification(() => true, { read: true });
+        }),
+        finalize(() => {
+          this.readAllLoading = false;
+          this.changeDetectorRef.markForCheck();
+        })
+      )
+      .subscribe();
+  }
+
+  ngOnInit(): void {
+    this.notificationService.seenAll().subscribe();
+  }
+}

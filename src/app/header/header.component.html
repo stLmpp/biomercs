@@ -14,6 +14,7 @@
     </div>
     <div class="end">
       <ng-container *ngIf="isLogged$ | async; else notLogged">
+        <bio-notifications-icon></bio-notifications-icon>
         <a
           bioButton
           [icon]="isMobile"

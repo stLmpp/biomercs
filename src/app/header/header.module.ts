@@ -8,10 +8,20 @@ import { BadgeModule } from '@shared/components/badge/badge.module';
 import { SideMenuComponent } from './side-menu/side-menu.component';
 import { ListModule } from '@shared/components/list/list.module';
 import { TooltipModule } from '@shared/components/tooltip/tooltip.module';
+import { NotificationModule } from '../notification/notification.module';
 
 @NgModule({
   declarations: [HeaderComponent, SideMenuComponent],
-  imports: [MenuModule, ListModule, ButtonModule, RouterModule, TooltipModule, NgLetModule, BadgeModule],
+  imports: [
+    MenuModule,
+    ListModule,
+    ButtonModule,
+    RouterModule,
+    TooltipModule,
+    NgLetModule,
+    BadgeModule,
+    NotificationModule,
+  ],
   exports: [HeaderComponent],
 })
 export class HeaderModule {}

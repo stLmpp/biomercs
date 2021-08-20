@@ -1,8 +1,10 @@
 export interface Notification {
-  id: string;
+  id: number;
   content: string;
   idUser: number;
   read: boolean;
+  seen: boolean;
   idScore?: number;
-  scoreName?: string;
+  idScoreStatus?: number;
+  idNotificationType?: number;
 }

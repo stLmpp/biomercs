@@ -1,0 +1,36 @@
+@use 'variables' as v;
+
+$item-height: 90px;
+$height: $item-height * 6;
+$height-mobile: $item-height * 5;
+
+.list-item {
+  height: $item-height;
+  font-size: 0.9rem;
+  .list-item-line {
+    white-space: pre-line;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  &.unread {
+    background-color: v.$primary-100;
+  }
+}
+
+.cdk-virtual-scroll-viewport {
+  height: $height;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem;
+}
+
+@media only screen and (max-width: v.$mobile-width) {
+  .cdk-virtual-scroll-viewport {
+    height: $height-mobile;
+  }
+}

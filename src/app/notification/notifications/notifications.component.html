@@ -1,1 +1,32 @@
-<p>notifications works!</p>
+<div class="actions">
+  <button bioButton type="button" (click)="readAll()" [loading]="readAllLoading" primary>Read all</button>
+</div>
+<bio-list selectable [bioLoading]="loading">
+  <cdk-virtual-scroll-viewport itemSize="90" (scrolledIndexChange)="onScrolledIndexChange($event)">
+    <bio-list-item
+      *cdkVirtualFor="let notification of notifications; trackBy: trackById"
+      [disabled]="notification.loading"
+      (click)="openModal(notification)"
+      [title]="notification.content"
+      [class.unread]="!notification.read"
+    >
+      <bio-list-item-line> {{ notification.content }} </bio-list-item-line>
+      <bio-spinner bioSuffix [size]="0.1" *ngIf="notification.loading"></bio-spinner>
+      <div bioSuffix>
+        <button
+          type="button"
+          bioButton
+          icon
+          (click)="toggleRead($event, notification)"
+          [loading]="notification.readLoading"
+        >
+          <bio-icon>{{ notification.read ? 'drafts' : 'markunread' }}</bio-icon>
+        </button>
+      </div>
+    </bio-list-item>
+    <bio-list-item *ngIf="loadingMore">
+      <bio-list-item-line>Loading...</bio-list-item-line>
+      <bio-spinner bioSuffix [size]="0.1"></bio-spinner>
+    </bio-list-item>
+  </cdk-virtual-scroll-viewport>
+</bio-list>

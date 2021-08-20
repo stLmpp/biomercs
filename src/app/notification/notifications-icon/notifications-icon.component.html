@@ -1,1 +1,39 @@
-<p>notifications-icon works!</p>
+<ng-container *ngLet="unseenCount$ | async as unseenCount">
+  <button
+    bioButton
+    icon
+    type="button"
+    [bioBadge]="unseenCount"
+    [bioBadgeOverlap]="false"
+    [bioBadgeHidden]="!unseenCount"
+    cdkOverlayOrigin
+    #cdkOverlayOrigin="cdkOverlayOrigin"
+    (click)="onClick()"
+    (mouseenter)="preloadNotifications()"
+  >
+    <bio-icon>notifications</bio-icon>
+  </button>
+  <ng-template
+    cdkConnectedOverlay
+    [cdkConnectedOverlayOrigin]="cdkOverlayOrigin"
+    [cdkConnectedOverlayOpen]="overlayIsOpen"
+    [cdkConnectedOverlayPositions]="overlayPositions"
+    [cdkConnectedOverlayOffsetX]="(offsetY$ | async) ?? 0"
+    cdkConnectedOverlayFlexibleDimensions
+    cdkConnectedOverlayWidth="300px"
+    cdkConnectedOverlayPush
+    cdkConnectedOverlayHasBackdrop
+    (backdropClick)="overlayIsOpen = !overlayIsOpen"
+  >
+    <bio-notifications
+      [(notifications)]="notifications"
+      [page]="page"
+      (pageChange)="pageChange($event)"
+      [meta]="meta"
+      [loading]="loading"
+      [loadingMore]="loadingMore"
+      @fadeInOut
+      @scaleIn
+    ></bio-notifications>
+  </ng-template>
+</ng-container>

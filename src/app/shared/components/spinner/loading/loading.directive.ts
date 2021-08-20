@@ -3,6 +3,7 @@ import {
   ComponentFactoryResolver,
   Directive,
   ElementRef,
+  HostBinding,
   Injector,
   Input,
   OnDestroy,
@@ -15,7 +16,7 @@ import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 
 @Directive({
   selector: '[bioLoading]',
-  host: { '[style.position]': `'relative'`, '[style.min-height]': `'150px'` },
+  host: { '[style.position]': `'relative'` },
 })
 export class LoadingDirective implements OnInit, AfterViewInit, OnDestroy {
   constructor(
@@ -30,7 +31,8 @@ export class LoadingDirective implements OnInit, AfterViewInit, OnDestroy {
   private readonly _componentRef = this.viewContainerRef.createComponent(this._componentFactory);
 
   private _loading = false;
-  private _noBox = false;
+  private _bioLoadingNoBox = false;
+  private _bioLoadingIgnoreMinHeight = false;
 
   @Input()
   get bioLoading(): boolean {
@@ -42,13 +44,26 @@ export class LoadingDirective implements OnInit, AfterViewInit, OnDestroy {
   }
 
   @Input()
-  get noBox(): boolean {
-    return this._noBox;
+  get bioLoadingNoBox(): boolean {
+    return this._bioLoadingNoBox;
   }
-  set noBox(noBox: boolean) {
-    this._noBox = coerceBooleanProperty(noBox);
+  set bioLoadingNoBox(noBox: boolean) {
+    this._bioLoadingNoBox = coerceBooleanProperty(noBox);
     this._componentRef.instance.noBox = noBox;
     this._componentRef.changeDetectorRef.markForCheck();
+  }
+
+  @Input()
+  get bioLoadingIgnoreMinHeight(): boolean {
+    return this._bioLoadingIgnoreMinHeight;
+  }
+  set bioLoadingIgnoreMinHeight(bioLoadingIgnoreMinHeight: boolean) {
+    this._bioLoadingIgnoreMinHeight = coerceBooleanProperty(bioLoadingIgnoreMinHeight);
+  }
+
+  @HostBinding('style.min-height.px')
+  get styleMinHeight(): number {
+    return this._bioLoadingIgnoreMinHeight ? 0 : 150;
   }
 
   toggle(loading: boolean): void {
@@ -68,7 +83,7 @@ export class LoadingDirective implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this._componentRef.instance.noBox = this._noBox;
+    this._componentRef.instance.noBox = this._bioLoadingNoBox;
     this._componentRef.changeDetectorRef.markForCheck();
   }
 
@@ -81,5 +96,6 @@ export class LoadingDirective implements OnInit, AfterViewInit, OnDestroy {
   }
 
   static ngAcceptInputType_bioLoading: BooleanInput;
-  static ngAcceptInputType_noBox: BooleanInput;
+  static ngAcceptInputType_bioLoadingNoBox: BooleanInput;
+  static ngAcceptInputType_bioLoadingIgnoreMinHeight: BooleanInput;
 }

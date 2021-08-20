@@ -1,0 +1,10 @@
+@use 'variables' as v;
+@use 'mixins' as m;
+
+.notifications {
+  padding-bottom: 1rem;
+  border-radius: v.$radius;
+  background-color: v.$primary-50;
+  width: 100%;
+  @include m.elevation(2);
+}
