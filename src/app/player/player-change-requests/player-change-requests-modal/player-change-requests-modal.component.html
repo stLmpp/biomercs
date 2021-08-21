@@ -87,6 +87,7 @@
     <hr />
   </bio-modal-content>
   <bio-modal-actions end>
+    <button bioButton type="button" (click)="modalRef.close()" [disabled]="loading">Close</button>
     <button
       bioButton
       type="submit"
@@ -106,6 +107,5 @@
     >
       Cancel score
     </button>
-    <button bioButton type="button" (click)="modalRef.close()" [disabled]="loading">Close</button>
   </bio-modal-actions>
 </form>

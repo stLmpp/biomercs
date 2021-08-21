@@ -21,6 +21,7 @@
     </bio-form-field>
   </bio-modal-content>
   <bio-modal-actions end>
+    <button type="button" bioButton (click)="modalRef.close()" [disabled]="saving">Close</button>
     <button
       [disabled]="form.invalid"
       [loading]="saving"
@@ -30,6 +31,5 @@
     >
       {{ action }}
     </button>
-    <button type="button" bioButton (click)="modalRef.close()" [disabled]="saving">Close</button>
   </bio-modal-actions>
 </form>
