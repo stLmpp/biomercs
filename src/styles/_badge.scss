@@ -28,75 +28,81 @@ $overlap-size: -8px;
 }
 
 .badge-container {
-  .badge {
+  > .badge {
     position: absolute;
     z-index: f.get-z-index(badge);
     pointer-events: none;
   }
 
+  &.badge-container-hidden {
+    > .badge {
+      display: none;
+    }
+  }
+
   &.badge-container-top {
-    .badge {
+    > .badge {
       top: 0;
     }
   }
 
   &.badge-container-bottom {
-    .badge {
+    > .badge {
       bottom: 0;
     }
   }
 
   &.badge-container-right {
-    .badge {
+    > .badge {
       right: 0;
     }
   }
 
   &.badge-container-left {
-    .badge {
+    > .badge {
       left: 0;
     }
   }
 
   &.badge-primary {
-    .badge {
+    > .badge {
       background-color: v.$primary;
     }
   }
 
   &.badge-accent {
-    .badge {
+    > .badge {
       background-color: v.$accent;
     }
   }
 
   &.badge-danger {
-    .badge {
+    > .badge {
       background-color: v.$danger;
     }
   }
 
   &.badge-container-overlap {
     &.badge-container-top {
-      .badge {
+      > .badge {
         top: $overlap-size;
       }
     }
 
     &.badge-container-bottom {
-      .badge {
+      > .badge {
         bottom: $overlap-size;
       }
     }
 
     &.badge-container-right {
-      .badge {
+      > .badge {
         right: $overlap-size;
       }
     }
 
     &.badge-container-left {
-      .badge {
+      > .badge {
         left: $overlap-size;
       }
     }

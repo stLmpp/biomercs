@@ -16,7 +16,11 @@ import { HttpParams } from '@util/http-params';
 import { OrderByDirection } from 'st-utils';
 import { ScoreApprovalAdd, ScoreApprovalPagination } from '@model/score-approval';
 import { ScoreApprovalActionEnum } from '@model/enum/score-approval-action.enum';
-import { ScoreChangeRequest, ScoreChangeRequestsPagination } from '@model/score-change-request';
+import {
+  ScoreChangeRequest,
+  ScoreChangeRequestsPagination,
+  ScoreWithScoreChangeRequests,
+} from '@model/score-change-request';
 import { Pagination } from '@model/pagination';
 import { ScoreGroupedByStatus } from '@model/score-grouped-by-status';
 
@@ -34,6 +38,10 @@ export class ScoreService {
 
   findById(idScore: number): Observable<Score> {
     return this.http.get<Score>(`${this.endPoint}/${idScore}`);
+  }
+
+  findByIdWithChangeRequests(idScore: number): Observable<ScoreWithScoreChangeRequests> {
+    return this.http.get<ScoreWithScoreChangeRequests>(`${this.endPoint}/${idScore}/with-change-requests`);
   }
 
   findLeaderboards(

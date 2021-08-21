@@ -1,0 +1,61 @@
+<div class="actions" *ngIf="notifications.length">
+  <button bioButton type="button" (click)="deleteAll()" [loading]="deleteAllLoading" danger>Delete all</button>
+  <button bioButton type="button" (click)="readAll()" [loading]="readAllLoading" primary>Read all</button>
+</div>
+<bio-list selectable [bioLoading]="loading">
+  <cdk-virtual-scroll-viewport
+    itemSize="90"
+    (scrolledIndexChange)="onScrolledIndexChange($event)"
+    [class.viewport-no-data-found]="!notifications.length && !loading"
+  >
+    <div class="no-data-found" *ngIf="!notifications.length && !loading">Nothing here to see</div>
+    <bio-list-item
+      *cdkVirtualFor="let notification of notifications; trackBy: trackById"
+      [disabled]="notification.loading"
+      (click)="openModal(notification)"
+      [title]="notification.content"
+      [class.unread]="!notification.read"
+    >
+      <bio-list-item-line> {{ notification.content }} </bio-list-item-line>
+      <bio-spinner bioSuffix [size]="0.1" *ngIf="notification.loading"></bio-spinner>
+      <div bioSuffix>
+        <button
+          type="button"
+          bioButton
+          icon
+          [bioMenuTrigger]="menu"
+          [loading]="notification.readLoading || notification.deleteLoading"
+          (click)="$event.stopPropagation()"
+        >
+          <bio-icon>more_vert</bio-icon>
+        </button>
+      </div>
+      <bio-menu #menu>
+        <button
+          type="button"
+          bioMenuItem
+          bioButton
+          [loading]="notification.readLoading"
+          (click)="toggleRead(notification)"
+        >
+          <bio-icon>{{ notification.read ? 'drafts' : 'markunread' }}</bio-icon>
+          {{ notification.read ? 'Unread' : 'Read' }}
+        </button>
+        <button
+          type="button"
+          bioMenuItem
+          bioButton
+          [loading]="notification.deleteLoading"
+          (click)="delete(notification)"
+        >
+          <bio-icon>delete</bio-icon>
+          Delete
+        </button>
+      </bio-menu>
+    </bio-list-item>
+    <bio-list-item *ngIf="loadingMore">
+      <bio-list-item-line>Loading...</bio-list-item-line>
+      <bio-spinner bioSuffix [size]="0.1"></bio-spinner>
+    </bio-list-item>
+  </cdk-virtual-scroll-viewport>
+</bio-list>

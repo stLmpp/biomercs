@@ -6,9 +6,10 @@
   margin-top: $margin-top;
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
 
-  button:not(:last-child) {
-    margin-right: 1rem;
+  .button {
+    margin: 0.5rem;
   }
 
   &.end {
