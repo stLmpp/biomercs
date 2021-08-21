@@ -8,10 +8,20 @@ import { ListModule } from '@shared/components/list/list.module';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { NgLetModule } from '@stlmpp/utils';
+import { MenuModule } from '@shared/components/menu/menu.module';
 
 @NgModule({
   declarations: [NotificationsComponent, NotificationsIconComponent],
-  imports: [CommonModule, ButtonModule, BadgeModule, ListModule, ScrollingModule, OverlayModule, NgLetModule],
+  imports: [
+    CommonModule,
+    ButtonModule,
+    BadgeModule,
+    ListModule,
+    ScrollingModule,
+    OverlayModule,
+    NgLetModule,
+    MenuModule,
+  ],
   exports: [NotificationsIconComponent, NotificationsComponent],
 })
 export class NotificationModule {}

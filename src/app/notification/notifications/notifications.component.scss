@@ -29,6 +29,10 @@ $height-mobile: $item-height * 5;
   display: flex;
   justify-content: flex-end;
   padding: 1rem;
+
+  .button:not(:last-of-type) {
+    margin-right: 1rem;
+  }
 }
 
 @media only screen and (max-width: v.$mobile-width) {

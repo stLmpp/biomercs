@@ -1,4 +1,5 @@
 <div class="actions" *ngIf="notifications.length">
+  <button bioButton type="button" (click)="deleteAll()" [loading]="deleteAllLoading" danger>Delete all</button>
   <button bioButton type="button" (click)="readAll()" [loading]="readAllLoading" primary>Read all</button>
 </div>
 <bio-list selectable [bioLoading]="loading">
@@ -22,12 +23,35 @@
           type="button"
           bioButton
           icon
-          (click)="toggleRead($event, notification)"
-          [loading]="notification.readLoading"
+          [bioMenuTrigger]="menu"
+          [loading]="notification.readLoading || notification.deleteLoading"
+          (click)="$event.stopPropagation()"
         >
-          <bio-icon>{{ notification.read ? 'drafts' : 'markunread' }}</bio-icon>
+          <bio-icon>more_vert</bio-icon>
         </button>
       </div>
+      <bio-menu #menu>
+        <button
+          type="button"
+          bioMenuItem
+          bioButton
+          [loading]="notification.readLoading"
+          (click)="toggleRead(notification)"
+        >
+          <bio-icon>{{ notification.read ? 'drafts' : 'markunread' }}</bio-icon>
+          {{ notification.read ? 'Unread' : 'Read' }}
+        </button>
+        <button
+          type="button"
+          bioMenuItem
+          bioButton
+          [loading]="notification.deleteLoading"
+          (click)="delete(notification)"
+        >
+          <bio-icon>delete</bio-icon>
+          Delete
+        </button>
+      </bio-menu>
     </bio-list-item>
     <bio-list-item *ngIf="loadingMore">
       <bio-list-item-line>Loading...</bio-list-item-line>

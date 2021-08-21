@@ -75,4 +75,12 @@ export class NotificationService {
       )
     );
   }
+
+  delete(idNotification: number): Observable<void> {
+    return this.http.delete<void>(`${this.endPoint}/${idNotification}`);
+  }
+
+  deleteAll(): Observable<void> {
+    return this.http.delete<void>(`${this.endPoint}/all`);
+  }
 }

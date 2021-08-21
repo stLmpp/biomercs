@@ -25,6 +25,7 @@ import { arrayUtil } from 'st-utils';
 interface NotificationCustom extends Notification {
   loading?: boolean;
   readLoading?: boolean;
+  deleteLoading?: boolean;
 }
 
 @Component({
@@ -55,6 +56,7 @@ export class NotificationsComponent extends Destroyable implements OnInit {
   @Input() loadingMore = false;
 
   readAllLoading = false;
+  deleteAllLoading = false;
 
   readonly trackById = trackById;
 
@@ -140,14 +142,20 @@ export class NotificationsComponent extends Destroyable implements OnInit {
       .subscribe();
   }
 
-  onScrolledIndexChange($event: number): void {
-    if ($event + 12 === this.notifications.length && this.page < this.meta.totalPages) {
+  onScrolledIndexChange(firstIndex: number): void {
+    /* firstIndex + 12 is more or less the number of items in the screen + offsets
+     * if it's higher than the number of notifications, it means more notifications needs to be fetched
+     *
+     * this.page < this.meta.totalPages: check if the current page is lower than the total number of pages, for obvious reasons
+     *
+     * !this.loadingMore: and for last check if the notifications are being fetched already
+     */
+    if (firstIndex + 12 >= this.notifications.length && this.page < this.meta.totalPages && !this.loadingMore) {
       this.pageChange.emit(this.page + 1);
     }
   }
 
-  toggleRead($event: MouseEvent, notification: NotificationCustom): void {
-    $event.stopPropagation();
+  toggleRead(notification: NotificationCustom): void {
     if (notification.readLoading) {
       return;
     }
@@ -178,6 +186,47 @@ export class NotificationsComponent extends Destroyable implements OnInit {
         })
       )
       .subscribe();
+  }
+
+  deleteAll(): void {
+    this.deleteAllLoading = true;
+    this.dialogService.confirm({
+      title: 'Delete all notifications',
+      content: `This action can't be undone.`,
+      buttons: [
+        'Close',
+        {
+          title: 'Delete all',
+          type: 'danger',
+          action: () =>
+            this.notificationService.deleteAll().pipe(
+              finalize(() => {
+                this.deleteAllLoading = false;
+                this.changeDetectorRef.markForCheck();
+              }),
+              tap(() => {
+                this._setNotifications(() => []);
+              })
+            ),
+        },
+      ],
+    });
+  }
+
+  delete(notification: NotificationCustom): void {
+    this._updateNotification(notification.id, { deleteLoading: true });
+    this.notificationService
+      .delete(notification.id)
+      .pipe(
+        finalize(() => {
+          this._updateNotification(notification.id, { deleteLoading: false });
+        })
+      )
+      .subscribe(() => {
+        this._setNotifications(notifications =>
+          notifications.filter(_notification => _notification.id !== notification.id)
+        );
+      });
   }
 
   ngOnInit(): void {
