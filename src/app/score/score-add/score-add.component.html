@@ -4,7 +4,7 @@
     <h3 bioCardTitle>Parameters</h3>
     <bio-card-content>
       <bio-params
-        [params]="form.valueChanges$ | async"
+        [params]="params$ | async"
         (paramsChange)="form.patchValue($event)"
         [config]="paramsConfig"
         setQueryParamsOnChange
