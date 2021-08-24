@@ -1,0 +1,35 @@
+<ng-container *ngLet="isAdmin$ | async as isAdmin">
+  <div class="actions" *ngIf="isAdmin">
+    <bio-checkbox [(checked)]="hideDeleted">Hide deleted</bio-checkbox>
+    <button bioButton type="button" (click)="openAddEditModal()">
+      <bio-icon>add</bio-icon>
+      Add category
+    </button>
+  </div>
+  <p *ngIf="!categories.length">No categories found</p>
+  <bio-accordion
+    multi
+    cdkDropList
+    [cdkDropListData]="categories"
+    [cdkDropListDisabled]="updatingOrder || !isAdmin"
+    (cdkDropListDropped)="onCdkDropListDropped($event)"
+  >
+    <bio-accordion-item
+      *ngFor="let category of categories | filterDeleted: hideDeleted; trackBy: trackById"
+      [accordionTitle]="category.name"
+      cdkDrag
+      expanded
+    >
+      <div class="actions" *ngIf="isAdmin">
+        <button bioButton type="button" (click)="openAddEditModal(category.id)">
+          <bio-icon>edit</bio-icon>
+          Edit category
+        </button>
+        <button bioButton type="button" (click)="openAddEditSubCategory()">
+          <bio-icon>add</bio-icon>
+          Add sub category
+        </button>
+      </div>
+    </bio-accordion-item>
+  </bio-accordion>
+</ng-container>

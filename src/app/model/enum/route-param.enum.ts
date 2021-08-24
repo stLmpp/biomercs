@@ -17,6 +17,8 @@ export enum RouteParamEnum {
   idModes = 'idModes',
   idStages = 'idStages',
   idCharacterCostumes = 'idCharacterCostumes',
+  idCategory = 'idCategory',
+  idSubCategory = 'idSubCategory',
 
   steamid = 'steamid',
 

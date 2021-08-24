@@ -11,4 +11,5 @@ export enum RouteDataEnum {
   platforms = 'resolver.platforms',
   player = 'resolver.player',
   scoreGroupedByStatus = 'resolver.scoreGroupedByStatus',
+  categories = 'resolver.categories',
 }
