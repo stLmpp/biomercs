@@ -1,4 +1,4 @@
-import { SubCategory } from '@model/forum/sub-category';
+import { SubCategoryWithModeratorsInfo } from '@model/forum/sub-category';
 
 export interface Category {
   id: number;
@@ -8,7 +8,7 @@ export interface Category {
 }
 
 export interface CategoryWithSubCategories extends Category {
-  subCategories: SubCategory[];
+  subCategories: SubCategoryWithModeratorsInfo[];
 }
 
 export interface CategoryAddDto {

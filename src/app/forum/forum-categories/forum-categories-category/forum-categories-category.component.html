@@ -1,0 +1,10 @@
+<div class="actions" *ngIf="isAdmin">
+  <button bioButton type="button" (click)="openAddEditModal.emit(category.id)" [disabled]="loadingAddEditModal">
+    <bio-icon>edit</bio-icon>
+    Edit category
+  </button>
+  <button bioButton type="button" (click)="openAddEditSubCategory()">
+    <bio-icon>add</bio-icon>
+    Add sub category
+  </button>
+</div>

@@ -37,6 +37,7 @@ export class ForumCategoryAddEditComponent implements OnInit {
     this.loading = true;
     this.form.disable();
     const formValue = this.form.value;
+    this.modalRef.disableClose = true;
     let http$: Observable<Category>;
     if (this.idCategory) {
       http$ = this.categoryService.update(this.idCategory, formValue);
@@ -47,6 +48,7 @@ export class ForumCategoryAddEditComponent implements OnInit {
       .pipe(
         finalize(() => {
           this.loading = false;
+          this.modalRef.disableClose = false;
           this.changeDetectorRef.markForCheck();
         })
       )

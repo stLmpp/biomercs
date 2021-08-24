@@ -9,9 +9,11 @@ import { NgLetModule } from '@stlmpp/utils';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CheckboxModule } from '@shared/components/checkbox/checkbox.module';
 import { ArrayPipesModule } from '@shared/array-pipes/array-pipes.module';
+import { ForumCategoriesCategoryComponent } from './forum-categories-category/forum-categories-category.component';
+import { AuthSharedModule } from '../../auth/shared/auth-shared.module';
 
 @NgModule({
-  declarations: [ForumCategoriesComponent],
+  declarations: [ForumCategoriesComponent, ForumCategoriesCategoryComponent],
   imports: [
     CommonModule,
     ForumCategoriesRoutingModule,
@@ -21,6 +23,7 @@ import { ArrayPipesModule } from '@shared/array-pipes/array-pipes.module';
     DragDropModule,
     CheckboxModule,
     ArrayPipesModule,
+    AuthSharedModule,
   ],
 })
 export class ForumCategoriesModule {}

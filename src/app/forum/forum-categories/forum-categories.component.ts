@@ -32,7 +32,7 @@ export class ForumCategoriesComponent {
 
   loadingAddEditModal = false;
   updatingOrder = false;
-  hideDeleted = false;
+  hideDeleted = true;
 
   async openAddEditModal(idCategory?: number): Promise<void> {
     this.loadingAddEditModal = true;
@@ -76,5 +76,7 @@ export class ForumCategoriesComponent {
       });
   }
 
-  openAddEditSubCategory(): void {}
+  onCategoryChange($event: CategoryWithSubCategories): void {
+    this.categories = arrayUtil(this.categories).update($event.id, $event).toArray();
+  }
 }

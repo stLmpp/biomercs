@@ -5,6 +5,10 @@ export interface SubCategory {
   name: string;
   description: string;
   idCategory: number;
+  order: number;
+}
+
+export interface SubCategoryWithModeratorsInfo extends SubCategory {
   moderators: Moderator[];
   playerPersonaNameLastPost?: string;
   idPlayerLastPost?: number;
@@ -14,5 +18,18 @@ export interface SubCategory {
   topicCount: number;
   postCount: number;
   hasNewPosts: boolean;
-  order: number;
+}
+
+export interface SubCategoryAddDto {
+  name: string;
+  description: string;
+  idCategory: number;
+}
+
+export interface SubCategoryUpdateDto {
+  name: string | undefined;
+  description: string | undefined;
+  idCategory: number | undefined;
+  deleted: boolean;
+  restored: boolean;
 }
