@@ -23,7 +23,7 @@ class Cache {
     this._cache.set(key, { timeout: () => clearTimeout(timeout), value });
   }
 
-  burstCache(...params: any): void {
+  burstCache(params: any): void {
     const key = this._serializeKey(params);
     if (this._cache.has(key)) {
       const { timeout } = this._cache.get(key)!;
