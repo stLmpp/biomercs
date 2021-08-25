@@ -2,19 +2,23 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { SubCategory, SubCategoryAddDto, SubCategoryUpdateDto } from '@model/forum/sub-category';
+import { CacheService } from '@shared/cache/cache';
 
 @Injectable({ providedIn: 'root' })
 export class SubCategoryService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private cacheService: CacheService) {}
 
-  endPoint = 'forum/sub-category';
+  private readonly _cache = this.cacheService.createCache();
+  readonly endPoint = 'forum/sub-category';
 
   add(dto: SubCategoryAddDto): Observable<SubCategory> {
     return this.http.post<SubCategory>(this.endPoint, dto);
   }
 
   update(idSubCategory: number, dto: SubCategoryUpdateDto): Observable<SubCategory> {
-    return this.http.patch<SubCategory>(`${this.endPoint}/${idSubCategory}`, dto);
+    return this.http
+      .patch<SubCategory>(`${this.endPoint}/${idSubCategory}`, dto)
+      .pipe(this._cache.burst(idSubCategory));
   }
 
   updateOrder(idSubCategories: number[]): Observable<SubCategory[]> {
@@ -22,6 +26,6 @@ export class SubCategoryService {
   }
 
   getById(idSubCategory: number): Observable<SubCategory> {
-    return this.http.get<SubCategory>(`${this.endPoint}/${idSubCategory}`);
+    return this.http.get<SubCategory>(`${this.endPoint}/${idSubCategory}`).pipe(this._cache.use(idSubCategory));
   }
 }
