@@ -19,8 +19,8 @@
       </bio-errors>
     </bio-form-field>
     <ng-container *ngIf="idSubCategory">
-      <bio-checkbox controlName="deleted" *ngIf="!subCategory.deletedDate">Delete this category</bio-checkbox>
-      <bio-checkbox controlName="restored" *ngIf="subCategory.deletedDate">Restore this category</bio-checkbox>
+      <bio-checkbox controlName="deleted" *ngIf="!subCategory.deletedDate">Delete this sub category</bio-checkbox>
+      <bio-checkbox controlName="restored" *ngIf="subCategory.deletedDate">Restore this sub category</bio-checkbox>
     </ng-container>
   </bio-modal-content>
   <bio-modal-actions end>

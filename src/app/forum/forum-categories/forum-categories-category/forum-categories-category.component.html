@@ -9,12 +9,42 @@
   </button>
 </div>
 <bio-list selectable>
-  <bio-list-item *ngFor="let subCategory of category.subCategories; trackBy: trackById">
+  <a
+    bioListItem
+    *ngFor="let subCategory of category.subCategories; trackBy: trackById"
+    [routerLink]="['sub-category', subCategory.id]"
+  >
     <bio-list-item-line>{{ subCategory.name }}</bio-list-item-line>
     <bio-list-item-line>{{ subCategory.description }}</bio-list-item-line>
-    <button bioButton bioSuffix *ngIf="isAdmin">
-      <bio-icon>edit</bio-icon>
-      Edit sub category
-    </button>
-  </bio-list-item>
+    <div bioSuffix>
+      <div>{{ subCategory.postCount | number: '1.0-0' }} Posts</div>
+      <div>{{ subCategory.topicCount | number: '1.0-0' }} Topics</div>
+    </div>
+    <div bioSuffix *ngIf="subCategory.idTopicLastPost && !isMobile" class="last-post">
+      <div>
+        Last post by
+        <a class="white" [routerLink]="['/player', subCategory.idPlayerLastPost]">
+          {{ subCategory.playerPersonaNameLastPost }}
+        </a>
+      </div>
+      <div>
+        in
+        <a class="white" [routerLink]="['sub-category', subCategory.id, 'topic', subCategory.idTopicLastPost]">
+          {{ subCategory.topicNameLastPost }}
+        </a>
+      </div>
+      <div>on {{ subCategory.lastPostDate | authDateFormat }}</div>
+    </div>
+    <div bioSuffix>
+      <button
+        bioButton
+        *ngIf="isAdmin"
+        (click)="openAddEditSubCategory(subCategory.id, $event)"
+        [disabled]="loadingSubCategoryAddEditModal"
+      >
+        <bio-icon>edit</bio-icon>
+        Edit sub category
+      </button>
+    </div>
+  </a>
 </bio-list>

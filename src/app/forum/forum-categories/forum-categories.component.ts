@@ -10,6 +10,7 @@ import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { CategoryService } from '../service/category.service';
 import { finalize } from 'rxjs';
+import { BreakpointObserverService } from '@shared/services/breakpoint-observer/breakpoint-observer.service';
 
 @Component({
   selector: 'bio-forum-categories',
@@ -23,11 +24,13 @@ export class ForumCategoriesComponent {
     private authQuery: AuthQuery,
     private categoryModalService: CategoryModalService,
     private changeDetectorRef: ChangeDetectorRef,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private breakpointObserverService: BreakpointObserverService
   ) {}
 
   categories: CategoryWithSubCategories[] = this.activatedRoute.snapshot.data[RouteDataEnum.categories];
   readonly isAdmin$ = this.authQuery.isAdmin$;
+  readonly isMobile$ = this.breakpointObserverService.isMobile$;
   readonly trackById = trackById;
 
   loadingAddEditModal = false;

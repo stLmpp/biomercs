@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ForumComponent } from './forum.component';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
+import { createMeta } from '@shared/meta/meta';
 
 const routes: Routes = [
   {
@@ -10,6 +11,10 @@ const routes: Routes = [
     component: ForumComponent,
     data: {
       [RouteDataEnum.title]: 'Forum',
+      [RouteDataEnum.meta]: createMeta({
+        title: 'Forum',
+        description: 'Forum',
+      }),
     },
     children: [
       {

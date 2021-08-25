@@ -12,6 +12,7 @@ import { ArrayPipesModule } from '@shared/array-pipes/array-pipes.module';
 import { ForumCategoriesCategoryComponent } from './forum-categories-category/forum-categories-category.component';
 import { AuthSharedModule } from '../../auth/shared/auth-shared.module';
 import { ListModule } from '@shared/components/list/list.module';
+import { AsyncDefaultModule } from '@shared/async-default/async-default.module';
 
 @NgModule({
   declarations: [ForumCategoriesComponent, ForumCategoriesCategoryComponent],
@@ -26,6 +27,7 @@ import { ListModule } from '@shared/components/list/list.module';
     ArrayPipesModule,
     AuthSharedModule,
     ListModule,
+    AsyncDefaultModule,
   ],
 })
 export class ForumCategoriesModule {}

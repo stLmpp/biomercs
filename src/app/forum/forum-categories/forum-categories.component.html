@@ -29,6 +29,7 @@
         [category]="category"
         [isAdmin]="isAdmin"
         [loadingAddEditModal]="loadingAddEditModal"
+        [isMobile]="isMobile$ | asyncDefault: false"
         (openAddEditModal)="openAddEditModal($event)"
         (categoryChange)="onCategoryChange($event)"
       ></bio-forum-categories-category>

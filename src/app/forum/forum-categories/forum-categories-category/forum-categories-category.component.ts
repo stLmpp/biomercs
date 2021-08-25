@@ -15,6 +15,7 @@ export class ForumCategoriesCategoryComponent {
 
   @Input() category!: CategoryWithSubCategories;
   @Input() isAdmin = false;
+  @Input() isMobile = false;
   @Input() loadingAddEditModal = false;
 
   @Output() readonly openAddEditModal = new EventEmitter<number>();
@@ -24,7 +25,11 @@ export class ForumCategoriesCategoryComponent {
 
   readonly trackById = trackById;
 
-  async openAddEditSubCategory(idSubCategory?: number): Promise<void> {
+  async openAddEditSubCategory(idSubCategory?: number, $event?: MouseEvent): Promise<void> {
+    if ($event) {
+      $event.stopPropagation();
+      $event.preventDefault();
+    }
     this.loadingSubCategoryAddEditModal = true;
     const modalRef = await this.subCategoryModalService.openAddEdit({ idSubCategory, idCategory: this.category.id });
     modalRef.onClose$.subscribe(subCategory => {

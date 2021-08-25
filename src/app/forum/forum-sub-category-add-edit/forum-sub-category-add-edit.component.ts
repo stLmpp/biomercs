@@ -71,6 +71,7 @@ export class ForumSubCategoryAddEditComponent implements OnInit {
         finalize(() => {
           this.saving = false;
           this.modalRef.disableClose = false;
+          this.form.enable();
           this.changeDetectorRef.markForCheck();
         })
       )
