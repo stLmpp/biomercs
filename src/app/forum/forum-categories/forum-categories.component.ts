@@ -11,6 +11,8 @@ import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { CategoryService } from '../service/category.service';
 import { finalize } from 'rxjs';
 import { BreakpointObserverService } from '@shared/services/breakpoint-observer/breakpoint-observer.service';
+import { mdiAccountTie } from '@mdi/js';
+import { ModeratorModalService } from '../service/moderator-modal.service';
 
 @Component({
   selector: 'bio-forum-categories',
@@ -25,15 +27,18 @@ export class ForumCategoriesComponent {
     private categoryModalService: CategoryModalService,
     private changeDetectorRef: ChangeDetectorRef,
     private categoryService: CategoryService,
-    private breakpointObserverService: BreakpointObserverService
+    private breakpointObserverService: BreakpointObserverService,
+    private moderatorModalService: ModeratorModalService
   ) {}
 
   categories: CategoryWithSubCategories[] = this.activatedRoute.snapshot.data[RouteDataEnum.categories];
   readonly isAdmin$ = this.authQuery.isAdmin$;
   readonly isMobile$ = this.breakpointObserverService.isMobile$;
+  readonly mdiAccountTie = mdiAccountTie;
   readonly trackById = trackById;
 
   loadingAddEditModal = false;
+  loadingManageModeratorsModal = false;
   updatingOrder = false;
   hideDeleted = true;
 
@@ -81,5 +86,12 @@ export class ForumCategoriesComponent {
 
   onCategoryChange($event: CategoryWithSubCategories): void {
     this.categories = arrayUtil(this.categories).update($event.id, $event).toArray();
+  }
+
+  async openManageModerators(): Promise<void> {
+    this.loadingManageModeratorsModal = true;
+    await this.moderatorModalService.management();
+    this.loadingManageModeratorsModal = false;
+    this.changeDetectorRef.markForCheck();
   }
 }

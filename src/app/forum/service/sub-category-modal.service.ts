@@ -20,7 +20,7 @@ export class SubCategoryModalService {
           m => m.ForumSubCategoryAddEditComponent
         ),
       {
-        minWidth: 300,
+        width: 'clamp(300px, 60vw, 80vw)',
         data,
         module: () =>
           import('../forum-sub-category-add-edit/forum-sub-category-add-edit.module').then(

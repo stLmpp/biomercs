@@ -1,0 +1,52 @@
+<bio-loading *ngIf="loading"></bio-loading>
+<h4 bioModalTitle>Manage moderators</h4>
+<div bioModalTitle>
+  <bio-form-field [loading]="loadingPlayers">
+    <input
+      bioInput
+      placeholder="Type at least 3 characters to search"
+      [control]="termControl"
+      [bioAutocomplete]="autocomplete"
+    />
+    <bio-autocomplete #autocomplete [closeOnSelect]="false" [replaceInputWithValue]="false">
+      <bio-autocomplete-option
+        *ngFor="let player of players; trackBy: trackById"
+        [value]="player.personaName"
+        (autocompleteSelect)="onAutocompleteSelect(player)"
+      >
+        {{ player.personaName }}
+      </bio-autocomplete-option>
+    </bio-autocomplete>
+    <button
+      type="button"
+      bioButton
+      icon
+      bioSuffix
+      bioTooltip="Advanced search"
+      (click)="openPlayerSearchModal()"
+      [disabled]="loadingPlayerSearchModal"
+    >
+      <bio-icon>search</bio-icon>
+    </button>
+  </bio-form-field>
+</div>
+<bio-list bioModalContent>
+  <bio-list-item *ngFor="let moderator of moderators; trackBy: trackById">
+    <bio-list-item-line class="moderator-persona-name">
+      {{ moderator.playerPersonaName }}
+      <bio-checkbox
+        [disabled]="!moderator.deleteAllowed"
+        bioTooltip="Moderator is associated with sub categories already"
+        [bioTooltipDisabled]="moderator.deleteAllowed"
+        [checked]="moderator.deleted"
+        (checkedChange)="onDeletedChange(moderator.id, $event)"
+      >
+        Delete
+      </bio-checkbox>
+    </bio-list-item-line>
+  </bio-list-item>
+</bio-list>
+<bio-modal-actions end>
+  <button type="button" bioButton bioModalClose [disabled]="saving">Close</button>
+  <button type="button" bioButton (click)="save()" [loading]="saving">Save</button>
+</bio-modal-actions>

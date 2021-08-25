@@ -20,7 +20,7 @@ export class CategoryModalService {
         data: idCategory,
         module: () =>
           import('../forum-category-add-edit/forum-category-add-edit.module').then(m => m.ForumCategoryAddEditModule),
-        minWidth: 300,
+        width: 'clamp(300px, 60vw, 80vw)',
       }
     );
   }

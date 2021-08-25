@@ -1,6 +1,10 @@
 <ng-container *ngLet="isAdmin$ | async as isAdmin">
   <div class="actions" *ngIf="isAdmin">
     <bio-checkbox [(checked)]="hideDeleted">Hide deleted</bio-checkbox>
+    <button bioButton type="button" (click)="openManageModerators()" [loading]="loadingManageModeratorsModal">
+      <bio-icon [mdi]="mdiAccountTie"></bio-icon>
+      Manage moderators
+    </button>
     <button bioButton type="button" (click)="openAddEditModal()" [loading]="loadingAddEditModal">
       <bio-icon>add</bio-icon>
       Add category
