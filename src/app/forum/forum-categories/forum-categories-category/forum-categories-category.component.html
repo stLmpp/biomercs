@@ -16,6 +16,17 @@
   >
     <bio-list-item-line>{{ subCategory.name }}</bio-list-item-line>
     <bio-list-item-line>{{ subCategory.description }}</bio-list-item-line>
+    <bio-list-item-line *ngIf="!isMobile" class="moderators">
+      Moderators:
+      <a
+        class="white"
+        *ngFor="let moderator of subCategory.moderators; trackBy: trackById"
+        [routerLink]="['/player', moderator.idPlayer]"
+        (click)="$event.stopPropagation()"
+      >
+        {{ moderator.playerPersonaName }}
+      </a>
+    </bio-list-item-line>
     <div bioSuffix>
       <div>{{ subCategory.postCount | number: '1.0-0' }} Posts</div>
       <div>{{ subCategory.topicCount | number: '1.0-0' }} Topics</div>
@@ -23,13 +34,17 @@
     <div bioSuffix *ngIf="subCategory.idTopicLastPost && !isMobile" class="last-post">
       <div>
         Last post by
-        <a class="white" [routerLink]="['/player', subCategory.idPlayerLastPost]">
+        <a class="white" [routerLink]="['/player', subCategory.idPlayerLastPost]" (click)="$event.stopPropagation()">
           {{ subCategory.playerPersonaNameLastPost }}
         </a>
       </div>
       <div>
         in
-        <a class="white" [routerLink]="['sub-category', subCategory.id, 'topic', subCategory.idTopicLastPost]">
+        <a
+          class="white"
+          [routerLink]="['sub-category', subCategory.id, 'topic', subCategory.idTopicLastPost]"
+          (click)="$event.stopPropagation()"
+        >
           {{ subCategory.topicNameLastPost }}
         </a>
       </div>
