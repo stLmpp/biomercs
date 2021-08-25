@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, In
 import { CategoryWithSubCategories } from '@model/forum/category';
 import { SubCategoryModalService } from '../../service/sub-category-modal.service';
 import { arrayUtil } from 'st-utils';
+import { trackById } from '@util/track-by';
 
 @Component({
   selector: 'bio-forum-categories-category',
@@ -20,6 +21,8 @@ export class ForumCategoriesCategoryComponent {
   @Output() readonly categoryChange = new EventEmitter<CategoryWithSubCategories>();
 
   loadingSubCategoryAddEditModal = false;
+
+  readonly trackById = trackById;
 
   async openAddEditSubCategory(idSubCategory?: number): Promise<void> {
     this.loadingSubCategoryAddEditModal = true;

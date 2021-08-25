@@ -6,6 +6,7 @@ export interface SubCategory {
   description: string;
   idCategory: number;
   order: number;
+  deletedDate?: Date;
 }
 
 export interface SubCategoryWithModeratorsInfo extends SubCategory {

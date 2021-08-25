@@ -11,6 +11,7 @@ import { CheckboxModule } from '@shared/components/checkbox/checkbox.module';
 import { ArrayPipesModule } from '@shared/array-pipes/array-pipes.module';
 import { ForumCategoriesCategoryComponent } from './forum-categories-category/forum-categories-category.component';
 import { AuthSharedModule } from '../../auth/shared/auth-shared.module';
+import { ListModule } from '@shared/components/list/list.module';
 
 @NgModule({
   declarations: [ForumCategoriesComponent, ForumCategoriesCategoryComponent],
@@ -24,6 +25,7 @@ import { AuthSharedModule } from '../../auth/shared/auth-shared.module';
     CheckboxModule,
     ArrayPipesModule,
     AuthSharedModule,
+    ListModule,
   ],
 })
 export class ForumCategoriesModule {}

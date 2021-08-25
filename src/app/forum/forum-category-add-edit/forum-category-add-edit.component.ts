@@ -34,7 +34,7 @@ export class ForumCategoryAddEditComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    this.loading = true;
+    this.saving = true;
     this.form.disable();
     const formValue = this.form.value;
     this.modalRef.disableClose = true;
@@ -47,7 +47,7 @@ export class ForumCategoryAddEditComponent implements OnInit {
     http$
       .pipe(
         finalize(() => {
-          this.loading = false;
+          this.saving = false;
           this.modalRef.disableClose = false;
           this.changeDetectorRef.markForCheck();
         })

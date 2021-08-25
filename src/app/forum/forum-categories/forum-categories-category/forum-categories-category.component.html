@@ -8,3 +8,13 @@
     Add sub category
   </button>
 </div>
+<bio-list selectable>
+  <bio-list-item *ngFor="let subCategory of category.subCategories; trackBy: trackById">
+    <bio-list-item-line>{{ subCategory.name }}</bio-list-item-line>
+    <bio-list-item-line>{{ subCategory.description }}</bio-list-item-line>
+    <button bioButton bioSuffix *ngIf="isAdmin">
+      <bio-icon>edit</bio-icon>
+      Edit sub category
+    </button>
+  </bio-list-item>
+</bio-list>
