@@ -30,6 +30,7 @@
     </button>
   </bio-form-field>
 </div>
+<p *ngIf="!moderators.length">No moderators found</p>
 <bio-list bioModalContent>
   <bio-list-item *ngFor="let moderator of moderators; trackBy: trackById">
     <bio-list-item-line class="moderator-persona-name">

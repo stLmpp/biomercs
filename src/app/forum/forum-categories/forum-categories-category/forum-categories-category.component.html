@@ -26,6 +26,7 @@
       >
         {{ moderator.playerPersonaName }}
       </a>
+      <button bioButton small *ngIf="isAdmin">Manage moderators</button>
     </bio-list-item-line>
     <div bioSuffix>
       <div>{{ subCategory.postCount | number: '1.0-0' }} Posts</div>
