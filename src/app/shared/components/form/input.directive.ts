@@ -21,6 +21,11 @@ export class InputDirective extends AbstractComponent implements FocusableOption
 
   @Input() @HostBinding('attr.id') id?: number | string;
 
+  @HostBinding('attr.disabled')
+  get disabledAttr(): boolean | null {
+    return this._disabled || null;
+  }
+
   override get primaryClass(): boolean {
     return !this.dangerClass && (this.bioType || 'primary') === 'primary';
   }

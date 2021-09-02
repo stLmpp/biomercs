@@ -1,0 +1,30 @@
+<bio-multi-select-items
+  (search)="search.emit($event)"
+  [items]="items"
+  [label]="label"
+  icon="chevron_right"
+  (selectItem)="selectItem.emit($event)"
+  [loading]="loadingItems"
+></bio-multi-select-items>
+<div class="middle">
+  <button type="button" bioButton icon (click)="allSelected.emit(items)" [disabled]="!items.length || loadingItems">
+    <bio-icon>keyboard_double_arrow_right</bio-icon>
+  </button>
+  <button
+    type="button"
+    bioButton
+    icon
+    (click)="allRemoved.emit(selected)"
+    [disabled]="!selected.length || loadingSelected"
+  >
+    <bio-icon>keyboard_double_arrow_left</bio-icon>
+  </button>
+</div>
+<bio-multi-select-items
+  [useInternalSearch]="true"
+  [items]="selected"
+  [label]="label"
+  icon="chevron_left"
+  (selectItem)="removeItem.emit($event)"
+  [loading]="loadingSelected"
+></bio-multi-select-items>

@@ -1,0 +1,16 @@
+@use 'variables' as v;
+
+:host {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 50px) minmax(0, 1fr);
+  grid-gap: 1rem;
+  border-radius: v.$radius;
+  padding: 1rem;
+}
+
+.middle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
