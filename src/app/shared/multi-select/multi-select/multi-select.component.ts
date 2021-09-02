@@ -11,8 +11,10 @@ export class MultiSelectComponent<T extends { id: number }, K extends keyof T> {
   @Input() items: T[] = [];
   @Input() selected: T[] = [];
   @Input() label!: keyof T;
+  @Input() disabledKey?: keyof T;
   @Input() loadingItems = false;
   @Input() loadingSelected = false;
+  @Input() itemsSearchHint?: string;
 
   @Output() readonly search = new EventEmitter<string>();
   @Output() readonly allSelected = new EventEmitter<T[]>();

@@ -31,10 +31,10 @@
     <ng-content select="[bioSuffix]"></ng-content>
   </div>
 </div>
-<div class="bottom-wrapper">
-  <div class="hints" *ngIf="!control?.touched || !(control?.hasErrors$ | async)" @fadeIn>
+<div class="form-field__bottom-wrapper">
+  <div class="form-field__hints" *ngIf="!control?.touched || !(control?.hasErrors$ | async)" @fadeIn>
     <ng-content select="bio-hint:not([end]),[bioHint]:not([end])"></ng-content>
-    <div class="hint-spacer"></div>
+    <div class="form-field__hint-spacer"></div>
     <ng-content select="bio-hint[end],[bioHint][end]"></ng-content>
   </div>
   <ng-content select="bio-errors,[bioErrors]"></ng-content>
