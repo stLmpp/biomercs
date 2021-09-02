@@ -29,6 +29,13 @@
 
   .modal-actions {
     @include m.actions();
+
     padding: 0;
+  }
+
+  .form-field__hints {
+    .hint {
+      color: v.$primary-400;
+    }
   }
 }

@@ -1,10 +1,12 @@
 <bio-multi-select-items
-  (search)="search.emit($event)"
+  icon="chevron_right"
   [items]="items"
   [label]="label"
-  icon="chevron_right"
-  (selectItem)="selectItem.emit($event)"
   [loading]="loadingItems"
+  [disabledKey]="disabledKey"
+  [searchHint]="itemsSearchHint"
+  (search)="search.emit($event)"
+  (selectItem)="selectItem.emit($event)"
 ></bio-multi-select-items>
 <div class="middle">
   <button type="button" bioButton icon (click)="allSelected.emit(items)" [disabled]="!items.length || loadingItems">
@@ -21,10 +23,11 @@
   </button>
 </div>
 <bio-multi-select-items
-  [useInternalSearch]="true"
+  icon="chevron_left"
   [items]="selected"
   [label]="label"
-  icon="chevron_left"
-  (selectItem)="removeItem.emit($event)"
   [loading]="loadingSelected"
+  [disabledKey]="disabledKey"
+  [useInternalSearch]="true"
+  (selectItem)="removeItem.emit($event)"
 ></bio-multi-select-items>

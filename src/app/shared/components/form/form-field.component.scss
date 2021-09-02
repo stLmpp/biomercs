@@ -73,29 +73,29 @@
       left: 0.5rem;
     }
   }
+}
 
-  > .bottom-wrapper {
-    padding: 0.25rem 0.5rem 0;
-    min-height: 1.25rem;
-    position: relative;
+.form-field__bottom-wrapper {
+  padding: 0.25rem 0.5rem 0;
+  min-height: 1.25rem;
+  position: relative;
 
-    .errors {
-      position: absolute;
-      top: 0.25rem;
-    }
-
-    > .hints {
-      display: flex;
-
-      .hint {
-        font-size: 0.65rem;
-        color: v.$primary-100;
-        display: block;
-      }
-
-      > .hint-spacer {
-        flex-grow: 1;
-      }
-    }
+  .errors {
+    position: absolute;
+    top: 0.25rem;
   }
+}
+
+.form-field__hints {
+  display: flex;
+
+  .hint {
+    font-size: 0.65rem;
+    color: v.$primary-100;
+    display: block;
+  }
+}
+
+.form-field__hint-spacer {
+  flex-grow: 1;
 }
