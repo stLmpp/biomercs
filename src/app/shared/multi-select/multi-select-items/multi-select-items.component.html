@@ -4,9 +4,9 @@
     <bio-icon bioSuffix>search</bio-icon>
   </bio-form-field>
 </div>
-<bio-list [bioLoading]="loading">
-  <bio-list-item *ngIf="!items.length"> No data found </bio-list-item>
-  <bio-list-item *ngFor="let item of items | searchIf: useInternalSearch:label:(term$ | async); trackBy: trackById">
+<bio-list [bioLoading]="loading" *ngIf="items | searchIf: useInternalSearch:label:(term$ | async) as itemsFiltered">
+  <bio-list-item *ngIf="!itemsFiltered.length"> No data found </bio-list-item>
+  <bio-list-item *ngFor="let item of itemsFiltered; trackBy: trackById">
     <button type="button" bioButton icon bioPrefix (click)="selectItem.emit(item)">
       <bio-icon>{{ icon }}</bio-icon>
     </button>
