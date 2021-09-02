@@ -1,24 +1,21 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { debounceTime, filter, finalize, map, OperatorFunction, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { ModeratorService } from '../service/moderator.service';
-import { ModeratorAddAndDeleteDto, ModeratorWithInfo } from '@model/forum/moderator';
-import { combineLatest, debounceTime, filter, finalize, map, pluck, startWith, Subject, switchMap, tap } from 'rxjs';
-import { trackById } from '@util/track-by';
-import { PlayerService } from '../../player/player.service';
-import { PlayerModalService } from '../../player/player-modal.service';
-import { Control } from '@stlmpp/control';
-import { Player } from '@model/player';
+import { ModeratorWithInfo } from '@model/forum/moderator';
 import { Destroyable } from '@shared/components/common/destroyable-component';
-import { ModalRef } from '@shared/components/modal/modal-ref';
-import { arrayUtil } from 'st-utils';
+import { PlayerService } from '../../player/player.service';
+import { Player } from '@model/player';
+import { orderBy } from 'st-utils';
 
 interface ModeratorManage extends ModeratorWithInfo {
-  new: boolean;
-  deleted: boolean;
+  disabled: boolean;
 }
 
-function mapModeratorManage(moderators: ModeratorWithInfo[]): ModeratorManage[] {
-  return moderators.map(moderator => ({ ...moderator, new: false, deleted: false }));
+function mapModeratorsManage(moderators: ModeratorWithInfo[]): ModeratorManage[] {
+  return moderators.map(moderator => ({ ...moderator, disabled: !moderator.deleteAllowed }));
 }
+
+let uid = -1;
 
 @Component({
   selector: 'bio-forum-moderator-management',
@@ -30,133 +27,138 @@ export class ForumModeratorManagementComponent extends Destroyable implements On
   constructor(
     private moderatorService: ModeratorService,
     private changeDetectorRef: ChangeDetectorRef,
-    private playerService: PlayerService,
-    private playerModalService: PlayerModalService,
-    private modalRef: ModalRef<ForumModeratorManagementComponent>
+    private playerService: PlayerService
   ) {
     super();
   }
 
-  private _id = -1;
-  private readonly _refreshPlayers$ = new Subject<void>();
+  private readonly _term$ = new Subject<string>();
 
   loading = true;
-  loadingPlayers = false;
-  moderators: ModeratorManage[] = [];
-  players: Player[] = [];
-  readonly trackById = trackById;
-
-  readonly termControl = new Control('');
-  loadingPlayerSearchModal = false;
   saving = false;
+  loadingPlayers = false;
+
+  // Map has idPlayer as key, and idModerator as value
+  moderatorsDeletedMap = new Map<number, number>();
+  moderators: ModeratorManage[] = [];
+  moderatorsSelected: ModeratorManage[] = [];
+
+  label: keyof ModeratorManage = 'playerPersonaName';
+  disabledKey: keyof ModeratorManage = 'disabled';
+
+  private _mapPlayersToModerator(): OperatorFunction<Player[], ModeratorManage[]> {
+    return map(players =>
+      players.map(player => {
+        const id = this.moderatorsDeletedMap.get(player.id);
+        if (id) {
+          this.moderatorsDeletedMap.delete(player.id);
+        }
+        return {
+          idPlayer: player.id,
+          playerPersonaName: player.personaName,
+          disabled: false,
+          deleteAllowed: true,
+          id: id ?? uid--,
+        };
+      })
+    );
+  }
 
   private _getIdPlayersSelected(): number[] {
-    return this.moderators.map(moderator => moderator.idPlayer);
+    return this.moderatorsSelected.map(moderator => moderator.idPlayer);
   }
 
-  private _addNewModerator(player: Player): void {
-    if (this.moderators.some(moderator => moderator.idPlayer === player.id)) {
-      return;
-    }
-    this.moderators = [
-      ...this.moderators,
-      {
-        id: this._id--,
-        new: true,
-        idPlayer: player.id,
-        playerPersonaName: player.personaName,
-        deleteAllowed: true,
-        deleted: false,
-      },
-    ];
-    this.changeDetectorRef.markForCheck();
-  }
-
-  onDeletedChange(idModerator: number, $event: boolean): void {
-    this.moderators = arrayUtil(this.moderators).update(idModerator, { deleted: $event }).toArray();
-    this.changeDetectorRef.markForCheck();
-  }
-
-  onAutocompleteSelect(player: Player): void {
-    this._addNewModerator(player);
-    this._refreshPlayers$.next();
-  }
-
-  async openPlayerSearchModal(): Promise<void> {
-    this.loadingPlayerSearchModal = true;
-    const modalRef = await this.playerModalService.openPlayerSearchModal({
-      idPlayersSelected: this._getIdPlayersSelected(),
-    });
-    modalRef.onClose$.subscribe(player => {
-      if (player) {
-        this._addNewModerator(player);
-      }
-    });
-    this.loadingPlayerSearchModal = false;
-    this.changeDetectorRef.markForCheck();
-  }
-
-  save(): void {
-    this.saving = true;
-    const dto: ModeratorAddAndDeleteDto = { add: [], delete: [] };
-    for (const moderator of this.moderators) {
-      if (moderator.new && !moderator.deleted) {
-        dto.add.push(moderator.idPlayer);
-      }
-      if (moderator.deleted && !moderator.new) {
-        dto.delete.push(moderator.id);
-      }
-    }
-    this.moderatorService
-      .andAndDelete(dto)
-      .pipe(
-        finalize(() => {
-          this.saving = false;
-          this.changeDetectorRef.markForCheck();
-        })
-      )
-      .subscribe(() => {
-        this.modalRef.close();
-      });
-  }
-
-  ngOnInit(): void {
+  private _loadModeratorsSelected(): void {
     this.moderatorService
       .getAll()
       .pipe(
+        map(mapModeratorsManage),
         finalize(() => {
           this.loading = false;
           this.changeDetectorRef.markForCheck();
-        }),
-        map(mapModeratorManage)
+        })
       )
-      .subscribe(moderators => {
-        this.moderators = moderators;
+      .subscribe(playersSelected => {
+        this.moderatorsSelected = playersSelected;
       });
-    combineLatest([this.termControl.value$.pipe(debounceTime(500)), this._refreshPlayers$.pipe(startWith(null))])
+  }
+
+  private _listenToSearch(): void {
+    this._term$
       .pipe(
-        map(([term]) => term),
+        debounceTime(400),
         tap(term => {
           if (term.length < 3) {
-            this.players = [];
+            this.moderators = [];
             this.changeDetectorRef.markForCheck();
           }
         }),
         filter(term => term.length >= 3),
-        switchMap(personaName => {
+        switchMap(term => {
           this.loadingPlayers = true;
           this.changeDetectorRef.markForCheck();
-          return this.playerService.search(personaName, 1, 8, this._getIdPlayersSelected()).pipe(
+          return this.playerService.search(term, this._getIdPlayersSelected()).pipe(
             finalize(() => {
               this.loadingPlayers = false;
               this.changeDetectorRef.markForCheck();
             })
           );
         }),
-        pluck('items')
+        this._mapPlayersToModerator(),
+        takeUntil(this.destroy$)
       )
-      .subscribe(players => {
-        this.players = players;
+      .subscribe(moderators => {
+        this.moderators = moderators;
       });
+  }
+
+  save(): void {
+    // TODO
+  }
+
+  onSearch($event: string): void {
+    this._term$.next($event);
+  }
+
+  onRemoveItem($event: ModeratorManage): void {
+    if ($event.id > 0) {
+      this.moderatorsDeletedMap.set($event.idPlayer, $event.id);
+    }
+    this.moderatorsSelected = this.moderatorsSelected.filter(moderator => moderator.id !== $event.id);
+    this.moderators = orderBy([...this.moderators, $event], 'playerPersonaName');
+  }
+
+  onAllRemoved($event: ModeratorManage[]): void {
+    for (const moderator of $event) {
+      if (moderator.id > 0) {
+        this.moderatorsDeletedMap.set(moderator.idPlayer, moderator.id);
+      }
+    }
+    this.moderatorsSelected = [];
+    this.moderators = orderBy([...this.moderators, ...$event], 'playerPersonaName');
+  }
+
+  onSelectItem($event: ModeratorManage): void {
+    if ($event.id > 0) {
+      this.moderatorsDeletedMap.delete($event.idPlayer);
+    }
+    this.moderators = this.moderators.filter(moderator => moderator.id !== $event.id);
+    this.moderatorsSelected = orderBy([...this.moderatorsSelected, $event], 'playerPersonaName');
+  }
+
+  onAllSelected($event: ModeratorManage[]): void {
+    for (const moderator of $event) {
+      if (moderator.id > 0) {
+        this.moderatorsDeletedMap.delete(moderator.idPlayer);
+      }
+    }
+    this.moderatorsSelected = orderBy([...this.moderatorsSelected, ...$event], 'playerPersonaName');
+    this.moderators = [];
+  }
+
+  ngOnInit(): void {
+    this._loadModeratorsSelected();
+    this._listenToSearch();
+    (window as any).c = this;
   }
 }

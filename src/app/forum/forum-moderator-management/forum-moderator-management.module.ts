@@ -9,6 +9,7 @@ import { AutocompleteModule } from '@shared/components/autocomplete/autocomplete
 import { ButtonModule } from '@shared/components/button/button.module';
 import { CheckboxModule } from '@shared/components/checkbox/checkbox.module';
 import { TooltipModule } from '@shared/components/tooltip/tooltip.module';
+import { MultiSelectModule } from '@shared/multi-select/multi-select.module';
 
 @NgModule({
   declarations: [ForumModeratorManagementComponent],
@@ -22,6 +23,7 @@ import { TooltipModule } from '@shared/components/tooltip/tooltip.module';
     ButtonModule,
     CheckboxModule,
     TooltipModule,
+    MultiSelectModule,
   ],
 })
 export class ForumModeratorManagementModule {}

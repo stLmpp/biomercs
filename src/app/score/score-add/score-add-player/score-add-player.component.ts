@@ -72,7 +72,7 @@ export class ScoreAddPlayerComponent extends Destroyable implements OnInit, OnCh
     switchMap(personaName => {
       this.playersLoading = true;
       this.changeDetectorRef.markForCheck();
-      return this.playerService.search(personaName, 1, 8, this.idPlayersSelected).pipe(
+      return this.playerService.searchPaginated(personaName, 1, 8, this.idPlayersSelected).pipe(
         finalize(() => {
           this.playersLoading = false;
           this.changeDetectorRef.markForCheck();
