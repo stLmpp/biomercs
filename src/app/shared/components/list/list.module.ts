@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ListComponent, ListControlValue, ListSelectable } from './list.component';
+import { ListDirective, ListControlValue, ListSelectable } from './list.directive';
 import { ListItemComponent } from './list-item.component';
 import { BioCommonModule } from '../common/bio-common.module';
 import { ListItemLineDirective } from '@shared/components/list/list-item-line.directive';
 
-const DECLARATIONS = [ListComponent, ListItemComponent, ListControlValue, ListItemLineDirective, ListSelectable];
+const DECLARATIONS = [ListDirective, ListItemComponent, ListControlValue, ListItemLineDirective, ListSelectable];
 const MODULES = [CommonModule, BioCommonModule];
 
 @NgModule({
