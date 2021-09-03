@@ -1,6 +1,29 @@
 @use 'variables' as v;
 
-.list {
+.list-item {
+  padding: 0.75rem 0.5rem;
+  border-bottom: 1px solid v.$primary-400;
+  display: flex;
+  outline: none;
+
+  .suffix {
+    margin-left: auto;
+    display: grid;
+    place-items: center;
+  }
+
+  .prefix {
+    margin-right: 0.5rem;
+    display: grid;
+    place-items: center;
+  }
+
+  > input.control {
+    margin-right: 1rem;
+  }
+}
+
+.bio-list {
   display: flex;
   flex-direction: column;
 
@@ -24,29 +47,6 @@
         background-color: v.$primary-50;
       }
     }
-  }
-}
-
-.list-item {
-  padding: 0.75rem 0.5rem;
-  border-bottom: 1px solid v.$primary-400;
-  display: flex;
-  outline: none;
-
-  .suffix {
-    margin-left: auto;
-    display: grid;
-    place-items: center;
-  }
-
-  .prefix {
-    margin-right: 0.5rem;
-    display: grid;
-    place-items: center;
-  }
-
-  > input.control {
-    margin-right: 1rem;
   }
 }
 

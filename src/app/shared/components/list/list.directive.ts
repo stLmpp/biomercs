@@ -1,29 +1,15 @@
-import {
-  AfterContentInit,
-  ChangeDetectionStrategy,
-  Component,
-  ContentChildren,
-  Directive,
-  HostListener,
-  OnDestroy,
-  QueryList,
-  ViewEncapsulation,
-} from '@angular/core';
+import { AfterContentInit, ContentChildren, Directive, HostListener, OnDestroy, QueryList } from '@angular/core';
 import { ControlValue } from '@stlmpp/control';
 import { ListItemComponent } from './list-item.component';
 import { Subject } from 'rxjs';
 import { ListParentControl } from './list-config';
 import { FocusKeyManager } from '@angular/cdk/a11y';
 
-@Component({
-  selector: 'bio-list',
-  templateUrl: './list.component.html',
-  styleUrls: ['./list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
-  host: { class: 'list' },
+@Directive({
+  selector: 'bio-list,[bioList]',
+  host: { class: 'bio-list' },
 })
-export class ListComponent {}
+export class ListDirective {}
 
 @Directive({ selector: 'bio-list[selectable]', host: { class: 'control' } })
 export class ListSelectable {}
