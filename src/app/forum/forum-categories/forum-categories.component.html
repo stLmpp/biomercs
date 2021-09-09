@@ -24,6 +24,7 @@
       expanded
     >
       <div bioAccordionItemTitle>
+        <bio-icon cdkDragHandle class="drag-handle" *ngIf="isAdmin"> drag_handle </bio-icon>
         {{ category.name }}
         <ng-container *ngIf="category.deletedDate">
           - Deleted at {{ category.deletedDate | authDateFormat }}

@@ -8,24 +8,24 @@
     Add sub category
   </button>
 </div>
-<bio-list selectable>
+<bio-list selectable cdkDropList>
   <a
     bioListItem
     *ngFor="let subCategory of category.subCategories; trackBy: trackById"
     [routerLink]="['sub-category', subCategory.id]"
+    cdkDrag
   >
+    <!--TODO drag and drop sub category-->
+    <bio-icon bioPrefix *ngIf="isAdmin" cdkDragHandle> drag_handle </bio-icon>
     <bio-list-item-line>{{ subCategory.name }}</bio-list-item-line>
     <bio-list-item-line>{{ subCategory.description }}</bio-list-item-line>
     <bio-list-item-line *ngIf="!isMobile && subCategory.moderators.length" class="moderators">
       Moderators:
-      <a
-        class="white"
-        *ngFor="let moderator of subCategory.moderators; trackBy: trackById"
-        [routerLink]="['/player', moderator.idPlayer]"
-        (click)="$event.stopPropagation()"
-      >
-        {{ moderator.playerPersonaName }}
-      </a>
+      <ng-container *ngFor="let moderator of subCategory.moderators; trackBy: trackById; let $last = last">
+        <a class="white" [routerLink]="['/player', moderator.idPlayer]" (click)="$event.stopPropagation()">
+          {{ moderator.playerPersonaName }}<ng-container *ngIf="!$last">, </ng-container>
+        </a>
+      </ng-container>
     </bio-list-item-line>
     <div bioSuffix>
       <div>{{ subCategory.postCount | number: '1.0-0' }} Posts</div>
@@ -60,7 +60,12 @@
         <bio-icon>edit</bio-icon>
         Edit sub category
       </button>
-      <button bioButton type="button">
+      <button
+        bioButton
+        type="button"
+        (click)="openSubCategoryModeratorManagement(subCategory, $event)"
+        [disabled]="loadingSubCategoryModeratorManagement"
+      >
         <bio-icon [mdi]="mdiAccountTie"></bio-icon>
         Manage moderators
       </button>

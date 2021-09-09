@@ -7,7 +7,6 @@ import { AuthQuery } from '../../auth/auth.query';
 import { CategoryModalService } from '../service/category-modal.service';
 import { arrayUtil } from 'st-utils';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
-import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { CategoryService } from '../service/category.service';
 import { finalize } from 'rxjs';
 import { BreakpointObserverService } from '@shared/services/breakpoint-observer/breakpoint-observer.service';
@@ -70,7 +69,7 @@ export class ForumCategoriesComponent {
       return;
     }
     this.updatingOrder = true;
-    moveItemInArray(this.categories, $event.previousIndex, $event.currentIndex);
+    this.categories = arrayUtil(this.categories).move($event.previousIndex, $event.currentIndex).toArray();
     this.categoryService
       .updateOrder(this.categories.map(category => category.id))
       .pipe(

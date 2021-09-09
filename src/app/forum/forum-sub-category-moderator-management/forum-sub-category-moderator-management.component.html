@@ -1,0 +1,57 @@
+<bio-loading *ngIf="loading"></bio-loading>
+<h4 bioModalTitle>{{ nameSubCategory }} - Manage moderators</h4>
+<bio-modal-content>
+  <bio-multi-select
+    (allRemoved)="onAllRemoved()"
+    (allSelected)="onAllSelected()"
+    [disabledRemoveAll]="!subCategoryModeratorsSelected.length"
+    [disabledSelectAll]="!subCategoryModerators.length"
+  >
+    <bio-list
+      bioMultiSelectItems
+      items
+      (searchChange)="onSearch($event)"
+      debounceTime="400"
+      [bioLoading]="loadingModerators"
+      hint="Type at least 3 characters to start searching"
+    >
+      <bio-list-item *ngIf="!loadingModerators && !subCategoryModerators.length">No data found</bio-list-item>
+      <bio-list-item *ngFor="let subCategoryModerator of subCategoryModerators; trackBy: trackById">
+        <button bioButton type="button" bioPrefix icon (click)="onSelectItem(subCategoryModerator)">
+          <bio-icon>chevron_right</bio-icon>
+        </button>
+        <bio-list-item-line>{{ subCategoryModerator.playerPersonaName }}</bio-list-item-line>
+      </bio-list-item>
+    </bio-list>
+    <bio-list bioMultiSelectItems selected [(search)]="subCategoryModeratorsSelectedSearch" debounceTime="400">
+      <bio-list-item *ngIf="!subCategoryModeratorsSelected.length">No data found</bio-list-item>
+      <bio-list-item
+        *ngFor="
+          let subCategoryModerator of subCategoryModeratorsSelected
+            | search: 'playerPersonaName':subCategoryModeratorsSelectedSearch;
+          trackBy: trackById
+        "
+      >
+        <button bioButton type="button" bioPrefix icon (click)="onRemoveItem(subCategoryModerator)">
+          <bio-icon>chevron_left</bio-icon>
+        </button>
+        <bio-list-item-line>{{ subCategoryModerator.playerPersonaName }}</bio-list-item-line>
+      </bio-list-item>
+    </bio-list>
+  </bio-multi-select>
+</bio-modal-content>
+<bio-modal-actions end>
+  <button type="button" bioButton bioModalClose [disabled]="saving">Close</button>
+  <button
+    type="button"
+    bioButton
+    (click)="save()"
+    [loading]="saving"
+    [disabled]="
+      !subCategoryModeratorsDeletedMap.size &&
+      (subCategoryModeratorsSelected | forumSubCategoryModeratorManagementValidation)
+    "
+  >
+    Save
+  </button>
+</bio-modal-actions>

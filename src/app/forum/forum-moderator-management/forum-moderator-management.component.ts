@@ -30,12 +30,12 @@ export class ForumModeratorManagementComponent extends Destroyable implements On
   loading = true;
   saving = false;
   loadingPlayers = false;
-  term = '';
 
   // Map has idPlayer as key, and idModerator as value
-  moderatorsDeletedMap = new Map<number, number>();
+  readonly moderatorsDeletedMap = new Map<number, number>();
   moderators: ModeratorWithInfo[] = [];
   moderatorsSelected: ModeratorWithInfo[] = [];
+  moderatorsSelectedSearch = '';
 
   readonly trackById = trackById;
 
@@ -92,7 +92,6 @@ export class ForumModeratorManagementComponent extends Destroyable implements On
   }
 
   onSearch(term: string): void {
-    this.term = term;
     if (term.length < 3) {
       this.moderators = [];
       this.changeDetectorRef.markForCheck();

@@ -4,6 +4,8 @@ import { SubCategoryModalService } from '../../service/sub-category-modal.servic
 import { arrayUtil } from 'st-utils';
 import { trackById } from '@util/track-by';
 import { mdiAccountTie } from '@mdi/js';
+import { SubCategoryModeratorModalService } from '../../service/sub-category-moderator-modal.service';
+import { SubCategory } from '@model/forum/sub-category';
 
 @Component({
   selector: 'bio-forum-categories-category',
@@ -12,7 +14,11 @@ import { mdiAccountTie } from '@mdi/js';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ForumCategoriesCategoryComponent {
-  constructor(private subCategoryModalService: SubCategoryModalService, private changeDetectorRef: ChangeDetectorRef) {}
+  constructor(
+    private subCategoryModalService: SubCategoryModalService,
+    private changeDetectorRef: ChangeDetectorRef,
+    private subCategoryModeratorModalService: SubCategoryModeratorModalService
+  ) {}
 
   @Input() category!: CategoryWithSubCategories;
   @Input() isAdmin = false;
@@ -23,6 +29,7 @@ export class ForumCategoriesCategoryComponent {
   @Output() readonly categoryChange = new EventEmitter<CategoryWithSubCategories>();
 
   loadingSubCategoryAddEditModal = false;
+  loadingSubCategoryModeratorManagement = false;
 
   readonly trackById = trackById;
   readonly mdiAccountTie = mdiAccountTie;
@@ -46,6 +53,26 @@ export class ForumCategoriesCategoryComponent {
       this.categoryChange.emit(this.category);
     });
     this.loadingSubCategoryAddEditModal = false;
+    this.changeDetectorRef.markForCheck();
+  }
+
+  async openSubCategoryModeratorManagement(subCategory: SubCategory, $event: MouseEvent): Promise<void> {
+    $event.stopPropagation();
+    $event.preventDefault();
+    this.loadingSubCategoryModeratorManagement = true;
+    const modalRef = await this.subCategoryModeratorModalService.openModeratorManagement({
+      idSubCategory: subCategory.id,
+      nameSubCategory: subCategory.name,
+    });
+    modalRef.onClose$.subscribe(moderators => {
+      if (!moderators) {
+        return;
+      }
+      const subCategories = arrayUtil(this.category.subCategories).update(subCategory.id, { moderators }).toArray();
+      this.category = { ...this.category, subCategories };
+      this.categoryChange.emit(this.category);
+    });
+    this.loadingSubCategoryModeratorManagement = false;
     this.changeDetectorRef.markForCheck();
   }
 }

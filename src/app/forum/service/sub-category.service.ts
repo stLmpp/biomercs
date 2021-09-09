@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { SubCategory, SubCategoryAddDto, SubCategoryUpdateDto } from '@model/forum/sub-category';
 import { CacheService } from '@shared/cache/cache';
+import { Moderator } from '@model/forum/moderator';
 
 @Injectable({ providedIn: 'root' })
 export class SubCategoryService {
@@ -27,5 +28,9 @@ export class SubCategoryService {
 
   getById(idSubCategory: number): Observable<SubCategory> {
     return this.http.get<SubCategory>(`${this.endPoint}/${idSubCategory}`).pipe(this._cache.use(idSubCategory));
+  }
+
+  getModerators(idSubCategory: number): Observable<Moderator[]> {
+    return this.http.get<Moderator[]>(`${this.endPoint}/${idSubCategory}/moderators`);
   }
 }
