@@ -3,6 +3,7 @@ import { CategoryWithSubCategories } from '@model/forum/category';
 import { SubCategoryModalService } from '../../service/sub-category-modal.service';
 import { arrayUtil } from 'st-utils';
 import { trackById } from '@util/track-by';
+import { mdiAccountTie } from '@mdi/js';
 
 @Component({
   selector: 'bio-forum-categories-category',
@@ -24,6 +25,7 @@ export class ForumCategoriesCategoryComponent {
   loadingSubCategoryAddEditModal = false;
 
   readonly trackById = trackById;
+  readonly mdiAccountTie = mdiAccountTie;
 
   async openAddEditSubCategory(idSubCategory?: number, $event?: MouseEvent): Promise<void> {
     if ($event) {
