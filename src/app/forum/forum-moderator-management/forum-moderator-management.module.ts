@@ -10,9 +10,10 @@ import { ButtonModule } from '@shared/components/button/button.module';
 import { CheckboxModule } from '@shared/components/checkbox/checkbox.module';
 import { TooltipModule } from '@shared/components/tooltip/tooltip.module';
 import { MultiSelectModule } from '@shared/multi-select/multi-select.module';
+import { ForumModeratorManagementValidationPipe } from './forum-moderator-management-validation.pipe';
 
 @NgModule({
-  declarations: [ForumModeratorManagementComponent],
+  declarations: [ForumModeratorManagementComponent, ForumModeratorManagementValidationPipe],
   imports: [
     CommonModule,
     ModalModule,

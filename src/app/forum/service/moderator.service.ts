@@ -16,7 +16,7 @@ export class ModeratorService {
     return this.http.get<ModeratorWithInfo[]>(this.endPoint).pipe(this._cache.use());
   }
 
-  andAndDelete(dto: ModeratorAddAndDeleteDto): Observable<ModeratorWithInfo[]> {
+  addAndDelete(dto: ModeratorAddAndDeleteDto): Observable<ModeratorWithInfo[]> {
     return this.http.put<ModeratorWithInfo[]>(`${this.endPoint}/add-and-delete`, dto).pipe(this._cache.burst());
   }
 }
