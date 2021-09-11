@@ -5,7 +5,17 @@ import { arrayUtil } from 'st-utils';
 import { trackById } from '@util/track-by';
 import { mdiAccountTie } from '@mdi/js';
 import { SubCategoryModeratorModalService } from '../../service/sub-category-moderator-modal.service';
-import { SubCategory } from '@model/forum/sub-category';
+import { SubCategory, SubCategoryWithModeratorsInfo } from '@model/forum/sub-category';
+import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
+
+export interface ForumCategoriesCategoryComponentOrderChangeEvent {
+  idCategory: number;
+  cdkDragDrop: CdkDragDrop<
+    SubCategoryWithModeratorsInfo[],
+    SubCategoryWithModeratorsInfo[],
+    SubCategoryWithModeratorsInfo
+  >;
+}
 
 @Component({
   selector: 'bio-forum-categories-category',
@@ -24,9 +34,12 @@ export class ForumCategoriesCategoryComponent {
   @Input() isAdmin = false;
   @Input() isMobile = false;
   @Input() loadingAddEditModal = false;
+  @Input() idCategoriesDropList: string[] = [];
+  @Input() idCategoryDropList = '';
 
   @Output() readonly openAddEditModal = new EventEmitter<number>();
   @Output() readonly categoryChange = new EventEmitter<CategoryWithSubCategories>();
+  @Output() readonly orderChange = new EventEmitter<ForumCategoriesCategoryComponentOrderChangeEvent>();
 
   loadingSubCategoryAddEditModal = false;
   loadingSubCategoryModeratorManagement = false;
@@ -74,5 +87,15 @@ export class ForumCategoriesCategoryComponent {
     });
     this.loadingSubCategoryModeratorManagement = false;
     this.changeDetectorRef.markForCheck();
+  }
+
+  onCdkDropListDropped(
+    cdkDragDrop: CdkDragDrop<
+      SubCategoryWithModeratorsInfo[],
+      SubCategoryWithModeratorsInfo[],
+      SubCategoryWithModeratorsInfo
+    >
+  ): void {
+    this.orderChange.emit({ cdkDragDrop, idCategory: this.category.id });
   }
 }

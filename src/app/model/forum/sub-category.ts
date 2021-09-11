@@ -34,3 +34,9 @@ export interface SubCategoryUpdateDto {
   deleted: boolean;
   restored: boolean;
 }
+
+export interface SubCategoryOrderDto {
+  id: number;
+  order: number;
+  idCategory?: number;
+}

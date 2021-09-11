@@ -10,34 +10,40 @@
       Add category
     </button>
   </div>
-  <p *ngIf="!categories.length">No categories found</p>
-  <bio-accordion
-    multi
-    cdkDropList
-    [cdkDropListData]="categories"
-    [cdkDropListDisabled]="updatingOrder || !isAdmin"
-    (cdkDropListDropped)="onCdkDropListDropped($event)"
-  >
-    <bio-accordion-item
-      *ngFor="let category of categories | filterDeleted: hideDeleted; trackBy: trackById"
-      cdkDrag
-      expanded
+  <ng-container *ngIf="categories$ | async as categories">
+    <p *ngIf="!categories.length">No categories found</p>
+    <bio-accordion
+      multi
+      cdkDropList
+      [cdkDropListData]="categories"
+      [cdkDropListDisabled]="updatingOrder || !isAdmin"
+      (cdkDropListDropped)="onCdkDropListDropped($event)"
     >
-      <div bioAccordionItemTitle>
-        <bio-icon cdkDragHandle class="drag-handle" *ngIf="isAdmin"> drag_handle </bio-icon>
-        {{ category.name }}
-        <ng-container *ngIf="category.deletedDate">
-          - Deleted at {{ category.deletedDate | authDateFormat }}
-        </ng-container>
-      </div>
-      <bio-forum-categories-category
-        [category]="category"
-        [isAdmin]="isAdmin"
-        [loadingAddEditModal]="loadingAddEditModal"
-        [isMobile]="isMobile$ | asyncDefault: false"
-        (openAddEditModal)="openAddEditModal($event)"
-        (categoryChange)="onCategoryChange($event)"
-      ></bio-forum-categories-category>
-    </bio-accordion-item>
-  </bio-accordion>
+      <bio-accordion-item
+        *ngFor="let category of categories | filterDeleted: hideDeleted; trackBy: trackById"
+        cdkDrag
+        [cdkDragData]="category"
+        expanded
+      >
+        <div bioAccordionItemTitle>
+          <bio-icon cdkDragHandle *ngIf="isAdmin"> drag_handle </bio-icon>
+          {{ category.name }}
+          <ng-container *ngIf="category.deletedDate">
+            - Deleted at {{ category.deletedDate | authDateFormat }}
+          </ng-container>
+        </div>
+        <bio-forum-categories-category
+          [category]="category"
+          [isAdmin]="isAdmin"
+          [loadingAddEditModal]="loadingAddEditModal"
+          [isMobile]="isMobile$ | asyncDefault: false"
+          [idCategoriesDropList]="idCategories$ | asyncDefault: []"
+          idCategoryDropList="category-drop-list-{{ category.id }}"
+          (openAddEditModal)="openAddEditModal($event)"
+          (categoryChange)="onCategoryChange($event)"
+          (orderChange)="onSubCategoryOrderChange($event)"
+        ></bio-forum-categories-category>
+      </bio-accordion-item>
+    </bio-accordion>
+  </ng-container>
 </ng-container>

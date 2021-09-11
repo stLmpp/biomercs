@@ -8,14 +8,22 @@
     Add sub category
   </button>
 </div>
-<bio-list selectable cdkDropList>
-  <a
-    bioListItem
+<bio-list
+  selectable
+  cdkDropList
+  [cdkDropListDisabled]="!isAdmin"
+  [cdkDropListData]="category.subCategories"
+  [cdkDropListConnectedTo]="idCategoriesDropList"
+  (cdkDropListDropped)="onCdkDropListDropped($event)"
+  [id]="idCategoryDropList"
+>
+  <bio-list-item *ngIf="!category.subCategories.length"> No sub categories found! </bio-list-item>
+  <bio-list-item
     *ngFor="let subCategory of category.subCategories; trackBy: trackById"
     [routerLink]="['sub-category', subCategory.id]"
     cdkDrag
+    [cdkDragData]="subCategory"
   >
-    <!--TODO drag and drop sub category-->
     <bio-icon bioPrefix *ngIf="isAdmin" cdkDragHandle> drag_handle </bio-icon>
     <bio-list-item-line>{{ subCategory.name }}</bio-list-item-line>
     <bio-list-item-line>{{ subCategory.description }}</bio-list-item-line>
@@ -70,5 +78,5 @@
         Manage moderators
       </button>
     </div>
-  </a>
+  </bio-list-item>
 </bio-list>
