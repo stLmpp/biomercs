@@ -8,14 +8,14 @@ import { ButtonModule } from '@shared/components/button/button.module';
 import { NgLetModule } from '@stlmpp/utils';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CheckboxModule } from '@shared/components/checkbox/checkbox.module';
-import { ArrayPipesModule } from '@shared/array-pipes/array-pipes.module';
 import { ForumCategoriesCategoryComponent } from './forum-categories-category/forum-categories-category.component';
 import { AuthSharedModule } from '../../auth/shared/auth-shared.module';
 import { ListModule } from '@shared/components/list/list.module';
 import { AsyncDefaultModule } from '@shared/async-default/async-default.module';
+import { ForumFilterDeletedPipe } from './forum-filter-deleted.pipe';
 
 @NgModule({
-  declarations: [ForumCategoriesComponent, ForumCategoriesCategoryComponent],
+  declarations: [ForumCategoriesComponent, ForumCategoriesCategoryComponent, ForumFilterDeletedPipe],
   imports: [
     CommonModule,
     ForumCategoriesRoutingModule,
@@ -24,7 +24,6 @@ import { AsyncDefaultModule } from '@shared/async-default/async-default.module';
     NgLetModule,
     DragDropModule,
     CheckboxModule,
-    ArrayPipesModule,
     AuthSharedModule,
     ListModule,
     AsyncDefaultModule,

@@ -42,6 +42,13 @@ export class ForumCategoriesComponent {
   readonly idCategories$ = this.categories$.pipe(
     map(categories => categories.map(category => `category-drop-list-${category.id}`))
   );
+  readonly hasNoneDeleted$ = this.categories$.pipe(
+    map(categories =>
+      categories.every(
+        category => !category.deletedDate && category.subCategories.every(subCategory => !subCategory.deletedDate)
+      )
+    )
+  );
   readonly isAdmin$ = this.authQuery.isAdmin$;
   readonly isMobile$ = this.breakpointObserverService.isMobile$;
   readonly mdiAccountTie = mdiAccountTie;

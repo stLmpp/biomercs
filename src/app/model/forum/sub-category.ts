@@ -1,4 +1,5 @@
 import { Moderator } from '@model/forum/moderator';
+import { Topic } from '@model/forum/topic';
 
 export interface SubCategory {
   id: number;
@@ -19,6 +20,11 @@ export interface SubCategoryWithModeratorsInfo extends SubCategory {
   topicCount: number;
   postCount: number;
   hasNewPosts: boolean;
+  isModerator: boolean;
+}
+
+export interface SubCategoryWithTopics extends SubCategory {
+  topics: Topic[];
 }
 
 export interface SubCategoryAddDto {

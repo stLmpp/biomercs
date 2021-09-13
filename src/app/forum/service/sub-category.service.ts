@@ -21,7 +21,16 @@ export class SubCategoryService {
   add(dto: SubCategoryAddDto): Observable<SubCategoryWithModeratorsInfo> {
     return this.http
       .post<SubCategory>(this.endPoint, dto)
-      .pipe(map(subCategory => ({ ...subCategory, moderators: [], topicCount: 0, postCount: 0, hasNewPosts: false })));
+      .pipe(
+        map(subCategory => ({
+          ...subCategory,
+          moderators: [],
+          topicCount: 0,
+          postCount: 0,
+          hasNewPosts: false,
+          isModerator: false,
+        }))
+      );
   }
 
   update(idSubCategory: number, dto: SubCategoryUpdateDto): Observable<SubCategory> {

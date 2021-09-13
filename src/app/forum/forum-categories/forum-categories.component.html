@@ -1,6 +1,6 @@
 <ng-container *ngLet="isAdmin$ | async as isAdmin">
   <div class="actions" *ngIf="isAdmin">
-    <bio-checkbox [(checked)]="hideDeleted">Hide deleted</bio-checkbox>
+    <bio-checkbox [(checked)]="hideDeleted" [disabled]="hasNoneDeleted$ | async">Hide deleted</bio-checkbox>
     <button bioButton type="button" (click)="openManageModerators()" [loading]="loadingManageModeratorsModal">
       <bio-icon [mdi]="mdiAccountTie"></bio-icon>
       Manage moderators
@@ -20,7 +20,7 @@
       (cdkDropListDropped)="onCdkDropListDropped($event)"
     >
       <bio-accordion-item
-        *ngFor="let category of categories | filterDeleted: hideDeleted; trackBy: trackById"
+        *ngFor="let category of categories | forumFilterDeleted: hideDeleted; trackBy: trackById"
         cdkDrag
         [cdkDragData]="category"
         expanded
