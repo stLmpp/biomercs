@@ -1,5 +1,6 @@
 import { Moderator } from '@model/forum/moderator';
 import { Topic } from '@model/forum/topic';
+import { Pagination } from '@model/pagination';
 
 export interface SubCategory {
   id: number;
@@ -23,8 +24,8 @@ export interface SubCategoryWithModeratorsInfo extends SubCategory {
   isModerator: boolean;
 }
 
-export interface SubCategoryWithTopics extends SubCategory {
-  topics: Topic[];
+export interface SubCategoryWithTopics extends SubCategoryWithModeratorsInfo {
+  topics: Pagination<Topic>;
 }
 
 export interface SubCategoryAddDto {

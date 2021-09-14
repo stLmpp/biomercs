@@ -7,9 +7,10 @@ import {
   SubCategoryOrderDto,
   SubCategoryUpdateDto,
   SubCategoryWithModeratorsInfo,
+  SubCategoryWithTopics,
 } from '@model/forum/sub-category';
 import { CacheService } from '@shared/cache/cache';
-import { Moderator } from '@model/forum/moderator';
+import { HttpParams } from '@util/http-params';
 
 @Injectable({ providedIn: 'root' })
 export class SubCategoryService {
@@ -19,18 +20,16 @@ export class SubCategoryService {
   readonly endPoint = 'forum/sub-category';
 
   add(dto: SubCategoryAddDto): Observable<SubCategoryWithModeratorsInfo> {
-    return this.http
-      .post<SubCategory>(this.endPoint, dto)
-      .pipe(
-        map(subCategory => ({
-          ...subCategory,
-          moderators: [],
-          topicCount: 0,
-          postCount: 0,
-          hasNewPosts: false,
-          isModerator: false,
-        }))
-      );
+    return this.http.post<SubCategory>(this.endPoint, dto).pipe(
+      map(subCategory => ({
+        ...subCategory,
+        moderators: [],
+        topicCount: 0,
+        postCount: 0,
+        hasNewPosts: false,
+        isModerator: false,
+      }))
+    );
   }
 
   update(idSubCategory: number, dto: SubCategoryUpdateDto): Observable<SubCategory> {
@@ -47,7 +46,10 @@ export class SubCategoryService {
     return this.http.get<SubCategory>(`${this.endPoint}/${idSubCategory}`).pipe(this._cache.use(idSubCategory));
   }
 
-  getModerators(idSubCategory: number): Observable<Moderator[]> {
-    return this.http.get<Moderator[]>(`${this.endPoint}/${idSubCategory}/moderators`);
+  getByIdWithTopics(idSubCategory: number, page: number, limit: number): Observable<SubCategoryWithTopics> {
+    const params = new HttpParams({ page, limit });
+    return this.http.get<SubCategoryWithTopics>(`${this.endPoint}/${idSubCategory}/with/info/moderators/topics`, {
+      params,
+    });
   }
 }

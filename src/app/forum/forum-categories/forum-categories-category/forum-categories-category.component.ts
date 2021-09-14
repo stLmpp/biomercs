@@ -96,6 +96,12 @@ export class ForumCategoriesCategoryComponent {
       SubCategoryWithModeratorsInfo
     >
   ): void {
+    if (
+      cdkDragDrop.previousContainer === cdkDragDrop.container &&
+      cdkDragDrop.previousIndex === cdkDragDrop.currentIndex
+    ) {
+      return;
+    }
     this.orderChange.emit({ cdkDragDrop, idCategory: this.category.id });
   }
 }

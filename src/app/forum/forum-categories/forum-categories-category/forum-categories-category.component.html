@@ -20,7 +20,7 @@
   <bio-list-item *ngIf="!category.subCategories.length"> No sub categories found! </bio-list-item>
   <bio-list-item
     *ngFor="let subCategory of category.subCategories; trackBy: trackById"
-    [routerLink]="['sub-category', subCategory.id]"
+    [routerLink]="['category', category.id, 'sub-category', subCategory.id]"
     cdkDrag
     [cdkDragData]="subCategory"
   >
