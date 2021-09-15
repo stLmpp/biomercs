@@ -19,6 +19,8 @@ export enum RouteParamEnum {
   idCharacterCostumes = 'idCharacterCostumes',
   idCategory = 'idCategory',
   idSubCategory = 'idSubCategory',
+  idTopic = 'idTopic',
+  idPost = 'idPost',
 
   steamid = 'steamid',
 
@@ -45,4 +47,6 @@ export enum RouteParamEnum {
   onlyMyScores = 'onlyMyScores',
   score = 'score',
   key = 'key',
+  pageSubCategory = 'pageSubCategory',
+  pageTopic = 'pageTopic',
 }

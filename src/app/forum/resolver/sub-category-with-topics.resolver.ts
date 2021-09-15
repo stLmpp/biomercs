@@ -14,8 +14,7 @@ export class SubCategoryWithTopicsResolver implements Resolve<SubCategoryWithTop
     state: RouterStateSnapshot
   ): Observable<SubCategoryWithTopics> | Promise<SubCategoryWithTopics> | SubCategoryWithTopics {
     const idSubCategory = +(route.paramMap.get(RouteParamEnum.idSubCategory) ?? 0);
-    const page = +(route.queryParamMap.get(RouteParamEnum.page) ?? 1);
-    const limit = +(route.queryParamMap.get(RouteParamEnum.itemsPerPage) ?? 10);
-    return this.subCategoryService.getByIdWithTopics(idSubCategory, page, limit);
+    const page = +(route.paramMap.get(RouteParamEnum.pageSubCategory) ?? 1);
+    return this.subCategoryService.getByIdWithTopics(idSubCategory, page, 10);
   }
 }

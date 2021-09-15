@@ -13,9 +13,10 @@ import { AuthSharedModule } from '../../auth/shared/auth-shared.module';
 import { ListModule } from '@shared/components/list/list.module';
 import { AsyncDefaultModule } from '@shared/async-default/async-default.module';
 import { ForumFilterDeletedPipe } from './forum-filter-deleted.pipe';
+import { ForumCategoriesRecentTopicsComponent } from './forum-categories-recent-topics/forum-categories-recent-topics.component';
 
 @NgModule({
-  declarations: [ForumCategoriesComponent, ForumCategoriesCategoryComponent, ForumFilterDeletedPipe],
+  declarations: [ForumCategoriesComponent, ForumCategoriesCategoryComponent, ForumFilterDeletedPipe, ForumCategoriesRecentTopicsComponent],
   imports: [
     CommonModule,
     ForumCategoriesRoutingModule,

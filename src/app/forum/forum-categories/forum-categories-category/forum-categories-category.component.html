@@ -20,7 +20,7 @@
   <bio-list-item *ngIf="!category.subCategories.length"> No sub categories found! </bio-list-item>
   <bio-list-item
     *ngFor="let subCategory of category.subCategories; trackBy: trackById"
-    [routerLink]="['category', category.id, 'sub-category', subCategory.id]"
+    [routerLink]="['category', category.id, 'sub-category', subCategory.id, 'page', 1]"
     cdkDrag
     [cdkDragData]="subCategory"
   >
@@ -30,7 +30,7 @@
     <bio-list-item-line *ngIf="!isMobile && subCategory.moderators.length" class="moderators">
       Moderators:
       <ng-container *ngFor="let moderator of subCategory.moderators; trackBy: trackById; let $last = last">
-        <a class="white" [routerLink]="['/player', moderator.idPlayer]" (click)="$event.stopPropagation()">
+        <a [routerLink]="['/player', moderator.idPlayer]" (click)="$event.stopPropagation()">
           {{ moderator.playerPersonaName }}<ng-container *ngIf="!$last">, </ng-container>
         </a>
       </ng-container>
@@ -39,21 +39,29 @@
       <div>{{ subCategory.postCount | number: '1.0-0' }} Posts</div>
       <div>{{ subCategory.topicCount | number: '1.0-0' }} Topics</div>
     </div>
-    <div bioSuffix *ngIf="subCategory.idTopicLastPost && !isMobile" class="last-post">
+    <div bioSuffix *ngIf="subCategory.idLastPost && !isMobile" class="last-post">
       <div>
         Last post by
-        <a class="white" [routerLink]="['/player', subCategory.idPlayerLastPost]" (click)="$event.stopPropagation()">
+        <a [routerLink]="['/player', subCategory.idPlayerLastPost]" (click)="$event.stopPropagation()">
           {{ subCategory.playerPersonaNameLastPost }}
         </a>
       </div>
       <div>
         in
         <a
-          class="white"
-          [routerLink]="['sub-category', subCategory.id, 'topic', subCategory.idTopicLastPost]"
+          [routerLink]="[
+            'category',
+            category.id,
+            'sub-category',
+            subCategory.id,
+            'topic',
+            subCategory.idTopicLastPost,
+            'post',
+            subCategory.idLastPost
+          ]"
           (click)="$event.stopPropagation()"
         >
-          {{ subCategory.topicNameLastPost }}
+          {{ subCategory.nameLastPost }}
         </a>
       </div>
       <div>on {{ subCategory.lastPostDate | authDateFormat }}</div>

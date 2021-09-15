@@ -22,6 +22,8 @@ export interface SubCategoryWithModeratorsInfo extends SubCategory {
   postCount: number;
   hasNewPosts: boolean;
   isModerator: boolean;
+  idLastPost?: number;
+  nameLastPost?: string;
 }
 
 export interface SubCategoryWithTopics extends SubCategoryWithModeratorsInfo {

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CategoryWithSubCategories } from '@model/forum/category';
+import { CategoriesWithRecentTopics, CategoryWithSubCategories } from '@model/forum/category';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { trackById } from '@util/track-by';
 import { AuthQuery } from '../../auth/auth.query';
@@ -15,6 +15,7 @@ import { ModeratorModalService } from '../service/moderator-modal.service';
 import { SubCategoryOrderDto } from '@model/forum/sub-category';
 import { ForumCategoriesCategoryComponentOrderChangeEvent } from './forum-categories-category/forum-categories-category.component';
 import { SubCategoryService } from '../service/sub-category.service';
+import { TopicRecent } from '@model/forum/topic';
 
 @Component({
   selector: 'bio-forum-categories',
@@ -35,7 +36,7 @@ export class ForumCategoriesComponent {
   ) {}
 
   private readonly _categories$ = new BehaviorSubject<CategoryWithSubCategories[]>(
-    this.activatedRoute.snapshot.data[RouteDataEnum.categories]
+    this._getCategoriesWithRecentTopicsFromRoute().categories
   );
 
   readonly categories$ = this._categories$.asObservable();
@@ -54,10 +55,16 @@ export class ForumCategoriesComponent {
   readonly mdiAccountTie = mdiAccountTie;
   readonly trackById = trackById;
 
+  readonly recentTopics: TopicRecent[] = this._getCategoriesWithRecentTopicsFromRoute().recentTopics;
+
   loadingAddEditModal = false;
   loadingManageModeratorsModal = false;
   updatingOrder = false;
   hideDeleted = true;
+
+  private _getCategoriesWithRecentTopicsFromRoute(): CategoriesWithRecentTopics {
+    return this.activatedRoute.snapshot.data[RouteDataEnum.categoriesWithRecentTopics];
+  }
 
   private _setCategories(
     categories: CategoryWithSubCategories[] | ((categories: CategoryWithSubCategories[]) => CategoryWithSubCategories[])

@@ -2,6 +2,7 @@
 
 html {
   font-size: 16px;
+
   @media only screen and (max-width: v.$mobile-width) {
     font-size: 18px;
   }
@@ -37,7 +38,7 @@ a {
   }
 
   text-decoration: none;
-  color: v.$accent;
+  color: v.$accent-700;
 
   &.white {
     color: v.$white;
