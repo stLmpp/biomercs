@@ -1,0 +1,27 @@
+@use 'variables' as v;
+
+@mixin sub-category-grid {
+  display: grid;
+  grid-template-columns:
+    /* prettier-ignore */ minmax(0, 25px) // message icon
+    repeat(3, minmax(0, 1fr)) // topic name
+    minmax(0, 25px) // pin icon
+    minmax(0, 1fr) // created by
+    repeat(3, minmax(0, 100px)) // creation date, replies and views
+    minmax(0, 1fr); // last post
+
+  grid-gap: 1rem;
+  font-size: 0.9rem;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid v.$primary-400;
+
+  .grid-container__name {
+    grid-column: span 3;
+  }
+
+  .grid-container__replies,
+  .grid-container__views {
+    text-align: center;
+  }
+}

@@ -1,4 +1,4 @@
-<div class="items-per-page">
+<div class="items-per-page" *ngIf="!itemsPerPageHidden">
   <span> Items per page: </span>
   <bio-select
     [disabled]="!itemCount"

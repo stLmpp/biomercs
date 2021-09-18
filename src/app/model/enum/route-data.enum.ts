@@ -13,4 +13,6 @@ export enum RouteDataEnum {
   scoreGroupedByStatus = 'resolver.scoreGroupedByStatus',
   categories = 'resolver.categories',
   categoriesWithRecentTopics = 'resolver.categoriesWithRecentTopics',
+  subCategoryWithTopics = 'resolver.subCategoryWithTopics',
+  breadcrumbs = 'breadcrumbs',
 }

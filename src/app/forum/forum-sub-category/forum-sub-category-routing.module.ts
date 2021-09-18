@@ -3,12 +3,15 @@ import { RouterModule, Routes } from '@angular/router';
 import { ForumSubCategoryComponent } from './forum-sub-category.component';
 import { SubCategoryWithTopicsResolver } from '../resolver/sub-category-with-topics.resolver';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
+import { RouteDataEnum } from '@model/enum/route-data.enum';
 
 const routes: Routes = [
   {
     path: `page/:${RouteParamEnum.pageSubCategory}`,
     component: ForumSubCategoryComponent,
-    resolve: [SubCategoryWithTopicsResolver],
+    resolve: {
+      [RouteDataEnum.subCategoryWithTopics]: SubCategoryWithTopicsResolver,
+    },
   },
   {
     path: `topic/:${RouteParamEnum.idTopic}`,

@@ -4,6 +4,7 @@ export interface Topic {
   idSubCategory: number;
   idScore?: number;
   idPlayer: number;
+  playerPersonaName: string;
   views: number;
   pinned: boolean;
   lockedDate?: Date;
@@ -14,6 +15,7 @@ export interface Topic {
   hasNewPosts: boolean;
   idLastPost: number;
   nameLastPost: string;
+  creationDate: Date;
 }
 
 export interface TopicRecent {

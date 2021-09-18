@@ -1,0 +1,23 @@
+@use 'variables' as v;
+@use '../forum-sub-category' as sub-category;
+
+:host {
+  @include sub-category.sub-category-grid();
+
+  &:hover {
+    background-color: v.$primary-50;
+    text-decoration: none;
+  }
+
+  color: inherit;
+}
+
+.has-new-posts {
+  color: v.$accent-700;
+}
+
+.last-post-player {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

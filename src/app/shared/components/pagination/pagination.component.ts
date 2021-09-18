@@ -16,6 +16,7 @@ export class PaginationComponent implements OnChanges, PaginationMeta {
   constructor(private router: Router) {}
 
   private _setQueryParamsOnChange = false;
+  private _itemsPerPageHidden = false;
 
   @Input()
   set setQueryParamsOnChange(setQueryParamsOnChange: boolean) {
@@ -27,6 +28,13 @@ export class PaginationComponent implements OnChanges, PaginationMeta {
   @Input() itemsPerPage!: number;
   @Input() totalItems!: number;
   @Input() totalPages!: number;
+  @Input()
+  get itemsPerPageHidden(): boolean {
+    return this._itemsPerPageHidden;
+  }
+  set itemsPerPageHidden(itemsPerPageHidden: boolean) {
+    this._itemsPerPageHidden = coerceBooleanProperty(itemsPerPageHidden);
+  }
 
   @Input() itemsPerPageOptions = [5, 10, 25, 50, 100];
 
@@ -97,6 +105,7 @@ export class PaginationComponent implements OnChanges, PaginationMeta {
   }
 
   static ngAcceptInputType_setQueryParamsOnChange: BooleanInput;
+  static ngAcceptInputType_itemsPerPageHidden: BooleanInput;
   static defaultItemsPerPageOptions = [5, 10, 25, 50, 100];
   static getItemsPerPageFromRoute(activatedRoute: ActivatedRoute, itemPerPageOptions?: number[]): number {
     itemPerPageOptions ??= PaginationComponent.defaultItemsPerPageOptions;
