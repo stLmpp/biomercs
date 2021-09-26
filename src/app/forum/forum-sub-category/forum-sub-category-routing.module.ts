@@ -4,6 +4,7 @@ import { ForumSubCategoryComponent } from './forum-sub-category.component';
 import { SubCategoryWithTopicsResolver } from '../resolver/sub-category-with-topics.resolver';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
+import { ForumSubCategoryBreadcrumbResolver } from './forum-sub-category.breadcrumb-resolver';
 
 const routes: Routes = [
   {
@@ -11,6 +12,9 @@ const routes: Routes = [
     component: ForumSubCategoryComponent,
     resolve: {
       [RouteDataEnum.subCategoryWithTopics]: SubCategoryWithTopicsResolver,
+    },
+    data: {
+      [RouteDataEnum.breadcrumbs]: ForumSubCategoryBreadcrumbResolver,
     },
   },
   {

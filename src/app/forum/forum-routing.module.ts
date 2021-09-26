@@ -4,7 +4,6 @@ import { ForumComponent } from './forum.component';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { createMeta } from '@shared/meta/meta';
-import { ForumBreadcrumbsResolver } from './forum-breadcrumbs.resolver';
 
 const routes: Routes = [
   {
@@ -16,7 +15,7 @@ const routes: Routes = [
         title: 'Forum',
         description: 'Forum',
       }),
-      [RouteDataEnum.breadcrumbs]: ForumBreadcrumbsResolver,
+      [RouteDataEnum.breadcrumbs]: 'Forum',
     },
     children: [
       {
