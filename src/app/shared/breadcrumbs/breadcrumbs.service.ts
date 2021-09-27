@@ -2,12 +2,12 @@ import { Injectable, Injector, Type } from '@angular/core';
 import { GlobalListenersService } from '@shared/services/global-listeners/global-listeners.service';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { BreadcrumbsData, BreadcrumbsItem, BreadcrumbsItemInternal } from '@shared/breadcrumbs/breadcrumbs';
-import { BreadcrumbResolver } from '@shared/breadcrumbs/breadcrumb-resolver';
+import { BreadcrumbsResolver } from '@shared/breadcrumbs/breadcrumbs-resolver';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { isFunction, isObject } from 'st-utils';
 import { auditTime, forkJoin, isObservable, map, Observable, of, ReplaySubject, Subscription, switchMap } from 'rxjs';
 
-function isBreadcrumbsResolver(resolver: any): resolver is Type<BreadcrumbResolver> {
+function isBreadcrumbsResolver(resolver: any): resolver is Type<BreadcrumbsResolver> {
   return isFunction(resolver);
 }
 
@@ -25,7 +25,7 @@ export class BreadcrumbsService {
 
   readonly breadcrumbs$ = this._breadcrumbs$.asObservable();
 
-  private _getBreadcrumbsFromRoute(): Observable<BreadcrumbsItem[]> {
+  private _getBreadcrumbsResolverMap(): Map<BreadcrumbsData, BreadcrumbsItemInternal> {
     const breadcrumbsResolverMap = new Map<BreadcrumbsData, BreadcrumbsItemInternal>();
     let state = this.activatedRoute.snapshot.root;
     if (state.data[RouteDataEnum.breadcrumbs]) {
@@ -41,11 +41,16 @@ export class BreadcrumbsService {
         breadcrumbsResolverMap.set(breadcrumbResolver, { resolver: breadcrumbResolver, activatedRouteSnapshot: state });
       }
     }
+    return breadcrumbsResolverMap;
+  }
+
+  private _getBreadcrumbsFromRoute(): Observable<BreadcrumbsItem[]> {
+    const breadcrumbsResolverMap = this._getBreadcrumbsResolverMap();
     const breadcrumbs$: Observable<BreadcrumbsItem>[] = [];
     for (const [, breadcrumbResolver] of breadcrumbsResolverMap) {
       if (isBreadcrumbsResolver(breadcrumbResolver.resolver)) {
-        const resolver: BreadcrumbResolver = this.injector.get(breadcrumbResolver.resolver);
-        breadcrumbs$.push(this._resolveBreadcrumbs(state, resolver));
+        const resolver: BreadcrumbsResolver = this.injector.get(breadcrumbResolver.resolver);
+        breadcrumbs$.push(this._resolveBreadcrumbs(breadcrumbResolver.activatedRouteSnapshot, resolver));
       } else {
         breadcrumbs$.push(
           of(this._mapBreadcrumbs(breadcrumbResolver.activatedRouteSnapshot, breadcrumbResolver.resolver))
@@ -57,7 +62,7 @@ export class BreadcrumbsService {
 
   private _resolveBreadcrumbs(
     activatedRouteSnapshot: ActivatedRouteSnapshot,
-    resolver: BreadcrumbResolver
+    resolver: BreadcrumbsResolver
   ): Observable<BreadcrumbsItem> {
     const response = resolver.resolve(activatedRouteSnapshot);
     if (isObservable(response)) {
@@ -86,7 +91,7 @@ export class BreadcrumbsService {
     let path = '';
     for (const activatedRouteSnapshotPath of pathFromRoot) {
       if (activatedRouteSnapshotPath.url.length) {
-        path += '/' + activatedRouteSnapshotPath.url.map(segment => segment.toString()).join('/');
+        path += '/' + activatedRouteSnapshotPath.url.map(urlSegment => urlSegment.toString()).join('/');
       }
     }
     return path;

@@ -9,13 +9,22 @@ import { ForumSubCategoryBreadcrumbResolver } from './forum-sub-category.breadcr
 const routes: Routes = [
   {
     path: `page/:${RouteParamEnum.pageSubCategory}`,
-    component: ForumSubCategoryComponent,
-    resolve: {
-      [RouteDataEnum.subCategoryWithTopics]: SubCategoryWithTopicsResolver,
-    },
     data: {
       [RouteDataEnum.breadcrumbs]: ForumSubCategoryBreadcrumbResolver,
     },
+    resolve: {
+      [RouteDataEnum.subCategoryWithTopics]: SubCategoryWithTopicsResolver,
+    },
+    children: [
+      {
+        path: '',
+        component: ForumSubCategoryComponent,
+      },
+      {
+        path: `topic/:${RouteParamEnum.idTopic}`,
+        loadChildren: () => import('../forum-topic/forum-topic.module').then(m => m.ForumTopicModule),
+      },
+    ],
   },
   {
     path: `topic/:${RouteParamEnum.idTopic}`,

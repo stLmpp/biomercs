@@ -1,5 +1,5 @@
 import { Type } from '@angular/core';
-import { BreadcrumbResolver } from '@shared/breadcrumbs/breadcrumb-resolver';
+import { BreadcrumbsResolver } from '@shared/breadcrumbs/breadcrumbs-resolver';
 import { ActivatedRouteSnapshot, Params, QueryParamsHandling } from '@angular/router';
 
 export interface BreadcrumbsItem {
@@ -15,4 +15,4 @@ export interface BreadcrumbsItemInternal {
   resolver: BreadcrumbsData;
 }
 
-export type BreadcrumbsData = string | BreadcrumbsItem | Type<BreadcrumbResolver>;
+export type BreadcrumbsData = string | BreadcrumbsItem | Type<BreadcrumbsResolver>;

@@ -15,4 +15,6 @@ export enum RouteDataEnum {
   categoriesWithRecentTopics = 'resolver.categoriesWithRecentTopics',
   subCategoryWithTopics = 'resolver.subCategoryWithTopics',
   breadcrumbs = 'breadcrumbs',
+  topicIncreaseViews = 'resolver.topicIncreaseViews',
+  topicWithPosts = 'resolver.topicWithPosts',
 }

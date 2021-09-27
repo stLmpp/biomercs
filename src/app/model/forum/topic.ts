@@ -1,3 +1,6 @@
+import { Post } from '@model/forum/post';
+import { Pagination } from '@model/pagination';
+
 export interface Topic {
   id: number;
   name: string;
@@ -16,6 +19,10 @@ export interface Topic {
   idLastPost: number;
   nameLastPost: string;
   creationDate: Date;
+}
+
+export interface TopicWithPosts extends Topic {
+  posts: Pagination<Post>;
 }
 
 export interface TopicRecent {
