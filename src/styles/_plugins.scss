@@ -1,5 +1,6 @@
 @use '~@angular/cdk';
 @use '~highlight.js/scss/base16/material-vivid';
+@use 'quill';
 
 @include cdk.a11y-visually-hidden();
 @include cdk.text-field();

@@ -1,1 +1,17 @@
-<p>forum-topic works!</p>
+<bio-card dark>
+  <bio-loading *ngIf="loading"></bio-loading>
+  <h4 bioCardTitle>{{ topic.name }} - {{ loading }}</h4>
+  <bio-card-content>
+    <bio-forum-topic-post
+      *ngFor="let post of topic.posts.items; trackBy: trackByIndex"
+      [post]="post"
+    ></bio-forum-topic-post>
+  </bio-card-content>
+  <bio-card-actions end>
+    <bio-pagination
+      [meta]="topic.posts.meta"
+      itemsPerPageHidden
+      (currentPageChange)="onPageChange($event)"
+    ></bio-pagination>
+  </bio-card-actions>
+</bio-card>

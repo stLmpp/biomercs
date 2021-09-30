@@ -4,5 +4,12 @@ export interface Post {
   post: string;
   idTopic: number;
   idPlayer: number;
-  deletedDate: Date;
+  deletedDate?: Date;
+  personaNamePlayer: string;
+  postCount: number;
+  idRegionPlayer: number;
+  nameRegionPlayer: string;
+  shortNameRegionPlayer: string;
+  editAllowed: boolean;
+  deleteAllowed: boolean;
 }

@@ -1,0 +1,16 @@
+@use 'variables' as v;
+
+@import '~quill/dist/quill.core.css';
+@import '~quill/dist/quill.snow.css';
+
+quill-editor {
+  display: block;
+
+  .ql-container {
+    height: 25vh;
+  }
+}
+
+quill-view {
+  display: block;
+}

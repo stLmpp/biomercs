@@ -1,0 +1,15 @@
+<div class="player-info">
+  <div class="name">
+    <a [routerLink]="['/player', post.idPlayer]">{{ post.personaNamePlayer }}</a>
+  </div>
+  <div class="status">Online</div>
+  <div class="region">{{ post.nameRegionPlayer }}</div>
+  <div class="posts">{{ post.postCount | number: '1.0-0' }}</div>
+  <div class="avatar">Avatar</div>
+</div>
+<div class="post">
+  <div class="title">{{ post.name }}</div>
+  <div class="content">
+    <quill-view [content]="post.post"></quill-view>
+  </div>
+</div>
