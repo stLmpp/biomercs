@@ -1639,7 +1639,7 @@
   resolved "https://registry.yarnpkg.com/@types/q/-/q-0.0.32.tgz#bd284e57c84f1325da702babfc82a5328190c0c5"
   integrity sha1-vShOV8hPEyXacCur/IKlMoGQwMU=
 
-"@types/quill@^1.3.10":
+"@types/quill@~1.3.10":
   version "1.3.10"
   resolved "https://registry.yarnpkg.com/@types/quill/-/quill-1.3.10.tgz#dc1f7b6587f7ee94bdf5291bc92289f6f0497613"
   integrity sha512-IhW3fPW+bkt9MLNlycw8u8fWb7oO7W5URC9MfZYHBlA24rex9rs23D5DETChu1zvgVdc5ka64ICjJOgQMr6Shw==
@@ -6542,7 +6542,7 @@ ngx-progressbar@~6.1.1:
   dependencies:
     tslib "^2.0.0"
 
-ngx-quill@^14.3.0:
+ngx-quill@~14.3.0:
   version "14.3.0"
   resolved "https://registry.yarnpkg.com/ngx-quill/-/ngx-quill-14.3.0.tgz#4ba1d548425f36d08629d444b6ccee7197773391"
   integrity sha512-4lkE2uLv6vZt886UvK36ITHz+qA2pWjGy42ty+ZGD9dxUMND5pYsYYcOkKiH+pFFWmnxzfIXBZk0ZrBqBFrASw==
@@ -8033,7 +8033,7 @@ quill-delta@^3.6.2:
     extend "^3.0.2"
     fast-diff "1.1.2"
 
-quill@^1.3.7:
+quill@~1.3.7:
   version "1.3.7"
   resolved "https://registry.yarnpkg.com/quill/-/quill-1.3.7.tgz#da5b2f3a2c470e932340cdbf3668c9f21f9286e8"
   integrity sha512-hG/DVzh/TiknWtE6QmWAF/pxoZKYxfe3J/d/+ShUWkDvvkZQVTPeVmUJVu1uE6DDooC4fWTiCLh84ul89oNz5g==
