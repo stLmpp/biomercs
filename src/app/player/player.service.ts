@@ -4,11 +4,15 @@ import { PlayerStore } from './player.store';
 import { WINDOW } from '../core/window.service';
 import { SteamService } from '@shared/services/steam/steam.service';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
-import { map, Observable, switchMap, tap } from 'rxjs';
+import { lastValueFrom, map, Observable, switchMap, tap } from 'rxjs';
 import { Player, PlayerAdd, PlayerUpdate } from '@model/player';
 import { Pagination } from '@model/pagination';
 import { HttpParams } from '@util/http-params';
 import { SteamPlayerLinkedSocketViewModel } from '@model/steam-profile';
+import { QuillModules } from 'ngx-quill/lib/quill-editor.interfaces';
+import { getQuillDefaultModules, QuillMentionOptions } from '@shared/quill/quill';
+import Quill from 'quill';
+import { Router } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class PlayerService {
@@ -17,7 +21,8 @@ export class PlayerService {
     private playerStore: PlayerStore,
     @Inject(WINDOW) private window: Window,
     private steamService: SteamService,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private router: Router
   ) {}
 
   readonly endPoint = 'player';
@@ -115,5 +120,40 @@ export class PlayerService {
           this.playerStore.updateEntity(idPlayer, { personaName, lastUpdatedPersonaNameDate });
         })
       );
+  }
+
+  getMentionQuillModule(options?: QuillMentionOptions): QuillModules {
+    const mentionOptions: QuillMentionOptions = {
+      minChars: 3,
+      source: async (searchTerm, renderList) => {
+        if (!searchTerm) {
+          renderList([], searchTerm);
+        } else {
+          const { items } = await lastValueFrom(this.searchPaginated(searchTerm, 1, 8));
+          renderList(
+            items.map(player => ({
+              id: player.id,
+              value: player.personaName,
+              link: this.router.createUrlTree(['/player', player.id]).toString(),
+            })),
+            searchTerm
+          );
+        }
+      },
+      ...options,
+    };
+    return {
+      ...getQuillDefaultModules(),
+      mention: mentionOptions,
+    };
+  }
+
+  quillMentionOnSelect(
+    editor: Quill,
+    item: DOMStringMap,
+    insertItem: (item: DOMStringMap) => Promise<void> | void
+  ): void {
+    insertItem(item);
+    editor.insertText(editor.getLength() - 1, '', 'user');
   }
 }

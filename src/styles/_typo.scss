@@ -32,7 +32,7 @@ p {
   font-size: 0.75rem;
 }
 
-a {
+@mixin anchor() {
   &:hover {
     text-decoration: underline;
   }
@@ -47,4 +47,8 @@ a {
   &.inherit {
     color: inherit;
   }
+}
+
+a {
+  @include anchor();
 }

@@ -1,13 +1,14 @@
 <div class="grid-container__icon-read">
-  <bio-icon outlined [class.has-new-posts]="topic.hasNewPosts">{{
-    topic.hasNewPosts ? 'mark_chat_unread' : 'chat_bubble_outline'
-  }}</bio-icon>
+  <bio-icon outlined [class.has-new-posts]="topic.hasNewPosts">
+    {{ topic.hasNewPosts ? 'mark_chat_unread' : 'chat_bubble_outline' }}
+  </bio-icon>
 </div>
 <div class="grid-container__name">
   {{ topic.name }}
 </div>
-<div class="grid-container__pinned">
-  <bio-icon *ngIf="topic.pinned"> push_pin </bio-icon>
+<div class="grid-container__icons">
+  <bio-icon *ngIf="topic.lockedDate" bioTooltip="Locked"> lock </bio-icon>
+  <bio-icon *ngIf="topic.pinned" bioTooltip="Pinned"> push_pin </bio-icon>
 </div>
 <div class="grid-container__created-by">
   {{ topic.playerPersonaName }}

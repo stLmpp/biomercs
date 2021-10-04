@@ -1,15 +1,55 @@
 <div class="player-info">
   <div class="name">
+    <bio-icon [flag]="post.shortNameRegion" small [bioTooltip]="post.nameRegion"></bio-icon>
     <a [routerLink]="['/player', post.idPlayer]">{{ post.personaNamePlayer }}</a>
   </div>
-  <div class="status">Online</div>
-  <div class="region">{{ post.nameRegionPlayer }}</div>
-  <div class="posts">{{ post.postCount | number: '1.0-0' }}</div>
-  <div class="avatar">Avatar</div>
+  <div class="status">Online<!--TODO ONLINE STATUS--></div>
+  <div class="posts">Posts: {{ post.postCount | number: '1.0-0' }}</div>
+  <div class="avatar">Avatar<!--TODO AVATAR--></div>
 </div>
-<div class="post">
-  <div class="title">{{ post.name }}</div>
-  <div class="content">
-    <quill-view [content]="post.post"></quill-view>
+<form class="post" [controlGroup]="form" (groupSubmit)="save()">
+  <div class="header">
+    <span class="title">
+      <ng-container *ngIf="!editing; else editingPostNameTemplate">{{ post.name }}</ng-container>
+      <ng-template #editingPostNameTemplate>
+        <bio-form-field label="Name">
+          <input bioInput controlName="name" placeholder="Name" />
+          <bio-hint end>{{ postNameEdited.length }} / 500</bio-hint>
+          <bio-errors>
+            <bio-error *error="'required'">Name is required</bio-error>
+          </bio-errors>
+        </bio-form-field>
+      </ng-template>
+    </span>
+    <div class="actions" *ngIf="!editing">
+      <a bioButton routerLink="replay" [queryParams]="{ quote: post.id }" *ngIf="!topicLocked">
+        <bio-icon>format_quote</bio-icon>
+        Quote
+      </a>
+      <button bioButton type="button" *ngIf="post.editAllowed" (click)="openEdit()">
+        <bio-icon>edit</bio-icon>
+        Edit
+      </button>
+      <button bioButton type="button" *ngIf="post.deleteAllowed">
+        <bio-icon>delete</bio-icon>
+        Delete
+      </button>
+    </div>
   </div>
-</div>
+  <div class="content">
+    <quill-view class="dark" [content]="post.content" *ngIf="!editing; else editingTemplate"></quill-view>
+    <ng-template #editingTemplate>
+      <quill-editor
+        class="dark"
+        controlName="content"
+        [debounceTime]="300"
+        placeholder="Write something here"
+        [modules]="quillModules"
+      ></quill-editor>
+      <div class="actions">
+        <button primary bioButton type="button" (click)="closeEdit()">Cancel</button>
+        <button primary bioButton type="submit">Save</button>
+      </div>
+    </ng-template>
+  </div>
+</form>

@@ -2,9 +2,18 @@
   <bio-loading *ngIf="loading"></bio-loading>
   <h4 bioCardTitle>{{ topic.name }} - {{ loading }}</h4>
   <bio-card-content>
+    <div class="actions" *ngIf="!topic.lockedDate || topic.isModerator">
+      <a accent bioButton routerLink="reply">
+        <bio-icon>reply</bio-icon>
+        Reply
+      </a>
+    </div>
     <bio-forum-topic-post
-      *ngFor="let post of topic.posts.items; trackBy: trackByIndex"
+      *ngFor="let post of topic.posts.items; trackBy: trackByIndex; let $odd = odd"
       [post]="post"
+      [odd]="$odd"
+      [topicLocked]="!!topic.lockedDate && !topic.isModerator"
+      (postChange)="onPostChange($event)"
     ></bio-forum-topic-post>
   </bio-card-content>
   <bio-card-actions end>
