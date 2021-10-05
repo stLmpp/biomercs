@@ -14,7 +14,7 @@
       <ng-template #editingPostNameTemplate>
         <bio-form-field label="Name">
           <input bioInput controlName="name" placeholder="Name" />
-          <bio-hint end>{{ postNameEdited.length }} / 500</bio-hint>
+          <bio-hint end>{{ (name$ | asyncDefault: '').length }} / 500</bio-hint>
           <bio-errors>
             <bio-error *error="'required'">Name is required</bio-error>
           </bio-errors>
@@ -37,19 +37,13 @@
     </div>
   </div>
   <div class="content">
-    <quill-view class="dark" [content]="post.content" *ngIf="!editing; else editingTemplate"></quill-view>
-    <ng-template #editingTemplate>
-      <quill-editor
-        class="dark"
-        controlName="content"
-        [debounceTime]="300"
-        placeholder="Write something here"
-        [modules]="quillModules"
-      ></quill-editor>
-      <div class="actions">
-        <button primary bioButton type="button" (click)="closeEdit()">Cancel</button>
-        <button primary bioButton type="submit">Save</button>
-      </div>
-    </ng-template>
+    <!--    <bio-viewer [content]="post.content" *ngIf="!editing; else editingTemplate"> </bio-viewer>-->
+    <!--    <ng-template #editingTemplate>-->
+    <!--      <bio-editor controlName="content"></bio-editor>-->
+    <!--      <div class="actions">-->
+    <!--        <button primary bioButton type="button" (click)="closeEdit()">Cancel</button>-->
+    <!--        <button primary bioButton type="submit">Save</button>-->
+    <!--      </div>-->
+    <!--    </ng-template>-->
   </div>
 </form>

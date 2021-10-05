@@ -1,15 +1,21 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, Output, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  HostBinding,
+  Input,
+  Output,
+} from '@angular/core';
 import { Post, PostUpdateDto } from '@model/forum/post';
 import { PlayerService } from '../../../player/player.service';
-import { QuillEditorComponent } from 'ngx-quill';
 import { PostService } from '../../service/post.service';
 import { finalize } from 'rxjs';
-import { PostContent } from '@model/forum/post-content';
 import { Control, ControlGroup, Validators } from '@stlmpp/control';
 
 interface FormPostContent {
   name: string;
-  content: Control<PostContent>;
+  content: string;
 }
 
 @Component({
@@ -19,9 +25,11 @@ interface FormPostContent {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ForumTopicPostComponent {
-  constructor(private playerService: PlayerService, private postService: PostService) {}
-
-  @ViewChild(QuillEditorComponent) readonly quillEditorComponent!: QuillEditorComponent;
+  constructor(
+    private playerService: PlayerService,
+    private postService: PostService,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {}
 
   @Input() post!: Post;
   @Input() topicLocked = false;
@@ -29,20 +37,15 @@ export class ForumTopicPostComponent {
 
   @Output() readonly postChange = new EventEmitter<Post>();
 
-  readonly form = new ControlGroup<FormPostContent>({
-    name: new Control('', [Validators.required, Validators.maxLength(500)]),
+  readonly form = new ControlGroup<Required<PostUpdateDto>>({
+    name: new Control('<p></p>', [Validators.required, Validators.maxLength(500)]),
     content: new Control({ ops: [] }, [Validators.required]),
   });
 
-  editing = false;
-  postContentEdited: PostContent = { ops: [] };
-  postNameEdited = '';
-  saving = false;
+  readonly name$ = this.form.get('name').value$;
 
-  readonly quillModules = this.playerService.getMentionQuillModule({
-    onSelect: (item, insertItem) =>
-      this.playerService.quillMentionOnSelect(this.quillEditorComponent.quillEditor, item, insertItem),
-  });
+  editing = false;
+  saving = false;
 
   openEdit(): void {
     this.form.setValue({ name: this.post.name, content: this.post.content });
@@ -50,8 +53,10 @@ export class ForumTopicPostComponent {
   }
 
   closeEdit(): void {
-    this.form.reset();
     this.editing = false;
+    setTimeout(() => {
+      this.form.reset();
+    });
   }
 
   save(): void {
@@ -72,6 +77,7 @@ export class ForumTopicPostComponent {
       .pipe(
         finalize(() => {
           this.saving = false;
+          this.changeDetectorRef.markForCheck();
         })
       )
       .subscribe(post => {

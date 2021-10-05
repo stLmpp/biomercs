@@ -1,9 +1,7 @@
-import { PostContent } from '@model/forum/post-content';
-
 export interface Post {
   id: number;
   name: string;
-  content: PostContent;
+  content: string;
   idTopic: number;
   idPlayer: number;
   deletedDate?: Date;
@@ -18,5 +16,5 @@ export interface Post {
 
 export interface PostUpdateDto {
   name?: string;
-  content?: PostContent;
+  content?: string;
 }

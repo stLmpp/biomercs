@@ -11,8 +11,6 @@ import { NgProgressModule } from 'ngx-progressbar';
 import { NgProgressRouterModule } from 'ngx-progressbar/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { FooterModule } from './footer/footer.module';
-import { QuillModule } from 'ngx-quill';
-import { getQuillDefaultModules } from '@shared/quill/quill';
 
 @NgModule({
   declarations: [AppComponent],
@@ -32,7 +30,6 @@ import { getQuillDefaultModules } from '@shared/quill/quill';
       registrationStrategy: 'registerWhenStable:30000',
     }),
     FooterModule,
-    QuillModule.forRoot({ format: 'object', modules: getQuillDefaultModules() }),
   ],
   bootstrap: [AppComponent],
 })
