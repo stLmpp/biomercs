@@ -37,6 +37,15 @@
     </div>
   </div>
   <div class="content">
+    <ckeditor
+      [editor]="editor"
+      [config]="config"
+      style="color: black"
+      [(ngModel)]="model"
+      [ngModelOptions]="{ standalone: true }"
+    ></ckeditor>
+    <hr />
+    {{ model | json }}
     <!--    <bio-viewer [content]="post.content" *ngIf="!editing; else editingTemplate"> </bio-viewer>-->
     <!--    <ng-template #editingTemplate>-->
     <!--      <bio-editor controlName="content"></bio-editor>-->

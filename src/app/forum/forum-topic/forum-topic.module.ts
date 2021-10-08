@@ -8,8 +8,9 @@ import { PaginationModule } from '@shared/components/pagination/pagination.modul
 import { ForumTopicPostComponent } from './forum-topic-post/forum-topic-post.component';
 import { FormModule } from '@shared/components/form/form.module';
 import { FlagModule } from '@shared/components/icon/flag/flag.module';
-import { EditorModule } from '@shared/editor/editor.module';
 import { AsyncDefaultModule } from '@shared/async-default/async-default.module';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [ForumTopicComponent, ForumTopicPostComponent],
@@ -22,8 +23,9 @@ import { AsyncDefaultModule } from '@shared/async-default/async-default.module';
     FormModule,
     FlagModule,
     StControlModule,
-    EditorModule,
     AsyncDefaultModule,
+    CKEditorModule,
+    FormsModule,
   ],
 })
 export class ForumTopicModule {}

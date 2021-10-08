@@ -24,6 +24,7 @@
     "@angular/platform-browser-dynamic": "~12.2.8",
     "@angular/router": "~12.2.8",
     "@angular/service-worker": "~12.2.8",
+    "@ckeditor/ckeditor5-angular": "~2.0.2",
     "@material/elevation": "~13.0.0",
     "@mdi/js": "~6.1.95",
     "@stlmpp/control": "~8.2.1",

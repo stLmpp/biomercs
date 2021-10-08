@@ -12,6 +12,8 @@ import { PlayerService } from '../../../player/player.service';
 import { PostService } from '../../service/post.service';
 import { finalize } from 'rxjs';
 import { Control, ControlGroup, Validators } from '@stlmpp/control';
+import ClassicEditor from '@shared/ckeditor/ckeditor';
+import { CKEditor5 } from '@ckeditor/ckeditor5-angular/ckeditor';
 
 interface FormPostContent {
   name: string;
@@ -37,15 +39,29 @@ export class ForumTopicPostComponent {
 
   @Output() readonly postChange = new EventEmitter<Post>();
 
+  editor = ClassicEditor;
+  config: CKEditor5.Config = {
+    mention: {
+      feeds: [
+        {
+          marker: '@',
+          feed: ['@Teste', '@Teste2'],
+          minimumCharacters: 3,
+        },
+      ],
+    },
+  };
+
   readonly form = new ControlGroup<Required<PostUpdateDto>>({
     name: new Control('<p></p>', [Validators.required, Validators.maxLength(500)]),
-    content: new Control({ ops: [] }, [Validators.required]),
+    content: new Control('', [Validators.required]),
   });
 
   readonly name$ = this.form.get('name').value$;
 
   editing = false;
   saving = false;
+  model: any;
 
   openEdit(): void {
     this.form.setValue({ name: this.post.name, content: this.post.content });

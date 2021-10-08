@@ -35,6 +35,7 @@ export class ForumTopicComponent extends Destroyable implements OnInit {
         this.topic = topic;
       }
     });
+    this.topic.posts.items = [this.topic.posts.items[0]];
   }
 
   async onPageChange($event: number): Promise<void> {
