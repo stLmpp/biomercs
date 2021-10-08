@@ -7,10 +7,13 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
+          "style": "scss",
+          "displayBlock": true,
+          "changeDetection": "OnPush"
         },
         "@schematics/angular:application": {
-          "strict": true
+          "strict": true,
+          "skipTests": true
         }
       },
       "root": "",
@@ -147,12 +150,5 @@
   "cli": {
     "analytics": "f24f9637-c7d5-4d50-ab3f-ec7931bdf2da",
     "defaultCollection": "@angular-eslint/schematics"
-  },
-  "schematics": {
-    "@schematics/angular": {
-      "component": {
-        "changeDetection": "OnPush"
-      }
-    }
   }
 }
