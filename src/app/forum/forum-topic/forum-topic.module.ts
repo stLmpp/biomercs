@@ -9,8 +9,7 @@ import { ForumTopicPostComponent } from './forum-topic-post/forum-topic-post.com
 import { FormModule } from '@shared/components/form/form.module';
 import { FlagModule } from '@shared/components/icon/flag/flag.module';
 import { AsyncDefaultModule } from '@shared/async-default/async-default.module';
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
-import { FormsModule } from '@angular/forms';
+import { CKEditorModule } from '@shared/ckeditor/ckeditor.module';
 
 @NgModule({
   declarations: [ForumTopicComponent, ForumTopicPostComponent],
@@ -25,7 +24,6 @@ import { FormsModule } from '@angular/forms';
     StControlModule,
     AsyncDefaultModule,
     CKEditorModule,
-    FormsModule,
   ],
 })
 export class ForumTopicModule {}

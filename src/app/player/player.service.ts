@@ -9,7 +9,6 @@ import { Player, PlayerAdd, PlayerUpdate } from '@model/player';
 import { Pagination } from '@model/pagination';
 import { HttpParams } from '@util/http-params';
 import { SteamPlayerLinkedSocketViewModel } from '@model/steam-profile';
-import { Router } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class PlayerService {
@@ -18,8 +17,7 @@ export class PlayerService {
     private playerStore: PlayerStore,
     @Inject(WINDOW) private window: Window,
     private steamService: SteamService,
-    private dialogService: DialogService,
-    private router: Router
+    private dialogService: DialogService
   ) {}
 
   readonly endPoint = 'player';
