@@ -18,3 +18,10 @@ export interface PostUpdateDto {
   name?: string;
   content?: string;
 }
+
+export interface PostAddDto {
+  name: string;
+  content: string;
+  idTopic: number;
+  idPlayer: number;
+}

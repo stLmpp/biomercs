@@ -10,9 +10,10 @@ import { FormModule } from '@shared/components/form/form.module';
 import { FlagModule } from '@shared/components/icon/flag/flag.module';
 import { AsyncDefaultModule } from '@shared/async-default/async-default.module';
 import { CKEditorModule } from '@shared/ckeditor/ckeditor.module';
+import { ForumTopicPostReplyComponent } from './forum-topic-post-reply/forum-topic-post-reply.component';
 
 @NgModule({
-  declarations: [ForumTopicComponent, ForumTopicPostComponent],
+  declarations: [ForumTopicComponent, ForumTopicPostComponent, ForumTopicPostReplyComponent],
   imports: [
     CommonModule,
     ForumTopicRoutingModule,

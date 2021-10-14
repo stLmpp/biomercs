@@ -3,25 +3,35 @@
   <h4 bioCardTitle>{{ topic.name }} - {{ loading }}</h4>
   <bio-card-content>
     <div class="actions" *ngIf="!topic.lockedDate || topic.isModerator">
-      <a accent bioButton routerLink="reply">
+      <button accent bioButton type="button" (click)="replying = true" [disabled]="replying">
         <bio-icon>reply</bio-icon>
         Reply
-      </a>
+      </button>
     </div>
     <bio-forum-topic-post
-      *ngFor="let post of topic.posts.items; trackBy: trackByIndex; let $odd = odd"
+      *ngFor="let post of topic.posts.items; trackBy: trackById; let $odd = odd"
       [post]="post"
       [odd]="$odd"
       [topicLocked]="!!topic.lockedDate && !topic.isModerator"
       (postChange)="onPostChange($event)"
       (postDelete)="onPostDelete()"
     ></bio-forum-topic-post>
+    <ng-container *ngIf="replying">
+      <hr />
+      <bio-forum-topic-post-reply
+        [idTopic]="topic.id"
+        [topicName]="topic.name"
+        (cancel)="replying = false"
+        (afterSubmit)="onAfterSubmitPost($event)"
+      ></bio-forum-topic-post-reply>
+    </ng-container>
   </bio-card-content>
   <bio-card-actions end>
     <bio-pagination
       [meta]="topic.posts.meta"
       itemsPerPageHidden
       (currentPageChange)="onPageChange($event)"
+      [disabled]="replying"
     ></bio-pagination>
   </bio-card-actions>
 </bio-card>
