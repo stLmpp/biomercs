@@ -14,4 +14,8 @@ export class PostService {
   update(idTopic: number, idPost: number, dto: PostUpdateDto): Observable<Post> {
     return this.http.patch<Post>(`${this.getEndPoint(idTopic)}/${idPost}`, dto);
   }
+
+  delete(idTopic: number, idPost: number): Observable<void> {
+    return this.http.delete<void>(`${this.getEndPoint(idTopic)}/${idPost}`);
+  }
 }

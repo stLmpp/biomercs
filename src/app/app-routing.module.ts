@@ -42,6 +42,7 @@ const routes: Routes = [
       anchorScrolling: 'disabled',
       scrollOffset: [0, 74],
       enableTracing: false,
+      onSameUrlNavigation: 'reload',
     }),
   ],
   exports: [RouterModule],

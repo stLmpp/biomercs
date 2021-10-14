@@ -30,7 +30,7 @@
         <bio-icon>edit</bio-icon>
         Edit
       </button>
-      <button bioButton type="button" *ngIf="post.deleteAllowed">
+      <button bioButton type="button" *ngIf="post.deleteAllowed" (click)="delete()">
         <bio-icon>delete</bio-icon>
         Delete
       </button>

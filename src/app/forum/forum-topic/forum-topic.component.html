@@ -14,6 +14,7 @@
       [odd]="$odd"
       [topicLocked]="!!topic.lockedDate && !topic.isModerator"
       (postChange)="onPostChange($event)"
+      (postDelete)="onPostDelete()"
     ></bio-forum-topic-post>
   </bio-card-content>
   <bio-card-actions end>
