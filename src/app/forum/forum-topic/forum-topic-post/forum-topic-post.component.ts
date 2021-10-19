@@ -32,9 +32,11 @@ export class ForumTopicPostComponent {
   @Input() post!: Post;
   @Input() topicLocked = false;
   @Input() @HostBinding('class.odd') odd = false;
+  @Input() loadingReply = false;
 
   @Output() readonly postChange = new EventEmitter<Post>();
   @Output() readonly postDelete = new EventEmitter<Post>();
+  @Output() readonly postQuote = new EventEmitter<Post>();
 
   readonly editor = ClassicEditor;
 

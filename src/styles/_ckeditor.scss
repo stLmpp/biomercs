@@ -1,7 +1,44 @@
+@use 'variables' as v;
+@use 'functions' as f;
+
 .ck-editor__main {
   color: black;
 }
 
-.ckeditor-view {
+.ck-view {
   display: block;
+}
+
+.ck {
+  .ck-content {
+    hr {
+      height: 1px;
+    }
+
+    blockquote {
+      background-color: v.$primary;
+      color: white;
+      padding-top: 0.25rem;
+      padding-bottom: 0.25rem;
+      border-color: v.$primary-400;
+
+      blockquote {
+        background-color: v.$primary-50;
+
+        blockquote {
+          background-color: v.$primary-100;
+
+          blockquote {
+            border-top: 1px solid v.$primary-400;
+            border-right: 1px solid v.$primary-400;
+            border-bottom: 1px solid v.$primary-400;
+          }
+        }
+      }
+    }
+  }
+
+  &.ck-sticky-panel__content > .ck.ck-toolbar.ck-toolbar_grouping > .ck.ck-toolbar__items {
+    flex-wrap: wrap;
+  }
 }

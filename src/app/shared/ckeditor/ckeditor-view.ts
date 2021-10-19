@@ -1,8 +1,10 @@
-import { Directive, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-@Directive({
+@Component({
   selector: 'ckeditor-view,[ckeditorView]',
-  host: { '[innerHTML]': 'content', class: 'ckeditor-view ck-content' },
+  template: `<div class="ck-content" [innerHTML]="content"></div>`,
+  host: { class: 'ck ck-view' },
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CKEditorView {
   @Input() content: string | null | undefined;

@@ -22,10 +22,10 @@
       </ng-template>
     </span>
     <div class="actions" *ngIf="!editing">
-      <a bioButton routerLink="replay" [queryParams]="{ quote: post.id }" *ngIf="!topicLocked">
+      <button bioButton type="button" (click)="postQuote.emit(post)" *ngIf="!topicLocked" [disabled]="loadingReply">
         <bio-icon>format_quote</bio-icon>
         Quote
-      </a>
+      </button>
       <button bioButton type="button" *ngIf="post.editAllowed" (click)="openEdit()">
         <bio-icon>edit</bio-icon>
         Edit

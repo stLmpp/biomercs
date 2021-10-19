@@ -4,10 +4,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { Destroyable } from '@shared/components/common/destroyable-component';
 import { finalize, skip, takeUntil } from 'rxjs';
-import { trackById, trackByIndex } from '@util/track-by';
+import { trackById } from '@util/track-by';
 import { Post } from '@model/forum/post';
 import { arrayUtil } from 'st-utils';
 import { TopicService } from '../service/topic.service';
+import { PostModalService } from '../service/post-modal.service';
 
 @Component({
   selector: 'bio-forum-topic',
@@ -20,14 +21,15 @@ export class ForumTopicComponent extends Destroyable implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private changeDetectorRef: ChangeDetectorRef,
-    private topicService: TopicService
+    private topicService: TopicService,
+    private postModalService: PostModalService
   ) {
     super();
   }
 
   topic: TopicWithPosts = this.activatedRoute.snapshot.data[RouteDataEnum.topicWithPosts];
   loading = false;
-  replying = false;
+  loadingReply = false;
 
   readonly trackById = trackById;
 
@@ -55,23 +57,27 @@ export class ForumTopicComponent extends Destroyable implements OnInit {
     };
   }
 
-  onPostDelete(): void {
+  async onPostDelete(): Promise<void> {
     this.loading = true;
-    this.topicService
-      .getByIdWithPosts(this.topic.id, this.topic.posts.meta.currentPage, this.topic.posts.meta.itemsPerPage)
-      .pipe(
-        finalize(() => {
-          this.loading = false;
-          this.changeDetectorRef.markForCheck();
-        })
-      )
-      .subscribe(topic => {
-        this.topic = topic;
-      });
+    const { meta, items } = this.topic.posts;
+    if (meta.currentPage === 1 || items.length > 1) {
+      this.topicService
+        .getByIdWithPosts(this.topic.id, meta.currentPage, this.topic.posts.meta.itemsPerPage)
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+            this.changeDetectorRef.markForCheck();
+          })
+        )
+        .subscribe(topic => {
+          this.topic = topic;
+        });
+    } else {
+      await this.onPageChange(meta.currentPage - 1);
+    }
   }
 
   async onAfterSubmitPost($event: Post): Promise<void> {
-    this.replying = false;
     const lastPage = Math.ceil((this.topic.posts.meta.totalItems + 1) / this.topic.posts.meta.itemsPerPage);
     if (lastPage === this.topic.posts.meta.currentPage) {
       this.topic = {
@@ -79,12 +85,10 @@ export class ForumTopicComponent extends Destroyable implements OnInit {
         posts: {
           ...this.topic.posts,
           items: [
-            ...this.topic.posts.items.map(post => {
-              if (post.idPlayer === $event.idPlayer) {
-                post = { ...post, postCount: post.postCount + 1 };
-              }
-              return post;
-            }),
+            ...arrayUtil(this.topic.posts.items).update(
+              post => post.idPlayer === $event.idPlayer,
+              post => ({ ...post, postCount: post.postCount + 1 })
+            ),
             $event,
           ],
         },
@@ -93,5 +97,21 @@ export class ForumTopicComponent extends Destroyable implements OnInit {
     } else {
       await this.onPageChange(lastPage);
     }
+  }
+
+  async onReply(quote?: Post): Promise<void> {
+    this.loadingReply = true;
+    const modalRef = await this.postModalService.openReply({
+      idTopic: this.topic.id,
+      topicName: this.topic.name,
+      quote,
+    });
+    modalRef.onClose$.subscribe(post => {
+      if (post) {
+        this.onAfterSubmitPost(post);
+      }
+    });
+    this.loadingReply = false;
+    this.changeDetectorRef.markForCheck();
   }
 }

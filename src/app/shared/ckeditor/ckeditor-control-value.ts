@@ -20,4 +20,8 @@ export class CKEditorControlValue extends ControlValue<string | null | undefined
   override setDisabled(disabled: boolean): void {
     this.ckEditorComponent.setDisabledState(disabled);
   }
+
+  override focus(): void {
+    this.ckEditorComponent.editorInstance?.editing.view.focus();
+  }
 }

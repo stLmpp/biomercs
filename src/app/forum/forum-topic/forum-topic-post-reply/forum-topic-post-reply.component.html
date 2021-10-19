@@ -1,11 +1,14 @@
 <form [controlGroup]="form" (groupSubmit)="onSubmit()">
-  <bio-form-field label="Name">
-    <input bioInput controlName="name" placeholder="Name" />
-  </bio-form-field>
-  <label for="content">Content</label>
-  <ckeditor id="content" [editor]="editor" controlName="content"></ckeditor>
-  <div class="actions">
+  <h4 bioModalTitle>Reply</h4>
+  <bio-modal-content>
+    <bio-form-field label="Name">
+      <input bioInput controlName="name" placeholder="Name" />
+    </bio-form-field>
+    <label for="content">Content</label>
+    <ckeditor id="content" [editor]="editor" controlName="content" (ready)="onReady($event)"></ckeditor>
+  </bio-modal-content>
+  <bio-modal-actions end>
     <button bioButton type="button" (click)="onCancel()" [disabled]="saving">Cancel</button>
     <button bioButton type="submit" [loading]="saving" [disabled]="form.invalid">Submit</button>
-  </div>
+  </bio-modal-actions>
 </form>
