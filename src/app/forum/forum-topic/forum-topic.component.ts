@@ -114,4 +114,8 @@ export class ForumTopicComponent extends Destroyable implements OnInit {
     this.loadingReply = false;
     this.changeDetectorRef.markForCheck();
   }
+
+  onTopicDelete(): void {
+    this.router.navigate(['../../../../'], { relativeTo: this.activatedRoute }).then();
+  }
 }

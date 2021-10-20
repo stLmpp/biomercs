@@ -14,6 +14,7 @@ import { finalize, tap } from 'rxjs';
 import { Control, ControlGroup, Validators } from '@stlmpp/control';
 import ClassicEditor from '@shared/ckeditor/ckeditor';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
+import { TopicService } from '../../service/topic.service';
 
 @Component({
   selector: 'bio-forum-topic-post',
@@ -26,7 +27,8 @@ export class ForumTopicPostComponent {
     private playerService: PlayerService,
     private postService: PostService,
     private changeDetectorRef: ChangeDetectorRef,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private topicService: TopicService
   ) {}
 
   @Input() post!: Post;
@@ -37,6 +39,7 @@ export class ForumTopicPostComponent {
   @Output() readonly postChange = new EventEmitter<Post>();
   @Output() readonly postDelete = new EventEmitter<Post>();
   @Output() readonly postQuote = new EventEmitter<Post>();
+  @Output() readonly topicDelete = new EventEmitter<void>();
 
   readonly editor = ClassicEditor;
 
@@ -88,21 +91,40 @@ export class ForumTopicPostComponent {
   }
 
   delete(): void {
-    this.dialogService.confirm({
-      title: 'Delete post?',
-      content: `This action can't be undone`,
-      buttons: [
-        'Cancel',
-        {
-          title: 'Delete',
-          action: () =>
-            this.postService.delete(this.post.idTopic, this.post.id).pipe(
-              tap(() => {
-                this.postDelete.emit(this.post);
-              })
-            ),
-        },
-      ],
-    });
+    if (this.post.firstPost) {
+      this.dialogService.confirm({
+        title: 'Delete topic?',
+        content: `This action can't be undone`,
+        buttons: [
+          'Cancel',
+          {
+            title: 'Delete',
+            action: () =>
+              this.topicService.delete(this.post.idTopic).pipe(
+                tap(() => {
+                  this.topicDelete.emit();
+                })
+              ),
+          },
+        ],
+      });
+    } else {
+      this.dialogService.confirm({
+        title: 'Delete post?',
+        content: `This action can't be undone`,
+        buttons: [
+          'Cancel',
+          {
+            title: 'Delete',
+            action: () =>
+              this.postService.delete(this.post.idTopic, this.post.id).pipe(
+                tap(() => {
+                  this.postDelete.emit(this.post);
+                })
+              ),
+          },
+        ],
+      });
+    }
   }
 }

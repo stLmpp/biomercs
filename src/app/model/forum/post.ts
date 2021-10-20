@@ -12,6 +12,7 @@ export interface Post {
   shortNameRegion: string;
   editAllowed: boolean;
   deleteAllowed: boolean;
+  firstPost: boolean;
 }
 
 export interface PostUpdateDto {

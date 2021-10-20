@@ -22,7 +22,13 @@
       </ng-template>
     </span>
     <div class="actions" *ngIf="!editing">
-      <button bioButton type="button" (click)="postQuote.emit(post)" *ngIf="!topicLocked" [disabled]="loadingReply">
+      <button
+        bioButton
+        type="button"
+        (click)="postQuote.emit(post)"
+        *ngIf="!topicLocked && !post.deletedDate"
+        [disabled]="loadingReply"
+      >
         <bio-icon>format_quote</bio-icon>
         Quote
       </button>

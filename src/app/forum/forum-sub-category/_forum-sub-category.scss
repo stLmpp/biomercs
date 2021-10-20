@@ -5,7 +5,7 @@
   grid-template-columns:
     /* prettier-ignore */ minmax(0, 25px) // message icon
     repeat(3, minmax(0, 1fr)) // topic name
-    minmax(0, 50px) // pin icon
+    minmax(0, 75px) // pin icon
     minmax(0, 1fr) // created by
     repeat(3, minmax(0, 100px)) // creation date, replies and views
     minmax(0, 1fr); // last post

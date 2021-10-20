@@ -18,4 +18,10 @@ export class TopicService {
     const params = new HttpParams({ page, limit });
     return this.http.get<TopicWithPosts>(`${this.endPoint}/${idTopic}/with/posts`, { params });
   }
+
+  delete(idTopic: number): Observable<void> {
+    return this.http.delete<void>(`${this.endPoint}/${idTopic}`);
+  }
+
+  // TODO lock, unlock, pin, unpin
 }

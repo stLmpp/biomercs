@@ -7,8 +7,18 @@
   {{ topic.name }}
 </div>
 <div class="grid-container__icons">
-  <bio-icon *ngIf="topic.lockedDate" bioTooltip="Locked"> lock </bio-icon>
-  <bio-icon *ngIf="topic.pinned" bioTooltip="Pinned"> push_pin </bio-icon>
+  <ng-container *ngIf="topic.isModerator">
+    <button bioButton icon type="button" class="icon-moderator" (click)="onLockUnlock()">
+      <bio-icon [bioTooltip]="topic.lockedDate ? 'Unlock' : 'Lock'" outlined>
+        {{ topic.lockedDate ? 'lock_open' : 'lock' }}
+      </bio-icon>
+    </button>
+    <button bioButton icon type="button" class="icon-moderator">
+      <bio-icon [mdi]="topic.pinned ? mdiPinOff : mdiPin" [bioTooltip]="topic.pinned ? 'Unpin' : 'Pin'"> </bio-icon>
+    </button>
+  </ng-container>
+  <bio-icon class="icon-user" [class.show]="topic.lockedDate" bioTooltip="Locked" outlined>lock</bio-icon>
+  <bio-icon class="icon-user" [class.show]="topic.pinned" [mdi]="mdiPin" bioTooltip="Pinned"></bio-icon>
 </div>
 <div class="grid-container__created-by">
   {{ topic.playerPersonaName }}

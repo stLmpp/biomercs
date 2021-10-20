@@ -15,6 +15,7 @@ const routes: Routes = [
     resolve: {
       [RouteDataEnum.subCategoryWithTopics]: SubCategoryWithTopicsResolver,
     },
+    runGuardsAndResolvers: 'always',
     children: [
       {
         path: '',
