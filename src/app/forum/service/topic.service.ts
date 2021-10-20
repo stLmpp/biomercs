@@ -23,5 +23,21 @@ export class TopicService {
     return this.http.delete<void>(`${this.endPoint}/${idTopic}`);
   }
 
+  lock(idTopic: number): Observable<void> {
+    return this.http.put<void>(`${this.endPoint}/${idTopic}/lock`, undefined);
+  }
+
+  unlock(idTopic: number): Observable<void> {
+    return this.http.put<void>(`${this.endPoint}/${idTopic}/unlock`, undefined);
+  }
+
+  pin(idTopic: number): Observable<void> {
+    return this.http.put<void>(`${this.endPoint}/${idTopic}/pin`, undefined);
+  }
+
+  unpin(idTopic: number): Observable<void> {
+    return this.http.put<void>(`${this.endPoint}/${idTopic}/unpin`, undefined);
+  }
+
   // TODO lock, unlock, pin, unpin
 }

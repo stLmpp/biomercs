@@ -8,12 +8,12 @@
 </div>
 <div class="grid-container__icons">
   <ng-container *ngIf="topic.isModerator">
-    <button bioButton icon type="button" class="icon-moderator" (click)="onLockUnlock()">
+    <button bioButton icon type="button" class="icon-moderator" (click)="onLockUnlock($event)" [disabled]="locking">
       <bio-icon [bioTooltip]="topic.lockedDate ? 'Unlock' : 'Lock'" outlined>
         {{ topic.lockedDate ? 'lock_open' : 'lock' }}
       </bio-icon>
     </button>
-    <button bioButton icon type="button" class="icon-moderator">
+    <button bioButton icon type="button" class="icon-moderator" (click)="onPinUnpin($event)" [disabled]="pinning">
       <bio-icon [mdi]="topic.pinned ? mdiPinOff : mdiPin" [bioTooltip]="topic.pinned ? 'Unpin' : 'Pin'"> </bio-icon>
     </button>
   </ng-container>

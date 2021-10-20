@@ -14,6 +14,8 @@
       [routerLink]="['topic', topic.id, 'page', 1]"
       *ngFor="let topic of subCategory.topics.items; trackBy: trackById"
       [topic]="topic"
+      (topicChange)="onTopicChange($event)"
+      (reloadSubCategory)="onReloadSubcategory()"
     >
     </a>
   </bio-card-content>

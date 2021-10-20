@@ -10,7 +10,7 @@ export interface Topic {
   playerPersonaName: string;
   views: number;
   pinned: boolean;
-  lockedDate?: Date;
+  lockedDate?: Date | null;
   idPlayerLastPost: number;
   playerPersonaNameLastPost: string;
   lastPostDate: Date;
