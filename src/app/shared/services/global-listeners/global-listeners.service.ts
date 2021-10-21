@@ -15,7 +15,6 @@ export class GlobalListenersService {
     private router: Router,
     @Inject(WINDOW) private window: Window
   ) {}
-  readonly bodyClick$ = fromEvent(this.document.body, 'click').pipe(share());
   readonly htmlClick$ = fromEvent(this.document.documentElement, 'click').pipe(share());
   readonly windowResize$ = fromEvent(this.window, 'resize').pipe(share());
 

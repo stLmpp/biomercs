@@ -17,4 +17,5 @@ export enum RouteDataEnum {
   breadcrumbs = 'breadcrumbs',
   topicIncreaseViews = 'resolver.topicIncreaseViews',
   topicWithPosts = 'resolver.topicWithPosts',
+  usersOnline = 'resolver.usersOnline',
 }

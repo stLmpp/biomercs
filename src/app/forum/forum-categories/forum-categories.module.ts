@@ -14,9 +14,10 @@ import { ListModule } from '@shared/components/list/list.module';
 import { AsyncDefaultModule } from '@shared/async-default/async-default.module';
 import { ForumFilterDeletedPipe } from './forum-filter-deleted.pipe';
 import { ForumCategoriesRecentTopicsComponent } from './forum-categories-recent-topics/forum-categories-recent-topics.component';
+import { ForumCategoriesPlayersOnlineComponent } from './forum-categories-players-online/forum-categories-players-online.component';
 
 @NgModule({
-  declarations: [ForumCategoriesComponent, ForumCategoriesCategoryComponent, ForumFilterDeletedPipe, ForumCategoriesRecentTopicsComponent],
+  declarations: [ForumCategoriesComponent, ForumCategoriesCategoryComponent, ForumFilterDeletedPipe, ForumCategoriesRecentTopicsComponent, ForumCategoriesPlayersOnlineComponent],
   imports: [
     CommonModule,
     ForumCategoriesRoutingModule,
