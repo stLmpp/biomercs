@@ -7,19 +7,19 @@ import { Post, PostAddDto, PostUpdateDto } from '@model/forum/post';
 export class PostService {
   constructor(private http: HttpClient) {}
 
-  getEndPoint(idTopic: number): string {
-    return `forum/topic/${idTopic}/post`;
+  getEndPoint(idSubCategory: number, idTopic: number): string {
+    return `forum/sub-category/${idSubCategory}/topic/${idTopic}/post`;
   }
 
-  update(idTopic: number, idPost: number, dto: PostUpdateDto): Observable<Post> {
-    return this.http.patch<Post>(`${this.getEndPoint(idTopic)}/${idPost}`, dto);
+  update(idSubCategory: number, idTopic: number, idPost: number, dto: PostUpdateDto): Observable<Post> {
+    return this.http.patch<Post>(`${this.getEndPoint(idSubCategory, idTopic)}/${idPost}`, dto);
   }
 
-  delete(idTopic: number, idPost: number): Observable<void> {
-    return this.http.delete<void>(`${this.getEndPoint(idTopic)}/${idPost}`);
+  delete(idSubCategory: number, idTopic: number, idPost: number): Observable<void> {
+    return this.http.delete<void>(`${this.getEndPoint(idSubCategory, idTopic)}/${idPost}`);
   }
 
-  add(idTopic: number, dto: PostAddDto): Observable<Post> {
-    return this.http.post<Post>(`${this.getEndPoint(idTopic)}`, dto);
+  add(idSubCategory: number, idTopic: number, dto: PostAddDto): Observable<Post> {
+    return this.http.post<Post>(`${this.getEndPoint(idSubCategory, idTopic)}`, dto);
   }
 }

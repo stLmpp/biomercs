@@ -16,3 +16,9 @@
     grid-column-start: 6;
   }
 }
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-bottom: 0.5rem;
+}

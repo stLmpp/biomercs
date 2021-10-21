@@ -13,8 +13,9 @@ export class TopicWithPostsResolver implements Resolve<TopicWithPosts> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<TopicWithPosts> | Promise<TopicWithPosts> | TopicWithPosts {
+    const idSubCategory = +(route.paramMap.get(RouteParamEnum.idSubCategory) ?? 0);
     const idTopic = +(route.paramMap.get(RouteParamEnum.idTopic) ?? 0);
     const page = +(route.paramMap.get(RouteParamEnum.pageTopic) ?? 1);
-    return this.topicService.getByIdWithPosts(idTopic, page, 10);
+    return this.topicService.getByIdWithPosts(idSubCategory, idTopic, page, 10);
   }
 }

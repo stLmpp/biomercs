@@ -1,43 +1,47 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { TopicWithPosts } from '@model/forum/topic';
+import { TopicAddDto, TopicWithPosts } from '@model/forum/topic';
 import { HttpParams } from '@util/http-params';
 
 @Injectable({ providedIn: 'root' })
 export class TopicService {
   constructor(private http: HttpClient) {}
 
-  readonly endPoint = 'forum/topic';
-
-  increaseViews(idTopic: number): Observable<void> {
-    return this.http.put<void>(`${this.endPoint}/${idTopic}/increase-views`, undefined);
+  getEndPoint(idSubCategory: number): string {
+    return `forum/sub-category/${idSubCategory}/topic`;
   }
 
-  getByIdWithPosts(idTopic: number, page: number, limit: number): Observable<TopicWithPosts> {
+  increaseViews(idSubCategory: number, idTopic: number): Observable<void> {
+    return this.http.put<void>(`${this.getEndPoint(idSubCategory)}/${idTopic}/increase-views`, undefined);
+  }
+
+  getByIdWithPosts(idSubCategory: number, idTopic: number, page: number, limit: number): Observable<TopicWithPosts> {
     const params = new HttpParams({ page, limit });
-    return this.http.get<TopicWithPosts>(`${this.endPoint}/${idTopic}/with/posts`, { params });
+    return this.http.get<TopicWithPosts>(`${this.getEndPoint(idSubCategory)}/${idTopic}/with/posts`, { params });
   }
 
-  delete(idTopic: number): Observable<void> {
-    return this.http.delete<void>(`${this.endPoint}/${idTopic}`);
+  delete(idSubCategory: number, idTopic: number): Observable<void> {
+    return this.http.delete<void>(`${this.getEndPoint(idSubCategory)}/${idTopic}`);
   }
 
-  lock(idTopic: number): Observable<void> {
-    return this.http.put<void>(`${this.endPoint}/${idTopic}/lock`, undefined);
+  lock(idSubCategory: number, idTopic: number): Observable<void> {
+    return this.http.put<void>(`${this.getEndPoint(idSubCategory)}/${idTopic}/lock`, undefined);
   }
 
-  unlock(idTopic: number): Observable<void> {
-    return this.http.put<void>(`${this.endPoint}/${idTopic}/unlock`, undefined);
+  unlock(idSubCategory: number, idTopic: number): Observable<void> {
+    return this.http.put<void>(`${this.getEndPoint(idSubCategory)}/${idTopic}/unlock`, undefined);
   }
 
-  pin(idTopic: number): Observable<void> {
-    return this.http.put<void>(`${this.endPoint}/${idTopic}/pin`, undefined);
+  pin(idSubCategory: number, idTopic: number): Observable<void> {
+    return this.http.put<void>(`${this.getEndPoint(idSubCategory)}/${idTopic}/pin`, undefined);
   }
 
-  unpin(idTopic: number): Observable<void> {
-    return this.http.put<void>(`${this.endPoint}/${idTopic}/unpin`, undefined);
+  unpin(idSubCategory: number, idTopic: number): Observable<void> {
+    return this.http.put<void>(`${this.getEndPoint(idSubCategory)}/${idTopic}/unpin`, undefined);
   }
 
-  // TODO lock, unlock, pin, unpin
+  add(idSubCategory: number, dto: TopicAddDto): Observable<{ idTopic: number; page: number }> {
+    return this.http.post<{ idTopic: number; page: number }>(`${this.getEndPoint(idSubCategory)}`, dto);
+  }
 }

@@ -62,7 +62,7 @@ export class ForumTopicComponent extends Destroyable implements OnInit {
     const { meta, items } = this.topic.posts;
     if (meta.currentPage === 1 || items.length > 1) {
       this.topicService
-        .getByIdWithPosts(this.topic.id, meta.currentPage, this.topic.posts.meta.itemsPerPage)
+        .getByIdWithPosts(this.topic.idSubCategory, this.topic.id, meta.currentPage, this.topic.posts.meta.itemsPerPage)
         .pipe(
           finalize(() => {
             this.loading = false;
@@ -102,6 +102,7 @@ export class ForumTopicComponent extends Destroyable implements OnInit {
   async onReply(quote?: Post): Promise<void> {
     this.loadingReply = true;
     const modalRef = await this.postModalService.openReply({
+      idSubCategory: this.topic.idSubCategory,
       idTopic: this.topic.id,
       topicName: this.topic.name,
       quote,

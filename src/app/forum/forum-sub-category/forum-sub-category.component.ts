@@ -34,7 +34,7 @@ export class ForumSubCategoryComponent extends Destroyable implements OnInit {
 
   async onPageChange($event: number): Promise<void> {
     this.loading = true;
-    await this.router.navigate(['../', $event], { relativeTo: this.activatedRoute, skipLocationChange: true });
+    await this.router.navigate(['../', $event], { relativeTo: this.activatedRoute });
     this.loading = false;
     this.changeDetectorRef.markForCheck();
   }

@@ -10,6 +10,7 @@ import { CKEditor5 } from '@ckeditor/ckeditor5-angular/ckeditor';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 
 export interface ForumTopicPostReplyComponentData {
+  idSubCategory: number;
   idTopic: number;
   topicName: string;
   quote?: Post;
@@ -24,11 +25,12 @@ export interface ForumTopicPostReplyComponentData {
 export class ForumTopicPostReplyComponent {
   constructor(
     private modalRef: ModalRef<ForumTopicPostReplyComponent, ForumTopicPostReplyComponentData, Post>,
-    @Inject(MODAL_DATA) { quote, topicName, idTopic }: ForumTopicPostReplyComponentData,
+    @Inject(MODAL_DATA) { quote, topicName, idTopic, idSubCategory }: ForumTopicPostReplyComponentData,
     private authQuery: AuthQuery,
     private postService: PostService,
     private changeDetectorRef: ChangeDetectorRef
   ) {
+    this._idSubCategory = idSubCategory;
     this._idTopic = idTopic;
     this._topicName = topicName;
     this._quote = quote;
@@ -39,10 +41,10 @@ export class ForumTopicPostReplyComponent {
       name: new Control(`RE: ${topicName}`, { validators: [Validators.required, Validators.maxLength(500)] }),
       content: new Control(content, { validators: [Validators.required] }),
       idTopic: new Control(idTopic),
-      idPlayer: new Control(this.authQuery.getUser()!.idPlayer!),
     });
   }
 
+  private readonly _idSubCategory: number;
   private readonly _idTopic: number;
   private readonly _topicName: string;
   private readonly _quote?: Post;
@@ -61,7 +63,7 @@ export class ForumTopicPostReplyComponent {
     this.modalRef.disableClose = true;
     this.form.disable();
     this.postService
-      .add(this._idTopic, dto)
+      .add(this._idSubCategory, this._idTopic, dto)
       .pipe(
         finalize(() => {
           this.saving = false;
@@ -76,7 +78,6 @@ export class ForumTopicPostReplyComponent {
   }
 
   onReady(editor: CKEditor5.Editor): void {
-    (window as any).editor = editor;
     setTimeout(() => {
       editor.editing.view.focus();
       editor.model.change((writer: any) => {

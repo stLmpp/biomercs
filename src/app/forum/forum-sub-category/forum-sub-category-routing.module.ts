@@ -22,6 +22,10 @@ const routes: Routes = [
         component: ForumSubCategoryComponent,
       },
       {
+        path: 'topic/new',
+        loadChildren: () => import('../forum-topic-new/forum-topic-new.module').then(m => m.ForumTopicNewModule),
+      },
+      {
         path: `topic/:${RouteParamEnum.idTopic}`,
         loadChildren: () => import('../forum-topic/forum-topic.module').then(m => m.ForumTopicModule),
       },

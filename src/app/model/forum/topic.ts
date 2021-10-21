@@ -38,3 +38,8 @@ export interface TopicRecent {
   postName: string;
   postDate: Date;
 }
+
+export interface TopicAddDto {
+  name: string;
+  content: string;
+}

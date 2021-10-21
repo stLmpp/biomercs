@@ -44,7 +44,9 @@ export class ForumSubCategoryTopicComponent {
     this.locking = true;
     const isLocked = !!this.topic.lockedDate;
     const newLockedDate = isLocked ? null : new Date();
-    const http$ = isLocked ? this.topicService.unlock(this.topic.id) : this.topicService.lock(this.topic.id);
+    const http$ = isLocked
+      ? this.topicService.unlock(this.topic.idSubCategory, this.topic.id)
+      : this.topicService.lock(this.topic.idSubCategory, this.topic.id);
     http$
       .pipe(
         finalize(() => {
@@ -61,7 +63,9 @@ export class ForumSubCategoryTopicComponent {
     $event.stopPropagation();
     $event.preventDefault();
     this.pinning = true;
-    const http$ = this.topic.pinned ? this.topicService.unpin(this.topic.id) : this.topicService.pin(this.topic.id);
+    const http$ = this.topic.pinned
+      ? this.topicService.unpin(this.topic.idSubCategory, this.topic.id)
+      : this.topicService.pin(this.topic.idSubCategory, this.topic.id);
     http$
       .pipe(
         finalize(() => {

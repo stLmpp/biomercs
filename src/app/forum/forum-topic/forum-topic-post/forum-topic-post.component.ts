@@ -31,6 +31,7 @@ export class ForumTopicPostComponent {
     private topicService: TopicService
   ) {}
 
+  @Input() idSubCategory!: number;
   @Input() post!: Post;
   @Input() topicLocked = false;
   @Input() @HostBinding('class.odd') odd = false;
@@ -77,7 +78,7 @@ export class ForumTopicPostComponent {
     }
     this.saving = true;
     this.postService
-      .update(this.post.idTopic, this.post.id, postUpdateDto)
+      .update(this.idSubCategory, this.post.idTopic, this.post.id, postUpdateDto)
       .pipe(
         finalize(() => {
           this.saving = false;
@@ -100,7 +101,7 @@ export class ForumTopicPostComponent {
           {
             title: 'Delete',
             action: () =>
-              this.topicService.delete(this.post.idTopic).pipe(
+              this.topicService.delete(this.idSubCategory, this.post.idTopic).pipe(
                 tap(() => {
                   this.topicDelete.emit();
                 })
@@ -117,7 +118,7 @@ export class ForumTopicPostComponent {
           {
             title: 'Delete',
             action: () =>
-              this.postService.delete(this.post.idTopic, this.post.id).pipe(
+              this.postService.delete(this.idSubCategory, this.post.idTopic, this.post.id).pipe(
                 tap(() => {
                   this.postDelete.emit(this.post);
                 })

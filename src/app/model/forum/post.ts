@@ -24,5 +24,4 @@ export interface PostAddDto {
   name: string;
   content: string;
   idTopic: number;
-  idPlayer: number;
 }

@@ -1,0 +1,15 @@
+<form [controlGroup]="form" (groupSubmit)="onSubmit()">
+  <bio-card dark>
+    <h4 bioCardTitle>New topic</h4>
+    <bio-card-content>
+      <bio-form-field label="Name">
+        <input bioInput controlName="name" />
+      </bio-form-field>
+      <ckeditor [editor]="editor" controlName="content"></ckeditor>
+    </bio-card-content>
+    <bio-card-actions end>
+      <button bioButton type="button" (click)="onGoBack()" [disabled]="saving">Cancel</button>
+      <button bioButton type="submit" [loading]="saving" [disabled]="form.invalid">Submit</button>
+    </bio-card-actions>
+  </bio-card>
+</form>
