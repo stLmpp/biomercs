@@ -48,4 +48,8 @@ export class TopicService {
   getPageTopicPost(idSubCategory: number, idTopic: number, idPost: number): Observable<TopicPostPage> {
     return this.http.get<TopicPostPage>(`${this.getEndPoint(idSubCategory)}/${idTopic}/page/with/post/${idPost}`);
   }
+
+  read(idSubCategory: number, idTopic: number): Observable<void> {
+    return this.http.put<void>(`${this.getEndPoint(idSubCategory)}/${idTopic}/read`, undefined);
+  }
 }

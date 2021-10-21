@@ -18,4 +18,5 @@ export enum RouteDataEnum {
   topicIncreaseViews = 'resolver.topicIncreaseViews',
   topicWithPosts = 'resolver.topicWithPosts',
   usersOnline = 'resolver.usersOnline',
+  topicRead = 'resolver.topicRead',
 }

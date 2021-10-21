@@ -6,6 +6,7 @@ import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { ForumTopicBreadcrumbsResolver } from './forum-topic.breadcrumbs-resolver';
 import { TopicIncreaseViewsResolver } from '../resolver/topic-increase-views.resolver';
 import { TopicWithPostsResolver } from '../resolver/topic-with-posts.resolver';
+import { TopicReadResolver } from '../resolver/topic-read.resolver';
 
 const routes: Routes = [
   {
@@ -17,6 +18,7 @@ const routes: Routes = [
     resolve: {
       [RouteDataEnum.topicIncreaseViews]: TopicIncreaseViewsResolver,
       [RouteDataEnum.topicWithPosts]: TopicWithPostsResolver,
+      [RouteDataEnum.topicRead]: TopicReadResolver,
     },
   },
 ];
