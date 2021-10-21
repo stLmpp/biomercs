@@ -1,5 +1,4 @@
 @use 'variables' as v;
-@use 'mixins' as m;
 
 :host {
   display: flex;
@@ -13,7 +12,6 @@
 
   &.highlight {
     border-color: v.$accent-300;
-    @include m.elevation(3);
   }
 }
 
