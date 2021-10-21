@@ -5,6 +5,7 @@ import { SubCategoryWithTopicsResolver } from '../resolver/sub-category-with-top
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { ForumSubCategoryBreadcrumbResolver } from './forum-sub-category.breadcrumb-resolver';
+import { ForumRedirectTopicPostGuard } from '../guard/forum-redirect-topic-post.guard';
 
 const routes: Routes = [
   {
@@ -32,17 +33,8 @@ const routes: Routes = [
     ],
   },
   {
-    path: `topic/:${RouteParamEnum.idTopic}`,
-    children: [
-      {
-        path: '',
-        canActivate: [], // TODO redirect to page/{pageSubCategory}/topic/{idTopic}
-      },
-      {
-        path: `post/:${RouteParamEnum.idPost}`,
-        canActivate: [], // TODO redirect to page/{pageSubCategory}/topic/{idTopic}/page/{pageTopic}#{idPost}
-      },
-    ],
+    path: `topic/:${RouteParamEnum.idTopic}/post/:${RouteParamEnum.idPost}`,
+    canActivate: [ForumRedirectTopicPostGuard],
   },
 ];
 

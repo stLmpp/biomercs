@@ -43,3 +43,11 @@ export interface TopicAddDto {
   name: string;
   content: string;
 }
+
+export interface TopicPostPage {
+  idSubCategory: number;
+  idTopic: number;
+  idPost: number;
+  pageTopic: number;
+  pagePost: number;
+}

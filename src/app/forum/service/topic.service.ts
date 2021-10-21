@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { TopicAddDto, TopicWithPosts } from '@model/forum/topic';
+import { TopicAddDto, TopicPostPage, TopicWithPosts } from '@model/forum/topic';
 import { HttpParams } from '@util/http-params';
 
 @Injectable({ providedIn: 'root' })
@@ -43,5 +43,9 @@ export class TopicService {
 
   add(idSubCategory: number, dto: TopicAddDto): Observable<{ idTopic: number; page: number }> {
     return this.http.post<{ idTopic: number; page: number }>(`${this.getEndPoint(idSubCategory)}`, dto);
+  }
+
+  getPageTopicPost(idSubCategory: number, idTopic: number, idPost: number): Observable<TopicPostPage> {
+    return this.http.get<TopicPostPage>(`${this.getEndPoint(idSubCategory)}/${idTopic}/page/with/post/${idPost}`);
   }
 }
