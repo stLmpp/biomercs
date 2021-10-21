@@ -1,7 +1,9 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
   HostBinding,
   Input,
@@ -15,6 +17,7 @@ import { Control, ControlGroup, Validators } from '@stlmpp/control';
 import ClassicEditor from '@shared/ckeditor/ckeditor';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
 import { TopicService } from '../../service/topic.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'bio-forum-topic-post',
@@ -22,13 +25,15 @@ import { TopicService } from '../../service/topic.service';
   styleUrls: ['./forum-topic-post.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ForumTopicPostComponent {
+export class ForumTopicPostComponent implements AfterViewInit {
   constructor(
     private playerService: PlayerService,
     private postService: PostService,
     private changeDetectorRef: ChangeDetectorRef,
     private dialogService: DialogService,
-    private topicService: TopicService
+    private topicService: TopicService,
+    private elementRef: ElementRef<HTMLElement>,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   @Input() idSubCategory!: number;
@@ -42,6 +47,11 @@ export class ForumTopicPostComponent {
   @Output() readonly postQuote = new EventEmitter<Post>();
   @Output() readonly topicDelete = new EventEmitter<void>();
 
+  @HostBinding('class.highlight')
+  get highlight(): boolean {
+    return this.post.id === this._getFragment();
+  }
+
   readonly editor = ClassicEditor;
 
   readonly form = new ControlGroup<Required<PostUpdateDto>>({
@@ -53,6 +63,10 @@ export class ForumTopicPostComponent {
 
   editing = false;
   saving = false;
+
+  private _getFragment(): number {
+    return +(this.activatedRoute.snapshot.fragment ?? 0);
+  }
 
   openEdit(): void {
     this.form.setValue({ name: this.post.name, content: this.post.content });
@@ -125,6 +139,18 @@ export class ForumTopicPostComponent {
               ),
           },
         ],
+      });
+    }
+  }
+
+  ngAfterViewInit(): void {
+    const idPost = this._getFragment();
+    if (!idPost) {
+      return;
+    }
+    if (idPost === this.post.id) {
+      setTimeout(() => {
+        this.elementRef.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
       });
     }
   }

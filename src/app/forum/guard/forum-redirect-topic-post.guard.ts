@@ -20,19 +20,22 @@ export class ForumRedirectTopicPostGuard implements CanActivate {
       .getPageTopicPost(idSubCategory, idTopic, idPost)
       .pipe(
         map(response =>
-          this.router.createUrlTree([
-            '/forum',
-            'category',
-            idCategory,
-            'sub-category',
-            idSubCategory,
-            'page',
-            response.pageTopic,
-            'topic',
-            idTopic,
-            'page',
-            response.pagePost,
-          ])
+          this.router.createUrlTree(
+            [
+              '/forum',
+              'category',
+              idCategory,
+              'sub-category',
+              idSubCategory,
+              'page',
+              response.pageTopic,
+              'topic',
+              idTopic,
+              'page',
+              response.pagePost,
+            ],
+            { fragment: '' + idPost }
+          )
         )
       );
   }
