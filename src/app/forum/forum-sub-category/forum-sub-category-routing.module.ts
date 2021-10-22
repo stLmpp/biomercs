@@ -10,17 +10,19 @@ import { ForumRedirectTopicPostGuard } from '../guard/forum-redirect-topic-post.
 const routes: Routes = [
   {
     path: `page/:${RouteParamEnum.pageSubCategory}`,
-    data: {
-      [RouteDataEnum.breadcrumbs]: ForumSubCategoryBreadcrumbResolver,
-    },
     resolve: {
       [RouteDataEnum.subCategoryWithTopics]: SubCategoryWithTopicsResolver,
     },
-    runGuardsAndResolvers: 'always',
+    data: {
+      [RouteDataEnum.breadcrumbs]: ForumSubCategoryBreadcrumbResolver,
+    },
     children: [
       {
         path: '',
         component: ForumSubCategoryComponent,
+        resolve: {
+          [RouteDataEnum.subCategoryWithTopics]: SubCategoryWithTopicsResolver,
+        },
       },
       {
         path: 'topic/new',

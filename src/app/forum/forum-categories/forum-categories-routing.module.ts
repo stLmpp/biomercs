@@ -4,6 +4,7 @@ import { ForumCategoriesComponent } from './forum-categories.component';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { CategoriesWithRecentTopicsResolver } from '../resolver/categories-with-recent-topics.resolver';
 import { UsersOnlineResolver } from '@shared/services/user/users-online.resolver';
+import { RouteParamEnum } from '@model/enum/route-param.enum';
 
 const routes: Routes = [
   {
@@ -13,6 +14,10 @@ const routes: Routes = [
       [RouteDataEnum.categoriesWithRecentTopics]: CategoriesWithRecentTopicsResolver,
       [RouteDataEnum.usersOnline]: UsersOnlineResolver,
     },
+  },
+  {
+    path: `category/:${RouteParamEnum.idCategory}/sub-category/:${RouteParamEnum.idSubCategory}`,
+    loadChildren: () => import('../forum-sub-category/forum-sub-category.module').then(m => m.ForumSubCategoryModule),
   },
 ];
 

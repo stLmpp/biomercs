@@ -4,10 +4,17 @@ import { SubCategoryWithTopics } from '@model/forum/sub-category';
 import { SubCategoryService } from '../service/sub-category.service';
 import { Observable, tap } from 'rxjs';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
+import { CacheService } from '@shared/cache/cache';
 
 @Injectable({ providedIn: 'root' })
 export class SubCategoryWithTopicsResolver implements Resolve<SubCategoryWithTopics> {
-  constructor(private subCategoryService: SubCategoryService, private router: Router) {}
+  constructor(
+    private subCategoryService: SubCategoryService,
+    private router: Router,
+    private cacheService: CacheService
+  ) {}
+
+  private readonly _cache = this.cacheService.createCache(5000);
 
   resolve(
     route: ActivatedRouteSnapshot,
@@ -29,7 +36,8 @@ export class SubCategoryWithTopicsResolver implements Resolve<SubCategoryWithTop
             ])
             .then();
         }
-      })
+      }),
+      this._cache.use(idSubCategory, page)
     );
   }
 }
