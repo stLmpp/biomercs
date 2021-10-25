@@ -11,8 +11,8 @@ export class PostService {
     return `forum/sub-category/${idSubCategory}/topic/${idTopic}/post`;
   }
 
-  update(idSubCategory: number, idTopic: number, idPost: number, dto: PostUpdateDto): Observable<Post> {
-    return this.http.patch<Post>(`${this.getEndPoint(idSubCategory, idTopic)}/${idPost}`, dto);
+  update(idSubCategory: number, idTopic: number, idPost: number, dto: PostUpdateDto): Observable<void> {
+    return this.http.patch<void>(`${this.getEndPoint(idSubCategory, idTopic)}/${idPost}`, dto);
   }
 
   delete(idSubCategory: number, idTopic: number, idPost: number): Observable<void> {

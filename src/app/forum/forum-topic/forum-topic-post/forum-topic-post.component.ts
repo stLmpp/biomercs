@@ -99,8 +99,8 @@ export class ForumTopicPostComponent implements AfterViewInit {
           this.changeDetectorRef.markForCheck();
         })
       )
-      .subscribe(post => {
-        this.postChange.emit(post);
+      .subscribe(() => {
+        this.postChange.emit({ ...this.post, ...postUpdateDto });
         this.closeEdit();
       });
   }
