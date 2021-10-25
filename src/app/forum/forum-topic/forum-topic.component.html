@@ -7,6 +7,10 @@
         <bio-icon>reply</bio-icon>
         Reply
       </button>
+      <button accent bioButton type="button" (click)="onMove()" [loading]="loadingMove" *ngIf="topic.isModerator">
+        <bio-icon>swap_horiz</bio-icon>
+        Move
+      </button>
     </div>
     <bio-forum-topic-post
       *ngFor="let post of topic.posts.items; trackBy: trackById; let $odd = odd"

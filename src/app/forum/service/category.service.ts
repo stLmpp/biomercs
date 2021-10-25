@@ -6,7 +6,7 @@ import {
   Category,
   CategoryAddDto,
   CategoryUpdateDto,
-  CategoryWithSubCategories,
+  CategoryWithSubCategoriesAlt,
 } from '@model/forum/category';
 import { CacheService } from '@shared/cache/cache';
 
@@ -29,15 +29,15 @@ export class CategoryService {
     return this.http.put<Category[]>(`${this.endPoint}/order`, idCategories);
   }
 
-  getAll(): Observable<CategoryWithSubCategories[]> {
-    return this.http.get<CategoryWithSubCategories[]>(this.endPoint);
-  }
-
   getById(idCategory: number): Observable<Category> {
     return this.http.get<Category>(`${this.endPoint}/${idCategory}`).pipe(this._cache.use(idCategory));
   }
 
   getAllWithRecentTopics(): Observable<CategoriesWithRecentTopics> {
     return this.http.get<CategoriesWithRecentTopics>(`${this.endPoint}/with/recent-topics`);
+  }
+
+  getAll(): Observable<CategoryWithSubCategoriesAlt[]> {
+    return this.http.get<CategoryWithSubCategoriesAlt[]>(this.endPoint);
   }
 }

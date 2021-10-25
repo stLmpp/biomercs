@@ -9,6 +9,8 @@ import { Post } from '@model/forum/post';
 import { arrayUtil } from 'st-utils';
 import { TopicService } from '../service/topic.service';
 import { PostModalService } from '../service/post-modal.service';
+import { TopicModalService } from '../service/topic-modal.service';
+import { RouteParamEnum } from '@model/enum/route-param.enum';
 
 @Component({
   selector: 'bio-forum-topic',
@@ -22,7 +24,8 @@ export class ForumTopicComponent extends Destroyable implements OnInit {
     private router: Router,
     private changeDetectorRef: ChangeDetectorRef,
     private topicService: TopicService,
-    private postModalService: PostModalService
+    private postModalService: PostModalService,
+    private topicModalService: TopicModalService
   ) {
     super();
   }
@@ -30,6 +33,7 @@ export class ForumTopicComponent extends Destroyable implements OnInit {
   topic: TopicWithPosts = this.activatedRoute.snapshot.data[RouteDataEnum.topicWithPosts];
   loading = false;
   loadingReply = false;
+  loadingMove = false;
 
   readonly trackById = trackById;
 
@@ -113,6 +117,34 @@ export class ForumTopicComponent extends Destroyable implements OnInit {
       }
     });
     this.loadingReply = false;
+    this.changeDetectorRef.markForCheck();
+  }
+
+  async onMove(): Promise<void> {
+    this.loadingMove = true;
+    const modalRef = await this.topicModalService.openTransferModal(this.topic.idSubCategory, this.topic.id);
+    modalRef.onClose$.subscribe(response => {
+      if (!response) {
+        return;
+      }
+      const pageTopic = +(this.activatedRoute.snapshot.paramMap.get(RouteParamEnum.pageTopic) ?? 1);
+      this.router
+        .navigate(
+          [
+            '../../../../../../../',
+            response.idSubCategory,
+            'page',
+            response.pageSubCategory,
+            'topic',
+            this.topic.id,
+            'page',
+            pageTopic,
+          ],
+          { relativeTo: this.activatedRoute }
+        )
+        .then();
+    });
+    this.loadingMove = false;
     this.changeDetectorRef.markForCheck();
   }
 

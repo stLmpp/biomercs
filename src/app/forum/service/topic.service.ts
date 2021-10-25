@@ -52,4 +52,8 @@ export class TopicService {
   read(idSubCategory: number, idTopic: number): Observable<void> {
     return this.http.put<void>(`${this.getEndPoint(idSubCategory)}/${idTopic}/read`, undefined);
   }
+
+  move(idSubCategory: number, idTopic: number, idSubCategoryTo: number): Observable<number> {
+    return this.http.put<number>(`${this.getEndPoint(idSubCategory)}/${idTopic}/move/${idSubCategoryTo}`, undefined);
+  }
 }
