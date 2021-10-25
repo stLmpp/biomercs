@@ -1,0 +1,40 @@
+<div class="grid-container__icon-read">
+  <bio-icon outlined [class.has-new-posts]="topic.hasNewPosts">
+    {{ topic.hasNewPosts ? 'mark_chat_unread' : 'chat_bubble_outline' }}
+  </bio-icon>
+</div>
+<div class="grid-container__name">
+  {{ topic.name }}
+</div>
+<div class="grid-container__icons">
+  <ng-container *ngIf="topic.isModerator">
+    <button bioButton icon type="button" class="icon-moderator" (click)="onLockUnlock($event)" [disabled]="locking">
+      <bio-icon [bioTooltip]="topic.lockedDate ? 'Unlock' : 'Lock'" outlined>
+        {{ topic.lockedDate ? 'lock_open' : 'lock' }}
+      </bio-icon>
+    </button>
+    <button bioButton icon type="button" class="icon-moderator" (click)="onPinUnpin($event)" [disabled]="pinning">
+      <bio-icon [mdi]="topic.pinned ? mdiPinOff : mdiPin" [bioTooltip]="topic.pinned ? 'Unpin' : 'Pin'"> </bio-icon>
+    </button>
+  </ng-container>
+  <bio-icon class="icon-user" [class.show]="topic.lockedDate" bioTooltip="Locked" outlined>lock</bio-icon>
+  <bio-icon class="icon-user" [class.show]="topic.pinned" [mdi]="mdiPin" bioTooltip="Pinned"></bio-icon>
+</div>
+<div class="grid-container__created-by">
+  {{ topic.playerPersonaName }}
+</div>
+<div class="grid-container__creation-date">
+  {{ topic.creationDate | authDateFormat }}
+</div>
+<div class="grid-container__replies">
+  {{ topic.repliesCount | number: '1.0-0' }}
+</div>
+<div class="grid-container__views">
+  {{ topic.views | number: '1.0-0' }}
+</div>
+<div class="grid-container__last-post">
+  <div class="last-post-player">
+    Last post by <a [routerLink]="['/player', topic.idPlayerLastPost]">{{ topic.playerPersonaNameLastPost }}</a>
+  </div>
+  <div>on {{ topic.lastPostDate | authDateFormat }}</div>
+</div>

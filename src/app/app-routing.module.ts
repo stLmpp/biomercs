@@ -14,6 +14,11 @@ const routes: Routes = [
   { path: 'contact', loadChildren: () => import('./contact/contact.module').then(m => m.ContactModule) },
   { path: 'faq', loadChildren: () => import('./faq/faq.module').then(m => m.FaqModule) },
   {
+    path: 'forum',
+    loadChildren: () => import('./forum/forum.module').then(m => m.ForumModule),
+    canLoad: [AuthLoggedGuard],
+  },
+  {
     path: 'player',
     loadChildren: () => import('./player/player.module').then(m => m.PlayerModule),
     canLoad: [AuthLoggedGuard],
@@ -37,6 +42,7 @@ const routes: Routes = [
       anchorScrolling: 'disabled',
       scrollOffset: [0, 74],
       enableTracing: false,
+      onSameUrlNavigation: 'reload',
     }),
   ],
   exports: [RouterModule],

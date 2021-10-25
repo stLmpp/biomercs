@@ -11,11 +11,12 @@ import { FocusKeyManager } from '@angular/cdk/a11y';
 })
 export class ListDirective {}
 
-@Directive({ selector: 'bio-list[selectable]', host: { class: 'control' } })
+@Directive({ selector: 'bio-list[selectable],[bioList][selectable]', host: { class: 'control' } })
 export class ListSelectable {}
 
 @Directive({
-  selector: 'bio-list[model],bio-list[control],bio-list[controlName]',
+  selector:
+    'bio-list[model],[bioList][model],bio-list[control],[bioList][control],bio-list[controlName][bioList][controlName]',
   providers: [
     { provide: ControlValue, useExisting: ListControlValue, multi: true },
     { provide: ListParentControl, useExisting: ListControlValue },

@@ -1,0 +1,3 @@
+<a *ngFor="let user of usersOnline; trackBy: trackById; let $last = last" [routerLink]="['/player', user.idPlayer]">
+  {{ user.personaName }}{{ !$last ? ',' : '' }}
+</a>

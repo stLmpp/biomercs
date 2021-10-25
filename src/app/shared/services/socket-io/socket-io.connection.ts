@@ -6,30 +6,35 @@ export class SocketIOConnection {
 
   private readonly _events = new Map<string, Subject<any>>();
 
-  private _createEventSubject<T>(event: string): Subject<T> {
+  private _createEvent<T>(event: string): Observable<T> {
     if (this._events.has(event)) {
       return this._events.get(event)!;
     }
     const subject = new Subject<T>();
     this._events.set(event, subject);
-    this.connection.on(event, (data: T) => {
+    const handler = (data: T): void => {
       subject.next(data);
-    });
-    return subject;
+    };
+    this.connection.on(event, handler);
+    return subject.pipe(
+      finalize(() => {
+        this._events.delete(event);
+        this.connection.off(event, handler);
+      })
+    );
   }
 
   fromEvent<T>(event: string): Observable<T> {
-    return this._createEventSubject(event);
+    return this._createEvent(event);
   }
 
   fromEventOnce<T>(event: string): Observable<T> {
-    const subject = this._createEventSubject<T>(event);
-    return subject.pipe(
-      take(1),
-      finalize(() => {
-        this._events.delete(event);
-      })
-    );
+    const observable = this._createEvent<T>(event);
+    return observable.pipe(take(1));
+  }
+
+  disconnectEvent(event: string): void {
+    this._events.get(event)?.complete();
   }
 
   reconnectWhenTokenChanges(hasToken: boolean): this {
@@ -42,6 +47,16 @@ export class SocketIOConnection {
     if (hasToken && this.connection.disconnected) {
       this.connection.connect();
     }
+    return this;
+  }
+
+  emit(event: string, ...args: any[]): this {
+    this.connection.emit(event, ...args);
+    return this;
+  }
+
+  disconnect(): this {
+    this.connection.disconnect();
     return this;
   }
 }

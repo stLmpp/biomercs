@@ -2,11 +2,11 @@
 
 @function get-color($type: v.$primary-type, $level: 0) {
   @if $type == v.$primary-type {
-    @return map-get(v.$primary-pallete, $level);
+    @return map-get(v.$primary-palette, $level);
   } @else if $type == v.$accent-type {
-    @return map-get(v.$accent-pallete, $level);
+    @return map-get(v.$accent-palette, $level);
   } @else if $type == v.$danger-type {
-    @return map-get(v.$danger-pallete, $level);
+    @return map-get(v.$danger-palette, $level);
   }
 }
 

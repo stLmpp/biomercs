@@ -18,7 +18,7 @@ import {
   AuthRegisterVW,
   AuthSteamLoginSocketVW,
 } from '@model/auth';
-import { User } from '@model/user';
+import { User, UserOnline } from '@model/user';
 import { AuthSteamLoginSocketErrorType } from '@model/enum/auth-steam-login-socket-error-type';
 import { SocketIOService } from '@shared/services/socket-io/socket-io.service';
 import { DialogDataButtonType } from '@shared/components/modal/dialog/dialog-data';
@@ -38,7 +38,7 @@ export class AuthService {
   ) {}
 
   private readonly _steamidAuthMap = new Map<string, [string, number?]>();
-  private readonly _socketConnection = this.socketIOService.createConnection('auth', false);
+  private _socketConnection = this.socketIOService.createConnection('auth', false);
 
   readonly endPoint = 'auth';
 
@@ -201,7 +201,11 @@ export class AuthService {
   }
 
   logout(): void {
+    const user = this.authStore.getState().user!;
+    this.sendUserOffline(user.id);
     this.authStore.updateState({ user: null });
+    this._socketConnection.disconnectEvent(AuthGatewayEvents.userOnline);
+    this._socketConnection.disconnectEvent(AuthGatewayEvents.userOffline);
   }
 
   forgotPassword(email: string): Observable<void> {
@@ -268,5 +272,17 @@ export class AuthService {
 
   changePasswordValidate(key: string): Observable<boolean> {
     return this.http.get<boolean>(`${this.endPoint}/change-password/validate/${key}`);
+  }
+
+  userOnlineSocket(): Observable<UserOnline> {
+    return this._socketConnection.fromEvent<UserOnline>(AuthGatewayEvents.userOnline);
+  }
+
+  userOfflineSocket(): Observable<number> {
+    return this._socketConnection.fromEvent<number>(AuthGatewayEvents.userOffline);
+  }
+
+  sendUserOffline(idUser: number): void {
+    this._socketConnection.emit(AuthGatewayEvents.userOffline, idUser);
   }
 }

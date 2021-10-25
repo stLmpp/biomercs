@@ -1,0 +1,62 @@
+<bio-loading *ngIf="loading"></bio-loading>
+<h4 bioModalTitle>Manage moderators</h4>
+<bio-modal-content>
+  <bio-multi-select
+    (allRemoved)="onAllRemoved()"
+    (allSelected)="onAllSelected()"
+    [disabledRemoveAll]="!moderatorsSelected.length"
+    [disabledSelectAll]="!moderators.length"
+  >
+    <bio-list
+      bioMultiSelectItems
+      items
+      (searchChange)="onSearch($event)"
+      debounceTime="400"
+      [bioLoading]="loadingPlayers"
+      hint="Type at least 3 characters to start searching"
+    >
+      <bio-list-item *ngIf="!loadingPlayers && !moderators.length">No data found</bio-list-item>
+      <bio-list-item *ngFor="let moderator of moderators; trackBy: trackById">
+        <button bioButton type="button" bioPrefix icon (click)="onSelectItem(moderator)">
+          <bio-icon>chevron_right</bio-icon>
+        </button>
+        <bio-list-item-line>{{ moderator.playerPersonaName }}</bio-list-item-line>
+      </bio-list-item>
+    </bio-list>
+    <bio-list bioMultiSelectItems selected [(search)]="moderatorsSelectedSearch" debounceTime="400">
+      <bio-list-item *ngIf="!moderatorsSelected.length">No data found</bio-list-item>
+      <bio-list-item
+        *ngFor="
+          let moderator of moderatorsSelected | search: 'playerPersonaName':moderatorsSelectedSearch;
+          trackBy: trackById
+        "
+        bioTooltip="Moderator is assigned to some sub category, and can't be deleted"
+        [bioTooltipDisabled]="moderator.deleteAllowed"
+      >
+        <button
+          bioButton
+          type="button"
+          bioPrefix
+          icon
+          (click)="onRemoveItem(moderator)"
+          [disabled]="!moderator.deleteAllowed"
+        >
+          <bio-icon>chevron_left</bio-icon>
+        </button>
+        <bio-list-item-line>{{ moderator.playerPersonaName }}</bio-list-item-line>
+      </bio-list-item>
+    </bio-list>
+  </bio-multi-select>
+</bio-modal-content>
+<bio-modal-actions end>
+  <button type="button" bioButton bioModalClose [disabled]="saving">Close</button>
+  <button
+    type="button"
+    bioButton
+    (click)="save()"
+    [loading]="saving"
+    [disabled]="!moderatorsDeletedMap.size && (moderatorsSelected | forumModeratorManagementValidation)"
+  >
+    Save
+  </button>
+</bio-modal-actions>

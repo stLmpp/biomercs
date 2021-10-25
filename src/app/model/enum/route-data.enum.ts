@@ -11,4 +11,12 @@ export enum RouteDataEnum {
   platforms = 'resolver.platforms',
   player = 'resolver.player',
   scoreGroupedByStatus = 'resolver.scoreGroupedByStatus',
+  categories = 'resolver.categories',
+  categoriesWithRecentTopics = 'resolver.categoriesWithRecentTopics',
+  subCategoryWithTopics = 'resolver.subCategoryWithTopics',
+  breadcrumbs = 'breadcrumbs',
+  topicIncreaseViews = 'resolver.topicIncreaseViews',
+  topicWithPosts = 'resolver.topicWithPosts',
+  usersOnline = 'resolver.usersOnline',
+  topicRead = 'resolver.topicRead',
 }

@@ -54,16 +54,25 @@ export class PlayerService {
     );
   }
 
-  search(
+  searchPaginated(
     personaName: string,
     page: number,
     limit: number,
     idPlayersSelected: number[] = []
   ): Observable<Pagination<Player>> {
     const params = new HttpParams({ personaName, page, limit, idPlayersSelected });
-    return this.http.get<Pagination<Player>>(`${this.endPoint}/search`, { params }).pipe(
+    return this.http.get<Pagination<Player>>(`${this.endPoint}/search-paginated`, { params }).pipe(
       tap(({ items }) => {
         this.playerStore.upsert(items);
+      })
+    );
+  }
+
+  search(personaName: string, idPlayersSelected: number[] = []): Observable<Player[]> {
+    const params = new HttpParams({ personaName, idPlayersSelected });
+    return this.http.get<Player[]>(`${this.endPoint}/search`, { params }).pipe(
+      tap(players => {
+        this.playerStore.upsert(players);
       })
     );
   }

@@ -39,7 +39,8 @@ export class MultiSelectItemsComponent implements OnDestroy {
     this._startDebounce();
   }
 
-  @Output() readonly search = new EventEmitter<string>();
+  @Input() search = '';
+  @Output() readonly searchChange = new EventEmitter<string>();
 
   private _startDebounce(): void {
     if (!this._debounceTime || this._debounceTime <= 0) {
@@ -51,7 +52,7 @@ export class MultiSelectItemsComponent implements OnDestroy {
       return;
     }
     this._searchSubscription = this._search$.pipe(debounce(() => timer(this._debounceTime!))).subscribe(term => {
-      this.search.emit(term);
+      this.searchChange.emit(term);
     });
   }
 
@@ -60,7 +61,7 @@ export class MultiSelectItemsComponent implements OnDestroy {
     if (this._debounceTime) {
       this._search$.next(target.value);
     } else {
-      this.search.emit(target.value);
+      this.searchChange.emit(target.value);
     }
   }
 

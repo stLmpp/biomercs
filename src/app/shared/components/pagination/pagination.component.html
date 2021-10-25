@@ -1,7 +1,7 @@
-<div class="items-per-page">
+<div class="items-per-page" *ngIf="!itemsPerPageHidden">
   <span> Items per page: </span>
   <bio-select
-    [disabled]="!itemCount"
+    [disabled]="!itemCount || disabled"
     [model]="itemsPerPage"
     (modelChange)="itemsPerPageChange.emit($event)"
     placeholder="Items per page"
@@ -20,7 +20,7 @@
     icon
     type="button"
     (click)="onFirstPage()"
-    [disabled]="!itemCount || currentPage === 1"
+    [disabled]="!itemCount || currentPage === 1 || disabled"
     bioTooltip="First page"
   >
     <bio-icon>first_page</bio-icon>
@@ -30,7 +30,7 @@
     icon
     type="button"
     (click)="onPreviousPage()"
-    [disabled]="!itemCount || currentPage === 1"
+    [disabled]="!itemCount || currentPage === 1 || disabled"
     bioTooltip="Previous page"
   >
     <bio-icon>chevron_left</bio-icon>
@@ -40,7 +40,7 @@
     icon
     type="button"
     (click)="onNextPage()"
-    [disabled]="!itemCount || currentPage === totalPages"
+    [disabled]="!itemCount || currentPage === totalPages || disabled"
     bioTooltip="Next page"
   >
     <bio-icon>chevron_right</bio-icon>
@@ -50,7 +50,7 @@
     icon
     type="button"
     (click)="onLastPage()"
-    [disabled]="!itemCount || currentPage === totalPages"
+    [disabled]="!itemCount || currentPage === totalPages || disabled"
     bioTooltip="Last page"
   >
     <bio-icon>last_page</bio-icon>

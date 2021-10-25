@@ -55,7 +55,7 @@ export class PlayerSearchModalComponent {
     switchMap(([term, page, limit]) => {
       this.loading = true;
       this.changeDetectorRef.markForCheck();
-      return this.playerService.search(term, page, limit, this.idPlayersSelected).pipe(
+      return this.playerService.searchPaginated(term, page, limit, this.idPlayersSelected).pipe(
         finalize(() => {
           this.loading = false;
           this.changeDetectorRef.markForCheck();

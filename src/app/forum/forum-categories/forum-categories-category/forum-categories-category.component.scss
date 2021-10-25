@@ -1,0 +1,61 @@
+@use 'variables' as v;
+@use 'mixins' as m;
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.list {
+  margin-right: -1rem;
+  margin-left: -1rem;
+}
+
+.list-item {
+  padding-right: 1rem;
+  padding-left: 1.25rem;
+}
+
+.list-item-line {
+  white-space: normal;
+
+  &:not(:first-of-type) {
+    font-size: 0.9em;
+    color: v.$primary-400;
+  }
+}
+
+.suffix {
+  white-space: nowrap;
+  padding-left: 1rem;
+}
+
+.suffix.last-post {
+  min-width: 140px;
+  max-width: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  place-items: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  > div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.moderators {
+  white-space: normal;
+}
+
+@include m.drag-and-drop();
+
+.cdk-drag-handle {
+  cursor: move;
+  margin-right: 0.5rem;
+}

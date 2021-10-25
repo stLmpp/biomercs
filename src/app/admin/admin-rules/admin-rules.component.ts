@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Rule, RuleUpsert } from '@model/rule';
+import { Rule, RuleTypeEnum, RuleUpsert } from '@model/rule';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
-import { ControlArray, ControlBuilder, ControlGroup, Validators } from '@stlmpp/control';
+import { Control, ControlArray, ControlBuilder, ControlGroup, Validators } from '@stlmpp/control';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { RuleService } from '../../rules/rule.service';
 import { finalize, tap } from 'rxjs';
@@ -10,11 +10,12 @@ import { SnackBarService } from '@shared/components/snack-bar/snack-bar.service'
 import { UnsavedData, UnsavedDataType } from '@shared/guards/unsaved-data.guard';
 import { trackByControl } from '@util/track-by';
 
-type RuleUpsertForm = Omit<RuleUpsert, 'deleted'>;
+export type RuleUpsertForm = Omit<RuleUpsert, 'deleted'>;
 
 interface RulesForm {
   rules: RuleUpsertForm[];
   deleted: RuleUpsert[];
+  type: RuleTypeEnum;
 }
 
 @Component({
@@ -34,8 +35,11 @@ export class AdminRulesComponent implements UnsavedData {
 
   private _rules: Rule[] = this.activatedRoute.snapshot.data[RouteDataEnum.rules] ?? [];
   saving = false;
+  loadingType = false;
 
-  form = this._createForm();
+  form = this._createForm(RuleTypeEnum.Main);
+
+  readonly ruleTypeEnum = RuleTypeEnum;
 
   get rulesControl(): ControlArray<RuleUpsertForm> {
     return this.form.get('rules');
@@ -45,12 +49,19 @@ export class AdminRulesComponent implements UnsavedData {
     return this.form.get('deleted');
   }
 
+  get typeControl(): Control<RuleTypeEnum> {
+    return this.form.get('type');
+  }
+
   readonly trackByControl = trackByControl;
 
-  private _createForm(): ControlGroup<RulesForm> {
+  private _createForm(type: RuleTypeEnum): ControlGroup<RulesForm> {
     return this.controlBuilder.group<RulesForm>({
-      rules: this.controlBuilder.array<RuleUpsertForm>(this._rules.map(rule => this._createControlGroup(rule))),
+      rules: this.controlBuilder.array<RuleUpsertForm>(
+        this._rules.filter(rule => rule.type === type).map(rule => this._createControlGroup(rule))
+      ),
       deleted: this.controlBuilder.array<RuleUpsert>([]),
+      type: this.controlBuilder.control(type),
     });
   }
 
@@ -79,7 +90,7 @@ export class AdminRulesComponent implements UnsavedData {
   addRule(): void {
     const rulesControl = this.rulesControl;
     const lastOrder = rulesControl.get(rulesControl.length - 1)?.get('order').value ?? 0;
-    const newGroup = this._createControlGroup({ order: lastOrder + 1, description: '' });
+    const newGroup = this._createControlGroup({ order: lastOrder + 1, description: '', type: this.typeControl.value });
     this.rulesControl.push(newGroup);
     newGroup.get('id')?.markAsTouched();
   }
@@ -121,7 +132,7 @@ export class AdminRulesComponent implements UnsavedData {
       .pipe(
         tap(_rules => {
           this._rules = _rules;
-          this.form = this._createForm();
+          this.form = this._createForm(this.typeControl.value);
           this.snackBarService.open('Rules saved successfully!');
         }),
         finalize(() => {
@@ -144,5 +155,14 @@ export class AdminRulesComponent implements UnsavedData {
         content: 'Leave page? <br />If you press "Yes", the updated rules will be lost',
       }
     );
+  }
+
+  onRuleTypeChange(type: RuleTypeEnum): void {
+    this.loadingType = true;
+    setTimeout(() => {
+      this.form = this._createForm(type);
+      this.loadingType = false;
+      this.changeDetectorRef.markForCheck();
+    }, 500);
   }
 }

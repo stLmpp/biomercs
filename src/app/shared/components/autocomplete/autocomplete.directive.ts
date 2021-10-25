@@ -113,6 +113,13 @@ export class AutocompleteDirective extends Destroyable {
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.opened = false;
+      });
+    this.bioAutocomplete.onSelect$
+      .pipe(
+        takeUntil(this.destroy$),
+        filter(() => this.bioAutocomplete.closeOnSelect)
+      )
+      .subscribe(() => {
         this._actionAfterSelect();
       });
     this.bioAutocomplete.overlayRef = overlayRef;
@@ -133,6 +140,7 @@ export class AutocompleteDirective extends Destroyable {
       )
       .subscribe(() => {
         overlayRef.detach();
+        this._actionAfterSelect();
       });
     this.bioAutocomplete.init();
     this.opened = true;

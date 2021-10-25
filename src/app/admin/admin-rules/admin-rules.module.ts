@@ -7,6 +7,8 @@ import { StControlModule } from '@stlmpp/control';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ButtonModule } from '@shared/components/button/button.module';
 import { TextFieldModule } from '@angular/cdk/text-field';
+import { SelectModule } from '@shared/components/select/select.module';
+import { AsyncDefaultModule } from '@shared/async-default/async-default.module';
 
 @NgModule({
   declarations: [AdminRulesComponent],
@@ -18,6 +20,8 @@ import { TextFieldModule } from '@angular/cdk/text-field';
     DragDropModule,
     ButtonModule,
     TextFieldModule,
+    SelectModule,
+    AsyncDefaultModule,
   ],
 })
 export class AdminRulesModule {}

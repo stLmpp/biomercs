@@ -1,0 +1,24 @@
+@use 'variables' as v;
+@use './forum-sub-category' as sub-category;
+
+.card {
+  position: relative;
+}
+
+.grid-container {
+  @include sub-category.sub-category-grid();
+
+  .grid-container__name {
+    grid-column: 2 / span 3;
+  }
+
+  .grid-container__created-by {
+    grid-column-start: 6;
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-bottom: 0.5rem;
+}
