@@ -1,5 +1,6 @@
 import {
   AfterContentInit,
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -46,7 +47,7 @@ import { FormFieldChild } from '@shared/components/form/form-field-child';
   animations: [Animations.fade.inOut(100), Animations.scale.in(100, 0.8)],
 })
 // I had to do "implements", instead of "extends", so I can use the "Select" abstract class
-export class SelectComponent extends Select implements ControlValue, AfterContentInit {
+export class SelectComponent extends Select implements ControlValue, AfterContentInit, AfterViewInit {
   constructor(
     protected changeDetectorRef: ChangeDetectorRef,
     private overlay: Overlay,
@@ -56,8 +57,10 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
     super();
   }
 
+  private _afterViewInit = false;
   private _isInvalid = false;
   private _isTouched = false;
+  private _setValueAfterViewInit = false;
   private _overlayRef?: OverlayRef;
   private _focusManager?: FocusKeyManager<OptionComponent>;
 
@@ -196,6 +199,9 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
   setValue(value: any): void {
     this._setViewValueFromOptions(value);
     this.value = value;
+    if (!this._afterViewInit) {
+      this._setValueAfterViewInit = true;
+    }
   }
 
   setDisabled(isDisabled: boolean): void {
@@ -206,6 +212,15 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
     this._isInvalid = state.invalid;
     this._isTouched = state.touched;
     this.changeDetectorRef.markForCheck();
+  }
+
+  ngAfterViewInit(): void {
+    this._afterViewInit = true;
+    if (this._setValueAfterViewInit) {
+      this._setViewValueFromOptions(this.value);
+      this._setValueAfterViewInit = false;
+      this.changeDetectorRef.detectChanges();
+    }
   }
 
   ngAfterContentInit(): void {

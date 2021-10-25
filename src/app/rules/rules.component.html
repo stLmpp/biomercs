@@ -1,7 +1,13 @@
 <bio-card class="center-block-medium">
   <h3 bioCardTitle>Rules</h3>
   <bio-card-content>
-    <h5 *ngFor="let rule of rules; trackBy: trackBy">{{ rule.order }} - {{ rule.description }}</h5>
+    <bio-form-field label="Type">
+      <bio-select [control]="ruleTypeControl">
+        <bio-option [value]="ruleTypeEnum.Main">General</bio-option>
+        <bio-option [value]="ruleTypeEnum.Forum">Forum</bio-option>
+      </bio-select>
+    </bio-form-field>
+    <h5 *ngFor="let rule of rules$ | async; trackBy: trackBy">{{ rule.order }} - {{ rule.description }}</h5>
   </bio-card-content>
   <bio-card-actions *ngIf="isAdmin$ | async">
     <a bioButton primary routerLink="/admin/rules">Edit rules</a>

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Rule, RuleUpsert } from '@model/rule';
+import { Rule, RuleTypeEnum, RuleUpsert } from '@model/rule';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { ControlArray, ControlBuilder, ControlGroup, Validators } from '@stlmpp/control';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
@@ -79,7 +79,7 @@ export class AdminRulesComponent implements UnsavedData {
   addRule(): void {
     const rulesControl = this.rulesControl;
     const lastOrder = rulesControl.get(rulesControl.length - 1)?.get('order').value ?? 0;
-    const newGroup = this._createControlGroup({ order: lastOrder + 1, description: '' });
+    const newGroup = this._createControlGroup({ order: lastOrder + 1, description: '', type: RuleTypeEnum.Main });
     this.rulesControl.push(newGroup);
     newGroup.get('id')?.markAsTouched();
   }
