@@ -1499,37 +1499,37 @@
   resolved "https://registry.yarnpkg.com/@socket.io/component-emitter/-/component-emitter-3.0.0.tgz#8863915676f837d9dad7b76f50cb500c1e9422e9"
   integrity sha512-2pTGuibAXJswAPJjaKisthqS/NOK5ypG4LYT6tEAV0S/mxW0zOIvYvGK0V8w8+SHxAm6vRMSjqSalFXeBAqs+Q==
 
-"@stlmpp/control@~8.2.1":
-  version "8.2.1"
-  resolved "https://registry.yarnpkg.com/@stlmpp/control/-/control-8.2.1.tgz#a11c2d4a9c5274083b5f8e698f1dd54ba5c11d82"
-  integrity sha512-e0Bjo0Pd0hCR1dLQJk/3FNvtavIQNtDY+11hhvYgER/K1Y3LIK4fYuht/ZapnmE0mA+0sIhxea5AvHIe0L2oNw==
+"@stlmpp/control@~8.2.2":
+  version "8.2.2"
+  resolved "https://registry.yarnpkg.com/@stlmpp/control/-/control-8.2.2.tgz#29a25d6f58fc4301e7e098ec4befed40d092ca28"
+  integrity sha512-aN6ja53dOaWC4xZUG6YV4AdI1kAQ1rjGTSeDYbYYvqIxu7C/Pdl2ZZLeAyLeIGSv360FSvjXMbR+fCyNjSPkoA==
   dependencies:
     date-fns "~2.23.0"
     st-utils "~2.1.1"
     tslib "~2.3.1"
 
-"@stlmpp/router@~8.2.1":
-  version "8.2.1"
-  resolved "https://registry.yarnpkg.com/@stlmpp/router/-/router-8.2.1.tgz#df96a9190939aa8b84ec62cbe81d759d00e9fba5"
-  integrity sha512-khjpwziTlXCazmeArsEUay0aAyV0CTq22Gl5zUDhCP7QR8fvgPOklx6JPufhLoMXi2E2+gNXyxQPzxS5GFZmKQ==
+"@stlmpp/router@~8.2.2":
+  version "8.2.2"
+  resolved "https://registry.yarnpkg.com/@stlmpp/router/-/router-8.2.2.tgz#f6becedebc98ef520b466899edc1b955825533d6"
+  integrity sha512-DHp63KaiNVNO1M6x0jls1qBLdkBcuLdlI2NUH/MTidqwknZuehkY+mhzfbXHEjF46DlMZg1E4yYpOLCdS148YQ==
   dependencies:
     st-utils "~2.1.1"
     tslib "~2.3.1"
 
-"@stlmpp/store@~8.2.1":
-  version "8.2.1"
-  resolved "https://registry.yarnpkg.com/@stlmpp/store/-/store-8.2.1.tgz#e96d45b7f8708ea8edead01948afda996abdafae"
-  integrity sha512-AoqDgmB9PSLXconbJ21A/fWQuwtxI3FxQXYMBNJljEmoUAuyJRdvg151HcU/D+QgU6p1sCtSzHp9Jr224HYBBA==
+"@stlmpp/store@~8.2.2":
+  version "8.2.2"
+  resolved "https://registry.yarnpkg.com/@stlmpp/store/-/store-8.2.2.tgz#1cb3bd3312a232214b27ba5b791aa1d4d5f59e90"
+  integrity sha512-AKe4Htu3nrN15ERHez+pTOl3O1WV4MpUWsW8LytZo3iTE6mRm2n+/0tn/dz75J7Lw2Eu1q4blLAUBUulk/TOQw==
   dependencies:
     copy-anything "~2.0.3"
     st-utils "~2.1.1"
     tslib "~2.3.1"
     type-fest "~2.0.0"
 
-"@stlmpp/utils@~8.2.1":
-  version "8.2.1"
-  resolved "https://registry.yarnpkg.com/@stlmpp/utils/-/utils-8.2.1.tgz#9f9ce4f3fc90c3c88e396710a00eddd610444623"
-  integrity sha512-GvaHbWDSwW16vjQTNMx1MoZ/uATo8hXIOtoGUo9U/PavBsfXLMUMCm3RZ/V7Py22CMwaYYDZuzbHWY4KR08fEg==
+"@stlmpp/utils@~8.2.2":
+  version "8.2.2"
+  resolved "https://registry.yarnpkg.com/@stlmpp/utils/-/utils-8.2.2.tgz#c95a84a447e0b2aee3a6d6cd22e3089ce65d33f8"
+  integrity sha512-PtX3CXYYe2ACag7CoA5iEgEUy6ZLZdnVLffYOZ6K5noC0HP87IWYh9PZPyDg8KQI18aK5VBq8CxDtdeiB0vNxA==
   dependencies:
     st-utils "~2.1.1"
     tslib "~2.3.1"
@@ -6006,10 +6006,10 @@ karma-source-map-support@1.4.0:
   dependencies:
     source-map-support "^0.5.5"
 
-karma@~6.3.5:
-  version "6.3.5"
-  resolved "https://registry.yarnpkg.com/karma/-/karma-6.3.5.tgz#78c76dc40230590f89d2c1749a8eb049a6968dcc"
-  integrity sha512-uAwOPXtfEdIHIZdK7QcnKEv0BK/bg+AZikZ7TK1ZLk3apW/wNH74rbdamJby1CVVYw3I9PXxqeEo78OaiHeErA==
+karma@~6.3.6:
+  version "6.3.6"
+  resolved "https://registry.yarnpkg.com/karma/-/karma-6.3.6.tgz#6f64cdd558c7d0c9da6fcdece156089582694611"
+  integrity sha512-xsiu3D6AjCv6Uq0YKXJgC6TvXX2WloQ5+XtHXmC1lwiLVG617DDV3W2DdM4BxCMKHlmz6l3qESZHFQGHAKvrew==
   dependencies:
     body-parser "^1.19.0"
     braces "^3.0.2"
@@ -6032,7 +6032,7 @@ karma@~6.3.5:
     socket.io "^4.2.0"
     source-map "^0.6.1"
     tmp "^0.2.1"
-    ua-parser-js "^0.7.28"
+    ua-parser-js "^0.7.30"
     yargs "^16.1.1"
 
 killable@^1.0.1:
@@ -9901,10 +9901,10 @@ typescript@~4.4.4:
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.4.4.tgz#2cd01a1a1f160704d3101fd5a58ff0f9fcb8030c"
   integrity sha512-DqGhF5IKoBl8WNf8C1gu8q0xZSInh9j1kJJMqT3a94w1JzVaBU4EXOSMrz9yDqMT0xt3selp83fuFMQ0uzv6qA==
 
-ua-parser-js@^0.7.28:
-  version "0.7.28"
-  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.28.tgz#8ba04e653f35ce210239c64661685bf9121dec31"
-  integrity sha512-6Gurc1n//gjp9eQNXjD9O3M/sMwVtN5S8Lv9bvOYBfKfDNiIIhqiyi01vMBO45u4zkDE420w/e0se7Vs+sIg+g==
+ua-parser-js@^0.7.30:
+  version "0.7.30"
+  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.30.tgz#4cf5170e8b55ac553fe8b38df3a82f0669671f0b"
+  integrity sha512-uXEtSresNUlXQ1QL4/3dQORcGv7+J2ookOG2ybA/ga9+HYEXueT2o+8dUJQkpedsyTyCJ6jCCirRcKtdtx1kbg==
 
 unbox-primitive@^1.0.1:
   version "1.0.1"
