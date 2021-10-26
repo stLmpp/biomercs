@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { PARAMS_FORM_NULL, ParamsConfig, ParamsForm } from '@shared/params/params.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ScoreService } from '../../score.service';
+import { ScoreService } from '../score.service';
 import { filter, finalize, Observable, pluck, skip, switchMap, takeUntil } from 'rxjs';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { PaginationMeta } from '@model/pagination';
@@ -11,7 +11,7 @@ import { ScoreApprovalActionEnum } from '@model/enum/score-approval-action.enum'
 import { ScoreApprovalPagination } from '@model/score-approval';
 import { LocalState } from '@stlmpp/store';
 import { getScoreDefaultColDefs } from '../util';
-import { AuthDateFormatPipe } from '../../../auth/shared/auth-date-format.pipe';
+import { AuthDateFormatPipe } from '../../auth/shared/auth-date-format.pipe';
 import { ColDef } from '@shared/components/table/col-def';
 import { ScoreApprovalActionsCellComponent } from './score-approval-actions-cell/score-approval-actions-cell.component';
 import { TableCellNotifyChange, TableOrder } from '@shared/components/table/type';

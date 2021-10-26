@@ -15,10 +15,10 @@ import {
 } from '@model/score-grouped-by-status';
 import { ActivatedRoute } from '@angular/router';
 import { Score } from '@model/score';
-import { getScoreDefaultColDefs } from '../../score/score-shared/util';
+import { getScoreDefaultColDefs } from '../../score/util';
 import { AuthDateFormatPipe } from '../../auth/shared/auth-date-format.pipe';
 import { ColDef } from '@shared/components/table/col-def';
-import { ScoreOpenInfoCellComponent } from '../../score/score-shared/score-open-info-cell/score-open-info-cell.component';
+import { ScoreOpenInfoCellComponent } from '../../score/score-approval/score-open-info-cell/score-open-info-cell.component';
 import { subDays } from 'date-fns';
 import { filterNil } from '@util/operators/filter';
 import { mdiSteam } from '@mdi/js';

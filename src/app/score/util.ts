@@ -3,7 +3,7 @@ import { ColDef } from '@shared/components/table/col-def';
 import { Score } from '@model/score';
 import { formatNumber } from '@angular/common';
 import { ScorePlayer } from '@model/score-player';
-import { AuthDateFormatPipe } from '../../auth/shared/auth-date-format.pipe';
+import { AuthDateFormatPipe } from '../auth/shared/auth-date-format.pipe';
 
 export const scoreCurrencyMask: Partial<CurrencyMaskConfig> = {
   align: 'left',

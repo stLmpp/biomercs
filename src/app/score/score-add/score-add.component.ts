@@ -20,7 +20,7 @@ import { ScoreService } from '../score.service';
 import { ScoreAdd } from '@model/score';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
 import { Mode } from '@model/mode';
-import { scoreCurrencyMask } from '../score-shared/util';
+import { scoreCurrencyMask } from '../util';
 import { Router } from '@angular/router';
 import { filterNilArrayOperator } from '@util/operators/filter-nil-array';
 import { trackByControl } from '@util/track-by';

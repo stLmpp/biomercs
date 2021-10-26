@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TableCell } from '@shared/components/table/type';
 import { Score } from '@model/score';
 import { BehaviorSubject } from 'rxjs';
-import { ScoreInfoModalData } from '../score-info/score-info-modal/score-info-modal.component';
+import { ScoreInfoModalData } from '../../score-info/score-info-modal/score-info-modal.component';
 import { ScoreModalService } from '../../score-modal.service';
 
 @Component({

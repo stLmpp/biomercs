@@ -5,7 +5,7 @@ import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import { ScoreApprovalComponentState } from '../score-approval.component';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import { ScoreApprovalPagination } from '@model/score-approval';
-import { ScoreModalService } from '../../../score-modal.service';
+import { ScoreModalService } from '../../score-modal.service';
 
 export interface ScoreApprovalActionsModalData {
   score: Score;

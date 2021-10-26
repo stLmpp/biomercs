@@ -17,9 +17,9 @@ import { finalize, Subject, switchMap, tap, throttleTime } from 'rxjs';
 import { Key, KeyCode } from '@model/enum/key';
 import { FocusKeyManager } from '@angular/cdk/a11y';
 import { InputDirective } from '@shared/components/form/input.directive';
-import { ScoreApprovalComponentState } from '../score-approval.component';
+import { ScoreApprovalComponentState } from '../score-approval/score-approval.component';
 import { trackByControl } from '@util/track-by';
-import { ScoreService } from '../../../score.service';
+import { ScoreService } from '../score.service';
 
 export interface ScoreRequestChangesModalData {
   score: Score;

@@ -8,7 +8,7 @@ import { ModalRef } from '@shared/components/modal/modal-ref';
 import { IdChecked } from '@shared/type/id-checked';
 import { MaskEnum, MaskEnumPatterns } from '@shared/mask/mask.enum';
 import { CURRENCY_MASK_CONFIG } from '@shared/currency-mask/currency-mask-config.token';
-import { scoreCurrencyMask } from '../../../score/score-shared/util';
+import { scoreCurrencyMask } from '../../../score/util';
 import { ScoreService } from '../../../score/score.service';
 import { finalize, map, Observable, of, switchMap, tap } from 'rxjs';
 import { SnackBarService } from '@shared/components/snack-bar/snack-bar.service';

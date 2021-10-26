@@ -5,7 +5,7 @@ import { ScoreApprovalActionEnum } from '@model/enum/score-approval-action.enum'
 import { ColDefInternal } from '@shared/components/table/col-def';
 import { ScoreApprovalComponentState } from '../score-approval.component';
 import { ScoreApprovalPagination } from '@model/score-approval';
-import { ScoreModalService } from '../../../score-modal.service';
+import { ScoreModalService } from '../../score-modal.service';
 
 @Component({
   selector: 'bio-score-approval-actions-cell',

@@ -10,7 +10,7 @@ import { finalize, Observable, switchMap, tap } from 'rxjs';
 import { ScoreApprovalAdd, ScoreApprovalPagination } from '@model/score-approval';
 import { ScoreApprovalComponentState } from '../score-approval.component';
 import { trackById } from '@util/track-by';
-import { ScoreService } from '../../../score.service';
+import { ScoreService } from '../../score.service';
 
 export interface ScoreApprovalModalData {
   score: Score;
