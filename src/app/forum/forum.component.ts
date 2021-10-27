@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ForumService } from './service/forum.service';
 
 @Component({
   selector: 'bio-forum',
@@ -6,4 +7,14 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrls: ['./forum.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ForumComponent {}
+export class ForumComponent implements OnInit, OnDestroy {
+  constructor(private forumService: ForumService) {}
+
+  ngOnInit(): void {
+    this.forumService.init();
+  }
+
+  ngOnDestroy(): void {
+    this.forumService.destroy();
+  }
+}

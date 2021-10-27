@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { ForumCategoriesComponent } from './forum-categories.component';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { CategoriesWithRecentTopicsResolver } from '../resolver/categories-with-recent-topics.resolver';
-import { UsersOnlineResolver } from '@shared/services/user/users-online.resolver';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 
 const routes: Routes = [
@@ -12,7 +11,6 @@ const routes: Routes = [
     component: ForumCategoriesComponent,
     resolve: {
       [RouteDataEnum.categoriesWithRecentTopics]: CategoriesWithRecentTopicsResolver,
-      [RouteDataEnum.usersOnline]: UsersOnlineResolver,
     },
   },
   {

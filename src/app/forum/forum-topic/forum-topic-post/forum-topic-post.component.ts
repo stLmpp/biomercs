@@ -7,17 +7,20 @@ import {
   EventEmitter,
   HostBinding,
   Input,
+  OnChanges,
   Output,
 } from '@angular/core';
 import { Post, PostUpdateDto } from '@model/forum/post';
 import { PlayerService } from '../../../player/player.service';
 import { PostService } from '../../service/post.service';
-import { finalize, tap } from 'rxjs';
+import { combineLatest, finalize, map, ReplaySubject, tap } from 'rxjs';
 import { Control, ControlGroup, Validators } from '@stlmpp/control';
 import ClassicEditor from '@shared/ckeditor/ckeditor';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
 import { TopicService } from '../../service/topic.service';
 import { ActivatedRoute } from '@angular/router';
+import { SimpleChangesCustom } from '@util/util';
+import { ForumService } from '../../service/forum.service';
 
 @Component({
   selector: 'bio-forum-topic-post',
@@ -25,7 +28,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./forum-topic-post.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ForumTopicPostComponent implements AfterViewInit {
+export class ForumTopicPostComponent implements AfterViewInit, OnChanges {
   constructor(
     private playerService: PlayerService,
     private postService: PostService,
@@ -33,8 +36,11 @@ export class ForumTopicPostComponent implements AfterViewInit {
     private dialogService: DialogService,
     private topicService: TopicService,
     private elementRef: ElementRef<HTMLElement>,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private forumService: ForumService
   ) {}
+
+  private readonly _post$ = new ReplaySubject<Post>();
 
   @Input() idSubCategory!: number;
   @Input() post!: Post;
@@ -46,6 +52,10 @@ export class ForumTopicPostComponent implements AfterViewInit {
   @Output() readonly postDelete = new EventEmitter<Post>();
   @Output() readonly postQuote = new EventEmitter<Post>();
   @Output() readonly topicDelete = new EventEmitter<void>();
+
+  readonly isOnline$ = combineLatest([this._post$, this.forumService.usersOnline$]).pipe(
+    map(([post, usersOnline]) => usersOnline.some(user => user.idPlayer === post.idPlayer))
+  );
 
   @HostBinding('class.highlight')
   get highlight(): boolean {
@@ -152,6 +162,12 @@ export class ForumTopicPostComponent implements AfterViewInit {
       setTimeout(() => {
         this.elementRef.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
       });
+    }
+  }
+
+  ngOnChanges(changes: SimpleChangesCustom<ForumTopicPostComponent>): void {
+    if (changes.post?.currentValue) {
+      this._post$.next(changes.post.currentValue);
     }
   }
 }

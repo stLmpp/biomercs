@@ -11,6 +11,7 @@ import { FlagModule } from '@shared/components/icon/flag/flag.module';
 import { AsyncDefaultModule } from '@shared/async-default/async-default.module';
 import { CKEditorModule } from '@shared/ckeditor/ckeditor.module';
 import { PlayerAvatarModule } from '../../player/player-avatar/player-avatar.module';
+import { NgLetModule } from '@stlmpp/utils';
 
 @NgModule({
   declarations: [ForumTopicComponent, ForumTopicPostComponent],
@@ -26,6 +27,7 @@ import { PlayerAvatarModule } from '../../player/player-avatar/player-avatar.mod
     AsyncDefaultModule,
     CKEditorModule,
     PlayerAvatarModule,
+    NgLetModule,
   ],
 })
 export class ForumTopicModule {}

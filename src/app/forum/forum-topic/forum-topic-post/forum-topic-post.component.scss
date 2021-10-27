@@ -65,3 +65,22 @@
     }
   }
 }
+
+.indicator {
+  display: inline-block;
+
+  &.online {
+    background-color: v.$success;
+    border-radius: 50%;
+    width: 0.5rem;
+    height: 0.5rem;
+  }
+
+  &.offline {
+    background-color: v.$danger;
+    width: 0.4rem;
+    height: 0.4rem;
+  }
+
+  margin-right: 0.1rem;
+}

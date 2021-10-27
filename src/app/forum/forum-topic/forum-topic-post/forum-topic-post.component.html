@@ -3,7 +3,10 @@
     <bio-icon [flag]="post.shortNameRegion" small [bioTooltip]="post.nameRegion"></bio-icon>
     <a [routerLink]="['/player', post.idPlayer]">{{ post.personaNamePlayer }}</a>
   </div>
-  <div class="status">Online<!--TODO ONLINE STATUS--></div>
+  <div class="status" *ngLet="isOnline$ | async as isOnline">
+    <span class="indicator" [class.online]="isOnline" [class.offline]="!isOnline"></span>
+    {{ isOnline ? 'Online' : 'Offline' }}
+  </div>
   <div class="posts">Posts: {{ post.postCount | number: '1.0-0' }}</div>
   <div class="avatar">
     <bio-player-avatar [personaName]="post.personaNamePlayer" [avatar]="post.avatarPlayer"></bio-player-avatar>
