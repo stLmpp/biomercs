@@ -9,7 +9,13 @@ import {
 } from '@angular/core';
 import { NotificationService } from '../notification.service';
 import { Destroyable } from '@shared/components/common/destroyable-component';
-import { Notification } from '@model/notification';
+import {
+  isNotificationExtraPost,
+  isNotificationExtraScore,
+  Notification,
+  NotificationExtraPost,
+  NotificationExtraScore,
+} from '@model/notification';
 import { finalize, lastValueFrom, Observable, of, switchMap, tap } from 'rxjs';
 import { trackById } from '@util/track-by';
 import { ScoreService } from '../../score/score.service';
@@ -21,6 +27,7 @@ import { NotificationTypeEnum } from '@model/enum/notification-type-enum';
 import { ScoreStatusEnum } from '@model/enum/score-status.enum';
 import { PlayerModalService } from '../../player/player-modal.service';
 import { arrayUtil } from 'st-utils';
+import { Router } from '@angular/router';
 
 interface NotificationCustom extends Notification {
   loading?: boolean;
@@ -42,7 +49,8 @@ export class NotificationsComponent extends Destroyable implements OnInit {
     private scoreService: ScoreService,
     private scoreModalService: ScoreModalService,
     private dialogService: DialogService,
-    private playerModalService: PlayerModalService
+    private playerModalService: PlayerModalService,
+    private router: Router
   ) {
     super();
   }
@@ -54,6 +62,7 @@ export class NotificationsComponent extends Destroyable implements OnInit {
   @Output() readonly pageChange = new EventEmitter<number>();
   @Input() loading = false;
   @Input() loadingMore = false;
+  @Output() readonly closeOverlay = new EventEmitter<void>();
 
   readAllLoading = false;
   deleteAllLoading = false;
@@ -85,14 +94,19 @@ export class NotificationsComponent extends Destroyable implements OnInit {
   }
 
   async openModal(notification: NotificationCustom): Promise<void> {
-    if (notification.idScore) {
-      if (
-        notification.idNotificationType === NotificationTypeEnum.ScoreRequestedChanges &&
-        notification.idScoreStatus === ScoreStatusEnum.ChangesRequested
-      ) {
-        this.openModalChangeRequests(notification);
-      } else {
-        this.openModalScore(notification);
+    if (notification.extra) {
+      if (isNotificationExtraScore(notification.extra)) {
+        if (
+          notification.idNotificationType === NotificationTypeEnum.ScoreRequestedChanges &&
+          notification.extra.idScoreStatus === ScoreStatusEnum.ChangesRequested
+        ) {
+          this.openModalChangeRequests(notification, notification.extra);
+        } else {
+          this.openModalScore(notification, notification.extra);
+        }
+      }
+      if (isNotificationExtraPost(notification.extra)) {
+        await this.navigateToPost(notification, notification.extra);
       }
     } else {
       this._updateNotification(notification.id, { loading: true });
@@ -104,9 +118,10 @@ export class NotificationsComponent extends Destroyable implements OnInit {
     }
   }
 
-  openModalScore(notification: NotificationCustom): void {
-    const { idScore, loading, id } = notification;
-    if (!idScore || loading) {
+  openModalScore(notification: NotificationCustom, extra: NotificationExtraScore): void {
+    const { loading, id } = notification;
+    const { idScore } = extra;
+    if (loading) {
       return;
     }
     this._updateNotification(id, { loading: true });
@@ -124,9 +139,10 @@ export class NotificationsComponent extends Destroyable implements OnInit {
       .subscribe();
   }
 
-  openModalChangeRequests(notification: NotificationCustom): void {
-    const { idScore, loading, id } = notification;
-    if (!idScore || loading) {
+  openModalChangeRequests(notification: NotificationCustom, extra: NotificationExtraScore): void {
+    const { loading, id } = notification;
+    const { idScore } = extra;
+    if (loading) {
       return;
     }
     this._updateNotification(id, { loading: true });
@@ -140,6 +156,34 @@ export class NotificationsComponent extends Destroyable implements OnInit {
         })
       )
       .subscribe();
+  }
+
+  async navigateToPost(notification: NotificationCustom, extra: NotificationExtraPost): Promise<void> {
+    const { loading, id } = notification;
+    const { idCategory, idSubCategory, pageSubCategory, idTopic, pageTopic, idPost } = extra;
+    if (loading) {
+      return;
+    }
+    this._updateNotification(id, { loading: true });
+    await lastValueFrom(this._maskAsRead(notification));
+    this.closeOverlay.emit();
+    await this.router.navigate(
+      [
+        '/forum',
+        'category',
+        idCategory,
+        'sub-category',
+        idSubCategory,
+        'page',
+        pageSubCategory,
+        'topic',
+        idTopic,
+        'page',
+        pageTopic,
+      ],
+      { fragment: '' + idPost }
+    );
+    this._updateNotification(id, { loading: false });
   }
 
   onScrolledIndexChange(firstIndex: number): void {
