@@ -113,7 +113,12 @@ export class PlayerProfileComponent extends Destroyable implements OnInit {
     const idRegionPlayer = this.player.region?.id ?? -1;
     this.loadingRegion = true;
     await this.regionModalService.showSelectModal(idRegionPlayer, idRegion =>
-      this.playerService.update(this.idPlayer, { idRegion })
+      this.playerService.update(this.idPlayer, { idRegion }).pipe(
+        tap(player => {
+          this.player = { ...this.player, ...player };
+          this.changeDetectorRef.markForCheck();
+        })
+      )
     );
     this.loadingRegion = false;
     this.changeDetectorRef.markForCheck();
@@ -141,7 +146,15 @@ export class PlayerProfileComponent extends Destroyable implements OnInit {
           this.changeDetectorRef.markForCheck();
         })
       )
-      .subscribe();
+      .subscribe(response => {
+        if (response.steamProfile) {
+          this.player = {
+            ...this.player,
+            steamProfile: response.steamProfile,
+            idSteamProfile: response.steamProfile.id,
+          };
+        }
+      });
   }
 
   setEditMode(editMode: boolean): void {
@@ -160,8 +173,8 @@ export class PlayerProfileComponent extends Destroyable implements OnInit {
       const personaName = this.newPersonaName;
       requests.push(
         this.playerService.updatePersonaName(player.id, personaName).pipe(
-          tap(() => {
-            this.player = { ...this.player, personaName };
+          tap(lastUpdatedPersonaNameDate => {
+            this.player = { ...this.player, personaName, lastUpdatedPersonaNameDate };
           })
         )
       );
@@ -170,8 +183,8 @@ export class PlayerProfileComponent extends Destroyable implements OnInit {
       const update = this.update;
       requests.push(
         this.playerService.update(player.id, update).pipe(
-          tap(() => {
-            this.player = { ...this.player, ...update };
+          tap(_player => {
+            this.player = { ...this.player, ..._player };
           })
         )
       );

@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { PlayerStore } from './player.store';
 import { WINDOW } from '../core/window.service';
 import { SteamService } from '@shared/services/steam/steam.service';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
@@ -14,7 +13,6 @@ import { SteamPlayerLinkedSocketViewModel } from '@model/steam-profile';
 export class PlayerService {
   constructor(
     private http: HttpClient,
-    private playerStore: PlayerStore,
     @Inject(WINDOW) private window: Window,
     private steamService: SteamService,
     private dialogService: DialogService
@@ -23,11 +21,7 @@ export class PlayerService {
   readonly endPoint = 'player';
 
   getById(idPlayer: number): Observable<Player> {
-    return this.http.get<Player>(`${this.endPoint}/${idPlayer}`).pipe(
-      tap(player => {
-        this.playerStore.upsert(idPlayer, player);
-      })
-    );
+    return this.http.get<Player>(`${this.endPoint}/${idPlayer}`);
   }
 
   getIdByPersonaName(personaName: string): Observable<number> {
@@ -39,19 +33,11 @@ export class PlayerService {
   }
 
   getAuth(): Observable<Player> {
-    return this.http.get<Player>(`${this.endPoint}/auth`).pipe(
-      tap(player => {
-        this.playerStore.upsert(player.id, player);
-      })
-    );
+    return this.http.get<Player>(`${this.endPoint}/auth`);
   }
 
   update(idPlayer: number, dto: PlayerUpdate): Observable<Player> {
-    return this.http.patch<Player>(`${this.endPoint}/${idPlayer}`, dto).pipe(
-      tap(player => {
-        this.playerStore.upsert(idPlayer, player);
-      })
-    );
+    return this.http.patch<Player>(`${this.endPoint}/${idPlayer}`, dto);
   }
 
   searchPaginated(
@@ -61,20 +47,12 @@ export class PlayerService {
     idPlayersSelected: number[] = []
   ): Observable<Pagination<Player>> {
     const params = new HttpParams({ personaName, page, limit, idPlayersSelected });
-    return this.http.get<Pagination<Player>>(`${this.endPoint}/search-paginated`, { params }).pipe(
-      tap(({ items }) => {
-        this.playerStore.upsert(items);
-      })
-    );
+    return this.http.get<Pagination<Player>>(`${this.endPoint}/search-paginated`, { params });
   }
 
   search(personaName: string, idPlayersSelected: number[] = []): Observable<Player[]> {
     const params = new HttpParams({ personaName, idPlayersSelected });
-    return this.http.get<Player[]>(`${this.endPoint}/search`, { params }).pipe(
-      tap(players => {
-        this.playerStore.upsert(players);
-      })
-    );
+    return this.http.get<Player[]>(`${this.endPoint}/search`, { params });
   }
 
   personaNameExists(personaName: string): Observable<boolean> {
@@ -96,8 +74,6 @@ export class PlayerService {
             windowSteam?.close();
             if (error) {
               await this.dialogService.info({ title: 'Error', content: error, buttons: ['Close'] });
-            } else if (steamProfile) {
-              this.playerStore.updateEntity(idPlayer, { steamProfile, idSteamProfile: steamProfile.id });
             }
           })
         );
@@ -106,25 +82,15 @@ export class PlayerService {
   }
 
   updatePersonaName(idPlayer: number, personaName: string): Observable<Date> {
-    const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
     return this.http
-      .put(`${this.endPoint}/${idPlayer}/personaName`, { personaName }, { responseType: 'text', headers })
-      .pipe(
-        map(lastUpdatedPersonaNameDate => new Date(lastUpdatedPersonaNameDate)),
-        tap(lastUpdatedPersonaNameDate => {
-          this.playerStore.updateEntity(idPlayer, { personaName, lastUpdatedPersonaNameDate });
-        })
-      );
+      .put(`${this.endPoint}/${idPlayer}/persona-name`, { personaName }, { responseType: 'text' })
+      .pipe(map(lastUpdatedPersonaNameDate => new Date(lastUpdatedPersonaNameDate)));
   }
 
   avatar(idPlayer: number, file: File): Observable<string> {
     const formData = new FormData();
     formData.append('file', file);
-    return this.http.put(`${this.endPoint}/${idPlayer}/avatar`, formData, { responseType: 'text' }).pipe(
-      tap(avatar => {
-        this.playerStore.updateEntity(idPlayer, { avatar });
-      })
-    );
+    return this.http.put(`${this.endPoint}/${idPlayer}/avatar`, formData, { responseType: 'text' });
   }
 
   removeAvatar(idPlayer: number): Observable<void> {
