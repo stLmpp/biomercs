@@ -10,6 +10,7 @@ import { FormModule } from '@shared/components/form/form.module';
 import { FlagModule } from '@shared/components/icon/flag/flag.module';
 import { AsyncDefaultModule } from '@shared/async-default/async-default.module';
 import { CKEditorModule } from '@shared/ckeditor/ckeditor.module';
+import { PlayerAvatarModule } from '../../player/player-avatar/player-avatar.module';
 
 @NgModule({
   declarations: [ForumTopicComponent, ForumTopicPostComponent],
@@ -24,6 +25,7 @@ import { CKEditorModule } from '@shared/ckeditor/ckeditor.module';
     StControlModule,
     AsyncDefaultModule,
     CKEditorModule,
+    PlayerAvatarModule,
   ],
 })
 export class ForumTopicModule {}

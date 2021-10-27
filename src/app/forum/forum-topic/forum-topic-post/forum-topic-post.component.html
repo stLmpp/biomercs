@@ -5,7 +5,9 @@
   </div>
   <div class="status">Online<!--TODO ONLINE STATUS--></div>
   <div class="posts">Posts: {{ post.postCount | number: '1.0-0' }}</div>
-  <div class="avatar">Avatar<!--TODO AVATAR--></div>
+  <div class="avatar">
+    <bio-player-avatar [personaName]="post.personaNamePlayer" [avatar]="post.avatarPlayer"></bio-player-avatar>
+  </div>
 </div>
 <form class="post" [controlGroup]="form" (groupSubmit)="save()">
   <div class="header">

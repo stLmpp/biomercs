@@ -6,6 +6,7 @@ export interface Post {
   idPlayer: number;
   deletedDate?: Date;
   personaNamePlayer: string;
+  avatarPlayer?: string | null;
   postCount: number;
   idRegion: number;
   nameRegion: string;

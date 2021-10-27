@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { concat, distinctUntilChanged, finalize, map, switchMap, takeUntil } from 'rxjs';
+import { concat, distinctUntilChanged, finalize, map, switchMap, takeUntil, tap } from 'rxjs';
 import { PlayerService } from '../player.service';
 import { Animations } from '@shared/animations/animations';
 import { AuthQuery } from '../../auth/auth.query';
@@ -71,6 +71,8 @@ export class PlayerProfileComponent extends Destroyable implements OnInit {
   editMode = false;
   update: PlayerUpdate = {};
   newPersonaName: string | null = null;
+  avatarLoading = false;
+  avatarFile: FileList | null | undefined;
 
   readonly colDefs: ColDef<ScoreScoreGroupedByStatusScoreVW>[] = [
     { property: 'id', component: ScoreOpenInfoCellComponent, width: '40px' },
@@ -155,10 +157,24 @@ export class PlayerProfileComponent extends Destroyable implements OnInit {
     const player = this.player;
     const requests = [];
     if (playerProfileValidatePersonaName(player, this.newPersonaName)) {
-      requests.push(this.playerService.updatePersonaName(player.id, this.newPersonaName));
+      const personaName = this.newPersonaName;
+      requests.push(
+        this.playerService.updatePersonaName(player.id, personaName).pipe(
+          tap(() => {
+            this.player = { ...this.player, personaName };
+          })
+        )
+      );
     }
     if (!isObjectEmpty(this.update)) {
-      requests.push(this.playerService.update(player.id, this.update));
+      const update = this.update;
+      requests.push(
+        this.playerService.update(player.id, update).pipe(
+          tap(() => {
+            this.player = { ...this.player, ...update };
+          })
+        )
+      );
     }
     if (!requests.length) {
       this.editMode = false;
@@ -185,6 +201,41 @@ export class PlayerProfileComponent extends Destroyable implements OnInit {
       $event = null;
     }
     this.newPersonaName = $event;
+  }
+
+  onRemoveAvatar(): void {
+    this.avatarLoading = true;
+    this.playerService
+      .removeAvatar(this.player.id)
+      .pipe(
+        finalize(() => {
+          this.avatarLoading = false;
+          this.changeDetectorRef.markForCheck();
+        })
+      )
+      .subscribe(() => {
+        this.player = { ...this.player, avatar: null };
+      });
+  }
+
+  onChangeAvatar($event: FileList | null | undefined): void {
+    const file = $event?.item(0);
+    if (!file) {
+      return;
+    }
+    this.avatarLoading = true;
+    this.playerService
+      .avatar(this.player.id, file)
+      .pipe(
+        finalize(() => {
+          this.avatarLoading = false;
+          this.avatarFile = null;
+          this.changeDetectorRef.markForCheck();
+        })
+      )
+      .subscribe(avatar => {
+        this.player = { ...this.player, avatar };
+      });
   }
 
   ngOnInit(): void {

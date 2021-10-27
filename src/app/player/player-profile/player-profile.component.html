@@ -1,5 +1,43 @@
 <bio-card class="player" *ngLet="isSameAsLogged$ | async as isSameAsLogged">
   <div bioCardTitle>
+    <div class="avatar" *ngIf="isSameAsLogged; else avatarTemplate">
+      <ng-container [ngTemplateOutlet]="avatarTemplate"></ng-container>
+      <div class="overlay">
+        <input
+          class="cdk-visually-hidden"
+          type="file"
+          #inputFile
+          [model]="avatarFile"
+          (modelChange)="onChangeAvatar($event)"
+        />
+        <button
+          bioButton
+          icon
+          small
+          type="button"
+          bioTooltip="Edit"
+          (click)="inputFile.click()"
+          [disabled]="avatarLoading"
+        >
+          <bio-icon class="edit" small>edit</bio-icon>
+        </button>
+        <button
+          *ngIf="player.avatar"
+          bioButton
+          icon
+          small
+          type="button"
+          bioTooltip="Remove"
+          (click)="onRemoveAvatar()"
+          [disabled]="avatarLoading"
+        >
+          <bio-icon class="clear" small>clear</bio-icon>
+        </button>
+      </div>
+    </div>
+    <ng-template #avatarTemplate>
+      <bio-player-avatar [avatar]="player.avatar" [personaName]="player.personaName"></bio-player-avatar>
+    </ng-template>
     <button
       *ngIf="isSameAsLogged; else flagTemplate"
       class="flag"

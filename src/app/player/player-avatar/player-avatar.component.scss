@@ -1,0 +1,17 @@
+@use 'variables' as v;
+
+:host {
+  display: block;
+  width: 50px;
+  height: 50px;
+  background-color: white;
+  border: 1px solid v.$primary-50;
+  border-radius: v.$radius;
+  overflow: hidden;
+}
+
+img {
+  object-fit: cover;
+  max-width: 100%;
+  max-height: 100%;
+}

@@ -116,4 +116,18 @@ export class PlayerService {
         })
       );
   }
+
+  avatar(idPlayer: number, file: File): Observable<string> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.put(`${this.endPoint}/${idPlayer}/avatar`, formData, { responseType: 'text' }).pipe(
+      tap(avatar => {
+        this.playerStore.updateEntity(idPlayer, { avatar });
+      })
+    );
+  }
+
+  removeAvatar(idPlayer: number): Observable<void> {
+    return this.http.put<void>(`${this.endPoint}/${idPlayer}/remove-avatar`, undefined);
+  }
 }
