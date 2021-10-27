@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { WINDOW } from '../core/window.service';
 import { SteamService } from '@shared/services/steam/steam.service';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
@@ -65,8 +65,7 @@ export class PlayerService {
   }
 
   linkSteam(idPlayer: number): Observable<SteamPlayerLinkedSocketViewModel> {
-    const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
-    return this.http.put(`${this.endPoint}/${idPlayer}/link-steam`, undefined, { responseType: 'text', headers }).pipe(
+    return this.http.put(`${this.endPoint}/${idPlayer}/link-steam`, undefined, { responseType: 'text' }).pipe(
       switchMap(url => {
         const windowSteam = this.window.open(url, 'Login Steam', 'width=500,height=500');
         return this.steamService.playerLinkedSocket(idPlayer).pipe(
