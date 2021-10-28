@@ -1,15 +1,16 @@
-<h3 bioModalTitle>Search players</h3>
-<bio-modal-content [controlGroup]="form">
-  <form-field label="Search">
-    <input autocomplete="off" type="search" bioInput placeholder="Search" controlName="term" />
-  </form-field>
-  <ng-container *ngLet="{ players: players$ | async, loading: loading$ | async, term: term$ | async } as state">
-    <ng-container *ngIf="!state.players?.length && !state.loading">
+<ng-container [controlGroup]="form">
+  <h3 bioModalTitle>Search players</h3>
+  <div bioModalTitle>
+    <label class="cdk-visually-hidden" for="search">Search</label>
+    <input id="search" autocomplete="off" type="search" bioInput placeholder="Search" controlName="term" />
+  </div>
+  <bio-modal-content *ngIf="{ players: players$ | async, term: term$ | async } as state">
+    <ng-container *ngIf="!state.players?.length && !loading">
       <p *ngIf="!state.term">Type something to start searching</p>
       <p *ngIf="state.term">No data found</p>
     </ng-container>
     <bio-list [model]="idPlayer">
-      <bio-loading *ngIf="state.loading"></bio-loading>
+      <bio-loading *ngIf="loading"></bio-loading>
       <bio-list-item
         *ngFor="let player of state.players; trackBy: trackByPlayer"
         [value]="player.id"
@@ -18,16 +19,14 @@
         {{ player.personaName }}
       </bio-list-item>
     </bio-list>
-  </ng-container>
-
-  <bio-pagination
-    *ngIf="paginationMeta$ | async as paginationMeta"
-    [meta]="paginationMeta"
-    (itemsPerPageChange)="onItemsPerPageChange($event)"
-    (currentPageChange)="onCurrentPageChange($event)"
-  >
-  </bio-pagination>
-</bio-modal-content>
-<bio-modal-actions end>
-  <button bioButton type="button" bioModalClose>Close</button>
-</bio-modal-actions>
+  </bio-modal-content>
+  <bio-modal-actions>
+    <bio-pagination
+      [meta]="paginationMeta$ | async"
+      (itemsPerPageChange)="onItemsPerPageChange($event)"
+      (currentPageChange)="onCurrentPageChange($event)"
+    >
+    </bio-pagination>
+    <button bioButton type="button" bioModalClose>Close</button>
+  </bio-modal-actions>
+</ng-container>

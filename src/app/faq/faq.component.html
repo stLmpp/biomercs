@@ -1,6 +1,6 @@
 <h4 bioPageTitle></h4>
 
-<form-field label="Search">
+<bio-form-field label="Search">
   <input
     bioInput
     type="search"
@@ -9,8 +9,8 @@
     autocomplete="off"
     (keydown.arrowDown)="accordionDirective?.focusKeyManager?.setFirstItemActive()"
   />
-  <icon prefix>search</icon>
-</form-field>
+  <bio-icon bioPrefix>search</bio-icon>
+</bio-form-field>
 
 <bio-accordion
   (itemExpanded)="onItemExpanded($event)"
@@ -29,12 +29,12 @@
       [icon]="isMobile"
       routerLink="/score/add"
       queryParamsHandling="preserve"
-      tooltip="Submit score"
-      tooltipPosition="bottom"
+      bioTooltip="Submit score"
+      bioTooltipPosition="bottom"
       small
-      [tooltipDisabled]="!isMobile"
+      [bioTooltipDisabled]="!isMobile"
     >
-      <icon small>add</icon>
+      <bio-icon small>add</bio-icon>
       <ng-container *ngIf="!isMobile">Submit score</ng-container>
     </a>
     ), that redirects you to the page of score submission.<br />
@@ -46,19 +46,19 @@
     id="after-i-submitted-my-score-what-happens"
   >
     It depends. <br /><br />
-    If your score is Solo:<br />
+
     <ol>
       <li>It goes to the approval of an admin</li>
       <li>
         If an admin approves your score:
-        <a class="inherit" [routerLink]="[]" fragment="what-happens-when-my-score-is-approved-by-an-admin">
-          What happens when my score is approved by an admin?
+        <a class="inherit" [routerLink]="[]" fragment="what-happens-when-my-score-is-approved">
+          What happens when my score is approved?
         </a>
       </li>
       <li>
         If an admin rejects your score:
-        <a class="inherit" [routerLink]="[]" fragment="what-happens-when-my-score-is-rejected-by-an-admin">
-          What happens when my score is rejected by an admin?
+        <a class="inherit" [routerLink]="[]" fragment="what-happens-when-my-score-is-rejected">
+          What happens when my score is rejected?
         </a>
       </li>
       <li>
@@ -68,45 +68,18 @@
         </a>
       </li>
     </ol>
-
-    If your score is Duo:
-    <ol>
-      <li>It goes to the approval of your partner</li>
-      <li>
-        If your partner approves your score:
-        <a class="inherit" [routerLink]="[]" fragment="what-happens-when-my-score-is-approved-by-my-partner">
-          What happens when my score is approved by my partner?
-        </a>
-      </li>
-      <li>
-        If your partner rejects your score:
-        <a class="inherit" [routerLink]="[]" fragment="what-happens-when-my-score-is-rejected-by-my-partner">
-          What happens when my score is rejected by my partner?
-        </a>
-      </li>
-      <li>
-        If your partner requests changes to your score:
-        <a
-          class="inherit"
-          [routerLink]="[]"
-          fragment="what-do-i-need-to-do-when-my-partner-request-a-change-in-my-score"
-        >
-          What do I need to do when my partner request a change in my score?
-        </a>
-      </li>
-    </ol>
   </bio-accordion-item>
   <bio-accordion-item
     bioFilterItem
-    accordionTitle="What happens when my score is approved by an admin?"
-    id="what-happens-when-my-score-is-approved-by-an-admin"
+    accordionTitle="What happens when my score is approved?"
+    id="what-happens-when-my-score-is-approved"
   >
     Your score will be visible to anyone, and will enter the Leaderboards.
   </bio-accordion-item>
   <bio-accordion-item
     bioFilterItem
-    accordionTitle="What happens when my score is rejected by an admin?"
-    id="what-happens-when-my-score-is-rejected-by-an-admin"
+    accordionTitle="What happens when my score is rejected?"
+    id="what-happens-when-my-score-is-rejected"
   >
     We will try our best to never do this, but if your score gets rejected, will you have to submit another one.
   </bio-accordion-item>
@@ -115,27 +88,9 @@
     accordionTitle="What happens when an admin request changes to my score?"
     id="what-happens-when-an-admin-request-changes-to-my-score"
   >
-    You'll need to change your score and it will by re-submitted to approval.
+    You'll need to change your score and it will be re-submitted to approval.
     <br />
     <small>This is what we will always try to do instead of rejecting the score.</small>
-  </bio-accordion-item>
-  <bio-accordion-item
-    accordionTitle="What happens when my score is approved by my partner?"
-    id="what-happens-when-my-score-is-approved-by-my-partner"
-  >
-    Your score will be sent to the approval of the admins.
-  </bio-accordion-item>
-  <bio-accordion-item
-    accordionTitle="What happens when my score is rejected by my partner?"
-    id="what-happens-when-my-score-is-rejected-by-my-partner"
-  >
-    You'll need to submit your score again.
-  </bio-accordion-item>
-  <bio-accordion-item
-    accordionTitle="What do I need to do when my partner request a change in my score?"
-    id="what-do-i-need-to-do-when-my-partner-request-a-change-in-my-score"
-  >
-    You'll need to change your score and it will by re-submitted to approval of your partner.
   </bio-accordion-item>
   <bio-accordion-item accordionTitle="Why do we need this approval system?" id="why-do-we-need-this-approval-system">
     The in-game leaderboards (when existent) are full of cheaters, most of the scores are 999.999.999 or 2.147.483.647,

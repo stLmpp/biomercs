@@ -1,49 +1,47 @@
 <bio-modal-content>
-  <ng-container *ngLet="loading$ | async as loading">
-    <div class="title">Approve</div>
-    <div class="title">Reject</div>
-    <div class="title">Request changes</div>
-    <div class="button-wrapper">
-      <button
-        bioButton
-        icon
-        large
-        tooltip="Approve"
-        tooltipPosition="right"
-        (click)="openModalApproval(scoreApprovalActionEnum.Approve)"
-        [disabled]="loading"
-        type="button"
-      >
-        <icon large>check</icon>
-      </button>
-    </div>
-    <div class="button-wrapper">
-      <button
-        bioButton
-        icon
-        large
-        tooltip="Reject"
-        tooltipPosition="right"
-        (click)="openModalApproval(scoreApprovalActionEnum.Reject)"
-        [disabled]="loading"
-        type="button"
-      >
-        <icon large>close</icon>
-      </button>
-    </div>
-    <div class="button-wrapper">
-      <button
-        bioButton
-        icon
-        large
-        tooltip="Request changes"
-        tooltipPosition="right"
-        type="button"
-        (click)="openModalRequestChanges()"
-        [disabled]="loading"
-      >
-        <icon large>sync_alt</icon>
-      </button>
-    </div>
-  </ng-container>
+  <div class="title">Approve</div>
+  <div class="title">Reject</div>
+  <div class="title">Request changes</div>
+  <div class="button-wrapper">
+    <button
+      bioButton
+      icon
+      large
+      bioTooltip="Approve"
+      bioTooltipPosition="right"
+      (click)="openModalApproval(scoreApprovalActionEnum.Approve)"
+      [disabled]="loading"
+      type="button"
+    >
+      <bio-icon large>check</bio-icon>
+    </button>
+  </div>
+  <div class="button-wrapper">
+    <button
+      bioButton
+      icon
+      large
+      bioTooltip="Reject"
+      bioTooltipPosition="right"
+      (click)="openModalApproval(scoreApprovalActionEnum.Reject)"
+      [disabled]="loading"
+      type="button"
+    >
+      <bio-icon large>close</bio-icon>
+    </button>
+  </div>
+  <div class="button-wrapper">
+    <button
+      bioButton
+      icon
+      large
+      bioTooltip="Request changes"
+      bioTooltipPosition="right"
+      type="button"
+      (click)="openModalRequestChanges()"
+      [disabled]="loading"
+    >
+      <bio-icon large>sync_alt</bio-icon>
+    </button>
+  </div>
 </bio-modal-content>

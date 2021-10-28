@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -10,13 +11,12 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { Control, ControlBuilder, ControlValidator, ValidatorsKeys } from '@stlmpp/control';
-import { Nullable } from '../type/nullable';
-import { PlatformQuery } from '../services/platform/platform.query';
 import { GameService } from '../services/game/game.service';
 import { MiniGameService } from '../services/mini-game/mini-game.service';
 import { ModeService } from '../services/mode/mode.service';
-import { filterNil } from '../operators/filter';
+import { filterNil } from '@util/operators/filter';
 import {
+  BehaviorSubject,
   combineLatest,
   debounceTime,
   distinctUntilChanged,
@@ -33,26 +33,26 @@ import { StageService } from '../services/stage/stage.service';
 import { trackByFactory } from '@stlmpp/utils';
 import { CharacterService } from '../services/character/character.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
+import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { CharacterCostume } from '@model/character-costume';
 import { Game } from '@model/game';
 import { Mode } from '@model/mode';
 import { Stage } from '@model/stage';
 import { MiniGame } from '@model/mini-game';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
-import { LocalState } from '@stlmpp/store';
 import { Platform } from '@model/platform';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { filterNilArrayOperator } from '@util/operators/filter-nil-array';
 import { trackById } from '@util/track-by';
+import { Destroyable } from '@shared/components/common/destroyable-component';
 
 export interface ParamsForm {
-  idPlatform: Nullable<number>;
-  idGame: Nullable<number>;
-  idMiniGame: Nullable<number>;
-  idMode: Nullable<number>;
-  idStage: Nullable<number>;
-  idCharacterCostume: Nullable<number>;
+  idPlatform: number | null | undefined;
+  idGame: number | null | undefined;
+  idMiniGame: number | null | undefined;
+  idMode: number | null | undefined;
+  idStage: number | null | undefined;
+  idCharacterCostume: number | null | undefined;
 }
 
 export const PARAMS_FORM_NULL: ParamsForm = {
@@ -84,58 +84,31 @@ const defaultConfigs: ParamsConfig = {
   idGame: { show: true },
 };
 
-interface ParamsComponentState {
-  gameLoading: boolean;
-  miniGameLoading: boolean;
-  modeLoading: boolean;
-  stageLoading: boolean;
-  characterLoading: boolean;
-  clearable: boolean;
-  approval: boolean;
-}
-
 @Component({
   selector: 'bio-params',
   templateUrl: './params.component.html',
   styleUrls: ['./params.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ParamsComponent extends LocalState<ParamsComponentState> implements OnChanges, OnInit {
+export class ParamsComponent extends Destroyable implements OnChanges, OnInit {
   constructor(
     private controlBuilder: ControlBuilder,
-    private platformQuery: PlatformQuery,
     private gameService: GameService,
     private miniGameService: MiniGameService,
     private modeService: ModeService,
     private stageService: StageService,
     private characterService: CharacterService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private changeDetectorRef: ChangeDetectorRef
   ) {
-    super(
-      {
-        gameLoading: false,
-        miniGameLoading: false,
-        modeLoading: false,
-        stageLoading: false,
-        characterLoading: false,
-        clearable: false,
-        approval: false,
-      },
-      {
-        inputs: [
-          { key: 'clearable', transformer: coerceBooleanProperty },
-          { key: 'approval', transformer: coerceBooleanProperty },
-        ],
-      }
-    );
+    super();
   }
 
   private _setQueryParamsOnChange = false;
   private _selectParamIfOne = true;
-  private _approval = false;
-
-  private readonly _approval$ = this.selectState('approval');
+  private _clearable = false;
+  private readonly _approval$ = new BehaviorSubject(false);
 
   @Input() idPlatform: number | null = null;
   @Input() idGame: number | null = null;
@@ -143,7 +116,14 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
   @Input() idMode: number | null = null;
   @Input() idStage: number | null = null;
   @Input() idCharacterCostume: number | null = null;
-  @Input() clearable = false;
+
+  @Input()
+  get clearable(): boolean {
+    return this._clearable;
+  }
+  set clearable(clearable: boolean) {
+    this._clearable = coerceBooleanProperty(clearable);
+  }
 
   @Input()
   set config(config: Partial<ParamsConfig>) {
@@ -153,7 +133,8 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
     );
   }
 
-  @Input() set params(params: Partial<ParamsForm> | null) {
+  @Input()
+  set params(params: Partial<ParamsForm> | null) {
     if (params) {
       this.form.patchValue(params, { emitChange: false });
     }
@@ -171,15 +152,23 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
 
   @Input()
   set approval(approval: boolean) {
-    this._approval = coerceBooleanProperty(approval);
+    this._approval$.next(coerceBooleanProperty(approval));
   }
 
-  @Output() readonly idPlatformChange = new EventEmitter<Nullable<number>>();
-  @Output() readonly idGameChange = new EventEmitter<Nullable<number>>();
-  @Output() readonly idMiniGameChange = new EventEmitter<Nullable<number>>();
-  @Output() readonly idModeChange = new EventEmitter<Nullable<number>>();
-  @Output() readonly idStageChange = new EventEmitter<Nullable<number>>();
-  @Output() readonly idCharacterCostumeChange = new EventEmitter<Nullable<number>>();
+  @Output() readonly idPlatformChange = new EventEmitter<number | null | undefined>();
+  @Output() readonly idGameChange = new EventEmitter<number | null | undefined>();
+  @Output() readonly idMiniGameChange = new EventEmitter<number | null | undefined>();
+  @Output() readonly idModeChange = new EventEmitter<number | null | undefined>();
+  @Output() readonly idStageChange = new EventEmitter<number | null | undefined>();
+  @Output() readonly idCharacterCostumeChange = new EventEmitter<number | null | undefined>();
+
+  @Output() readonly platformChange = new EventEmitter<Platform | null | undefined>();
+  @Output() readonly gameChange = new EventEmitter<Game | null | undefined>();
+  @Output() readonly miniGameChange = new EventEmitter<MiniGame | null | undefined>();
+  @Output() readonly modeChange = new EventEmitter<Mode | null | undefined>();
+  @Output() readonly stageChange = new EventEmitter<Stage | null | undefined>();
+  @Output() readonly characterCostumeChange = new EventEmitter<CharacterCostume | null | undefined>();
+
   @Output() readonly paramsChange = new EventEmitter<ParamsForm>();
 
   formsConfig = defaultConfigs;
@@ -192,25 +181,12 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
     idStage: this._getParamOrNull(RouteParamEnum.idStage),
     idCharacterCostume: this._getParamOrNull(RouteParamEnum.idCharacterCostume),
   });
-
-  get idPlatformControl(): Control<Nullable<number>> {
-    return this.form.get('idPlatform');
-  }
-  get idGameControl(): Control<Nullable<number>> {
-    return this.form.get('idGame');
-  }
-  get idMiniGameControl(): Control<Nullable<number>> {
-    return this.form.get('idMiniGame');
-  }
-  get idModeControl(): Control<Nullable<number>> {
-    return this.form.get('idMode');
-  }
-  get idStageControl(): Control<Nullable<number>> {
-    return this.form.get('idStage');
-  }
-  get idCharacterCostumeControl(): Control<Nullable<number>> {
-    return this.form.get('idCharacterCostume');
-  }
+  readonly idPlatformControl = this.form.get('idPlatform');
+  readonly idGameControl = this.form.get('idGame');
+  readonly idMiniGameControl = this.form.get('idMiniGame');
+  readonly idModeControl = this.form.get('idMode');
+  readonly idStageControl = this.form.get('idStage');
+  readonly idCharacterCostumeControl = this.form.get('idCharacterCostume');
 
   readonly idPlatform$ = this.idPlatformControl.value$.pipe(distinctUntilChanged());
   readonly idGame$ = this.idGameControl.value$.pipe(
@@ -294,10 +270,12 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
   readonly characters$ = combineLatest([this.idPlatform$, this.idGame$, this.idMiniGame$, this.idMode$]).pipe(
     filterNilArrayOperator(),
     switchMap(([idPlatform, idGame, idMiniGame, idMode]) => {
-      this.updateState('characterLoading', true);
+      this.characterLoading = true;
+      this.changeDetectorRef.markForCheck();
       return this.characterService.findByIdPlatformGameMiniGameMode(idPlatform, idGame, idMiniGame, idMode).pipe(
         finalize(() => {
-          this.updateState('characterLoading', false);
+          this.characterLoading = false;
+          this.changeDetectorRef.markForCheck();
         }),
         tap(characters => {
           const characterCostumes = characters.reduce(
@@ -311,19 +289,26 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
     shareReplay()
   );
 
-  readonly state$ = this.selectState();
+  gameLoading = false;
+  miniGameLoading = false;
+  modeLoading = false;
+  stageLoading = false;
+  characterLoading = false;
 
-  readonly trackByPlatform = this.platformQuery.trackBy;
   readonly trackById = trackById;
   readonly trackByControlValidator = trackByFactory<ControlValidator>('name');
 
   private _selectPlatforms(): Observable<Platform[]> {
     return this._approval$.pipe(
       switchMap(approval => {
-        if (approval) {
-          return this.activatedRoute.data.pipe(map(data => data[RouteDataEnum.platformApproval]) ?? []);
+        const key: RouteDataEnum = approval ? RouteDataEnum.platformApproval : RouteDataEnum.platforms;
+        return this.activatedRoute.data.pipe(map(data => data[key] ?? []));
+      }),
+      tap(platforms => {
+        const idPlatform = this.idPlatformControl.value;
+        if (idPlatform) {
+          this.platformChange.emit(platforms.find(platform => platform.id === idPlatform));
         }
-        return this.platformQuery.all$.pipe(map(platforms => [...platforms]));
       })
     );
   }
@@ -331,14 +316,22 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
   private _selectGames(idPlatform: number): Observable<Game[]> {
     return this._approval$.pipe(
       switchMap(approval => {
-        this.updateState('gameLoading', true);
+        this.gameLoading = true;
+        this.changeDetectorRef.markForCheck();
         let request$ = this.gameService.findByIdPlatform(idPlatform);
         if (approval) {
           request$ = this.gameService.findApprovalByIdPlatform(idPlatform);
         }
         return request$.pipe(
           finalize(() => {
-            this.updateState('gameLoading', false);
+            this.gameLoading = false;
+            this.changeDetectorRef.markForCheck();
+          }),
+          tap(games => {
+            const idGame = this.idGameControl.value;
+            if (idGame) {
+              this.gameChange.emit(games.find(game => game.id === idGame));
+            }
           })
         );
       })
@@ -348,14 +341,22 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
   private _selectMiniGames(idPlatform: number, idGame: number): Observable<MiniGame[]> {
     return this._approval$.pipe(
       switchMap(approval => {
-        this.updateState('miniGameLoading', true);
+        this.miniGameLoading = true;
+        this.changeDetectorRef.markForCheck();
         let request$ = this.miniGameService.findByIdPlatformGame(idPlatform, idGame);
         if (approval) {
           request$ = this.miniGameService.findApprovalByIdPlatformGame(idPlatform, idGame);
         }
         return request$.pipe(
           finalize(() => {
-            this.updateState('miniGameLoading', false);
+            this.miniGameLoading = false;
+            this.changeDetectorRef.markForCheck();
+          }),
+          tap(miniGames => {
+            const idMiniGame = this.idMiniGameControl.value;
+            if (idMiniGame) {
+              this.miniGameChange.emit(miniGames.find(miniGame => miniGame.id === idMiniGame));
+            }
           })
         );
       })
@@ -365,14 +366,22 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
   private _selectModes(idPlatform: number, idGame: number, idMiniGame: number): Observable<Mode[]> {
     return this._approval$.pipe(
       switchMap(approval => {
-        this.updateState('modeLoading', true);
+        this.modeLoading = true;
+        this.changeDetectorRef.markForCheck();
         let request$ = this.modeService.findByIdPlatformGameMiniGame(idPlatform, idGame, idMiniGame);
         if (approval) {
           request$ = this.modeService.findApprovalByIdPlatformGameMiniGame(idPlatform, idGame, idMiniGame);
         }
         return request$.pipe(
           finalize(() => {
-            this.updateState('modeLoading', false);
+            this.modeLoading = false;
+            this.changeDetectorRef.markForCheck();
+          }),
+          tap(modes => {
+            const idMode = this.idModeControl.value;
+            if (idMode) {
+              this.modeChange.emit(modes.find(mode => mode.id === idMode));
+            }
           })
         );
       })
@@ -382,14 +391,22 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
   private _selectStages(idPlatform: number, idGame: number, idMiniGame: number, idMode: number): Observable<Stage[]> {
     return this._approval$.pipe(
       switchMap(approval => {
-        this.updateState('stageLoading', true);
+        this.stageLoading = true;
+        this.changeDetectorRef.markForCheck();
         let request$ = this.stageService.findByIdPlatformGameMiniGameMode(idPlatform, idGame, idMiniGame, idMode);
         if (approval) {
           request$ = this.stageService.findApprovalByIdPlatformGameMiniGameMode(idPlatform, idGame, idMiniGame, idMode);
         }
         return request$.pipe(
           finalize(() => {
-            this.updateState('stageLoading', false);
+            this.stageLoading = false;
+            this.changeDetectorRef.markForCheck();
+          }),
+          tap(stages => {
+            const idStage = this.idStageControl.value;
+            if (idStage) {
+              this.stageChange.emit(stages.find(stage => stage.id === idStage));
+            }
           })
         );
       })
@@ -401,7 +418,7 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
     return id ? +id : null;
   }
 
-  private _setParamOrNull<T extends { id: number }>(control: Control<Nullable<number>>, entities: T[]): void {
+  private _setParamOrNull<T extends { id: number }>(control: Control<number | null | undefined>, entities: T[]): void {
     const id = control.value;
     const exists = entities.some(entity => entity.id === id);
     if (exists) {
@@ -415,7 +432,7 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
   }
 
   private _setParamOrNullOperator<T extends { id: number }>(
-    control: Control<Nullable<number>>
+    control: Control<number | null | undefined>
   ): MonoTypeOperatorFunction<T[]> {
     return tap(entities => {
       this._setParamOrNull(control, entities);
@@ -451,7 +468,7 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
       });
   }
 
-  override ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(changes: SimpleChanges): void {
     const params: Partial<ParamsForm> = {};
     for (const [key, change] of Object.entries(changes) as [keyof ParamsForm, SimpleChange][]) {
       if (ids.includes(key)) {
@@ -459,7 +476,6 @@ export class ParamsComponent extends LocalState<ParamsComponentState> implements
       }
     }
     this.form.patchValue(params);
-    super.ngOnChanges(changes);
   }
 
   static ngAcceptInputType_setQueryParamsOnChange: BooleanInput;

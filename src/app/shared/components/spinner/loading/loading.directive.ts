@@ -1,8 +1,6 @@
 import {
   AfterViewInit,
-  ComponentFactory,
   ComponentFactoryResolver,
-  ComponentRef,
   Directive,
   ElementRef,
   Injector,
@@ -13,7 +11,7 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { LoadingComponent } from './loading.component';
-import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
+import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 
 @Directive({
   selector: '[bioLoading]',
@@ -28,6 +26,12 @@ export class LoadingDirective implements OnInit, AfterViewInit, OnDestroy {
     private elementRef: ElementRef
   ) {}
 
+  private readonly _componentFactory = this.componentFactoryResolver.resolveComponentFactory(LoadingComponent);
+  private readonly _componentRef = this.viewContainerRef.createComponent(this._componentFactory);
+
+  private _loading = false;
+  private _noBox = false;
+
   @Input()
   get bioLoading(): boolean {
     return this._loading;
@@ -36,7 +40,6 @@ export class LoadingDirective implements OnInit, AfterViewInit, OnDestroy {
     this._loading = coerceBooleanProperty(loading);
     this.toggle(this._loading);
   }
-  private _loading = false;
 
   @Input()
   get noBox(): boolean {
@@ -44,15 +47,9 @@ export class LoadingDirective implements OnInit, AfterViewInit, OnDestroy {
   }
   set noBox(noBox: boolean) {
     this._noBox = coerceBooleanProperty(noBox);
-    if (this.componentRef) {
-      this.componentRef.instance.noBox = noBox;
-      this.componentRef.changeDetectorRef.markForCheck();
-    }
+    this._componentRef.instance.noBox = noBox;
+    this._componentRef.changeDetectorRef.markForCheck();
   }
-  private _noBox = false;
-
-  componentFactory?: ComponentFactory<LoadingComponent>;
-  componentRef?: ComponentRef<LoadingComponent>;
 
   toggle(loading: boolean): void {
     if (loading) {
@@ -63,22 +60,16 @@ export class LoadingDirective implements OnInit, AfterViewInit, OnDestroy {
   }
 
   show(): void {
-    if (this.componentRef) {
-      this.renderer2.appendChild(this.elementRef.nativeElement, this.componentRef.location.nativeElement);
-    }
+    this.renderer2.appendChild(this.elementRef.nativeElement, this._componentRef.location.nativeElement);
   }
 
   hide(): void {
-    if (this.componentRef) {
-      this.renderer2.removeChild(this.elementRef.nativeElement, this.componentRef.location.nativeElement);
-    }
+    this.renderer2.removeChild(this.elementRef.nativeElement, this._componentRef.location.nativeElement);
   }
 
   ngOnInit(): void {
-    this.componentFactory = this.componentFactoryResolver.resolveComponentFactory(LoadingComponent);
-    this.componentRef = this.viewContainerRef.createComponent(this.componentFactory);
-    this.componentRef.instance.noBox = this._noBox;
-    this.componentRef.changeDetectorRef.markForCheck();
+    this._componentRef.instance.noBox = this._noBox;
+    this._componentRef.changeDetectorRef.markForCheck();
   }
 
   ngAfterViewInit(): void {
@@ -86,7 +77,7 @@ export class LoadingDirective implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.componentRef?.destroy();
+    this._componentRef.destroy();
   }
 
   static ngAcceptInputType_bioLoading: BooleanInput;

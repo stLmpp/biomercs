@@ -5,7 +5,6 @@ import {
   Component,
   ContentChildren,
   ElementRef,
-  forwardRef,
   HostBinding,
   HostListener,
   Input,
@@ -26,21 +25,23 @@ import { FocusKeyManager } from '@angular/cdk/a11y';
 import { Animations } from '../../animations/animations';
 import { AnimationEvent } from '@angular/animations';
 import { OptgroupComponent } from './optgroup.component';
-import { isNil } from 'st-utils';
+import { BooleanInput, isNil } from 'st-utils';
 import { Key } from '@model/enum/key';
 import { getOverlayPositionMenu } from '@shared/components/menu/util';
-import { BooleanInput } from '@angular/cdk/coercion';
+import { ControlState } from '@stlmpp/control/lib/control/control';
+import { FormFieldChild } from '@shared/components/form/form-field-child';
 
 @Component({
   selector: 'bio-select:not([multiple])',
   templateUrl: './select.component.html',
-  styleUrls: ['./select.component.scss'],
+  styleUrls: ['./select.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: { class: 'bio-select input' },
   providers: [
-    { provide: Select, useExisting: forwardRef(() => SelectComponent) },
-    { provide: ControlValue, useExisting: forwardRef(() => SelectComponent), multi: true },
+    { provide: Select, useExisting: SelectComponent },
+    { provide: ControlValue, useExisting: SelectComponent, multi: true },
+    { provide: FormFieldChild, useExisting: SelectComponent },
   ],
   animations: [Animations.fade.inOut(100), Animations.scale.in(100, 0.8)],
 })
@@ -55,25 +56,31 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
     super();
   }
 
+  private _isInvalid = false;
+  private _isTouched = false;
   private _overlayRef?: OverlayRef;
   private _focusManager?: FocusKeyManager<OptionComponent>;
 
-  @ViewChild('panel', { read: TemplateRef }) panelTemplateRef!: TemplateRef<any>;
-  @ContentChildren(OptionComponent, { descendants: true }) options!: QueryList<OptionComponent>;
-  @ContentChildren(OptgroupComponent, { descendants: true }) optgroups!: QueryList<OptgroupComponent>;
+  @ViewChild('panel', { read: TemplateRef }) readonly panelTemplateRef!: TemplateRef<any>;
+  @ContentChildren(OptionComponent, { descendants: true }) readonly options!: QueryList<OptionComponent>;
+  @ContentChildren(OptgroupComponent, { descendants: true }) readonly optgroups!: QueryList<OptgroupComponent>;
 
   @Input() compareWith: (valueA: any, valueB: any) => boolean = Object.is;
   @Input() placeholder?: string;
 
   @HostBinding('attr.title') viewValue = '';
 
-  onChange$ = new Subject<any>();
-  onTouched$ = new Subject<void>();
+  readonly onChange$ = new Subject<any>();
+  readonly onTouched$ = new Subject<void>();
   isOpen = false;
   value: any;
 
   override get primaryClass(): boolean {
     return !this.dangerClass && (this.bioType || 'primary') === 'primary';
+  }
+
+  override get dangerClass(): boolean {
+    return super.dangerClass || (this._isTouched && this._isInvalid);
   }
 
   @HostBinding('attr.tabindex')
@@ -195,8 +202,11 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
     this.disabled = isDisabled;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  stateChanged(): void {}
+  stateChanged(state: ControlState): void {
+    this._isInvalid = state.invalid;
+    this._isTouched = state.touched;
+    this.changeDetectorRef.markForCheck();
+  }
 
   ngAfterContentInit(): void {
     this.options.changes.pipe(takeUntil(this.destroy$), auditTime(100), startWith(this.options)).subscribe(() => {

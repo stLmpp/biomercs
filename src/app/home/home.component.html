@@ -2,11 +2,11 @@
 <bio-card-menus bioCardMenuFocusOnFirstItem>
   <ng-container *ngIf="isLogged$ | async; else noLogged">
     <a bioCardMenu routerLink="/score/add">
-      <icon>add</icon>
+      <bio-icon>add</bio-icon>
       Submit a score
     </a>
     <a bioCardMenu routerLink="/score/leaderboards" *ngIf="isNotMobile$ | async">
-      <icon>leaderboard</icon>
+      <bio-icon>leaderboard</bio-icon>
       Check the leaderboards
     </a>
     <ng-container *ngIf="isAdmin$ | async">
@@ -16,42 +16,42 @@
         [bioBadge]="adminApprovalCount"
         routerLink="/admin/approval"
       >
-        <icon>checklist</icon>
+        <bio-icon>checklist</bio-icon>
         Check the pending scores (Admin)
       </a>
     </ng-container>
-    <ng-container *ngIf="idUser$ | async as idUser">
+    <ng-container *ngIf="idPlayer$ | async as idPlayer">
       <a
         bioCardMenu
         *ngIf="playerRequestChangesCount$ | async as playerRequestChangesCount"
         [bioBadge]="playerRequestChangesCount"
-        [routerLink]="['/player/u', idUser, 'change-requests']"
+        [routerLink]="['/player', idPlayer, 'change-requests']"
       >
-        <icon>sync_alt</icon>
+        <bio-icon>sync_alt</bio-icon>
         Check your pending changes list
       </a>
     </ng-container>
   </ng-container>
   <ng-template #noLogged>
     <a bioCardMenu routerLink="/auth/login">
-      <icon>login</icon>
+      <bio-icon>login</bio-icon>
       Login
     </a>
     <a bioCardMenu routerLink="/auth/register">
-      <icon>person_add</icon>
+      <bio-icon>person_add</bio-icon>
       Register
     </a>
   </ng-template>
   <a bioCardMenu routerLink="/rules">
-    <icon>article</icon>
+    <bio-icon>article</bio-icon>
     Read the rules
   </a>
   <a bioCardMenu routerLink="/faq">
-    <icon>quiz</icon>
+    <bio-icon>quiz</bio-icon>
     Read our FAQ
   </a>
   <a bioCardMenu routerLink="/contact">
-    <icon>contact_support</icon>
+    <bio-icon>contact_support</bio-icon>
     Contact support
   </a>
 </bio-card-menus>

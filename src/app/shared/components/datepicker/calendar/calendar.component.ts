@@ -59,8 +59,8 @@ export class CalendarComponent
 
   private _disabled = false;
 
-  @ViewChild(CalendarKeyboardNavigation) calendarKeyboardNavigation!: CalendarKeyboardNavigation;
-  @ContentChild(CalendarFooterDirective) calendarFooterDirective?: CalendarFooterDirective;
+  @ViewChild(CalendarKeyboardNavigation) readonly calendarKeyboardNavigation!: CalendarKeyboardNavigation;
+  @ContentChild(CalendarFooterDirective) readonly calendarFooterDirective?: CalendarFooterDirective;
 
   @Input() value: Date | null | undefined;
   @Input() viewMode: CalendarViewModeEnum = CalendarViewModeEnum.day;

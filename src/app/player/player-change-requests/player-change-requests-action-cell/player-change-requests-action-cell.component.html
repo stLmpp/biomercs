@@ -2,11 +2,11 @@
   bioButton
   icon
   small
-  tooltip="Check requested changes"
-  tooltipPosition="right"
+  bioTooltip="Check requested changes"
+  bioTooltipPosition="right"
   type="button"
-  [disabled]="loadingModal$ | async"
+  [disabled]="loadingModal"
   (click)="openModalChangeRequests()"
 >
-  <icon small>sync_alt</icon>
+  <bio-icon small>sync_alt</bio-icon>
 </button>

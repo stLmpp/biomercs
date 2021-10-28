@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, ViewEncapsulation } from '@angular/core';
-import { BooleanInput, coerceBooleanProperty, coerceNumberProperty, NumberInput } from '@angular/cdk/coercion';
+import { BooleanInput, coerceBooleanProperty, coerceNumberProperty, NumberInput } from 'st-utils';
 import { Animations } from '../../animations/animations';
 import { SimpleChangesCustom } from '@util/util';
 
 @Component({
-  selector: 'spinner',
+  selector: 'bio-spinner',
   templateUrl: './spinner.component.html',
   styleUrls: ['./spinner.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

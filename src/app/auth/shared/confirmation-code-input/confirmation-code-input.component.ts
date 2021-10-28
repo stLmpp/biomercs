@@ -5,7 +5,6 @@ import {
   Directive,
   ElementRef,
   EventEmitter,
-  forwardRef,
   Input,
   OnChanges,
   OnDestroy,
@@ -36,7 +35,7 @@ export class ConfirmationCodeInputDirective implements FocusableOption {
   templateUrl: './confirmation-code-input.component.html',
   styleUrls: ['./confirmation-code-input.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [{ provide: ControlValue, useExisting: forwardRef(() => ConfirmationCodeInputComponent) }],
+  providers: [{ provide: ControlValue, useExisting: ConfirmationCodeInputComponent }],
 })
 export class ConfirmationCodeInputComponent
   extends ControlValue
@@ -46,9 +45,9 @@ export class ConfirmationCodeInputComponent
     super();
   }
 
-  private _destroy$ = new Subject<void>();
+  private readonly _destroy$ = new Subject<void>();
 
-  @ViewChildren(ConfirmationCodeInputDirective) inputList!: QueryList<ConfirmationCodeInputDirective>;
+  @ViewChildren(ConfirmationCodeInputDirective) readonly inputList!: QueryList<ConfirmationCodeInputDirective>;
   @Output() readonly focusoutLastItem = new EventEmitter<void>();
 
   @Input() length = 6;

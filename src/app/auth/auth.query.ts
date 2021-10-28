@@ -6,7 +6,7 @@ import { distinctUntilChanged, map, Observable } from 'rxjs';
 import { Player } from '@model/player';
 import { User } from '@model/user';
 import { isNumber } from 'st-utils';
-import { filterNil } from '@shared/operators/filter';
+import { filterNil } from '@util/operators/filter';
 
 @Injectable({ providedIn: 'root' })
 export class AuthQuery extends Query<Auth> {
@@ -44,11 +44,11 @@ export class AuthQuery extends Query<Auth> {
 
   selectIsSameAsLogged(value: number | Player): Observable<boolean> {
     const idPlayer = isNumber(value) ? value : value.id;
-    return this.user$.pipe(map(user => user?.player?.id === idPlayer));
+    return this.user$.pipe(map(user => user?.idPlayer === idPlayer));
   }
 
   getIsSameAsLogged(value: number | Player): boolean {
     const idPlayer = isNumber(value) ? value : value.id;
-    return this.getUser()?.player?.id === idPlayer;
+    return this.getUser()?.idPlayer === idPlayer;
   }
 }

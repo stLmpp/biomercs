@@ -1,9 +1,7 @@
-import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, Renderer2 } from '@angular/core';
 import { UrlMetadataService } from '@shared/services/url-metadata/url-metadata.service';
-import { filterNil } from '@shared/operators/filter';
-import { debounceTime, finalize, switchMap } from 'rxjs';
-import { BooleanInput } from '@angular/cdk/coercion';
-import { LocalState } from '@stlmpp/store';
+import { filterNil } from '@util/operators/filter';
+import { debounceTime, finalize, ReplaySubject, switchMap } from 'rxjs';
 
 @Component({
   selector: 'a[bio-url-preview]',
@@ -12,29 +10,36 @@ import { LocalState } from '@stlmpp/store';
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'url-preview' },
 })
-export class UrlPreviewComponent extends LocalState<{ url: string | null; loading: boolean }> {
-  constructor(private urlMetadataService: UrlMetadataService) {
-    super({ url: null, loading: false }, { inputs: ['url'] });
+export class UrlPreviewComponent {
+  constructor(
+    private urlMetadataService: UrlMetadataService,
+    private changeDetectorRef: ChangeDetectorRef,
+    private renderer2: Renderer2,
+    private elementRef: ElementRef<HTMLAnchorElement>
+  ) {}
+
+  private readonly _url$ = new ReplaySubject<string | null>();
+
+  @Input()
+  set url(url: string | null) {
+    this._url$.next(url);
+    this.renderer2.setAttribute(this.elementRef.nativeElement, 'href', url ?? '');
   }
 
-  @HostBinding('attr.href')
-  @Input()
-  url: string | null = null;
+  loading = false;
 
-  loading$ = this.selectState('loading');
-
-  urlMetadata$ = this.selectState('url').pipe(
+  readonly urlMetadata$ = this._url$.pipe(
     debounceTime(300),
     filterNil(),
     switchMap(url => {
-      this.updateState({ loading: true });
+      this.loading = true;
+      this.changeDetectorRef.markForCheck();
       return this.urlMetadataService.get(url).pipe(
         finalize(() => {
-          this.updateState({ loading: false });
+          this.loading = false;
+          this.changeDetectorRef.markForCheck();
         })
       );
     })
   );
-
-  static ngAcceptInputType_dark: BooleanInput;
 }

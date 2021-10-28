@@ -2,51 +2,38 @@
   <bio-card class="center-block-mobile">
     <h3 bioCardTitle>Login</h3>
     <bio-card-content>
-      <form-field>
+      <bio-form-field>
         <label>Username</label>
         <input autocomplete="username" bioInput controlName="username" autocapitalize="off" />
-        <errors>
-          <error *error="'required'">Username is required</error>
-        </errors>
-      </form-field>
-      <form-field>
+        <bio-errors>
+          <bio-error *error="'required'">Username is required</bio-error>
+        </bio-errors>
+      </bio-form-field>
+      <bio-form-field>
         <label>Password</label>
         <input [type]="typePassword" autocomplete="current-password" bioInput controlName="password" />
-        <hint end><a routerLink="../forgot-password">Forgot password?</a></hint>
-        <errors>
-          <error *error="'required'">Password is required</error>
-        </errors>
+        <bio-hint end><a routerLink="../forgot-password">Forgot password?</a></bio-hint>
+        <bio-errors>
+          <bio-error *error="'required'">Password is required</bio-error>
+        </bio-errors>
         <button
-          suffix
+          bioSuffix
           bioButton
           icon
           type="button"
           (click)="typePassword = typePassword === 'password' ? 'text' : 'password'"
         >
-          <icon>{{ typePassword === 'password' ? 'visibility_off' : 'visibility' }}</icon>
+          <bio-icon>{{ typePassword === 'password' ? 'visibility_off' : 'visibility' }}</bio-icon>
         </button>
-      </form-field>
+      </bio-form-field>
       <bio-checkbox controlName="rememberMe"> Remember me </bio-checkbox>
-      <p *ngIf="error$ | async as error" class="text-danger">{{ error }}</p>
+      <p *ngIf="error" class="text-danger">{{ error }}</p>
     </bio-card-content>
-    <bio-card-actions end *ngLet="loading$ | async as loading">
-      <button
-        bioButton
-        primary
-        type="button"
-        (click)="loginSteam()"
-        [loading]="loading.loadingSteam"
-        [disabled]="loading.loading"
-      >
+    <bio-card-actions end>
+      <button bioButton primary type="button" (click)="loginSteam()" [loading]="loadingSteam" [disabled]="loading">
         Login Steam
       </button>
-      <button
-        bioButton
-        primary
-        type="submit"
-        [disabled]="form.invalid || loading.loadingSteam"
-        [loading]="loading.loading"
-      >
+      <button bioButton primary type="submit" [disabled]="form.invalid || loadingSteam" [loading]="loading">
         Login
       </button>
     </bio-card-actions>

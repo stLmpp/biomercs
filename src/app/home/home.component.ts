@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AuthQuery } from '../auth/auth.query';
 import { HeaderQuery } from '../header/header.query';
-import { filterNil } from '@shared/operators/filter';
+import { filterNil } from '@util/operators/filter';
 import { map, pluck } from 'rxjs';
 import { BreakpointObserverService } from '@shared/services/breakpoint-observer/breakpoint-observer.service';
 
@@ -18,11 +18,10 @@ export class HomeComponent {
     private breakpointObserverService: BreakpointObserverService
   ) {}
 
-  isLogged$ = this.authQuery.isLogged$;
-  isAdmin$ = this.authQuery.isAdmin$;
-  adminApprovalCount$ = this.headerQuery.adminApprovalCount$;
-  playerRequestChangesCount$ = this.headerQuery.playerRequestChangesCount$;
-
-  idUser$ = this.authQuery.user$.pipe(filterNil(), pluck('id'));
-  isNotMobile$ = this.breakpointObserverService.isMobile$.pipe(map(isMobile => !isMobile));
+  readonly isLogged$ = this.authQuery.isLogged$;
+  readonly isAdmin$ = this.authQuery.isAdmin$;
+  readonly adminApprovalCount$ = this.headerQuery.adminApprovalCount$;
+  readonly playerRequestChangesCount$ = this.headerQuery.playerRequestChangesCount$;
+  readonly idPlayer$ = this.authQuery.user$.pipe(filterNil(), pluck('idPlayer'), filterNil());
+  readonly isNotMobile$ = this.breakpointObserverService.isMobile$.pipe(map(isMobile => !isMobile));
 }

@@ -10,6 +10,7 @@ import { ButtonModule } from '@shared/components/button/button.module';
 import { SelectModule } from '@shared/components/select/select.module';
 import { TitleModule } from '@shared/title/title.module';
 import { NgLetModule } from '@stlmpp/utils';
+import { FlagModule } from '@shared/components/icon/flag/flag.module';
 
 @NgModule({
   declarations: [AdminCreatePlayerComponent],
@@ -23,6 +24,7 @@ import { NgLetModule } from '@stlmpp/utils';
     NgLetModule,
     SelectModule,
     ButtonModule,
+    FlagModule,
   ],
 })
 export class AdminCreatePlayerModule {}

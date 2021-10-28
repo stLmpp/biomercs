@@ -7,26 +7,26 @@
       <a [href]="mailto">{{ mail }}</a>
     </div>
     <bio-card-content>
-      <form-field label="Your e-mail">
+      <bio-form-field label="Your e-mail">
         <input bioInput controlName="from" autocomplete="off" placeholder="Your e-mail" />
-        <errors>
-          <error *error="'required'">Your e-mail is required</error>
-          <error *error="'email'">Your e-mail needs to be a valid e-mail</error>
-        </errors>
-      </form-field>
-      <form-field label="Subject">
+        <bio-errors>
+          <bio-error *error="'required'">Your e-mail is required</bio-error>
+          <bio-error *error="'email'">Your e-mail needs to be a valid e-mail</bio-error>
+        </bio-errors>
+      </bio-form-field>
+      <bio-form-field label="Subject">
         <input bioInput controlName="subject" autocomplete="off" [placeholder]="subject" />
-        <hint>Max 200 characters</hint>
-        <hint end *ngIf="subjectControlValue$ | async as subjectControlValue">
+        <bio-hint>Max 200 characters</bio-hint>
+        <bio-hint end *ngIf="subjectControlValue$ | async as subjectControlValue">
           {{ subjectControlValue.length }}/200
-        </hint>
-        <errors>
-          <error *error="'required'">Subject is required</error>
-          <error *error="'whiteSpace'">Subject is required</error>
-          <error *error="'maxLength'">Subject must not have more than 200 characters</error>
-        </errors>
-      </form-field>
-      <form-field label="Message">
+        </bio-hint>
+        <bio-errors>
+          <bio-error *error="'required'">Subject is required</bio-error>
+          <bio-error *error="'whiteSpace'">Subject is required</bio-error>
+          <bio-error *error="'maxLength'">Subject must not have more than 200 characters</bio-error>
+        </bio-errors>
+      </bio-form-field>
+      <bio-form-field label="Message">
         <textarea
           bioInput
           controlName="body"
@@ -35,18 +35,18 @@
           [cdkAutosizeMaxRows]="15"
           [placeholder]="body"
         ></textarea>
-        <hint>Max 2000 characters</hint>
-        <hint end *ngIf="bodyControlValue$ | async as bodyControlValue">{{ bodyControlValue.length }}/2000</hint>
-        <errors>
-          <error *error="'required'">Subject is required</error>
-          <error *error="'whiteSpace'">Subject is required</error>
-        </errors>
-      </form-field>
+        <bio-hint>Max 2000 characters</bio-hint>
+        <bio-hint end *ngIf="bodyControlValue$ | async as bodyControlValue"
+          >{{ bodyControlValue.length }}/2000</bio-hint
+        >
+        <bio-errors>
+          <bio-error *error="'required'">Subject is required</bio-error>
+          <bio-error *error="'whiteSpace'">Subject is required</bio-error>
+        </bio-errors>
+      </bio-form-field>
     </bio-card-content>
     <bio-card-actions>
-      <button bioButton primary type="submit" [disabled]="form.invalid" [loading]="sending$ | async">
-        Send message
-      </button>
+      <button bioButton primary type="submit" [disabled]="form.invalid" [loading]="sending">Send message</button>
     </bio-card-actions>
   </bio-card>
 </form>

@@ -1,14 +1,14 @@
 <ng-container *ngLet="user$ | async as user">
   <ng-container *ngLet="isMobile$ | async as isMobile">
     <bio-side-menu
-      *ngIf="(sideMenuOpened$ | async) && user"
+      *ngIf="sideMenuOpened && user"
       [user]="user"
       [isMobile]="isMobile"
       (menuSelected)="toggleSideMenu($event)"
     ></bio-side-menu>
     <div class="brand-wrapper">
       <button bioButton icon type="button" (click)="toggleSideMenu($event)" *ngIf="user">
-        <icon>menu</icon>
+        <bio-icon>menu</bio-icon>
       </button>
       <a class="brand" routerLink="/"> Biomercs </a>
     </div>
@@ -19,23 +19,25 @@
           [icon]="isMobile"
           routerLink="/score/add"
           queryParamsHandling="preserve"
-          tooltip="Submit score"
-          tooltipPosition="bottom"
-          [tooltipDisabled]="!isMobile"
+          bioTooltip="Submit score"
+          bioTooltipPosition="bottom"
+          [bioTooltipDisabled]="!isMobile"
         >
-          <icon>add</icon>
+          <bio-icon>add</bio-icon>
           <ng-container *ngIf="!isMobile">Submit score</ng-container>
         </a>
-        <button type="button" bioButton [menuTrigger]="menu">
-          <icon>person</icon>
+        <button type="button" bioButton [bioMenuTrigger]="menu">
+          <bio-icon>person</bio-icon>
           <ng-container *ngIf="!isMobile">{{ user.username }}</ng-container>
-          <icon class="triangle" [mdi]="mdiTriangle" [size]="8"></icon>
+          <bio-icon class="triangle" [mdi]="mdiTriangle" [size]="8"></bio-icon>
         </button>
         <bio-menu #menu>
-          <a bioButton menuItem [routerLink]="pathToProfile$ | async"> <icon>person</icon> Profile </a>
-          <a bioButton menuItem routerLink="/auth/change-password"> <icon>vpn_key</icon> Change password</a>
-          <button type="button" bioButton menuItem (click)="logout()">
-            <icon>logout</icon>
+          <a *ngIf="user.idPlayer" bioButton bioMenuItem [routerLink]="['/player', user.idPlayer]">
+            <bio-icon>person</bio-icon> Profile
+          </a>
+          <a bioButton bioMenuItem routerLink="/auth/change-password"> <bio-icon>vpn_key</bio-icon> Change password</a>
+          <button type="button" bioButton bioMenuItem (click)="logout()">
+            <bio-icon>logout</bio-icon>
             Logout
           </button>
         </bio-menu>

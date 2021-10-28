@@ -9,6 +9,6 @@ export class IsSameAsLoggedPipe implements PipeTransform {
 
   transform(value: number | Player): boolean {
     const idPlayer = isNumber(value) ? value : value.id;
-    return idPlayer === this.authQuery.getUser()?.player?.id;
+    return idPlayer === this.authQuery.getUser()?.idPlayer;
   }
 }

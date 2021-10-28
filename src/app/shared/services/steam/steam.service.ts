@@ -9,9 +9,9 @@ import { SteamGatewayEvents, SteamPlayerLinkedSocketViewModel } from '@model/ste
 export class SteamService {
   constructor(private http: HttpClient, private socketIOService: SocketIOService) {}
 
-  private _socketConnection = this.socketIOService.createConnection('steam');
+  private readonly _socketConnection = this.socketIOService.createConnection('steam');
 
-  endPoint = 'steam';
+  readonly endPoint = 'steam';
 
   steamIdExists(steamid: string): Observable<boolean> {
     const params = new HttpParams({ steamid }, true);

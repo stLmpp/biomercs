@@ -7,4 +7,8 @@ export enum RouteDataEnum {
   mailQueue = 'resolver.mailQueue',
   platformApproval = 'resolver.platformApproval',
   errors = 'resolver.errors',
+  regions = 'resolver.region',
+  platforms = 'resolver.platforms',
+  player = 'resolver.player',
+  scoreGroupedByStatus = 'resolver.scoreGroupedByStatus',
 }

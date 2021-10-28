@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { AutocompleteDirective } from './autocomplete.directive';
 import { AutocompleteComponent } from './autocomplete.component';
 import { A11yModule } from '@angular/cdk/a11y';
-import { AutocompleteOptionComponent } from './autocomplete-option.component';
+import { AutocompleteOptionDirective } from './autocomplete-option.directive';
 
-const DECLARATIONS = [AutocompleteDirective, AutocompleteComponent, AutocompleteOptionComponent];
+const DECLARATIONS = [AutocompleteDirective, AutocompleteComponent, AutocompleteOptionDirective];
 const MODULES = [CommonModule, A11yModule];
 
 @NgModule({

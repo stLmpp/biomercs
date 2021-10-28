@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
-import { BooleanInput } from '@angular/cdk/coercion';
+import { BooleanInput } from 'st-utils';
 import packageJson from '../../../package.json';
 
 @Component({
@@ -13,9 +13,9 @@ export class FooterComponent {
   @HostBinding('class.mobile')
   mobile: BooleanInput = false;
 
-  version = packageJson.version;
+  readonly version = packageJson.version;
 
-  year = new Date().getFullYear();
-  startedYear = 2021;
-  copyright = '\u00A9' + this.startedYear + (this.year === this.startedYear ? '' : `-${this.year}`);
+  readonly year = new Date().getFullYear();
+  readonly startedYear = 2021;
+  readonly copyright = '\u00A9' + this.startedYear + (this.year === this.startedYear ? '' : `-${this.year}`);
 }

@@ -1,7 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { RuleService } from './rule.service';
-import { RuleQuery } from './rule.query';
 import { AuthQuery } from '../auth/auth.query';
+import { Rule } from '@model/rule';
+import { ActivatedRoute } from '@angular/router';
+import { RouteDataEnum } from '@model/enum/route-data.enum';
+import { trackById } from '@util/track-by';
 
 @Component({
   selector: 'bio-rules',
@@ -11,9 +13,9 @@ import { AuthQuery } from '../auth/auth.query';
   host: { class: 'center-container' },
 })
 export class RulesComponent {
-  constructor(private ruleService: RuleService, private ruleQuery: RuleQuery, private authQuery: AuthQuery) {}
+  constructor(private authQuery: AuthQuery, private activatedRoute: ActivatedRoute) {}
 
+  readonly rules: Rule[] = this.activatedRoute.snapshot.data[RouteDataEnum.rules];
+  readonly trackBy = trackById;
   readonly isAdmin$ = this.authQuery.isAdmin$;
-  readonly rules$ = this.ruleQuery.all$;
-  readonly trackByRule = this.ruleQuery.trackBy;
 }

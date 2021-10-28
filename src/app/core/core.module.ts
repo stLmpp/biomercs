@@ -1,46 +1,37 @@
 import { APP_INITIALIZER, LOCALE_ID, ModuleWithProviders, NgModule, Provider } from '@angular/core';
-import { NAVIGATOR, WINDOW, WINDOW_PROVIDERS } from './window.service';
-import { ApiInterceptor } from './api.interceptor';
-import { LoadingInterceptor } from './loading/loading.interceptor';
-import { DateInterceptor } from './date.interceptor';
-import { FormatErrorInterceptor } from './error/format-error.interceptor';
+import { WINDOW, WINDOW_PROVIDERS } from './window.service';
+import { ApiInterceptor } from './interceptor/api.interceptor';
+import { DateInterceptor } from './interceptor/date.interceptor';
+import { FormatErrorInterceptor } from './interceptor/format-error.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { ErrorComponent } from './error/error.component';
-import { HandleErrorDevInterceptor } from './error/handle-error-dev.interceptor';
-import { ModalModule } from '@shared/components/modal/modal.module';
-import { ButtonModule } from '@shared/components/button/button.module';
-import { SnackBarModule } from '@shared/components/snack-bar/snack-bar.module';
-import { CommonModule, registerLocaleData } from '@angular/common';
-import { AuthService } from '../auth/auth.service';
+import { HandleErrorDevInterceptor } from './interceptor/handle-error-dev.interceptor';
+import { registerLocaleData } from '@angular/common';
+import { AuthAutoLoginService } from '../auth/auth-auto-login.service';
 import { AuthInterceptor } from '../auth/auth.interceptor';
 import { AuthErrorInterceptor } from '../auth/auth-error.interceptor';
-import { AbstractRegionService } from '../region/region-service.token';
-import { RegionService } from '../region/region.service';
 import localePt from '@angular/common/locales/pt';
-import { ScoreService } from '../score/score.service';
-import { AbstractScoreService } from '../score/abstract-score.service';
-import { AbstractPlayerService } from '../player/abstract-player.service';
-import { PlayerService } from '../player/player.service';
-import { RetryInterceptor } from './retry.interceptor';
+import { RetryInterceptor } from './interceptor/retry.interceptor';
 import { HighlightModule } from '@shared/highlight/highlight.module';
+import { NAVIGATOR } from './navigator.token';
+import { DEFAULT_TOOLTIP_CONFIG, TOOLTIP_DEFAULT_CONFIG } from '@shared/components/tooltip/tooltip-token';
+import { MASK_CONFIG } from '@shared/mask/mask-config.token';
+import { CURRENCY_MASK_CONFIG } from '@shared/currency-mask/currency-mask-config.token';
+import { MODAL_DEFAULT_CONFIG, ModalConfig } from '@shared/components/modal/modal.config';
+import { SNACK_BAR_DEFAULT_CONFIG, SnackBarConfig } from '@shared/components/snack-bar/snack-bar.config';
+import { SnackBarModule } from '@shared/components/snack-bar/snack-bar.module';
 
 const withInterceptors = (...interceptors: any[]): Provider[] =>
-  interceptors.map(useClass => ({
-    provide: HTTP_INTERCEPTORS,
-    useClass,
-    multi: true,
-  }));
+  interceptors.map(useExisting => ({ provide: HTTP_INTERCEPTORS, useExisting, multi: true }));
 
 registerLocaleData(localePt);
 
 @NgModule({
-  declarations: [ErrorComponent],
   imports: [
-    CommonModule,
-    ModalModule,
-    ButtonModule,
+    HighlightModule.forRoot({
+      sql: () => import('highlight.js/lib/languages/sql'),
+      yaml: () => import('highlight.js/lib/languages/yaml'),
+    }),
     SnackBarModule,
-    HighlightModule.forRoot({ sql: () => import('highlight.js/lib/languages/sql') }),
   ],
 })
 export class CoreModule {
@@ -54,7 +45,6 @@ export class CoreModule {
           AuthInterceptor,
           AuthErrorInterceptor,
           ApiInterceptor,
-          LoadingInterceptor,
           DateInterceptor,
           HandleErrorDevInterceptor,
           RetryInterceptor,
@@ -62,14 +52,16 @@ export class CoreModule {
         ),
         {
           provide: APP_INITIALIZER,
-          useFactory: (authService: AuthService) => () => authService.autoLogin(),
-          deps: [AuthService],
+          useFactory: (authAutoLoginService: AuthAutoLoginService) => () => authAutoLoginService.autoLogin(),
+          deps: [AuthAutoLoginService],
           multi: true,
         },
-        { provide: AbstractRegionService, useExisting: RegionService },
         { provide: NAVIGATOR, useFactory: (window: Window) => window.navigator ?? {}, deps: [WINDOW] },
-        { provide: AbstractScoreService, useExisting: ScoreService },
-        { provide: AbstractPlayerService, useExisting: PlayerService },
+        { provide: TOOLTIP_DEFAULT_CONFIG, useValue: DEFAULT_TOOLTIP_CONFIG },
+        { provide: MASK_CONFIG, useValue: {} },
+        { provide: CURRENCY_MASK_CONFIG, useValue: {} },
+        { provide: MODAL_DEFAULT_CONFIG, useValue: new ModalConfig<any>() },
+        { provide: SNACK_BAR_DEFAULT_CONFIG, useValue: new SnackBarConfig() },
       ],
     };
   }

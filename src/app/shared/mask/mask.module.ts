@@ -10,10 +10,7 @@ import { IConfig } from 'ngx-mask';
   exports: [MaskDirective],
 })
 export class MaskModule {
-  static forRoot(config?: Partial<IConfig>): ModuleWithProviders<MaskModule> {
-    return { ngModule: MaskModule, providers: [{ provide: MASK_CONFIG, useValue: config ?? {} }] };
-  }
-  static forChild(config?: Partial<IConfig>): ModuleWithProviders<MaskModule> {
+  static forFeature(config?: Partial<IConfig>): ModuleWithProviders<MaskModule> {
     return {
       ngModule: MaskModule,
       providers: [

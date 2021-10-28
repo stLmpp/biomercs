@@ -1,30 +1,22 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
-import { PlatformStore } from './platform.store';
-import { useCache } from '@stlmpp/store';
+import { Observable } from 'rxjs';
 import { Platform } from '@model/platform';
+import { CacheService } from '@shared/cache/cache';
 
 @Injectable({ providedIn: 'root' })
 export class PlatformService {
-  constructor(private http: HttpClient, private platformStore: PlatformStore) {}
+  constructor(private http: HttpClient, private cacheService: CacheService) {}
 
-  endPoint = 'platform';
+  private readonly _cache = this.cacheService.createCache();
+
+  readonly endPoint = 'platform';
 
   findAll(): Observable<Platform[]> {
-    return this.http.get<Platform[]>(this.endPoint).pipe(
-      useCache(this.platformStore),
-      tap(platforms => {
-        this.platformStore.setEntities(platforms);
-      })
-    );
+    return this.http.get<Platform[]>(this.endPoint).pipe(this._cache.use());
   }
 
   findApproval(): Observable<Platform[]> {
-    return this.http.get<Platform[]>(`${this.endPoint}/approval`).pipe(
-      tap(platforms => {
-        this.platformStore.upsert(platforms);
-      })
-    );
+    return this.http.get<Platform[]>(`${this.endPoint}/approval`);
   }
 }

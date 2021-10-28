@@ -1,22 +1,14 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AdminError } from '@model/admin-error';
 import { PaginationMeta } from '@model/pagination';
-import { LocalState } from '@stlmpp/store';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
-import { debounceTime, finalize, skip, switchMap } from 'rxjs';
+import { finalize, takeUntil } from 'rxjs';
 import { ErrorService } from '@shared/services/error/error.service';
 import { trackById } from '@util/track-by';
 import { Clipboard } from '@angular/cdk/clipboard';
-
-interface AdminErrorsComponentState {
-  loading: boolean;
-  errors: AdminError[];
-  meta: PaginationMeta;
-  page: number;
-  itemsPerPage: number;
-}
+import { Destroyable } from '@shared/components/common/destroyable-component';
 
 @Component({
   selector: 'bio-admin-errors',
@@ -24,57 +16,49 @@ interface AdminErrorsComponentState {
   styleUrls: ['./admin-errors.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AdminErrorsComponent extends LocalState<AdminErrorsComponentState> implements OnInit {
+export class AdminErrorsComponent extends Destroyable {
   constructor(
     private activatedRoute: ActivatedRoute,
     private errorService: ErrorService,
-    private clipboard: Clipboard
+    private clipboard: Clipboard,
+    private changeDetectorRef: ChangeDetectorRef
   ) {
-    super({
-      errors: activatedRoute.snapshot.data[RouteDataEnum.errors]?.items ?? [],
-      meta: activatedRoute.snapshot.data[RouteDataEnum.errors]?.meta ?? {
-        currentPage: 1,
-        itemCount: 0,
-        itemsPerPage: 10,
-        totalItems: 0,
-        totalPages: 0,
-      },
-      loading: false,
-      page: +(activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.page) ?? 1),
-      itemsPerPage: +(activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.itemsPerPage) ?? 10),
-    });
+    super();
   }
 
-  readonly errors$ = this.selectState('errors');
-  readonly meta$ = this.selectState('meta');
-  readonly loading$ = this.selectState('loading');
+  private _page = +(this.activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.page) ?? 1);
+  private _itemsPerPage = +(this.activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.itemsPerPage) ?? 10);
+
+  loading = false;
+  meta: PaginationMeta | null = this.activatedRoute.snapshot.data[RouteDataEnum.errors]?.meta ?? null;
+  errors: AdminError[] = this.activatedRoute.snapshot.data[RouteDataEnum.errors]?.items ?? [];
   readonly trackBy = trackById;
 
-  onItemsPerPage(itemsPerPage: number): void {
-    this.updateState({ itemsPerPage });
-  }
-
-  onCurrentPageChange(page: number): void {
-    this.updateState({ page });
-  }
-
-  ngOnInit(): void {
-    this.selectState(['page', 'itemsPerPage'])
+  private _findErrors(): void {
+    this.loading = true;
+    this.errorService
+      .paginate(this._page, this._itemsPerPage)
       .pipe(
-        skip(1),
-        debounceTime(100),
-        switchMap(({ page, itemsPerPage }) => {
-          this.updateState({ loading: true });
-          return this.errorService.paginate(page, itemsPerPage).pipe(
-            finalize(() => {
-              this.updateState({ loading: false });
-            })
-          );
+        takeUntil(this.destroy$),
+        finalize(() => {
+          this.loading = false;
+          this.changeDetectorRef.markForCheck();
         })
       )
       .subscribe(({ items, meta }) => {
-        this.updateState({ errors: items, meta });
+        this.errors = items;
+        this.meta = meta;
       });
+  }
+
+  onItemsPerPage(itemsPerPage: number): void {
+    this._itemsPerPage = itemsPerPage;
+    this._findErrors();
+  }
+
+  onCurrentPageChange(page: number): void {
+    this._page = page;
+    this._findErrors();
   }
 
   copyQueryToClipboard(query: string): void {

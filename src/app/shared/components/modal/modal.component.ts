@@ -39,7 +39,7 @@ export class ModalComponent<R = any> implements OnInit, OnDestroy {
 
   private _focusTrap?: ConfigurableFocusTrap;
 
-  @ViewChild(CdkPortalOutlet, { static: true }) portalOutlet!: CdkPortalOutlet;
+  @ViewChild(CdkPortalOutlet, { static: true }) readonly portalOutlet!: CdkPortalOutlet;
 
   @HostBinding('attr.id') get id(): string {
     return this.modalConfig.id;

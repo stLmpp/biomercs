@@ -1,15 +1,15 @@
-<form [controlGroup]="form" (groupSubmit)="onSubmit()" *ngLet="saving$ | async as saving">
+<form [controlGroup]="form" (groupSubmit)="onSubmit()">
   <h4 bioModalTitle>Request changes</h4>
   <bio-modal-content controlArrayName="changes">
     <bio-score-info [score]="score"></bio-score-info>
     <hr />
     <div class="actions">
-      <button bioButton icon tooltip="Add change" type="button" (click)="addChange()" [disabled]="saving">
-        <icon>add_circle</icon>
+      <button bioButton icon bioTooltip="Add change" type="button" (click)="addChange()" [disabled]="saving">
+        <bio-icon>add_circle</bio-icon>
       </button>
     </div>
     <div class="change" *ngFor="let change of changesControl; trackBy: trackByControl; let $index = index">
-      <form-field label="Change {{ $index + 1 }}">
+      <bio-form-field label="Change {{ $index + 1 }}">
         <textarea
           bioInput
           cdkTextareaAutosize
@@ -20,17 +20,17 @@
           placeholder="Describe what needs to be changed"
           #change="bio-input"
         ></textarea>
-      </form-field>
+      </bio-form-field>
       <div class="icon-wrapper">
         <button
           bioButton
           type="button"
           icon
           (click)="removeChange($index)"
-          tooltip="Delete change (CTRL + D)"
+          bioTooltip="Delete change (CTRL + D)"
           [disabled]="saving"
         >
-          <icon>delete</icon>
+          <bio-icon>delete</bio-icon>
         </button>
       </div>
     </div>

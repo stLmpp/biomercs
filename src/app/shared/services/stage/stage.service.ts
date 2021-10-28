@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
-import { StageStore } from './stage.store';
-import { httpCache } from '../../operators/http-cache';
+import { Observable } from 'rxjs';
 import { Stage } from '@model/stage';
 import { HttpParams } from '@util/http-params';
+import { CacheService } from '@shared/cache/cache';
 
 @Injectable({ providedIn: 'root' })
 export class StageService {
-  constructor(private http: HttpClient, private stageStore: StageStore) {}
+  constructor(private http: HttpClient, private cacheService: CacheService) {}
 
-  endPoint = 'stage';
+  private readonly _cache = this.cacheService.createCache();
+
+  readonly endPoint = 'stage';
 
   findByIdPlatformGameMiniGameMode(
     idPlatform: number,
@@ -20,12 +21,7 @@ export class StageService {
   ): Observable<Stage[]> {
     return this.http
       .get<Stage[]>(`${this.endPoint}/platform/${idPlatform}/game/${idGame}/mini-game/${idMiniGame}/mode/${idMode}`)
-      .pipe(
-        httpCache(this.stageStore, [idPlatform, idGame, idMiniGame, idMode]),
-        tap(stages => {
-          this.stageStore.upsert(stages);
-        })
-      );
+      .pipe(this._cache.use(idPlatform, idGame, idMiniGame, idMode));
   }
 
   findByIdPlatformsGamesMiniGamesModes(
@@ -35,12 +31,9 @@ export class StageService {
     idModes: number[]
   ): Observable<Stage[]> {
     const params = new HttpParams({ idPlatforms, idGames, idMiniGames, idModes });
-    return this.http.get<Stage[]>(`${this.endPoint}/platforms/games/mini-games/modes`, { params }).pipe(
-      httpCache(this.stageStore, [...idPlatforms, ...idGames, ...idMiniGames, ...idModes]),
-      tap(stages => {
-        this.stageStore.upsert(stages);
-      })
-    );
+    return this.http
+      .get<Stage[]>(`${this.endPoint}/platforms/games/mini-games/modes`, { params })
+      .pipe(this._cache.use(idPlatforms, idGames, idMiniGames, idModes));
   }
 
   findApprovalByIdPlatformGameMiniGameMode(
@@ -49,14 +42,8 @@ export class StageService {
     idMiniGame: number,
     idMode: number
   ): Observable<Stage[]> {
-    return this.http
-      .get<Stage[]>(
-        `${this.endPoint}/approval/platform/${idPlatform}/game/${idGame}/mini-game/${idMiniGame}/mode/${idMode}`
-      )
-      .pipe(
-        tap(stages => {
-          this.stageStore.upsert(stages);
-        })
-      );
+    return this.http.get<Stage[]>(
+      `${this.endPoint}/approval/platform/${idPlatform}/game/${idGame}/mini-game/${idMiniGame}/mode/${idMode}`
+    );
   }
 }

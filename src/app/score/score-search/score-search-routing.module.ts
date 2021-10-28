@@ -9,7 +9,9 @@ const routes: Routes = [
   {
     path: '',
     component: ScoreSearchComponent,
-    resolve: [PlatformResolver],
+    resolve: {
+      [RouteDataEnum.platforms]: PlatformResolver,
+    },
     data: {
       [RouteDataEnum.title]: 'Search scores',
       [RouteDataEnum.meta]: createMeta({

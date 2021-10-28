@@ -5,7 +5,7 @@ import { MetaService } from '@shared/meta/meta.service';
 import { GlobalListenersService } from '@shared/services/global-listeners/global-listeners.service';
 import { Destroyable } from '@shared/components/common/destroyable-component';
 import { DOCUMENT } from '@angular/common';
-import { debounceTime, takeUntil } from 'rxjs';
+import { auditTime, distinctUntilChanged, map, startWith, takeUntil } from 'rxjs';
 import { WINDOW } from './core/window.service';
 
 @Component({
@@ -26,28 +26,33 @@ export class AppComponent extends Destroyable implements OnInit, OnDestroy {
     super();
   }
 
-  isMobile$ = this.breakpointObserverService.isMobile$;
+  readonly isMobile$ = this.breakpointObserverService.isMobile$;
 
-  private _defineHeightPropertyCss(): void {
-    const vh = this.window.innerHeight * 0.01;
-    this.document.documentElement.style.setProperty('--vh', `${vh}px`);
+  private _getVh(): number {
+    return this.window.innerHeight * 0.01;
   }
 
   private _listenToResize(): void {
-    this.globalListenersService.windowResize$.pipe(takeUntil(this.destroy$), debounceTime(500)).subscribe(() => {
-      this._defineHeightPropertyCss();
-    });
+    this.globalListenersService.windowResize$
+      .pipe(
+        takeUntil(this.destroy$),
+        auditTime(200),
+        map(() => this._getVh()),
+        distinctUntilChanged(),
+        startWith(this._getVh())
+      )
+      .subscribe(vh => {
+        this.document.documentElement.style.setProperty('--vh', `${vh}px`);
+      });
   }
 
   ngOnInit(): void {
-    this._defineHeightPropertyCss();
     this._listenToResize();
-    this.titleService.init();
     this.metaService.init();
+    this.titleService.title$.pipe(takeUntil(this.destroy$)).subscribe();
   }
 
   override ngOnDestroy(): void {
-    this.titleService.ngOnDestroy();
     this.metaService.ngOnDestroy();
     super.ngOnDestroy();
   }

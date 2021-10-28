@@ -28,7 +28,7 @@ export class OptgroupComponent {
 
   @Input() label!: string;
 
-  @ContentChildren(Option, { descendants: true }) options!: QueryList<Option>;
+  @ContentChildren(Option, { descendants: true }) options?: QueryList<Option>;
 
   @HostBinding('class.multiple') multiple: boolean;
 
@@ -48,7 +48,12 @@ export class OptgroupComponent {
   }
 
   get isDisabled(): boolean {
-    return !!this.options?.every(option => option.disabled);
+    for (const option of this.options ?? []) {
+      if (!option.disabled) {
+        return false;
+      }
+    }
+    return true;
   }
 
   private _select($event: boolean): void {

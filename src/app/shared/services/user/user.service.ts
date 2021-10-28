@@ -9,7 +9,7 @@ import { HttpParams } from '@util/http-params';
 export class UserService {
   constructor(private http: HttpClient) {}
 
-  endPoint = 'user';
+  readonly endPoint = 'user';
 
   banUser(idUser: number): Observable<void> {
     return this.http.put<void>(`${this.endPoint}/${idUser}/ban`, undefined);

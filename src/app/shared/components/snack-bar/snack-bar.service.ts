@@ -3,10 +3,10 @@ import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { SnackBarComponent } from './snack-bar.component';
 import { SNACK_BAR_DEFAULT_CONFIG, SnackBarConfig } from './snack-bar.config';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { coerceArray } from '@angular/cdk/coercion';
+import { coerceArray } from 'st-utils';
 import { take } from 'rxjs';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class SnackBarService {
   constructor(
     private overlay: Overlay,

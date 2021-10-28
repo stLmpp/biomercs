@@ -14,7 +14,7 @@ import {
 } from '@angular/core';
 import { ListParentControl } from './list-config';
 import { FocusableOption } from '@angular/cdk/a11y';
-import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
+import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 
 @Component({
   selector: 'bio-list-item,a[bioListItem]',
@@ -33,7 +33,7 @@ export class ListItemComponent implements OnInit, FocusableOption {
 
   private _disabled = false;
 
-  @ViewChild('control') controlInput?: ElementRef<HTMLInputElement>;
+  @ViewChild('control') readonly controlInput?: ElementRef<HTMLInputElement>;
 
   @Input() value: any;
 

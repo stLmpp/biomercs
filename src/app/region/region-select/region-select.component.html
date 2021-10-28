@@ -1,19 +1,23 @@
-<bio-loading *ngIf="loading$ | async"></bio-loading>
+<bio-loading *ngIf="loading"></bio-loading>
 <h3 bioModalTitle>Region</h3>
 <div bioModalTitle>
   <label class="cdk-visually-hidden" for="search">Search</label>
   <input id="search" placeholder="Search" bioInput type="search" [control]="searchControl" autocomplete="off" />
 </div>
 <bio-list bioModalContent [(model)]="idRegion">
-  <cdk-virtual-scroll-viewport itemSize="44" (keydown.control.s)="onSave($event)" *ngLet="all$ | async as all">
+  <cdk-virtual-scroll-viewport
+    itemSize="44"
+    (keydown.control.s)="onSave($event)"
+    *ngIf="regions | search: 'name':(search$ | async) as all"
+  >
     <bio-list-item [value]="region.id" *cdkVirtualFor="let region of all; trackBy: trackByRegion; templateCacheSize: 0">
-      <icon prefix [flag]="region.shortName"></icon>
+      <bio-icon bioPrefix [flag]="region.shortName"></bio-icon>
       {{ region.name }}
     </bio-list-item>
     <bio-list-item *ngIf="!all.length"> No data found </bio-list-item>
   </cdk-virtual-scroll-viewport>
 </bio-list>
-<bio-modal-actions end *ngLet="saving$ | async as saving">
+<bio-modal-actions end>
   <button bioButton type="button" (click)="onSave()" [loading]="saving">Save</button>
   <button bioButton type="button" (click)="onClose()" [disabled]="saving">Close</button>
 </bio-modal-actions>

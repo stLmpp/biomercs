@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { Control, ControlGroup, Validators } from '@stlmpp/control';
 import { ContactSendMail } from '@model/contact';
-import { LocalState } from '@stlmpp/store';
 import { ContactService } from './contact.service';
 import { finalize, tap } from 'rxjs';
 import { Router } from '@angular/router';
@@ -11,33 +10,28 @@ import { HttpStatusCode } from '@angular/common/http';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
 import { AuthQuery } from '../auth/auth.query';
 
-interface ContactComponentState {
-  sending: boolean;
-}
-
 @Component({
   selector: 'bio-contact',
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ContactComponent extends LocalState<ContactComponentState> {
+export class ContactComponent {
   constructor(
     private contactService: ContactService,
     private router: Router,
     private snackBarService: SnackBarService,
     private dialogService: DialogService,
-    private authQuery: AuthQuery
-  ) {
-    super({ sending: false });
-  }
+    private authQuery: AuthQuery,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {}
 
-  mail = 'support@biomercs.net';
-  subject = 'Give me a good subject';
-  body = 'Describe your question(s) or suggestion(s)';
-  mailto = encodeURI(`mailto:${this.mail}?subject=${this.subject}&body=${this.body}`);
+  readonly mail = 'support@biomercs.net';
+  readonly subject = 'Give me a good subject';
+  readonly body = 'Describe your question(s) or suggestion(s)';
+  readonly mailto = encodeURI(`mailto:${this.mail}?subject=${this.subject}&body=${this.body}`);
 
-  form = new ControlGroup<ContactSendMail>({
+  readonly form = new ControlGroup<ContactSendMail>({
     body: new Control('', [
       Validators.required,
       Validators.maxLength(2000),
@@ -54,22 +48,23 @@ export class ContactComponent extends LocalState<ContactComponentState> {
     }),
   });
 
-  subjectControlValue$ = this.form.get('subject').value$;
-  bodyControlValue$ = this.form.get('body').value$;
-  sending$ = this.selectState('sending');
+  readonly subjectControlValue$ = this.form.get('subject').value$;
+  readonly bodyControlValue$ = this.form.get('body').value$;
+  sending = false;
 
   onSubmit(): void {
     if (this.form.invalid) {
       return;
     }
-    this.updateState({ sending: true });
+    this.sending = true;
     const dto = this.form.value;
     this.form.disable();
     this.contactService
       .sendMail(dto)
       .pipe(
         finalize(() => {
-          this.updateState({ sending: false });
+          this.sending = false;
+          this.changeDetectorRef.markForCheck();
           this.form.enable();
         }),
         tap(() => {
@@ -78,7 +73,7 @@ export class ContactComponent extends LocalState<ContactComponentState> {
         }),
         catchAndThrow(err => {
           if (err.status === HttpStatusCode.TooManyRequests) {
-            this.dialogService.error({ title: 'Sorry', content: err.message, btnNo: null, btnYes: 'Ok' }).then();
+            this.dialogService.error({ title: 'Sorry', content: err.message, buttons: ['Ok'] }).then();
           }
         })
       )

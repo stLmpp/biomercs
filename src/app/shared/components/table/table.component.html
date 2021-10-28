@@ -1,14 +1,14 @@
 <bio-card class="bio-table" [collapsable]="collapsable" [collapsed]="true">
   <bio-loading *ngIf="loading"></bio-loading>
   <h3 bioCardTitle *ngIf="title">{{ title }}</h3>
-  <bio-card-content *ngLet="colDefs$ | async as colDefs">
+  <bio-card-content>
     <div
       class="header"
       [class.header-order]="order"
       *ngLet="order?.orderByDirection === 'desc' ? 'arrow_drop_up' : 'arrow_drop_down' as arrow"
     >
       <div
-        *ngFor="let colDef of colDefs; trackBy: trackByColDef"
+        *ngFor="let colDef of colDefsInternal; trackBy: trackByColDef"
         [style.flex-basis]="colDef.width"
         [class.flex-grow-0]="colDef.width"
         [ngStyle]="colDef.headerStyle"
@@ -16,25 +16,24 @@
         (click)="changeOrder(colDef.orderByKey)"
       >
         {{ colDef.title }}
-        <icon class="order-icon" *ngIf="colDef.orderBy && order?.orderBy === colDef.orderByKey" small>
+        <bio-icon class="order-icon" *ngIf="colDef.orderBy && order?.orderBy === colDef.orderByKey" small>
           {{ arrow }}
-        </icon>
+        </bio-icon>
       </div>
     </div>
     <hr />
-    <div class="body" *ngIf="data$ | async as data">
+    <div class="body">
       <div class="no-data-found" *ngIf="!data.length">No data found</div>
       <ng-container *ngFor="let item of data; trackBy: trackBy">
         <div>
-          <ng-container *ngFor="let colDef of colDefs; trackBy: trackByColDef">
-            <bio-cell
-              [ngStyle]="colDef.bodyStyle"
-              [colDef]="colDef"
-              [item]="item"
-              [metadata]="metadata"
-              (notifyChange)="notifyChange.emit($event)"
-            ></bio-cell>
-          </ng-container>
+          <bio-cell
+            *ngFor="let colDef of colDefsInternal; trackBy: trackByColDef"
+            [ngStyle]="colDef.bodyStyle"
+            [colDef]="colDef"
+            [item]="item"
+            [metadata]="metadata"
+            (notifyChange)="notifyChange.emit($event)"
+          ></bio-cell>
         </div>
         <hr />
       </ng-container>

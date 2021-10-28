@@ -10,7 +10,10 @@ const routes: Routes = [
   {
     path: '',
     component: ScoreAddComponent,
-    resolve: [PlatformResolver, AuthPlayerResolver],
+    resolve: {
+      [RouteDataEnum.platforms]: PlatformResolver,
+      authPlayerResolver: AuthPlayerResolver,
+    },
     data: {
       [RouteDataEnum.title]: 'Submit score',
       [RouteDataEnum.meta]: createMeta({ title: 'Submit score', description: 'Submit new score for approval' }),

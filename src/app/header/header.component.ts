@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AuthQuery } from '../auth/auth.query';
 import { AuthService } from '../auth/auth.service';
 import { SnackBarService } from '@shared/components/snack-bar/snack-bar.service';
@@ -17,14 +17,10 @@ import {
 import { BreakpointObserverService } from '@shared/services/breakpoint-observer/breakpoint-observer.service';
 import { Router } from '@angular/router';
 import { ScoreService } from '../score/score.service';
-import { LocalState } from '@stlmpp/store';
 import { GlobalListenersService } from '@shared/services/global-listeners/global-listeners.service';
 import { mdiTriangle } from '@mdi/js';
-import { filterNil } from '@shared/operators/filter';
-
-export interface HeaderComponentState {
-  sideMenuOpened: boolean;
-}
+import { filterNil } from '@util/operators/filter';
+import { Destroyable } from '@shared/components/common/destroyable-component';
 
 @Component({
   selector: 'bio-header',
@@ -32,7 +28,7 @@ export interface HeaderComponentState {
   styleUrls: ['./header.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderComponent extends LocalState<HeaderComponentState> implements OnInit {
+export class HeaderComponent extends Destroyable implements OnInit {
   constructor(
     private authQuery: AuthQuery,
     private authService: AuthService,
@@ -40,27 +36,18 @@ export class HeaderComponent extends LocalState<HeaderComponentState> implements
     private breakpointObserverService: BreakpointObserverService,
     private router: Router,
     private scoreService: ScoreService,
-    private globalListenersService: GlobalListenersService
+    private globalListenersService: GlobalListenersService,
+    private changeDetectorRef: ChangeDetectorRef
   ) {
-    super({ sideMenuOpened: false });
+    super();
   }
 
   readonly user$ = this.authQuery.user$;
-  readonly sideMenuOpened$ = this.selectState('sideMenuOpened');
-  readonly pathToProfile$ = this.user$.pipe(
-    map(user => {
-      if (!user) {
-        return [];
-      }
-      if (user.player?.id) {
-        return ['/player', user.player.id];
-      }
-      return ['/player/u', user.id];
-    })
-  );
   readonly isLogged$ = this.authQuery.isLogged$;
   readonly isMobile$ = this.breakpointObserverService.isMobile$;
   readonly mdiTriangle = mdiTriangle;
+
+  sideMenuOpened = false;
 
   async logout(): Promise<void> {
     this.authService.logout();
@@ -70,7 +57,7 @@ export class HeaderComponent extends LocalState<HeaderComponentState> implements
 
   toggleSideMenu($event: MouseEvent): void {
     $event.stopPropagation();
-    this.updateState('sideMenuOpened', sideMenuOpened => !sideMenuOpened);
+    this.sideMenuOpened = !this.sideMenuOpened;
   }
 
   ngOnInit(): void {
@@ -96,11 +83,11 @@ export class HeaderComponent extends LocalState<HeaderComponentState> implements
     this.globalListenersService.htmlClick$
       .pipe(
         takeUntil(this.destroy$),
-        withLatestFrom(this.sideMenuOpened$),
-        filter(([, sideMenuOpened]) => sideMenuOpened)
+        filter(() => this.sideMenuOpened)
       )
       .subscribe(() => {
-        this.updateState({ sideMenuOpened: false });
+        this.sideMenuOpened = !this.sideMenuOpened;
+        this.changeDetectorRef.markForCheck();
       });
   }
 }

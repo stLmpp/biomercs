@@ -1,4 +1,3 @@
-import { Nullable } from '@shared/type/nullable';
 import { TemplateRef } from '@angular/core';
 import { BioCellComponentType } from '@shared/components/table/type';
 import { TooltipPosition } from '@shared/components/tooltip/tooltip.directive';
@@ -7,7 +6,7 @@ let uid = 99;
 
 export type TableCellFormatter<T extends Record<any, any>, K extends keyof T = keyof T> = (
   value: T[K]
-) => Nullable<string>;
+) => string | null | undefined;
 
 export interface ColDefTemplateRefContext<T extends Record<any, any>, K extends keyof T = keyof T> {
   item: T;

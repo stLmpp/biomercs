@@ -43,12 +43,13 @@ export class AccordionItemComponent extends CdkAccordionItem implements OnInit, 
     super(_accordion, changeDetectorRef, uniqueSelectionDispatcher);
   }
 
-  private _destroy$ = new Subject<void>();
+  private readonly _destroy$ = new Subject<void>();
 
   @Input() accordionTitle?: string;
 
-  @ContentChildren(AccordionItemTitleDirective) accordionItemTitleDirectives!: QueryList<AccordionItemTitleDirective>;
-  @ViewChild('header') headerElementRef!: ElementRef<HTMLDivElement>;
+  @ContentChildren(AccordionItemTitleDirective)
+  readonly accordionItemTitleDirectives!: QueryList<AccordionItemTitleDirective>;
+  @ViewChild('header') readonly headerElementRef!: ElementRef<HTMLDivElement>;
 
   @HostBinding('class.expanded')
   get expandedClass(): boolean {

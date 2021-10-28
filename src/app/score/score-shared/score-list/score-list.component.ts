@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Score } from '@model/score';
-import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
+import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { PaginationMeta } from '@model/pagination';
 import { trackById } from '@util/track-by';
 import { trackByFactory } from '@stlmpp/utils';

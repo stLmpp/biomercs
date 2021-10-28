@@ -1,31 +1,31 @@
-<form [controlGroup]="form" (groupSubmit)="submit()" *ngIf="state$ | async as state" class="center-container">
+<form [controlGroup]="form" (groupSubmit)="submit()" class="center-container">
   <bio-card class="center-block-mobile">
     <h3 bioCardTitle>Register Steam</h3>
     <bio-card-content>
-      <ng-container *ngIf="state.emailSent; else emailForm">
+      <ng-container *ngIf="emailSent; else emailForm">
         <p>Please confirm the code we sent to your e-mail</p>
         <bio-confirmation-code-input
           controlName="code"
           (focusoutLastItem)="submit()"
           label="Confirmation code"
-          [codeError]="confirmCodeError$ | async"
+          [codeError]="confirmCodeError"
         ></bio-confirmation-code-input>
       </ng-container>
 
       <ng-template #emailForm>
         <p>Fill the box with your e-mail and click register to complete your registration</p>
-        <form-field label="E-mail">
+        <bio-form-field label="E-mail">
           <input autocomplete="email" placeholder="E-mail" bioInput controlName="email" type="email" />
-          <errors>
-            <error *error="'email'">This e-mail is not valid</error>
-            <error *error="'required'">E-mail is required</error>
-          </errors>
-        </form-field>
+          <bio-errors>
+            <bio-error *error="'email'">This e-mail is not valid</bio-error>
+            <bio-error *error="'required'">E-mail is required</bio-error>
+          </bio-errors>
+        </bio-form-field>
       </ng-template>
     </bio-card-content>
     <bio-card-actions end>
-      <button bioButton primary type="submit" [disabled]="form.invalid" [loading]="state.loading">
-        {{ state.emailSent ? 'Send confirmation code' : 'Register' }}
+      <button bioButton primary type="submit" [disabled]="form.invalid" [loading]="loading">
+        {{ emailSent ? 'Send confirmation code' : 'Register' }}
       </button>
     </bio-card-actions>
   </bio-card>

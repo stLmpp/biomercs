@@ -1,17 +1,11 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Output } from '@angular/core';
 import { TableCell } from '@shared/components/table/type';
 import { Score } from '@model/score';
 import { ScoreApprovalActionEnum } from '@model/enum/score-approval-action.enum';
 import { ColDefInternal } from '@shared/components/table/col-def';
-import { LocalState } from '@stlmpp/store';
-import { ScoreService } from '../../../score.service';
 import { ScoreApprovalComponentState } from '../score-approval.component';
 import { ScoreApprovalPagination } from '@model/score-approval';
-
-export interface ScoreApprovalActionsCellState {
-  loadingApprovalModal: boolean;
-  loadingRequestChangesModal: boolean;
-}
+import { ScoreModalService } from '../../../score-modal.service';
 
 @Component({
   selector: 'bio-score-approval-actions-cell',
@@ -19,26 +13,22 @@ export interface ScoreApprovalActionsCellState {
   styleUrls: ['./score-approval-actions-cell.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ScoreApprovalActionsCellComponent
-  extends LocalState<ScoreApprovalActionsCellState>
-  implements TableCell<Score>
-{
-  constructor(private scoreService: ScoreService) {
-    super({ loadingApprovalModal: false, loadingRequestChangesModal: false });
-  }
+export class ScoreApprovalActionsCellComponent implements TableCell<Score> {
+  constructor(private scoreModalService: ScoreModalService, private changeDetectorRef: ChangeDetectorRef) {}
 
   @Output() readonly notifyChange = new EventEmitter<ScoreApprovalPagination>();
 
   colDef!: ColDefInternal<Score, keyof Score>;
   item!: Score;
   metadata!: ScoreApprovalComponentState;
-  scoreApprovalActionEnum = ScoreApprovalActionEnum;
+  readonly scoreApprovalActionEnum = ScoreApprovalActionEnum;
 
-  state$ = this.selectState();
+  loadingApprovalModal = false;
+  loadingRequestChangesModal = false;
 
   async openModalApproval(action: ScoreApprovalActionEnum): Promise<void> {
-    this.updateState({ loadingApprovalModal: true });
-    const modalRef = await this.scoreService.openModalScoreApproval({
+    this.loadingApprovalModal = true;
+    const modalRef = await this.scoreModalService.openModalScoreApproval({
       score: this.item,
       action,
       scoreApprovalComponentState: this.metadata,
@@ -48,12 +38,13 @@ export class ScoreApprovalActionsCellComponent
         this.notifyChange.emit(data);
       }
     });
-    this.updateState({ loadingApprovalModal: false });
+    this.loadingApprovalModal = false;
+    this.changeDetectorRef.markForCheck();
   }
 
   async openModalRequestChanges(): Promise<void> {
-    this.updateState({ loadingRequestChangesModal: true });
-    const modalRef = await this.scoreService.openModalRequestChangesScore({
+    this.loadingRequestChangesModal = true;
+    const modalRef = await this.scoreModalService.openModalRequestChangesScore({
       score: this.item,
       scoreApprovalComponentState: this.metadata,
     });
@@ -62,6 +53,7 @@ export class ScoreApprovalActionsCellComponent
         this.notifyChange.emit(data);
       }
     });
-    this.updateState({ loadingRequestChangesModal: false });
+    this.loadingRequestChangesModal = false;
+    this.changeDetectorRef.markForCheck();
   }
 }

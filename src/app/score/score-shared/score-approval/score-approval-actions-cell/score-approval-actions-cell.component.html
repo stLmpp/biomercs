@@ -1,38 +1,36 @@
-<ng-container *ngIf="state$ | async as state">
-  <button
-    bioButton
-    icon
-    small
-    tooltip="Approve"
-    tooltipPosition="right"
-    (click)="openModalApproval(scoreApprovalActionEnum.Approve)"
-    [disabled]="state.loadingApprovalModal"
-    type="button"
-  >
-    <icon small>check</icon>
-  </button>
-  <button
-    bioButton
-    icon
-    small
-    tooltip="Reject"
-    tooltipPosition="right"
-    (click)="openModalApproval(scoreApprovalActionEnum.Reject)"
-    [disabled]="state.loadingApprovalModal"
-    type="button"
-  >
-    <icon small>close</icon>
-  </button>
-  <button
-    bioButton
-    icon
-    small
-    tooltip="Request changes"
-    tooltipPosition="right"
-    type="button"
-    (click)="openModalRequestChanges()"
-    [disabled]="state.loadingRequestChangesModal"
-  >
-    <icon small>sync_alt</icon>
-  </button>
-</ng-container>
+<button
+  bioButton
+  icon
+  small
+  bioTooltip="Approve"
+  bioTooltipPosition="right"
+  (click)="openModalApproval(scoreApprovalActionEnum.Approve)"
+  [disabled]="loadingApprovalModal"
+  type="button"
+>
+  <bio-icon small>check</bio-icon>
+</button>
+<button
+  bioButton
+  icon
+  small
+  bioTooltip="Reject"
+  bioTooltipPosition="right"
+  (click)="openModalApproval(scoreApprovalActionEnum.Reject)"
+  [disabled]="loadingApprovalModal"
+  type="button"
+>
+  <bio-icon small>close</bio-icon>
+</button>
+<button
+  bioButton
+  icon
+  small
+  bioTooltip="Request changes"
+  bioTooltipPosition="right"
+  type="button"
+  (click)="openModalRequestChanges()"
+  [disabled]="loadingRequestChangesModal"
+>
+  <bio-icon small>sync_alt</bio-icon>
+</button>

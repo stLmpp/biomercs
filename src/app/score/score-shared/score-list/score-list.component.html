@@ -24,7 +24,7 @@
         <bio-list-item-line *ngFor="let scorePlayer of score.scorePlayers; trackBy: trackById">
           {{ scorePlayer.characterName }} {{ scorePlayer.characterCostumeName }} ({{ scorePlayer.playerPersonaName }})
         </bio-list-item-line>
-        <div suffix [tooltip]="score.score | number: '1.0-0'">{{ score.score | scoreFormat }}</div>
+        <div bioSuffix [bioTooltip]="score.score | number: '1.0-0'">{{ score.score | scoreFormat }}</div>
       </bio-list-item>
       <bio-list-item *ngIf="!scores.length">
         <bio-list-item-line>No data found</bio-list-item-line>

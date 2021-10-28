@@ -15,9 +15,10 @@ import { combineLatest, filter, finalize, map, Observable, shareReplay, switchMa
 import { orderBy, OrderByDirection, OrderByType } from 'st-utils';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
-import { isNotNil } from '@shared/operators/filter';
+import { isNotNil } from '@util/operators/filter';
 import { BreakpointObserverService } from '@shared/services/breakpoint-observer/breakpoint-observer.service';
 import { trackById } from '@util/track-by';
+import { ScoreModalService } from '../score-modal.service';
 
 export interface ScoreWorldRecordTableState {
   tableLoading: boolean;
@@ -43,7 +44,8 @@ export class ScoreWorldRecordsComponent extends LocalState<ScoreWorldRecordTable
     private controlBuilder: ControlBuilder,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private breakpointObserverService: BreakpointObserverService
+    private breakpointObserverService: BreakpointObserverService,
+    private scoreModalService: ScoreModalService
   ) {
     super({
       tableLoading: false,
@@ -76,6 +78,7 @@ export class ScoreWorldRecordsComponent extends LocalState<ScoreWorldRecordTable
   readonly tableLoading$ = this.selectState('tableLoading');
   readonly loadingInfoModal$ = this.selectState('loadingInfoModal');
   readonly orderBy$ = this.selectState(['orderByStage', 'orderByDirection', 'orderByCharacter']);
+  readonly isMobile$ = this.breakpointObserverService.isMobile$;
 
   readonly paramsConfig: Partial<ParamsConfig> = {
     idStage: { show: false },
@@ -89,9 +92,10 @@ export class ScoreWorldRecordsComponent extends LocalState<ScoreWorldRecordTable
   readonly scoreTopTable$: Observable<ScoreTopTableWorldRecord> = combineLatest([
     this._scoreTopTable$,
     this.orderBy$,
+    this.isMobile$,
   ]).pipe(
-    map(([scoreTopTable, { orderByStage, orderByDirection, orderByCharacter }]) => {
-      if (!orderByStage && !orderByCharacter) {
+    map(([scoreTopTable, { orderByStage, orderByDirection, orderByCharacter }, isMobile]) => {
+      if ((!orderByStage && !orderByCharacter) || isMobile) {
         return scoreTopTable;
       }
       let orderByValue: OrderByType<ScoreTableWorldRecord>;
@@ -115,8 +119,6 @@ export class ScoreWorldRecordsComponent extends LocalState<ScoreWorldRecordTable
     }))
   );
 
-  readonly isMobile$ = this.breakpointObserverService.isMobile$;
-
   readonly trackById = trackById;
   readonly trackByScoreTable = trackByFactory<ScoreTableWorldRecord>('idCharacterCostume');
   readonly trackByScoreTableWithoutUndefined =
@@ -129,7 +131,7 @@ export class ScoreWorldRecordsComponent extends LocalState<ScoreWorldRecordTable
 
   async openScoreInfo(score: Score): Promise<void> {
     this.updateState({ loadingInfoModal: true });
-    await this.scoreService.openModalScoreInfo({ score, showWorldRecord: true, showApprovalDate: true });
+    await this.scoreModalService.openModalScoreInfo({ score, showWorldRecord: true, showApprovalDate: true });
     this.updateState({ loadingInfoModal: false });
   }
 

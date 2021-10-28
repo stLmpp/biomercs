@@ -3,7 +3,7 @@
 </ng-container>
 <ng-template #noLabelRef>
   <label
-    [danger]="inputDirective?.dangerClass"
+    [danger]="inputDirective?.dangerClass || select?.dangerClass"
     *ngIf="label"
     [for]="id"
     [class.required]="forceRequired || (control | hasValidators: ['required'])"
@@ -17,26 +17,25 @@
     'has-prefix': !!prefixDirective,
     'has-suffix': !!suffixDirective,
     disabled: control?.disabled,
-    'is-select': !!selectComponent
+    'is-select': !!select
   }"
 >
-  <!--TODO https://github.com/stLmpp/biomercs-ng/issues/64-->
   <div class="spinner-wrapper">
-    <spinner *ngIf="loading" [size]="0.1"></spinner>
+    <bio-spinner *ngIf="loading" [size]="0.1"></bio-spinner>
   </div>
   <div class="prefix-wrapper" *ngIf="prefixDirective" (click)="$event.stopPropagation()">
-    <ng-content select="[prefix]"></ng-content>
+    <ng-content select="[bioPrefix]"></ng-content>
   </div>
   <ng-content></ng-content>
   <div class="suffix-wrapper" *ngIf="suffixDirective" (click)="$event.stopPropagation()">
-    <ng-content select="[suffix]"></ng-content>
+    <ng-content select="[bioSuffix]"></ng-content>
   </div>
 </div>
 <div class="bottom-wrapper">
   <div class="hints" *ngIf="!control?.touched || !(control?.hasErrors$ | async)" @fadeIn>
-    <ng-content select="hint:not([end]),[hint]:not([end])"></ng-content>
+    <ng-content select="bio-hint:not([end]),[bioHint]:not([end])"></ng-content>
     <div class="hint-spacer"></div>
-    <ng-content select="hint[end],[hint][end]"></ng-content>
+    <ng-content select="bio-hint[end],[bioHint][end]"></ng-content>
   </div>
-  <ng-content select="errors,[errors]"></ng-content>
+  <ng-content select="bio-errors,[bioErrors]"></ng-content>
 </div>

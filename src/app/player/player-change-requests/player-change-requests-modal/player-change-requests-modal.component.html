@@ -12,25 +12,25 @@
             </label>
           </div>
           <div class="body">
-            <form-field label="Description">
+            <bio-form-field label="Description">
               <input bioInput controlName="description" placeholder="Description" />
-              <errors>
-                <error *error="'required'">Description is required</error>
-              </errors>
-            </form-field>
-            <form-field label="Bullet kills">
+              <bio-errors>
+                <bio-error *error="'required'">Description is required</bio-error>
+              </bio-errors>
+            </bio-form-field>
+            <bio-form-field label="Bullet kills">
               <input bioInput controlName="bulletKills" placeholder="Number of bullet kills" type="number" />
-              <errors>
-                <error *error="'required'">Bullet kills is required</error>
-              </errors>
-            </form-field>
-            <form-field label="Evidence">
+              <bio-errors>
+                <bio-error *error="'required'">Bullet kills is required</bio-error>
+              </bio-errors>
+            </bio-form-field>
+            <bio-form-field label="Evidence">
               <input bioInput controlName="evidence" placeholder="Evidence video URL" type="url" />
-              <errors>
-                <error *error="'required'">Evidence is required</error>
-                <error *error="'url'">Evidence must be an URL</error>
-              </errors>
-            </form-field>
+              <bio-errors>
+                <bio-error *error="'required'">Evidence is required</bio-error>
+                <bio-error *error="'url'">Evidence must be an URL</bio-error>
+              </bio-errors>
+            </bio-form-field>
             <ng-container *ngIf="scorePlayersControl.get($index)! as playerControl">
               <ng-container *ngLet="playerControl.value$ | async as playerUpdate">
                 <a
@@ -46,21 +46,21 @@
       </ng-container>
     </div>
     <div class="score-info body">
-      <form-field label="Score">
+      <bio-form-field label="Score">
         <input bioInput controlName="score" bioCurrencyMask placeholder="Score" autocomplete="off" />
-        <errors>
-          <error *error="'required'">Score is required</error>
-        </errors>
-      </form-field>
-      <form-field label="Max combo">
+        <bio-errors>
+          <bio-error *error="'required'">Score is required</bio-error>
+        </bio-errors>
+      </bio-form-field>
+      <bio-form-field label="Max combo">
         <input bioInput controlName="maxCombo" type="number" autocomplete="off" />
-        <errors>
-          <error *error="'required'">Max combo is required</error>
-          <error *error="'min'">Max combo can't be negative</error>
-          <error *error="'max'">Max combo can't surpass 400</error>
-        </errors>
-      </form-field>
-      <form-field label="Time">
+        <bio-errors>
+          <bio-error *error="'required'">Max combo is required</bio-error>
+          <bio-error *error="'min'">Max combo can't be negative</bio-error>
+          <bio-error *error="'max'">Max combo can't surpass 400</bio-error>
+        </bio-errors>
+      </bio-form-field>
+      <bio-form-field label="Time">
         <input
           bioInput
           controlName="time"
@@ -69,10 +69,10 @@
           [patterns]="maskTimePattern"
           autocomplete="off"
         />
-        <errors>
-          <error *error="'required'">Time is required</error>
-        </errors>
-      </form-field>
+        <bio-errors>
+          <bio-error *error="'required'">Time is required</bio-error>
+        </bio-errors>
+      </bio-form-field>
     </div>
     <hr />
     <h5>Changes Requested</h5>
@@ -86,8 +86,26 @@
     </div>
     <hr />
   </bio-modal-content>
-  <bio-modal-actions end *ngLet="loading$ | async as loading">
-    <button bioButton type="submit" [disabled]="form.invalid" [loading]="loading" primary>Submit</button>
+  <bio-modal-actions end>
+    <button
+      bioButton
+      type="submit"
+      [disabled]="form.invalid || (noChangeRequestsSelected$ | async)"
+      [loading]="loading"
+      primary
+    >
+      Submit
+    </button>
+    <button
+      bioButton
+      type="button"
+      [disabled]="loading"
+      danger
+      (click)="onCancelScore()"
+      [loading]="loadingCancelScore"
+    >
+      Cancel score
+    </button>
     <button bioButton type="button" (click)="modalRef.close()" [disabled]="loading">Close</button>
   </bio-modal-actions>
 </form>

@@ -33,20 +33,20 @@
             >
               <div class="character" (click)="updateOrderByCharacter()">
                 Character
-                <icon class="order-icon" *ngIf="order.orderByCharacter" small>
+                <bio-icon class="order-icon" *ngIf="order.orderByCharacter" small>
                   {{ arrow }}
-                </icon>
+                </bio-icon>
               </div>
               <div
                 *ngFor="let stage of scoreTopTable.stages; trackBy: trackById"
-                [tooltip]="stage.name"
+                [bioTooltip]="stage.name"
                 (click)="updateOrderByIdStage(stage.id)"
                 class="stage"
               >
                 {{ stage.shortName }}
-                <icon class="order-icon" *ngIf="order.orderByStage === stage.id" small>
+                <bio-icon class="order-icon" *ngIf="order.orderByStage === stage.id" small>
                   {{ arrow }}
-                </icon>
+                </bio-icon>
               </div>
             </div>
           </ng-container>

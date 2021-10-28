@@ -21,7 +21,7 @@ import type {
   ScoreApprovalActionsModalComponent,
   ScoreApprovalActionsModalData,
 } from './score-approval-actions-modal/score-approval-actions-modal.component';
-import { filterNil } from '@shared/operators/filter';
+import { filterNil } from '@util/operators/filter';
 import { Validators } from '@stlmpp/control';
 
 export interface ScoreApprovalComponentState extends ParamsForm {
@@ -67,24 +67,24 @@ export class ScoreApprovalComponent extends LocalState<ScoreApprovalComponentSta
 
   private _data$ = this.selectState('data').pipe(filterNil());
 
-  scoreApprovalActionEnum = ScoreApprovalActionEnum;
+  readonly scoreApprovalActionEnum = ScoreApprovalActionEnum;
 
-  tableLoading$ = this.selectState('tableLoading');
-  scores$: Observable<Score[]> = this._data$.pipe(pluck('scores'));
-  meta$: Observable<PaginationMeta> = this._data$.pipe(pluck('meta'));
-  order$ = this.selectState(['orderBy', 'orderByDirection']);
+  readonly tableLoading$ = this.selectState('tableLoading');
+  readonly scores$: Observable<Score[]> = this._data$.pipe(pluck('scores'));
+  readonly meta$: Observable<PaginationMeta> = this._data$.pipe(pluck('meta'));
+  readonly order$ = this.selectState(['orderBy', 'orderByDirection']);
 
-  itemsPerPageOptions = [5, 10, 25, 50, 100];
+  readonly itemsPerPageOptions = [5, 10, 25, 50, 100];
 
-  params$ = this.selectState(['idPlatform', 'idGame', 'idMiniGame', 'idMode', 'idStage']).pipe(skip(1));
-  metadata$ = this.selectState();
+  readonly params$ = this.selectState(['idPlatform', 'idGame', 'idMiniGame', 'idMode', 'idStage']).pipe(skip(1));
+  readonly metadata$ = this.selectState();
 
-  paramsConfig: Partial<ParamsConfig> = {
+  readonly paramsConfig: Partial<ParamsConfig> = {
     idCharacterCostume: { show: false },
     idPlatform: { clearable: false, validators: [Validators.required] },
   };
 
-  colDefs: ColDef<Score>[] = [
+  readonly colDefs: ColDef<Score>[] = [
     { property: 'id', component: ScoreApprovalActionsCellComponent, width: '100px' } as ColDef<Score>,
     ...getScoreDefaultColDefs(this.authDateFormatPipe),
   ].map(colDef => {

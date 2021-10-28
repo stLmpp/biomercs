@@ -15,10 +15,10 @@ export class GlobalListenersService {
     private router: Router,
     @Inject(WINDOW) private window: Window
   ) {}
-  bodyClick$ = fromEvent(this.document.body, 'click').pipe(share());
-  htmlClick$ = fromEvent(this.document.documentElement, 'click').pipe(share());
-  windowResize$ = fromEvent(this.window, 'resize').pipe(share());
+  readonly bodyClick$ = fromEvent(this.document.body, 'click').pipe(share());
+  readonly htmlClick$ = fromEvent(this.document.documentElement, 'click').pipe(share());
+  readonly windowResize$ = fromEvent(this.window, 'resize').pipe(share());
 
-  routerEvents$ = this.router.events;
-  routerActivationEnd$ = this.routerEvents$.pipe(filter(isActivationEnd));
+  readonly routerEvents$ = this.router.events;
+  readonly routerActivationEnd$ = this.routerEvents$.pipe(filter(isActivationEnd));
 }

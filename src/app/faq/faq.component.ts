@@ -4,7 +4,7 @@ import { AccordionDirective } from '@shared/components/accordion/accordion.direc
 import { Destroyable } from '@shared/components/common/destroyable-component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { asyncScheduler, debounceTime, distinctUntilChanged, observeOn, takeUntil } from 'rxjs';
-import { filterNil } from '@shared/operators/filter';
+import { filterNil } from '@util/operators/filter';
 import { Control } from '@stlmpp/control';
 import { FilterItemDirective } from '@shared/filter/filter-item.directive';
 
@@ -23,18 +23,18 @@ export class FaqComponent extends Destroyable implements AfterViewInit {
     super();
   }
 
-  @ViewChild(AccordionDirective) accordionDirective!: AccordionDirective;
+  @ViewChild(AccordionDirective) readonly accordionDirective?: AccordionDirective;
 
-  isMobile$ = this.breakpointObserverService.isMobile$;
-  searchControl = new Control<string>('', { initialFocus: true });
-  search$ = this.searchControl.value$.pipe(debounceTime(400), distinctUntilChanged());
+  readonly isMobile$ = this.breakpointObserverService.isMobile$;
+  readonly searchControl = new Control<string>('', { initialFocus: true });
+  readonly search$ = this.searchControl.value$.pipe(debounceTime(400), distinctUntilChanged());
 
   onItemExpanded($event: string): void {
     this.router.navigate([], { relativeTo: this.activatedRoute, fragment: $event }).then();
   }
 
   onFilterChange($event: FilterItemDirective[]): void {
-    if ($event.length === 1) {
+    if ($event.length === 1 && this.accordionDirective) {
       this.accordionDirective.expandItem($event[0].id + '');
     }
   }
@@ -45,9 +45,9 @@ export class FaqComponent extends Destroyable implements AfterViewInit {
       .pipe(observeOn(asyncScheduler), takeUntil(this.destroy$), filterNil(), distinctUntilChanged())
       .subscribe(fragment => {
         if (isFirstChange) {
-          this.accordionDirective.focusItem(fragment);
+          this.accordionDirective?.focusItem(fragment);
         }
-        this.accordionDirective.expandItem(fragment);
+        this.accordionDirective?.expandItem(fragment);
         isFirstChange = false;
       });
   }

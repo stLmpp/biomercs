@@ -8,7 +8,9 @@ const routes: Routes = [
   {
     path: '',
     component: AdminCreatePlayerComponent,
-    resolve: [RegionResolver],
+    resolve: {
+      [RouteDataEnum.regions]: RegionResolver,
+    },
     data: {
       [RouteDataEnum.title]: 'Create player',
     },

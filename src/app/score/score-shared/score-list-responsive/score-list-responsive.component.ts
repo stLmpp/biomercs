@@ -5,12 +5,11 @@ import {
 } from '@shared/services/breakpoint-observer/breakpoint-observer.service';
 import { Score } from '@model/score';
 import { map } from 'rxjs';
-import { BooleanInput } from 'st-utils';
+import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { PaginationMeta } from '@model/pagination';
 import { TableCellNotifyChange, TableOrder } from '@shared/components/table/type';
 import { ColDef } from '@shared/components/table/col-def';
 import { PaginationComponent } from '@shared/components/pagination/pagination.component';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 @Component({
   selector: 'bio-score-list-responsive',
@@ -49,7 +48,7 @@ export class ScoreListResponsiveComponent<T extends Score = Score> {
   @Output() readonly notifyChange = new EventEmitter<TableCellNotifyChange<any, T>>();
   @Output() readonly scoreClicked = new EventEmitter<T>();
 
-  isSmall$ = this.breakpointObserverService.observe([MediaQueryEnum.md]).pipe(map(isMd => !isMd));
+  readonly isSmall$ = this.breakpointObserverService.observe([MediaQueryEnum.md]).pipe(map(isMd => !isMd));
 
   static ngAcceptInputType_collapsable: BooleanInput;
 }

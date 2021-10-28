@@ -62,15 +62,3 @@ import 'zone.js'; // Included with Angular CLI.
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
-
-import { QueryList } from '@angular/core';
-
-declare module '@angular/core/core' {
-  interface QueryList<T> {
-    every(fn: (value: T, index: number, array: T[]) => boolean): boolean;
-  }
-}
-
-QueryList.prototype.every = function (fn) {
-  return this['_results'].every(fn);
-};

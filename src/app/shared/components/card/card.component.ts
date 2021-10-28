@@ -17,7 +17,7 @@ import { CardContentDirective } from './card-content.directive';
 import { CardActionsDirective } from './card-actions.directive';
 import { CardSubtitleDirective } from '@shared/components/card/card-subtitle.directive';
 import { Animations } from '@shared/animations/animations';
-import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
+import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { CardChild } from '@shared/components/card/card-child';
 import { Destroyable } from '@shared/components/common/destroyable-component';
 import { takeUntil } from 'rxjs';
@@ -40,11 +40,11 @@ export class CardComponent extends Destroyable implements AfterContentInit {
   private _collapsable = false;
   private _dark = false;
 
-  @ContentChildren(CardTitleDirective) cardTitleDirectives!: QueryList<CardTitleDirective>;
-  @ContentChildren(CardSubtitleDirective) cardSubtitleDirective!: QueryList<CardSubtitleDirective>;
-  @ContentChildren(CardContentDirective) cardContentDirectives!: QueryList<CardContentDirective>;
-  @ContentChildren(CardActionsDirective) cardActionsDirective!: QueryList<CardActionsDirective>;
-  @ContentChildren(CardChild) cardChildren!: QueryList<CardChild>;
+  @ContentChildren(CardTitleDirective) readonly cardTitleDirectives!: QueryList<CardTitleDirective>;
+  @ContentChildren(CardSubtitleDirective) readonly cardSubtitleDirective!: QueryList<CardSubtitleDirective>;
+  @ContentChildren(CardContentDirective) readonly cardContentDirectives!: QueryList<CardContentDirective>;
+  @ContentChildren(CardActionsDirective) readonly cardActionsDirective!: QueryList<CardActionsDirective>;
+  @ContentChildren(CardChild) readonly cardChildren!: QueryList<CardChild>;
 
   @Input()
   @HostBinding('class.collapsable')

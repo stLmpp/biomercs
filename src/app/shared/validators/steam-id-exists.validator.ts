@@ -9,8 +9,8 @@ export class SteamIdExistsValidator extends ControlValidator<string | undefined,
     super();
   }
 
-  name = 'steamIdExists';
-  override async = true;
+  readonly name = 'steamIdExists';
+  override readonly async = true;
 
   validate({ value }: Control<string> | Control<string | undefined>): Observable<boolean | null> | boolean | null {
     if (!value) {

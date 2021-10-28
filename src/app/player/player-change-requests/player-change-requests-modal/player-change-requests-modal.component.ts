@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject } from '@angular/core';
 import { ScoreChangeRequestsPagination, ScoreWithScoreChangeRequests } from '@model/score-change-request';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import { Control, ControlArray, ControlGroup, Validators } from '@stlmpp/control';
@@ -10,10 +10,10 @@ import { MaskEnum, MaskEnumPatterns } from '@shared/mask/mask.enum';
 import { CURRENCY_MASK_CONFIG } from '@shared/currency-mask/currency-mask-config.token';
 import { scoreCurrencyMask } from '../../../score/score-shared/util';
 import { ScoreService } from '../../../score/score.service';
-import { finalize, switchMapTo } from 'rxjs';
+import { finalize, map, switchMapTo, tap } from 'rxjs';
 import { SnackBarService } from '@shared/components/snack-bar/snack-bar.service';
-import { LocalState } from '@stlmpp/store';
 import { trackById } from '@util/track-by';
+import { DialogService } from '@shared/components/modal/dialog/dialog.service';
 
 export interface PlayerChangeRequestsModalData {
   score: ScoreWithScoreChangeRequests;
@@ -25,23 +25,14 @@ interface ScoreChangeRequestsFulfilForm extends Omit<ScoreChangeRequestsFulfilDt
   idsScoreChangeRequests: IdChecked[];
 }
 
-interface PlayerChangeRequestsModalState {
-  loading: boolean;
-}
-
 @Component({
   selector: 'bio-player-change-requests-modal',
   templateUrl: './player-change-requests-modal.component.html',
   styleUrls: ['./player-change-requests-modal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    {
-      provide: CURRENCY_MASK_CONFIG,
-      useValue: scoreCurrencyMask,
-    },
-  ],
+  providers: [{ provide: CURRENCY_MASK_CONFIG, useValue: scoreCurrencyMask }],
 })
-export class PlayerChangeRequestsModalComponent extends LocalState<PlayerChangeRequestsModalState> {
+export class PlayerChangeRequestsModalComponent {
   constructor(
     @Inject(MODAL_DATA) public data: PlayerChangeRequestsModalData,
     public modalRef: ModalRef<
@@ -50,15 +41,15 @@ export class PlayerChangeRequestsModalComponent extends LocalState<PlayerChangeR
       ScoreChangeRequestsPagination
     >,
     private scoreService: ScoreService,
-    private snackBarService: SnackBarService
-  ) {
-    super({ loading: false });
-  }
+    private snackBarService: SnackBarService,
+    private dialogService: DialogService,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {}
 
-  readonly loading$ = this.selectState('loading');
+  loading = false;
+  loadingCancelScore = false;
   readonly maskEnum = MaskEnum;
   readonly maskTimePattern = MaskEnumPatterns[MaskEnum.time]!;
-
   readonly form = new ControlGroup<ScoreChangeRequestsFulfilForm>({
     score: new Control(this.data.score.score, [Validators.required]),
     idsScoreChangeRequests: new ControlArray<IdChecked>(
@@ -85,10 +76,10 @@ export class PlayerChangeRequestsModalComponent extends LocalState<PlayerChangeR
     time: new Control(this.data.score.time, [Validators.required]),
     maxCombo: new Control(this.data.score.maxCombo, [Validators.required, Validators.min(0), Validators.max(400)]),
   });
-
-  get scorePlayersControl(): ControlArray<ScorePlayerUpdateDto> {
-    return this.form.get('scorePlayers');
-  }
+  readonly scorePlayersControl = this.form.get('scorePlayers');
+  readonly noChangeRequestsSelected$ = this.form
+    .get('idsScoreChangeRequests')
+    .value$.pipe(map(idsScoreChangeRequests => !idsScoreChangeRequests.some(changeRequest => changeRequest.checked)));
 
   readonly trackById = trackById;
 
@@ -105,7 +96,8 @@ export class PlayerChangeRequestsModalComponent extends LocalState<PlayerChangeR
     if (this.form.invalid) {
       return;
     }
-    this.updateState({ loading: true });
+    this.loading = true;
+    this.modalRef.disableClose = true;
     this.form.disable();
     const formValue = this.form.value;
     const dto: ScoreChangeRequestsFulfilDto = {
@@ -118,12 +110,48 @@ export class PlayerChangeRequestsModalComponent extends LocalState<PlayerChangeR
         switchMapTo(this.scoreService.findChangeRequests(this.data.page, this.data.itemsPerPage)),
         finalize(() => {
           this.form.enable();
-          this.updateState({ loading: false });
+          this.loading = false;
+          this.modalRef.disableClose = false;
+          this.changeDetectorRef.markForCheck();
         })
       )
       .subscribe(data => {
         this.modalRef.close(data);
         this.snackBarService.open('Score updated successfully!');
       });
+  }
+
+  onCancelScore(): void {
+    this.loadingCancelScore = true;
+    this.dialogService.confirm({
+      title: 'Cancel score?',
+      content: `This score will no longer appear in the list of scores, <br> and you won't be able to submit it again for approval`,
+      buttons: [
+        {
+          title: 'Close',
+          action: modalRef => {
+            this.loadingCancelScore = false;
+            this.changeDetectorRef.markForCheck();
+            modalRef.close();
+          },
+        },
+        {
+          title: 'Cancel Score',
+          type: 'danger',
+          action: modalRef =>
+            this.scoreService.cancel(this.data.score.id).pipe(
+              switchMapTo(this.scoreService.findChangeRequests(this.data.page, this.data.itemsPerPage)),
+              tap(data => {
+                modalRef.close();
+                this.modalRef.close(data);
+              }),
+              finalize(() => {
+                this.loadingCancelScore = false;
+                this.changeDetectorRef.markForCheck();
+              })
+            ),
+        },
+      ],
+    });
   }
 }

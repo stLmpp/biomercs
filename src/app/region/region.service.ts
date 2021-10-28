@@ -1,43 +1,18 @@
 import { Injectable } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { RegionStore } from './region.store';
-import { setLoading, useCache } from '@stlmpp/store';
-import { AbstractRegionService } from './region-service.token';
-import { ModalRef } from '@shared/components/modal/modal-ref';
-import { RegionSelectComponent, RegionSelectData } from './region-select/region-select.component';
-import { ModalService } from '@shared/components/modal/modal.service';
 import { Region } from '@model/region';
+import { CacheService } from '@shared/cache/cache';
 
 @Injectable({ providedIn: 'root' })
-export class RegionService extends AbstractRegionService {
-  constructor(private http: HttpClient, private regionStore: RegionStore, private modalService: ModalService) {
-    super();
-  }
+export class RegionService {
+  constructor(private http: HttpClient, private cacheService: CacheService) {}
+
+  private _cache = this.cacheService.createCache();
 
   endPoint = 'region';
 
   get(): Observable<Region[]> {
-    return this.http.get<Region[]>(this.endPoint).pipe(
-      useCache(this.regionStore),
-      setLoading(this.regionStore),
-      tap(regions => {
-        this.regionStore.setEntities(regions);
-      })
-    );
-  }
-
-  async showSelectModal(
-    idRegion: number,
-    onSelect: (idRegion: number) => Observable<any>
-  ): Promise<ModalRef<RegionSelectComponent, RegionSelectData>> {
-    return this.modalService.openLazy<RegionSelectComponent, RegionSelectData>(
-      () => import('./region-select/region-select.component').then(c => c.RegionSelectComponent),
-      {
-        data: { idRegion, onSelect },
-        width: 500,
-        module: () => import('./region.module').then(m => m.RegionModule),
-      }
-    );
+    return this.http.get<Region[]>(this.endPoint).pipe(this._cache.use());
   }
 }

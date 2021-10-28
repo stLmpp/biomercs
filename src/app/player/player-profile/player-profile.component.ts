@@ -1,29 +1,13 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { PlayerQuery } from '../player.query';
-import { RouterQuery } from '@stlmpp/router';
-import {
-  combineLatest,
-  concat,
-  debounceTime,
-  filter,
-  finalize,
-  map,
-  Observable,
-  pluck,
-  skip,
-  switchMap,
-  takeUntil,
-} from 'rxjs';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { concat, distinctUntilChanged, finalize, map, switchMap, takeUntil } from 'rxjs';
 import { PlayerService } from '../player.service';
 import { Animations } from '@shared/animations/animations';
 import { AuthQuery } from '../../auth/auth.query';
 import { RegionService } from '../../region/region.service';
-import { RegionQuery } from '../../region/region.query';
 import { DynamicLoaderService } from '../../core/dynamic-loader.service';
 import { Player, PlayerUpdate } from '@model/player';
 import { arrayUtil, isObjectEmpty } from 'st-utils';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
-import { LocalState } from '@stlmpp/store';
 import {
   ScoreGroupedByStatus,
   ScoreScoreGroupedByStatusScoreVW,
@@ -31,114 +15,75 @@ import {
 } from '@model/score-grouped-by-status';
 import { ActivatedRoute } from '@angular/router';
 import { Score } from '@model/score';
-import { ScoreService } from '../../score/score.service';
 import { getScoreDefaultColDefs } from '../../score/score-shared/util';
 import { AuthDateFormatPipe } from '../../auth/shared/auth-date-format.pipe';
 import { ColDef } from '@shared/components/table/col-def';
 import { ScoreOpenInfoCellComponent } from '../../score/score-shared/score-open-info-cell/score-open-info-cell.component';
-import { isBefore, subDays } from 'date-fns';
-import { filterNil } from '@shared/operators/filter';
+import { subDays } from 'date-fns';
+import { filterNil } from '@util/operators/filter';
 import { mdiSteam } from '@mdi/js';
-
-interface PlayerProfileComponentState {
-  loadingRegion: boolean;
-  update: PlayerUpdate;
-  scoreGroupedByStatus: ScoreGroupedByStatus[];
-  loadingLinkSteam: boolean;
-  editMode: boolean;
-  newPersonaName: string | null;
-  saving: boolean;
-}
+import { RegionModalService } from '../../region/region-modal.service';
+import { ScoreModalService } from '../../score/score-modal.service';
+import { mapToParam } from '@util/operators/map-to-param';
+import { RouteDataEnum } from '@model/enum/route-data.enum';
+import { ModelDirective } from '@stlmpp/control';
+import { playerProfileValidatePersonaName } from './player-profile-invalid.pipe';
+import { Destroyable } from '@shared/components/common/destroyable-component';
 
 @Component({
   selector: 'bio-player-profile',
   templateUrl: './player-profile.component.html',
   styleUrls: ['./player-profile.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [Animations.fade.inOut()],
+  animations: [Animations.fade.in()],
 })
-export class PlayerProfileComponent extends LocalState<PlayerProfileComponentState> implements OnInit {
+export class PlayerProfileComponent extends Destroyable implements OnInit {
   constructor(
-    private playerQuery: PlayerQuery,
-    private routerQuery: RouterQuery,
     private playerService: PlayerService,
     private authQuery: AuthQuery,
     private regionService: RegionService,
-    private regionQuery: RegionQuery,
     private dynamicLoaderService: DynamicLoaderService,
     private activatedRoute: ActivatedRoute,
-    private scoreService: ScoreService,
-    private authDateFormatPipe: AuthDateFormatPipe
+    private authDateFormatPipe: AuthDateFormatPipe,
+    private regionModalService: RegionModalService,
+    private scoreModalService: ScoreModalService,
+    private changeDetectorRef: ChangeDetectorRef
   ) {
-    super({
-      loadingRegion: false,
-      update: {},
-      scoreGroupedByStatus: activatedRoute.snapshot.data.scoreGroupedByStatus ?? [],
-      loadingLinkSteam: false,
-      editMode: false,
-      newPersonaName: null,
-      saving: false,
-    });
+    super();
   }
 
-  private _idPlayer$ = this.routerQuery.selectParams(RouteParamEnum.idPlayer).pipe(
-    filter(idPlayer => !!idPlayer),
-    map(Number)
+  private readonly _idPlayer$ = this.activatedRoute.paramMap.pipe(
+    mapToParam(RouteParamEnum.idPlayer),
+    filterNil(),
+    map(Number),
+    distinctUntilChanged()
   );
 
-  saving$ = this.selectState('saving');
-  player$ = this._idPlayer$.pipe(
-    switchMap(idPlayer => this.playerQuery.selectEntity(idPlayer)),
-    filterNil()
-  );
-  isSameAsLogged$ = this._idPlayer$.pipe(switchMap(idPlayer => this.authQuery.selectIsSameAsLogged(idPlayer)));
-  loadingRegion$ = this.selectState('loadingRegion');
-  scoreGroupedByStatus$ = this.selectState('scoreGroupedByStatus');
-  loadingLinkSteam$ = this.selectState('loadingLinkSteam');
-  editMode$ = this.selectState('editMode');
-  canSave$ = combineLatest([this.selectState(['update', 'newPersonaName']), this.player$]).pipe(
-    debounceTime(100),
-    map(
-      ([{ update, newPersonaName }, player]) =>
-        !isObjectEmpty(update) || this._validatePersonaName(player, newPersonaName)
-    )
-  );
-  state$: Observable<{ editMode: boolean; isSameAsLogged: boolean; saving: boolean; canSave: boolean }> = combineLatest(
-    {
-      editMode: this.editMode$,
-      isSameAsLogged: this.isSameAsLogged$,
-      saving: this.saving$,
-      canSave: this.canSave$,
-    }
-  );
+  @ViewChild('personaNameModel') readonly personaNameModelRef?: ModelDirective<string | null | undefined>;
 
-  colDefs: ColDef<ScoreScoreGroupedByStatusScoreVW>[] = [
+  readonly isSameAsLogged$ = this._idPlayer$.pipe(switchMap(idPlayer => this.authQuery.selectIsSameAsLogged(idPlayer)));
+
+  saving = false;
+  player: Player = this.activatedRoute.snapshot.data[RouteDataEnum.player];
+  scoreGroupedByStatus: ScoreGroupedByStatus[] = [];
+  loadingRegion = false;
+  loadingLinkSteam = false;
+  editMode = false;
+  update: PlayerUpdate = {};
+  newPersonaName: string | null = null;
+
+  readonly colDefs: ColDef<ScoreScoreGroupedByStatusScoreVW>[] = [
     { property: 'id', component: ScoreOpenInfoCellComponent, width: '40px' },
     ...getScoreDefaultColDefs<ScoreScoreGroupedByStatusScoreVW>(this.authDateFormatPipe),
   ];
 
-  todayMinusSevenDate = subDays(new Date(), 7);
-
-  mdiSteam = mdiSteam;
-
-  trackByScoreGroupByStatus = trackByScoreGroupedByStatus;
+  readonly todayMinusSevenDate = subDays(new Date(), 7);
+  readonly mdiSteam = mdiSteam;
+  readonly trackByScoreGroupByStatus = trackByScoreGroupedByStatus;
 
   get idPlayer(): number {
     // idPlayer is required to access this component
-    return +this.routerQuery.getParams(RouteParamEnum.idPlayer)!;
-  }
-
-  get player(): Player {
-    return this.playerQuery.getEntity(this.idPlayer)!;
-  }
-
-  private _validatePersonaName(player: Player, personaName: string | null): personaName is string {
-    return (
-      !!personaName &&
-      personaName.length >= 3 &&
-      personaName !== player.personaName &&
-      (!player.lastUpdatedPersonaNameDate || isBefore(player.lastUpdatedPersonaNameDate, subDays(new Date(), 7)))
-    );
+    return +this.activatedRoute.snapshot.paramMap.get(RouteParamEnum.idPlayer)!;
   }
 
   private _updateScore(
@@ -146,18 +91,17 @@ export class PlayerProfileComponent extends LocalState<PlayerProfileComponentSta
     idScore: number,
     partial: Partial<ScoreScoreGroupedByStatusScoreVW>
   ): void {
-    this.updateState('scoreGroupedByStatus', scoreGroupedByStatus =>
-      arrayUtil(scoreGroupedByStatus, 'idScoreStatus')
-        .update(idScoreStatus, status => ({
-          ...status,
-          scores: arrayUtil(status.scores, 'id').update(idScore, partial).get(),
-        }))
-        .get()
-    );
+    this.scoreGroupedByStatus = arrayUtil(this.scoreGroupedByStatus, 'idScoreStatus')
+      .update(idScoreStatus, status => ({
+        ...status,
+        scores: arrayUtil(status.scores, 'id').update(idScore, partial).toArray(),
+      }))
+      .toArray();
+    this.changeDetectorRef.markForCheck();
   }
 
-  update<K extends keyof PlayerUpdate>(key: K, value: PlayerUpdate[K]): void {
-    this.updateState('update', update => ({ ...update, [key]: value }));
+  updatePlayer<K extends keyof PlayerUpdate>(key: K, value: PlayerUpdate[K]): void {
+    this.update = { ...this.update, [key]: value };
   }
 
   async openModalSelectRegion(): Promise<void> {
@@ -165,84 +109,92 @@ export class PlayerProfileComponent extends LocalState<PlayerProfileComponentSta
       return;
     }
     const idRegionPlayer = this.player.region?.id ?? -1;
-    this.updateState('loadingRegion', true);
-    await this.regionService.showSelectModal(idRegionPlayer, idRegion =>
+    this.loadingRegion = true;
+    await this.regionModalService.showSelectModal(idRegionPlayer, idRegion =>
       this.playerService.update(this.idPlayer, { idRegion })
     );
-    this.updateState('loadingRegion', false);
+    this.loadingRegion = false;
+    this.changeDetectorRef.markForCheck();
   }
 
   preloadRegions(): void {
-    if (
-      this.authQuery.getIsSameAsLogged(this.idPlayer) &&
-      !this.regionQuery.getLoading() &&
-      !this.regionQuery.getAll().length
-    ) {
+    if (this.authQuery.getIsSameAsLogged(this.idPlayer)) {
       this.dynamicLoaderService.preloadRequest(this.regionService.get());
     }
   }
 
   async openScoreInfo(score: Score): Promise<void> {
     this._updateScore(score.idScoreStatus, score.id, { disabled: true });
-    await this.scoreService.openModalScoreInfo({ score });
+    await this.scoreModalService.openModalScoreInfo({ score });
     this._updateScore(score.idScoreStatus, score.id, { disabled: false });
   }
 
   linkSteam(idPlayer: number): void {
-    this.updateState({ loadingLinkSteam: true });
+    this.loadingLinkSteam = true;
     this.playerService
       .linkSteam(idPlayer)
       .pipe(
         finalize(() => {
-          this.updateState({ loadingLinkSteam: false });
+          this.loadingLinkSteam = false;
+          this.changeDetectorRef.markForCheck();
         })
       )
       .subscribe();
   }
 
-  toggleEditMode(): void {
-    const editMode = this.getState('editMode');
-    const update: Partial<PlayerProfileComponentState> = {};
-    if (editMode) {
-      update.update = {};
-      update.newPersonaName = null;
+  setEditMode(editMode: boolean): void {
+    if (!editMode) {
+      this.newPersonaName = null;
+      this.update = {};
     }
-    this.updateState({ editMode: !editMode, ...update });
+    this.editMode = editMode;
+    this.changeDetectorRef.markForCheck();
   }
 
   save(): void {
     const player = this.player;
-    const { update, newPersonaName } = this.getState();
     const requests = [];
-    if (this._validatePersonaName(player, newPersonaName)) {
-      requests.push(this.playerService.updatePersonaName(player.id, newPersonaName));
+    if (playerProfileValidatePersonaName(player, this.newPersonaName)) {
+      requests.push(this.playerService.updatePersonaName(player.id, this.newPersonaName));
     }
-    if (!isObjectEmpty(update)) {
-      requests.push(this.playerService.update(player.id, update));
+    if (!isObjectEmpty(this.update)) {
+      requests.push(this.playerService.update(player.id, this.update));
     }
     if (!requests.length) {
-      this.updateState({ editMode: false, update: {}, newPersonaName: null });
+      this.editMode = false;
+      this.update = {};
+      this.newPersonaName = null;
       return;
     }
-    this.updateState({ saving: true });
+    this.saving = true;
     concat(...requests)
       .pipe(
         finalize(() => {
-          this.updateState({ saving: false, editMode: false, update: {}, newPersonaName: null });
+          this.saving = false;
+          this.editMode = false;
+          this.update = {};
+          this.newPersonaName = null;
+          this.changeDetectorRef.markForCheck();
         })
       )
       .subscribe();
   }
 
-  updatePersonaName($event: string): void {
-    this.updateState('newPersonaName', $event);
+  updatePersonaName($event: string | null): void {
+    if (this.player.personaName === $event) {
+      $event = null;
+    }
+    this.newPersonaName = $event;
   }
 
   ngOnInit(): void {
-    this.activatedRoute.data
-      .pipe(takeUntil(this.destroy$), pluck('scoreGroupedByStatus'), skip(1), filterNil())
-      .subscribe((scoreGroupedByStatus: ScoreGroupedByStatus[]) => {
-        this.updateState({ scoreGroupedByStatus });
-      });
+    this.activatedRoute.data.pipe(takeUntil(this.destroy$)).subscribe(data => {
+      this.scoreGroupedByStatus = data[RouteDataEnum.scoreGroupedByStatus];
+      this.player = data[RouteDataEnum.player];
+      this.editMode = false;
+      this.update = {};
+      this.newPersonaName = null;
+      this.changeDetectorRef.markForCheck();
+    });
   }
 }

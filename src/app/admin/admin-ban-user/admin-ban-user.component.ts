@@ -1,29 +1,18 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { UserService } from '@shared/services/user/user.service';
 import { Control, ControlGroup } from '@stlmpp/control';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
-import {
-  combineLatest,
-  debounceTime,
-  distinctUntilChanged,
-  filter,
-  finalize,
-  Observable,
-  pluck,
-  switchMap,
-  takeUntil,
-  tap,
-} from 'rxjs';
-import { LocalState } from '@stlmpp/store';
-import { filterNil } from '@shared/operators/filter';
+import { combineLatest, debounceTime, distinctUntilChanged, filter, finalize, switchMap, takeUntil, tap } from 'rxjs';
 import { User } from '@model/user';
-import { Pagination, PaginationMeta } from '@model/pagination';
+import { PaginationMeta } from '@model/pagination';
 import { arrayUtil } from 'st-utils';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
-import { isAfter, subDays } from 'date-fns';
+import { differenceInHours, subDays } from 'date-fns';
 import { mdiShieldAccount } from '@mdi/js';
 import { trackById } from '@util/track-by';
+import { dateDifference } from '@shared/date/date-difference.pipe';
+import { Destroyable } from '@shared/components/common/destroyable-component';
 
 interface UserSearchForm {
   term: string;
@@ -31,9 +20,10 @@ interface UserSearchForm {
   limit: number;
 }
 
-interface AdminBanUserComponentState {
-  loading: boolean;
-  data: Pagination<User>;
+interface UserBan extends User {
+  disabled: boolean;
+  tooltip: string;
+  tooltipDisabled: boolean;
 }
 
 @Component({
@@ -42,17 +32,15 @@ interface AdminBanUserComponentState {
   styleUrls: ['./admin-ban-user.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AdminBanUserComponent extends LocalState<AdminBanUserComponentState> implements OnInit {
+export class AdminBanUserComponent extends Destroyable implements OnInit {
   constructor(
     private userService: UserService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private changeDetectorRef: ChangeDetectorRef
   ) {
-    super({
-      loading: false,
-      data: { items: [], meta: { itemCount: 0, totalItems: 0, totalPages: 0, itemsPerPage: 10, currentPage: 1 } },
-    });
+    super();
   }
 
   readonly dateMinus7 = subDays(new Date(), 7);
@@ -64,17 +52,15 @@ export class AdminBanUserComponent extends LocalState<AdminBanUserComponentState
     term: new Control(this.activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.term) ?? ''),
   });
 
-  readonly loading$ = this.selectState('loading');
-
   readonly term$ = this.form.get('term').value$.pipe(debounceTime(400), distinctUntilChanged());
   readonly page$ = this.form.get('page').value$.pipe(distinctUntilChanged(), debounceTime(100));
   readonly limit$ = this.form.get('limit').value$.pipe(distinctUntilChanged());
 
-  readonly data$ = this.selectState('data');
-  readonly users$: Observable<User[]> = this.data$.pipe(filterNil(), pluck('items'));
-  readonly paginationMeta$: Observable<PaginationMeta> = this.data$.pipe(filterNil(), pluck('meta'));
+  loading = false;
+  paginationMeta: PaginationMeta | null = null;
+  users: UserBan[] = [];
 
-  readonly trackByUser = trackById;
+  readonly trackById = trackById;
 
   private _getNumberParamOrNull(param: string): number | null {
     return this.activatedRoute.snapshot.queryParamMap.has(param)
@@ -83,7 +69,27 @@ export class AdminBanUserComponent extends LocalState<AdminBanUserComponentState
   }
 
   private _updateUser(idUser: number, partial: Partial<User>): void {
-    this.updateState('data', data => ({ ...data, items: arrayUtil(data.items, 'id').update(idUser, partial).get() }));
+    this._setUsers(users => arrayUtil(users, 'id').update(idUser, partial).toArray());
+  }
+
+  private _setUsers(callback: (users: Array<User | UserBan>) => Array<User | UserBan>): void {
+    this.users = callback(this.users).map(user => {
+      let hoursDifference = 0;
+      if (user.bannedDate) {
+        hoursDifference = differenceInHours(user.bannedDate, this.dateMinus7);
+      }
+      const userBan: UserBan = {
+        ...user,
+        disabled: hoursDifference > 0,
+        tooltipDisabled: hoursDifference <= 0,
+        tooltip: `User will be available to unban in ${dateDifference(user.bannedDate, this.dateMinus7, [
+          'days',
+          'hours',
+        ])}`,
+      };
+      return userBan;
+    });
+    this.changeDetectorRef.markForCheck();
   }
 
   pageChange($event: number): void {
@@ -94,8 +100,9 @@ export class AdminBanUserComponent extends LocalState<AdminBanUserComponentState
     this.form.patchValue({ page: 1, limit: $event });
   }
 
-  action(user: User): void {
-    let title = `Ban ${user.username}`;
+  action(user: UserBan): void {
+    let buttonTitle = 'Ban';
+    let title = `${buttonTitle} ${user.username}`;
     let content = `${user.username} will not be able to login. <br> There'll be a cooldown of 7 days to do an unban.`;
     let request$ = this.userService.banUser(user.id).pipe(
       tap(() => {
@@ -103,10 +110,11 @@ export class AdminBanUserComponent extends LocalState<AdminBanUserComponentState
       })
     );
     if (user.bannedDate) {
-      if (isAfter(user.bannedDate, subDays(new Date(), 7))) {
+      if (user.disabled) {
         return;
       }
-      title = 'Un' + title.substring(1);
+      buttonTitle = 'Unban';
+      title = `${buttonTitle} ${user.username}`;
       content = `${user.username} will be able to login.`;
       request$ = this.userService.unbanUser(user.id).pipe(
         tap(() => {
@@ -114,7 +122,9 @@ export class AdminBanUserComponent extends LocalState<AdminBanUserComponentState
         })
       );
     }
-    this.dialogService.confirm({ title, content, yesAction: request$, btnNo: 'Cancel', btnYes: 'Ban' }).subscribe();
+    this.dialogService
+      .confirm({ title, content, buttons: ['Cancel', { title: buttonTitle, action: request$ }] })
+      .subscribe();
   }
 
   ngOnInit(): void {
@@ -133,19 +143,23 @@ export class AdminBanUserComponent extends LocalState<AdminBanUserComponentState
       });
     combineLatest([this.term$, this.page$, this.limit$])
       .pipe(
+        takeUntil(this.destroy$),
         debounceTime(50),
         filter(([term]) => term.length >= 3),
         switchMap(([term, page, limit]) => {
-          this.updateState({ loading: true });
+          this.loading = true;
+          this.changeDetectorRef.markForCheck();
           return this.userService.search(term, page, limit).pipe(
             finalize(() => {
-              this.updateState({ loading: false });
+              this.loading = false;
+              this.changeDetectorRef.markForCheck();
             })
           );
         })
       )
       .subscribe(data => {
-        this.updateState({ data });
+        this._setUsers(() => data.items);
+        this.paginationMeta = data.meta;
       });
   }
 }

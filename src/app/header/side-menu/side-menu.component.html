@@ -1,10 +1,10 @@
 <bio-list selectable>
   <a bioListItem routerLink="/" (click)="onMenuSelected($event)">
-    <icon prefix>home</icon>
+    <bio-icon bioPrefix>home</bio-icon>
     Home
   </a>
   <a bioListItem routerLink="/score/search" queryParamsHandling="preserve" (click)="onMenuSelected($event)">
-    <icon prefix>search</icon>
+    <bio-icon bioPrefix>search</bio-icon>
     Search scores
   </a>
   <!--TODO add better Leaderboards layout to support mobile, for now it's disabled-->
@@ -15,7 +15,7 @@
     queryParamsHandling="preserve"
     (click)="onMenuSelected($event)"
   >
-    <icon prefix>leaderboard</icon>
+    <bio-icon bioPrefix>leaderboard</bio-icon>
     Leaderboards
   </a>
   <a
@@ -25,49 +25,48 @@
     (click)="onMenuSelected($event)"
     class="world-records"
   >
-    <icon prefix [mdi]="mdiTrophy"></icon>
+    <bio-icon bioPrefix [mdi]="mdiTrophy"></bio-icon>
     World records
   </a>
   <a
+    *ngIf="user.idPlayer"
     bioListItem
-    [routerLink]="
-      user.player?.id ? ['/player', user.player!.id, 'change-requests'] : ['player/u', user.id, 'change-requests']
-    "
+    [routerLink]="['/player', user.idPlayer, 'change-requests']"
     queryParamsHandling="preserve"
     (click)="onMenuSelected($event)"
   >
-    <icon prefix>sync_alt</icon>
+    <bio-icon bioPrefix>sync_alt</bio-icon>
     Score change requests
-    <bio-badge suffix>{{ headerQuery.playerRequestChangesCount$ | async }}</bio-badge>
+    <bio-badge bioSuffix>{{ headerQuery.playerRequestChangesCount$ | async }}</bio-badge>
   </a>
   <ng-container *ngIf="user.admin">
     <a class="admin-list-item" bioListItem routerLink="/admin" (click)="onMenuSelected($event)">
-      <icon prefix>admin_panel_settings</icon>
+      <bio-icon bioPrefix>admin_panel_settings</bio-icon>
       Admin
     </a>
     <a bioListItem routerLink="/admin/approval" queryParamsHandling="preserve" (click)="onMenuSelected($event)">
-      <icon prefix>checklist</icon>
+      <bio-icon bioPrefix>checklist</bio-icon>
       Scores approval (Admin)
-      <bio-badge suffix>{{ headerQuery.adminApprovalCount$ | async }}</bio-badge>
+      <bio-badge bioSuffix>{{ headerQuery.adminApprovalCount$ | async }}</bio-badge>
     </a>
     <a bioListItem routerLink="/admin/create-player" (click)="onMenuSelected($event)">
-      <icon prefix>person_add_alt_1</icon>
+      <bio-icon bioPrefix>person_add_alt_1</bio-icon>
       Create player
     </a>
     <a bioListItem routerLink="/admin/rules" (click)="onMenuSelected($event)">
-      <icon prefix>article</icon>
+      <bio-icon bioPrefix>article</bio-icon>
       Edit rules
     </a>
     <a bioListItem routerLink="/admin/mail-queue" (click)="onMenuSelected($event)">
-      <icon prefix [mdi]="mdiEmailSyncOutline"></icon>
+      <bio-icon bioPrefix [mdi]="mdiEmailSyncOutline"></bio-icon>
       Mail queue
     </a>
     <a bioListItem routerLink="/admin/ban-user" (click)="onMenuSelected($event)">
-      <icon prefix [mdi]="mdiAccountLock"></icon>
+      <bio-icon bioPrefix [mdi]="mdiAccountLock"></bio-icon>
       Ban user
     </a>
     <a bioListItem routerLink="/admin/errors" (click)="onMenuSelected($event)">
-      <icon prefix outlined>error_outline</icon>
+      <bio-icon bioPrefix outlined>error_outline</bio-icon>
       Errors
     </a>
   </ng-container>

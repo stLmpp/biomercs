@@ -1,0 +1,4 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <path fill="#ccc" d="M0 0h512v512H0z" />
+  <text fill="#999" x="256" y="384" style="font: bold 333px sans-serif;" text-anchor="middle">?</text>
+</svg>

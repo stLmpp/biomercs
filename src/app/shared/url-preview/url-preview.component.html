@@ -1,16 +1,16 @@
 <ng-container *ngLet="urlMetadata$ | async as urlMetadata">
-  <ng-container *ngIf="!(loading$ | async) && urlMetadata; else skeleton">
+  <ng-container *ngIf="!loading && urlMetadata; else skeleton">
     <img class="img" [src]="urlMetadata.image" [alt]="urlMetadata.title" *ngIf="urlMetadata.image; else noImage" />
     <ng-template #noImage>
       <div class="img no-image">
-        <icon>broken_image</icon>
+        <bio-icon>broken_image</bio-icon>
       </div>
     </ng-template>
     <div class="body">
       <div class="title">{{ urlMetadata.title }}</div>
       <div class="description">{{ urlMetadata.description }}</div>
       <div class="domain">
-        <icon small>link</icon>
+        <bio-icon small>link</bio-icon>
         {{ urlMetadata.domain }}
       </div>
     </div>
@@ -18,7 +18,7 @@
 </ng-container>
 <ng-template #skeleton>
   <div class="img skeleton">
-    <spinner medium></spinner>
+    <bio-spinner medium></bio-spinner>
   </div>
   <div class="body skeleton">Loading url preview...</div>
 </ng-template>

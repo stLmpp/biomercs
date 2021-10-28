@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { WINDOW } from '../../../core/window.service';
-import { auditTime, fromEvent, map, Observable, shareReplay, startWith } from 'rxjs';
+import { auditTime, map, Observable, shareReplay, startWith } from 'rxjs';
+import { GlobalListenersService } from '@shared/services/global-listeners/global-listeners.service';
 
 export enum MediaQueryEnum {
   xl = '(min-width: 1920px)',
@@ -12,11 +13,11 @@ export enum MediaQueryEnum {
 
 @Injectable({ providedIn: 'root' })
 export class BreakpointObserverService {
-  constructor(@Inject(WINDOW) private window: Window) {}
+  constructor(@Inject(WINDOW) private window: Window, private globalListenersService: GlobalListenersService) {}
 
-  private _resize$ = fromEvent(this.window, 'resize').pipe(auditTime(300), shareReplay());
+  private readonly _resize$ = this.globalListenersService.windowResize$.pipe(auditTime(300), shareReplay());
 
-  isMobile$ = this.observe([MediaQueryEnum.sm]).pipe(map(isSmallScreen => !isSmallScreen));
+  readonly isMobile$ = this.observe([MediaQueryEnum.sm]).pipe(map(isSmallScreen => !isSmallScreen));
 
   private _getQuery(medias: MediaQueryEnum[], customMedia?: string[]): boolean {
     return [...medias, ...(customMedia ?? [])].some(key => this.window.matchMedia(key).matches);

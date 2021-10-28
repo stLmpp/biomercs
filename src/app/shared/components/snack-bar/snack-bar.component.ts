@@ -15,7 +15,7 @@ import { AnimationEvent } from '@angular/animations';
 import { Animations } from '../../animations/animations';
 
 @Component({
-  selector: 'snack-bar',
+  selector: 'bio-snack-bar',
   templateUrl: './snack-bar.component.html',
   styleUrls: ['./snack-bar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -38,10 +38,9 @@ export class SnackBarComponent implements OnInit, OnDestroy {
     return !this.action;
   }
 
-  onClose$ = new Subject<void>();
-  onAction$ = new Subject<void>();
-
-  loading$ = new BehaviorSubject(false);
+  readonly onClose$ = new Subject<void>();
+  readonly onAction$ = new Subject<void>();
+  readonly loading$ = new BehaviorSubject(false);
 
   private _startTimeout(): void {
     if (this.snackBarConfig.timeout) {

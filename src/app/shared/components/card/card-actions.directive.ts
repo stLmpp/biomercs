@@ -1,5 +1,5 @@
 import { Directive, HostBinding, Input } from '@angular/core';
-import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
+import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { CardChild } from '@shared/components/card/card-child';
 
 @Directive({

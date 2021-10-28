@@ -1,4 +1,4 @@
-<form [controlGroup]="form" (groupSubmit)="submit()" *ngLet="emailSent$ | async as emailSent" class="center-container">
+<form [controlGroup]="form" (groupSubmit)="submit()" class="center-container">
   <bio-card class="center-block-mobile">
     <h3 bioCardTitle>Register</h3>
     <bio-card-content>
@@ -7,28 +7,31 @@
         <bio-confirmation-code-input
           controlName="code"
           label="Confirmation code"
-          [codeError]="errorConfirmationCode$ | async"
+          [codeError]="errorConfirmationCode"
           (focusoutLastItem)="submit()"
         ></bio-confirmation-code-input>
       </ng-container>
       <ng-template #emailNotSent>
-        <form-field label="Username" [loading]="usernameControl.pending">
+        <bio-form-field label="Username" [loading]="usernameControl.pending">
           <input bioInput placeholder="Username" controlName="username" autocomplete="username" />
-          <errors>
-            <error *error="'required'">Username is required</error>
-            <error *error="'minLength'; let error">Username must have at least {{ error.required }} characters</error>
-            <error *error="'usernameExists'">Username already exists</error>
-          </errors>
-        </form-field>
-        <form-field label="E-mail" [loading]="emailControl.pending">
+          <bio-errors>
+            <bio-error *error="'required'">Username is required</bio-error>
+            <bio-error *error="'minLength'; let error"
+              >Username must have at least {{ error.required }} characters</bio-error
+            >
+            <bio-error *error="'usernameExists'">Username already exists</bio-error>
+          </bio-errors>
+          <bio-hint end> {{ usernameLength$ | async }} / 100 </bio-hint>
+        </bio-form-field>
+        <bio-form-field label="E-mail" [loading]="emailControl.pending">
           <input bioInput placeholder="E-mail" controlName="email" type="email" autocomplete="email" />
-          <errors>
-            <error *error="'required'">E-mail is required</error>
-            <error *error="'email'">E-mail not valid</error>
-            <error *error="'emailExists'">E-mail already exists</error>
-          </errors>
-        </form-field>
-        <form-field label="Password">
+          <bio-errors>
+            <bio-error *error="'required'">E-mail is required</bio-error>
+            <bio-error *error="'email'">E-mail not valid</bio-error>
+            <bio-error *error="'emailExists'">E-mail already exists</bio-error>
+          </bio-errors>
+        </bio-form-field>
+        <bio-form-field label="Password">
           <input
             bioInput
             placeholder="Password"
@@ -36,16 +39,18 @@
             [type]="hidePassword ? 'password' : 'text'"
             autocomplete="new-password"
           />
-          <button suffix bioButton icon type="button" (click)="hidePassword = !hidePassword">
-            <icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</icon>
+          <button bioSuffix bioButton icon type="button" (click)="hidePassword = !hidePassword">
+            <bio-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</bio-icon>
           </button>
-          <errors>
-            <error *error="'required'">Password is required</error>
-            <error *error="'minLength'; let error">Password must have at least {{ error.required }} characters</error>
-          </errors>
-        </form-field>
+          <bio-errors>
+            <bio-error *error="'required'">Password is required</bio-error>
+            <bio-error *error="'minLength'; let error"
+              >Password must have at least {{ error.required }} characters</bio-error
+            >
+          </bio-errors>
+        </bio-form-field>
         <bio-password-strong [password]="password$ | async"></bio-password-strong>
-        <form-field label="Confirm password">
+        <bio-form-field label="Confirm password">
           <input
             bioInput
             placeholder="Confirm password"
@@ -53,25 +58,27 @@
             [type]="hideConfirmPassword ? 'password' : 'text'"
             autocomplete="off"
           />
-          <button suffix bioButton icon type="button" (click)="hideConfirmPassword = !hideConfirmPassword">
-            <icon>{{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}</icon>
+          <button bioSuffix bioButton icon type="button" (click)="hideConfirmPassword = !hideConfirmPassword">
+            <bio-icon>{{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}</bio-icon>
           </button>
-          <errors>
-            <error *error="'required'">Password is required</error>
-            <error *error="'minLength'; let error">Password must have at least {{ error.required }} characters</error>
-            <error *error="'siblingEquals'">Passwords doesn't match</error>
-          </errors>
-        </form-field>
+          <bio-errors>
+            <bio-error *error="'required'">Password is required</bio-error>
+            <bio-error *error="'minLength'; let error"
+              >Password must have at least {{ error.required }} characters</bio-error
+            >
+            <bio-error *error="'siblingEquals'">Passwords doesn't match</bio-error>
+          </bio-errors>
+        </bio-form-field>
       </ng-template>
     </bio-card-content>
-    <bio-card-actions end *ngLet="loading$ | async as state">
+    <bio-card-actions end>
       <button
         bioButton
         primary
         type="button"
         (click)="registerSteam()"
-        [loading]="state.loadingSteam"
-        [disabled]="state.loading"
+        [loading]="loadingSteam"
+        [disabled]="loading"
         *ngIf="!emailSent"
       >
         Register with Steam
@@ -80,8 +87,8 @@
         bioButton
         primary
         type="submit"
-        [disabled]="state.loadingSteam || form.invalid || form.pending"
-        [loading]="state.loading"
+        [disabled]="loadingSteam || form.invalid || form.pending"
+        [loading]="loading"
       >
         {{ emailSent ? 'Confirm code' : 'Register' }}
       </button>

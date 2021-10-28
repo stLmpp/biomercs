@@ -1,14 +1,19 @@
-import { ChangeDetectionStrategy, Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { ControlArray, ControlBuilder, ControlGroup, Validators } from '@stlmpp/control';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
+import { Control, ControlArray, ControlGroup, Validators } from '@stlmpp/control';
 import { AuthQuery } from '../../auth/auth.query';
-import { ParamsComponent, ParamsConfig } from '@shared/params/params.component';
+import { ParamsComponent, ParamsConfig, ParamsForm } from '@shared/params/params.component';
 import { CURRENCY_MASK_CONFIG } from '@shared/currency-mask/currency-mask-config.token';
 import { MaskEnum, MaskEnumPatterns } from '@shared/mask/mask.enum';
-import { combineLatest, distinctUntilChanged, finalize, map, shareReplay, switchMap, takeUntil, tap } from 'rxjs';
+import { combineLatest, distinctUntilChanged, finalize, map, Observable, shareReplay, switchMap, tap } from 'rxjs';
 import { CharacterCostume } from '@model/character-costume';
-import { filterNil } from '@shared/operators/filter';
 import { CharacterService } from '@shared/services/character/character.service';
-import { ModeQuery } from '@shared/services/mode/mode.query';
 import { ScoreAddPlayerComponent } from './score-add-player/score-add-player.component';
 import { generateScorePlayerControlGroup, ScoreAddForm, ScorePlayerAddForm } from './score-add';
 import { ScoreService } from '../score.service';
@@ -16,16 +21,10 @@ import { ScoreAdd } from '@model/score';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
 import { Mode } from '@model/mode';
 import { scoreCurrencyMask } from '../score-shared/util';
-import { LocalState } from '@stlmpp/store';
 import { Router } from '@angular/router';
 import { filterNilArrayOperator } from '@util/operators/filter-nil-array';
 import { trackByControl } from '@util/track-by';
-
-export interface ScoreAddState {
-  characterLoading: boolean;
-  submitting: boolean;
-  submitModalLoading: boolean;
-}
+import { isNotNil, isObjectEqualShallow } from 'st-utils';
 
 @Component({
   selector: 'bio-score-add',
@@ -34,21 +33,18 @@ export interface ScoreAddState {
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [{ provide: CURRENCY_MASK_CONFIG, useValue: scoreCurrencyMask }],
 })
-export class ScoreAddComponent extends LocalState<ScoreAddState> implements OnInit {
+export class ScoreAddComponent {
   constructor(
-    private controlBuilder: ControlBuilder,
     private authQuery: AuthQuery,
     private characterService: CharacterService,
-    private modeQuery: ModeQuery,
     private scoreService: ScoreService,
     private dialogService: DialogService,
-    private router: Router
-  ) {
-    super({ characterLoading: false, submitting: false, submitModalLoading: false });
-  }
+    private router: Router,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {}
 
-  @ViewChildren(ScoreAddPlayerComponent) scoreAddPlayerComponents!: QueryList<ScoreAddPlayerComponent>;
-  @ViewChild(ParamsComponent) paramsComponent!: ParamsComponent;
+  @ViewChildren(ScoreAddPlayerComponent) readonly scoreAddPlayerComponents!: QueryList<ScoreAddPlayerComponent>;
+  @ViewChild(ParamsComponent) readonly paramsComponent!: ParamsComponent;
 
   readonly maskEnum = MaskEnum;
   readonly maskTimePattern = MaskEnumPatterns[MaskEnum.time]!;
@@ -62,46 +58,40 @@ export class ScoreAddComponent extends LocalState<ScoreAddState> implements OnIn
     idStage: { show: true, validators: [Validators.required], errorMessages: { required: 'Stage is required' } },
   };
 
-  readonly form = this.controlBuilder.group<ScoreAddForm>({
-    idGame: [null, [Validators.required]],
-    idMiniGame: [null, [Validators.required]],
-    idMode: [null, [Validators.required]],
-    idPlatform: [null, [Validators.required]],
-    idStage: [null, [Validators.required]],
-    score: [0, [Validators.required]],
-    maxCombo: [0, [Validators.required, Validators.min(0), Validators.max(400)]],
-    time: [`00'00"00`, [Validators.required]],
-    achievedDate: [undefined],
-    scorePlayers: this.controlBuilder.array<ScorePlayerAddForm>([
-      {
-        bulletKills: [0],
-        description: ['', [Validators.required]],
-        host: [true],
-        // No need to worry here, since it's only possible to access this route with auth and the resolver of the player
-        idPlayer: [this.authQuery.getUser()!.player!.id, [Validators.required]],
-        personaName: [this.authQuery.getUser()!.player!.personaName],
-        evidence: ['', [Validators.required, Validators.url]],
-        idCharacterCostume: [null, [Validators.required]],
-      },
-    ]),
-  });
+  readonly form = this._getControlGroup();
+  readonly params$: Observable<Partial<ParamsForm>> = this.form.valueChanges$.pipe(
+    map(form => {
+      const params: Partial<ParamsForm> = {
+        idPlatform: form.idPlatform,
+        idGame: form.idGame,
+        idMiniGame: form.idMiniGame,
+        idMode: form.idMode,
+        idStage: form.idStage,
+      };
+
+      return params;
+    }),
+    distinctUntilChanged(isObjectEqualShallow)
+  );
 
   readonly idPlatform$ = this.form.get('idPlatform').value$.pipe(distinctUntilChanged());
   readonly idGame$ = this.form.get('idGame').value$.pipe(distinctUntilChanged());
   readonly idMiniGame$ = this.form.get('idMiniGame').value$.pipe(distinctUntilChanged());
   readonly idMode$ = this.form.get('idMode').value$.pipe(distinctUntilChanged());
-  readonly characterLoading$ = this.selectState('characterLoading');
-  readonly submitModalLoading$ = this.selectState('submitModalLoading');
+  characterLoading = false;
+  submitModalLoading = false;
 
   readonly hasIdMode$ = this.form.get('idMode').value$.pipe(map(idMode => !!idMode));
 
   readonly characters$ = combineLatest([this.idPlatform$, this.idGame$, this.idMiniGame$, this.idMode$]).pipe(
     filterNilArrayOperator(),
     switchMap(([idPlatform, idGame, idMiniGame, idMode]) => {
-      this.updateState('characterLoading', true);
+      this.characterLoading = true;
+      this.changeDetectorRef.markForCheck();
       return this.characterService.findByIdPlatformGameMiniGameMode(idPlatform, idGame, idMiniGame, idMode).pipe(
         finalize(() => {
-          this.updateState('characterLoading', false);
+          this.characterLoading = false;
+          this.changeDetectorRef.markForCheck();
         }),
         tap(characters => {
           const characterCostumes = characters.reduce(
@@ -128,12 +118,35 @@ export class ScoreAddComponent extends LocalState<ScoreAddState> implements OnIn
 
   readonly trackByScorePlayerControl = trackByControl;
 
-  get scorePlayersControl(): ControlArray<ScorePlayerAddForm> {
-    return this.form.get('scorePlayers');
-  }
+  readonly scorePlayersControl = this.form.get('scorePlayers');
 
-  private _getCurrentMode(): Mode | undefined {
-    return this.modeQuery.getEntity(this.form.get('idMode').value ?? -1);
+  readonly idPlayersSelected$: Observable<number[]> = this.scorePlayersControl.value$.pipe(
+    map(scorePlayers => scorePlayers.map(scorePlayer => scorePlayer.idPlayer).filter(isNotNil))
+  );
+
+  currentMode?: Mode;
+
+  private _getControlGroup(): ControlGroup<ScoreAddForm> {
+    const user = this.authQuery.getUser()!;
+    return new ControlGroup<ScoreAddForm>({
+      idGame: new Control(null, [Validators.required]),
+      idMiniGame: new Control(null, [Validators.required]),
+      idMode: new Control(null, [Validators.required]),
+      idPlatform: new Control(null, [Validators.required]),
+      idStage: new Control(null, [Validators.required]),
+      score: new Control(0, [Validators.required]),
+      maxCombo: new Control(0, [Validators.required, Validators.min(0), Validators.max(400)]),
+      time: new Control(`00'00"00`, [Validators.required]),
+      achievedDate: new Control(undefined),
+      scorePlayers: new ControlArray<ScorePlayerAddForm>([
+        generateScorePlayerControlGroup({
+          idPlayer: user.idPlayer,
+          idPlayerPersonaName: user.playerPersonaName,
+          personaName: user.playerPersonaName,
+          host: true,
+        }),
+      ]),
+    });
   }
 
   private _changeAllForms(callback: (form: ControlGroup<any>) => void): void {
@@ -161,7 +174,6 @@ export class ScoreAddComponent extends LocalState<ScoreAddState> implements OnIn
     if (this.form.invalid) {
       return;
     }
-    this.updateState({ submitting: true });
     // Casting because all fields must be valid, which means all fields were fulfilled
     const dto = this.form.value as ScoreAdd;
     this._changeAllForms(form => form.disable());
@@ -171,38 +183,50 @@ export class ScoreAddComponent extends LocalState<ScoreAddState> implements OnIn
           {
             title: 'Score submitted successfully!',
             content: 'Your score was submitted and will be reviewed by one of ours administrators',
-            btnNo: 'Close',
-            btnYes: 'Submit another',
-            yesAction: modalRef => {
-              this._changeAllForms(form => form.enable());
-              this.onReset();
-              modalRef.close();
-            },
-            noAction: modalRef => {
-              this.router.navigate(['/']).then();
-              modalRef.close();
-            },
+            buttons: [
+              {
+                title: 'Close',
+                action: modalRef => {
+                  this.router.navigate(['/']).then();
+                  modalRef.close();
+                },
+              },
+              {
+                title: 'Submit another',
+                action: modalRef => {
+                  this._changeAllForms(form => form.enable());
+                  this.onReset();
+                  modalRef.close();
+                },
+                backdropAction: true,
+              },
+            ],
           },
-          { width: 500, disableClose: true }
+          { width: 500 }
         );
       })
     );
-    this.updateState({ submitModalLoading: true });
+    this.submitModalLoading = true;
     await this.dialogService.info(
       {
-        btnNo: 'Cancel',
-        btnYes: 'Submit',
         title: 'Submit the score?',
         content: `Before your score reach the leaderboards there will be a review by one of ours administrators. If your score is approved you'll receive a notification.`,
-        yesAction: request$,
-        noAction: modalRef => {
-          this._changeAllForms(form => form.enable());
-          modalRef.close();
-        },
+        buttons: [
+          {
+            title: 'Cancel',
+            action: modalRef => {
+              this._changeAllForms(form => form.enable());
+              modalRef.close();
+            },
+            backdropAction: true,
+          },
+          { title: 'Submit', action: request$ },
+        ],
       },
-      { width: 500, disableClose: true }
+      { width: 500 }
     );
-    this.updateState({ submitModalLoading: false });
+    this.submitModalLoading = false;
+    this.changeDetectorRef.markForCheck();
   }
 
   onReset(): void {
@@ -215,8 +239,7 @@ export class ScoreAddComponent extends LocalState<ScoreAddState> implements OnIn
         bulletKills: 0,
       },
     ];
-    const mode = this._getCurrentMode();
-    if (mode && mode.playerQuantity > 1) {
+    if (this.currentMode && this.currentMode.playerQuantity > 1) {
       const playerCount = this.form.get('scorePlayers').length - 1;
       for (let i = 0; i < playerCount; i++) {
         scorePlayers.push({
@@ -239,27 +262,21 @@ export class ScoreAddComponent extends LocalState<ScoreAddState> implements OnIn
     this._changeAllForms(form => form.markAsTouched(false));
   }
 
-  ngOnInit(): void {
-    this.idMode$
-      .pipe(
-        takeUntil(this.destroy$),
-        filterNil(),
-        switchMap(idMode => this.modeQuery.selectEntity(idMode)),
-        filterNil()
-      )
-      .subscribe(mode => {
-        const playersControl = this.form.get('scorePlayers');
-        if (mode.playerQuantity > playersControl.length) {
-          const diff = mode.playerQuantity - playersControl.length;
-          for (let i = 0; i < diff; i++) {
-            playersControl.push(generateScorePlayerControlGroup(this.controlBuilder));
-          }
-        } else if (mode.playerQuantity < playersControl.length) {
-          const len = playersControl.length;
-          for (let i = mode.playerQuantity; i < len; i++) {
-            playersControl.removeAt(i);
-          }
-        }
-      });
+  onModeChange(mode: Mode | null | undefined): void {
+    if (!mode) {
+      return;
+    }
+    const playersControl = this.form.get('scorePlayers');
+    if (mode.playerQuantity > playersControl.length) {
+      const diff = mode.playerQuantity - playersControl.length;
+      for (let i = 0; i < diff; i++) {
+        playersControl.push(generateScorePlayerControlGroup());
+      }
+    } else if (mode.playerQuantity < playersControl.length) {
+      const len = playersControl.length;
+      for (let i = mode.playerQuantity; i < len; i++) {
+        playersControl.removeAt(i);
+      }
+    }
   }
 }

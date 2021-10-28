@@ -13,9 +13,9 @@
         cdkDrag
       >
         <div class="icon-wrapper drag">
-          <icon cdkDragHandle>drag_handle</icon>
+          <bio-icon cdkDragHandle>drag_handle</bio-icon>
         </div>
-        <form-field *ngIf="ruleControl.value$ | async as ruleValue" label="{{ ruleValue.order }}">
+        <bio-form-field *ngIf="ruleControl.value$ | async as ruleValue" label="{{ ruleValue.order }}">
           <textarea
             bioInput
             controlName="description"
@@ -23,14 +23,14 @@
             [cdkAutosizeMinRows]="1"
             [cdkAutosizeMaxRows]="6"
           ></textarea>
-          <errors>
-            <error *error="'required'">Description is required</error>
-            <error *error="'whiteSpace'">Description is required</error>
-          </errors>
-        </form-field>
+          <bio-errors>
+            <bio-error *error="'required'">Description is required</bio-error>
+            <bio-error *error="'whiteSpace'">Description is required</bio-error>
+          </bio-errors>
+        </bio-form-field>
         <div class="icon-wrapper delete">
           <button bioButton icon type="button" (click)="deleteRule($index)">
-            <icon>delete</icon>
+            <bio-icon>delete</bio-icon>
           </button>
         </div>
       </div>
@@ -41,7 +41,7 @@
         primary
         type="submit"
         [disabled]="(form.invalid || form.pristine) && !deletedValue.length"
-        [loading]="saving$ | async"
+        [loading]="saving"
       >
         Save
       </button>

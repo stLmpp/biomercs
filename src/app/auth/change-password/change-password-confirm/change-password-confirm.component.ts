@@ -1,6 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { Control, ControlGroup, Validators } from '@stlmpp/control';
-import { LocalState } from '@stlmpp/store';
 import { debounceTime, finalize, tap } from 'rxjs';
 import { AuthChangePassword } from '@model/auth';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,22 +15,6 @@ interface AuthChangePasswordForm {
   confirmNewPassword: string;
 }
 
-interface AuthChangePasswordComponentState {
-  hideOldPassword: boolean;
-  hidePassword: boolean;
-  hideConfirmPassword: boolean;
-  error: string | null;
-  confirming: boolean;
-}
-
-const initialState: AuthChangePasswordComponentState = {
-  hideOldPassword: true,
-  hideConfirmPassword: true,
-  hidePassword: true,
-  error: null,
-  confirming: false,
-};
-
 @Component({
   selector: 'bio-change-password-confirm',
   templateUrl: './change-password-confirm.component.html',
@@ -39,21 +22,22 @@ const initialState: AuthChangePasswordComponentState = {
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'center-container' },
 })
-export class ChangePasswordConfirmComponent extends LocalState<AuthChangePasswordComponentState> {
+export class ChangePasswordConfirmComponent {
   constructor(
     private activatedRoute: ActivatedRoute,
     private authService: AuthService,
     private snackBarService: SnackBarService,
-    private router: Router
-  ) {
-    super(initialState);
-  }
+    private router: Router,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {}
 
-  state$ = this.selectState(['hideOldPassword', 'hideConfirmPassword', 'hidePassword']);
-  error$ = this.selectState('error');
-  confirming$ = this.selectState('confirming');
+  hideOldPassword = true;
+  hideConfirmPassword = true;
+  hidePassword = true;
+  error: string | null = null;
+  confirming = false;
 
-  form = new ControlGroup<AuthChangePasswordForm>({
+  readonly form = new ControlGroup<AuthChangePasswordForm>({
     code: new Control(null, [Validators.required]),
     oldPassword: new Control('', [Validators.required, Validators.siblingNotEquals('confirmNewPassword')]),
     newPassword: new Control('', [
@@ -69,19 +53,7 @@ export class ChangePasswordConfirmComponent extends LocalState<AuthChangePasswor
     ]),
   });
 
-  password$ = this.form.get('newPassword').value$.pipe(debounceTime(250));
-
-  toggleHideOldPassword(): void {
-    this.updateState('hideOldPassword', hideOldPassword => !hideOldPassword);
-  }
-
-  toggleHidePassword(): void {
-    this.updateState('hidePassword', hidePassword => !hidePassword);
-  }
-
-  toggleHideConfirmPassword(): void {
-    this.updateState('hideConfirmPassword', hideConfirmPassword => !hideConfirmPassword);
-  }
+  readonly password$ = this.form.get('newPassword').value$.pipe(debounceTime(250));
 
   onConfirm(): void {
     if (this.form.invalid) {
@@ -90,7 +62,7 @@ export class ChangePasswordConfirmComponent extends LocalState<AuthChangePasswor
     const { newPassword, oldPassword, code } = this.form.value;
     // Safe to use, because there's a guard that validates this param
     const key = this.activatedRoute.snapshot.paramMap.get(RouteParamEnum.key)!;
-    this.updateState({ confirming: true });
+    this.confirming = true;
     this.form.disable();
     const dto: AuthChangePassword = {
       newPassword,
@@ -103,14 +75,16 @@ export class ChangePasswordConfirmComponent extends LocalState<AuthChangePasswor
       .confirmChangePassword(dto)
       .pipe(
         tap(() => {
-          this.updateState({ confirming: false, error: null });
+          this.error = null;
           this.snackBarService.open('Password changed successfully!');
           this.router.navigate(['/']).then();
         }),
         catchAndThrow(error => {
-          this.updateState({ error: error.message, confirming: false });
+          this.error = error.message;
         }),
         finalize(() => {
+          this.confirming = false;
+          this.changeDetectorRef.markForCheck();
           this.form.enable();
         })
       )

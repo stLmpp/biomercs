@@ -4,10 +4,11 @@
     <h3 bioCardTitle>Parameters</h3>
     <bio-card-content>
       <bio-params
-        [params]="form.valueChanges$ | async"
+        [params]="params$ | async"
         (paramsChange)="form.patchValue($event)"
         [config]="paramsConfig"
         setQueryParamsOnChange
+        (modeChange)="onModeChange($event)"
       ></bio-params>
     </bio-card-content>
   </bio-card>
@@ -27,29 +28,30 @@
         (playerChange)="scorePlayerControl.setValue($event)"
         [player]="player"
         [characters]="characters$ | async"
-        [charactersLoading]="characterLoading$ | async"
+        [charactersLoading]="characterLoading"
         [first]="$first"
         [playerNumber]="$index + 1"
+        [idPlayersSelected]="(idPlayersSelected$ | async) ?? []"
       ></bio-score-add-player>
     </ng-container>
     <bio-card class="score-params" collapsable>
       <h3 bioCardTitle>Score info</h3>
       <bio-card-content>
-        <form-field label="Score" [disabled]="!state.hasMode">
+        <bio-form-field label="Score" [disabled]="!state.hasMode">
           <input bioInput controlName="score" bioCurrencyMask placeholder="Score" autocomplete="off" />
-          <errors>
-            <error *error="'required'">Score is required</error>
-          </errors>
-        </form-field>
-        <form-field label="Max combo" [disabled]="!state.hasMode">
+          <bio-errors>
+            <bio-error *error="'required'">Score is required</bio-error>
+          </bio-errors>
+        </bio-form-field>
+        <bio-form-field label="Max combo" [disabled]="!state.hasMode">
           <input bioInput controlName="maxCombo" type="number" autocomplete="off" />
-          <errors>
-            <error *error="'required'">Max combo is required</error>
-            <error *error="'min'">Max combo can't be negative</error>
-            <error *error="'max'">Max combo can't surpass 400</error>
-          </errors>
-        </form-field>
-        <form-field label="Time" [disabled]="!state.hasMode">
+          <bio-errors>
+            <bio-error *error="'required'">Max combo is required</bio-error>
+            <bio-error *error="'min'">Max combo can't be negative</bio-error>
+            <bio-error *error="'max'">Max combo can't surpass 400</bio-error>
+          </bio-errors>
+        </bio-form-field>
+        <bio-form-field label="Time" [disabled]="!state.hasMode">
           <input
             bioInput
             controlName="time"
@@ -58,11 +60,11 @@
             [patterns]="maskTimePattern"
             autocomplete="off"
           />
-          <errors>
-            <error *error="'required'">Time is required</error>
-          </errors>
-        </form-field>
-        <form-field label="Achieved date" [disabled]="!state.hasMode">
+          <bio-errors>
+            <bio-error *error="'required'">Time is required</bio-error>
+          </bio-errors>
+        </bio-form-field>
+        <bio-form-field label="Achieved date" [disabled]="!state.hasMode">
           <input
             bioInput
             controlName="achievedDate"
@@ -70,18 +72,16 @@
             [bioDatepicker]="datepicker"
             placeholder="Achieved date"
           />
-          <button bioButton icon suffix [bioDatepickerTrigger]="datepicker">
-            <icon>calendar_today</icon>
+          <button bioButton icon bioSuffix [bioDatepickerTrigger]="datepicker">
+            <bio-icon>calendar_today</bio-icon>
           </button>
           <bio-datepicker #datepicker></bio-datepicker>
-        </form-field>
+        </bio-form-field>
       </bio-card-content>
       <bio-card-actions>
         <button bioButton type="button" primary (click)="onReset()">Reset</button>
         <div class="submit-wrapper" (mouseenter)="onMouseenterCardActions()">
-          <button bioButton type="submit" primary [disabled]="form.invalid || (submitModalLoading$ | async)">
-            Submit
-          </button>
+          <button bioButton type="submit" primary [disabled]="form.invalid || submitModalLoading">Submit</button>
         </div>
       </bio-card-actions>
     </bio-card>

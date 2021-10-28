@@ -1,13 +1,12 @@
 import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, Renderer2 } from '@angular/core';
 import { Animations } from '@shared/animations/animations';
-import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
+import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { AnimationEvent } from '@angular/animations';
 
 @Component({
   selector: '[bioCollapsed],[bioExpanded]',
-  template:
-    '<div *ngIf="!bioCollapsed" @collapse (@collapse.start)="onCollapseStart($event)" (@collapse.done)="onCollapseDone($event)"><ng-content></ng-content></div>',
-  styles: [':host.bio-collapsed-animating { overflow: hidden !important; }'],
+  templateUrl: './collapse.component.html',
+  styleUrls: ['./collapse.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [Animations.collapse.collapse(), Animations.skipFirstAnimation()],
   host: { '[@skipFirstAnimation]': '' },

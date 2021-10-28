@@ -1,19 +1,22 @@
-import { AfterContentInit, ChangeDetectionStrategy, Component, forwardRef, ViewEncapsulation } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 import { SelectComponent } from '@shared/components/select/select.component';
 import { Select } from '@shared/components/select/select';
 import { ControlValue } from '@stlmpp/control';
 import { Animations } from '@shared/animations/animations';
 import { auditTime, startWith, takeUntil } from 'rxjs';
+import { FormFieldChild } from '@shared/components/form/form-field-child';
 
 @Component({
   selector: 'bio-select[multiple]',
   templateUrl: './select-multiple.component.html',
+  styleUrls: ['./select.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: { class: 'multiple' },
   providers: [
-    { provide: Select, useExisting: forwardRef(() => SelectMultipleComponent) },
-    { provide: ControlValue, useExisting: forwardRef(() => SelectMultipleComponent), multi: true },
+    { provide: Select, useExisting: SelectMultipleComponent },
+    { provide: ControlValue, useExisting: SelectMultipleComponent, multi: true },
+    { provide: FormFieldChild, useExisting: SelectMultipleComponent },
   ],
   animations: [Animations.fade.inOut(100), Animations.scale.in(100, 0.8)],
 })

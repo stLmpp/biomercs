@@ -4,7 +4,6 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChildren,
-  forwardRef,
   QueryList,
   Renderer2,
   TemplateRef,
@@ -14,7 +13,7 @@ import {
 import { Animations } from '@shared/animations/animations';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { AnimationEvent } from '@angular/animations';
-import { AutocompleteOptionComponent } from '@shared/components/autocomplete/autocomplete-option.component';
+import { AutocompleteOptionDirective } from '@shared/components/autocomplete/autocomplete-option.directive';
 import { FocusKeyManager } from '@angular/cdk/a11y';
 import { Autocomplete } from '@shared/components/autocomplete/autocomplete';
 import { Control } from '@stlmpp/control';
@@ -29,19 +28,19 @@ import { Observable, of, pluck, startWith } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [Animations.fade.inOut(100), Animations.scale.in(100, 0.8)],
   encapsulation: ViewEncapsulation.None,
-  providers: [{ provide: Autocomplete, useExisting: forwardRef(() => AutocompleteComponent) }],
+  providers: [{ provide: Autocomplete, useExisting: AutocompleteComponent }],
 })
 export class AutocompleteComponent extends Autocomplete implements AfterContentInit {
   constructor(private renderer2: Renderer2, public changeDetectorRef: ChangeDetectorRef) {
     super();
   }
 
-  @ViewChild(TemplateRef) templateRef!: TemplateRef<any>;
-  @ContentChildren(AutocompleteOptionComponent, { descendants: true })
-  autocompleteOptions!: QueryList<AutocompleteOptionComponent>;
+  @ViewChild(TemplateRef) readonly templateRef!: TemplateRef<any>;
+  @ContentChildren(AutocompleteOptionDirective, { descendants: true })
+  readonly autocompleteOptions!: QueryList<AutocompleteOptionDirective>;
 
   overlayRef?: OverlayRef;
-  focusManager?: FocusKeyManager<AutocompleteOptionComponent>;
+  focusManager?: FocusKeyManager<AutocompleteOptionDirective>;
   control?: Control<string>;
   origin?: HTMLInputElement;
   setFocusOnOrigin = noop;
@@ -89,7 +88,7 @@ export class AutocompleteComponent extends Autocomplete implements AfterContentI
   }
 
   ngAfterContentInit(): void {
-    const optionsChanges: Observable<QueryList<AutocompleteOptionComponent>> = this.autocompleteOptions.changes.pipe(
+    const optionsChanges: Observable<QueryList<AutocompleteOptionDirective>> = this.autocompleteOptions.changes.pipe(
       startWith(this.autocompleteOptions)
     );
     this.optionsCount$ = optionsChanges.pipe(pluck('length'));

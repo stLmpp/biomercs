@@ -7,7 +7,7 @@ import { MailStatusQueue } from '@model/mail';
 export class MailService {
   constructor(private http: HttpClient) {}
 
-  endPoint = 'mail';
+  readonly endPoint = 'mail';
 
   statusQueue(): Observable<MailStatusQueue> {
     return this.http.get<MailStatusQueue>(`${this.endPoint}/status-queue`);

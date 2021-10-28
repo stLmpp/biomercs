@@ -1,20 +1,15 @@
-import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
-import { LocalState } from '@stlmpp/store';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject } from '@angular/core';
 import { ScoreApprovalActionEnum } from '@model/enum/score-approval-action.enum';
 import { Score } from '@model/score';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import { ScoreApprovalComponentState } from '../score-approval.component';
-import { ScoreService } from '../../../score.service';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import { ScoreApprovalPagination } from '@model/score-approval';
+import { ScoreModalService } from '../../../score-modal.service';
 
 export interface ScoreApprovalActionsModalData {
   score: Score;
   scoreApprovalComponentState: ScoreApprovalComponentState;
-}
-
-interface ScoreApprovalActionsComponentState {
-  loadingModal: boolean;
 }
 
 @Component({
@@ -23,17 +18,17 @@ interface ScoreApprovalActionsComponentState {
   styleUrls: ['./score-approval-actions-modal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ScoreApprovalActionsModalComponent extends LocalState<ScoreApprovalActionsComponentState> {
+export class ScoreApprovalActionsModalComponent {
   constructor(
     @Inject(MODAL_DATA) { score, scoreApprovalComponentState }: ScoreApprovalActionsModalData,
-    private scoreService: ScoreService,
     private modalRef: ModalRef<
       ScoreApprovalActionsModalComponent,
       ScoreApprovalActionsModalData,
       ScoreApprovalPagination | null
-    >
+    >,
+    private scoreModalService: ScoreModalService,
+    private changeDetectorRef: ChangeDetectorRef
   ) {
-    super({ loadingModal: false });
     this.score = score;
     this.scoreApprovalComponentState = scoreApprovalComponentState;
   }
@@ -41,13 +36,13 @@ export class ScoreApprovalActionsModalComponent extends LocalState<ScoreApproval
   score: Score;
   scoreApprovalComponentState: ScoreApprovalComponentState;
 
-  scoreApprovalActionEnum = ScoreApprovalActionEnum;
+  readonly scoreApprovalActionEnum = ScoreApprovalActionEnum;
 
-  loading$ = this.selectState('loadingModal');
+  loading = false;
 
   async openModalApproval(action: ScoreApprovalActionEnum): Promise<void> {
-    this.updateState({ loadingModal: true });
-    const modalRef = await this.scoreService.openModalScoreApproval({
+    this.loading = true;
+    const modalRef = await this.scoreModalService.openModalScoreApproval({
       score: this.score,
       action,
       scoreApprovalComponentState: this.scoreApprovalComponentState,
@@ -55,18 +50,20 @@ export class ScoreApprovalActionsModalComponent extends LocalState<ScoreApproval
     modalRef.onClose$.subscribe(data => {
       this.modalRef.close(data);
     });
-    this.updateState({ loadingModal: false });
+    this.loading = false;
+    this.changeDetectorRef.markForCheck();
   }
 
   async openModalRequestChanges(): Promise<void> {
-    this.updateState({ loadingModal: true });
-    const modalRef = await this.scoreService.openModalRequestChangesScore({
+    this.loading = true;
+    const modalRef = await this.scoreModalService.openModalRequestChangesScore({
       score: this.score,
       scoreApprovalComponentState: this.scoreApprovalComponentState,
     });
     modalRef.onClose$.subscribe(data => {
       this.modalRef.close(data);
     });
-    this.updateState({ loadingModal: false });
+    this.loading = false;
+    this.changeDetectorRef.markForCheck();
   }
 }

@@ -20,14 +20,14 @@ import { FormFieldErrorComponent } from './error.component';
 import { PrefixDirective } from '../common/prefix.directive';
 import { SuffixDirective } from '../common/suffix.directive';
 import { Control, ControlDirective, ModelDirective } from '@stlmpp/control';
-import { SelectComponent } from '../select/select.component';
-import { BooleanInput } from '@angular/cdk/coercion';
-import { isNil } from 'st-utils';
+import { BooleanInput, isNil } from 'st-utils';
+import { Select } from '@shared/components/select/select';
+import { FormFieldChild } from '@shared/components/form/form-field-child';
 
 let uniqueId = 0;
 
 @Component({
-  selector: 'form-field',
+  selector: 'bio-form-field',
   templateUrl: './form-field.component.html',
   styleUrls: ['./form-field.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -38,16 +38,18 @@ let uniqueId = 0;
 export class FormFieldComponent implements AfterContentInit, OnChanges, OnDestroy {
   constructor(private changeDetectorRef: ChangeDetectorRef) {}
 
-  private _destroy$ = new Subject<void>();
+  private readonly _destroy$ = new Subject<void>();
 
-  @ContentChild(LabelDirective) labelDirective?: LabelDirective;
-  @ContentChild(InputDirective) inputDirective?: InputDirective;
-  @ContentChild(ControlDirective) controlDirective?: ControlDirective;
-  @ContentChild(ModelDirective) modelDirective?: ModelDirective;
-  @ContentChildren(FormFieldErrorComponent, { descendants: true }) errorComponents!: QueryList<FormFieldErrorComponent>;
-  @ContentChild(PrefixDirective) prefixDirective?: PrefixDirective;
-  @ContentChild(SuffixDirective) suffixDirective?: SuffixDirective;
-  @ContentChild(SelectComponent) selectComponent?: SelectComponent;
+  @ContentChild(LabelDirective) readonly labelDirective?: LabelDirective;
+  @ContentChild(InputDirective) readonly inputDirective?: InputDirective;
+  @ContentChild(ControlDirective) readonly controlDirective?: ControlDirective;
+  @ContentChild(ModelDirective) readonly modelDirective?: ModelDirective;
+  @ContentChildren(FormFieldErrorComponent, { descendants: true })
+  readonly errorComponents!: QueryList<FormFieldErrorComponent>;
+  @ContentChild(PrefixDirective) readonly prefixDirective?: PrefixDirective;
+  @ContentChild(SuffixDirective) readonly suffixDirective?: SuffixDirective;
+  @ContentChild(Select) readonly select?: Select;
+  @ContentChildren(FormFieldChild, { descendants: true }) readonly formFieldChildren!: QueryList<FormFieldChild>;
 
   @Input() label?: string;
   @Input() id: string | number = uniqueId++;
@@ -80,6 +82,9 @@ export class FormFieldComponent implements AfterContentInit, OnChanges, OnDestro
         this.control.disable(!!this.disabled);
       }
     }
+    this.formFieldChildren.changes.pipe(takeUntil(this._destroy$), auditTime(50)).subscribe(() => {
+      this.changeDetectorRef.markForCheck();
+    });
   }
 
   ngOnChanges(changes: SimpleChangesCustom<FormFieldComponent>): void {

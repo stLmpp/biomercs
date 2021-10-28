@@ -1,41 +1,28 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
-import { GameStore } from './game.store';
-import { httpCache } from '../../operators/http-cache';
+import { Observable } from 'rxjs';
 import { Game } from '@model/game';
 import { HttpParams } from '@util/http-params';
+import { CacheService } from '@shared/cache/cache';
 
 @Injectable({ providedIn: 'root' })
 export class GameService {
-  constructor(private http: HttpClient, private gameStore: GameStore) {}
+  constructor(private http: HttpClient, private cacheService: CacheService) {}
 
-  endPoint = 'game';
+  private readonly _cache = this.cacheService.createCache();
+
+  readonly endPoint = 'game';
 
   findByIdPlatform(idPlatform: number): Observable<Game[]> {
-    return this.http.get<Game[]>(`${this.endPoint}/platform/${idPlatform}`).pipe(
-      httpCache(this.gameStore, [idPlatform]),
-      tap(games => {
-        this.gameStore.upsert(games);
-      })
-    );
+    return this.http.get<Game[]>(`${this.endPoint}/platform/${idPlatform}`).pipe(this._cache.use(idPlatform));
   }
 
   findByIdPlatforms(idPlatforms: number[]): Observable<Game[]> {
     const params = new HttpParams({ idPlatforms });
-    return this.http.get<Game[]>(`${this.endPoint}/platforms`, { params }).pipe(
-      httpCache(this.gameStore, idPlatforms),
-      tap(games => {
-        this.gameStore.upsert(games);
-      })
-    );
+    return this.http.get<Game[]>(`${this.endPoint}/platforms`, { params }).pipe(this._cache.use(idPlatforms));
   }
 
   findApprovalByIdPlatform(idPlatform: number): Observable<Game[]> {
-    return this.http.get<Game[]>(`${this.endPoint}/approval/platform/${idPlatform}`).pipe(
-      tap(games => {
-        this.gameStore.upsert(games);
-      })
-    );
+    return this.http.get<Game[]>(`${this.endPoint}/approval/platform/${idPlatform}`);
   }
 }

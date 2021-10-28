@@ -16,7 +16,7 @@ import { DialogService } from '@shared/components/modal/dialog/dialog.service';
 export const IgnoreErrorContextToken = new HttpContextToken(() => false);
 export const ignoreErrorContext = (): HttpContext => new HttpContext().set(IgnoreErrorContextToken, true);
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AuthErrorInterceptor implements HttpInterceptor {
   constructor(private router: Router, private dialogService: DialogService) {}
 
@@ -27,20 +27,11 @@ export class AuthErrorInterceptor implements HttpInterceptor {
         catchAndThrow(err => {
           switch (err.status) {
             case HttpStatusCode.Forbidden:
-              this.dialogService.confirm({
-                btnNo: null,
-                btnYes: null,
-                content: `<img src="/assets/illegal.jpg" alt="illegal">`,
-              });
+              this.dialogService.confirm({ content: `<img src="/assets/illegal.jpg" alt="illegal">` });
               break;
             case HttpStatusCode.Unauthorized:
               this.dialogService
-                .confirm({
-                  content: `It seems you're not logged...`,
-                  title: 'Sorry',
-                  btnNo: null,
-                  btnYes: 'Ok',
-                })
+                .confirm({ content: `It seems you're not logged...`, title: 'Sorry', buttons: ['Ok'] })
                 .subscribe(async () => {
                   await this.router.navigate(['/auth', 'login']);
                 });
@@ -49,8 +40,7 @@ export class AuthErrorInterceptor implements HttpInterceptor {
               this.dialogService.confirm({
                 content: `It seems you're requesting too much of our humble server, please wait a second before sending another request`,
                 title: 'Dayum',
-                btnNo: null,
-                btnYes: 'Ok',
+                buttons: ['Ok'],
               });
               break;
           }

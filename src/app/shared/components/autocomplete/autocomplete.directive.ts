@@ -18,8 +18,8 @@ import { Destroyable } from '@shared/components/common/destroyable-component';
 import { AutocompleteComponent } from '@shared/components/autocomplete/autocomplete.component';
 import { getOverlayPositionMenu } from '@shared/components/menu/util';
 import { ControlDirective } from '@stlmpp/control';
-import { AutocompleteOptionComponent } from '@shared/components/autocomplete/autocomplete-option.component';
-import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
+import { AutocompleteOptionDirective } from '@shared/components/autocomplete/autocomplete-option.directive';
+import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 
 @Directive({
   selector: 'input[bioAutocomplete],textarea[bioAutocomplete]',
@@ -79,7 +79,7 @@ export class AutocompleteDirective extends Destroyable {
       return;
     }
     this._isSubscribed = true;
-    const optionsChanges: Observable<QueryList<AutocompleteOptionComponent>> =
+    const optionsChanges: Observable<QueryList<AutocompleteOptionDirective>> =
       this.bioAutocomplete.autocompleteOptions.changes.pipe(startWith(this.bioAutocomplete.autocompleteOptions));
     combineLatest([this._onFocus$, optionsChanges])
       .pipe(takeUntil(this.destroy$))

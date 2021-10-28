@@ -1,7 +1,8 @@
+<bio-loading *ngIf="loading"></bio-loading>
 <h4 bioPageTitle></h4>
 <bio-accordion>
   <bio-accordion-item
-    *ngFor="let error of errors$ | async; trackBy: trackBy"
+    *ngFor="let error of errors; trackBy: trackBy"
     accordionTitle="[ {{ error.creationDate | date: 'dd/MM/yyyy HH:mm:ss' }} ] {{ error.id }} - {{ error.name }}"
   >
     <p>User: {{ error.createdByUsername ?? 'Not logged' }}</p>
@@ -18,20 +19,23 @@
           icon
           type="button"
           (click)="copyQueryToClipboard(error.sqlQueryWithParameters)"
-          tooltip="Copy to clipboard (with parameters)"
+          bioTooltip="Copy to clipboard (with parameters)"
         >
-          <icon>assignment</icon>
+          <bio-icon>assignment</bio-icon>
         </button>
         <pre><code [highlight]="error.sqlQuery" [languages]="['sql']"></code></pre>
       </div>
-      <p *ngIf="error.sqlParameters && error.sqlParameters.length">
-        Parameters: {{ error.sqlParameters | join: '.':', ' }}
-      </p>
+      <ng-container *ngIf="error.sqlParametersFormatted">
+        Parameters:
+        <pre class="sql-parameters">
+          <code [highlight]="error.sqlParametersFormatted" [languages]="['yaml']"></code>
+        </pre>
+      </ng-container>
     </ng-container>
   </bio-accordion-item>
 </bio-accordion>
 <bio-pagination
-  [meta]="meta$ | async"
+  [meta]="meta"
   setQueryParamsOnChange
   (itemsPerPageChange)="onItemsPerPage($event)"
   (currentPageChange)="onCurrentPageChange($event)"

@@ -1,4 +1,4 @@
-<bio-card *ngIf="statusQueue$ | async as statusQueue">
+<bio-card>
   <h4 bioCardTitle>Mail queue</h4>
   <bio-card-content>
     <div><b>Status:</b> {{ statusQueue.status }}</div>
@@ -6,8 +6,6 @@
     <div><b>Retry attempts:</b> {{ statusQueue.retryAttempts }}</div>
   </bio-card-content>
   <bio-card-actions *ngIf="!statusQueue.queueWorking">
-    <button bioButton primary type="button" (click)="restartQueue()" [loading]="restartingQueue$ | async">
-      Restart queue
-    </button>
+    <button bioButton primary type="button" (click)="restartQueue()" [loading]="restartingQueue">Restart queue</button>
   </bio-card-actions>
 </bio-card>

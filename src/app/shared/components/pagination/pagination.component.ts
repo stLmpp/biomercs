@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
+import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { PaginationMeta } from '@model/pagination';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { trackByFactory } from '@stlmpp/utils';
@@ -50,7 +50,7 @@ export class PaginationComponent implements OnChanges, PaginationMeta {
   @Output() readonly itemsPerPageChange = new EventEmitter<number>();
   @Output() readonly currentPageChange = new EventEmitter<number>();
 
-  trackByNumber = trackByFactory<number>();
+  readonly trackByNumber = trackByFactory<number>();
 
   private _setQueryParams(): void {
     if (!this._setQueryParamsOnChange) {

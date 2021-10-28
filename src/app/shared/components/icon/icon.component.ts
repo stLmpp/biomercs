@@ -3,8 +3,9 @@ import { AbstractComponent } from '../core/abstract-component';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 
 @Component({
-  selector: 'icon:not([flag]):not([mdi])',
+  selector: 'bio-icon:not([flag]):not([mdi])',
   templateUrl: './icon.component.html',
+  styleUrls: ['./icon.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'icon' },
   encapsulation: ViewEncapsulation.None,

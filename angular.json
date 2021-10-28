@@ -25,7 +25,16 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "assets": ["src/favicon.ico", "src/assets", "src/manifest.json"],
+            "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              "src/manifest.json",
+              {
+                "input": "node_modules/flag-icon-css/flags/4x3/",
+                "glob": "*.svg",
+                "output": "assets/flag"
+              }
+            ],
             "styles": ["src/styles.scss"],
             "scripts": [],
             "stylePreprocessorOptions": {
@@ -41,8 +50,8 @@
             "extractLicenses": true,
             "buildOptimizer": true,
             "budgets": [
-              { "type": "initial", "maximumWarning": "1mb", "maximumError": "3mb" },
-              { "type": "anyComponentStyle", "maximumWarning": "4kb", "maximumError": "6kb" }
+              { "type": "initial", "maximumWarning": "500kb", "maximumError": "1mb" },
+              { "type": "anyComponentStyle", "maximumWarning": "2kb", "maximumError": "4kb" }
             ]
           },
           "configurations": {
@@ -62,6 +71,13 @@
               "buildOptimizer": false,
               "sourceMap": true,
               "optimization": false,
+              "namedChunks": true,
+              "outputHashing": "none",
+              "budgets": []
+            },
+            "analyze": {
+              "extractLicenses": false,
+              "sourceMap": true,
               "namedChunks": true,
               "outputHashing": "none",
               "budgets": []
