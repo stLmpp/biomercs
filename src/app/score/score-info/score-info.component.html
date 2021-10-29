@@ -43,6 +43,10 @@
       <bio-icon small>launch</bio-icon>
     </a>
   </div>
+  <ng-container *ngIf="player.inputTypeName">
+    <div class="title">Controller:</div>
+    <div class="value">{{ player.inputTypeName }}</div>
+  </ng-container>
   <div class="title">Character {{ $index + 1 }}:</div>
   <div class="value">
     {{ player.characterName }} {{ player.characterCostumeName }}

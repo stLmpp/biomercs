@@ -1,4 +1,4 @@
-import { finalize, MonoTypeOperatorFunction, Observable, tap } from 'rxjs';
+import { finalize, MonoTypeOperatorFunction, Observable, Subscription } from 'rxjs';
 import { environment } from '@environment/environment';
 import { Injectable } from '@angular/core';
 
@@ -41,19 +41,26 @@ class Cache {
 
   use<T>(...params: any): MonoTypeOperatorFunction<T> {
     const key = this._serializeKey(params);
-    return source => {
-      if (!this._cache.has(key)) {
-        return source.pipe(
-          tap(value => {
-            this._setCache(key, value);
-          })
-        );
-      }
-      return new Observable<T>(subscriber => {
-        subscriber.next(this._cache.get(key)!.value);
-        subscriber.complete();
+    return source =>
+      new Observable<T>(subscriber => {
+        let subscription: Subscription | undefined = undefined;
+        if (this._cache.has(key)) {
+          subscriber.next(this._cache.get(key)!.value);
+          subscriber.complete();
+        } else {
+          subscription = source.subscribe({
+            next: value => {
+              this._setCache(key, value);
+              subscriber.next(value);
+            },
+            complete: () => subscriber.complete(),
+            error: error => subscriber.error(error),
+          });
+        }
+        return () => {
+          subscription?.unsubscribe();
+        };
       });
-    };
   }
 
   burst<T>(...params: any): MonoTypeOperatorFunction<T> {

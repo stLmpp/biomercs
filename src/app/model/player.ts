@@ -14,6 +14,8 @@ export interface Player {
   steamProfile?: SteamProfile;
   lastUpdatedPersonaNameDate?: Date;
   avatar?: string | null;
+  idInputType?: number;
+  inputTypeName?: string;
 }
 
 export interface PlayerAdd {
@@ -31,4 +33,5 @@ export interface PlayerUpdate {
   title?: string;
   aboutMe?: string;
   idRegion?: number;
+  idInputType?: number;
 }

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { concat, distinctUntilChanged, finalize, map, switchMap, takeUntil, tap } from 'rxjs';
+import { concat, distinctUntilChanged, finalize, map, share, switchMap, takeUntil, tap } from 'rxjs';
 import { PlayerService } from '../player.service';
 import { Animations } from '@shared/animations/animations';
 import { AuthQuery } from '../../auth/auth.query';
@@ -29,6 +29,8 @@ import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { ModelDirective } from '@stlmpp/control';
 import { playerProfileValidatePersonaName } from './player-profile-invalid.pipe';
 import { Destroyable } from '@shared/components/common/destroyable-component';
+import { InputTypeService } from '@shared/services/input-type/input-type.service';
+import { trackById } from '@util/track-by';
 
 @Component({
   selector: 'bio-player-profile',
@@ -47,7 +49,8 @@ export class PlayerProfileComponent extends Destroyable implements OnInit {
     private authDateFormatPipe: AuthDateFormatPipe,
     private regionModalService: RegionModalService,
     private scoreModalService: ScoreModalService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private inputTypeService: InputTypeService
   ) {
     super();
   }
@@ -73,6 +76,13 @@ export class PlayerProfileComponent extends Destroyable implements OnInit {
   newPersonaName: string | null = null;
   avatarLoading = false;
   avatarFile: FileList | null | undefined;
+  inputTypeLoading = true;
+  inputTypes$ = this.inputTypeService.get().pipe(
+    finalize(() => {
+      this.inputTypeLoading = false;
+    }),
+    share()
+  );
 
   readonly colDefs: ColDef<ScoreScoreGroupedByStatusScoreVW>[] = [
     { property: 'id', component: ScoreOpenInfoCellComponent, width: '40px' },
@@ -82,6 +92,7 @@ export class PlayerProfileComponent extends Destroyable implements OnInit {
   readonly todayMinusSevenDate = subDays(new Date(), 7);
   readonly mdiSteam = mdiSteam;
   readonly trackByScoreGroupByStatus = trackByScoreGroupedByStatus;
+  readonly trackById = trackById;
 
   get idPlayer(): number {
     // idPlayer is required to access this component
