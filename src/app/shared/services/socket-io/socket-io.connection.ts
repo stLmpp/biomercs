@@ -43,6 +43,7 @@ export class SocketIOConnection {
     }
     if (this.connection.connected) {
       this.connection.disconnect();
+      this.connection.io.engine.close();
     }
     if (hasToken && this.connection.disconnected) {
       this.connection.connect();

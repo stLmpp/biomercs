@@ -39,6 +39,7 @@ export class AuthService {
 
   private readonly _steamidAuthMap = new Map<string, [string, number?]>();
   private _socketConnection = this.socketIOService.createConnection('auth', false);
+  private _socketConnectionWithAuth = this.socketIOService.createConnection('auth');
 
   readonly endPoint = 'auth';
 
@@ -274,14 +275,14 @@ export class AuthService {
   }
 
   userOnlineSocket(): Observable<UserOnline> {
-    return this._socketConnection.fromEvent<UserOnline>(AuthGatewayEvents.userOnline);
+    return this._socketConnectionWithAuth.fromEvent<UserOnline>(AuthGatewayEvents.userOnline);
   }
 
   userOfflineSocket(): Observable<number> {
-    return this._socketConnection.fromEvent<number>(AuthGatewayEvents.userOffline);
+    return this._socketConnectionWithAuth.fromEvent<number>(AuthGatewayEvents.userOffline);
   }
 
   sendUserOffline(idUser: number): void {
-    this._socketConnection.emit(AuthGatewayEvents.userOffline, idUser);
+    this._socketConnectionWithAuth.emit(AuthGatewayEvents.userOffline, idUser);
   }
 }
