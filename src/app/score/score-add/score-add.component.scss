@@ -5,13 +5,11 @@
 }
 
 :host ::ng-deep {
-  .score-params,
-  .player {
-    .card-content {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      grid-gap: 1rem;
-    }
+  .score-params .card-content,
+  .player .card-content .form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-gap: 1rem;
   }
 
   .card {

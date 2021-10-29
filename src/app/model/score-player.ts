@@ -5,6 +5,7 @@ export interface ScorePlayerAdd {
   bulletKills: number;
   description?: string;
   evidence: string;
+  idPlatformInputType: number | undefined;
 }
 
 export interface ScorePlayer {

@@ -25,6 +25,8 @@ import { Router } from '@angular/router';
 import { filterNilArrayOperator } from '@util/operators/filter-nil-array';
 import { trackByControl } from '@util/track-by';
 import { isNotNil, isObjectEqualShallow } from 'st-utils';
+import { filterNil } from '@util/operators/filter';
+import { PlatformInputTypeService } from '@shared/services/platform-input-type/platform-input-type.service';
 
 @Component({
   selector: 'bio-score-add',
@@ -40,7 +42,8 @@ export class ScoreAddComponent {
     private scoreService: ScoreService,
     private dialogService: DialogService,
     private router: Router,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private platformInputTypeService: PlatformInputTypeService
   ) {}
 
   @ViewChildren(ScoreAddPlayerComponent) readonly scoreAddPlayerComponents!: QueryList<ScoreAddPlayerComponent>;
@@ -80,6 +83,7 @@ export class ScoreAddComponent {
   readonly idMode$ = this.form.get('idMode').value$.pipe(distinctUntilChanged());
   characterLoading = false;
   submitModalLoading = false;
+  platformInputTypeLoading = false;
 
   readonly hasIdMode$ = this.form.get('idMode').value$.pipe(map(idMode => !!idMode));
 
@@ -114,6 +118,19 @@ export class ScoreAddComponent {
       );
     }),
     shareReplay()
+  );
+  readonly platformInputTypes$ = this.idPlatform$.pipe(
+    filterNil(),
+    switchMap(idPlatform => {
+      this.platformInputTypeLoading = true;
+      this.changeDetectorRef.markForCheck();
+      return this.platformInputTypeService.getByPlatform(idPlatform).pipe(
+        finalize(() => {
+          this.platformInputTypeLoading = false;
+          this.changeDetectorRef.markForCheck();
+        })
+      );
+    })
   );
 
   readonly trackByScorePlayerControl = trackByControl;

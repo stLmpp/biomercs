@@ -23,6 +23,7 @@ import { trackById } from '@util/track-by';
 import { PlayerModalService } from '../../../player/player-modal.service';
 import { Control } from '@stlmpp/control';
 import { Destroyable } from '@shared/components/common/destroyable-component';
+import { PlatformInputType } from '@model/platform-input-type';
 
 @Component({
   selector: 'bio-score-add-player',
@@ -45,7 +46,9 @@ export class ScoreAddPlayerComponent extends Destroyable implements OnInit, OnCh
   @Input() disabled = false;
   @Input() first = false;
   @Input() charactersLoading: BooleanInput = false;
-  @Input() characters: CharacterWithCharacterCostumes[] | null = [];
+  @Input() platformInputTypeLoading: BooleanInput = false;
+  @Input() characters: CharacterWithCharacterCostumes[] = [];
+  @Input() platformInputTypes: PlatformInputType[] = [];
 
   @Input()
   set player(player: ScorePlayerAddForm) {
