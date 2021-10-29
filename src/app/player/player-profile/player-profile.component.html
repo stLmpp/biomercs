@@ -100,6 +100,17 @@
           <bio-error *error="'personaNameExists'">Player name already exists</bio-error>
         </bio-errors>
       </bio-form-field>
+      <bio-form-field label="Preferred controller" [loading]="inputTypeLoading">
+        <bio-select
+          [model]="player.idInputType"
+          (modelChange)="updatePlayer('idInputType', $event)"
+          placeholder="Preferred controller"
+        >
+          <bio-option [value]="inputType.id" *ngFor="let inputType of inputTypes$ | async; trackBy: trackById">
+            {{ inputType.name }}
+          </bio-option>
+        </bio-select>
+      </bio-form-field>
       <bio-form-field label="Title">
         <input
           bioInput
@@ -112,17 +123,6 @@
           #titleModel="model"
         />
         <bio-hint end>{{ titleModel.model?.length }} / 250</bio-hint>
-      </bio-form-field>
-      <bio-form-field label="Preferred controller" [loading]="inputTypeLoading">
-        <bio-select
-          [model]="player.idInputType"
-          (modelChange)="updatePlayer('idInputType', $event)"
-          placeholder="Preferred controller"
-        >
-          <bio-option [value]="inputType.id" *ngFor="let inputType of inputTypes$ | async; trackBy: trackById">
-            {{ inputType.name }}
-          </bio-option>
-        </bio-select>
       </bio-form-field>
       <bio-form-field label="About me">
         <textarea
