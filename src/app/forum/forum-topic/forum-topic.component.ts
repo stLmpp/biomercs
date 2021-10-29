@@ -11,6 +11,7 @@ import { TopicService } from '../service/topic.service';
 import { PostModalService } from '../service/post-modal.service';
 import { TopicModalService } from '../service/topic-modal.service';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
+import { catchAndThrow } from '@util/operators/catch-and-throw';
 
 @Component({
   selector: 'bio-forum-topic',
@@ -34,6 +35,7 @@ export class ForumTopicComponent extends Destroyable implements OnInit {
   loading = false;
   loadingReply = false;
   loadingMove = false;
+  loadingNotifications = false;
 
   readonly trackById = trackById;
 
@@ -150,5 +152,23 @@ export class ForumTopicComponent extends Destroyable implements OnInit {
 
   onTopicDelete(): void {
     this.router.navigate(['../../../../'], { relativeTo: this.activatedRoute }).then();
+  }
+
+  onNotificationsChange($event: boolean): void {
+    this.loadingNotifications = true;
+    this.topicService
+      .toggleNotifications(this.topic.idSubCategory, this.topic.id, $event)
+      .pipe(
+        finalize(() => {
+          this.loadingNotifications = false;
+          this.changeDetectorRef.markForCheck();
+        }),
+        catchAndThrow(() => {
+          this.topic = { ...this.topic, notifications: !$event };
+        })
+      )
+      .subscribe(() => {
+        this.topic = { ...this.topic, notifications: $event };
+      });
   }
 }

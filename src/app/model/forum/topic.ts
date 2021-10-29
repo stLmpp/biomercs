@@ -20,6 +20,7 @@ export interface Topic {
   nameLastPost: string;
   creationDate: Date;
   isModerator: boolean;
+  notifications: boolean;
 }
 
 export interface TopicWithPosts extends Topic {

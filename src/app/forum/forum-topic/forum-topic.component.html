@@ -2,15 +2,24 @@
   <bio-loading *ngIf="loading"></bio-loading>
   <h4 bioCardTitle>{{ topic.name }}</h4>
   <bio-card-content>
-    <div class="actions" *ngIf="!topic.lockedDate || topic.isModerator">
-      <button accent bioButton type="button" (click)="onReply()" [loading]="loadingReply">
-        <bio-icon>reply</bio-icon>
-        Reply
-      </button>
-      <button accent bioButton type="button" (click)="onMove()" [loading]="loadingMove" *ngIf="topic.isModerator">
-        <bio-icon>swap_horiz</bio-icon>
-        Move
-      </button>
+    <div class="actions">
+      <bio-checkbox
+        [checked]="topic.notifications"
+        (checkedChange)="onNotificationsChange($event)"
+        [disabled]="loadingNotifications"
+      >
+        Notifications
+      </bio-checkbox>
+      <ng-container *ngIf="!topic.lockedDate || topic.isModerator">
+        <button accent bioButton type="button" (click)="onReply()" [loading]="loadingReply">
+          <bio-icon>reply</bio-icon>
+          Reply
+        </button>
+        <button accent bioButton type="button" (click)="onMove()" [loading]="loadingMove" *ngIf="topic.isModerator">
+          <bio-icon>swap_horiz</bio-icon>
+          Move
+        </button>
+      </ng-container>
     </div>
     <bio-forum-topic-post
       *ngFor="let post of topic.posts.items; trackBy: trackById; let $odd = odd"

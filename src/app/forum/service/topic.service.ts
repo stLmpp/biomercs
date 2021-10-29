@@ -56,4 +56,11 @@ export class TopicService {
   move(idSubCategory: number, idTopic: number, idSubCategoryTo: number): Observable<number> {
     return this.http.put<number>(`${this.getEndPoint(idSubCategory)}/${idTopic}/move/${idSubCategoryTo}`, undefined);
   }
+
+  toggleNotifications(idSubCategory: number, idTopic: number, notifications: boolean): Observable<void> {
+    return this.http.put<void>(
+      `${this.getEndPoint(idSubCategory)}/${idTopic}/notifications/${notifications}`,
+      undefined
+    );
+  }
 }
