@@ -19,4 +19,5 @@ export enum RouteDataEnum {
   topicWithPosts = 'resolver.topicWithPosts',
   usersOnline = 'resolver.usersOnline',
   topicRead = 'resolver.topicRead',
+  steamValidateNames = 'resolver.steamValidateNames',
 }

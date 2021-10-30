@@ -44,3 +44,8 @@ export interface AuthChangePassword {
   newPassword: string;
   confirmationCode: number;
 }
+
+export interface AuthSteamValidateNames {
+  steamPersonaName: string;
+  newName: boolean;
+}

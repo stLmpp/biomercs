@@ -17,6 +17,7 @@ import {
   AuthRegister,
   AuthRegisterVW,
   AuthSteamLoginSocketVW,
+  AuthSteamValidateNames,
 } from '@model/auth';
 import { User, UserOnline } from '@model/user';
 import { AuthSteamLoginSocketErrorType } from '@model/enum/auth-steam-login-socket-error-type';
@@ -226,14 +227,23 @@ export class AuthService {
       );
   }
 
-  registerSteam(steamid: string, email: string, token: string): Observable<AuthRegisterVW> {
+  registerSteam(steamid: string, email: string, token: string, newName?: string): Observable<AuthRegisterVW> {
     const headers = new HttpHeaders({ 'authorization-steam': token });
-    return this.http.post<AuthRegisterVW>(`${this.endPoint}/steam/register`, { email, steamid }, { headers });
+    return this.http.post<AuthRegisterVW>(`${this.endPoint}/steam/register`, { email, steamid, newName }, { headers });
   }
 
   validateTokenRegisterSteam(steamid: string, token: string): Observable<boolean> {
     const headers = new HttpHeaders({ 'authorization-steam': token });
     return this.http.post<boolean>(`${this.endPoint}/steam/${steamid}/validate-token`, undefined, { headers });
+  }
+
+  validateSteamNames(steamid: string): Observable<AuthSteamValidateNames> {
+    return this.http.get<AuthSteamValidateNames>(`${this.endPoint}/steam/${steamid}/validate-names`);
+  }
+
+  steamRegisterNameExists(newName: string): Observable<boolean> {
+    const params = new HttpParams({ newName });
+    return this.http.get<boolean>(`${this.endPoint}/steam/register/name-exists`, { params });
   }
 
   addSteamToken(steamid: string, token: string, idUser?: number): void {
