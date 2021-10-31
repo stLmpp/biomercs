@@ -34,6 +34,8 @@ export interface AuthSteamLoginSocketVW {
 
 export enum AuthGatewayEvents {
   loginSteam = 'login-steam',
+  userOnline = 'user-online',
+  userOffline = 'user-offline',
 }
 
 export interface AuthChangePassword {
@@ -41,4 +43,9 @@ export interface AuthChangePassword {
   oldPassword: string;
   newPassword: string;
   confirmationCode: number;
+}
+
+export interface AuthSteamValidateNames {
+  steamPersonaName: string;
+  newName: boolean;
 }

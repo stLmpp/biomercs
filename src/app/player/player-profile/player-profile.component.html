@@ -1,5 +1,43 @@
 <bio-card class="player" *ngLet="isSameAsLogged$ | async as isSameAsLogged">
   <div bioCardTitle>
+    <div class="avatar" *ngIf="isSameAsLogged; else avatarTemplate">
+      <ng-container [ngTemplateOutlet]="avatarTemplate"></ng-container>
+      <div class="overlay">
+        <input
+          class="cdk-visually-hidden"
+          type="file"
+          #inputFile
+          [model]="avatarFile"
+          (modelChange)="onChangeAvatar($event)"
+        />
+        <button
+          bioButton
+          icon
+          small
+          type="button"
+          bioTooltip="Edit"
+          (click)="inputFile.click()"
+          [disabled]="avatarLoading"
+        >
+          <bio-icon class="edit" small>edit</bio-icon>
+        </button>
+        <button
+          *ngIf="player.avatar"
+          bioButton
+          icon
+          small
+          type="button"
+          bioTooltip="Remove"
+          (click)="onRemoveAvatar()"
+          [disabled]="avatarLoading"
+        >
+          <bio-icon class="clear" small>clear</bio-icon>
+        </button>
+      </div>
+    </div>
+    <ng-template #avatarTemplate>
+      <bio-player-avatar [avatar]="player.avatar" [personaName]="player.personaName"></bio-player-avatar>
+    </ng-template>
     <button
       *ngIf="isSameAsLogged; else flagTemplate"
       class="flag"
@@ -13,7 +51,7 @@
       <ng-container *ngTemplateOutlet="flagTemplate"></ng-container>
     </button>
     <ng-template #flagTemplate>
-      <bio-icon small [flag]="player.region?.shortName" [bioTooltip]="player.region?.name"></bio-icon>
+      <bio-icon class="flag" small [flag]="player.region?.shortName" [bioTooltip]="player.region?.name"></bio-icon>
     </ng-template>
     <h3>{{ player.personaName }}</h3>
     <a
@@ -27,6 +65,7 @@
       <bio-icon [mdi]="mdiSteam"></bio-icon>
     </a>
   </div>
+  <div bioCardSubtitle *ngIf="player.inputTypeName">{{ player.inputTypeName }}</div>
   <div bioCardSubtitle>{{ player.title }}</div>
   <div bioCardSubtitle class="about-me">{{ player.aboutMe }}</div>
   <bio-card-content>
@@ -60,6 +99,17 @@
         <bio-errors>
           <bio-error *error="'personaNameExists'">Player name already exists</bio-error>
         </bio-errors>
+      </bio-form-field>
+      <bio-form-field label="Preferred controller" [loading]="inputTypeLoading">
+        <bio-select
+          [model]="player.idInputType"
+          (modelChange)="updatePlayer('idInputType', $event)"
+          placeholder="Preferred controller"
+        >
+          <bio-option [value]="inputType.id" *ngFor="let inputType of inputTypes$ | async; trackBy: trackById">
+            {{ inputType.name }}
+          </bio-option>
+        </bio-select>
       </bio-form-field>
       <bio-form-field label="Title">
         <input

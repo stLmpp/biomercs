@@ -1,0 +1,46 @@
+@use 'variables' as v;
+@use '../forum-sub-category' as sub-category;
+
+.icon-moderator {
+  display: none;
+}
+
+.icon-user {
+  padding: 0.25rem;
+  visibility: hidden;
+
+  &.show {
+    visibility: visible;
+  }
+}
+
+:host {
+  @include sub-category.sub-category-grid();
+
+  &:hover {
+    background-color: v.$primary-50;
+    text-decoration: none;
+
+    &.is-moderator {
+      .icon-moderator {
+        display: inline-block;
+      }
+
+      .icon-user {
+        display: none;
+      }
+    }
+  }
+
+  color: inherit;
+}
+
+.has-new-posts {
+  color: v.$accent-700;
+}
+
+.last-post-player {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

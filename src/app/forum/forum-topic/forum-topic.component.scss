@@ -1,0 +1,25 @@
+.card {
+  position: relative;
+}
+
+.card-content {
+  padding: 0;
+}
+
+.actions {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+  .button {
+    margin-left: 1rem;
+  }
+
+  .checkbox-container {
+    width: auto;
+  }
+}

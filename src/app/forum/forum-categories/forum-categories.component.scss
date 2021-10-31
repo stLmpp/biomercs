@@ -1,0 +1,15 @@
+@use 'mixins' as m;
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+@include m.drag-and-drop();
+
+.cdk-drag-handle {
+  cursor: move;
+  margin-right: 0.5rem;
+}

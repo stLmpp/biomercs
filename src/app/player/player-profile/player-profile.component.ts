@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { concat, distinctUntilChanged, finalize, map, switchMap, takeUntil } from 'rxjs';
+import { concat, distinctUntilChanged, finalize, map, share, switchMap, takeUntil, tap } from 'rxjs';
 import { PlayerService } from '../player.service';
 import { Animations } from '@shared/animations/animations';
 import { AuthQuery } from '../../auth/auth.query';
@@ -15,10 +15,10 @@ import {
 } from '@model/score-grouped-by-status';
 import { ActivatedRoute } from '@angular/router';
 import { Score } from '@model/score';
-import { getScoreDefaultColDefs } from '../../score/score-shared/util';
+import { getScoreDefaultColDefs } from '../../score/util';
 import { AuthDateFormatPipe } from '../../auth/shared/auth-date-format.pipe';
 import { ColDef } from '@shared/components/table/col-def';
-import { ScoreOpenInfoCellComponent } from '../../score/score-shared/score-open-info-cell/score-open-info-cell.component';
+import { ScoreOpenInfoCellComponent } from '../../score/score-approval/score-open-info-cell/score-open-info-cell.component';
 import { subDays } from 'date-fns';
 import { filterNil } from '@util/operators/filter';
 import { mdiSteam } from '@mdi/js';
@@ -29,6 +29,8 @@ import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { ModelDirective } from '@stlmpp/control';
 import { playerProfileValidatePersonaName } from './player-profile-invalid.pipe';
 import { Destroyable } from '@shared/components/common/destroyable-component';
+import { InputTypeService } from '@shared/services/input-type/input-type.service';
+import { trackById } from '@util/track-by';
 
 @Component({
   selector: 'bio-player-profile',
@@ -47,7 +49,8 @@ export class PlayerProfileComponent extends Destroyable implements OnInit {
     private authDateFormatPipe: AuthDateFormatPipe,
     private regionModalService: RegionModalService,
     private scoreModalService: ScoreModalService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private inputTypeService: InputTypeService
   ) {
     super();
   }
@@ -71,6 +74,15 @@ export class PlayerProfileComponent extends Destroyable implements OnInit {
   editMode = false;
   update: PlayerUpdate = {};
   newPersonaName: string | null = null;
+  avatarLoading = false;
+  avatarFile: FileList | null | undefined;
+  inputTypeLoading = true;
+  inputTypes$ = this.inputTypeService.get().pipe(
+    finalize(() => {
+      this.inputTypeLoading = false;
+    }),
+    share()
+  );
 
   readonly colDefs: ColDef<ScoreScoreGroupedByStatusScoreVW>[] = [
     { property: 'id', component: ScoreOpenInfoCellComponent, width: '40px' },
@@ -80,6 +92,7 @@ export class PlayerProfileComponent extends Destroyable implements OnInit {
   readonly todayMinusSevenDate = subDays(new Date(), 7);
   readonly mdiSteam = mdiSteam;
   readonly trackByScoreGroupByStatus = trackByScoreGroupedByStatus;
+  readonly trackById = trackById;
 
   get idPlayer(): number {
     // idPlayer is required to access this component
@@ -111,7 +124,12 @@ export class PlayerProfileComponent extends Destroyable implements OnInit {
     const idRegionPlayer = this.player.region?.id ?? -1;
     this.loadingRegion = true;
     await this.regionModalService.showSelectModal(idRegionPlayer, idRegion =>
-      this.playerService.update(this.idPlayer, { idRegion })
+      this.playerService.update(this.idPlayer, { idRegion }).pipe(
+        tap(player => {
+          this.player = { ...this.player, ...player };
+          this.changeDetectorRef.markForCheck();
+        })
+      )
     );
     this.loadingRegion = false;
     this.changeDetectorRef.markForCheck();
@@ -139,7 +157,15 @@ export class PlayerProfileComponent extends Destroyable implements OnInit {
           this.changeDetectorRef.markForCheck();
         })
       )
-      .subscribe();
+      .subscribe(response => {
+        if (response.steamProfile) {
+          this.player = {
+            ...this.player,
+            steamProfile: response.steamProfile,
+            idSteamProfile: response.steamProfile.id,
+          };
+        }
+      });
   }
 
   setEditMode(editMode: boolean): void {
@@ -155,10 +181,24 @@ export class PlayerProfileComponent extends Destroyable implements OnInit {
     const player = this.player;
     const requests = [];
     if (playerProfileValidatePersonaName(player, this.newPersonaName)) {
-      requests.push(this.playerService.updatePersonaName(player.id, this.newPersonaName));
+      const personaName = this.newPersonaName;
+      requests.push(
+        this.playerService.updatePersonaName(player.id, personaName).pipe(
+          tap(lastUpdatedPersonaNameDate => {
+            this.player = { ...this.player, personaName, lastUpdatedPersonaNameDate };
+          })
+        )
+      );
     }
     if (!isObjectEmpty(this.update)) {
-      requests.push(this.playerService.update(player.id, this.update));
+      const update = this.update;
+      requests.push(
+        this.playerService.update(player.id, update).pipe(
+          tap(_player => {
+            this.player = { ...this.player, ..._player };
+          })
+        )
+      );
     }
     if (!requests.length) {
       this.editMode = false;
@@ -185,6 +225,41 @@ export class PlayerProfileComponent extends Destroyable implements OnInit {
       $event = null;
     }
     this.newPersonaName = $event;
+  }
+
+  onRemoveAvatar(): void {
+    this.avatarLoading = true;
+    this.playerService
+      .removeAvatar(this.player.id)
+      .pipe(
+        finalize(() => {
+          this.avatarLoading = false;
+          this.changeDetectorRef.markForCheck();
+        })
+      )
+      .subscribe(() => {
+        this.player = { ...this.player, avatar: null };
+      });
+  }
+
+  onChangeAvatar($event: FileList | null | undefined): void {
+    const file = $event?.item(0);
+    if (!file) {
+      return;
+    }
+    this.avatarLoading = true;
+    this.playerService
+      .avatar(this.player.id, file)
+      .pipe(
+        finalize(() => {
+          this.avatarLoading = false;
+          this.avatarFile = null;
+          this.changeDetectorRef.markForCheck();
+        })
+      )
+      .subscribe(avatar => {
+        this.player = { ...this.player, avatar };
+      });
   }
 
   ngOnInit(): void {

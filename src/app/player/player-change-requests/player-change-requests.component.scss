@@ -1,4 +1,4 @@
-@use '../../score/score-shared/score-approval/score-approval.component' as scoreApproval;
+@use '../../score/score-approval/score-approval.component' as scoreApproval;
 
 .flex-table {
   @include scoreApproval.table-scores();

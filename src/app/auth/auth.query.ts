@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Query } from '@stlmpp/store';
 import { AuthStore } from './auth.store';
 import { Auth } from '@model/auth';
-import { distinctUntilChanged, map, Observable } from 'rxjs';
+import { distinctUntilChanged, map, Observable, pluck } from 'rxjs';
 import { Player } from '@model/player';
 import { User } from '@model/user';
 import { isNumber } from 'st-utils';
@@ -24,6 +24,8 @@ export class AuthQuery extends Query<Auth> {
     map(user => user.admin),
     distinctUntilChanged()
   );
+  readonly token$ = this.user$.pipe(map(user => user?.token));
+  readonly idUser$ = this.user$.pipe(filterNil(), pluck('id'));
 
   getToken(): string {
     return this.getUser()?.token ?? '';

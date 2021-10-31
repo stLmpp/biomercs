@@ -1,0 +1,30 @@
+@use 'variables' as v;
+
+:host {
+  display: block;
+}
+
+.list-item-line:not(:first-of-type) {
+  font-size: 0.9em;
+  color: v.$primary-400;
+}
+
+.scores {
+  background-color: v.$primary;
+  color: v.$primary-600;
+  position: relative;
+
+  .card-content {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .bio-list {
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+
+    .list-item {
+      padding: 1rem 0.75rem;
+    }
+  }
+}

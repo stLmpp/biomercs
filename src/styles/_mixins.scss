@@ -1,14 +1,16 @@
 @use 'variables' as v;
 @use 'functions' as f;
+@use '~@material/elevation/elevation-theme' as mat-elevation;
 @forward '~@material/elevation/elevation-theme';
 
 @mixin actions($margin-top: 1rem) {
   margin-top: $margin-top;
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
 
-  button:not(:last-child) {
-    margin-right: 1rem;
+  .button {
+    margin: 0.5rem;
   }
 
   &.end {
@@ -54,4 +56,22 @@
 
 @mixin z-index($name) {
   z-index: f.get-z-index($name);
+}
+
+@mixin drag-and-drop() {
+  .cdk-drag-preview {
+    @include mat-elevation.elevation(3);
+  }
+
+  .cdk-drag-placeholder {
+    opacity: 0;
+  }
+
+  .cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  .cdk-drop-list-dragging .cdk-drag:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
 }

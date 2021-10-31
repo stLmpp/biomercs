@@ -17,8 +17,9 @@ import {
   AuthRegister,
   AuthRegisterVW,
   AuthSteamLoginSocketVW,
+  AuthSteamValidateNames,
 } from '@model/auth';
-import { User } from '@model/user';
+import { User, UserOnline } from '@model/user';
 import { AuthSteamLoginSocketErrorType } from '@model/enum/auth-steam-login-socket-error-type';
 import { SocketIOService } from '@shared/services/socket-io/socket-io.service';
 import { DialogDataButtonType } from '@shared/components/modal/dialog/dialog-data';
@@ -38,13 +39,13 @@ export class AuthService {
   ) {}
 
   private readonly _steamidAuthMap = new Map<string, [string, number?]>();
-  private readonly _socketConnection = this.socketIOService.createConnection('auth');
+  private _socketConnection = this.socketIOService.createConnection('auth', false);
+  private _socketConnectionWithAuth = this.socketIOService.createConnection('auth');
 
   readonly endPoint = 'auth';
 
   private _getSteamLoginUrl(uuid: string): Observable<string> {
-    const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
-    return this.http.post(`${this.endPoint}/steam/login/${uuid}`, undefined, { responseType: 'text', headers });
+    return this.http.post(`${this.endPoint}/steam/login/${uuid}`, undefined, { responseType: 'text' });
   }
 
   register(dto: AuthRegister): Observable<AuthRegisterVW> {
@@ -201,7 +202,11 @@ export class AuthService {
   }
 
   logout(): void {
+    const user = this.authStore.getState().user!;
+    this.sendUserOffline(user.id);
     this.authStore.updateState({ user: null });
+    this._socketConnection.disconnectEvent(AuthGatewayEvents.userOnline);
+    this._socketConnection.disconnectEvent(AuthGatewayEvents.userOffline);
   }
 
   forgotPassword(email: string): Observable<void> {
@@ -222,14 +227,23 @@ export class AuthService {
       );
   }
 
-  registerSteam(steamid: string, email: string, token: string): Observable<AuthRegisterVW> {
+  registerSteam(steamid: string, email: string, token: string, newName?: string): Observable<AuthRegisterVW> {
     const headers = new HttpHeaders({ 'authorization-steam': token });
-    return this.http.post<AuthRegisterVW>(`${this.endPoint}/steam/register`, { email, steamid }, { headers });
+    return this.http.post<AuthRegisterVW>(`${this.endPoint}/steam/register`, { email, steamid, newName }, { headers });
   }
 
   validateTokenRegisterSteam(steamid: string, token: string): Observable<boolean> {
     const headers = new HttpHeaders({ 'authorization-steam': token });
     return this.http.post<boolean>(`${this.endPoint}/steam/${steamid}/validate-token`, undefined, { headers });
+  }
+
+  validateSteamNames(steamid: string): Observable<AuthSteamValidateNames> {
+    return this.http.get<AuthSteamValidateNames>(`${this.endPoint}/steam/${steamid}/validate-names`);
+  }
+
+  steamRegisterNameExists(newName: string): Observable<boolean> {
+    const params = new HttpParams({ newName });
+    return this.http.get<boolean>(`${this.endPoint}/steam/register/name-exists`, { params });
   }
 
   addSteamToken(steamid: string, token: string, idUser?: number): void {
@@ -268,5 +282,17 @@ export class AuthService {
 
   changePasswordValidate(key: string): Observable<boolean> {
     return this.http.get<boolean>(`${this.endPoint}/change-password/validate/${key}`);
+  }
+
+  userOnlineSocket(): Observable<UserOnline> {
+    return this._socketConnectionWithAuth.fromEvent<UserOnline>(AuthGatewayEvents.userOnline);
+  }
+
+  userOfflineSocket(): Observable<number> {
+    return this._socketConnectionWithAuth.fromEvent<number>(AuthGatewayEvents.userOffline);
+  }
+
+  sendUserOffline(idUser: number): void {
+    this._socketConnectionWithAuth.emit(AuthGatewayEvents.userOffline, idUser);
   }
 }

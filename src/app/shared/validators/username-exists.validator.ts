@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Control, ControlValidator } from '@stlmpp/control';
 import { AuthService } from '../../auth/auth.service';
-import { map, Observable, switchMapTo, timer } from 'rxjs';
+import { map, Observable, switchMap, timer } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class UsernameExistsValidator extends ControlValidator<string, boolean> {
@@ -16,6 +16,9 @@ export class UsernameExistsValidator extends ControlValidator<string, boolean> {
     if (!value) {
       return null;
     }
-    return timer(500).pipe(switchMapTo(this.authService.usernameExists(value).pipe(map(exists => exists || null))));
+    return timer(500).pipe(
+      switchMap(() => this.authService.usernameExists(value)),
+      map(exists => exists || null)
+    );
   }
 }

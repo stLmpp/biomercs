@@ -11,3 +11,9 @@ export interface User {
   idPlayer?: number;
   playerPersonaName?: string;
 }
+
+export interface UserOnline {
+  id: number;
+  idPlayer: number;
+  personaName: string;
+}

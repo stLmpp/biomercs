@@ -33,7 +33,7 @@ export class BadgeDirective extends BadgeBase implements AfterViewInit {
     return this._bioBadge;
   }
   set bioBadge(bioBadge: any) {
-    this._bioBadge = isNil(bioBadge) ? '' : bioBadge?.toString?.() ?? `${bioBadge}`;
+    this._bioBadge = isNil(bioBadge) ? '' : bioBadge.toString?.() ?? `${bioBadge}`;
     this._buildBadge();
   }
 

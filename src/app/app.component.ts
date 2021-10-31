@@ -7,6 +7,7 @@ import { Destroyable } from '@shared/components/common/destroyable-component';
 import { DOCUMENT } from '@angular/common';
 import { auditTime, distinctUntilChanged, map, startWith, takeUntil } from 'rxjs';
 import { WINDOW } from './core/window.service';
+import { BreadcrumbsService } from '@shared/breadcrumbs/breadcrumbs.service';
 
 @Component({
   selector: 'bio-root',
@@ -21,7 +22,8 @@ export class AppComponent extends Destroyable implements OnInit, OnDestroy {
     private metaService: MetaService,
     private globalListenersService: GlobalListenersService,
     @Inject(DOCUMENT) private document: Document,
-    @Inject(WINDOW) private window: Window
+    @Inject(WINDOW) private window: Window,
+    private breadcrumbsService: BreadcrumbsService
   ) {
     super();
   }
@@ -50,10 +52,12 @@ export class AppComponent extends Destroyable implements OnInit, OnDestroy {
     this._listenToResize();
     this.metaService.init();
     this.titleService.title$.pipe(takeUntil(this.destroy$)).subscribe();
+    this.breadcrumbsService.init();
   }
 
   override ngOnDestroy(): void {
     this.metaService.ngOnDestroy();
+    this.breadcrumbsService.destroy();
     super.ngOnDestroy();
   }
 }

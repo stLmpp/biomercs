@@ -39,6 +39,10 @@
     Score change requests
     <bio-badge bioSuffix>{{ headerQuery.playerRequestChangesCount$ | async }}</bio-badge>
   </a>
+  <a bioListItem routerLink="/forum" (click)="onMenuSelected($event)">
+    <bio-icon bioPrefix>forum</bio-icon>
+    Forum
+  </a>
   <ng-container *ngIf="user.admin">
     <a class="admin-list-item" bioListItem routerLink="/admin" (click)="onMenuSelected($event)">
       <bio-icon bioPrefix>admin_panel_settings</bio-icon>

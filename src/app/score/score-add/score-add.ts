@@ -14,6 +14,7 @@ export function generateScorePlayerControlGroup(
     personaName: new Control(partial?.personaName ?? ''),
     evidence: new Control(partial?.evidence ?? '', [Validators.required, Validators.url, Validators.maxLength(1000)]),
     idCharacterCostume: new Control(partial?.idCharacterCostume ?? null, [Validators.required]),
+    idPlatformInputType: new Control(partial?.idPlatformInputType),
   });
 }
 

@@ -8,17 +8,17 @@ import { ModalRef } from '@shared/components/modal/modal-ref';
 import { IdChecked } from '@shared/type/id-checked';
 import { MaskEnum, MaskEnumPatterns } from '@shared/mask/mask.enum';
 import { CURRENCY_MASK_CONFIG } from '@shared/currency-mask/currency-mask-config.token';
-import { scoreCurrencyMask } from '../../../score/score-shared/util';
+import { scoreCurrencyMask } from '../../../score/util';
 import { ScoreService } from '../../../score/score.service';
-import { finalize, map, switchMapTo, tap } from 'rxjs';
+import { finalize, map, Observable, of, switchMap, tap } from 'rxjs';
 import { SnackBarService } from '@shared/components/snack-bar/snack-bar.service';
 import { trackById } from '@util/track-by';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
 
 export interface PlayerChangeRequestsModalData {
   score: ScoreWithScoreChangeRequests;
-  page: number;
-  itemsPerPage: number;
+  page?: number;
+  itemsPerPage?: number;
 }
 
 interface ScoreChangeRequestsFulfilForm extends Omit<ScoreChangeRequestsFulfilDto, 'idsScoreChangeRequests'> {
@@ -83,6 +83,14 @@ export class PlayerChangeRequestsModalComponent {
 
   readonly trackById = trackById;
 
+  private _getChangeRequests(): Observable<ScoreChangeRequestsPagination | undefined> {
+    if (!this.data.page || !this.data.itemsPerPage) {
+      return of(undefined);
+    } else {
+      return this.scoreService.findChangeRequests(this.data.page, this.data.itemsPerPage);
+    }
+  }
+
   hostChange($index: number): void {
     const scorePlayersControl = this.form.get('scorePlayers');
     for (let i = 0; i < scorePlayersControl.length; i++) {
@@ -107,7 +115,7 @@ export class PlayerChangeRequestsModalComponent {
     this.scoreService
       .fulfilChangeRequests(this.data.score.id, dto)
       .pipe(
-        switchMapTo(this.scoreService.findChangeRequests(this.data.page, this.data.itemsPerPage)),
+        switchMap(() => this._getChangeRequests()),
         finalize(() => {
           this.form.enable();
           this.loading = false;
@@ -140,7 +148,7 @@ export class PlayerChangeRequestsModalComponent {
           type: 'danger',
           action: modalRef =>
             this.scoreService.cancel(this.data.score.id).pipe(
-              switchMapTo(this.scoreService.findChangeRequests(this.data.page, this.data.itemsPerPage)),
+              switchMap(() => this._getChangeRequests()),
               tap(data => {
                 modalRef.close();
                 this.modalRef.close(data);

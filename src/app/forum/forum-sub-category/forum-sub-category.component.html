@@ -1,0 +1,33 @@
+<bio-card dark>
+  <bio-loading *ngIf="loading"></bio-loading>
+  <bio-card-content>
+    <div class="actions">
+      <a bioButton accent [routerLink]="['topic', 'new']">New topic</a>
+    </div>
+    <div class="grid-container grid-container--header">
+      <div class="grid-container__name">Topic name</div>
+      <div class="grid-container__created-by">Created by</div>
+      <div class="grid-container__creation-date">Creation date</div>
+      <div class="grid-container__replies">Replies</div>
+      <div class="grid-container__views">Views</div>
+      <div class="grid-container__last-post">Last post</div>
+    </div>
+    <a
+      bioForumSubCategoryTopic
+      [routerLink]="['topic', topic.id, 'page', 1]"
+      *ngFor="let topic of subCategory.topics.items; trackBy: trackById"
+      [topic]="topic"
+      (topicChange)="onTopicChange($event)"
+      (reloadSubCategory)="onReloadSubcategory()"
+    >
+    </a>
+  </bio-card-content>
+  <bio-card-actions end>
+    <bio-pagination
+      [(currentPage)]="page"
+      (currentPageChange)="onPageChange($event)"
+      [meta]="subCategory.topics.meta"
+      itemsPerPageHidden
+    ></bio-pagination>
+  </bio-card-actions>
+</bio-card>

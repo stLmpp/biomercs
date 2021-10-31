@@ -13,6 +13,7 @@ import { ButtonModule } from '@shared/components/button/button.module';
 import { TooltipModule } from '@shared/components/tooltip/tooltip.module';
 import { TitleModule } from '@shared/title/title.module';
 import { DatepickerModule } from '@shared/components/datepicker/datepicker.module';
+import { AsyncDefaultModule } from '@shared/async-default/async-default.module';
 
 @NgModule({
   declarations: [ScoreAddComponent, ScoreAddPlayerComponent],
@@ -29,6 +30,7 @@ import { DatepickerModule } from '@shared/components/datepicker/datepicker.modul
     ButtonModule,
     TooltipModule,
     DatepickerModule,
+    AsyncDefaultModule,
   ],
 })
 export class ScoreAddModule {}

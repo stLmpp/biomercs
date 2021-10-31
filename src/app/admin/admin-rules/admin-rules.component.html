@@ -1,39 +1,50 @@
 <form [controlGroup]="form" (groupSubmit)="save()">
   <bio-card>
     <h3 bioCardTitle>Edit rules</h3>
-    <bio-card-content controlArrayName="rules" cdkDropList (cdkDropListDropped)="changeOrder($event)">
+    <bio-card-content cdkDropList (cdkDropListDropped)="changeOrder($event)">
+      <bio-form-field label="Type">
+        <bio-select controlName="type">
+          <bio-option [value]="ruleTypeEnum.Main" (click)="onRuleTypeChange(ruleTypeEnum.Main)">General</bio-option>
+          <bio-option [value]="ruleTypeEnum.Forum" (click)="onRuleTypeChange(ruleTypeEnum.Forum)">Forum</bio-option>
+        </bio-select>
+      </bio-form-field>
       <div class="actions">
         <button bioButton primary (click)="addRule()" type="button">Add rule</button>
       </div>
-      <h5 *ngIf="!rulesControl.length">No rules found</h5>
-      <div
-        class="item"
-        *ngFor="let ruleControl of rulesControl; trackBy: trackByControl; let $index = index"
-        [controlGroupName]="$index"
-        cdkDrag
-      >
-        <div class="icon-wrapper drag">
-          <bio-icon cdkDragHandle>drag_handle</bio-icon>
+      <ng-container controlArrayName="rules" *ngIf="!loadingType; else loadingTypeTemplate">
+        <h5 *ngIf="!rulesControl.length">No rules found</h5>
+        <div
+          class="item"
+          *ngFor="let ruleControl of rulesControl; trackBy: trackByControl; let $index = index"
+          [controlGroupName]="$index"
+          cdkDrag
+        >
+          <div class="icon-wrapper drag">
+            <bio-icon cdkDragHandle>drag_handle</bio-icon>
+          </div>
+          <bio-form-field *ngIf="ruleControl.value$ | async as ruleValue" label="{{ ruleValue.order }}">
+            <textarea
+              bioInput
+              controlName="description"
+              cdkTextareaAutosize
+              [cdkAutosizeMinRows]="1"
+              [cdkAutosizeMaxRows]="6"
+            ></textarea>
+            <bio-errors>
+              <bio-error *error="'required'">Description is required</bio-error>
+              <bio-error *error="'whiteSpace'">Description is required</bio-error>
+            </bio-errors>
+          </bio-form-field>
+          <div class="icon-wrapper delete">
+            <button bioButton icon type="button" (click)="deleteRule($index)">
+              <bio-icon>delete</bio-icon>
+            </button>
+          </div>
         </div>
-        <bio-form-field *ngIf="ruleControl.value$ | async as ruleValue" label="{{ ruleValue.order }}">
-          <textarea
-            bioInput
-            controlName="description"
-            cdkTextareaAutosize
-            [cdkAutosizeMinRows]="1"
-            [cdkAutosizeMaxRows]="6"
-          ></textarea>
-          <bio-errors>
-            <bio-error *error="'required'">Description is required</bio-error>
-            <bio-error *error="'whiteSpace'">Description is required</bio-error>
-          </bio-errors>
-        </bio-form-field>
-        <div class="icon-wrapper delete">
-          <button bioButton icon type="button" (click)="deleteRule($index)">
-            <bio-icon>delete</bio-icon>
-          </button>
-        </div>
-      </div>
+      </ng-container>
+      <ng-template #loadingTypeTemplate>
+        <bio-loading></bio-loading>
+      </ng-template>
     </bio-card-content>
     <bio-card-actions (mouseenter)="onMouseenterActions()" *ngIf="deletedControl.value$ | async as deletedValue">
       <button

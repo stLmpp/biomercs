@@ -1,0 +1,30 @@
+<bio-loading *ngIf="loading"></bio-loading>
+<form [controlGroup]="form" (groupSubmit)="save()">
+  <h4 bioModalTitle>{{ idSubCategory ? 'Edit' : 'Add' }} Sub category</h4>
+  <bio-modal-content>
+    <bio-form-field label="Name">
+      <input bioInput placeholder="Name" controlName="name" />
+      <bio-hint end>{{ nameHint$ | async }}</bio-hint>
+      <bio-errors>
+        <bio-error *error="'required'">Name is required</bio-error>
+        <bio-error *error="'whiteSpace'">Name is required</bio-error>
+      </bio-errors>
+    </bio-form-field>
+    <bio-form-field label="Description">
+      <textarea bioInput cdkTextareaAutosize placeholder="Description" controlName="description"></textarea>
+      <bio-hint end>{{ descriptionHint$ | async }}</bio-hint>
+      <bio-errors>
+        <bio-error *error="'required'">Description is required</bio-error>
+        <bio-error *error="'whiteSpace'">Description is required</bio-error>
+      </bio-errors>
+    </bio-form-field>
+    <ng-container *ngIf="idSubCategory">
+      <bio-checkbox controlName="deleted" *ngIf="!subCategory.deletedDate">Delete this sub category</bio-checkbox>
+      <bio-checkbox controlName="restored" *ngIf="subCategory.deletedDate">Restore this sub category</bio-checkbox>
+    </ng-container>
+  </bio-modal-content>
+  <bio-modal-actions end>
+    <button type="button" bioButton bioModalClose [disabled]="saving">Close</button>
+    <button type="submit" bioButton [disabled]="form.invalid" [loading]="saving">Save</button>
+  </bio-modal-actions>
+</form>

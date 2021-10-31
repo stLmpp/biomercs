@@ -14,17 +14,32 @@
 
       <ng-template #emailForm>
         <p>Fill the box with your e-mail and click register to complete your registration</p>
-        <bio-form-field label="E-mail">
+        <bio-form-field label="E-mail" [loading]="emailControl.pending">
           <input autocomplete="email" placeholder="E-mail" bioInput controlName="email" type="email" />
           <bio-errors>
             <bio-error *error="'email'">This e-mail is not valid</bio-error>
             <bio-error *error="'required'">E-mail is required</bio-error>
+            <bio-error *error="'emailExists'">E-mail already registered</bio-error>
           </bio-errors>
         </bio-form-field>
+        <ng-container *ngIf="authSteamValidateNames.newName">
+          <p class="text-danger">
+            There's already a player with your steam profile name ({{ authSteamValidateNames.steamPersonaName }}). You
+            will need to choose another name for your account.
+          </p>
+          <bio-form-field label="New name" [loading]="newNameControl.pending">
+            <input autocomplete="off" placeholder="New name" bioInput controlName="newName" />
+            <bio-errors>
+              <bio-error *error="'required'">New name is required</bio-error>
+              <bio-error *error="'maxLength'; let error">New name must not have more than 100 characters</bio-error>
+              <bio-error *error="'steamRegisterNameExists'">Name already exists</bio-error>
+            </bio-errors>
+          </bio-form-field>
+        </ng-container>
       </ng-template>
     </bio-card-content>
     <bio-card-actions end>
-      <button bioButton primary type="submit" [disabled]="form.invalid" [loading]="loading">
+      <button bioButton primary type="submit" [disabled]="form.invalid || form.pending" [loading]="loading">
         {{ emailSent ? 'Send confirmation code' : 'Register' }}
       </button>
     </bio-card-actions>

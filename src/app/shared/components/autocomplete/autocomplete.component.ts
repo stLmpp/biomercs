@@ -4,6 +4,7 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChildren,
+  Input,
   QueryList,
   Renderer2,
   TemplateRef,
@@ -19,7 +20,7 @@ import { Autocomplete } from '@shared/components/autocomplete/autocomplete';
 import { Control } from '@stlmpp/control';
 import { noop } from 'st-utils';
 import { Key } from '@model/enum/key';
-import { Observable, of, pluck, startWith } from 'rxjs';
+import { Observable, of, pluck, startWith, Subject } from 'rxjs';
 
 @Component({
   selector: 'bio-autocomplete',
@@ -39,11 +40,15 @@ export class AutocompleteComponent extends Autocomplete implements AfterContentI
   @ContentChildren(AutocompleteOptionDirective, { descendants: true })
   readonly autocompleteOptions!: QueryList<AutocompleteOptionDirective>;
 
+  @Input() closeOnSelect = true;
+  @Input() replaceInputWithValue = true;
+
   overlayRef?: OverlayRef;
   focusManager?: FocusKeyManager<AutocompleteOptionDirective>;
   control?: Control<string>;
   origin?: HTMLInputElement;
   setFocusOnOrigin = noop;
+  onSelect$ = new Subject<void>();
 
   optionsCount$ = of(0);
 
@@ -79,12 +84,18 @@ export class AutocompleteComponent extends Autocomplete implements AfterContentI
   }
 
   select(value: string): void {
-    if (this.control) {
-      this.control.setValue(value);
-    } else if (this.origin) {
-      this.renderer2.setProperty(this.origin, 'value', value);
+    if (this.replaceInputWithValue) {
+      if (this.control) {
+        this.control.setValue(value);
+      } else if (this.origin) {
+        this.renderer2.setProperty(this.origin, 'value', value);
+      }
     }
-    this.overlayRef?.detach();
+    this.onSelect$.next();
+    if (this.closeOnSelect) {
+      this.onSelect$.complete();
+      this.overlayRef?.detach();
+    }
   }
 
   ngAfterContentInit(): void {

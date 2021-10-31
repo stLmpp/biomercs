@@ -1,0 +1,86 @@
+@use 'variables' as v;
+
+:host {
+  display: flex;
+  background-color: darken(v.$primary-50, 5%);
+
+  &.odd {
+    background-color: v.$primary-50;
+  }
+
+  border: 2px solid transparent;
+
+  &.highlight {
+    border-color: v.$accent-300;
+  }
+}
+
+.player-info {
+  padding: 0.5rem 1rem;
+  width: clamp(200px, 250px, 15vw);
+  font-size: 0.75rem;
+  margin-right: 1rem;
+
+  .name {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+
+    .flag-icon {
+      margin-right: 0.5rem;
+    }
+  }
+
+  > div {
+    margin-bottom: 0.15rem;
+  }
+}
+
+.post {
+  flex: 1;
+  padding: 0.5rem 1rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.25rem 0;
+
+  .title {
+    flex: 1;
+  }
+}
+
+.content {
+  padding: 0 0.5rem 0.5rem 0.5rem;
+  border-radius: v.$radius;
+  color: white;
+
+  .actions {
+    margin-top: 0.5rem;
+    display: flex;
+    justify-content: flex-end;
+
+    .button:not(:last-of-type) {
+      margin-right: 1rem;
+    }
+  }
+}
+
+.indicator {
+  display: inline-block;
+
+  &.online {
+    background-color: v.$success;
+    border-radius: 50%;
+    width: 0.5rem;
+    height: 0.5rem;
+  }
+
+  &.offline {
+    background-color: v.$danger;
+    width: 0.4rem;
+    height: 0.4rem;
+  }
+
+  margin-right: 0.1rem;
+}
