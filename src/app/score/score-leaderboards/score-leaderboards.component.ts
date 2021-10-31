@@ -138,7 +138,7 @@ export class ScoreLeaderboardsComponent extends LocalState<ScoreLeaderboardsStat
   readonly paginationMeta$: Observable<PaginationMeta> = this.scoreTopTable$.pipe(
     pluck('meta'),
     tap(meta => {
-      if (meta.currentPage > meta.totalPages) {
+      if (meta.totalPages && meta.currentPage > meta.totalPages) {
         this.changePage(meta.totalPages);
       }
     })

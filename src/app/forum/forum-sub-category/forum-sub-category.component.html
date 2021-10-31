@@ -21,6 +21,7 @@
       (reloadSubCategory)="onReloadSubcategory()"
     >
     </a>
+    <p class="no-data-found" *ngIf="!subCategory.topics.items.length">No topics found</p>
   </bio-card-content>
   <bio-card-actions end>
     <bio-pagination

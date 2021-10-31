@@ -24,7 +24,7 @@ export class SubCategoryWithTopicsResolver implements Resolve<SubCategoryWithTop
     const page = +(route.paramMap.get(RouteParamEnum.pageSubCategory) ?? 1);
     return this.subCategoryService.getByIdWithTopics(idSubCategory, page, 10).pipe(
       tap(subCategory => {
-        if (page > subCategory.topics.meta.totalPages) {
+        if (subCategory.topics.meta.totalPages && page > subCategory.topics.meta.totalPages) {
           this.router
             .navigate([
               '/forum/category',
