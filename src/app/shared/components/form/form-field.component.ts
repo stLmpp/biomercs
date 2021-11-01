@@ -23,6 +23,7 @@ import { Control, ControlDirective, ModelDirective } from '@stlmpp/control';
 import { BooleanInput, isNil } from 'st-utils';
 import { Select } from '@shared/components/select/select';
 import { FormFieldChild } from '@shared/components/form/form-field-child';
+import { ControlState } from '@stlmpp/control/lib/control/control';
 
 let uniqueId = 0;
 
@@ -62,17 +63,18 @@ export class FormFieldComponent implements AfterContentInit, OnChanges, OnDestro
     return this.controlDirective?.control ?? this.modelDirective?.control;
   }
 
+  controlState?: ControlState;
+
   ngAfterContentInit(): void {
     if (this.labelDirective) {
       this.labelDirective.for = this.id;
     }
     if (this.inputDirective) {
-      this.inputDirective.id = this.id;
-      if (this.inputDirective.control) {
-        this.inputDirective.control.stateChanged$.pipe(takeUntil(this._destroy$), auditTime(50)).subscribe(() => {
-          if (this.labelDirective) {
-            this.labelDirective.danger = !!this.inputDirective?.dangerClass;
-          }
+      const inputDirective = this.inputDirective;
+      inputDirective.id = this.id;
+      if (this.control) {
+        this.control.stateChanged$.pipe(takeUntil(this._destroy$), auditTime(50)).subscribe(state => {
+          this.controlState = state;
           this.changeDetectorRef.markForCheck();
         });
       }
