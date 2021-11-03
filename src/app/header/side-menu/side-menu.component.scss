@@ -6,10 +6,10 @@
   position: fixed;
   left: 0;
   top: v.$header-height;
-  bottom: 0;
+  bottom: v.$footer-height;
   width: 300px;
   background-color: v.$primary;
-  padding: 1rem 0 v.$footer-height 0;
+  padding: 1rem 0;
   overflow: auto;
   @include m.elevation(3);
 
