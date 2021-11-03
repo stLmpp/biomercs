@@ -11,6 +11,7 @@ export const environment = {
   dev: true,
   socketIOPath: '/api/socket',
   socketIOHost: 'http://localhost:3000',
+  avatar: 'https://biomercs.s3.sa-east-1.amazonaws.com/dev/image/avatar',
 };
 
 /*

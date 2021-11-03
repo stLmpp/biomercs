@@ -7,4 +7,5 @@ export const environment = {
   api: '/api',
   socketIOPath: '/api/socket',
   socketIOHost: '',
+  avatar: 'https://biomercs.s3.sa-east-1.amazonaws.com/dev/image/avatar',
 };
