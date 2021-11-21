@@ -34,4 +34,6 @@ export interface ScorePlayerUpdateDto {
   bulletKills?: number;
   description?: string;
   evidence?: string;
+  idCharacterCostume?: number;
+  idPlatformInputType?: number;
 }

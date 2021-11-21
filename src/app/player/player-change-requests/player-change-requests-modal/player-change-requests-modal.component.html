@@ -12,6 +12,31 @@
             </label>
           </div>
           <div class="body">
+            <!--<editor-fold desc="Character">-->
+            <bio-form-field [loading]="loadingCharacters" label="Character">
+              <bio-select controlName="idCharacterCostume" placeholder="Character">
+                <bio-option disabled *ngIf="loadingCharacters">
+                  <bio-spinner [size]="0.1"></bio-spinner> Loading...
+                </bio-option>
+                <bio-optgroup
+                  *ngFor="let character of characters$ | async; trackBy: trackById"
+                  [label]="character.name"
+                  [title]="character.name"
+                >
+                  <bio-option
+                    *ngFor="let characterCostume of character.characterCostumes; trackBy: trackById"
+                    [value]="characterCostume.id"
+                    title="{{ character.name }} {{ characterCostume.name }}"
+                  >
+                    {{ characterCostume.name }}
+                  </bio-option>
+                </bio-optgroup>
+              </bio-select>
+              <bio-errors>
+                <bio-error *error="'required'">Character is required</bio-error>
+              </bio-errors>
+            </bio-form-field>
+            <!--</editor-fold>-->
             <bio-form-field label="Description">
               <input bioInput controlName="description" placeholder="Description" />
               <bio-errors>
@@ -31,14 +56,20 @@
                 <bio-error *error="'url'">Evidence must be an URL</bio-error>
               </bio-errors>
             </bio-form-field>
-            <ng-container *ngIf="scorePlayersControl.get($index)! as playerControl">
-              <ng-container *ngLet="playerControl.value$ | async as playerUpdate">
-                <a
-                  *ngIf="playerControl.get('evidence')!.valid"
-                  bio-url-preview
-                  [url]="playerUpdate.evidence || null"
-                ></a>
-              </ng-container>
+            <bio-form-field label="Controller" [loading]="loadingInputTypes">
+              <bio-select controlName="idPlatformInputType" placeholder="Controller">
+                <bio-option
+                  *ngFor="let platformInputType of platformInputTypes$ | async; trackBy: trackById"
+                  [value]="platformInputType.id"
+                >
+                  {{ platformInputType.nameInputType }}
+                </bio-option>
+              </bio-select>
+            </bio-form-field>
+          </div>
+          <div *ngIf="scorePlayersControl.get($index)! as playerControl">
+            <ng-container *ngLet="playerControl.value$ | async as playerUpdate">
+              <a *ngIf="playerControl.get('evidence')!.valid" bio-url-preview [url]="playerUpdate.evidence || null"></a>
             </ng-container>
           </div>
         </div>

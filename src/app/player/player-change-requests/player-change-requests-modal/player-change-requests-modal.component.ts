@@ -10,10 +10,12 @@ import { MaskEnum, MaskEnumPatterns } from '@shared/mask/mask.enum';
 import { CURRENCY_MASK_CONFIG } from '@shared/currency-mask/currency-mask-config.token';
 import { scoreCurrencyMask } from '../../../score/util';
 import { ScoreService } from '../../../score/score.service';
-import { finalize, map, Observable, of, switchMap, tap } from 'rxjs';
+import { finalize, map, Observable, of, share, switchMap, tap } from 'rxjs';
 import { SnackBarService } from '@shared/components/snack-bar/snack-bar.service';
 import { trackById } from '@util/track-by';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
+import { CharacterService } from '@shared/services/character/character.service';
+import { PlatformInputTypeService } from '@shared/services/platform-input-type/platform-input-type.service';
 
 export interface PlayerChangeRequestsModalData {
   score: ScoreWithScoreChangeRequests;
@@ -43,11 +45,16 @@ export class PlayerChangeRequestsModalComponent {
     private scoreService: ScoreService,
     private snackBarService: SnackBarService,
     private dialogService: DialogService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private characterService: CharacterService,
+    private platformInputTypeService: PlatformInputTypeService
   ) {}
 
   loading = false;
   loadingCancelScore = false;
+  loadingCharacters = true;
+  loadingInputTypes = true;
+
   readonly maskEnum = MaskEnum;
   readonly maskTimePattern = MaskEnumPatterns[MaskEnum.time]!;
   readonly form = new ControlGroup<ScoreChangeRequestsFulfilForm>({
@@ -70,6 +77,8 @@ export class PlayerChangeRequestsModalComponent {
             host: new Control(scorePlayer.host),
             description: new Control(scorePlayer.description, [Validators.required]),
             evidence: new Control(scorePlayer.evidence, [Validators.required, Validators.url]),
+            idCharacterCostume: new Control(scorePlayer.idCharacterCostume, [Validators.required]),
+            idPlatformInputType: new Control(scorePlayer.idPlatformInputType),
           })
       )
     ),
@@ -80,6 +89,27 @@ export class PlayerChangeRequestsModalComponent {
   readonly noChangeRequestsSelected$ = this.form
     .get('idsScoreChangeRequests')
     .value$.pipe(map(idsScoreChangeRequests => !idsScoreChangeRequests.some(changeRequest => changeRequest.checked)));
+
+  readonly characters$ = this.characterService
+    .findByIdPlatformGameMiniGameMode(
+      this.data.score.idPlatform,
+      this.data.score.idGame,
+      this.data.score.idMiniGame,
+      this.data.score.idMode
+    )
+    .pipe(
+      finalize(() => {
+        this.loadingCharacters = false;
+      }),
+      share()
+    );
+
+  readonly platformInputTypes$ = this.platformInputTypeService.getByPlatform(this.data.score.idPlatform).pipe(
+    finalize(() => {
+      this.loadingInputTypes = false;
+    }),
+    share()
+  );
 
   readonly trackById = trackById;
 
