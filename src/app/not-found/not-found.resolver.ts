@@ -25,6 +25,7 @@ export class NotFoundResolver implements Resolve<PossiblePath[]> {
     { path: '/score/world-records', title: 'World records', type: 'logged' },
     { path: '/rules', title: 'Rules', type: 'both' },
     { path: '/faq', title: 'FAQ', type: 'both' },
+    { path: '/forum', title: 'Forum', type: 'logged' },
   ];
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): PossiblePath[] {
