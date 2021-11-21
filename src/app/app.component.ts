@@ -5,9 +5,11 @@ import { MetaService } from '@shared/meta/meta.service';
 import { GlobalListenersService } from '@shared/services/global-listeners/global-listeners.service';
 import { Destroyable } from '@shared/components/common/destroyable-component';
 import { DOCUMENT } from '@angular/common';
-import { auditTime, distinctUntilChanged, map, startWith, takeUntil } from 'rxjs';
+import { auditTime, distinctUntilChanged, from, map, startWith } from 'rxjs';
 import { WINDOW } from './core/window.service';
 import { BreadcrumbsService } from '@shared/breadcrumbs/breadcrumbs.service';
+import { SwUpdate } from '@angular/service-worker';
+import { DialogService } from '@shared/components/modal/dialog/dialog.service';
 
 @Component({
   selector: 'bio-root',
@@ -23,7 +25,9 @@ export class AppComponent extends Destroyable implements OnInit, OnDestroy {
     private globalListenersService: GlobalListenersService,
     @Inject(DOCUMENT) private document: Document,
     @Inject(WINDOW) private window: Window,
-    private breadcrumbsService: BreadcrumbsService
+    private breadcrumbsService: BreadcrumbsService,
+    private swUpdate: SwUpdate,
+    private dialogService: DialogService
   ) {
     super();
   }
@@ -37,7 +41,7 @@ export class AppComponent extends Destroyable implements OnInit, OnDestroy {
   private _listenToResize(): void {
     this.globalListenersService.windowResize$
       .pipe(
-        takeUntil(this.destroy$),
+        this.takeUntilDestroy(),
         auditTime(200),
         map(() => this._getVh()),
         distinctUntilChanged(),
@@ -48,10 +52,29 @@ export class AppComponent extends Destroyable implements OnInit, OnDestroy {
       });
   }
 
+  private _listenToSwUpdate(): void {
+    this.swUpdate.available.pipe(this.takeUntilDestroy()).subscribe(() => {
+      this.dialogService
+        .info({
+          title: `There's a new version of the app`,
+          content: 'The app will updated and then reloaded',
+          buttons: [
+            {
+              title: 'Update and reload',
+              action: () => from(this.swUpdate.activateUpdate().then(() => this.document.location.reload())),
+              type: 'primary',
+            },
+          ],
+        })
+        .then();
+    });
+  }
+
   ngOnInit(): void {
     this._listenToResize();
+    this._listenToSwUpdate();
     this.metaService.init();
-    this.titleService.title$.pipe(takeUntil(this.destroy$)).subscribe();
+    this.titleService.title$.pipe(this.takeUntilDestroy()).subscribe();
     this.breadcrumbsService.init();
   }
 
