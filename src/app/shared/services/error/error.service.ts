@@ -27,6 +27,9 @@ export class ErrorService {
               ),
             };
           }
+          if (item.body) {
+            item = { ...item, bodyString: JSON.stringify(item.body) };
+          }
           return item;
         }),
       }))

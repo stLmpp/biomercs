@@ -15,4 +15,5 @@ export interface AdminError {
   body?: any;
 
   sqlParametersFormatted?: string;
+  bodyString?: string;
 }

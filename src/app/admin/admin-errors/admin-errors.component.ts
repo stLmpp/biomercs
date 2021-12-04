@@ -61,7 +61,7 @@ export class AdminErrorsComponent extends Destroyable {
     this._findErrors();
   }
 
-  copyQueryToClipboard(query: string): void {
-    this.clipboard.copy(query);
+  copyToClipboard(text: string): void {
+    this.clipboard.copy(text);
   }
 }

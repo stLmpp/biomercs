@@ -6,13 +6,38 @@
     accordionTitle="[ {{ error.creationDate | date: 'dd/MM/yyyy HH:mm:ss' }} ] {{ error.id }} - {{ error.name }}"
   >
     <p>User: {{ error.createdByUsername ?? 'Not logged' }}</p>
-    <p>
-      End-point:
-      <b>{{ error.url ?? 'Not found' }}</b>
-    </p>
-    <ng-container *ngIf="error.body">
+    <ng-container *ngIf="error.url">
+      <h4>End-point:</h4>
+      <div class="position-relative">
+        <button
+          class="copy-to-clipboard"
+          bioButton
+          icon
+          type="button"
+          (click)="copyToClipboard(error.url)"
+          bioTooltip="Copy to clipboard"
+        >
+          <bio-icon>assignment</bio-icon>
+        </button>
+        <pre><code [highlight]="error.url"></code></pre>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="error.bodyString">
       <h4>Body:</h4>
-      <pre><code [languages]="['json']" [highlight]="error.body | json"></code></pre>
+      <div class="position-relative">
+        <button
+          *ngIf="error.bodyString"
+          class="copy-to-clipboard"
+          bioButton
+          icon
+          type="button"
+          (click)="copyToClipboard(error.bodyString)"
+          bioTooltip="Copy to clipboard"
+        >
+          <bio-icon>assignment</bio-icon>
+        </button>
+        <pre><code [languages]="['json']" [highlight]="error.bodyString"></code></pre>
+      </div>
     </ng-container>
     <h4>Message:</h4>
     <pre><code [highlight]="error.message"></code></pre>
@@ -21,19 +46,19 @@
     <p *ngIf="error.sqlCode">SQL Code: {{ error.sqlCode }}</p>
     <p *ngIf="error.sqlHint">SQL Hint: {{ error.sqlHint }}</p>
     <ng-container *ngIf="error.sqlQuery">
-      <div class="sql-query">
+      <h4>Query:</h4>
+      <div class="position-relative">
         <button
           *ngIf="error.sqlQueryWithParameters"
           class="copy-to-clipboard"
           bioButton
           icon
           type="button"
-          (click)="copyQueryToClipboard(error.sqlQueryWithParameters)"
+          (click)="copyToClipboard(error.sqlQueryWithParameters)"
           bioTooltip="Copy to clipboard (with parameters)"
         >
           <bio-icon>assignment</bio-icon>
         </button>
-        <h4>Query:</h4>
         <pre><code [highlight]="error.sqlQuery" [languages]="['sql']"></code></pre>
       </div>
       <ng-container *ngIf="error.sqlParametersFormatted">

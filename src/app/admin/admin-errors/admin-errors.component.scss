@@ -8,8 +8,12 @@ p {
   top: 1rem;
 }
 
-.sql-query {
+.position-relative {
   position: relative;
+
+  code {
+    min-height: 4rem;
+  }
 }
 
 .sql-parameters {
