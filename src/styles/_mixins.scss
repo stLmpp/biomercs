@@ -1,7 +1,7 @@
 @use 'variables' as v;
 @use 'functions' as f;
-@use '~@material/elevation/elevation-theme' as mat-elevation;
-@forward '~@material/elevation/elevation-theme';
+@use '@material/elevation/elevation-theme' as mat-elevation;
+@forward '@material/elevation/elevation-theme';
 
 @mixin actions($margin-top: 1rem) {
   margin-top: $margin-top;

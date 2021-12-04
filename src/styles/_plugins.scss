@@ -1,5 +1,5 @@
-@use '~@angular/cdk';
-@use '~highlight.js/scss/base16/material-vivid';
+@use '@angular/cdk';
+@use 'highlight.js/scss/base16/material-vivid';
 @use 'ckeditor';
 
 @include cdk.a11y-visually-hidden();
