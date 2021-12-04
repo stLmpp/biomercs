@@ -30,6 +30,7 @@ registerLocaleData(localePt);
     HighlightModule.forRoot({
       sql: () => import('highlight.js/lib/languages/sql'),
       yaml: () => import('highlight.js/lib/languages/yaml'),
+      json: () => import('highlight.js/lib/languages/json'),
     }),
     SnackBarModule,
   ],

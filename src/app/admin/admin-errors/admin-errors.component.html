@@ -6,7 +6,17 @@
     accordionTitle="[ {{ error.creationDate | date: 'dd/MM/yyyy HH:mm:ss' }} ] {{ error.id }} - {{ error.name }}"
   >
     <p>User: {{ error.createdByUsername ?? 'Not logged' }}</p>
+    <p>
+      End-point:
+      <b>{{ error.url ?? 'Not found' }}</b>
+    </p>
+    <ng-container *ngIf="error.body">
+      <h4>Body:</h4>
+      <pre><code [languages]="['json']" [highlight]="error.body | json"></code></pre>
+    </ng-container>
+    <h4>Message:</h4>
     <pre><code [highlight]="error.message"></code></pre>
+    <h4>Stack:</h4>
     <pre><code [highlight]="error.stack"></code></pre>
     <p *ngIf="error.sqlCode">SQL Code: {{ error.sqlCode }}</p>
     <p *ngIf="error.sqlHint">SQL Hint: {{ error.sqlHint }}</p>
@@ -23,6 +33,7 @@
         >
           <bio-icon>assignment</bio-icon>
         </button>
+        <h4>Query:</h4>
         <pre><code [highlight]="error.sqlQuery" [languages]="['sql']"></code></pre>
       </div>
       <ng-container *ngIf="error.sqlParametersFormatted">
