@@ -1,6 +1,5 @@
 {
-  "extends": "stylelint-config-standard",
-  "plugins": ["stylelint-scss"],
+  "extends": ["stylelint-config-standard-scss"],
   "rules": {
     "no-invalid-position-at-import-rule": null,
     "at-rule-no-unknown": null,
@@ -11,6 +10,7 @@
     ],
     "block-closing-brace-newline-after": ["always", { "ignoreAtRules": ["if", "else"] }],
     "selector-pseudo-element-no-unknown": [true, { "ignorePseudoElements": ["ng-deep"] }],
-    "no-empty-source": null
+    "no-empty-source": null,
+    "string-quotes": "single"
   }
 }
