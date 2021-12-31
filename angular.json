@@ -33,7 +33,7 @@
               "src/assets",
               "src/manifest.json",
               {
-                "input": "node_modules/flag-icon-css/flags/4x3/",
+                "input": "node_modules/flag-icons/flags/4x3/",
                 "glob": "*.svg",
                 "output": "assets/flag"
               }

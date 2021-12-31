@@ -18,7 +18,7 @@ export class FlagComponent extends AbstractComponent {
 
   @HostBinding('class')
   get class(): string {
-    return `icon flag-icon flag-icon-${this._flag.toLowerCase()}`;
+    return `icon flag-icon fi fi-${this._flag.toLowerCase()}`;
   }
 
   @HostBinding('style.background-image')
