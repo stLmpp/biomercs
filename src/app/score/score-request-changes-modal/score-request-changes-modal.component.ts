@@ -10,7 +10,13 @@ import {
 } from '@angular/core';
 import { Score } from '@model/score';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
-import { ControlBuilder, Validators } from '@stlmpp/control';
+import {
+  ControlBuilder,
+  Validators,
+  StControlModule,
+  StControlCommonModule,
+  StControlValueModule,
+} from '@stlmpp/control';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import { ScoreApprovalPagination } from '@model/score-approval';
 import { finalize, Subject, switchMap, tap, throttleTime } from 'rxjs';
@@ -20,6 +26,17 @@ import { InputDirective } from '@shared/components/form/input.directive';
 import { ScoreApprovalComponentState } from '../score-approval/score-approval.component';
 import { trackByControl } from '@util/track-by';
 import { ScoreService } from '../score.service';
+import { ModalTitleDirective } from '../../shared/components/modal/modal-title.directive';
+import { ModalContentDirective } from '../../shared/components/modal/modal-content.directive';
+import { ScoreInfoComponent } from '../score-info/score-info.component';
+import { ButtonComponent } from '../../shared/components/button/button.component';
+import { TooltipDirective } from '../../shared/components/tooltip/tooltip.directive';
+import { IconComponent } from '../../shared/components/icon/icon.component';
+import { FormFieldComponent } from '../../shared/components/form/form-field.component';
+import { InputDirective as InputDirective_1 } from '../../shared/components/form/input.directive';
+import { TextareaDirective } from '../../shared/components/form/textarea.directive';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { ModalActionsDirective } from '../../shared/components/modal/modal-actions.directive';
 
 export interface ScoreRequestChangesModalData {
   score: Score;
@@ -36,11 +53,26 @@ export interface TextAreaEvent {
 }
 
 @Component({
-    selector: 'bio-score-request-changes-modal',
-    templateUrl: './score-request-changes-modal.component.html',
-    styleUrls: ['./score-request-changes-modal.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'bio-score-request-changes-modal',
+  templateUrl: './score-request-changes-modal.component.html',
+  styleUrls: ['./score-request-changes-modal.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    StControlModule,
+    StControlCommonModule,
+    ModalTitleDirective,
+    ModalContentDirective,
+    ScoreInfoComponent,
+    ButtonComponent,
+    TooltipDirective,
+    IconComponent,
+    FormFieldComponent,
+    InputDirective_1,
+    TextareaDirective,
+    CdkTextareaAutosize,
+    StControlValueModule,
+    ModalActionsDirective,
+  ],
 })
 export class ScoreRequestChangesModalComponent implements OnInit, AfterViewInit {
   constructor(

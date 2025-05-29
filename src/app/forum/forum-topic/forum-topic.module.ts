@@ -8,13 +8,10 @@ import { PaginationModule } from '@shared/components/pagination/pagination.modul
 import { ForumTopicPostComponent } from './forum-topic-post/forum-topic-post.component';
 import { FormModule } from '@shared/components/form/form.module';
 import { FlagModule } from '@shared/components/icon/flag/flag.module';
-import { AsyncDefaultModule } from '@shared/async-default/async-default.module';
-import { CKEditorModule } from '@shared/ckeditor/ckeditor.module';
-import { PlayerAvatarModule } from '../../player/player-avatar/player-avatar.module';
+
 import { NgLetModule } from '@stlmpp/utils';
 
 @NgModule({
-  declarations: [ForumTopicComponent, ForumTopicPostComponent],
   imports: [
     CommonModule,
     ForumTopicRoutingModule,
@@ -24,10 +21,9 @@ import { NgLetModule } from '@stlmpp/utils';
     FormModule,
     FlagModule,
     StControlModule,
-    AsyncDefaultModule,
-    CKEditorModule,
-    PlayerAvatarModule,
     NgLetModule,
+    ForumTopicComponent,
+    ForumTopicPostComponent,
   ],
 })
 export class ForumTopicModule {}

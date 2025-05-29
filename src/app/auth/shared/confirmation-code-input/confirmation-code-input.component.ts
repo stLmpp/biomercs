@@ -13,17 +13,25 @@ import {
   QueryList,
   ViewChildren,
 } from '@angular/core';
-import { ControlArray, ControlBuilder, ControlValue, Validators } from '@stlmpp/control';
+import {
+  ControlArray,
+  ControlBuilder,
+  ControlValue,
+  Validators,
+  StControlModule,
+  StControlCommonModule,
+  StControlValueModule,
+} from '@stlmpp/control';
 import { FocusableOption, FocusKeyManager } from '@angular/cdk/a11y';
 import { filter, Subject, takeUntil } from 'rxjs';
 import { SimpleChangesCustom } from '@util/util';
 import { isNil } from 'st-utils';
 import { trackByControl } from '@util/track-by';
+import { LabelDirective } from '../../../shared/components/form/label.directive';
+import { InputDirective } from '../../../shared/components/form/input.directive';
+import { FormFieldErrorComponent } from '../../../shared/components/form/error.component';
 
-@Directive({
-    selector: 'input[confirmationCodeInput]',
-    standalone: false
-})
+@Directive({ selector: 'input[confirmationCodeInput]' })
 export class ConfirmationCodeInputDirective implements FocusableOption {
   constructor(private elementRef: ElementRef<HTMLInputElement>) {}
 
@@ -34,12 +42,20 @@ export class ConfirmationCodeInputDirective implements FocusableOption {
 }
 
 @Component({
-    selector: 'bio-confirmation-code-input',
-    templateUrl: './confirmation-code-input.component.html',
-    styleUrls: ['./confirmation-code-input.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [{ provide: ControlValue, useExisting: ConfirmationCodeInputComponent }],
-    standalone: false
+  selector: 'bio-confirmation-code-input',
+  templateUrl: './confirmation-code-input.component.html',
+  styleUrls: ['./confirmation-code-input.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [{ provide: ControlValue, useExisting: ConfirmationCodeInputComponent }],
+  imports: [
+    StControlModule,
+    StControlCommonModule,
+    LabelDirective,
+    InputDirective,
+    ConfirmationCodeInputDirective,
+    StControlValueModule,
+    FormFieldErrorComponent,
+  ],
 })
 export class ConfirmationCodeInputComponent
   extends ControlValue

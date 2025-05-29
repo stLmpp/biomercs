@@ -4,11 +4,10 @@ import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 type ValidationFn = (password: string) => boolean;
 
 @Component({
-    selector: 'bio-password-strong',
-    templateUrl: './password-strong.component.html',
-    styleUrls: ['./password-strong.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'bio-password-strong',
+  templateUrl: './password-strong.component.html',
+  styleUrls: ['./password-strong.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PasswordStrongComponent {
   private _dark = false;

@@ -20,14 +20,14 @@ import { AnimationEvent } from '@angular/animations';
 import { Animations } from '../../animations/animations';
 
 @Component({
-    selector: 'bio-modal',
-    template: '<ng-template cdkPortalOutlet></ng-template>',
-    styleUrls: ['./modal.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    host: { class: 'modal', '[attr.modal]': `''`, '[@scaleIn]': '', '[@fadeOut]': '' },
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    animations: [Animations.scale.in(), Animations.fade.out(100)],
-    standalone: false
+  selector: 'bio-modal',
+  template: '<ng-template cdkPortalOutlet></ng-template>',
+  styleUrls: ['./modal.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  host: { class: 'modal', '[attr.modal]': `''`, '[@scaleIn]': '', '[@fadeOut]': '' },
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [Animations.scale.in(), Animations.fade.out(100)],
+  imports: [CdkPortalOutlet],
 })
 export class ModalComponent<R = any> implements OnInit, OnDestroy {
   constructor(

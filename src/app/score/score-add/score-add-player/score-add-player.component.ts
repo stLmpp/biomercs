@@ -21,16 +21,64 @@ import { BooleanInput } from 'st-utils';
 import { SimpleChangesCustom } from '@util/util';
 import { trackById } from '@util/track-by';
 import { PlayerModalService } from '../../../player/player-modal.service';
-import { Control } from '@stlmpp/control';
+import { Control, StControlCommonModule, StControlModule, StControlValueModule } from '@stlmpp/control';
 import { Destroyable } from '@shared/components/common/destroyable-component';
 import { PlatformInputType } from '@model/platform-input-type';
+import { CardComponent } from '../../../shared/components/card/card.component';
+import { CardTitleDirective } from '../../../shared/components/card/card-title.directive';
+import { IconComponent } from '../../../shared/components/icon/icon.component';
+import { TooltipDirective } from '../../../shared/components/tooltip/tooltip.directive';
+import { LabelDirective } from '../../../shared/components/form/label.directive';
+import { CardContentDirective } from '../../../shared/components/card/card-content.directive';
+import { FormFieldComponent } from '../../../shared/components/form/form-field.component';
+import { InputDirective } from '../../../shared/components/form/input.directive';
+import { AutocompleteDirective as AutocompleteDirective_1 } from '../../../shared/components/autocomplete/autocomplete.directive';
+import { AutocompleteComponent } from '../../../shared/components/autocomplete/autocomplete.component';
+import { AutocompleteOptionDirective } from '../../../shared/components/autocomplete/autocomplete-option.directive';
+import { FormFieldErrorsDirective } from '../../../shared/components/form/errors.directive';
+import { FormFieldErrorComponent } from '../../../shared/components/form/error.component';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { SuffixDirective } from '../../../shared/components/common/suffix.directive';
+import { FormFieldHintDirective } from '../../../shared/components/form/hint.directive';
+import { SelectComponent } from '../../../shared/components/select/select.component';
+import { OptionComponent } from '../../../shared/components/select/option.component';
+import { SpinnerComponent } from '../../../shared/components/spinner/spinner.component';
+import { OptgroupComponent } from '../../../shared/components/select/optgroup.component';
+import { UrlPreviewComponent } from '../../../shared/url-preview/url-preview.component';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
-    selector: 'bio-score-add-player',
-    templateUrl: './score-add-player.component.html',
-    styleUrls: ['./score-add-player.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'bio-score-add-player',
+  templateUrl: './score-add-player.component.html',
+  styleUrls: ['./score-add-player.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    CardComponent,
+    StControlCommonModule,
+    StControlModule,
+    CardTitleDirective,
+    IconComponent,
+    TooltipDirective,
+    LabelDirective,
+    StControlValueModule,
+    CardContentDirective,
+    FormFieldComponent,
+    InputDirective,
+    AutocompleteDirective_1,
+    AutocompleteComponent,
+    AutocompleteOptionDirective,
+    FormFieldErrorsDirective,
+    FormFieldErrorComponent,
+    ButtonComponent,
+    SuffixDirective,
+    FormFieldHintDirective,
+    SelectComponent,
+    OptionComponent,
+    SpinnerComponent,
+    OptgroupComponent,
+    UrlPreviewComponent,
+    AsyncPipe,
+  ],
 })
 export class ScoreAddPlayerComponent extends Destroyable implements OnInit, OnChanges {
   constructor(

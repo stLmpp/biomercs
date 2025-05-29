@@ -1,10 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { CategoryWithSubCategories } from '@model/forum/category';
 
-@Pipe({
-    name: 'forumFilterDeleted',
-    standalone: false
-})
+@Pipe({ name: 'forumFilterDeleted' })
 export class ForumFilterDeletedPipe implements PipeTransform {
   transform(categories: CategoryWithSubCategories[], hideDeleted: boolean): CategoryWithSubCategories[] {
     if (!hideDeleted) {

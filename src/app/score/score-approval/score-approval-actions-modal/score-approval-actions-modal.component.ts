@@ -6,6 +6,10 @@ import { ScoreApprovalComponentState } from '../score-approval.component';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import { ScoreApprovalPagination } from '@model/score-approval';
 import { ScoreModalService } from '../../score-modal.service';
+import { ModalContentDirective } from '../../../shared/components/modal/modal-content.directive';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { TooltipDirective } from '../../../shared/components/tooltip/tooltip.directive';
+import { IconComponent } from '../../../shared/components/icon/icon.component';
 
 export interface ScoreApprovalActionsModalData {
   score: Score;
@@ -13,11 +17,11 @@ export interface ScoreApprovalActionsModalData {
 }
 
 @Component({
-    selector: 'bio-score-approval-actions-modal',
-    templateUrl: './score-approval-actions-modal.component.html',
-    styleUrls: ['./score-approval-actions-modal.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'bio-score-approval-actions-modal',
+  templateUrl: './score-approval-actions-modal.component.html',
+  styleUrls: ['./score-approval-actions-modal.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [ModalContentDirective, ButtonComponent, TooltipDirective, IconComponent],
 })
 export class ScoreApprovalActionsModalComponent {
   constructor(

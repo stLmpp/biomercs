@@ -7,6 +7,18 @@ import { mdiAccountTie } from '@mdi/js';
 import { SubCategoryModeratorModalService } from '../../service/sub-category-moderator-modal.service';
 import { SubCategory, SubCategoryWithModeratorsInfo } from '@model/forum/sub-category';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { IconComponent } from '../../../shared/components/icon/icon.component';
+import { ListDirective, ListSelectable } from '../../../shared/components/list/list.directive';
+import { CdkDropList, CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
+import { ListItemComponent } from '../../../shared/components/list/list-item.component';
+import { RouterLink } from '@angular/router';
+import { PrefixDirective } from '../../../shared/components/common/prefix.directive';
+import { ListItemLineDirective } from '../../../shared/components/list/list-item-line.directive';
+import { SuffixDirective } from '../../../shared/components/common/suffix.directive';
+import { IconMdiComponent } from '../../../shared/components/icon/icon-mdi.component';
+import { DecimalPipe } from '@angular/common';
+import { AuthDateFormatPipe } from '../../../auth/shared/auth-date-format.pipe';
 
 export interface ForumCategoriesCategoryComponentOrderChangeEvent {
   idCategory: number;
@@ -18,11 +30,27 @@ export interface ForumCategoriesCategoryComponentOrderChangeEvent {
 }
 
 @Component({
-    selector: 'bio-forum-categories-category',
-    templateUrl: './forum-categories-category.component.html',
-    styleUrls: ['./forum-categories-category.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'bio-forum-categories-category',
+  templateUrl: './forum-categories-category.component.html',
+  styleUrls: ['./forum-categories-category.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    ButtonComponent,
+    IconComponent,
+    ListDirective,
+    ListSelectable,
+    CdkDropList,
+    ListItemComponent,
+    CdkDrag,
+    RouterLink,
+    PrefixDirective,
+    CdkDragHandle,
+    ListItemLineDirective,
+    SuffixDirective,
+    IconMdiComponent,
+    DecimalPipe,
+    AuthDateFormatPipe,
+  ],
 })
 export class ForumCategoriesCategoryComponent {
   constructor(

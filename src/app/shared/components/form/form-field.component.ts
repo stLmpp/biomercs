@@ -24,18 +24,21 @@ import { BooleanInput, isNil } from 'st-utils';
 import { Select } from '@shared/components/select/select';
 import { FormFieldChild } from '@shared/components/form/form-field-child';
 import { ControlState } from '@stlmpp/control/lib/control/control';
+import { NgClass, AsyncPipe } from '@angular/common';
+import { SpinnerComponent } from '../spinner/spinner.component';
+import { HasValidatorsPipe } from '@shared/validators/has-validators.pipe';
 
 let uniqueId = 0;
 
 @Component({
-    selector: 'bio-form-field',
-    templateUrl: './form-field.component.html',
-    styleUrls: ['./form-field.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None,
-    host: { class: 'form-field' },
-    animations: [Animations.slide.in(), Animations.fade.in()],
-    standalone: false
+  selector: 'bio-form-field',
+  templateUrl: './form-field.component.html',
+  styleUrls: ['./form-field.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  host: { class: 'form-field' },
+  animations: [Animations.slide.in(), Animations.fade.in()],
+  imports: [LabelDirective, NgClass, SpinnerComponent, AsyncPipe, HasValidatorsPipe],
 })
 export class FormFieldComponent implements AfterContentInit, OnChanges, OnDestroy {
   constructor(private changeDetectorRef: ChangeDetectorRef) {}

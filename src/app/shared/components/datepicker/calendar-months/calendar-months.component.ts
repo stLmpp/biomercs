@@ -1,14 +1,15 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { CalendarKeyboardNavigation } from '@shared/components/datepicker/calendar-keyboard-navigation';
 import { CalendarMonth } from '@shared/components/datepicker/calendar-month';
+import { ButtonComponent } from '../../button/button.component';
 
 @Component({
-    selector: 'bio-calendar-months',
-    templateUrl: './calendar-months.component.html',
-    styleUrls: ['./calendar-months.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [{ provide: CalendarKeyboardNavigation, useExisting: CalendarMonthsComponent }],
-    standalone: false
+  selector: 'bio-calendar-months',
+  templateUrl: './calendar-months.component.html',
+  styleUrls: ['./calendar-months.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [{ provide: CalendarKeyboardNavigation, useExisting: CalendarMonthsComponent }],
+  imports: [ButtonComponent],
 })
 export class CalendarMonthsComponent extends CalendarKeyboardNavigation {
   @Input() months: CalendarMonth[] = [];

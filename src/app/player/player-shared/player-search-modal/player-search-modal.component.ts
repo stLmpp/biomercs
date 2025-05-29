@@ -1,12 +1,31 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject } from '@angular/core';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import { Player } from '@model/player';
-import { Control, ControlGroup } from '@stlmpp/control';
+import {
+  Control,
+  ControlGroup,
+  StControlModule,
+  StControlValueModule,
+  StControlCommonModule,
+  StControlModelModule,
+} from '@stlmpp/control';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import { combineLatest, debounceTime, filter, finalize, Observable, pluck, shareReplay, switchMap } from 'rxjs';
 import { PlayerService } from '../../player.service';
 import { PaginationMeta } from '@model/pagination';
 import { trackById } from '@util/track-by';
+import { ModalTitleDirective } from '../../../shared/components/modal/modal-title.directive';
+import { LabelDirective } from '../../../shared/components/form/label.directive';
+import { InputDirective } from '../../../shared/components/form/input.directive';
+import { ModalContentDirective } from '../../../shared/components/modal/modal-content.directive';
+import { ListDirective, ListControlValue } from '../../../shared/components/list/list.directive';
+import { LoadingComponent } from '../../../shared/components/spinner/loading/loading.component';
+import { ListItemComponent } from '../../../shared/components/list/list-item.component';
+import { ModalCloseDirective } from '../../../shared/components/modal/modal-close.directive';
+import { ModalActionsDirective } from '../../../shared/components/modal/modal-actions.directive';
+import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { AsyncPipe } from '@angular/common';
 
 export interface PlayerSearchModalComponentData {
   idPlayer?: number | null | undefined;
@@ -20,11 +39,29 @@ interface PlayerSearchModalComponentForm {
 }
 
 @Component({
-    selector: 'bio-player-search-modal',
-    templateUrl: './player-search-modal.component.html',
-    styleUrls: ['./player-search-modal.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'bio-player-search-modal',
+  templateUrl: './player-search-modal.component.html',
+  styleUrls: ['./player-search-modal.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    StControlModule,
+    ModalTitleDirective,
+    LabelDirective,
+    InputDirective,
+    StControlValueModule,
+    StControlCommonModule,
+    ModalContentDirective,
+    ListDirective,
+    ListControlValue,
+    StControlModelModule,
+    LoadingComponent,
+    ListItemComponent,
+    ModalCloseDirective,
+    ModalActionsDirective,
+    PaginationComponent,
+    ButtonComponent,
+    AsyncPipe,
+  ],
 })
 export class PlayerSearchModalComponent {
   constructor(

@@ -8,7 +8,14 @@ import { ButtonModule } from '@shared/components/button/button.module';
 import { CheckboxModule } from '@shared/components/checkbox/checkbox.module';
 
 @NgModule({
-  imports: [ModalModule, SpinnerModule, FormModule, StControlModule, ButtonModule, CheckboxModule],
-  declarations: [ForumCategoryAddEditComponent],
+  imports: [
+    ModalModule,
+    SpinnerModule,
+    FormModule,
+    StControlModule,
+    ButtonModule,
+    CheckboxModule,
+    ForumCategoryAddEditComponent,
+  ],
 })
 export class ForumCategoryAddEditModule {}

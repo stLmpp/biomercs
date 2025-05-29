@@ -4,14 +4,13 @@ import { Subject } from 'rxjs';
 import { AnimationEvent } from '@angular/animations';
 
 @Component({
-    selector: 'bio-tooltip',
-    templateUrl: './tooltip.component.html',
-    styleUrls: ['./tooltip.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None,
-    host: { class: 'tooltip', '[@scaleIn]': '', '[@fadeInOut]': '' },
-    animations: [Animations.scale.in(), Animations.fade.inOut()],
-    standalone: false
+  selector: 'bio-tooltip',
+  templateUrl: './tooltip.component.html',
+  styleUrls: ['./tooltip.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  host: { class: 'tooltip', '[@scaleIn]': '', '[@fadeInOut]': '' },
+  animations: [Animations.scale.in(), Animations.fade.inOut()],
 })
 export class TooltipComponent {
   @Input() content!: string | number | null | undefined;

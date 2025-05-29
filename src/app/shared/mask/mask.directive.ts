@@ -8,7 +8,7 @@ import {
   Optional,
   Renderer2,
   SimpleChanges,
-  DOCUMENT
+  DOCUMENT,
 } from '@angular/core';
 import { ControlValue } from '@stlmpp/control';
 import { IConfig, initialConfig, MaskDirective as _MaskDirective, MaskService as _MaskService } from 'ngx-mask';
@@ -29,9 +29,8 @@ export class MaskService extends _MaskService {
 }
 
 @Directive({
-    selector: 'input[bioMask]',
-    providers: [{ provide: ControlValue, useExisting: MaskDirective, multi: false }, MaskService],
-    standalone: false
+  selector: 'input[bioMask]',
+  providers: [{ provide: ControlValue, useExisting: MaskDirective, multi: false }, MaskService],
 })
 export class MaskDirective extends _MaskDirective implements ControlValue<string>, OnChanges {
   constructor(

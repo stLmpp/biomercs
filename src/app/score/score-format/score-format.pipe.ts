@@ -1,10 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { formatNumber } from '@angular/common';
 
-@Pipe({
-    name: 'scoreFormat',
-    standalone: false
-})
+@Pipe({ name: 'scoreFormat' })
 export class ScoreFormatPipe implements PipeTransform {
   transform(value: number): string {
     if (value <= 0) {

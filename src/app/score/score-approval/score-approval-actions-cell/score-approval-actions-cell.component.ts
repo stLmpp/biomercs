@@ -6,13 +6,16 @@ import { ColDefInternal } from '@shared/components/table/col-def';
 import { ScoreApprovalComponentState } from '../score-approval.component';
 import { ScoreApprovalPagination } from '@model/score-approval';
 import { ScoreModalService } from '../../score-modal.service';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { TooltipDirective } from '../../../shared/components/tooltip/tooltip.directive';
+import { IconComponent } from '../../../shared/components/icon/icon.component';
 
 @Component({
-    selector: 'bio-score-approval-actions-cell',
-    templateUrl: './score-approval-actions-cell.component.html',
-    styleUrls: ['./score-approval-actions-cell.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'bio-score-approval-actions-cell',
+  templateUrl: './score-approval-actions-cell.component.html',
+  styleUrls: ['./score-approval-actions-cell.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [ButtonComponent, TooltipDirective, IconComponent],
 })
 export class ScoreApprovalActionsCellComponent implements TableCell<Score> {
   constructor(private scoreModalService: ScoreModalService, private changeDetectorRef: ChangeDetectorRef) {}

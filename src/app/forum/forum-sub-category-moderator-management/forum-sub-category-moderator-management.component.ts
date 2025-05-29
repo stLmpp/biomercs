@@ -8,6 +8,22 @@ import { SubCategoryModerator } from '@model/forum/sub-category-moderator';
 import { trackById } from '@util/track-by';
 import { ModeratorService } from '../service/moderator.service';
 import { orderBy } from 'st-utils';
+import { LoadingComponent } from '../../shared/components/spinner/loading/loading.component';
+import { ModalTitleDirective } from '../../shared/components/modal/modal-title.directive';
+import { ModalContentDirective } from '../../shared/components/modal/modal-content.directive';
+import { MultiSelectComponent } from '../../shared/multi-select/multi-select.component';
+import { ListDirective } from '../../shared/components/list/list.directive';
+import { MultiSelectItemsComponent } from '../../shared/multi-select/multi-select-items.component';
+import { LoadingDirective } from '../../shared/components/spinner/loading/loading.directive';
+import { ListItemComponent } from '../../shared/components/list/list-item.component';
+import { ButtonComponent } from '../../shared/components/button/button.component';
+import { PrefixDirective } from '../../shared/components/common/prefix.directive';
+import { IconComponent } from '../../shared/components/icon/icon.component';
+import { ListItemLineDirective } from '../../shared/components/list/list-item-line.directive';
+import { ModalActionsDirective } from '../../shared/components/modal/modal-actions.directive';
+import { ModalCloseDirective } from '../../shared/components/modal/modal-close.directive';
+import { StUtilsArrayModule } from '@stlmpp/utils';
+import { ForumSubCategoryModeratorManagementValidationPipe } from './forum-sub-category-moderator-management-validation.pipe';
 
 let uid = -1;
 
@@ -17,11 +33,28 @@ export interface ForumSubCategoryModeratorManagementComponentData {
 }
 
 @Component({
-    selector: 'bio-forum-sub-category-moderator-management',
-    templateUrl: './forum-sub-category-moderator-management.component.html',
-    styleUrls: ['./forum-sub-category-moderator-management.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'bio-forum-sub-category-moderator-management',
+  templateUrl: './forum-sub-category-moderator-management.component.html',
+  styleUrls: ['./forum-sub-category-moderator-management.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    LoadingComponent,
+    ModalTitleDirective,
+    ModalContentDirective,
+    MultiSelectComponent,
+    ListDirective,
+    MultiSelectItemsComponent,
+    LoadingDirective,
+    ListItemComponent,
+    ButtonComponent,
+    PrefixDirective,
+    IconComponent,
+    ListItemLineDirective,
+    ModalActionsDirective,
+    ModalCloseDirective,
+    StUtilsArrayModule,
+    ForumSubCategoryModeratorManagementValidationPipe,
+  ],
 })
 export class ForumSubCategoryModeratorManagementComponent implements OnInit {
   constructor(

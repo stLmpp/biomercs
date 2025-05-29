@@ -1,18 +1,38 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { fromEvent, race, shareReplay, take, takeUntil, timer } from 'rxjs';
 import { Destroyable } from '@shared/components/common/destroyable-component';
 import { Animations } from '@shared/animations/animations';
 import { mdiGithub, mdiSteam, mdiYoutube } from '@mdi/js';
+import { NgLetModule } from '@stlmpp/utils';
+import { CardComponent } from '../shared/components/card/card.component';
+import { CardTitleDirective } from '../shared/components/card/card-title.directive';
+import { CardSubtitleDirective } from '../shared/components/card/card-subtitle.directive';
+import { CardContentDirective } from '../shared/components/card/card-content.directive';
+import { ButtonComponent } from '../shared/components/button/button.component';
+import { IconMdiComponent } from '../shared/components/icon/icon-mdi.component';
+import { IconComponent } from '../shared/components/icon/icon.component';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
-    selector: 'bio-stlmpp',
-    templateUrl: './stlmpp.component.html',
-    styleUrls: ['./stlmpp.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    animations: [Animations.fade.inOut()],
-    host: { class: 'center-container' },
-    standalone: false
+  selector: 'bio-stlmpp',
+  templateUrl: './stlmpp.component.html',
+  styleUrls: ['./stlmpp.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [Animations.fade.inOut()],
+  host: { class: 'center-container' },
+  imports: [
+    NgLetModule,
+    CardComponent,
+    CardTitleDirective,
+    CardSubtitleDirective,
+    CardContentDirective,
+    ButtonComponent,
+    IconMdiComponent,
+    RouterLink,
+    IconComponent,
+    AsyncPipe,
+  ],
 })
 export class StlmppComponent extends Destroyable implements AfterViewInit {
   constructor(private router: Router, private activatedRoute: ActivatedRoute) {

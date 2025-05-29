@@ -11,13 +11,12 @@ import { CheckboxModule } from '@shared/components/checkbox/checkbox.module';
 import { ForumCategoriesCategoryComponent } from './forum-categories-category/forum-categories-category.component';
 import { AuthSharedModule } from '../../auth/shared/auth-shared.module';
 import { ListModule } from '@shared/components/list/list.module';
-import { AsyncDefaultModule } from '@shared/async-default/async-default.module';
+
 import { ForumFilterDeletedPipe } from './forum-filter-deleted.pipe';
 import { ForumCategoriesRecentTopicsComponent } from './forum-categories-recent-topics/forum-categories-recent-topics.component';
 import { ForumCategoriesPlayersOnlineComponent } from './forum-categories-players-online/forum-categories-players-online.component';
 
 @NgModule({
-  declarations: [ForumCategoriesComponent, ForumCategoriesCategoryComponent, ForumFilterDeletedPipe, ForumCategoriesRecentTopicsComponent, ForumCategoriesPlayersOnlineComponent],
   imports: [
     CommonModule,
     ForumCategoriesRoutingModule,
@@ -28,7 +27,11 @@ import { ForumCategoriesPlayersOnlineComponent } from './forum-categories-player
     CheckboxModule,
     AuthSharedModule,
     ListModule,
-    AsyncDefaultModule,
+    ForumCategoriesComponent,
+    ForumCategoriesCategoryComponent,
+    ForumFilterDeletedPipe,
+    ForumCategoriesRecentTopicsComponent,
+    ForumCategoriesPlayersOnlineComponent,
   ],
 })
 export class ForumCategoriesModule {}

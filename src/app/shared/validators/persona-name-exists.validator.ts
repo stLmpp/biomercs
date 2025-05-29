@@ -24,9 +24,8 @@ export class PersonaNameExistsValidator extends ControlValidator<string, boolean
 }
 
 @Directive({
-    selector: '[model][personaNameExists]',
-    providers: [{ provide: ControlValidator, useExisting: PersonaNameExistsValidatorDirective, multi: true }],
-    standalone: false
+  selector: '[model][personaNameExists]',
+  providers: [{ provide: ControlValidator, useExisting: PersonaNameExistsValidatorDirective, multi: true }],
 })
 export class PersonaNameExistsValidatorDirective extends ControlValidator<string, boolean> {
   constructor(private personaNameExistsValidator: PersonaNameExistsValidator) {

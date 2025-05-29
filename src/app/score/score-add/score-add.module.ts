@@ -11,26 +11,24 @@ import { CardModule } from '@shared/components/card/card.module';
 import { ParamsModule } from '@shared/params/params.module';
 import { ButtonModule } from '@shared/components/button/button.module';
 import { TooltipModule } from '@shared/components/tooltip/tooltip.module';
-import { TitleModule } from '@shared/title/title.module';
+
 import { DatepickerModule } from '@shared/components/datepicker/datepicker.module';
-import { AsyncDefaultModule } from '@shared/async-default/async-default.module';
 
 @NgModule({
-  declarations: [ScoreAddComponent, ScoreAddPlayerComponent],
   imports: [
     CommonModule,
     ScoreAddRoutingModule,
     CurrencyMaskModule.forFeature(),
     MaskModule.forFeature(),
     ParamsModule,
-    TitleModule,
     UrlPreviewModule,
     CardModule,
     AutocompleteModule,
     ButtonModule,
     TooltipModule,
     DatepickerModule,
-    AsyncDefaultModule,
+    ScoreAddComponent,
+    ScoreAddPlayerComponent,
   ],
 })
 export class ScoreAddModule {}

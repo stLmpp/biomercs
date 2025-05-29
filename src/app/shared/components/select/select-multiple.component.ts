@@ -5,21 +5,23 @@ import { ControlValue } from '@stlmpp/control';
 import { Animations } from '@shared/animations/animations';
 import { auditTime, startWith, takeUntil } from 'rxjs';
 import { FormFieldChild } from '@shared/components/form/form-field-child';
+import { IconComponent } from '../icon/icon.component';
+import { CdkTrapFocus } from '@angular/cdk/a11y';
 
 @Component({
-    selector: 'bio-select[multiple]',
-    templateUrl: './select-multiple.component.html',
-    styleUrls: ['./select.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None,
-    host: { class: 'multiple' },
-    providers: [
-        { provide: Select, useExisting: SelectMultipleComponent },
-        { provide: ControlValue, useExisting: SelectMultipleComponent, multi: true },
-        { provide: FormFieldChild, useExisting: SelectMultipleComponent },
-    ],
-    animations: [Animations.fade.inOut(100), Animations.scale.in(100, 0.8)],
-    standalone: false
+  selector: 'bio-select[multiple]',
+  templateUrl: './select-multiple.component.html',
+  styleUrls: ['./select.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  host: { class: 'multiple' },
+  providers: [
+    { provide: Select, useExisting: SelectMultipleComponent },
+    { provide: ControlValue, useExisting: SelectMultipleComponent, multi: true },
+    { provide: FormFieldChild, useExisting: SelectMultipleComponent },
+  ],
+  animations: [Animations.fade.inOut(100), Animations.scale.in(100, 0.8)],
+  imports: [IconComponent, CdkTrapFocus],
 })
 export class SelectMultipleComponent extends SelectComponent implements AfterContentInit {
   override multiple = true;

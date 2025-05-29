@@ -24,8 +24,7 @@ const DECLARATIONS = [
 const MODULES = [CommonModule, ValidationModule, SpinnerModule, BioCommonModule];
 
 @NgModule({
-  declarations: [...DECLARATIONS],
-  imports: [...MODULES],
+  imports: [...MODULES, ...DECLARATIONS],
   exports: [...DECLARATIONS, ...MODULES],
 })
 export class FormModule {}

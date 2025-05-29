@@ -25,6 +25,12 @@ import { ControlState, ControlValue } from '@stlmpp/control';
 import { CalendarKeyboardNavigation } from '@shared/components/datepicker/calendar-keyboard-navigation';
 import { CALENDAR_LOCALE } from '@shared/components/datepicker/calendar-locale.token';
 import { CalendarFooterDirective } from '@shared/components/datepicker/calendar/calendar-footer.directive';
+import { ButtonComponent } from '../../button/button.component';
+import { IconComponent } from '../../icon/icon.component';
+import { CalendarDaysComponent } from '../calendar-days/calendar-days.component';
+import { CalendarMonthsComponent } from '../calendar-months/calendar-months.component';
+import { CalendarYearsComponent } from '../calendar-years/calendar-years.component';
+import { AsyncPipe } from '@angular/common';
 
 interface CalendarComponentState {
   date: Date;
@@ -34,14 +40,21 @@ interface CalendarComponentState {
 }
 
 @Component({
-    selector: 'bio-calendar',
-    templateUrl: './calendar.component.html',
-    styleUrls: ['./calendar.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None,
-    host: { class: 'bio-calendar' },
-    providers: [{ provide: ControlValue, useExisting: CalendarComponent, multi: true }],
-    standalone: false
+  selector: 'bio-calendar',
+  templateUrl: './calendar.component.html',
+  styleUrls: ['./calendar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  host: { class: 'bio-calendar' },
+  providers: [{ provide: ControlValue, useExisting: CalendarComponent, multi: true }],
+  imports: [
+    ButtonComponent,
+    IconComponent,
+    CalendarDaysComponent,
+    CalendarMonthsComponent,
+    CalendarYearsComponent,
+    AsyncPipe,
+  ],
 })
 export class CalendarComponent
   extends LocalState<CalendarComponentState>

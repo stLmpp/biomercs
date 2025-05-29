@@ -7,6 +7,13 @@ import { DialogData, DialogDataButton, DialogDataButtonType } from '@shared/comp
 import { DialogType } from '@shared/components/modal/dialog/dialog-type.enum';
 import { trackById } from '@util/track-by';
 import { Destroyable } from '@shared/components/common/destroyable-component';
+import { LoadingComponent } from '../../spinner/loading/loading.component';
+import { ModalTitleDirective } from '../modal-title.directive';
+import { IconComponent } from '../../icon/icon.component';
+import { ModalContentDirective } from '../modal-content.directive';
+import { ModalActionsDirective } from '../modal-actions.directive';
+import { ButtonComponent } from '../../button/button.component';
+import { StUtilsArrayModule } from '@stlmpp/utils';
 
 let uid = 1;
 
@@ -31,11 +38,19 @@ function mapDialogDataButtonToInternal(buttons: DialogDataButtonType[] | undefin
 }
 
 @Component({
-    selector: 'bio-dialog',
-    templateUrl: './dialog.component.html',
-    styleUrls: ['./dialog.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'bio-dialog',
+  templateUrl: './dialog.component.html',
+  styleUrls: ['./dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    LoadingComponent,
+    ModalTitleDirective,
+    IconComponent,
+    ModalContentDirective,
+    ModalActionsDirective,
+    ButtonComponent,
+    StUtilsArrayModule,
+  ],
 })
 export class DialogComponent extends Destroyable implements OnInit {
   constructor(

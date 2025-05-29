@@ -2,8 +2,8 @@ import { ChangeDetectorRef, Directive, ElementRef, HostBinding, Input } from '@a
 import { BioFilterBy } from '@shared/filter/filter';
 
 @Directive({
-    selector: '[bioFilterItem]', host: { class: 'bio-filter-item' },
-    standalone: false
+  selector: '[bioFilterItem]',
+  host: { class: 'bio-filter-item' },
 })
 export class FilterItemDirective {
   constructor(private changeDetectorRef: ChangeDetectorRef, private elementRef: ElementRef<HTMLElement>) {}

@@ -3,7 +3,7 @@ import { ScoreService } from '../score.service';
 import { ControlBuilder, Validators } from '@stlmpp/control';
 import { ParamsConfig, ParamsForm } from '@shared/params/params.component';
 import { LocalState } from '@stlmpp/store';
-import { trackByFactory } from '@stlmpp/utils';
+import { trackByFactory, NgLetModule } from '@stlmpp/utils';
 import {
   Score,
   ScoreTableWorldRecord,
@@ -19,6 +19,18 @@ import { isNotNil } from '@util/operators/filter';
 import { BreakpointObserverService } from '@shared/services/breakpoint-observer/breakpoint-observer.service';
 import { trackById } from '@util/track-by';
 import { ScoreModalService } from '../score-modal.service';
+import { PageTitleComponent } from '../../shared/title/page-title.component';
+import { CardComponent } from '../../shared/components/card/card.component';
+import { CardTitleDirective } from '../../shared/components/card/card-title.directive';
+import { CardContentDirective } from '../../shared/components/card/card-content.directive';
+import { ParamsComponent } from '../../shared/params/params.component';
+import { LoadingComponent } from '../../shared/components/spinner/loading/loading.component';
+import { ScoreListComponent } from '../score-list/score-list/score-list.component';
+import { LoadingDirective } from '../../shared/components/spinner/loading/loading.directive';
+import { IconComponent } from '../../shared/components/icon/icon.component';
+import { TooltipDirective } from '../../shared/components/tooltip/tooltip.directive';
+import { ButtonComponent } from '../../shared/components/button/button.component';
+import { AsyncPipe, DecimalPipe } from '@angular/common';
 
 export interface ScoreWorldRecordTableState {
   tableLoading: boolean;
@@ -33,11 +45,26 @@ export interface ScoreWorldRecordTableState {
 }
 
 @Component({
-    selector: 'bio-score-world-records',
-    templateUrl: './score-world-records.component.html',
-    styleUrls: ['./score-world-records.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'bio-score-world-records',
+  templateUrl: './score-world-records.component.html',
+  styleUrls: ['./score-world-records.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    PageTitleComponent,
+    CardComponent,
+    CardTitleDirective,
+    CardContentDirective,
+    ParamsComponent,
+    NgLetModule,
+    LoadingComponent,
+    ScoreListComponent,
+    LoadingDirective,
+    IconComponent,
+    TooltipDirective,
+    ButtonComponent,
+    AsyncPipe,
+    DecimalPipe,
+  ],
 })
 export class ScoreWorldRecordsComponent extends LocalState<ScoreWorldRecordTableState> {
   constructor(

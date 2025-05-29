@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { PaginationMeta } from '@model/pagination';
 import { Score, ScoreSearch } from '@model/score';
 import { combineLatest, debounceTime, finalize, switchMap, takeUntil, tap } from 'rxjs';
-import { Control, ControlGroup } from '@stlmpp/control';
+import { Control, ControlGroup, StControlModule, StControlCommonModule, StControlValueModule } from '@stlmpp/control';
 import { AuthQuery } from '../../auth/auth.query';
 import { ScoreService } from '../score.service';
 import { ScoreStatusEnum } from '@model/enum/score-status.enum';
@@ -24,13 +24,45 @@ import { ScoreModalService } from '../score-modal.service';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { Platform } from '@model/platform';
 import { Destroyable } from '@shared/components/common/destroyable-component';
+import { PageTitleComponent } from '../../shared/title/page-title.component';
+import { CardComponent } from '../../shared/components/card/card.component';
+import { CardTitleDirective } from '../../shared/components/card/card-title.directive';
+import { CardContentDirective } from '../../shared/components/card/card-content.directive';
+import { FormFieldComponent } from '../../shared/components/form/form-field.component';
+import { SelectMultipleComponent } from '../../shared/components/select/select-multiple.component';
+import { OptionComponent } from '../../shared/components/select/option.component';
+import { OptgroupComponent } from '../../shared/components/select/optgroup.component';
+import { InputDirective } from '../../shared/components/form/input.directive';
+import { CheckboxComponent } from '../../shared/components/checkbox/checkbox.component';
+import { CardActionsDirective } from '../../shared/components/card/card-actions.directive';
+import { ButtonComponent } from '../../shared/components/button/button.component';
+import { ScoreListResponsiveComponent } from '../score-list/score-list-responsive/score-list-responsive.component';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
-    selector: 'bio-score-search',
-    templateUrl: './score-search.component.html',
-    styleUrls: ['./score-search.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'bio-score-search',
+  templateUrl: './score-search.component.html',
+  styleUrls: ['./score-search.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    PageTitleComponent,
+    StControlModule,
+    StControlCommonModule,
+    CardComponent,
+    CardTitleDirective,
+    CardContentDirective,
+    FormFieldComponent,
+    SelectMultipleComponent,
+    OptionComponent,
+    OptgroupComponent,
+    InputDirective,
+    StControlValueModule,
+    CheckboxComponent,
+    CardActionsDirective,
+    ButtonComponent,
+    ScoreListResponsiveComponent,
+    AsyncPipe,
+  ],
 })
 export class ScoreSearchComponent extends Destroyable implements OnInit {
   constructor(

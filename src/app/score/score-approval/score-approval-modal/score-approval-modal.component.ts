@@ -4,13 +4,32 @@ import { ScoreApprovalActionEnum } from '@model/enum/score-approval-action.enum'
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import { ScoreApprovalMotiveService } from '@shared/services/score-approval-motive/score-approval-motive.service';
-import { ControlBuilder, Validators } from '@stlmpp/control';
+import {
+  ControlBuilder,
+  Validators,
+  StControlModule,
+  StControlCommonModule,
+  StControlValueModule,
+} from '@stlmpp/control';
 import { ScoreApprovalMotive } from '@model/score-approval-motive';
 import { finalize, Observable, switchMap, tap } from 'rxjs';
 import { ScoreApprovalAdd, ScoreApprovalPagination } from '@model/score-approval';
 import { ScoreApprovalComponentState } from '../score-approval.component';
 import { trackById } from '@util/track-by';
 import { ScoreService } from '../../score.service';
+import { ModalTitleDirective } from '../../../shared/components/modal/modal-title.directive';
+import { ModalContentDirective } from '../../../shared/components/modal/modal-content.directive';
+import { ScoreInfoComponent } from '../../score-info/score-info.component';
+import { FormFieldComponent } from '../../../shared/components/form/form-field.component';
+import { InputDirective } from '../../../shared/components/form/input.directive';
+import { TextareaDirective } from '../../../shared/components/form/textarea.directive';
+import { FormFieldErrorsDirective } from '../../../shared/components/form/errors.directive';
+import { FormFieldErrorComponent } from '../../../shared/components/form/error.component';
+import { SelectComponent } from '../../../shared/components/select/select.component';
+import { OptionComponent } from '../../../shared/components/select/option.component';
+import { ModalActionsDirective } from '../../../shared/components/modal/modal-actions.directive';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { AsyncPipe } from '@angular/common';
 
 export interface ScoreApprovalModalData {
   score: Score;
@@ -19,11 +38,28 @@ export interface ScoreApprovalModalData {
 }
 
 @Component({
-    selector: 'bio-score-approval-modal',
-    templateUrl: './score-approval-modal.component.html',
-    styleUrls: ['./score-approval-modal.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'bio-score-approval-modal',
+  templateUrl: './score-approval-modal.component.html',
+  styleUrls: ['./score-approval-modal.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    StControlModule,
+    StControlCommonModule,
+    ModalTitleDirective,
+    ModalContentDirective,
+    ScoreInfoComponent,
+    FormFieldComponent,
+    InputDirective,
+    TextareaDirective,
+    StControlValueModule,
+    FormFieldErrorsDirective,
+    FormFieldErrorComponent,
+    SelectComponent,
+    OptionComponent,
+    ModalActionsDirective,
+    ButtonComponent,
+    AsyncPipe,
+  ],
 })
 export class ScoreApprovalModalComponent {
   constructor(

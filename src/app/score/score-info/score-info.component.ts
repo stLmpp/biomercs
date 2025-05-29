@@ -3,13 +3,30 @@ import { Score } from '@model/score';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { mdiAccountStar, mdiTrophy, mdiTrophyAward } from '@mdi/js';
 import { trackById } from '@util/track-by';
+import { IconMdiComponent } from '../../shared/components/icon/icon-mdi.component';
+import { TooltipDirective } from '../../shared/components/tooltip/tooltip.directive';
+import { ButtonComponent } from '../../shared/components/button/button.component';
+import { RouterLink } from '@angular/router';
+import { IconComponent } from '../../shared/components/icon/icon.component';
+import { UrlPreviewComponent } from '../../shared/url-preview/url-preview.component';
+import { AuthDateFormatPipe } from '../../auth/shared/auth-date-format.pipe';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
-    selector: 'bio-score-info',
-    templateUrl: './score-info.component.html',
-    styleUrls: ['./score-info.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'bio-score-info',
+  templateUrl: './score-info.component.html',
+  styleUrls: ['./score-info.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    IconMdiComponent,
+    TooltipDirective,
+    ButtonComponent,
+    RouterLink,
+    IconComponent,
+    UrlPreviewComponent,
+    AuthDateFormatPipe,
+    DecimalPipe,
+  ],
 })
 export class ScoreInfoComponent {
   private _showWorldRecord = false;

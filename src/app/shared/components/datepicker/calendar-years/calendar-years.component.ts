@@ -1,14 +1,15 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { CalendarKeyboardNavigation } from '@shared/components/datepicker/calendar-keyboard-navigation';
 import { trackByFactory } from '@stlmpp/utils';
+import { ButtonComponent } from '../../button/button.component';
 
 @Component({
-    selector: 'bio-calendar-years',
-    templateUrl: './calendar-years.component.html',
-    styleUrls: ['./calendar-years.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [{ provide: CalendarKeyboardNavigation, useExisting: CalendarYearsComponent }],
-    standalone: false
+  selector: 'bio-calendar-years',
+  templateUrl: './calendar-years.component.html',
+  styleUrls: ['./calendar-years.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [{ provide: CalendarKeyboardNavigation, useExisting: CalendarYearsComponent }],
+  imports: [ButtonComponent],
 })
 export class CalendarYearsComponent extends CalendarKeyboardNavigation {
   @Input() years: number[] = [];

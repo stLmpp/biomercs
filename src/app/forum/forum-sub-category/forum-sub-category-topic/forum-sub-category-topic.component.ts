@@ -11,14 +11,29 @@ import { mdiPin, mdiPinOff } from '@mdi/js';
 import { Topic } from '@model/forum/topic';
 import { TopicService } from '../../service/topic.service';
 import { finalize } from 'rxjs';
+import { IconComponent } from '../../../shared/components/icon/icon.component';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { TooltipDirective } from '../../../shared/components/tooltip/tooltip.directive';
+import { IconMdiComponent } from '../../../shared/components/icon/icon-mdi.component';
+import { RouterLink } from '@angular/router';
+import { DecimalPipe } from '@angular/common';
+import { AuthDateFormatPipe } from '../../../auth/shared/auth-date-format.pipe';
 
 @Component({
-    selector: 'a[bioForumSubCategoryTopic]',
-    templateUrl: './forum-sub-category-topic.component.html',
-    styleUrls: ['./forum-sub-category-topic.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    host: { class: 'grid-container' },
-    standalone: false
+  selector: 'a[bioForumSubCategoryTopic]',
+  templateUrl: './forum-sub-category-topic.component.html',
+  styleUrls: ['./forum-sub-category-topic.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'grid-container' },
+  imports: [
+    IconComponent,
+    ButtonComponent,
+    TooltipDirective,
+    IconMdiComponent,
+    RouterLink,
+    DecimalPipe,
+    AuthDateFormatPipe,
+  ],
 })
 export class ForumSubCategoryTopicComponent {
   constructor(private topicService: TopicService, private changeDetectorRef: ChangeDetectorRef) {}

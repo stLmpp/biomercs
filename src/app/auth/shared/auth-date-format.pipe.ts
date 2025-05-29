@@ -2,10 +2,7 @@ import { Inject, Injectable, LOCALE_ID, Pipe, PipeTransform } from '@angular/cor
 import { AuthQuery } from '../auth.query';
 import { DatePipe } from '@angular/common';
 
-@Pipe({
-    name: 'authDateFormat',
-    standalone: false
-})
+@Pipe({ name: 'authDateFormat' })
 @Injectable({ providedIn: 'root' })
 export class AuthDateFormatPipe implements PipeTransform {
   constructor(private authQuery: AuthQuery, @Inject(LOCALE_ID) locale: string) {

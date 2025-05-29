@@ -10,7 +10,14 @@ import {
   SimpleChange,
   SimpleChanges,
 } from '@angular/core';
-import { Control, ControlBuilder, ControlValidator, ValidatorsKeys } from '@stlmpp/control';
+import {
+  Control,
+  ControlBuilder,
+  ControlValidator,
+  ValidatorsKeys,
+  StControlCommonModule,
+  StControlModule,
+} from '@stlmpp/control';
 import { GameService } from '../services/game/game.service';
 import { MiniGameService } from '../services/mini-game/mini-game.service';
 import { ModeService } from '../services/mode/mode.service';
@@ -30,7 +37,7 @@ import {
   tap,
 } from 'rxjs';
 import { StageService } from '../services/stage/stage.service';
-import { trackByFactory } from '@stlmpp/utils';
+import { trackByFactory, NgLetModule, StUtilsObjectModule } from '@stlmpp/utils';
 import { CharacterService } from '../services/character/character.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
@@ -45,6 +52,14 @@ import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { filterNilArrayOperator } from '@util/operators/filter-nil-array';
 import { trackById } from '@util/track-by';
 import { Destroyable } from '@shared/components/common/destroyable-component';
+import { FormFieldComponent } from '../components/form/form-field.component';
+import { SelectComponent } from '../components/select/select.component';
+import { OptionComponent } from '../components/select/option.component';
+import { FormFieldErrorsDirective } from '../components/form/errors.directive';
+import { FormFieldErrorComponent } from '../components/form/error.component';
+import { SpinnerComponent } from '../components/spinner/spinner.component';
+import { OptgroupComponent } from '../components/select/optgroup.component';
+import { AsyncPipe } from '@angular/common';
 
 export interface ParamsForm {
   idPlatform: number | null | undefined;
@@ -85,11 +100,24 @@ const defaultConfigs: ParamsConfig = {
 };
 
 @Component({
-    selector: 'bio-params',
-    templateUrl: './params.component.html',
-    styleUrls: ['./params.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'bio-params',
+  templateUrl: './params.component.html',
+  styleUrls: ['./params.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    StControlCommonModule,
+    StControlModule,
+    FormFieldComponent,
+    NgLetModule,
+    SelectComponent,
+    OptionComponent,
+    FormFieldErrorsDirective,
+    FormFieldErrorComponent,
+    SpinnerComponent,
+    OptgroupComponent,
+    AsyncPipe,
+    StUtilsObjectModule,
+  ],
 })
 export class ParamsComponent extends Destroyable implements OnChanges, OnInit {
   constructor(

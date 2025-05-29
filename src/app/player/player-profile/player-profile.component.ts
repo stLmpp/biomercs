@@ -26,19 +26,82 @@ import { RegionModalService } from '../../region/region-modal.service';
 import { ScoreModalService } from '../../score/score-modal.service';
 import { mapToParam } from '@util/operators/map-to-param';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
-import { ModelDirective } from '@stlmpp/control';
-import { playerProfileValidatePersonaName } from './player-profile-invalid.pipe';
+import {
+  ModelDirective,
+  StControlValueModule,
+  StControlCommonModule,
+  StControlModelModule,
+  StControlModule,
+} from '@stlmpp/control';
+import { playerProfileValidatePersonaName, PlayerProfileInvalidPipe } from './player-profile-invalid.pipe';
 import { Destroyable } from '@shared/components/common/destroyable-component';
 import { InputTypeService } from '@shared/services/input-type/input-type.service';
 import { trackById } from '@util/track-by';
+import { NgLetModule } from '@stlmpp/utils';
+import { CardComponent } from '../../shared/components/card/card.component';
+import { CardTitleDirective } from '../../shared/components/card/card-title.directive';
+import { NgTemplateOutlet, AsyncPipe } from '@angular/common';
+import { ButtonComponent } from '../../shared/components/button/button.component';
+import { TooltipDirective } from '../../shared/components/tooltip/tooltip.directive';
+import { IconComponent } from '../../shared/components/icon/icon.component';
+import { PlayerAvatarComponent } from '../player-avatar/player-avatar.component';
+import { FlagComponent } from '../../shared/components/icon/flag/flag.component';
+import { IconMdiComponent } from '../../shared/components/icon/icon-mdi.component';
+import { CardSubtitleDirective } from '../../shared/components/card/card-subtitle.directive';
+import { CardContentDirective } from '../../shared/components/card/card-content.directive';
+import { FormFieldComponent } from '../../shared/components/form/form-field.component';
+import { InputDirective } from '../../shared/components/form/input.directive';
+import { PersonaNameExistsValidatorDirective } from '../../shared/validators/persona-name-exists.validator';
+import { FormFieldHintDirective } from '../../shared/components/form/hint.directive';
+import { FormFieldErrorsDirective } from '../../shared/components/form/errors.directive';
+import { FormFieldErrorComponent } from '../../shared/components/form/error.component';
+import { SelectComponent } from '../../shared/components/select/select.component';
+import { OptionComponent } from '../../shared/components/select/option.component';
+import { TextareaDirective } from '../../shared/components/form/textarea.directive';
+import { CardActionsDirective } from '../../shared/components/card/card-actions.directive';
+import { ScoreListResponsiveComponent } from '../../score/score-list/score-list-responsive/score-list-responsive.component';
+import { DateDifferencePipe } from '../../shared/date/date-difference.pipe';
+import { PlayerCanUpdatePersonaNamePipe } from './player-can-update-persona-name.pipe';
 
 @Component({
-    selector: 'bio-player-profile',
-    templateUrl: './player-profile.component.html',
-    styleUrls: ['./player-profile.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    animations: [Animations.fade.in()],
-    standalone: false
+  selector: 'bio-player-profile',
+  templateUrl: './player-profile.component.html',
+  styleUrls: ['./player-profile.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [Animations.fade.in()],
+  imports: [
+    NgLetModule,
+    CardComponent,
+    CardTitleDirective,
+    NgTemplateOutlet,
+    StControlValueModule,
+    StControlCommonModule,
+    StControlModelModule,
+    ButtonComponent,
+    TooltipDirective,
+    IconComponent,
+    PlayerAvatarComponent,
+    FlagComponent,
+    IconMdiComponent,
+    CardSubtitleDirective,
+    CardContentDirective,
+    FormFieldComponent,
+    InputDirective,
+    PersonaNameExistsValidatorDirective,
+    FormFieldHintDirective,
+    FormFieldErrorsDirective,
+    StControlModule,
+    FormFieldErrorComponent,
+    SelectComponent,
+    OptionComponent,
+    TextareaDirective,
+    CardActionsDirective,
+    ScoreListResponsiveComponent,
+    DateDifferencePipe,
+    AsyncPipe,
+    PlayerCanUpdatePersonaNamePipe,
+    PlayerProfileInvalidPipe,
+  ],
 })
 export class PlayerProfileComponent extends Destroyable implements OnInit {
   constructor(

@@ -6,9 +6,8 @@ import { AuthQuery } from '../../../../auth/auth.query';
 import { InputmaskService } from '@shared/inputmask/inputmask.service';
 
 @Directive({
-    selector: 'input[bioDatepicker]',
-    providers: [{ provide: ControlValue, useExisting: DatepickerDirective, multi: false }],
-    standalone: false
+  selector: 'input[bioDatepicker]',
+  providers: [{ provide: ControlValue, useExisting: DatepickerDirective, multi: false }],
 })
 export class DatepickerDirective extends ControlValue<Date | null | undefined> implements OnInit {
   constructor(

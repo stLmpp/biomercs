@@ -17,11 +17,10 @@ export interface ForumTopicPostReplyComponentData {
 }
 
 @Component({
-    selector: 'bio-forum-topic-post-reply',
-    templateUrl: './forum-topic-post-reply.component.html',
-    styleUrls: ['./forum-topic-post-reply.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'bio-forum-topic-post-reply',
+  templateUrl: './forum-topic-post-reply.component.html',
+  styleUrls: ['./forum-topic-post-reply.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ForumTopicPostReplyComponent {
   constructor(

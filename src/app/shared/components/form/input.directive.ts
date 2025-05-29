@@ -5,11 +5,10 @@ import { FocusableOption } from '@angular/cdk/a11y';
 import { FormFieldChild } from '@shared/components/form/form-field-child';
 
 @Directive({
-    selector: 'input[bioInput]:not([type=checkbox]):not([type=radio]),textarea[bioInput]',
-    host: { class: 'input' },
-    exportAs: 'bio-input',
-    providers: [{ provide: FormFieldChild, useExisting: InputDirective }],
-    standalone: false
+  selector: 'input[bioInput]:not([type=checkbox]):not([type=radio]),textarea[bioInput]',
+  host: { class: 'input' },
+  exportAs: 'bio-input',
+  providers: [{ provide: FormFieldChild, useExisting: InputDirective }],
 })
 export class InputDirective extends AbstractComponent implements FocusableOption {
   constructor(

@@ -13,16 +13,18 @@ import { SnackBarConfig } from './snack-bar.config';
 import { BehaviorSubject, isObservable, Observable, Subject, take, takeUntil, timer } from 'rxjs';
 import { AnimationEvent } from '@angular/animations';
 import { Animations } from '../../animations/animations';
+import { ButtonComponent } from '../button/button.component';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
-    selector: 'bio-snack-bar',
-    templateUrl: './snack-bar.component.html',
-    styleUrls: ['./snack-bar.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None,
-    host: { class: 'snack-bar', '[@fadeInOut]': '' },
-    animations: [Animations.fade.inOut()],
-    standalone: false
+  selector: 'bio-snack-bar',
+  templateUrl: './snack-bar.component.html',
+  styleUrls: ['./snack-bar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  host: { class: 'snack-bar', '[@fadeInOut]': '' },
+  animations: [Animations.fade.inOut()],
+  imports: [ButtonComponent, AsyncPipe],
 })
 export class SnackBarComponent implements OnInit, OnDestroy {
   constructor(private overlayRef: OverlayRef, private snackBarConfig: SnackBarConfig) {}

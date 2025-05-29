@@ -12,15 +12,16 @@ import {
 } from '@angular/core';
 import { Select } from '@shared/components/select/select';
 import { Option } from '@shared/components/select/option';
+import { CheckboxComponent } from '../checkbox/checkbox.component';
 
 @Component({
-    selector: 'bio-optgroup',
-    templateUrl: './optgroup.component.html',
-    styleUrls: ['./optgroup.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None,
-    host: { class: 'bio-optgroup' },
-    standalone: false
+  selector: 'bio-optgroup',
+  templateUrl: './optgroup.component.html',
+  styleUrls: ['./optgroup.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  host: { class: 'bio-optgroup' },
+  imports: [CheckboxComponent],
 })
 export class OptgroupComponent {
   constructor(@Host() private select: Select, public changeDetectorRef: ChangeDetectorRef) {

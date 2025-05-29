@@ -19,8 +19,7 @@ const DECLARATIONS = [
 const MODULES = [CommonModule, OverlayModule, PortalModule];
 
 @NgModule({
-  declarations: [...DECLARATIONS],
-  imports: [...MODULES],
+  imports: [...MODULES, ...DECLARATIONS],
   exports: [...DECLARATIONS, ...MODULES],
 })
 export class ModalModule {

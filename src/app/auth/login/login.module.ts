@@ -11,7 +11,16 @@ import { AuthSharedModule } from '../shared/auth-shared.module';
 import { CheckboxModule } from '@shared/components/checkbox/checkbox.module';
 
 @NgModule({
-  declarations: [LoginComponent, LoginConfirmCodeModalComponent],
-  imports: [CommonModule, LoginRoutingModule, AuthSharedModule, ModalModule, ButtonModule, CardModule, CheckboxModule],
+  imports: [
+    CommonModule,
+    LoginRoutingModule,
+    AuthSharedModule,
+    ModalModule,
+    ButtonModule,
+    CardModule,
+    CheckboxModule,
+    LoginComponent,
+    LoginConfirmCodeModalComponent,
+  ],
 })
 export class LoginModule {}

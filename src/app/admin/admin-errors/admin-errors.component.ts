@@ -9,13 +9,34 @@ import { ErrorService } from '@shared/services/error/error.service';
 import { trackById } from '@util/track-by';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Destroyable } from '@shared/components/common/destroyable-component';
+import { LoadingComponent } from '../../shared/components/spinner/loading/loading.component';
+import { PageTitleComponent } from '../../shared/title/page-title.component';
+import { AccordionDirective } from '../../shared/components/accordion/accordion.directive';
+import { AccordionItemComponent } from '../../shared/components/accordion/accordion-item.component';
+import { HighlightModule } from 'ngx-highlightjs';
+import { ButtonComponent } from '../../shared/components/button/button.component';
+import { TooltipDirective } from '../../shared/components/tooltip/tooltip.directive';
+import { IconComponent } from '../../shared/components/icon/icon.component';
+import { PaginationComponent } from '../../shared/components/pagination/pagination.component';
+import { DatePipe } from '@angular/common';
 
 @Component({
-    selector: 'bio-admin-errors',
-    templateUrl: './admin-errors.component.html',
-    styleUrls: ['./admin-errors.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'bio-admin-errors',
+  templateUrl: './admin-errors.component.html',
+  styleUrls: ['./admin-errors.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    LoadingComponent,
+    PageTitleComponent,
+    AccordionDirective,
+    AccordionItemComponent,
+    HighlightModule,
+    ButtonComponent,
+    TooltipDirective,
+    IconComponent,
+    PaginationComponent,
+    DatePipe,
+  ],
 })
 export class AdminErrorsComponent extends Destroyable {
   constructor(

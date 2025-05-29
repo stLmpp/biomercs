@@ -13,16 +13,53 @@ import { BreakpointObserverService } from '@shared/services/breakpoint-observer/
 import { mdiAccountTie } from '@mdi/js';
 import { ModeratorModalService } from '../service/moderator-modal.service';
 import { SubCategoryOrderDto } from '@model/forum/sub-category';
-import { ForumCategoriesCategoryComponentOrderChangeEvent } from './forum-categories-category/forum-categories-category.component';
+import {
+  ForumCategoriesCategoryComponentOrderChangeEvent,
+  ForumCategoriesCategoryComponent,
+} from './forum-categories-category/forum-categories-category.component';
 import { SubCategoryService } from '../service/sub-category.service';
 import { TopicRecent } from '@model/forum/topic';
+import { NgLetModule } from '@stlmpp/utils';
+import { CheckboxComponent } from '../../shared/components/checkbox/checkbox.component';
+import { ButtonComponent } from '../../shared/components/button/button.component';
+import { IconMdiComponent } from '../../shared/components/icon/icon-mdi.component';
+import { IconComponent } from '../../shared/components/icon/icon.component';
+import { AccordionDirective } from '../../shared/components/accordion/accordion.directive';
+import { CdkDropList, CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
+import { AccordionItemComponent } from '../../shared/components/accordion/accordion-item.component';
+import { AccordionItemTitleDirective } from '../../shared/components/accordion/accordion-item-title.directive';
+import { ForumCategoriesRecentTopicsComponent } from './forum-categories-recent-topics/forum-categories-recent-topics.component';
+import { ForumCategoriesPlayersOnlineComponent } from './forum-categories-players-online/forum-categories-players-online.component';
+import { AsyncPipe } from '@angular/common';
+import { AuthDateFormatPipe } from '../../auth/shared/auth-date-format.pipe';
+import { AsyncDefaultPipe } from '../../shared/async-default/async-default.pipe';
+import { ForumFilterDeletedPipe } from './forum-filter-deleted.pipe';
 
 @Component({
-    selector: 'bio-forum-categories',
-    templateUrl: './forum-categories.component.html',
-    styleUrls: ['./forum-categories.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'bio-forum-categories',
+  templateUrl: './forum-categories.component.html',
+  styleUrls: ['./forum-categories.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    NgLetModule,
+    CheckboxComponent,
+    ButtonComponent,
+    IconMdiComponent,
+    IconComponent,
+    AccordionDirective,
+    CdkDropList,
+    AccordionItemComponent,
+    CdkDrag,
+    AccordionItemTitleDirective,
+    CdkDragHandle,
+    ForumCategoriesCategoryComponent,
+    ForumCategoriesRecentTopicsComponent,
+    ForumCategoriesPlayersOnlineComponent,
+    AsyncPipe,
+    AuthDateFormatPipe,
+    AsyncDefaultPipe,
+    ForumFilterDeletedPipe,
+  ],
 })
 export class ForumCategoriesComponent {
   constructor(

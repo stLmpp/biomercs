@@ -16,6 +16,9 @@ import {
 } from './player-change-requests-action-cell/player-change-requests-action-cell.component';
 import { TableCellNotifyChange } from '@shared/components/table/type';
 import { PlayerModalService } from '../player-modal.service';
+import { PageTitleComponent } from '../../shared/title/page-title.component';
+import { ScoreListResponsiveComponent } from '../../score/score-list/score-list-responsive/score-list-responsive.component';
+import { AsyncPipe } from '@angular/common';
 
 export interface PlayerChangeRequestsState {
   page: number;
@@ -25,11 +28,11 @@ export interface PlayerChangeRequestsState {
 }
 
 @Component({
-    selector: 'bio-player-change-requests',
-    templateUrl: './player-change-requests.component.html',
-    styleUrls: ['./player-change-requests.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'bio-player-change-requests',
+  templateUrl: './player-change-requests.component.html',
+  styleUrls: ['./player-change-requests.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [PageTitleComponent, ScoreListResponsiveComponent, AsyncPipe],
 })
 export class PlayerChangeRequestsComponent extends LocalState<PlayerChangeRequestsState> implements OnInit {
   constructor(

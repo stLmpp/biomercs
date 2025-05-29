@@ -18,15 +18,27 @@ import { TableCell, TableCellNotifyChange } from '@shared/components/table/type'
 import { SimpleChangesCustom } from '@util/util';
 import { Destroyable } from '@shared/components/common/destroyable-component';
 import { takeUntil } from 'rxjs';
+import { NgTemplateOutlet } from '@angular/common';
+import { NgLetModule } from '@stlmpp/utils';
+import { TooltipDirective } from '../../tooltip/tooltip.directive';
+import { TableCellFormatterPipe } from '../table-cell-formatter.pipe';
+import { TableCellTooltipPipe } from '../table-cell-tooltip.pipe';
 
 @Component({
-    selector: 'bio-cell',
-    templateUrl: './table-cell.component.html',
-    styleUrls: ['./table-cell.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None,
-    host: { class: 'bio-cell' },
-    standalone: false
+  selector: 'bio-cell',
+  templateUrl: './table-cell.component.html',
+  styleUrls: ['./table-cell.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  host: { class: 'bio-cell' },
+  imports: [
+    NgTemplateOutlet,
+    NgLetModule,
+    TooltipDirective,
+    CdkPortalOutlet,
+    TableCellFormatterPipe,
+    TableCellTooltipPipe,
+  ],
 })
 export class TableCellComponent<T extends Record<any, any>, K extends keyof T>
   extends Destroyable

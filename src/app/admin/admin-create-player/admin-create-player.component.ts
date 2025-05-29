@@ -1,5 +1,12 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
-import { Control, ControlGroup, Validators } from '@stlmpp/control';
+import {
+  Control,
+  ControlGroup,
+  Validators,
+  StControlModule,
+  StControlCommonModule,
+  StControlValueModule,
+} from '@stlmpp/control';
 import { PlayerAdd } from '@model/player';
 import { finalize, map, pluck, tap } from 'rxjs';
 import { PlayerService } from '../../player/player.service';
@@ -10,13 +17,49 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { trackById } from '@util/track-by';
 import { Region } from '@model/region';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
+import { PageTitleComponent } from '../../shared/title/page-title.component';
+import { NgLetModule } from '@stlmpp/utils';
+import { CardComponent } from '../../shared/components/card/card.component';
+import { CardTitleDirective } from '../../shared/components/card/card-title.directive';
+import { CardContentDirective } from '../../shared/components/card/card-content.directive';
+import { FormFieldComponent } from '../../shared/components/form/form-field.component';
+import { InputDirective } from '../../shared/components/form/input.directive';
+import { FormFieldErrorsDirective } from '../../shared/components/form/errors.directive';
+import { FormFieldErrorComponent } from '../../shared/components/form/error.component';
+import { FormFieldHintDirective } from '../../shared/components/form/hint.directive';
+import { SelectComponent } from '../../shared/components/select/select.component';
+import { OptionComponent } from '../../shared/components/select/option.component';
+import { FlagComponent } from '../../shared/components/icon/flag/flag.component';
+import { CardActionsDirective } from '../../shared/components/card/card-actions.directive';
+import { ButtonComponent } from '../../shared/components/button/button.component';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
-    selector: 'bio-admin-create-player',
-    templateUrl: './admin-create-player.component.html',
-    styleUrls: ['./admin-create-player.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'bio-admin-create-player',
+  templateUrl: './admin-create-player.component.html',
+  styleUrls: ['./admin-create-player.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    PageTitleComponent,
+    StControlModule,
+    StControlCommonModule,
+    NgLetModule,
+    CardComponent,
+    CardTitleDirective,
+    CardContentDirective,
+    FormFieldComponent,
+    InputDirective,
+    StControlValueModule,
+    FormFieldErrorsDirective,
+    FormFieldErrorComponent,
+    FormFieldHintDirective,
+    SelectComponent,
+    OptionComponent,
+    FlagComponent,
+    CardActionsDirective,
+    ButtonComponent,
+    AsyncPipe,
+  ],
 })
 export class AdminCreatePlayerComponent {
   constructor(

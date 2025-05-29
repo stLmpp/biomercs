@@ -11,16 +11,17 @@ import {
 import { ControlValue } from '@stlmpp/control';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { HorizontalPosition } from '@shared/components/common/positions';
+import { NgClass } from '@angular/common';
 
 @Component({
-    selector: 'bio-checkbox',
-    templateUrl: './checkbox.component.html',
-    styleUrls: ['./checkbox.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None,
-    providers: [{ provide: ControlValue, useExisting: CheckboxComponent }],
-    host: { class: 'checkbox-container' },
-    standalone: false
+  selector: 'bio-checkbox',
+  templateUrl: './checkbox.component.html',
+  styleUrls: ['./checkbox.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  providers: [{ provide: ControlValue, useExisting: CheckboxComponent }],
+  host: { class: 'checkbox-container' },
+  imports: [NgClass],
 })
 export class CheckboxComponent extends ControlValue<boolean> {
   constructor(private changeDetectorRef: ChangeDetectorRef) {

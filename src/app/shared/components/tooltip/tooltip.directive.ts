@@ -19,9 +19,8 @@ import { TOOLTIP_DEFAULT_CONFIG, TooltipConfig } from './tooltip-token';
 export type TooltipPosition = 'top' | 'right' | 'bottom' | 'left';
 
 @Directive({
-    selector: '[bioTooltip]',
-    exportAs: 'tooltip',
-    standalone: false
+  selector: '[bioTooltip]',
+  exportAs: 'tooltip',
 })
 export class TooltipDirective implements OnDestroy {
   constructor(

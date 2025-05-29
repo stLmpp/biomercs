@@ -12,9 +12,29 @@ import { ModalRef } from '@shared/components/modal/modal-ref';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import { Region } from '@model/region';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { Control } from '@stlmpp/control';
+import {
+  Control,
+  StControlValueModule,
+  StControlCommonModule,
+  StControlModule,
+  StControlModelModule,
+} from '@stlmpp/control';
 import { trackById } from '@util/track-by';
 import { RegionService } from '../region.service';
+import { LoadingComponent } from '../../shared/components/spinner/loading/loading.component';
+import { ModalTitleDirective } from '../../shared/components/modal/modal-title.directive';
+import { LabelDirective } from '../../shared/components/form/label.directive';
+import { InputDirective } from '../../shared/components/form/input.directive';
+import { ListDirective, ListControlValue } from '../../shared/components/list/list.directive';
+import { ModalContentDirective } from '../../shared/components/modal/modal-content.directive';
+import { ɵɵCdkVirtualScrollViewport, ɵɵCdkFixedSizeVirtualScroll, ɵɵCdkVirtualForOf } from '@angular/cdk/overlay';
+import { ListItemComponent } from '../../shared/components/list/list-item.component';
+import { FlagComponent } from '../../shared/components/icon/flag/flag.component';
+import { PrefixDirective } from '../../shared/components/common/prefix.directive';
+import { ModalActionsDirective } from '../../shared/components/modal/modal-actions.directive';
+import { ButtonComponent } from '../../shared/components/button/button.component';
+import { AsyncPipe } from '@angular/common';
+import { StUtilsArrayModule } from '@stlmpp/utils';
 
 export interface RegionSelectData {
   idRegion: number;
@@ -22,11 +42,33 @@ export interface RegionSelectData {
 }
 
 @Component({
-    selector: 'bio-region-select',
-    templateUrl: './region-select.component.html',
-    styleUrls: ['./region-select.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'bio-region-select',
+  templateUrl: './region-select.component.html',
+  styleUrls: ['./region-select.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    LoadingComponent,
+    ModalTitleDirective,
+    LabelDirective,
+    InputDirective,
+    StControlValueModule,
+    StControlCommonModule,
+    StControlModule,
+    ListDirective,
+    ListControlValue,
+    ModalContentDirective,
+    StControlModelModule,
+    ɵɵCdkVirtualScrollViewport,
+    ɵɵCdkFixedSizeVirtualScroll,
+    ɵɵCdkVirtualForOf,
+    ListItemComponent,
+    FlagComponent,
+    PrefixDirective,
+    ModalActionsDirective,
+    ButtonComponent,
+    AsyncPipe,
+    StUtilsArrayModule,
+  ],
 })
 export class RegionSelectComponent implements OnInit, AfterViewInit {
   constructor(

@@ -3,15 +3,30 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { PaginationMeta } from '@model/pagination';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
-import { trackByFactory } from '@stlmpp/utils';
+import { trackByFactory, StUtilsNumberModule } from '@stlmpp/utils';
+import { SelectComponent } from '../select/select.component';
+import { StControlCommonModule, StControlModelModule } from '@stlmpp/control';
+import { OptionComponent } from '../select/option.component';
+import { ButtonComponent } from '../button/button.component';
+import { TooltipDirective } from '../tooltip/tooltip.directive';
+import { IconComponent } from '../icon/icon.component';
 
 @Component({
-    selector: 'bio-pagination',
-    templateUrl: './pagination.component.html',
-    styleUrls: ['./pagination.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    host: { class: 'pagination' },
-    standalone: false
+  selector: 'bio-pagination',
+  templateUrl: './pagination.component.html',
+  styleUrls: ['./pagination.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'pagination' },
+  imports: [
+    SelectComponent,
+    StControlCommonModule,
+    StControlModelModule,
+    OptionComponent,
+    ButtonComponent,
+    TooltipDirective,
+    IconComponent,
+    StUtilsNumberModule,
+  ],
 })
 export class PaginationComponent implements OnChanges, PaginationMeta {
   constructor(private router: Router) {}

@@ -3,9 +3,8 @@ import { ControlValue } from '@stlmpp/control';
 import { CKEditorComponent } from '@ckeditor/ckeditor5-angular';
 
 @Directive({
-    selector: 'ckeditor[control],ckeditor[controlName],ckeditor[model]',
-    providers: [{ provide: ControlValue, useExisting: CKEditorControlValue, multi: true }],
-    standalone: false
+  selector: 'ckeditor[control],ckeditor[controlName],ckeditor[model]',
+  providers: [{ provide: ControlValue, useExisting: CKEditorControlValue, multi: true }],
 })
 export class CKEditorControlValue extends ControlValue<string | null | undefined> {
   constructor(@Host() private ckEditorComponent: CKEditorComponent) {

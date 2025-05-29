@@ -6,6 +6,15 @@ import { CategoryWithSubCategoriesAlt } from '@model/forum/category';
 import { finalize } from 'rxjs';
 import { trackById } from '@util/track-by';
 import { TopicService } from '../service/topic.service';
+import { LoadingComponent } from '../../shared/components/spinner/loading/loading.component';
+import { ModalTitleDirective } from '../../shared/components/modal/modal-title.directive';
+import { ModalContentDirective } from '../../shared/components/modal/modal-content.directive';
+import { ListDirective, ListControlValue } from '../../shared/components/list/list.directive';
+import { StControlCommonModule, StControlModelModule } from '@stlmpp/control';
+import { ListItemComponent } from '../../shared/components/list/list-item.component';
+import { ModalActionsDirective } from '../../shared/components/modal/modal-actions.directive';
+import { ButtonComponent } from '../../shared/components/button/button.component';
+import { ModalCloseDirective } from '../../shared/components/modal/modal-close.directive';
 
 export interface ForumTopicTransferComponentData {
   idTopic: number;
@@ -18,11 +27,23 @@ export interface ForumTopicTransferComponentResponse {
 }
 
 @Component({
-    selector: 'bio-forum-topic-transfer',
-    templateUrl: './forum-topic-transfer.component.html',
-    styleUrls: ['./forum-topic-transfer.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'bio-forum-topic-transfer',
+  templateUrl: './forum-topic-transfer.component.html',
+  styleUrls: ['./forum-topic-transfer.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    LoadingComponent,
+    ModalTitleDirective,
+    ModalContentDirective,
+    ListDirective,
+    ListControlValue,
+    StControlCommonModule,
+    StControlModelModule,
+    ListItemComponent,
+    ModalActionsDirective,
+    ButtonComponent,
+    ModalCloseDirective,
+  ],
 })
 export class ForumTopicTransferComponent implements OnInit {
   constructor(

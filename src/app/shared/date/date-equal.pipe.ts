@@ -33,10 +33,7 @@ export function dateEqual(
   return isEqual(transformer(date1), transformer(date2));
 }
 
-@Pipe({
-    name: 'dateEqual',
-    standalone: false
-})
+@Pipe({ name: 'dateEqual' })
 export class DateEqualPipe implements PipeTransform {
   transform(
     date1: Date | null | undefined,

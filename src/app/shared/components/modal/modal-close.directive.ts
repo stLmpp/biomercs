@@ -2,10 +2,7 @@ import { Directive, ElementRef, HostBinding, HostListener, Input, OnInit, Option
 import { ModalRef } from './modal-ref';
 import { ModalService } from './modal.service';
 
-@Directive({
-    selector: '[bioModalClose]',
-    standalone: false
-})
+@Directive({ selector: '[bioModalClose]' })
 export class ModalCloseDirective<T = any> implements OnInit {
   constructor(
     private elementRef: ElementRef,

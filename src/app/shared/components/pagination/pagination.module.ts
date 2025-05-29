@@ -19,8 +19,7 @@ const MODULES = [
 const EXPORTS = [CommonModule, TooltipModule, SelectModule, StControlModelModule, ButtonModule, StUtilsNumberModule];
 
 @NgModule({
-  declarations: [...DECLARATIONS],
-  imports: [...MODULES],
+  imports: [...MODULES, ...DECLARATIONS],
   exports: [...DECLARATIONS, ...EXPORTS],
 })
 export class PaginationModule {}

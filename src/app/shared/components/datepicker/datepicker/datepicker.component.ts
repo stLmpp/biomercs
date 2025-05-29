@@ -23,14 +23,16 @@ import { Destroyable } from '@shared/components/common/destroyable-component';
 import { take, takeUntil } from 'rxjs';
 import { AnimationEvent } from '@angular/animations';
 import { getDatepickerOverlayPositions } from '@shared/components/datepicker/datepicker/datepicker';
+import { CalendarComponent } from '../calendar/calendar.component';
+import { CdkTrapFocus } from '@angular/cdk/a11y';
 
 @Component({
-    selector: 'bio-datepicker',
-    templateUrl: './datepicker.component.html',
-    styleUrls: ['./datepicker.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    animations: [Animations.fade.inOut(), Animations.scale.in()],
-    standalone: false
+  selector: 'bio-datepicker',
+  templateUrl: './datepicker.component.html',
+  styleUrls: ['./datepicker.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [Animations.fade.inOut(), Animations.scale.in()],
+  imports: [CalendarComponent, CdkTrapFocus],
 })
 export class DatepickerComponent extends Destroyable {
   constructor(

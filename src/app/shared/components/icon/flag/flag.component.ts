@@ -2,12 +2,11 @@ import { ChangeDetectionStrategy, Component, HostBinding, Input, ViewEncapsulati
 import { AbstractComponent } from '@shared/components/core/abstract-component';
 
 @Component({
-    selector: 'bio-icon[flag]',
-    templateUrl: './flag.component.html',
-    styleUrls: ['./flag.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None,
-    standalone: false
+  selector: 'bio-icon[flag]',
+  templateUrl: './flag.component.html',
+  styleUrls: ['./flag.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
 })
 export class FlagComponent extends AbstractComponent {
   private _flag = '';

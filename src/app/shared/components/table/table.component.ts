@@ -12,14 +12,35 @@ import { PaginationMeta } from '@model/pagination';
 import { ColDef, ColDefInternal } from '@shared/components/table/col-def';
 import { TableCellNotifyChange, TableOrder } from '@shared/components/table/type';
 import { trackById } from '@util/track-by';
+import { CardComponent } from '../card/card.component';
+import { LoadingComponent } from '../spinner/loading/loading.component';
+import { CardTitleDirective } from '../card/card-title.directive';
+import { CardContentDirective } from '../card/card-content.directive';
+import { NgLetModule } from '@stlmpp/utils';
+import { NgStyle } from '@angular/common';
+import { IconComponent } from '../icon/icon.component';
+import { TableCellComponent } from './table-cell/table-cell.component';
+import { CardActionsDirective } from '../card/card-actions.directive';
+import { PaginationComponent } from '../pagination/pagination.component';
 
 @Component({
-    selector: 'bio-table',
-    templateUrl: './table.component.html',
-    styleUrls: ['./table.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None,
-    standalone: false
+  selector: 'bio-table',
+  templateUrl: './table.component.html',
+  styleUrls: ['./table.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  imports: [
+    CardComponent,
+    LoadingComponent,
+    CardTitleDirective,
+    CardContentDirective,
+    NgLetModule,
+    NgStyle,
+    IconComponent,
+    TableCellComponent,
+    CardActionsDirective,
+    PaginationComponent,
+  ],
 })
 export class TableComponent<T extends Record<any, any>, K extends keyof T> {
   private _collapsable = false;

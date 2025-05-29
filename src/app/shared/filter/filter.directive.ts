@@ -4,10 +4,7 @@ import { combineLatest, map, Observable, ReplaySubject, startWith, takeUntil } f
 import { normalizeString } from 'st-utils';
 import { Destroyable } from '@shared/components/common/destroyable-component';
 
-@Directive({
-    selector: '[bioFilter]',
-    standalone: false
-})
+@Directive({ selector: '[bioFilter]' })
 export class FilterDirective extends Destroyable implements AfterContentInit {
   private readonly _bioFilter$ = new ReplaySubject<string | null | undefined>();
 

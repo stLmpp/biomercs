@@ -17,16 +17,18 @@ import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { OptgroupComponent } from './optgroup.component';
 import { Option } from '@shared/components/select/option';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { CheckboxComponent } from '../checkbox/checkbox.component';
+import { NgTemplateOutlet } from '@angular/common';
 
 @Component({
-    selector: 'bio-option',
-    templateUrl: './option.component.html',
-    styleUrls: ['./option.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    host: { class: 'bio-option' },
-    encapsulation: ViewEncapsulation.None,
-    providers: [{ provide: Option, useExisting: OptionComponent }],
-    standalone: false
+  selector: 'bio-option',
+  templateUrl: './option.component.html',
+  styleUrls: ['./option.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'bio-option' },
+  encapsulation: ViewEncapsulation.None,
+  providers: [{ provide: Option, useExisting: OptionComponent }],
+  imports: [CheckboxComponent, NgTemplateOutlet],
 })
 export class OptionComponent extends Option implements FocusableOption {
   constructor(

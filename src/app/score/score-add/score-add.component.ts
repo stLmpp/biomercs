@@ -6,7 +6,15 @@ import {
   ViewChild,
   ViewChildren,
 } from '@angular/core';
-import { Control, ControlArray, ControlGroup, Validators } from '@stlmpp/control';
+import {
+  Control,
+  ControlArray,
+  ControlGroup,
+  Validators,
+  StControlModule,
+  StControlCommonModule,
+  StControlValueModule,
+} from '@stlmpp/control';
 import { AuthQuery } from '../../auth/auth.query';
 import { ParamsComponent, ParamsConfig, ParamsForm } from '@shared/params/params.component';
 import { CURRENCY_MASK_CONFIG } from '@shared/currency-mask/currency-mask-config.token';
@@ -27,14 +35,61 @@ import { trackByControl } from '@util/track-by';
 import { isNotNil, isObjectEqualShallow } from 'st-utils';
 import { filterNil } from '@util/operators/filter';
 import { PlatformInputTypeService } from '@shared/services/platform-input-type/platform-input-type.service';
+import { PageTitleComponent } from '../../shared/title/page-title.component';
+import { NgLetModule } from '@stlmpp/utils';
+import { CardComponent } from '../../shared/components/card/card.component';
+import { CardTitleDirective } from '../../shared/components/card/card-title.directive';
+import { CardContentDirective } from '../../shared/components/card/card-content.directive';
+import { ParamsComponent as ParamsComponent_1 } from '../../shared/params/params.component';
+import { FormFieldComponent } from '../../shared/components/form/form-field.component';
+import { InputDirective } from '../../shared/components/form/input.directive';
+import { CurrencyMaskDirective } from '../../shared/currency-mask/currency-mask.directive';
+import { FormFieldErrorsDirective } from '../../shared/components/form/errors.directive';
+import { FormFieldErrorComponent } from '../../shared/components/form/error.component';
+import { MaskDirective } from '../../shared/mask/mask.directive';
+import { DatepickerDirective } from '../../shared/components/datepicker/datepicker/datepicker.directive';
+import { ButtonComponent } from '../../shared/components/button/button.component';
+import { SuffixDirective } from '../../shared/components/common/suffix.directive';
+import { DatepickerTriggerDirective } from '../../shared/components/datepicker/datepicker/datepicker-trigger.directive';
+import { IconComponent } from '../../shared/components/icon/icon.component';
+import { DatepickerComponent } from '../../shared/components/datepicker/datepicker/datepicker.component';
+import { CardActionsDirective } from '../../shared/components/card/card-actions.directive';
+import { AsyncPipe } from '@angular/common';
+import { AsyncDefaultPipe } from '../../shared/async-default/async-default.pipe';
 
 @Component({
-    selector: 'bio-score-add',
-    templateUrl: './score-add.component.html',
-    styleUrls: ['./score-add.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [{ provide: CURRENCY_MASK_CONFIG, useValue: scoreCurrencyMask }],
-    standalone: false
+  selector: 'bio-score-add',
+  templateUrl: './score-add.component.html',
+  styleUrls: ['./score-add.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [{ provide: CURRENCY_MASK_CONFIG, useValue: scoreCurrencyMask }],
+  imports: [
+    PageTitleComponent,
+    NgLetModule,
+    CardComponent,
+    CardTitleDirective,
+    CardContentDirective,
+    ParamsComponent_1,
+    StControlModule,
+    StControlCommonModule,
+    ScoreAddPlayerComponent,
+    FormFieldComponent,
+    InputDirective,
+    StControlValueModule,
+    CurrencyMaskDirective,
+    FormFieldErrorsDirective,
+    FormFieldErrorComponent,
+    MaskDirective,
+    DatepickerDirective,
+    ButtonComponent,
+    SuffixDirective,
+    DatepickerTriggerDirective,
+    IconComponent,
+    DatepickerComponent,
+    CardActionsDirective,
+    AsyncPipe,
+    AsyncDefaultPipe,
+  ],
 })
 export class ScoreAddComponent {
   constructor(

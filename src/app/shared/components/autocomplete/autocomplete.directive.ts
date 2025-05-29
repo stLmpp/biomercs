@@ -8,7 +8,7 @@ import {
   QueryList,
   Self,
   ViewContainerRef,
-  DOCUMENT
+  DOCUMENT,
 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 
@@ -23,10 +23,9 @@ import { AutocompleteOptionDirective } from '@shared/components/autocomplete/aut
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 
 @Directive({
-    selector: 'input[bioAutocomplete],textarea[bioAutocomplete]',
-    host: { autocomplete: 'off' },
-    exportAs: 'bio-autocomplete',
-    standalone: false
+  selector: 'input[bioAutocomplete],textarea[bioAutocomplete]',
+  host: { autocomplete: 'off' },
+  exportAs: 'bio-autocomplete',
 })
 export class AutocompleteDirective extends Destroyable {
   constructor(

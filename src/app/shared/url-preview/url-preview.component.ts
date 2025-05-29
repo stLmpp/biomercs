@@ -2,14 +2,18 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Inpu
 import { UrlMetadataService } from '@shared/services/url-metadata/url-metadata.service';
 import { filterNil } from '@util/operators/filter';
 import { debounceTime, finalize, ReplaySubject, switchMap } from 'rxjs';
+import { NgLetModule } from '@stlmpp/utils';
+import { IconComponent } from '../components/icon/icon.component';
+import { SpinnerComponent } from '../components/spinner/spinner.component';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
-    selector: 'a[bio-url-preview]',
-    templateUrl: './url-preview.component.html',
-    styleUrls: ['./url-preview.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    host: { class: 'url-preview' },
-    standalone: false
+  selector: 'a[bio-url-preview]',
+  templateUrl: './url-preview.component.html',
+  styleUrls: ['./url-preview.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'url-preview' },
+  imports: [NgLetModule, IconComponent, SpinnerComponent, AsyncPipe],
 })
 export class UrlPreviewComponent {
   constructor(

@@ -10,7 +10,6 @@ import { FlagModule } from '@shared/components/icon/flag/flag.module';
 import { SpinnerModule } from '@shared/components/spinner/spinner.module';
 
 @NgModule({
-  declarations: [RegionSelectComponent],
   imports: [
     ListModule,
     SpinnerModule,
@@ -21,6 +20,7 @@ import { SpinnerModule } from '@shared/components/spinner/spinner.module';
     StControlModelModule,
     StControlModule,
     StUtilsArrayModule,
+    RegionSelectComponent,
   ],
 })
 export class RegionModule {}

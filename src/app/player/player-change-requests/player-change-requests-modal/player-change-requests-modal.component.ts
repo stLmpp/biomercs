@@ -1,7 +1,15 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject } from '@angular/core';
 import { ScoreChangeRequestsPagination, ScoreWithScoreChangeRequests } from '@model/score-change-request';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
-import { Control, ControlArray, ControlGroup, Validators } from '@stlmpp/control';
+import {
+  Control,
+  ControlArray,
+  ControlGroup,
+  Validators,
+  StControlModule,
+  StControlCommonModule,
+  StControlValueModule,
+} from '@stlmpp/control';
 import { ScoreChangeRequestsFulfilDto } from '@model/score';
 import { ScorePlayerUpdateDto } from '@model/score-player';
 import { ModalRef } from '@shared/components/modal/modal-ref';
@@ -16,6 +24,25 @@ import { trackById } from '@util/track-by';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
 import { CharacterService } from '@shared/services/character/character.service';
 import { PlatformInputTypeService } from '@shared/services/platform-input-type/platform-input-type.service';
+import { ModalTitleDirective } from '../../../shared/components/modal/modal-title.directive';
+import { ModalContentDirective } from '../../../shared/components/modal/modal-content.directive';
+import { LabelDirective } from '../../../shared/components/form/label.directive';
+import { FormFieldComponent } from '../../../shared/components/form/form-field.component';
+import { SelectComponent } from '../../../shared/components/select/select.component';
+import { OptionComponent } from '../../../shared/components/select/option.component';
+import { SpinnerComponent } from '../../../shared/components/spinner/spinner.component';
+import { OptgroupComponent } from '../../../shared/components/select/optgroup.component';
+import { FormFieldErrorsDirective } from '../../../shared/components/form/errors.directive';
+import { FormFieldErrorComponent } from '../../../shared/components/form/error.component';
+import { InputDirective } from '../../../shared/components/form/input.directive';
+import { NgLetModule } from '@stlmpp/utils';
+import { UrlPreviewComponent } from '../../../shared/url-preview/url-preview.component';
+import { CurrencyMaskDirective } from '../../../shared/currency-mask/currency-mask.directive';
+import { MaskDirective } from '../../../shared/mask/mask.directive';
+import { CheckboxComponent } from '../../../shared/components/checkbox/checkbox.component';
+import { ModalActionsDirective } from '../../../shared/components/modal/modal-actions.directive';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { AsyncPipe } from '@angular/common';
 
 export interface PlayerChangeRequestsModalData {
   score: ScoreWithScoreChangeRequests;
@@ -28,12 +55,35 @@ interface ScoreChangeRequestsFulfilForm extends Omit<ScoreChangeRequestsFulfilDt
 }
 
 @Component({
-    selector: 'bio-player-change-requests-modal',
-    templateUrl: './player-change-requests-modal.component.html',
-    styleUrls: ['./player-change-requests-modal.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [{ provide: CURRENCY_MASK_CONFIG, useValue: scoreCurrencyMask }],
-    standalone: false
+  selector: 'bio-player-change-requests-modal',
+  templateUrl: './player-change-requests-modal.component.html',
+  styleUrls: ['./player-change-requests-modal.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [{ provide: CURRENCY_MASK_CONFIG, useValue: scoreCurrencyMask }],
+  imports: [
+    StControlModule,
+    StControlCommonModule,
+    ModalTitleDirective,
+    ModalContentDirective,
+    LabelDirective,
+    StControlValueModule,
+    FormFieldComponent,
+    SelectComponent,
+    OptionComponent,
+    SpinnerComponent,
+    OptgroupComponent,
+    FormFieldErrorsDirective,
+    FormFieldErrorComponent,
+    InputDirective,
+    NgLetModule,
+    UrlPreviewComponent,
+    CurrencyMaskDirective,
+    MaskDirective,
+    CheckboxComponent,
+    ModalActionsDirective,
+    ButtonComponent,
+    AsyncPipe,
+  ],
 })
 export class PlayerChangeRequestsModalComponent {
   constructor(

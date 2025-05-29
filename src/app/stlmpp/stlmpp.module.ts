@@ -8,7 +8,6 @@ import { ButtonModule } from '@shared/components/button/button.module';
 import { NgLetModule } from '@stlmpp/utils';
 
 @NgModule({
-  declarations: [StlmppComponent],
-  imports: [CommonModule, StlmppRoutingModule, CardModule, ButtonModule, NgLetModule],
+  imports: [CommonModule, StlmppRoutingModule, CardModule, ButtonModule, NgLetModule, StlmppComponent],
 })
 export class StlmppModule {}

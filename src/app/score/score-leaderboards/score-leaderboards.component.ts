@@ -14,8 +14,8 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-import { trackByFactory } from '@stlmpp/utils';
-import { ActivatedRoute } from '@angular/router';
+import { trackByFactory, NgLetModule } from '@stlmpp/utils';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { orderBy, OrderByDirection } from 'st-utils';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { PaginationMeta } from '@model/pagination';
@@ -23,6 +23,18 @@ import { Score, ScoreTable, ScoreTopTable } from '@model/score';
 import { LocalState } from '@stlmpp/store';
 import { trackById } from '@util/track-by';
 import { ScoreModalService } from '../score-modal.service';
+import { PageTitleComponent } from '../../shared/title/page-title.component';
+import { CardComponent } from '../../shared/components/card/card.component';
+import { CardTitleDirective } from '../../shared/components/card/card-title.directive';
+import { CardContentDirective } from '../../shared/components/card/card-content.directive';
+import { ParamsComponent } from '../../shared/params/params.component';
+import { LoadingDirective } from '../../shared/components/spinner/loading/loading.directive';
+import { IconComponent } from '../../shared/components/icon/icon.component';
+import { TooltipDirective } from '../../shared/components/tooltip/tooltip.directive';
+import { ButtonComponent } from '../../shared/components/button/button.component';
+import { CardActionsDirective } from '../../shared/components/card/card-actions.directive';
+import { PaginationComponent } from '../../shared/components/pagination/pagination.component';
+import { AsyncPipe, DecimalPipe } from '@angular/common';
 
 interface TopTableForm extends ParamsForm {
   page: number;
@@ -38,11 +50,27 @@ export interface ScoreLeaderboardsState {
 }
 
 @Component({
-    selector: 'bio-score-leaderboards',
-    templateUrl: './score-leaderboards.component.html',
-    styleUrls: ['./score-leaderboards.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'bio-score-leaderboards',
+  templateUrl: './score-leaderboards.component.html',
+  styleUrls: ['./score-leaderboards.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    PageTitleComponent,
+    CardComponent,
+    CardTitleDirective,
+    CardContentDirective,
+    ParamsComponent,
+    NgLetModule,
+    LoadingDirective,
+    IconComponent,
+    TooltipDirective,
+    ButtonComponent,
+    RouterLink,
+    CardActionsDirective,
+    PaginationComponent,
+    AsyncPipe,
+    DecimalPipe,
+  ],
 })
 export class ScoreLeaderboardsComponent extends LocalState<ScoreLeaderboardsState> {
   constructor(

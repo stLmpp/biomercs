@@ -2,7 +2,13 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnIni
 import { AuthService } from '../../auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
-import { ControlBuilder, Validators } from '@stlmpp/control';
+import {
+  ControlBuilder,
+  Validators,
+  StControlModule,
+  StControlCommonModule,
+  StControlValueModule,
+} from '@stlmpp/control';
 import { finalize, Observable, tap } from 'rxjs';
 import { catchAndThrow } from '@util/operators/catch-and-throw';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
@@ -10,6 +16,16 @@ import { User } from '@model/user';
 import { AuthRegisterVW, AuthSteamValidateNames } from '@model/auth';
 import { EmailExistsValidator } from '@shared/validators/email-exists.validator';
 import { SteamRegisterNameExistsValidator } from '@shared/validators/steam-register-name-exists.validator';
+import { CardComponent } from '../../../shared/components/card/card.component';
+import { CardTitleDirective } from '../../../shared/components/card/card-title.directive';
+import { CardContentDirective } from '../../../shared/components/card/card-content.directive';
+import { ConfirmationCodeInputComponent } from '../../shared/confirmation-code-input/confirmation-code-input.component';
+import { FormFieldComponent } from '../../../shared/components/form/form-field.component';
+import { InputDirective } from '../../../shared/components/form/input.directive';
+import { FormFieldErrorsDirective } from '../../../shared/components/form/errors.directive';
+import { FormFieldErrorComponent } from '../../../shared/components/form/error.component';
+import { CardActionsDirective } from '../../../shared/components/card/card-actions.directive';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
 
 interface SteamRegisterForm {
   code: number | null;
@@ -18,11 +34,25 @@ interface SteamRegisterForm {
 }
 
 @Component({
-    selector: 'bio-steam-register',
-    templateUrl: './steam-register.component.html',
-    styleUrls: ['./steam-register.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'bio-steam-register',
+  templateUrl: './steam-register.component.html',
+  styleUrls: ['./steam-register.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    StControlModule,
+    StControlCommonModule,
+    CardComponent,
+    CardTitleDirective,
+    CardContentDirective,
+    ConfirmationCodeInputComponent,
+    FormFieldComponent,
+    InputDirective,
+    StControlValueModule,
+    FormFieldErrorsDirective,
+    FormFieldErrorComponent,
+    CardActionsDirective,
+    ButtonComponent,
+  ],
 })
 export class SteamRegisterComponent implements OnDestroy, OnInit {
   constructor(

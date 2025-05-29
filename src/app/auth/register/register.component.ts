@@ -2,13 +2,34 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/
 import { debounceTime, finalize, Observable, pluck, tap } from 'rxjs';
 import { AuthService } from '../auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ControlBuilder, Validators } from '@stlmpp/control';
+import {
+  ControlBuilder,
+  Validators,
+  StControlModule,
+  StControlCommonModule,
+  StControlValueModule,
+} from '@stlmpp/control';
 import { catchAndThrow } from '@util/operators/catch-and-throw';
 import { EmailExistsValidator } from '@shared/validators/email-exists.validator';
 import { UsernameExistsValidator } from '@shared/validators/username-exists.validator';
 import { AuthRegister, AuthRegisterVW } from '@model/auth';
 import { User } from '@model/user';
 import { Destroyable } from '@shared/components/common/destroyable-component';
+import { CardComponent } from '../../shared/components/card/card.component';
+import { CardTitleDirective } from '../../shared/components/card/card-title.directive';
+import { CardContentDirective } from '../../shared/components/card/card-content.directive';
+import { ConfirmationCodeInputComponent } from '../shared/confirmation-code-input/confirmation-code-input.component';
+import { FormFieldComponent } from '../../shared/components/form/form-field.component';
+import { InputDirective } from '../../shared/components/form/input.directive';
+import { FormFieldErrorsDirective } from '../../shared/components/form/errors.directive';
+import { FormFieldErrorComponent } from '../../shared/components/form/error.component';
+import { FormFieldHintDirective } from '../../shared/components/form/hint.directive';
+import { ButtonComponent } from '../../shared/components/button/button.component';
+import { SuffixDirective } from '../../shared/components/common/suffix.directive';
+import { IconComponent } from '../../shared/components/icon/icon.component';
+import { PasswordStrongComponent } from '../shared/password-strong/password-strong.component';
+import { CardActionsDirective } from '../../shared/components/card/card-actions.directive';
+import { AsyncPipe } from '@angular/common';
 
 interface AuthRegisterForm extends AuthRegister {
   confirmPassword: string;
@@ -16,11 +37,30 @@ interface AuthRegisterForm extends AuthRegister {
 }
 
 @Component({
-    selector: 'bio-register',
-    templateUrl: './register.component.html',
-    styleUrls: ['./register.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'bio-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    StControlModule,
+    StControlCommonModule,
+    CardComponent,
+    CardTitleDirective,
+    CardContentDirective,
+    ConfirmationCodeInputComponent,
+    FormFieldComponent,
+    InputDirective,
+    StControlValueModule,
+    FormFieldErrorsDirective,
+    FormFieldErrorComponent,
+    FormFieldHintDirective,
+    ButtonComponent,
+    SuffixDirective,
+    IconComponent,
+    PasswordStrongComponent,
+    CardActionsDirective,
+    AsyncPipe,
+  ],
 })
 export class RegisterComponent extends Destroyable {
   constructor(

@@ -22,18 +22,20 @@ import { Accordion } from '@shared/components/accordion/accordion';
 import { Subject, takeUntil } from 'rxjs';
 import { FocusableOption } from '@angular/cdk/a11y';
 import { Key } from '@model/enum/key';
+import { IconComponent } from '../icon/icon.component';
+import { CollapseComponent } from '../collapse/collapse.component';
 
 @Component({
-    selector: 'bio-accordion-item',
-    templateUrl: './accordion-item.component.html',
-    styleUrls: ['./accordion-item.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [{ provide: CdkAccordionItem, useExisting: AccordionItemComponent }],
-    host: { class: 'accordion-item', '[attr.id]': 'id' },
-    animations: [Animations.collapse.collapse(), Animations.collapse.collapseIcon()],
-    encapsulation: ViewEncapsulation.None,
-    inputs: ['id'],
-    standalone: false
+  selector: 'bio-accordion-item',
+  templateUrl: './accordion-item.component.html',
+  styleUrls: ['./accordion-item.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [{ provide: CdkAccordionItem, useExisting: AccordionItemComponent }],
+  host: { class: 'accordion-item', '[attr.id]': 'id' },
+  animations: [Animations.collapse.collapse(), Animations.collapse.collapseIcon()],
+  encapsulation: ViewEncapsulation.None,
+  inputs: ['id'],
+  imports: [IconComponent, CollapseComponent],
 })
 export class AccordionItemComponent extends CdkAccordionItem implements OnInit, OnDestroy, FocusableOption {
   constructor(

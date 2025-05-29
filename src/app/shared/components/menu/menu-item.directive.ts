@@ -5,10 +5,9 @@ import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { ButtonComponent } from '../button/button.component';
 
 @Directive({
-    selector: '[bioMenuItem]:not([bioButton])',
-    host: { class: 'menu-item', tabindex: '0' },
-    providers: [{ provide: MenuItem, useExisting: MenuItemDirective }],
-    standalone: false
+  selector: '[bioMenuItem]:not([bioButton])',
+  host: { class: 'menu-item', tabindex: '0' },
+  providers: [{ provide: MenuItem, useExisting: MenuItemDirective }],
 })
 export class MenuItemDirective extends MenuItem {
   constructor(@Host() menu: MenuComponent, elementRef: ElementRef) {
@@ -38,10 +37,9 @@ export class MenuItemDirective extends MenuItem {
 }
 
 @Directive({
-    selector: '[bioButton][bioMenuItem]',
-    host: { class: 'menu-item' },
-    providers: [{ provide: MenuItem, useExisting: MenuItemButtonDirective }],
-    standalone: false
+  selector: '[bioButton][bioMenuItem]',
+  host: { class: 'menu-item' },
+  providers: [{ provide: MenuItem, useExisting: MenuItemButtonDirective }],
 })
 export class MenuItemButtonDirective extends MenuItem {
   constructor(@Host() menu: MenuComponent, elementRef: ElementRef, @Self() private buttonComponent: ButtonComponent) {

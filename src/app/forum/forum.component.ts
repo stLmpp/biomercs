@@ -1,12 +1,14 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ForumService } from './service/forum.service';
+import { BreadcrumbsComponent } from '../shared/breadcrumbs/breadcrumbs.component';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
-    selector: 'bio-forum',
-    templateUrl: './forum.component.html',
-    styleUrls: ['./forum.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'bio-forum',
+  templateUrl: './forum.component.html',
+  styleUrls: ['./forum.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [BreadcrumbsComponent, RouterOutlet],
 })
 export class ForumComponent implements OnInit, OnDestroy {
   constructor(private forumService: ForumService) {}

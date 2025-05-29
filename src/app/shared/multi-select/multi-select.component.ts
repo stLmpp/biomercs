@@ -1,12 +1,14 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
+import { ButtonComponent } from '../components/button/button.component';
+import { IconComponent } from '../components/icon/icon.component';
 
 @Component({
-    selector: 'bio-multi-select',
-    templateUrl: './multi-select.component.html',
-    styleUrls: ['./multi-select.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'bio-multi-select',
+  templateUrl: './multi-select.component.html',
+  styleUrls: ['./multi-select.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [ButtonComponent, IconComponent],
 })
 export class MultiSelectComponent {
   private _disabledSelectAll = false;

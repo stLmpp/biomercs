@@ -3,8 +3,30 @@ import { SubCategoryService } from '../service/sub-category.service';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import { SubCategory, SubCategoryAddDto, SubCategoryUpdateDto } from '@model/forum/sub-category';
 import { finalize, map, Observable } from 'rxjs';
-import { Control, ControlGroup, Validators } from '@stlmpp/control';
+import {
+  Control,
+  ControlGroup,
+  Validators,
+  StControlModule,
+  StControlCommonModule,
+  StControlValueModule,
+} from '@stlmpp/control';
 import { ModalRef } from '@shared/components/modal/modal-ref';
+import { LoadingComponent } from '../../shared/components/spinner/loading/loading.component';
+import { ModalTitleDirective } from '../../shared/components/modal/modal-title.directive';
+import { ModalContentDirective } from '../../shared/components/modal/modal-content.directive';
+import { FormFieldComponent } from '../../shared/components/form/form-field.component';
+import { InputDirective } from '../../shared/components/form/input.directive';
+import { FormFieldHintDirective } from '../../shared/components/form/hint.directive';
+import { FormFieldErrorsDirective } from '../../shared/components/form/errors.directive';
+import { FormFieldErrorComponent } from '../../shared/components/form/error.component';
+import { TextareaDirective } from '../../shared/components/form/textarea.directive';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { CheckboxComponent } from '../../shared/components/checkbox/checkbox.component';
+import { ModalActionsDirective } from '../../shared/components/modal/modal-actions.directive';
+import { ButtonComponent } from '../../shared/components/button/button.component';
+import { ModalCloseDirective } from '../../shared/components/modal/modal-close.directive';
+import { AsyncPipe } from '@angular/common';
 
 export interface ForumSubCategoryAddEditComponentData {
   idSubCategory: number | undefined;
@@ -12,11 +34,30 @@ export interface ForumSubCategoryAddEditComponentData {
 }
 
 @Component({
-    selector: 'bio-forum-sub-category-add-edit',
-    templateUrl: './forum-sub-category-add-edit.component.html',
-    styleUrls: ['./forum-sub-category-add-edit.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'bio-forum-sub-category-add-edit',
+  templateUrl: './forum-sub-category-add-edit.component.html',
+  styleUrls: ['./forum-sub-category-add-edit.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    LoadingComponent,
+    StControlModule,
+    StControlCommonModule,
+    ModalTitleDirective,
+    ModalContentDirective,
+    FormFieldComponent,
+    InputDirective,
+    StControlValueModule,
+    FormFieldHintDirective,
+    FormFieldErrorsDirective,
+    FormFieldErrorComponent,
+    TextareaDirective,
+    CdkTextareaAutosize,
+    CheckboxComponent,
+    ModalActionsDirective,
+    ButtonComponent,
+    ModalCloseDirective,
+    AsyncPipe,
+  ],
 })
 export class ForumSubCategoryAddEditComponent implements OnInit {
   constructor(

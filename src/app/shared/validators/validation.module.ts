@@ -5,7 +5,7 @@ import { HasValidatorsPipe } from '@shared/validators/has-validators.pipe';
 const DECLARATIONS = [PersonaNameExistsValidatorDirective, HasValidatorsPipe];
 
 @NgModule({
-  declarations: [...DECLARATIONS],
+  imports: [...DECLARATIONS],
   exports: [...DECLARATIONS],
 })
 export class ValidationModule {}

@@ -9,8 +9,7 @@ const DECLARATIONS = [TooltipComponent, TooltipDirective];
 const MODULES = [CommonModule, OverlayModule];
 
 @NgModule({
-  declarations: [...DECLARATIONS],
-  imports: [...MODULES],
+  imports: [...MODULES, ...DECLARATIONS],
   exports: [...DECLARATIONS, ...MODULES],
 })
 export class TooltipModule {

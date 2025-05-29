@@ -8,15 +8,50 @@ import { Player } from '@model/player';
 import { orderBy } from 'st-utils';
 import { trackById } from '@util/track-by';
 import { ModalRef } from '@shared/components/modal/modal-ref';
+import { LoadingComponent } from '../../shared/components/spinner/loading/loading.component';
+import { ModalTitleDirective } from '../../shared/components/modal/modal-title.directive';
+import { ModalContentDirective } from '../../shared/components/modal/modal-content.directive';
+import { MultiSelectComponent } from '../../shared/multi-select/multi-select.component';
+import { ListDirective } from '../../shared/components/list/list.directive';
+import { MultiSelectItemsComponent } from '../../shared/multi-select/multi-select-items.component';
+import { LoadingDirective } from '../../shared/components/spinner/loading/loading.directive';
+import { ListItemComponent } from '../../shared/components/list/list-item.component';
+import { ButtonComponent } from '../../shared/components/button/button.component';
+import { PrefixDirective } from '../../shared/components/common/prefix.directive';
+import { IconComponent } from '../../shared/components/icon/icon.component';
+import { ListItemLineDirective } from '../../shared/components/list/list-item-line.directive';
+import { TooltipDirective } from '../../shared/components/tooltip/tooltip.directive';
+import { ModalActionsDirective } from '../../shared/components/modal/modal-actions.directive';
+import { ModalCloseDirective } from '../../shared/components/modal/modal-close.directive';
+import { StUtilsArrayModule } from '@stlmpp/utils';
+import { ForumModeratorManagementValidationPipe } from './forum-moderator-management-validation.pipe';
 
 let uid = -1;
 
 @Component({
-    selector: 'bio-forum-moderator-management',
-    templateUrl: './forum-moderator-management.component.html',
-    styleUrls: ['./forum-moderator-management.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'bio-forum-moderator-management',
+  templateUrl: './forum-moderator-management.component.html',
+  styleUrls: ['./forum-moderator-management.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    LoadingComponent,
+    ModalTitleDirective,
+    ModalContentDirective,
+    MultiSelectComponent,
+    ListDirective,
+    MultiSelectItemsComponent,
+    LoadingDirective,
+    ListItemComponent,
+    ButtonComponent,
+    PrefixDirective,
+    IconComponent,
+    ListItemLineDirective,
+    TooltipDirective,
+    ModalActionsDirective,
+    ModalCloseDirective,
+    StUtilsArrayModule,
+    ForumModeratorManagementValidationPipe,
+  ],
 })
 export class ForumModeratorManagementComponent extends Destroyable implements OnInit {
   constructor(

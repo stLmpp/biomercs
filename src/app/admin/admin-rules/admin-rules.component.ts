@@ -2,13 +2,39 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/
 import { ActivatedRoute } from '@angular/router';
 import { Rule, RuleTypeEnum, RuleUpsert } from '@model/rule';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
-import { Control, ControlArray, ControlBuilder, ControlGroup, Validators } from '@stlmpp/control';
+import {
+  Control,
+  ControlArray,
+  ControlBuilder,
+  ControlGroup,
+  Validators,
+  StControlModule,
+  StControlCommonModule,
+  StControlValueModule,
+} from '@stlmpp/control';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { RuleService } from '../../rules/rule.service';
 import { finalize, tap } from 'rxjs';
 import { SnackBarService } from '@shared/components/snack-bar/snack-bar.service';
 import { UnsavedData, UnsavedDataType } from '@shared/guards/unsaved-data.guard';
 import { trackByControl } from '@util/track-by';
+import { CardComponent } from '../../shared/components/card/card.component';
+import { CardTitleDirective } from '../../shared/components/card/card-title.directive';
+import { CardContentDirective } from '../../shared/components/card/card-content.directive';
+import { CdkDropList, CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
+import { FormFieldComponent } from '../../shared/components/form/form-field.component';
+import { SelectComponent } from '../../shared/components/select/select.component';
+import { OptionComponent } from '../../shared/components/select/option.component';
+import { ButtonComponent } from '../../shared/components/button/button.component';
+import { IconComponent } from '../../shared/components/icon/icon.component';
+import { InputDirective } from '../../shared/components/form/input.directive';
+import { TextareaDirective } from '../../shared/components/form/textarea.directive';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { FormFieldErrorsDirective } from '../../shared/components/form/errors.directive';
+import { FormFieldErrorComponent } from '../../shared/components/form/error.component';
+import { LoadingComponent } from '../../shared/components/spinner/loading/loading.component';
+import { CardActionsDirective } from '../../shared/components/card/card-actions.directive';
+import { AsyncPipe } from '@angular/common';
 
 export type RuleUpsertForm = Omit<RuleUpsert, 'deleted'>;
 
@@ -19,11 +45,34 @@ interface RulesForm {
 }
 
 @Component({
-    selector: 'bio-admin-rules',
-    templateUrl: './admin-rules.component.html',
-    styleUrls: ['./admin-rules.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'bio-admin-rules',
+  templateUrl: './admin-rules.component.html',
+  styleUrls: ['./admin-rules.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    StControlModule,
+    StControlCommonModule,
+    CardComponent,
+    CardTitleDirective,
+    CardContentDirective,
+    CdkDropList,
+    FormFieldComponent,
+    SelectComponent,
+    OptionComponent,
+    ButtonComponent,
+    CdkDrag,
+    IconComponent,
+    CdkDragHandle,
+    InputDirective,
+    TextareaDirective,
+    StControlValueModule,
+    CdkTextareaAutosize,
+    FormFieldErrorsDirective,
+    FormFieldErrorComponent,
+    LoadingComponent,
+    CardActionsDirective,
+    AsyncPipe,
+  ],
 })
 export class AdminRulesComponent implements UnsavedData {
   constructor(

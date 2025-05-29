@@ -9,21 +9,21 @@ import {
 } from '@angular/core';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { Animations } from '../../animations/animations';
-import { FocusKeyManager } from '@angular/cdk/a11y';
+import { FocusKeyManager, CdkTrapFocus } from '@angular/cdk/a11y';
 import { MenuItem } from './menu-item';
 import { AnimationEvent } from '@angular/animations';
 import { Menu } from './menu';
 
 @Component({
-    selector: 'bio-menu',
-    templateUrl: './menu.component.html',
-    styleUrls: ['./menu.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    exportAs: 'bio-menu',
-    encapsulation: ViewEncapsulation.None,
-    animations: [Animations.fade.inOut(100), Animations.scale.in(100, 0.8)],
-    providers: [{ provide: Menu, useExisting: MenuComponent }],
-    standalone: false
+  selector: 'bio-menu',
+  templateUrl: './menu.component.html',
+  styleUrls: ['./menu.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  exportAs: 'bio-menu',
+  encapsulation: ViewEncapsulation.None,
+  animations: [Animations.fade.inOut(100), Animations.scale.in(100, 0.8)],
+  providers: [{ provide: Menu, useExisting: MenuComponent }],
+  imports: [CdkTrapFocus],
 })
 export class MenuComponent extends Menu {
   @ViewChild(TemplateRef) readonly templateRef!: TemplateRef<any>;

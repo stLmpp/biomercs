@@ -8,11 +8,10 @@ import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { finalize } from 'rxjs';
 
 @Component({
-    selector: 'bio-forum-topic-new',
-    templateUrl: './forum-topic-new.component.html',
-    styleUrls: ['./forum-topic-new.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'bio-forum-topic-new',
+  templateUrl: './forum-topic-new.component.html',
+  styleUrls: ['./forum-topic-new.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ForumTopicNewComponent {
   constructor(

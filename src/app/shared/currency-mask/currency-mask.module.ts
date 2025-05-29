@@ -5,9 +5,8 @@ import { CurrencyMaskConfig } from 'ngx-currency';
 import { CURRENCY_MASK_CONFIG } from '@shared/currency-mask/currency-mask-config.token';
 
 @NgModule({
-  declarations: [CurrencyMaskDirective],
   exports: [CurrencyMaskDirective],
-  imports: [CommonModule],
+  imports: [CommonModule, CurrencyMaskDirective],
 })
 export class CurrencyMaskModule {
   static forFeature(config?: Partial<CurrencyMaskConfig>): ModuleWithProviders<CurrencyMaskModule> {

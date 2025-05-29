@@ -5,8 +5,7 @@ import { MASK_CONFIG } from '@shared/mask/mask-config.token';
 import { IConfig } from 'ngx-mask';
 
 @NgModule({
-  declarations: [MaskDirective],
-  imports: [CommonModule],
+  imports: [CommonModule, MaskDirective],
   exports: [MaskDirective],
 })
 export class MaskModule {

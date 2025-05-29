@@ -22,7 +22,7 @@ import { OptionComponent } from './option.component';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { cdkOverlayTransparentBackdrop } from '@util/overlay';
-import { FocusKeyManager } from '@angular/cdk/a11y';
+import { FocusKeyManager, CdkTrapFocus } from '@angular/cdk/a11y';
 import { Animations } from '../../animations/animations';
 import { AnimationEvent } from '@angular/animations';
 import { OptgroupComponent } from './optgroup.component';
@@ -31,21 +31,22 @@ import { Key } from '@model/enum/key';
 import { getOverlayPositionMenu } from '@shared/components/menu/util';
 import { ControlState } from '@stlmpp/control/lib/control/control';
 import { FormFieldChild } from '@shared/components/form/form-field-child';
+import { IconComponent } from '../icon/icon.component';
 
 @Component({
-    selector: 'bio-select:not([multiple])',
-    templateUrl: './select.component.html',
-    styleUrls: ['./select.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None,
-    host: { class: 'bio-select input' },
-    providers: [
-        { provide: Select, useExisting: SelectComponent },
-        { provide: ControlValue, useExisting: SelectComponent, multi: true },
-        { provide: FormFieldChild, useExisting: SelectComponent },
-    ],
-    animations: [Animations.fade.inOut(100), Animations.scale.in(100, 0.8)],
-    standalone: false
+  selector: 'bio-select:not([multiple])',
+  templateUrl: './select.component.html',
+  styleUrls: ['./select.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  host: { class: 'bio-select input' },
+  providers: [
+    { provide: Select, useExisting: SelectComponent },
+    { provide: ControlValue, useExisting: SelectComponent, multi: true },
+    { provide: FormFieldChild, useExisting: SelectComponent },
+  ],
+  animations: [Animations.fade.inOut(100), Animations.scale.in(100, 0.8)],
+  imports: [IconComponent, CdkTrapFocus],
 })
 // I had to do "implements", instead of "extends", so I can use the "Select" abstract class
 export class SelectComponent extends Select implements ControlValue, AfterContentInit, AfterViewInit {

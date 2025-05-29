@@ -23,11 +23,10 @@ import { SimpleChangesCustom } from '@util/util';
 import { ForumService } from '../../service/forum.service';
 
 @Component({
-    selector: 'bio-forum-topic-post',
-    templateUrl: './forum-topic-post.component.html',
-    styleUrls: ['./forum-topic-post.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'bio-forum-topic-post',
+  templateUrl: './forum-topic-post.component.html',
+  styleUrls: ['./forum-topic-post.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ForumTopicPostComponent implements AfterViewInit, OnChanges {
   constructor(

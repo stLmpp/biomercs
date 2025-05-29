@@ -2,15 +2,16 @@ import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, Vie
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { AbstractComponent } from '../core/abstract-component';
 import { FocusableOption } from '@angular/cdk/a11y';
+import { SpinnerComponent } from '../spinner/spinner.component';
 
 @Component({
-    selector: 'button[bioButton],a[bioButton]',
-    templateUrl: './button.component.html',
-    styleUrls: ['./button.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    host: { class: 'button' },
-    standalone: false
+  selector: 'button[bioButton],a[bioButton]',
+  templateUrl: './button.component.html',
+  styleUrls: ['./button.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'button' },
+  imports: [SpinnerComponent],
 })
 export class ButtonComponent extends AbstractComponent implements FocusableOption {
   constructor(private elementRef: ElementRef<HTMLButtonElement>) {

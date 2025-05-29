@@ -11,7 +11,6 @@ import { NgLetModule } from '@stlmpp/utils';
 import { MenuModule } from '@shared/components/menu/menu.module';
 
 @NgModule({
-  declarations: [NotificationsComponent, NotificationsIconComponent],
   imports: [
     CommonModule,
     ButtonModule,
@@ -21,6 +20,8 @@ import { MenuModule } from '@shared/components/menu/menu.module';
     OverlayModule,
     NgLetModule,
     MenuModule,
+    NotificationsComponent,
+    NotificationsIconComponent,
   ],
   exports: [NotificationsIconComponent, NotificationsComponent],
 })

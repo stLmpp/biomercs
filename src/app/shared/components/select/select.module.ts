@@ -12,8 +12,7 @@ const DECLARATIONS = [SelectComponent, OptionComponent, OptgroupComponent, Selec
 const MODULES = [CommonModule, IconModule, A11yModule, CheckboxModule];
 
 @NgModule({
-  declarations: [...DECLARATIONS],
-  imports: [...MODULES],
+  imports: [...MODULES, ...DECLARATIONS],
   exports: [...DECLARATIONS, ...MODULES],
 })
 export class SelectModule {}

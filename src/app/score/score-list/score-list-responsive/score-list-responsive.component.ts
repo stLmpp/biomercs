@@ -10,13 +10,16 @@ import { PaginationMeta } from '@model/pagination';
 import { TableCellNotifyChange, TableOrder } from '@shared/components/table/type';
 import { ColDef } from '@shared/components/table/col-def';
 import { PaginationComponent } from '@shared/components/pagination/pagination.component';
+import { ScoreListComponent } from '../score-list/score-list.component';
+import { TableComponent } from '../../../shared/components/table/table.component';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
-    selector: 'bio-score-list-responsive',
-    templateUrl: './score-list-responsive.component.html',
-    styleUrls: ['./score-list-responsive.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'bio-score-list-responsive',
+  templateUrl: './score-list-responsive.component.html',
+  styleUrls: ['./score-list-responsive.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [ScoreListComponent, TableComponent, AsyncPipe],
 })
 export class ScoreListResponsiveComponent<T extends Score = Score> {
   constructor(private breakpointObserverService: BreakpointObserverService) {}

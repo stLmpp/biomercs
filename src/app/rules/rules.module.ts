@@ -8,7 +8,6 @@ import { SelectModule } from '@shared/components/select/select.module';
 import { StControlModule } from '@stlmpp/control';
 
 @NgModule({
-  declarations: [RulesComponent],
-  imports: [RulesRoutingModule, CardModule, ButtonModule, FormModule, SelectModule, StControlModule],
+  imports: [RulesRoutingModule, CardModule, ButtonModule, FormModule, SelectModule, StControlModule, RulesComponent],
 })
 export class RulesModule {}

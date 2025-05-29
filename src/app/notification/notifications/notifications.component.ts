@@ -28,6 +28,18 @@ import { ScoreStatusEnum } from '@model/enum/score-status.enum';
 import { PlayerModalService } from '../../player/player-modal.service';
 import { arrayUtil } from 'st-utils';
 import { Router } from '@angular/router';
+import { ButtonComponent } from '../../shared/components/button/button.component';
+import { ListDirective, ListSelectable } from '../../shared/components/list/list.directive';
+import { LoadingDirective } from '../../shared/components/spinner/loading/loading.directive';
+import { ɵɵCdkVirtualScrollViewport, ɵɵCdkFixedSizeVirtualScroll, ɵɵCdkVirtualForOf } from '@angular/cdk/overlay';
+import { ListItemComponent } from '../../shared/components/list/list-item.component';
+import { ListItemLineDirective } from '../../shared/components/list/list-item-line.directive';
+import { SpinnerComponent } from '../../shared/components/spinner/spinner.component';
+import { SuffixDirective } from '../../shared/components/common/suffix.directive';
+import { MenuTriggerDirective } from '../../shared/components/menu/menu-trigger.directive';
+import { IconComponent } from '../../shared/components/icon/icon.component';
+import { MenuComponent } from '../../shared/components/menu/menu.component';
+import { MenuItemButtonDirective } from '../../shared/components/menu/menu-item.directive';
 
 interface NotificationCustom extends Notification {
   loading?: boolean;
@@ -36,12 +48,28 @@ interface NotificationCustom extends Notification {
 }
 
 @Component({
-    selector: 'bio-notifications',
-    templateUrl: './notifications.component.html',
-    styleUrls: ['./notifications.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    host: { class: 'notifications' },
-    standalone: false
+  selector: 'bio-notifications',
+  templateUrl: './notifications.component.html',
+  styleUrls: ['./notifications.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'notifications' },
+  imports: [
+    ButtonComponent,
+    ListDirective,
+    ListSelectable,
+    LoadingDirective,
+    ɵɵCdkVirtualScrollViewport,
+    ɵɵCdkFixedSizeVirtualScroll,
+    ɵɵCdkVirtualForOf,
+    ListItemComponent,
+    ListItemLineDirective,
+    SpinnerComponent,
+    SuffixDirective,
+    MenuTriggerDirective,
+    IconComponent,
+    MenuComponent,
+    MenuItemButtonDirective,
+  ],
 })
 export class NotificationsComponent extends Destroyable implements OnInit {
   constructor(

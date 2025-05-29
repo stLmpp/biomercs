@@ -17,14 +17,16 @@ import {
 } from 'date-fns';
 import { CalendarAdapter } from '@shared/components/datepicker/calendar-adapter';
 import { CalendarKeyboardNavigation } from '@shared/components/datepicker/calendar-keyboard-navigation';
+import { ButtonComponent } from '../../button/button.component';
+import { DateEqualPipe } from '../../../date/date-equal.pipe';
 
 @Component({
-    selector: 'bio-calendar-days',
-    templateUrl: './calendar-days.component.html',
-    styleUrls: ['./calendar-days.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [{ provide: CalendarKeyboardNavigation, useExisting: CalendarDaysComponent }],
-    standalone: false
+  selector: 'bio-calendar-days',
+  templateUrl: './calendar-days.component.html',
+  styleUrls: ['./calendar-days.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [{ provide: CalendarKeyboardNavigation, useExisting: CalendarDaysComponent }],
+  imports: [ButtonComponent, DateEqualPipe],
 })
 export class CalendarDaysComponent extends CalendarKeyboardNavigation {
   constructor(private readonly calendarAdapter: CalendarAdapter) {

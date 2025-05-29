@@ -3,10 +3,7 @@ import { AuthQuery } from '../auth.query';
 import { Player } from '@model/player';
 import { isNumber } from 'st-utils';
 
-@Pipe({
-    name: 'isSameAsLogged',
-    standalone: false
-})
+@Pipe({ name: 'isSameAsLogged' })
 export class IsSameAsLoggedPipe implements PipeTransform {
   constructor(private authQuery: AuthQuery) {}
 

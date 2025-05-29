@@ -21,17 +21,20 @@ import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { CardChild } from '@shared/components/card/card-child';
 import { Destroyable } from '@shared/components/common/destroyable-component';
 import { takeUntil } from 'rxjs';
+import { IconComponent } from '../icon/icon.component';
+import { CollapseComponent } from '../collapse/collapse.component';
+import { NgTemplateOutlet } from '@angular/common';
 
 @Component({
-    selector: 'bio-card',
-    templateUrl: './card.component.html',
-    styleUrls: ['./card.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    host: { class: 'card' },
-    animations: [Animations.skipFirstAnimation(), Animations.collapse.collapseIcon()],
-    exportAs: 'bio-card',
-    standalone: false
+  selector: 'bio-card',
+  templateUrl: './card.component.html',
+  styleUrls: ['./card.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'card' },
+  animations: [Animations.skipFirstAnimation(), Animations.collapse.collapseIcon()],
+  exportAs: 'bio-card',
+  imports: [IconComponent, CollapseComponent, NgTemplateOutlet],
 })
 export class CardComponent extends Destroyable implements AfterContentInit {
   constructor(private changeDetectorRef: ChangeDetectorRef, public elementRef: ElementRef<HTMLElement>) {

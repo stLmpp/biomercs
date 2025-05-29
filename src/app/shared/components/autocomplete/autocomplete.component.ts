@@ -15,22 +15,23 @@ import { Animations } from '@shared/animations/animations';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { AnimationEvent } from '@angular/animations';
 import { AutocompleteOptionDirective } from '@shared/components/autocomplete/autocomplete-option.directive';
-import { FocusKeyManager } from '@angular/cdk/a11y';
+import { FocusKeyManager, CdkTrapFocus } from '@angular/cdk/a11y';
 import { Autocomplete } from '@shared/components/autocomplete/autocomplete';
 import { Control } from '@stlmpp/control';
 import { noop } from 'st-utils';
 import { Key } from '@model/enum/key';
 import { Observable, of, pluck, startWith, Subject } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
-    selector: 'bio-autocomplete',
-    templateUrl: './autocomplete.component.html',
-    styleUrls: ['./autocomplete.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    animations: [Animations.fade.inOut(100), Animations.scale.in(100, 0.8)],
-    encapsulation: ViewEncapsulation.None,
-    providers: [{ provide: Autocomplete, useExisting: AutocompleteComponent }],
-    standalone: false
+  selector: 'bio-autocomplete',
+  templateUrl: './autocomplete.component.html',
+  styleUrls: ['./autocomplete.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [Animations.fade.inOut(100), Animations.scale.in(100, 0.8)],
+  encapsulation: ViewEncapsulation.None,
+  providers: [{ provide: Autocomplete, useExisting: AutocompleteComponent }],
+  imports: [CdkTrapFocus, AsyncPipe],
 })
 export class AutocompleteComponent extends Autocomplete implements AfterContentInit {
   constructor(private renderer2: Renderer2, public changeDetectorRef: ChangeDetectorRef) {

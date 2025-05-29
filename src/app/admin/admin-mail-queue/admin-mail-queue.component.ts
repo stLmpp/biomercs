@@ -4,13 +4,18 @@ import { MailStatusQueue } from '@model/mail';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { MailService } from '@shared/services/mail/mail.service';
 import { finalize, tap } from 'rxjs';
+import { CardComponent } from '../../shared/components/card/card.component';
+import { CardTitleDirective } from '../../shared/components/card/card-title.directive';
+import { CardContentDirective } from '../../shared/components/card/card-content.directive';
+import { CardActionsDirective } from '../../shared/components/card/card-actions.directive';
+import { ButtonComponent } from '../../shared/components/button/button.component';
 
 @Component({
-    selector: 'bio-admin-mail-queue',
-    templateUrl: './admin-mail-queue.component.html',
-    styleUrls: ['./admin-mail-queue.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'bio-admin-mail-queue',
+  templateUrl: './admin-mail-queue.component.html',
+  styleUrls: ['./admin-mail-queue.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [CardComponent, CardTitleDirective, CardContentDirective, CardActionsDirective, ButtonComponent],
 })
 export class AdminMailQueueComponent {
   constructor(
