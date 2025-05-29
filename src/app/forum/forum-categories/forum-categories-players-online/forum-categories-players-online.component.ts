@@ -3,10 +3,11 @@ import { trackById } from '@util/track-by';
 import { ForumService } from '../../service/forum.service';
 
 @Component({
-  selector: 'bio-forum-categories-players-online',
-  templateUrl: './forum-categories-players-online.component.html',
-  styleUrls: ['./forum-categories-players-online.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-forum-categories-players-online',
+    templateUrl: './forum-categories-players-online.component.html',
+    styleUrls: ['./forum-categories-players-online.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ForumCategoriesPlayersOnlineComponent {
   constructor(private forumService: ForumService) {}

@@ -36,10 +36,11 @@ export interface TextAreaEvent {
 }
 
 @Component({
-  selector: 'bio-score-request-changes-modal',
-  templateUrl: './score-request-changes-modal.component.html',
-  styleUrls: ['./score-request-changes-modal.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-score-request-changes-modal',
+    templateUrl: './score-request-changes-modal.component.html',
+    styleUrls: ['./score-request-changes-modal.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ScoreRequestChangesModalComponent implements OnInit, AfterViewInit {
   constructor(

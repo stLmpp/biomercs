@@ -34,13 +34,14 @@ interface CalendarComponentState {
 }
 
 @Component({
-  selector: 'bio-calendar',
-  templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
-  host: { class: 'bio-calendar' },
-  providers: [{ provide: ControlValue, useExisting: CalendarComponent, multi: true }],
+    selector: 'bio-calendar',
+    templateUrl: './calendar.component.html',
+    styleUrls: ['./calendar.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.None,
+    host: { class: 'bio-calendar' },
+    providers: [{ provide: ControlValue, useExisting: CalendarComponent, multi: true }],
+    standalone: false
 })
 export class CalendarComponent
   extends LocalState<CalendarComponentState>

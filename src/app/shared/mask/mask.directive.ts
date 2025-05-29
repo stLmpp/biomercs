@@ -28,8 +28,9 @@ export class MaskService extends _MaskService {
 }
 
 @Directive({
-  selector: 'input[bioMask]',
-  providers: [{ provide: ControlValue, useExisting: MaskDirective, multi: false }, MaskService],
+    selector: 'input[bioMask]',
+    providers: [{ provide: ControlValue, useExisting: MaskDirective, multi: false }, MaskService],
+    standalone: false
 })
 export class MaskDirective extends _MaskDirective implements ControlValue<string>, OnChanges {
   constructor(

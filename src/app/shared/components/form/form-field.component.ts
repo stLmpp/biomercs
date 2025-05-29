@@ -28,13 +28,14 @@ import { ControlState } from '@stlmpp/control/lib/control/control';
 let uniqueId = 0;
 
 @Component({
-  selector: 'bio-form-field',
-  templateUrl: './form-field.component.html',
-  styleUrls: ['./form-field.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
-  host: { class: 'form-field' },
-  animations: [Animations.slide.in(), Animations.fade.in()],
+    selector: 'bio-form-field',
+    templateUrl: './form-field.component.html',
+    styleUrls: ['./form-field.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.None,
+    host: { class: 'form-field' },
+    animations: [Animations.slide.in(), Animations.fade.in()],
+    standalone: false
 })
 export class FormFieldComponent implements AfterContentInit, OnChanges, OnDestroy {
   constructor(private changeDetectorRef: ChangeDetectorRef) {}

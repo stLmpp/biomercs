@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/
 import { ForumService } from './service/forum.service';
 
 @Component({
-  selector: 'bio-forum',
-  templateUrl: './forum.component.html',
-  styleUrls: ['./forum.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-forum',
+    templateUrl: './forum.component.html',
+    styleUrls: ['./forum.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ForumComponent implements OnInit, OnDestroy {
   constructor(private forumService: ForumService) {}

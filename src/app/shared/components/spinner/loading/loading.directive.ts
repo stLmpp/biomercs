@@ -15,8 +15,9 @@ import { LoadingComponent } from './loading.component';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 
 @Directive({
-  selector: '[bioLoading]',
-  host: { '[style.position]': `'relative'` },
+    selector: '[bioLoading]',
+    host: { '[style.position]': `'relative'` },
+    standalone: false
 })
 export class LoadingDirective implements OnInit, AfterViewInit, OnDestroy {
   constructor(

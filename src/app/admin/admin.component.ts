@@ -3,10 +3,11 @@ import { mdiAccountLock, mdiEmailSyncOutline } from '@mdi/js';
 import { HeaderQuery } from '../header/header.query';
 
 @Component({
-  selector: 'bio-admin',
-  templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-admin',
+    templateUrl: './admin.component.html',
+    styleUrls: ['./admin.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AdminComponent {
   constructor(private headerQuery: HeaderQuery) {}

@@ -3,11 +3,12 @@ import { CalendarKeyboardNavigation } from '@shared/components/datepicker/calend
 import { trackByFactory } from '@stlmpp/utils';
 
 @Component({
-  selector: 'bio-calendar-years',
-  templateUrl: './calendar-years.component.html',
-  styleUrls: ['./calendar-years.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [{ provide: CalendarKeyboardNavigation, useExisting: CalendarYearsComponent }],
+    selector: 'bio-calendar-years',
+    templateUrl: './calendar-years.component.html',
+    styleUrls: ['./calendar-years.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [{ provide: CalendarKeyboardNavigation, useExisting: CalendarYearsComponent }],
+    standalone: false
 })
 export class CalendarYearsComponent extends CalendarKeyboardNavigation {
   @Input() years: number[] = [];

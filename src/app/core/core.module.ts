@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, LOCALE_ID, ModuleWithProviders, NgModule, Provider } from '@angular/core';
+import { LOCALE_ID, ModuleWithProviders, NgModule, Provider, inject, provideAppInitializer } from '@angular/core';
 import { WINDOW, WINDOW_PROVIDERS } from './window.service';
 import { ApiInterceptor } from './interceptor/api.interceptor';
 import { DateInterceptor } from './interceptor/date.interceptor';
@@ -50,12 +50,10 @@ export class CoreModule {
           RetryInterceptor,
           FormatErrorInterceptor
         ),
-        {
-          provide: APP_INITIALIZER,
-          useFactory: (authAutoLoginService: AuthAutoLoginService) => () => authAutoLoginService.autoLogin(),
-          deps: [AuthAutoLoginService],
-          multi: true,
-        },
+        provideAppInitializer(() => {
+        const initializerFn = ((authAutoLoginService: AuthAutoLoginService) => () => authAutoLoginService.autoLogin())(inject(AuthAutoLoginService));
+        return initializerFn();
+      }),
         { provide: NAVIGATOR, useFactory: (window: Window) => window.navigator ?? {}, deps: [WINDOW] },
         { provide: TOOLTIP_DEFAULT_CONFIG, useValue: DEFAULT_TOOLTIP_CONFIG },
         { provide: MASK_CONFIG, useValue: {} },

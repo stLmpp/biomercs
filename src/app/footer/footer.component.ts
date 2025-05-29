@@ -3,10 +3,11 @@ import { BooleanInput } from 'st-utils';
 import packageJson from '../../../package.json';
 
 @Component({
-  selector: 'bio-footer',
-  templateUrl: './footer.component.html',
-  styleUrls: ['./footer.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-footer',
+    templateUrl: './footer.component.html',
+    styleUrls: ['./footer.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class FooterComponent {
   @Input()

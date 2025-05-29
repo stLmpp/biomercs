@@ -3,10 +3,11 @@ import { SimpleChangesCustom } from '@util/util';
 import { environment } from '@environment/environment';
 
 @Component({
-  selector: 'bio-player-avatar',
-  templateUrl: './player-avatar.component.html',
-  styleUrls: ['./player-avatar.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-player-avatar',
+    templateUrl: './player-avatar.component.html',
+    styleUrls: ['./player-avatar.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class PlayerAvatarComponent implements OnChanges {
   @Input() avatar: string | null | undefined;

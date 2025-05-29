@@ -12,10 +12,11 @@ import { ModalRef } from '@shared/components/modal/modal-ref';
 let uid = -1;
 
 @Component({
-  selector: 'bio-forum-moderator-management',
-  templateUrl: './forum-moderator-management.component.html',
-  styleUrls: ['./forum-moderator-management.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-forum-moderator-management',
+    templateUrl: './forum-moderator-management.component.html',
+    styleUrls: ['./forum-moderator-management.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ForumModeratorManagementComponent extends Destroyable implements OnInit {
   constructor(

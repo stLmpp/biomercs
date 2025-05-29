@@ -14,11 +14,12 @@ import { TableCellNotifyChange, TableOrder } from '@shared/components/table/type
 import { trackById } from '@util/track-by';
 
 @Component({
-  selector: 'bio-table',
-  templateUrl: './table.component.html',
-  styleUrls: ['./table.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
+    selector: 'bio-table',
+    templateUrl: './table.component.html',
+    styleUrls: ['./table.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class TableComponent<T extends Record<any, any>, K extends keyof T> {
   private _collapsable = false;

@@ -12,10 +12,11 @@ import { ColDef } from '@shared/components/table/col-def';
 import { PaginationComponent } from '@shared/components/pagination/pagination.component';
 
 @Component({
-  selector: 'bio-score-list-responsive',
-  templateUrl: './score-list-responsive.component.html',
-  styleUrls: ['./score-list-responsive.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-score-list-responsive',
+    templateUrl: './score-list-responsive.component.html',
+    styleUrls: ['./score-list-responsive.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ScoreListResponsiveComponent<T extends Score = Score> {
   constructor(private breakpointObserverService: BreakpointObserverService) {}

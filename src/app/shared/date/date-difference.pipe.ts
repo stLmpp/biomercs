@@ -52,7 +52,10 @@ export function dateDifference(
   return units.join(' and ');
 }
 
-@Pipe({ name: 'dateDifference' })
+@Pipe({
+    name: 'dateDifference',
+    standalone: false
+})
 export class DateDifferencePipe implements PipeTransform {
   transform(
     value: Date | undefined | null,

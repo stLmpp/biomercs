@@ -16,10 +16,11 @@ interface AuthRegisterForm extends AuthRegister {
 }
 
 @Component({
-  selector: 'bio-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-register',
+    templateUrl: './register.component.html',
+    styleUrls: ['./register.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class RegisterComponent extends Destroyable {
   constructor(

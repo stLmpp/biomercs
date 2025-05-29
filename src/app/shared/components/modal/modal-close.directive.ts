@@ -3,7 +3,8 @@ import { ModalRef } from './modal-ref';
 import { ModalService } from './modal.service';
 
 @Directive({
-  selector: '[bioModalClose]',
+    selector: '[bioModalClose]',
+    standalone: false
 })
 export class ModalCloseDirective<T = any> implements OnInit {
   constructor(

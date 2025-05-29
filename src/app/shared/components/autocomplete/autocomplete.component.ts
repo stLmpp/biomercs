@@ -23,13 +23,14 @@ import { Key } from '@model/enum/key';
 import { Observable, of, pluck, startWith, Subject } from 'rxjs';
 
 @Component({
-  selector: 'bio-autocomplete',
-  templateUrl: './autocomplete.component.html',
-  styleUrls: ['./autocomplete.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [Animations.fade.inOut(100), Animations.scale.in(100, 0.8)],
-  encapsulation: ViewEncapsulation.None,
-  providers: [{ provide: Autocomplete, useExisting: AutocompleteComponent }],
+    selector: 'bio-autocomplete',
+    templateUrl: './autocomplete.component.html',
+    styleUrls: ['./autocomplete.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    animations: [Animations.fade.inOut(100), Animations.scale.in(100, 0.8)],
+    encapsulation: ViewEncapsulation.None,
+    providers: [{ provide: Autocomplete, useExisting: AutocompleteComponent }],
+    standalone: false
 })
 export class AutocompleteComponent extends Autocomplete implements AfterContentInit {
   constructor(private renderer2: Renderer2, public changeDetectorRef: ChangeDetectorRef) {

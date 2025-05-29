@@ -12,10 +12,11 @@ import { Region } from '@model/region';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
 
 @Component({
-  selector: 'bio-admin-create-player',
-  templateUrl: './admin-create-player.component.html',
-  styleUrls: ['./admin-create-player.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-admin-create-player',
+    templateUrl: './admin-create-player.component.html',
+    styleUrls: ['./admin-create-player.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AdminCreatePlayerComponent {
   constructor(

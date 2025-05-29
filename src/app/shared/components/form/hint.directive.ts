@@ -2,8 +2,9 @@ import { Directive, HostBinding, Input } from '@angular/core';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 
 @Directive({
-  selector: '[bioHint],bio-hint',
-  host: { class: 'hint' },
+    selector: '[bioHint],bio-hint',
+    host: { class: 'hint' },
+    standalone: false
 })
 export class FormFieldHintDirective {
   @Input()

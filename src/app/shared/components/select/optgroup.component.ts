@@ -14,12 +14,13 @@ import { Select } from '@shared/components/select/select';
 import { Option } from '@shared/components/select/option';
 
 @Component({
-  selector: 'bio-optgroup',
-  templateUrl: './optgroup.component.html',
-  styleUrls: ['./optgroup.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
-  host: { class: 'bio-optgroup' },
+    selector: 'bio-optgroup',
+    templateUrl: './optgroup.component.html',
+    styleUrls: ['./optgroup.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.None,
+    host: { class: 'bio-optgroup' },
+    standalone: false
 })
 export class OptgroupComponent {
   constructor(@Host() private select: Select, public changeDetectorRef: ChangeDetectorRef) {

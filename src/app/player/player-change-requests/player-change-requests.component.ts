@@ -25,10 +25,11 @@ export interface PlayerChangeRequestsState {
 }
 
 @Component({
-  selector: 'bio-player-change-requests',
-  templateUrl: './player-change-requests.component.html',
-  styleUrls: ['./player-change-requests.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-player-change-requests',
+    templateUrl: './player-change-requests.component.html',
+    styleUrls: ['./player-change-requests.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class PlayerChangeRequestsComponent extends LocalState<PlayerChangeRequestsState> implements OnInit {
   constructor(

@@ -31,10 +31,11 @@ function mapDialogDataButtonToInternal(buttons: DialogDataButtonType[] | undefin
 }
 
 @Component({
-  selector: 'bio-dialog',
-  templateUrl: './dialog.component.html',
-  styleUrls: ['./dialog.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-dialog',
+    templateUrl: './dialog.component.html',
+    styleUrls: ['./dialog.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DialogComponent extends Destroyable implements OnInit {
   constructor(

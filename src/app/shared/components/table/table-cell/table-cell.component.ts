@@ -20,12 +20,13 @@ import { Destroyable } from '@shared/components/common/destroyable-component';
 import { takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'bio-cell',
-  templateUrl: './table-cell.component.html',
-  styleUrls: ['./table-cell.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
-  host: { class: 'bio-cell' },
+    selector: 'bio-cell',
+    templateUrl: './table-cell.component.html',
+    styleUrls: ['./table-cell.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.None,
+    host: { class: 'bio-cell' },
+    standalone: false
 })
 export class TableCellComponent<T extends Record<any, any>, K extends keyof T>
   extends Destroyable

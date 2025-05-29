@@ -3,12 +3,13 @@ import { AbstractComponent } from '../core/abstract-component';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 
 @Component({
-  selector: 'bio-icon:not([flag]):not([mdi])',
-  templateUrl: './icon.component.html',
-  styleUrls: ['./icon.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'icon' },
-  encapsulation: ViewEncapsulation.None,
+    selector: 'bio-icon:not([flag]):not([mdi])',
+    templateUrl: './icon.component.html',
+    styleUrls: ['./icon.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    host: { class: 'icon' },
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class IconComponent extends AbstractComponent {
   private _filled = true;

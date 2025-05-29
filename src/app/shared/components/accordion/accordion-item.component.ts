@@ -24,15 +24,16 @@ import { FocusableOption } from '@angular/cdk/a11y';
 import { Key } from '@model/enum/key';
 
 @Component({
-  selector: 'bio-accordion-item',
-  templateUrl: './accordion-item.component.html',
-  styleUrls: ['./accordion-item.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [{ provide: CdkAccordionItem, useExisting: AccordionItemComponent }],
-  host: { class: 'accordion-item', '[attr.id]': 'id' },
-  animations: [Animations.collapse.collapse(), Animations.collapse.collapseIcon()],
-  encapsulation: ViewEncapsulation.None,
-  inputs: ['id'],
+    selector: 'bio-accordion-item',
+    templateUrl: './accordion-item.component.html',
+    styleUrls: ['./accordion-item.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [{ provide: CdkAccordionItem, useExisting: AccordionItemComponent }],
+    host: { class: 'accordion-item', '[attr.id]': 'id' },
+    animations: [Animations.collapse.collapse(), Animations.collapse.collapseIcon()],
+    encapsulation: ViewEncapsulation.None,
+    inputs: ['id'],
+    standalone: false
 })
 export class AccordionItemComponent extends CdkAccordionItem implements OnInit, OnDestroy, FocusableOption {
   constructor(

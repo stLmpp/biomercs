@@ -8,11 +8,12 @@ import { Control } from '@stlmpp/control';
 import { combineLatest, map } from 'rxjs';
 
 @Component({
-  selector: 'bio-rules',
-  templateUrl: './rules.component.html',
-  styleUrls: ['./rules.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'center-container' },
+    selector: 'bio-rules',
+    templateUrl: './rules.component.html',
+    styleUrls: ['./rules.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    host: { class: 'center-container' },
+    standalone: false
 })
 export class RulesComponent {
   constructor(private authQuery: AuthQuery, private activatedRoute: ActivatedRoute) {}

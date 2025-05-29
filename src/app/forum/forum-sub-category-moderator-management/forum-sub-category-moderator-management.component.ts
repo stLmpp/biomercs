@@ -17,10 +17,11 @@ export interface ForumSubCategoryModeratorManagementComponentData {
 }
 
 @Component({
-  selector: 'bio-forum-sub-category-moderator-management',
-  templateUrl: './forum-sub-category-moderator-management.component.html',
-  styleUrls: ['./forum-sub-category-moderator-management.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-forum-sub-category-moderator-management',
+    templateUrl: './forum-sub-category-moderator-management.component.html',
+    styleUrls: ['./forum-sub-category-moderator-management.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ForumSubCategoryModeratorManagementComponent implements OnInit {
   constructor(

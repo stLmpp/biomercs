@@ -5,13 +5,14 @@ import { AccordionItemComponent } from '@shared/components/accordion/accordion-i
 import { FocusKeyManager } from '@angular/cdk/a11y';
 
 @Directive({
-  selector: 'bio-accordion, [bioAccordion]',
-  providers: [
-    { provide: CdkAccordion, useExisting: AccordionDirective },
-    { provide: Accordion, useExisting: AccordionDirective },
-  ],
-  host: { class: 'accordion' },
-  exportAs: 'bioAccordion',
+    selector: 'bio-accordion, [bioAccordion]',
+    providers: [
+        { provide: CdkAccordion, useExisting: AccordionDirective },
+        { provide: Accordion, useExisting: AccordionDirective },
+    ],
+    host: { class: 'accordion' },
+    exportAs: 'bioAccordion',
+    standalone: false
 })
 export class AccordionDirective extends Accordion implements AfterContentInit {
   @ContentChildren(AccordionItemComponent) accordionItemComponents?: QueryList<AccordionItemComponent>;

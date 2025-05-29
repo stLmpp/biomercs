@@ -2,7 +2,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { Observable, Subscribable } from 'rxjs';
 
-@Pipe({ name: 'asyncDefault', pure: false })
+@Pipe({
+    name: 'asyncDefault', pure: false,
+    standalone: false
+})
 export class AsyncDefaultPipe extends AsyncPipe implements PipeTransform {
   override transform<T>(obj: Observable<T> | Subscribable<T> | Promise<T>): T | null;
   override transform<T>(obj: null | undefined): null;

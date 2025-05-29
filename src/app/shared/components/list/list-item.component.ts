@@ -17,12 +17,13 @@ import { FocusableOption } from '@angular/cdk/a11y';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 
 @Component({
-  selector: 'bio-list-item,a[bioListItem]',
-  templateUrl: './list-item.component.html',
-  styleUrls: ['./list-item.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
-  host: { class: 'list-item', tabindex: '0' },
+    selector: 'bio-list-item,a[bioListItem]',
+    templateUrl: './list-item.component.html',
+    styleUrls: ['./list-item.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.None,
+    host: { class: 'list-item', tabindex: '0' },
+    standalone: false
 })
 export class ListItemComponent implements OnInit, FocusableOption {
   constructor(

@@ -18,10 +18,11 @@ export interface ForumTopicTransferComponentResponse {
 }
 
 @Component({
-  selector: 'bio-forum-topic-transfer',
-  templateUrl: './forum-topic-transfer.component.html',
-  styleUrls: ['./forum-topic-transfer.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-forum-topic-transfer',
+    templateUrl: './forum-topic-transfer.component.html',
+    styleUrls: ['./forum-topic-transfer.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ForumTopicTransferComponent implements OnInit {
   constructor(

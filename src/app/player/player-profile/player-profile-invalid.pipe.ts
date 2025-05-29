@@ -15,7 +15,10 @@ export function playerProfileValidatePersonaName(
   );
 }
 
-@Pipe({ name: 'playerProfileInvalid' })
+@Pipe({
+    name: 'playerProfileInvalid',
+    standalone: false
+})
 export class PlayerProfileInvalidPipe implements PipeTransform {
   transform(player: Player, update: PlayerUpdate, newPersonaName: string | null): boolean {
     if (newPersonaName) {

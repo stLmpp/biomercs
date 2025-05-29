@@ -9,10 +9,11 @@ import { Control } from '@stlmpp/control';
 import { FilterItemDirective } from '@shared/filter/filter-item.directive';
 
 @Component({
-  selector: 'bio-faq',
-  templateUrl: './faq.component.html',
-  styleUrls: ['./faq.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-faq',
+    templateUrl: './faq.component.html',
+    styleUrls: ['./faq.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class FaqComponent extends Destroyable implements AfterViewInit {
   constructor(

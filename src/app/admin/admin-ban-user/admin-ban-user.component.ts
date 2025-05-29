@@ -27,10 +27,11 @@ interface UserBan extends User {
 }
 
 @Component({
-  selector: 'bio-admin-ban-user',
-  templateUrl: './admin-ban-user.component.html',
-  styleUrls: ['./admin-ban-user.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-admin-ban-user',
+    templateUrl: './admin-ban-user.component.html',
+    styleUrls: ['./admin-ban-user.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AdminBanUserComponent extends Destroyable implements OnInit {
   constructor(

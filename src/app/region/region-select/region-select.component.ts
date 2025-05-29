@@ -22,10 +22,11 @@ export interface RegionSelectData {
 }
 
 @Component({
-  selector: 'bio-region-select',
-  templateUrl: './region-select.component.html',
-  styleUrls: ['./region-select.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-region-select',
+    templateUrl: './region-select.component.html',
+    styleUrls: ['./region-select.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class RegionSelectComponent implements OnInit, AfterViewInit {
   constructor(

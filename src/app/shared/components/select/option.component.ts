@@ -19,13 +19,14 @@ import { Option } from '@shared/components/select/option';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
-  selector: 'bio-option',
-  templateUrl: './option.component.html',
-  styleUrls: ['./option.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'bio-option' },
-  encapsulation: ViewEncapsulation.None,
-  providers: [{ provide: Option, useExisting: OptionComponent }],
+    selector: 'bio-option',
+    templateUrl: './option.component.html',
+    styleUrls: ['./option.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    host: { class: 'bio-option' },
+    encapsulation: ViewEncapsulation.None,
+    providers: [{ provide: Option, useExisting: OptionComponent }],
+    standalone: false
 })
 export class OptionComponent extends Option implements FocusableOption {
   constructor(

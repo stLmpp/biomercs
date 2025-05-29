@@ -26,10 +26,11 @@ import { Platform } from '@model/platform';
 import { Destroyable } from '@shared/components/common/destroyable-component';
 
 @Component({
-  selector: 'bio-score-search',
-  templateUrl: './score-search.component.html',
-  styleUrls: ['./score-search.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-score-search',
+    templateUrl: './score-search.component.html',
+    styleUrls: ['./score-search.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ScoreSearchComponent extends Destroyable implements OnInit {
   constructor(

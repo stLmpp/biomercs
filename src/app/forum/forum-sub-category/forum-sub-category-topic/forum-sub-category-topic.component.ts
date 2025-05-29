@@ -13,11 +13,12 @@ import { TopicService } from '../../service/topic.service';
 import { finalize } from 'rxjs';
 
 @Component({
-  selector: 'a[bioForumSubCategoryTopic]',
-  templateUrl: './forum-sub-category-topic.component.html',
-  styleUrls: ['./forum-sub-category-topic.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'grid-container' },
+    selector: 'a[bioForumSubCategoryTopic]',
+    templateUrl: './forum-sub-category-topic.component.html',
+    styleUrls: ['./forum-sub-category-topic.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    host: { class: 'grid-container' },
+    standalone: false
 })
 export class ForumSubCategoryTopicComponent {
   constructor(private topicService: TopicService, private changeDetectorRef: ChangeDetectorRef) {}

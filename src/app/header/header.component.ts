@@ -23,10 +23,11 @@ import { filterNil } from '@util/operators/filter';
 import { Destroyable } from '@shared/components/common/destroyable-component';
 
 @Component({
-  selector: 'bio-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class HeaderComponent extends Destroyable implements OnInit {
   constructor(

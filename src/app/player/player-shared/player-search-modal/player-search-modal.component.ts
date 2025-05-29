@@ -20,10 +20,11 @@ interface PlayerSearchModalComponentForm {
 }
 
 @Component({
-  selector: 'bio-player-search-modal',
-  templateUrl: './player-search-modal.component.html',
-  styleUrls: ['./player-search-modal.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-player-search-modal',
+    templateUrl: './player-search-modal.component.html',
+    styleUrls: ['./player-search-modal.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class PlayerSearchModalComponent {
   constructor(

@@ -5,10 +5,11 @@ import { mdiAccountStar, mdiTrophy, mdiTrophyAward } from '@mdi/js';
 import { trackById } from '@util/track-by';
 
 @Component({
-  selector: 'bio-score-info',
-  templateUrl: './score-info.component.html',
-  styleUrls: ['./score-info.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-score-info',
+    templateUrl: './score-info.component.html',
+    styleUrls: ['./score-info.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ScoreInfoComponent {
   private _showWorldRecord = false;

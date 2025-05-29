@@ -26,10 +26,11 @@ import { Destroyable } from '@shared/components/common/destroyable-component';
 import { PlatformInputType } from '@model/platform-input-type';
 
 @Component({
-  selector: 'bio-score-add-player',
-  templateUrl: './score-add-player.component.html',
-  styleUrls: ['./score-add-player.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-score-add-player',
+    templateUrl: './score-add-player.component.html',
+    styleUrls: ['./score-add-player.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ScoreAddPlayerComponent extends Destroyable implements OnInit, OnChanges {
   constructor(

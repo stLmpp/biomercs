@@ -10,10 +10,11 @@ export interface PlayerChangeRequestsActionCellComponentMetadata {
 }
 
 @Component({
-  selector: 'bio-player-change-requests-action-cell',
-  templateUrl: './player-change-requests-action-cell.component.html',
-  styleUrls: ['./player-change-requests-action-cell.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-player-change-requests-action-cell',
+    templateUrl: './player-change-requests-action-cell.component.html',
+    styleUrls: ['./player-change-requests-action-cell.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class PlayerChangeRequestsActionCellComponent implements TableCell<ScoreWithScoreChangeRequests> {
   constructor(private playerModalService: PlayerModalService, private changeDetectorRef: ChangeDetectorRef) {}

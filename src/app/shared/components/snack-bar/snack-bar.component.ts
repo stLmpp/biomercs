@@ -15,13 +15,14 @@ import { AnimationEvent } from '@angular/animations';
 import { Animations } from '../../animations/animations';
 
 @Component({
-  selector: 'bio-snack-bar',
-  templateUrl: './snack-bar.component.html',
-  styleUrls: ['./snack-bar.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
-  host: { class: 'snack-bar', '[@fadeInOut]': '' },
-  animations: [Animations.fade.inOut()],
+    selector: 'bio-snack-bar',
+    templateUrl: './snack-bar.component.html',
+    styleUrls: ['./snack-bar.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.None,
+    host: { class: 'snack-bar', '[@fadeInOut]': '' },
+    animations: [Animations.fade.inOut()],
+    standalone: false
 })
 export class SnackBarComponent implements OnInit, OnDestroy {
   constructor(private overlayRef: OverlayRef, private snackBarConfig: SnackBarConfig) {}

@@ -11,10 +11,11 @@ import { DialogService } from '@shared/components/modal/dialog/dialog.service';
 import { AuthQuery } from '../auth/auth.query';
 
 @Component({
-  selector: 'bio-contact',
-  templateUrl: './contact.component.html',
-  styleUrls: ['./contact.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-contact',
+    templateUrl: './contact.component.html',
+    styleUrls: ['./contact.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ContactComponent {
   constructor(

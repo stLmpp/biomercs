@@ -12,10 +12,11 @@ import { SwUpdate } from '@angular/service-worker';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
 
 @Component({
-  selector: 'bio-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AppComponent extends Destroyable implements OnInit, OnDestroy {
   constructor(

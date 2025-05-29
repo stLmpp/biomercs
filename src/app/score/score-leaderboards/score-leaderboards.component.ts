@@ -38,10 +38,11 @@ export interface ScoreLeaderboardsState {
 }
 
 @Component({
-  selector: 'bio-score-leaderboards',
-  templateUrl: './score-leaderboards.component.html',
-  styleUrls: ['./score-leaderboards.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-score-leaderboards',
+    templateUrl: './score-leaderboards.component.html',
+    styleUrls: ['./score-leaderboards.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ScoreLeaderboardsComponent extends LocalState<ScoreLeaderboardsState> {
   constructor(

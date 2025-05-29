@@ -5,12 +5,13 @@ import { HeaderQuery } from '../header.query';
 import { mdiAccountLock, mdiEmailSyncOutline, mdiTrophy } from '@mdi/js';
 
 @Component({
-  selector: 'bio-side-menu',
-  templateUrl: './side-menu.component.html',
-  styleUrls: ['./side-menu.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [Animations.slide.inOut({ axis: 'X', opacity: false })],
-  host: { '[@slideInOut]': '' },
+    selector: 'bio-side-menu',
+    templateUrl: './side-menu.component.html',
+    styleUrls: ['./side-menu.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    animations: [Animations.slide.inOut({ axis: 'X', opacity: false })],
+    host: { '[@slideInOut]': '' },
+    standalone: false
 })
 export class SideMenuComponent {
   constructor(public headerQuery: HeaderQuery) {}

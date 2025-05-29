@@ -6,10 +6,11 @@ import { trackByFactory } from '@stlmpp/utils';
 import { PossiblePath } from './not-found.resolver';
 
 @Component({
-  selector: 'bio-not-found',
-  templateUrl: './not-found.component.html',
-  styleUrls: ['./not-found.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-not-found',
+    templateUrl: './not-found.component.html',
+    styleUrls: ['./not-found.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class NotFoundComponent {
   constructor(private activatedRoute: ActivatedRoute) {}

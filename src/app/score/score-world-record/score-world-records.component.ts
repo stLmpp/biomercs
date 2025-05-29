@@ -33,10 +33,11 @@ export interface ScoreWorldRecordTableState {
 }
 
 @Component({
-  selector: 'bio-score-world-records',
-  templateUrl: './score-world-records.component.html',
-  styleUrls: ['./score-world-records.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-score-world-records',
+    templateUrl: './score-world-records.component.html',
+    styleUrls: ['./score-world-records.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ScoreWorldRecordsComponent extends LocalState<ScoreWorldRecordTableState> {
   constructor(

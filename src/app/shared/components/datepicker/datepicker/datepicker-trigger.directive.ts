@@ -2,7 +2,8 @@ import { Directive, ElementRef, HostListener, Input, OnInit } from '@angular/cor
 import { DatepickerComponent } from '@shared/components/datepicker/datepicker/datepicker.component';
 
 @Directive({
-  selector: '[bioDatepickerTrigger]',
+    selector: '[bioDatepickerTrigger]',
+    standalone: false
 })
 export class DatepickerTriggerDirective implements OnInit {
   constructor(public elementRef: ElementRef<HTMLElement>) {}

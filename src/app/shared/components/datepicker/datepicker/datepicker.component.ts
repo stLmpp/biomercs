@@ -25,11 +25,12 @@ import { AnimationEvent } from '@angular/animations';
 import { getDatepickerOverlayPositions } from '@shared/components/datepicker/datepicker/datepicker';
 
 @Component({
-  selector: 'bio-datepicker',
-  templateUrl: './datepicker.component.html',
-  styleUrls: ['./datepicker.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [Animations.fade.inOut(), Animations.scale.in()],
+    selector: 'bio-datepicker',
+    templateUrl: './datepicker.component.html',
+    styleUrls: ['./datepicker.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    animations: [Animations.fade.inOut(), Animations.scale.in()],
+    standalone: false
 })
 export class DatepickerComponent extends Destroyable {
   constructor(

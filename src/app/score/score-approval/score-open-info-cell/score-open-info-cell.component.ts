@@ -6,10 +6,11 @@ import { ScoreInfoModalData } from '../../score-info/score-info-modal/score-info
 import { ScoreModalService } from '../../score-modal.service';
 
 @Component({
-  selector: 'bio-score-open-info-cell',
-  templateUrl: './score-open-info-cell.component.html',
-  styleUrls: ['./score-open-info-cell.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-score-open-info-cell',
+    templateUrl: './score-open-info-cell.component.html',
+    styleUrls: ['./score-open-info-cell.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ScoreOpenInfoCellComponent extends TableCell<Score> {
   constructor(private scoreModalService: ScoreModalService) {

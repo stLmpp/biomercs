@@ -12,10 +12,11 @@ interface LoginConfirmationForm {
 }
 
 @Component({
-  selector: 'bio-login-confirm-code-modal',
-  templateUrl: './login-confirm-code-modal.component.html',
-  styleUrls: ['./login-confirm-code-modal.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-login-confirm-code-modal',
+    templateUrl: './login-confirm-code-modal.component.html',
+    styleUrls: ['./login-confirm-code-modal.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LoginConfirmCodeModalComponent {
   constructor(

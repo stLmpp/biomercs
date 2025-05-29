@@ -33,11 +33,12 @@ import { InputTypeService } from '@shared/services/input-type/input-type.service
 import { trackById } from '@util/track-by';
 
 @Component({
-  selector: 'bio-player-profile',
-  templateUrl: './player-profile.component.html',
-  styleUrls: ['./player-profile.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [Animations.fade.in()],
+    selector: 'bio-player-profile',
+    templateUrl: './player-profile.component.html',
+    styleUrls: ['./player-profile.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    animations: [Animations.fade.in()],
+    standalone: false
 })
 export class PlayerProfileComponent extends Destroyable implements OnInit {
   constructor(

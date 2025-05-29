@@ -18,10 +18,11 @@ export interface ForumCategoriesCategoryComponentOrderChangeEvent {
 }
 
 @Component({
-  selector: 'bio-forum-categories-category',
-  templateUrl: './forum-categories-category.component.html',
-  styleUrls: ['./forum-categories-category.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-forum-categories-category',
+    templateUrl: './forum-categories-category.component.html',
+    styleUrls: ['./forum-categories-category.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ForumCategoriesCategoryComponent {
   constructor(

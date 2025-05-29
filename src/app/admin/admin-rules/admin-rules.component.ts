@@ -19,10 +19,11 @@ interface RulesForm {
 }
 
 @Component({
-  selector: 'bio-admin-rules',
-  templateUrl: './admin-rules.component.html',
-  styleUrls: ['./admin-rules.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-admin-rules',
+    templateUrl: './admin-rules.component.html',
+    styleUrls: ['./admin-rules.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AdminRulesComponent implements UnsavedData {
   constructor(

@@ -7,10 +7,11 @@ import { finalize, map, Observable } from 'rxjs';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 
 @Component({
-  selector: 'bio-forum-category-add-edit',
-  templateUrl: './forum-category-add-edit.component.html',
-  styleUrls: ['./forum-category-add-edit.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-forum-category-add-edit',
+    templateUrl: './forum-category-add-edit.component.html',
+    styleUrls: ['./forum-category-add-edit.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ForumCategoryAddEditComponent implements OnInit {
   constructor(

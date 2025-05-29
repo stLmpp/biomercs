@@ -3,11 +3,12 @@ import { AuthService } from '../../auth.service';
 import { finalize, tap } from 'rxjs';
 
 @Component({
-  selector: 'bio-change-password',
-  templateUrl: './change-password.component.html',
-  styleUrls: ['./change-password.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'center-container' },
+    selector: 'bio-change-password',
+    templateUrl: './change-password.component.html',
+    styleUrls: ['./change-password.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    host: { class: 'center-container' },
+    standalone: false
 })
 export class ChangePasswordComponent {
   constructor(private authService: AuthService, private changeDetectorRef: ChangeDetectorRef) {}

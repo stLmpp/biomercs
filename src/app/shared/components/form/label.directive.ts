@@ -1,7 +1,10 @@
 import { Directive, HostBinding, Input } from '@angular/core';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 
-@Directive({ selector: 'label' })
+@Directive({
+    selector: 'label',
+    standalone: false
+})
 export class LabelDirective {
   private _accent = false;
   private _danger = false;

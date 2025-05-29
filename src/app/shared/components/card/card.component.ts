@@ -23,14 +23,15 @@ import { Destroyable } from '@shared/components/common/destroyable-component';
 import { takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'bio-card',
-  templateUrl: './card.component.html',
-  styleUrls: ['./card.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'card' },
-  animations: [Animations.skipFirstAnimation(), Animations.collapse.collapseIcon()],
-  exportAs: 'bio-card',
+    selector: 'bio-card',
+    templateUrl: './card.component.html',
+    styleUrls: ['./card.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    host: { class: 'card' },
+    animations: [Animations.skipFirstAnimation(), Animations.collapse.collapseIcon()],
+    exportAs: 'bio-card',
+    standalone: false
 })
 export class CardComponent extends Destroyable implements AfterContentInit {
   constructor(private changeDetectorRef: ChangeDetectorRef, public elementRef: ElementRef<HTMLElement>) {

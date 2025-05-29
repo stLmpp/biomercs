@@ -11,10 +11,11 @@ import { Topic } from '@model/forum/topic';
 import { arrayUtil } from 'st-utils';
 
 @Component({
-  selector: 'bio-forum-sub-category',
-  templateUrl: './forum-sub-category.component.html',
-  styleUrls: ['./forum-sub-category.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-forum-sub-category',
+    templateUrl: './forum-sub-category.component.html',
+    styleUrls: ['./forum-sub-category.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ForumSubCategoryComponent extends Destroyable implements OnInit {
   constructor(

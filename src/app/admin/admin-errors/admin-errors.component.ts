@@ -11,10 +11,11 @@ import { Clipboard } from '@angular/cdk/clipboard';
 import { Destroyable } from '@shared/components/common/destroyable-component';
 
 @Component({
-  selector: 'bio-admin-errors',
-  templateUrl: './admin-errors.component.html',
-  styleUrls: ['./admin-errors.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-admin-errors',
+    templateUrl: './admin-errors.component.html',
+    styleUrls: ['./admin-errors.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AdminErrorsComponent extends Destroyable {
   constructor(

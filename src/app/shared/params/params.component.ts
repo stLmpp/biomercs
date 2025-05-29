@@ -85,10 +85,11 @@ const defaultConfigs: ParamsConfig = {
 };
 
 @Component({
-  selector: 'bio-params',
-  templateUrl: './params.component.html',
-  styleUrls: ['./params.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-params',
+    templateUrl: './params.component.html',
+    styleUrls: ['./params.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ParamsComponent extends Destroyable implements OnChanges, OnInit {
   constructor(

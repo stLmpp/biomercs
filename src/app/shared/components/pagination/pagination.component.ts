@@ -6,11 +6,12 @@ import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { trackByFactory } from '@stlmpp/utils';
 
 @Component({
-  selector: 'bio-pagination',
-  templateUrl: './pagination.component.html',
-  styleUrls: ['./pagination.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'pagination' },
+    selector: 'bio-pagination',
+    templateUrl: './pagination.component.html',
+    styleUrls: ['./pagination.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    host: { class: 'pagination' },
+    standalone: false
 })
 export class PaginationComponent implements OnChanges, PaginationMeta {
   constructor(private router: Router) {}

@@ -3,9 +3,10 @@ import { ControlError, ControlParent } from '@stlmpp/control';
 import { FormFieldComponent } from './form-field.component';
 
 @Directive({
-  selector: 'bio-errors, [bioErrors]',
-  host: { class: 'errors' },
-  providers: [{ provide: ControlError, useExisting: FormFieldErrorsDirective }],
+    selector: 'bio-errors, [bioErrors]',
+    host: { class: 'errors' },
+    providers: [{ provide: ControlError, useExisting: FormFieldErrorsDirective }],
+    standalone: false
 })
 export class FormFieldErrorsDirective extends ControlError implements AfterContentInit, OnInit {
   constructor(

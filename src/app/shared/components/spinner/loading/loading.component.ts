@@ -3,17 +3,17 @@ import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { Animations } from '@shared/animations/animations';
 
 @Component({
-  selector: 'bio-loading',
-  templateUrl: './loading.component.html',
-  styleUrls: ['./loading.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [Animations.fade.inOut()],
-  host: {
-    '[@fadeInOut]': '',
-    class:
-      'bio-loading bio-loading-backdrop cdk-overlay-backdrop cdk-overlay-dark-backdrop cdk-overlay-backdrop-showing',
-  },
-  encapsulation: ViewEncapsulation.None,
+    selector: 'bio-loading',
+    templateUrl: './loading.component.html',
+    styleUrls: ['./loading.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    animations: [Animations.fade.inOut()],
+    host: {
+        '[@fadeInOut]': '',
+        class: 'bio-loading bio-loading-backdrop cdk-overlay-backdrop cdk-overlay-dark-backdrop cdk-overlay-backdrop-showing',
+    },
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class LoadingComponent {
   private _noBox = false;

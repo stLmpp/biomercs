@@ -14,10 +14,11 @@ import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { catchAndThrow } from '@util/operators/catch-and-throw';
 
 @Component({
-  selector: 'bio-forum-topic',
-  templateUrl: './forum-topic.component.html',
-  styleUrls: ['./forum-topic.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-forum-topic',
+    templateUrl: './forum-topic.component.html',
+    styleUrls: ['./forum-topic.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ForumTopicComponent extends Destroyable implements OnInit {
   constructor(

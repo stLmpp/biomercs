@@ -8,10 +8,11 @@ import { ScoreApprovalPagination } from '@model/score-approval';
 import { ScoreModalService } from '../../score-modal.service';
 
 @Component({
-  selector: 'bio-score-approval-actions-cell',
-  templateUrl: './score-approval-actions-cell.component.html',
-  styleUrls: ['./score-approval-actions-cell.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-score-approval-actions-cell',
+    templateUrl: './score-approval-actions-cell.component.html',
+    styleUrls: ['./score-approval-actions-cell.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ScoreApprovalActionsCellComponent implements TableCell<Score> {
   constructor(private scoreModalService: ScoreModalService, private changeDetectorRef: ChangeDetectorRef) {}

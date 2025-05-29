@@ -16,11 +16,12 @@ interface AuthChangePasswordForm {
 }
 
 @Component({
-  selector: 'bio-change-password-confirm',
-  templateUrl: './change-password-confirm.component.html',
-  styleUrls: ['./change-password-confirm.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'center-container' },
+    selector: 'bio-change-password-confirm',
+    templateUrl: './change-password-confirm.component.html',
+    styleUrls: ['./change-password-confirm.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    host: { class: 'center-container' },
+    standalone: false
 })
 export class ChangePasswordConfirmComponent {
   constructor(

@@ -3,10 +3,11 @@ import { debounce, Subject, Subscription, timer } from 'rxjs';
 import { BooleanInput, coerceBooleanProperty, coerceNumberProperty, NumberInput } from 'st-utils';
 
 @Component({
-  selector: 'bio-list[bioMultiSelectItems][items],bio-list[bioMultiSelectItems][selected]',
-  templateUrl: './multi-select-items.component.html',
-  styleUrls: ['./multi-select-items.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-list[bioMultiSelectItems][items],bio-list[bioMultiSelectItems][selected]',
+    templateUrl: './multi-select-items.component.html',
+    styleUrls: ['./multi-select-items.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class MultiSelectItemsComponent implements OnDestroy {
   private readonly _search$ = new Subject<string>();

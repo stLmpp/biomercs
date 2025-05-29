@@ -11,10 +11,11 @@ export interface ScoreInfoModalData {
 }
 
 @Component({
-  selector: 'bio-score-info-modal',
-  templateUrl: './score-info-modal.component.html',
-  styleUrls: ['./score-info-modal.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-score-info-modal',
+    templateUrl: './score-info-modal.component.html',
+    styleUrls: ['./score-info-modal.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ScoreInfoModalComponent {
   constructor(

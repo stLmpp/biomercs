@@ -12,10 +12,11 @@ export interface ForumSubCategoryAddEditComponentData {
 }
 
 @Component({
-  selector: 'bio-forum-sub-category-add-edit',
-  templateUrl: './forum-sub-category-add-edit.component.html',
-  styleUrls: ['./forum-sub-category-add-edit.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-forum-sub-category-add-edit',
+    templateUrl: './forum-sub-category-add-edit.component.html',
+    styleUrls: ['./forum-sub-category-add-edit.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ForumSubCategoryAddEditComponent implements OnInit {
   constructor(

@@ -16,10 +16,11 @@ import { filterNil } from '@util/operators/filter';
 import { Destroyable } from '@shared/components/common/destroyable-component';
 
 @Component({
-  selector: 'bio-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class LoginComponent extends Destroyable implements OnInit {
   constructor(

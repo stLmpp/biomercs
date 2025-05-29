@@ -29,11 +29,12 @@ import { filterNil } from '@util/operators/filter';
 import { PlatformInputTypeService } from '@shared/services/platform-input-type/platform-input-type.service';
 
 @Component({
-  selector: 'bio-score-add',
-  templateUrl: './score-add.component.html',
-  styleUrls: ['./score-add.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [{ provide: CURRENCY_MASK_CONFIG, useValue: scoreCurrencyMask }],
+    selector: 'bio-score-add',
+    templateUrl: './score-add.component.html',
+    styleUrls: ['./score-add.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [{ provide: CURRENCY_MASK_CONFIG, useValue: scoreCurrencyMask }],
+    standalone: false
 })
 export class ScoreAddComponent {
   constructor(

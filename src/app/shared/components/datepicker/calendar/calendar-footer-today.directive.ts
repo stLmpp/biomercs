@@ -1,7 +1,10 @@
 import { Directive, Host, HostListener } from '@angular/core';
 import { CalendarComponent } from '@shared/components/datepicker/calendar/calendar.component';
 
-@Directive({ selector: '[bioCalendarFooterToday]' })
+@Directive({
+    selector: '[bioCalendarFooterToday]',
+    standalone: false
+})
 export class CalendarFooterTodayDirective {
   constructor(@Host() private readonly calendarComponent: CalendarComponent) {}
 

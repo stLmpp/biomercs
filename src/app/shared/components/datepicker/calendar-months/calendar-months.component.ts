@@ -3,11 +3,12 @@ import { CalendarKeyboardNavigation } from '@shared/components/datepicker/calend
 import { CalendarMonth } from '@shared/components/datepicker/calendar-month';
 
 @Component({
-  selector: 'bio-calendar-months',
-  templateUrl: './calendar-months.component.html',
-  styleUrls: ['./calendar-months.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [{ provide: CalendarKeyboardNavigation, useExisting: CalendarMonthsComponent }],
+    selector: 'bio-calendar-months',
+    templateUrl: './calendar-months.component.html',
+    styleUrls: ['./calendar-months.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [{ provide: CalendarKeyboardNavigation, useExisting: CalendarMonthsComponent }],
+    standalone: false
 })
 export class CalendarMonthsComponent extends CalendarKeyboardNavigation {
   @Input() months: CalendarMonth[] = [];

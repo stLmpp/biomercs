@@ -4,12 +4,13 @@ import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { AnimationEvent } from '@angular/animations';
 
 @Component({
-  selector: '[bioCollapsed],[bioExpanded]',
-  templateUrl: './collapse.component.html',
-  styleUrls: ['./collapse.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [Animations.collapse.collapse(), Animations.skipFirstAnimation()],
-  host: { '[@skipFirstAnimation]': '' },
+    selector: '[bioCollapsed],[bioExpanded]',
+    templateUrl: './collapse.component.html',
+    styleUrls: ['./collapse.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    animations: [Animations.collapse.collapse(), Animations.skipFirstAnimation()],
+    host: { '[@skipFirstAnimation]': '' },
+    standalone: false
 })
 export class CollapseComponent {
   constructor(private renderer2: Renderer2, private elementRef: ElementRef) {}

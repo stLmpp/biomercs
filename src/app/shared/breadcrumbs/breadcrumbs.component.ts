@@ -5,11 +5,12 @@ import { BreadcrumbsItem } from '@shared/breadcrumbs/breadcrumbs';
 import { trackByIndex } from '@util/track-by';
 
 @Component({
-  selector: 'bio-breadcrumbs',
-  templateUrl: './breadcrumbs.component.html',
-  styleUrls: ['./breadcrumbs.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'breadcrumbs' },
+    selector: 'bio-breadcrumbs',
+    templateUrl: './breadcrumbs.component.html',
+    styleUrls: ['./breadcrumbs.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    host: { class: 'breadcrumbs' },
+    standalone: false
 })
 export class BreadcrumbsComponent {
   constructor(private breadcrumbsService: BreadcrumbsService) {}

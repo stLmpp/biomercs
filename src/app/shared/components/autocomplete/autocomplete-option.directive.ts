@@ -4,8 +4,9 @@ import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { Autocomplete } from '@shared/components/autocomplete/autocomplete';
 
 @Directive({
-  selector: 'bio-autocomplete-option',
-  host: { class: 'autocomplete-option' },
+    selector: 'bio-autocomplete-option',
+    host: { class: 'autocomplete-option' },
+    standalone: false
 })
 export class AutocompleteOptionDirective implements FocusableOption {
   constructor(private elementRef: ElementRef<HTMLElement>, @Host() private autocomplete: Autocomplete) {}

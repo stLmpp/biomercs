@@ -9,8 +9,9 @@ import { Subject } from 'rxjs';
 import { CURRENCY_MASK_CONFIG } from '@shared/currency-mask/currency-mask-config.token';
 
 @Directive({
-  selector: 'input[bioCurrencyMask]',
-  providers: [{ provide: ControlValue, useExisting: CurrencyMaskDirective, multi: false }],
+    selector: 'input[bioCurrencyMask]',
+    providers: [{ provide: ControlValue, useExisting: CurrencyMaskDirective, multi: false }],
+    standalone: false
 })
 export class CurrencyMaskDirective extends _CurrencyMaskDirective implements ControlValue<number>, OnInit {
   constructor(

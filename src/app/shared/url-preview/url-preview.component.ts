@@ -4,11 +4,12 @@ import { filterNil } from '@util/operators/filter';
 import { debounceTime, finalize, ReplaySubject, switchMap } from 'rxjs';
 
 @Component({
-  selector: 'a[bio-url-preview]',
-  templateUrl: './url-preview.component.html',
-  styleUrls: ['./url-preview.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'url-preview' },
+    selector: 'a[bio-url-preview]',
+    templateUrl: './url-preview.component.html',
+    styleUrls: ['./url-preview.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    host: { class: 'url-preview' },
+    standalone: false
 })
 export class UrlPreviewComponent {
   constructor(

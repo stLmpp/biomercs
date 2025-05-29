@@ -36,11 +36,12 @@ interface NotificationCustom extends Notification {
 }
 
 @Component({
-  selector: 'bio-notifications',
-  templateUrl: './notifications.component.html',
-  styleUrls: ['./notifications.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'notifications' },
+    selector: 'bio-notifications',
+    templateUrl: './notifications.component.html',
+    styleUrls: ['./notifications.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    host: { class: 'notifications' },
+    standalone: false
 })
 export class NotificationsComponent extends Destroyable implements OnInit {
   constructor(

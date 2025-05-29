@@ -28,11 +28,12 @@ interface ScoreChangeRequestsFulfilForm extends Omit<ScoreChangeRequestsFulfilDt
 }
 
 @Component({
-  selector: 'bio-player-change-requests-modal',
-  templateUrl: './player-change-requests-modal.component.html',
-  styleUrls: ['./player-change-requests-modal.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [{ provide: CURRENCY_MASK_CONFIG, useValue: scoreCurrencyMask }],
+    selector: 'bio-player-change-requests-modal',
+    templateUrl: './player-change-requests-modal.component.html',
+    styleUrls: ['./player-change-requests-modal.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [{ provide: CURRENCY_MASK_CONFIG, useValue: scoreCurrencyMask }],
+    standalone: false
 })
 export class PlayerChangeRequestsModalComponent {
   constructor(

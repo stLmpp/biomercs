@@ -15,14 +15,15 @@ import { AnimationEvent } from '@angular/animations';
 import { Menu } from './menu';
 
 @Component({
-  selector: 'bio-menu',
-  templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  exportAs: 'bio-menu',
-  encapsulation: ViewEncapsulation.None,
-  animations: [Animations.fade.inOut(100), Animations.scale.in(100, 0.8)],
-  providers: [{ provide: Menu, useExisting: MenuComponent }],
+    selector: 'bio-menu',
+    templateUrl: './menu.component.html',
+    styleUrls: ['./menu.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    exportAs: 'bio-menu',
+    encapsulation: ViewEncapsulation.None,
+    animations: [Animations.fade.inOut(100), Animations.scale.in(100, 0.8)],
+    providers: [{ provide: Menu, useExisting: MenuComponent }],
+    standalone: false
 })
 export class MenuComponent extends Menu {
   @ViewChild(TemplateRef) readonly templateRef!: TemplateRef<any>;

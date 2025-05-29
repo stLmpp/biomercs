@@ -20,7 +20,10 @@ import { SimpleChangesCustom } from '@util/util';
 import { isNil } from 'st-utils';
 import { trackByControl } from '@util/track-by';
 
-@Directive({ selector: 'input[confirmationCodeInput]' })
+@Directive({
+    selector: 'input[confirmationCodeInput]',
+    standalone: false
+})
 export class ConfirmationCodeInputDirective implements FocusableOption {
   constructor(private elementRef: ElementRef<HTMLInputElement>) {}
 
@@ -31,11 +34,12 @@ export class ConfirmationCodeInputDirective implements FocusableOption {
 }
 
 @Component({
-  selector: 'bio-confirmation-code-input',
-  templateUrl: './confirmation-code-input.component.html',
-  styleUrls: ['./confirmation-code-input.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [{ provide: ControlValue, useExisting: ConfirmationCodeInputComponent }],
+    selector: 'bio-confirmation-code-input',
+    templateUrl: './confirmation-code-input.component.html',
+    styleUrls: ['./confirmation-code-input.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [{ provide: ControlValue, useExisting: ConfirmationCodeInputComponent }],
+    standalone: false
 })
 export class ConfirmationCodeInputComponent
   extends ControlValue

@@ -4,12 +4,13 @@ import { AbstractComponent } from '../core/abstract-component';
 import { FocusableOption } from '@angular/cdk/a11y';
 
 @Component({
-  selector: 'button[bioButton],a[bioButton]',
-  templateUrl: './button.component.html',
-  styleUrls: ['./button.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'button' },
+    selector: 'button[bioButton],a[bioButton]',
+    templateUrl: './button.component.html',
+    styleUrls: ['./button.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    host: { class: 'button' },
+    standalone: false
 })
 export class ButtonComponent extends AbstractComponent implements FocusableOption {
   constructor(private elementRef: ElementRef<HTMLButtonElement>) {

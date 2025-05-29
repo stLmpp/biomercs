@@ -22,9 +22,10 @@ import { AutocompleteOptionDirective } from '@shared/components/autocomplete/aut
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 
 @Directive({
-  selector: 'input[bioAutocomplete],textarea[bioAutocomplete]',
-  host: { autocomplete: 'off' },
-  exportAs: 'bio-autocomplete',
+    selector: 'input[bioAutocomplete],textarea[bioAutocomplete]',
+    host: { autocomplete: 'off' },
+    exportAs: 'bio-autocomplete',
+    standalone: false
 })
 export class AutocompleteDirective extends Destroyable {
   constructor(

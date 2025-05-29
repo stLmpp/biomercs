@@ -36,10 +36,11 @@ export interface ScoreApprovalComponentState extends ParamsForm {
 }
 
 @Component({
-  selector: 'bio-score-approval',
-  templateUrl: './score-approval.component.html',
-  styleUrls: ['./score-approval.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-score-approval',
+    templateUrl: './score-approval.component.html',
+    styleUrls: ['./score-approval.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ScoreApprovalComponent extends LocalState<ScoreApprovalComponentState> implements OnInit {
   constructor(

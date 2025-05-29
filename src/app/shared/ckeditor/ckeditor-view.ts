@@ -2,10 +2,11 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input } 
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
-  selector: 'ckeditor-view,[ckeditorView]',
-  template: `<div class="ck-content" [innerHTML]="safeContent"></div>`,
-  host: { class: 'ck ck-view' },
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'ckeditor-view,[ckeditorView]',
+    template: `<div class="ck-content" [innerHTML]="safeContent"></div>`,
+    host: { class: 'ck ck-view' },
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class CKEditorView implements AfterViewInit {
   constructor(private domSanitizer: DomSanitizer, private elementRef: ElementRef<HTMLElement>) {}

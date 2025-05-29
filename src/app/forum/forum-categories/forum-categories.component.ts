@@ -18,10 +18,11 @@ import { SubCategoryService } from '../service/sub-category.service';
 import { TopicRecent } from '@model/forum/topic';
 
 @Component({
-  selector: 'bio-forum-categories',
-  templateUrl: './forum-categories.component.html',
-  styleUrls: ['./forum-categories.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-forum-categories',
+    templateUrl: './forum-categories.component.html',
+    styleUrls: ['./forum-categories.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ForumCategoriesComponent {
   constructor(

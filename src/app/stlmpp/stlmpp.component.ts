@@ -6,12 +6,13 @@ import { Animations } from '@shared/animations/animations';
 import { mdiGithub, mdiSteam, mdiYoutube } from '@mdi/js';
 
 @Component({
-  selector: 'bio-stlmpp',
-  templateUrl: './stlmpp.component.html',
-  styleUrls: ['./stlmpp.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [Animations.fade.inOut()],
-  host: { class: 'center-container' },
+    selector: 'bio-stlmpp',
+    templateUrl: './stlmpp.component.html',
+    styleUrls: ['./stlmpp.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    animations: [Animations.fade.inOut()],
+    host: { class: 'center-container' },
+    standalone: false
 })
 export class StlmppComponent extends Destroyable implements AfterViewInit {
   constructor(private router: Router, private activatedRoute: ActivatedRoute) {

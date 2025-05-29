@@ -8,7 +8,10 @@ import { takeUntil } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 import { getOverlayPositionMenu } from '@shared/components/menu/util';
 
-@Directive({ selector: '[bioMenuTrigger]' })
+@Directive({
+    selector: '[bioMenuTrigger]',
+    standalone: false
+})
 export class MenuTriggerDirective extends Destroyable {
   constructor(
     private overlay: Overlay,

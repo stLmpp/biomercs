@@ -4,11 +4,12 @@ import { BadgeBase, BioBadgeConfig } from '@shared/components/badge/badge';
 import { VerticalHorizontalPosition } from '@shared/components/common/positions';
 
 @Directive({
-  selector: '[bioBadge]',
-  host: {
-    class: 'badge-container',
-    '[style.position]': `'relative'`,
-  },
+    selector: '[bioBadge]',
+    host: {
+        class: 'badge-container',
+        '[style.position]': `'relative'`,
+    },
+    standalone: false
 })
 export class BadgeDirective extends BadgeBase implements AfterViewInit {
   constructor(

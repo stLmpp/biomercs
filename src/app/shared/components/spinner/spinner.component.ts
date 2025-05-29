@@ -4,13 +4,14 @@ import { Animations } from '../../animations/animations';
 import { SimpleChangesCustom } from '@util/util';
 
 @Component({
-  selector: 'bio-spinner',
-  templateUrl: './spinner.component.html',
-  styleUrls: ['./spinner.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
-  host: { class: 'spinner', '[@fadeInOut]': '' },
-  animations: [Animations.fade.inOut()],
+    selector: 'bio-spinner',
+    templateUrl: './spinner.component.html',
+    styleUrls: ['./spinner.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.None,
+    host: { class: 'spinner', '[@fadeInOut]': '' },
+    animations: [Animations.fade.inOut()],
+    standalone: false
 })
 export class SpinnerComponent implements OnChanges {
   @Input()

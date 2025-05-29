@@ -13,10 +13,11 @@ export interface ScoreApprovalActionsModalData {
 }
 
 @Component({
-  selector: 'bio-score-approval-actions-modal',
-  templateUrl: './score-approval-actions-modal.component.html',
-  styleUrls: ['./score-approval-actions-modal.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-score-approval-actions-modal',
+    templateUrl: './score-approval-actions-modal.component.html',
+    styleUrls: ['./score-approval-actions-modal.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ScoreApprovalActionsModalComponent {
   constructor(

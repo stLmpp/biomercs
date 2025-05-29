@@ -18,10 +18,11 @@ interface SteamRegisterForm {
 }
 
 @Component({
-  selector: 'bio-steam-register',
-  templateUrl: './steam-register.component.html',
-  styleUrls: ['./steam-register.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-steam-register',
+    templateUrl: './steam-register.component.html',
+    styleUrls: ['./steam-register.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SteamRegisterComponent implements OnDestroy, OnInit {
   constructor(

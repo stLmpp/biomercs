@@ -6,10 +6,11 @@ import { MailService } from '@shared/services/mail/mail.service';
 import { finalize, tap } from 'rxjs';
 
 @Component({
-  selector: 'bio-admin-mail-queue',
-  templateUrl: './admin-mail-queue.component.html',
-  styleUrls: ['./admin-mail-queue.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-admin-mail-queue',
+    templateUrl: './admin-mail-queue.component.html',
+    styleUrls: ['./admin-mail-queue.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AdminMailQueueComponent {
   constructor(

@@ -17,11 +17,12 @@ interface NotificationCustom extends Notification {
 }
 
 @Component({
-  selector: 'bio-notifications-icon',
-  templateUrl: './notifications-icon.component.html',
-  styleUrls: ['./notifications-icon.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [Animations.fade.inOut(100), Animations.scale.in(100, 0.8)],
+    selector: 'bio-notifications-icon',
+    templateUrl: './notifications-icon.component.html',
+    styleUrls: ['./notifications-icon.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    animations: [Animations.fade.inOut(100), Animations.scale.in(100, 0.8)],
+    standalone: false
 })
 export class NotificationsIconComponent extends Destroyable implements OnInit {
   constructor(

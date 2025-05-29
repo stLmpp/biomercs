@@ -3,9 +3,10 @@ import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { CardChild } from '@shared/components/card/card-child';
 
 @Directive({
-  selector: '[bioCardActions], bio-card-actions',
-  host: { class: 'card-actions' },
-  providers: [{ provide: CardChild, useExisting: CardActionsDirective, multi: true }],
+    selector: '[bioCardActions], bio-card-actions',
+    host: { class: 'card-actions' },
+    providers: [{ provide: CardChild, useExisting: CardActionsDirective, multi: true }],
+    standalone: false
 })
 export class CardActionsDirective {
   @Input()

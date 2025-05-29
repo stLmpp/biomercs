@@ -6,10 +6,11 @@ import { trackById } from '@util/track-by';
 import { trackByFactory } from '@stlmpp/utils';
 
 @Component({
-  selector: 'bio-score-list',
-  templateUrl: './score-list.component.html',
-  styleUrls: ['./score-list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bio-score-list',
+    templateUrl: './score-list.component.html',
+    styleUrls: ['./score-list.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ScoreListComponent<T extends Score = Score> {
   private _collapsable = false;
