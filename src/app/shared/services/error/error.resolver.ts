@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { AdminError } from '@model/admin-error';
 import { ErrorService } from '@shared/services/error/error.service';
 import { Observable } from 'rxjs';
@@ -7,7 +7,7 @@ import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { Pagination } from '@model/pagination';
 
 @Injectable({ providedIn: 'root' })
-export class ErrorResolver implements Resolve<Pagination<AdminError>> {
+export class ErrorResolver  {
   constructor(private errorService: ErrorService) {}
 
   resolve(

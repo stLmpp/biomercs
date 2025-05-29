@@ -1,19 +1,10 @@
 import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  CanLoad,
-  Route,
-  Router,
-  RouterStateSnapshot,
-  UrlSegment,
-  UrlTree,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, Route, Router, RouterStateSnapshot, UrlSegment, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthQuery } from './auth.query';
 
 @Injectable({ providedIn: 'root' })
-export class AuthNotLoggedGuard implements CanActivate, CanLoad {
+export class AuthNotLoggedGuard  {
   constructor(private authQuery: AuthQuery, private router: Router) {}
 
   private _validateIsNotLogged(): boolean | UrlTree {

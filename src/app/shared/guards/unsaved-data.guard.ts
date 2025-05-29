@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { isObservable, Observable, of, switchMap, take } from 'rxjs';
 import { isNil, isObject, isString } from 'st-utils';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
@@ -16,7 +16,7 @@ export interface UnsavedData {
 }
 
 @Injectable({ providedIn: 'root' })
-export class UnsavedDataGuard<T extends UnsavedData = any> implements CanDeactivate<T> {
+export class UnsavedDataGuard<T extends UnsavedData = any>  {
   constructor(private dialogService: DialogService) {}
 
   private _resolveData(data: UnsavedDataType): Observable<boolean> {

@@ -1,19 +1,10 @@
 import { Injectable } from '@angular/core';
-import {
-  CanActivate,
-  CanLoad,
-  Route,
-  UrlSegment,
-  ActivatedRouteSnapshot,
-  RouterStateSnapshot,
-  UrlTree,
-  Router,
-} from '@angular/router';
+import { Route, UrlSegment, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthQuery } from './auth.query';
 
 @Injectable({ providedIn: 'root' })
-export class AuthAdminGuard implements CanActivate, CanLoad {
+export class AuthAdminGuard  {
   constructor(private authQuery: AuthQuery, private router: Router) {}
 
   private _validateAdmin(): boolean | UrlTree {

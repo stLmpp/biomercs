@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { compareTwoStrings } from 'string-similarity';
 import { AuthQuery } from '../auth/auth.query';
 
@@ -12,7 +12,7 @@ export interface PossiblePath {
 }
 
 @Injectable({ providedIn: 'root' })
-export class NotFoundResolver implements Resolve<PossiblePath[]> {
+export class NotFoundResolver  {
   constructor(private authQuery: AuthQuery) {}
 
   possibleRoutes: PossiblePath[] = [
