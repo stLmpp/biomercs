@@ -1,19 +1,22 @@
 <ng-container *ngLet="user$ | async as user">
   <ng-container *ngLet="isMobile$ | async as isMobile">
-    <bio-side-menu
-      *ngIf="sideMenuOpened && user"
-      [user]="user"
-      [isMobile]="isMobile"
-      (menuSelected)="toggleSideMenu($event)"
-    ></bio-side-menu>
+    @if (sideMenuOpened && user) {
+      <bio-side-menu
+        [user]="user"
+        [isMobile]="isMobile"
+        (menuSelected)="toggleSideMenu($event)"
+      ></bio-side-menu>
+    }
     <div class="brand-wrapper">
-      <button bioButton icon type="button" (click)="toggleSideMenu($event)" *ngIf="user">
-        <bio-icon>menu</bio-icon>
-      </button>
+      @if (user) {
+        <button bioButton icon type="button" (click)="toggleSideMenu($event)">
+          <bio-icon>menu</bio-icon>
+        </button>
+      }
       <a class="brand" routerLink="/"> Biomercs </a>
     </div>
     <div class="end">
-      <ng-container *ngIf="isLogged$ | async; else notLogged">
+      @if (isLogged$ | async) {
         <bio-notifications-icon></bio-notifications-icon>
         <a
           bioButton
@@ -23,30 +26,35 @@
           bioTooltip="Submit score"
           bioTooltipPosition="bottom"
           [bioTooltipDisabled]="!isMobile"
-        >
+          >
           <bio-icon>add</bio-icon>
-          <ng-container *ngIf="!isMobile">Submit score</ng-container>
+          @if (!isMobile) {
+            Submit score
+          }
         </a>
         <button type="button" bioButton [bioMenuTrigger]="menu">
           <bio-icon>person</bio-icon>
-          <ng-container *ngIf="!isMobile">{{ user.username }}</ng-container>
+          @if (!isMobile) {
+            {{ user.username }}
+          }
           <bio-icon class="triangle" [mdi]="mdiTriangle" [size]="8"></bio-icon>
         </button>
         <bio-menu #menu>
-          <a *ngIf="user.idPlayer" bioButton bioMenuItem [routerLink]="['/player', user.idPlayer]">
-            <bio-icon>person</bio-icon> Profile
-          </a>
+          @if (user.idPlayer) {
+            <a bioButton bioMenuItem [routerLink]="['/player', user.idPlayer]">
+              <bio-icon>person</bio-icon> Profile
+            </a>
+          }
           <a bioButton bioMenuItem routerLink="/auth/change-password"> <bio-icon>vpn_key</bio-icon> Change password</a>
           <button type="button" bioButton bioMenuItem (click)="logout()">
             <bio-icon>logout</bio-icon>
             Logout
           </button>
         </bio-menu>
-      </ng-container>
-      <ng-template #notLogged>
+      } @else {
         <a bioButton routerLink="/auth/register">Register</a>
         <a bioButton routerLink="/auth/login">Login</a>
-      </ng-template>
+      }
     </div>
   </ng-container>
 </ng-container>

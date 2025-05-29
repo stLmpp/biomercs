@@ -22,12 +22,14 @@
           icon
           type="button"
           (click)="typePassword = typePassword === 'password' ? 'text' : 'password'"
-        >
+          >
           <bio-icon>{{ typePassword === 'password' ? 'visibility_off' : 'visibility' }}</bio-icon>
         </button>
       </bio-form-field>
       <bio-checkbox controlName="rememberMe"> Remember me </bio-checkbox>
-      <p *ngIf="error" class="text-danger">{{ error }}</p>
+      @if (error) {
+        <p class="text-danger">{{ error }}</p>
+      }
     </bio-card-content>
     <bio-card-actions end>
       <button bioButton primary type="button" (click)="loginSteam()" [loading]="loadingSteam" [disabled]="loading">

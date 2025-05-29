@@ -15,8 +15,9 @@
 <form class="post" [controlGroup]="form" (groupSubmit)="save()">
   <div class="header">
     <span class="title">
-      <ng-container *ngIf="!editing; else editingPostNameTemplate">{{ post.name }}</ng-container>
-      <ng-template #editingPostNameTemplate>
+      @if (!editing) {
+        {{ post.name }}
+      } @else {
         <bio-form-field label="Name">
           <input bioInput controlName="name" placeholder="Name" />
           <bio-hint end>{{ (name$ | asyncDefault: '').length }} / 500</bio-hint>
@@ -24,37 +25,45 @@
             <bio-error *error="'required'">Name is required</bio-error>
           </bio-errors>
         </bio-form-field>
-      </ng-template>
+      }
     </span>
-    <div class="actions" *ngIf="!editing">
-      <button
-        bioButton
-        type="button"
-        (click)="postQuote.emit(post)"
-        *ngIf="!topicLocked && !post.deletedDate"
-        [disabled]="loadingReply"
-      >
-        <bio-icon>format_quote</bio-icon>
-        Quote
-      </button>
-      <button bioButton type="button" *ngIf="post.editAllowed" (click)="openEdit()">
-        <bio-icon>edit</bio-icon>
-        Edit
-      </button>
-      <button bioButton type="button" *ngIf="post.deleteAllowed" (click)="delete()">
-        <bio-icon>delete</bio-icon>
-        Delete
-      </button>
-    </div>
+    @if (!editing) {
+      <div class="actions">
+        @if (!topicLocked && !post.deletedDate) {
+          <button
+            bioButton
+            type="button"
+            (click)="postQuote.emit(post)"
+            [disabled]="loadingReply"
+            >
+            <bio-icon>format_quote</bio-icon>
+            Quote
+          </button>
+        }
+        @if (post.editAllowed) {
+          <button bioButton type="button" (click)="openEdit()">
+            <bio-icon>edit</bio-icon>
+            Edit
+          </button>
+        }
+        @if (post.deleteAllowed) {
+          <button bioButton type="button" (click)="delete()">
+            <bio-icon>delete</bio-icon>
+            Delete
+          </button>
+        }
+      </div>
+    }
   </div>
   <div class="content">
-    <ckeditor-view [content]="post.content" *ngIf="!editing; else editingTemplate"></ckeditor-view>
-    <ng-template #editingTemplate>
+    @if (!editing) {
+      <ckeditor-view [content]="post.content"></ckeditor-view>
+    } @else {
       <ckeditor [editor]="editor" controlName="content"></ckeditor>
       <div class="actions">
         <button primary bioButton type="button" (click)="closeEdit()" [disabled]="saving">Cancel</button>
         <button primary bioButton type="submit" [loading]="saving" [disabled]="form.pristine">Save</button>
       </div>
-    </ng-template>
+    }
   </div>
 </form>

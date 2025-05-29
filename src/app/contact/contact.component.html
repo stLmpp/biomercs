@@ -17,9 +17,11 @@
       <bio-form-field label="Subject">
         <input bioInput controlName="subject" autocomplete="off" [placeholder]="subject" />
         <bio-hint>Max 200 characters</bio-hint>
-        <bio-hint end *ngIf="subjectControlValue$ | async as subjectControlValue">
-          {{ subjectControlValue.length }}/200
-        </bio-hint>
+        @if (subjectControlValue$ | async; as subjectControlValue) {
+          <bio-hint end>
+            {{ subjectControlValue.length }}/200
+          </bio-hint>
+        }
         <bio-errors>
           <bio-error *error="'required'">Subject is required</bio-error>
           <bio-error *error="'whiteSpace'">Subject is required</bio-error>
@@ -36,17 +38,19 @@
           [placeholder]="body"
         ></textarea>
         <bio-hint>Max 2000 characters</bio-hint>
-        <bio-hint end *ngIf="bodyControlValue$ | async as bodyControlValue"
-          >{{ bodyControlValue.length }}/2000</bio-hint
-        >
-        <bio-errors>
-          <bio-error *error="'required'">Subject is required</bio-error>
-          <bio-error *error="'whiteSpace'">Subject is required</bio-error>
-        </bio-errors>
-      </bio-form-field>
-    </bio-card-content>
-    <bio-card-actions>
-      <button bioButton primary type="submit" [disabled]="form.invalid" [loading]="sending">Send message</button>
-    </bio-card-actions>
-  </bio-card>
-</form>
+        @if (bodyControlValue$ | async; as bodyControlValue) {
+          <bio-hint end
+            >{{ bodyControlValue.length }}/2000</bio-hint
+            >
+          }
+          <bio-errors>
+            <bio-error *error="'required'">Subject is required</bio-error>
+            <bio-error *error="'whiteSpace'">Subject is required</bio-error>
+          </bio-errors>
+        </bio-form-field>
+      </bio-card-content>
+      <bio-card-actions>
+        <button bioButton primary type="submit" [disabled]="form.invalid" [loading]="sending">Send message</button>
+      </bio-card-actions>
+    </bio-card>
+  </form>

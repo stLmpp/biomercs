@@ -8,9 +8,10 @@ import {
   QueryList,
   Self,
   ViewContainerRef,
+  DOCUMENT
 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
-import { DOCUMENT } from '@angular/common';
+
 import { cdkOverlayTransparentBackdrop } from '@util/overlay';
 import { combineLatest, filter, fromEvent, Observable, startWith, Subject, takeUntil } from 'rxjs';
 import { TemplatePortal } from '@angular/cdk/portal';

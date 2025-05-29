@@ -9,31 +9,40 @@
           type="search"
           controlName="term"
           autocomplete="off"
-        />
+          />
       </bio-form-field>
     </bio-card-content>
   </bio-card>
 
   <bio-card dark class="users">
-    <bio-loading *ngIf="loading"></bio-loading>
+    @if (loading) {
+      <bio-loading></bio-loading>
+    }
     <bio-card-content>
       <bio-list selectable>
-        <bio-list-item *ngIf="!users?.length">No data found</bio-list-item>
-        <bio-list-item
-          [disabled]="user.disabled"
-          *ngFor="let user of users; trackBy: trackById"
-          [bioTooltip]="user.tooltip"
-          [bioTooltipDisabled]="user.tooltipDisabled"
-          (click)="action(user)"
-        >
-          <bio-icon bioPrefix outlined>{{ user.bannedDate ? 'lock' : 'lock_open' }}</bio-icon>
-          <bio-list-item-line>
-            {{ user.username }}
-            <bio-icon [mdi]="mdiShieldAccount" *ngIf="user.admin" small></bio-icon>
-          </bio-list-item-line>
-          <bio-list-item-line>{{ user.email }}</bio-list-item-line>
-          <span bioSuffix *ngIf="user.bannedDate">Banned: {{ user.bannedDate | authDateFormat }}</span>
-        </bio-list-item>
+        @if (!users?.length) {
+          <bio-list-item>No data found</bio-list-item>
+        }
+        @for (user of users; track trackById($index, user)) {
+          <bio-list-item
+            [disabled]="user.disabled"
+            [bioTooltip]="user.tooltip"
+            [bioTooltipDisabled]="user.tooltipDisabled"
+            (click)="action(user)"
+            >
+            <bio-icon bioPrefix outlined>{{ user.bannedDate ? 'lock' : 'lock_open' }}</bio-icon>
+            <bio-list-item-line>
+              {{ user.username }}
+              @if (user.admin) {
+                <bio-icon [mdi]="mdiShieldAccount" small></bio-icon>
+              }
+            </bio-list-item-line>
+            <bio-list-item-line>{{ user.email }}</bio-list-item-line>
+            @if (user.bannedDate) {
+              <span bioSuffix>Banned: {{ user.bannedDate | authDateFormat }}</span>
+            }
+          </bio-list-item>
+        }
       </bio-list>
     </bio-card-content>
     <bio-card-actions end>

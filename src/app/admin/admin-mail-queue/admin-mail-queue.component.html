@@ -5,7 +5,9 @@
     <div><b>Max retries:</b> {{ statusQueue.maxRetries }}</div>
     <div><b>Retry attempts:</b> {{ statusQueue.retryAttempts }}</div>
   </bio-card-content>
-  <bio-card-actions *ngIf="!statusQueue.queueWorking">
-    <button bioButton primary type="button" (click)="restartQueue()" [loading]="restartingQueue">Restart queue</button>
-  </bio-card-actions>
+  @if (!statusQueue.queueWorking) {
+    <bio-card-actions>
+      <button bioButton primary type="button" (click)="restartQueue()" [loading]="restartingQueue">Restart queue</button>
+    </bio-card-actions>
+  }
 </bio-card>

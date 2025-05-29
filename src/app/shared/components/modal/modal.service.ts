@@ -7,6 +7,7 @@ import {
   TemplateRef,
   Type,
   ViewContainerRef,
+  DOCUMENT
 } from '@angular/core';
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ModalRef } from './modal-ref';
@@ -20,7 +21,7 @@ import {
 import { coerceArray } from 'st-utils';
 import { ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
 import { ModalComponent } from './modal.component';
-import { DOCUMENT } from '@angular/common';
+
 import { DynamicLoaderService, LazyFn } from '../../../core/dynamic-loader.service';
 
 @Injectable({ providedIn: 'root' })

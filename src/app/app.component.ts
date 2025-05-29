@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit, DOCUMENT } from '@angular/core';
 import { TitleService } from '@shared/title/title.service';
 import { BreakpointObserverService } from '@shared/services/breakpoint-observer/breakpoint-observer.service';
 import { MetaService } from '@shared/meta/meta.service';
 import { GlobalListenersService } from '@shared/services/global-listeners/global-listeners.service';
 import { Destroyable } from '@shared/components/common/destroyable-component';
-import { DOCUMENT } from '@angular/common';
+
 import { auditTime, distinctUntilChanged, from, map, startWith } from 'rxjs';
 import { WINDOW } from './core/window.service';
 import { BreadcrumbsService } from '@shared/breadcrumbs/breadcrumbs.service';

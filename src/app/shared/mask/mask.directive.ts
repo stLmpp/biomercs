@@ -8,11 +8,12 @@ import {
   Optional,
   Renderer2,
   SimpleChanges,
+  DOCUMENT
 } from '@angular/core';
 import { ControlValue } from '@stlmpp/control';
 import { IConfig, initialConfig, MaskDirective as _MaskDirective, MaskService as _MaskService } from 'ngx-mask';
 import { Subject } from 'rxjs';
-import { DOCUMENT } from '@angular/common';
+
 import { MASK_CONFIG } from '@shared/mask/mask-config.token';
 
 @Injectable()

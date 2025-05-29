@@ -1,22 +1,29 @@
 <form [controlGroup]="form">
-  <label *ngIf="label" (click)="focusManager.setFirstItemActive()">{{ label }}</label>
+  @if (label) {
+    <label (click)="focusManager.setFirstItemActive()">{{ label }}</label>
+  }
   <div controlArrayName="array" (keydown)="focusManager.onKeydown($event)">
-    <input
-      class="no-arrows"
-      bioInput
-      *ngFor="let input of arrayControl; let $index = index; trackBy: trackByControl"
-      [controlName]="$index"
-      (blur)="onTouched$.next()"
-      (focus)="focusManager.setActiveItem($index)"
-      (paste)="onPaste($event)"
-      (keydown.backspace)="onKeyupBackspace($event, $index)"
-      placeholder="0"
-      confirmationCodeInput
-      inputmode="numeric"
-    />
+    @for (input of arrayControl; track trackByControl($index, input)) {
+      <input
+        class="no-arrows"
+        bioInput
+        [controlName]="$index"
+        (blur)="onTouched$.next()"
+        (focus)="focusManager.setActiveItem($index)"
+        (paste)="onPaste($event)"
+        (keydown.backspace)="onKeyupBackspace($event, $index)"
+        placeholder="0"
+        confirmationCodeInput
+        inputmode="numeric"
+        />
+    }
   </div>
   <div class="errors">
-    <bio-error *ngIf="arrayControl.invalid && isTouched">Invalid code</bio-error>
-    <span class="error" *ngIf="codeError">{{ codeError }}</span>
+    @if (arrayControl.invalid && isTouched) {
+      <bio-error>Invalid code</bio-error>
+    }
+    @if (codeError) {
+      <span class="error">{{ codeError }}</span>
+    }
   </div>
 </form>

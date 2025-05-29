@@ -1,11 +1,11 @@
-import { Directive, ElementRef, HostListener, Inject, Input, ViewContainerRef } from '@angular/core';
+import { Directive, ElementRef, HostListener, Inject, Input, ViewContainerRef, DOCUMENT } from '@angular/core';
 import { MenuComponent } from './menu.component';
 import { Overlay } from '@angular/cdk/overlay';
 import { cdkOverlayTransparentBackdrop } from '@util/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Destroyable } from '../common/destroyable-component';
 import { takeUntil } from 'rxjs';
-import { DOCUMENT } from '@angular/common';
+
 import { getOverlayPositionMenu } from '@shared/components/menu/util';
 
 @Directive({

@@ -1,16 +1,20 @@
-<div class="items-per-page" *ngIf="!itemsPerPageHidden">
-  <span> Items per page: </span>
-  <bio-select
-    [disabled]="!itemCount || disabled"
-    [model]="itemsPerPage"
-    (modelChange)="itemsPerPageChange.emit($event)"
-    placeholder="Items per page"
-  >
-    <bio-option *ngFor="let option of itemsPerPageOptions; trackBy: trackByNumber" [value]="option">
-      {{ option }}
-    </bio-option>
-  </bio-select>
-</div>
+@if (!itemsPerPageHidden) {
+  <div class="items-per-page">
+    <span> Items per page: </span>
+    <bio-select
+      [disabled]="!itemCount || disabled"
+      [model]="itemsPerPage"
+      (modelChange)="itemsPerPageChange.emit($event)"
+      placeholder="Items per page"
+      >
+      @for (option of itemsPerPageOptions; track trackByNumber($index, option)) {
+        <bio-option [value]="option">
+          {{ option }}
+        </bio-option>
+      }
+    </bio-select>
+  </div>
+}
 <div class="buttons">
   <span>
     {{ (currentPage - 1) * itemsPerPage + 1 }} - {{ currentPage * itemsPerPage | min: totalItems }} of {{ totalItems }}
@@ -22,7 +26,7 @@
     (click)="onFirstPage()"
     [disabled]="!itemCount || currentPage === 1 || disabled"
     bioTooltip="First page"
-  >
+    >
     <bio-icon>first_page</bio-icon>
   </button>
   <button
@@ -32,7 +36,7 @@
     (click)="onPreviousPage()"
     [disabled]="!itemCount || currentPage === 1 || disabled"
     bioTooltip="Previous page"
-  >
+    >
     <bio-icon>chevron_left</bio-icon>
   </button>
   <button
@@ -42,7 +46,7 @@
     (click)="onNextPage()"
     [disabled]="!itemCount || currentPage === totalPages || disabled"
     bioTooltip="Next page"
-  >
+    >
     <bio-icon>chevron_right</bio-icon>
   </button>
   <button
@@ -52,7 +56,7 @@
     (click)="onLastPage()"
     [disabled]="!itemCount || currentPage === totalPages || disabled"
     bioTooltip="Last page"
-  >
+    >
     <bio-icon>last_page</bio-icon>
   </button>
 </div>

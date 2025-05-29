@@ -1,13 +1,14 @@
 <h4 bioPageTitle></h4>
-<bio-score-list-responsive
-  *ngIf="scores$ | async as scores"
-  [scores]="scores"
-  [paginationMeta]="paginationMeta$ | async"
-  [colDefs]="colDefs"
-  [loading]="loading$ | async"
-  [metadata]="metadata$ | async"
-  (scoreClicked)="openModalChangeRequests($event)"
-  (notifyChange)="onNotifyChange($event)"
-  (currentPageChange)="onCurrentPageChange($event)"
-  (itemsPerPageChange)="onItemsPerPageChange($event)"
-></bio-score-list-responsive>
+@if (scores$ | async; as scores) {
+  <bio-score-list-responsive
+    [scores]="scores"
+    [paginationMeta]="paginationMeta$ | async"
+    [colDefs]="colDefs"
+    [loading]="loading$ | async"
+    [metadata]="metadata$ | async"
+    (scoreClicked)="openModalChangeRequests($event)"
+    (notifyChange)="onNotifyChange($event)"
+    (currentPageChange)="onCurrentPageChange($event)"
+    (itemsPerPageChange)="onItemsPerPageChange($event)"
+  ></bio-score-list-responsive>
+}

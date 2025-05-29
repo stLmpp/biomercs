@@ -27,13 +27,17 @@
         </bio-form-field>
         <bio-form-field label="Region">
           <bio-select controlName="idRegion" placeholder="Region">
-            <bio-option *ngFor="let region of regions; trackBy: trackByRegion" [value]="region.id">
-              <bio-icon [flag]="region.shortName"></bio-icon> {{ region.name }}
-            </bio-option>
+            @for (region of regions; track trackByRegion($index, region)) {
+              <bio-option [value]="region.id">
+                <bio-icon [flag]="region.shortName"></bio-icon> {{ region.name }}
+              </bio-option>
+            }
           </bio-select>
         </bio-form-field>
       </div>
-      <p class="text-danger" *ngIf="isInvalid && form.touched">Either Steam ID or Player name must be fulfilled</p>
+      @if (isInvalid && form.touched) {
+        <p class="text-danger">Either Steam ID or Player name must be fulfilled</p>
+      }
     </bio-card-content>
     <bio-card-actions (mouseenter)="onCardActionsMouseenter()">
       <button
@@ -42,7 +46,7 @@
         type="submit"
         primary
         [loading]="loading"
-      >
+        >
         Create
       </button>
     </bio-card-actions>

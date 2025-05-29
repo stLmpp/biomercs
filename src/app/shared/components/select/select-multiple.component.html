@@ -1,8 +1,9 @@
 <div class="select-value" [class.placeholder]="!value.length && placeholder">
-  <ng-container *ngIf="value.length; else noValues"> {{ value.length }} items selected </ng-container>
-  <ng-template #noValues>
+  @if (value.length) {
+    {{ value.length }} items selected
+  } @else {
     {{ placeholder }}
-  </ng-template>
+  }
 </div>
 <div class="select-icon">
   <bio-icon small>keyboard_arrow_down</bio-icon>
@@ -16,7 +17,7 @@
     @fadeInOut
     @scaleIn
     (@fadeInOut.done)="onFadeInOutDone($event)"
-  >
+    >
     <ng-content></ng-content>
   </div>
 </ng-template>

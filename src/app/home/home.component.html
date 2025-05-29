@@ -1,42 +1,45 @@
 <h4>Welcome to biomercs</h4>
 <bio-card-menus bioCardMenuFocusOnFirstItem>
-  <ng-container *ngIf="isLogged$ | async; else noLogged">
+  @if (isLogged$ | async) {
     <a bioCardMenu routerLink="/score/add">
       <bio-icon>add</bio-icon>
       Submit a score
     </a>
-    <a bioCardMenu routerLink="/score/leaderboards" *ngIf="isNotMobile$ | async">
-      <bio-icon>leaderboard</bio-icon>
-      Check the leaderboards
-    </a>
-    <ng-container *ngIf="isAdmin$ | async">
-      <a
-        bioCardMenu
-        *ngIf="adminApprovalCount$ | async as adminApprovalCount"
-        [bioBadge]="adminApprovalCount"
-        routerLink="/admin/approval"
-      >
-        <bio-icon>checklist</bio-icon>
-        Check the pending scores (Admin)
+    @if (isNotMobile$ | async) {
+      <a bioCardMenu routerLink="/score/leaderboards">
+        <bio-icon>leaderboard</bio-icon>
+        Check the leaderboards
       </a>
-    </ng-container>
-    <ng-container *ngIf="idPlayer$ | async as idPlayer">
-      <a
-        bioCardMenu
-        *ngIf="playerRequestChangesCount$ | async as playerRequestChangesCount"
-        [bioBadge]="playerRequestChangesCount"
-        [routerLink]="['/player', idPlayer, 'change-requests']"
-      >
-        <bio-icon>sync_alt</bio-icon>
-        Check your pending changes list
-      </a>
-    </ng-container>
+    }
+    @if (isAdmin$ | async) {
+      @if (adminApprovalCount$ | async; as adminApprovalCount) {
+        <a
+          bioCardMenu
+          [bioBadge]="adminApprovalCount"
+          routerLink="/admin/approval"
+          >
+          <bio-icon>checklist</bio-icon>
+          Check the pending scores (Admin)
+        </a>
+      }
+    }
+    @if (idPlayer$ | async; as idPlayer) {
+      @if (playerRequestChangesCount$ | async; as playerRequestChangesCount) {
+        <a
+          bioCardMenu
+          [bioBadge]="playerRequestChangesCount"
+          [routerLink]="['/player', idPlayer, 'change-requests']"
+          >
+          <bio-icon>sync_alt</bio-icon>
+          Check your pending changes list
+        </a>
+      }
+    }
     <a bioCardMenu routerLink="/forum">
       <bio-icon>forum</bio-icon>
       Forum
     </a>
-  </ng-container>
-  <ng-template #noLogged>
+  } @else {
     <a bioCardMenu routerLink="/auth/login">
       <bio-icon>login</bio-icon>
       Login
@@ -45,7 +48,7 @@
       <bio-icon>person_add</bio-icon>
       Register
     </a>
-  </ng-template>
+  }
   <a bioCardMenu routerLink="/rules">
     <bio-icon>article</bio-icon>
     Read the rules

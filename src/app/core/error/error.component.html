@@ -1,12 +1,18 @@
 <h1 bioModalTitle>{{ httpError?.status }}</h1>
 <bio-modal-content>
-  <p *ngIf="httpError?.message">Message: {{ httpError.message }}</p>
-  <p *ngIf="httpError?.error">Error: {{ httpError.error }}</p>
-  <ng-container *ngIf="httpError.sqlError">
-    <p *ngFor="let keyvalue of httpError.sqlError | keyvalue">
-      <span style="text-transform: capitalize"> {{ keyvalue.key }} </span>: {{ keyvalue.value }}
-    </p>
-  </ng-container>
+  @if (httpError?.message) {
+    <p>Message: {{ httpError.message }}</p>
+  }
+  @if (httpError?.error) {
+    <p>Error: {{ httpError.error }}</p>
+  }
+  @if (httpError.sqlError) {
+    @for (keyvalue of httpError.sqlError | keyvalue; track keyvalue) {
+      <p>
+        <span style="text-transform: capitalize"> {{ keyvalue.key }} </span>: {{ keyvalue.value }}
+      </p>
+    }
+  }
 </bio-modal-content>
 <bio-modal-actions>
   <button bioModalClose bioButton>Close</button>

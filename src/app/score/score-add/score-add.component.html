@@ -13,29 +13,25 @@
     </bio-card-content>
   </bio-card>
   <form [controlGroup]="form" (groupSubmit)="onSubmit()">
-    <ng-container
-      *ngFor="
-        let scorePlayerControl of scorePlayersControl;
-        trackBy: trackByScorePlayerControl;
-        let $index = index;
-        let $first = first
-      "
-    >
-      <bio-score-add-player
-        *ngIf="scorePlayerControl.value$ | async as player"
-        [disabled]="!state.hasMode"
-        (hostChange)="hostChange($index)"
-        (playerChange)="scorePlayerControl.setValue($event)"
-        [player]="player"
-        [characters]="characters$ | asyncDefault: []"
-        [platformInputTypes]="platformInputTypes$ | asyncDefault: []"
-        [charactersLoading]="characterLoading"
-        [platformInputTypeLoading]="platformInputTypeLoading"
-        [first]="$first"
-        [playerNumber]="$index + 1"
-        [idPlayersSelected]="(idPlayersSelected$ | async) ?? []"
-      ></bio-score-add-player>
-    </ng-container>
+    @for (
+      scorePlayerControl of scorePlayersControl; track trackByScorePlayerControl($index,
+      scorePlayerControl)) {
+      @if (scorePlayerControl.value$ | async; as player) {
+        <bio-score-add-player
+          [disabled]="!state.hasMode"
+          (hostChange)="hostChange($index)"
+          (playerChange)="scorePlayerControl.setValue($event)"
+          [player]="player"
+          [characters]="characters$ | asyncDefault: []"
+          [platformInputTypes]="platformInputTypes$ | asyncDefault: []"
+          [charactersLoading]="characterLoading"
+          [platformInputTypeLoading]="platformInputTypeLoading"
+          [first]="$first"
+          [playerNumber]="$index + 1"
+          [idPlayersSelected]="(idPlayersSelected$ | async) ?? []"
+        ></bio-score-add-player>
+      }
+    }
     <bio-card class="score-params" collapsable>
       <h3 bioCardTitle>Score info</h3>
       <bio-card-content>
@@ -61,7 +57,7 @@
             [dropSpecialCharacters]="false"
             [patterns]="maskTimePattern"
             autocomplete="off"
-          />
+            />
           <bio-errors>
             <bio-error *error="'required'">Time is required</bio-error>
           </bio-errors>
@@ -73,7 +69,7 @@
             autocomplete="off"
             [bioDatepicker]="datepicker"
             placeholder="Achieved date"
-          />
+            />
           <button bioButton icon bioSuffix [bioDatepickerTrigger]="datepicker">
             <bio-icon>calendar_today</bio-icon>
           </button>

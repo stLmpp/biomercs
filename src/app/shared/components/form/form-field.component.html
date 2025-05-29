@@ -1,16 +1,16 @@
-<ng-container *ngIf="labelDirective; else noLabelRef">
+@if (labelDirective) {
   <ng-content select="label"></ng-content>
-</ng-container>
-<ng-template #noLabelRef>
-  <label
-    [danger]="inputDirective?.dangerClass || select?.dangerClass"
-    *ngIf="label"
-    [for]="id"
-    [class.required]="forceRequired || (control | hasValidators: ['required'])"
-  >
-    {{ label }}
-  </label>
-</ng-template>
+} @else {
+  @if (label) {
+    <label
+      [danger]="inputDirective?.dangerClass || select?.dangerClass"
+      [for]="id"
+      [class.required]="forceRequired || (control | hasValidators: ['required'])"
+      >
+      {{ label }}
+    </label>
+  }
+}
 <div
   class="input-wrapper"
   [ngClass]="{
@@ -19,23 +19,31 @@
     disabled: controlState?.disabled,
     'is-select': !!select
   }"
->
+  >
   <div class="spinner-wrapper">
-    <bio-spinner *ngIf="loading" [size]="0.1"></bio-spinner>
+    @if (loading) {
+      <bio-spinner [size]="0.1"></bio-spinner>
+    }
   </div>
-  <div class="prefix-wrapper" *ngIf="prefixDirective" (click)="$event.stopPropagation()">
-    <ng-content select="[bioPrefix]"></ng-content>
-  </div>
+  @if (prefixDirective) {
+    <div class="prefix-wrapper" (click)="$event.stopPropagation()">
+      <ng-content select="[bioPrefix]"></ng-content>
+    </div>
+  }
   <ng-content></ng-content>
-  <div class="suffix-wrapper" *ngIf="suffixDirective" (click)="$event.stopPropagation()">
-    <ng-content select="[bioSuffix]"></ng-content>
-  </div>
+  @if (suffixDirective) {
+    <div class="suffix-wrapper" (click)="$event.stopPropagation()">
+      <ng-content select="[bioSuffix]"></ng-content>
+    </div>
+  }
 </div>
 <div class="form-field__bottom-wrapper">
-  <div class="form-field__hints" *ngIf="!controlState?.touched || !(control?.hasErrors$ | async)" @fadeIn>
-    <ng-content select="bio-hint:not([end]),[bioHint]:not([end])"></ng-content>
-    <div class="form-field__hint-spacer"></div>
-    <ng-content select="bio-hint[end],[bioHint][end]"></ng-content>
-  </div>
+  @if (!controlState?.touched || !(control?.hasErrors$ | async)) {
+    <div class="form-field__hints" @fadeIn>
+      <ng-content select="bio-hint:not([end]),[bioHint]:not([end])"></ng-content>
+      <div class="form-field__hint-spacer"></div>
+      <ng-content select="bio-hint[end],[bioHint][end]"></ng-content>
+    </div>
+  }
   <ng-content select="bio-errors,[bioErrors]"></ng-content>
 </div>

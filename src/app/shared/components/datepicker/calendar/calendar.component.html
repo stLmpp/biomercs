@@ -1,4 +1,4 @@
-<ng-container *ngIf="viewMode$ | async as viewMode">
+@if (viewMode$ | async; as viewMode) {
   <div class="bio-calendar-header">
     <div>
       <button
@@ -6,7 +6,7 @@
         bioButton
         type="button"
         (click)="changeViewModel(viewModeDay)"
-      >
+        >
         {{ day$ | async }}
       </button>
       <button
@@ -15,7 +15,7 @@
         bioButton
         type="button"
         (click)="changeViewModel(viewModeMonth)"
-      >
+        >
         {{ month$ | async }}
       </button>
       <button
@@ -23,7 +23,7 @@
         bioButton
         type="button"
         (click)="changeViewModel(viewModeYear)"
-      >
+        >
         {{ year$ | async }}
       </button>
     </div>
@@ -36,46 +36,52 @@
       </button>
     </div>
   </div>
-  <div class="bio-calendar-body" [ngSwitch]="viewMode">
-    <ng-container *ngSwitchCase="viewModeDay">
-      <ng-container *ngIf="{ days: days$ | async, dayNames: dayNames$ | async } as dayState">
-        <bio-calendar-days
-          [days]="dayState.days ?? []"
-          [dayNames]="dayState.dayNames ?? []"
-          [value]="value"
-          [disabled]="disabled"
-          (valueChange)="onDaySelect($event)"
-          (nextMonth)="next()"
-          (previousMonth)="previous()"
-          (nextYear)="next(viewModeMonth)"
-          (previousYear)="previous(viewModeMonth)"
-        ></bio-calendar-days>
-      </ng-container>
-    </ng-container>
-    <ng-container *ngSwitchCase="viewModeMonth">
-      <bio-calendar-months
-        *ngIf="months$ | async as months"
-        [months]="months"
-        [value]="value"
-        [disabled]="disabled"
-        (monthSelect)="onMonthSelect($event)"
-        (nextYear)="next(viewModeMonth)"
-        (previousYear)="previous(viewModeMonth)"
-      ></bio-calendar-months>
-    </ng-container>
-    <ng-container *ngSwitchCase="viewModeYear">
-      <bio-calendar-years
-        *ngIf="years$ | async as years"
-        [value]="value"
-        [years]="years"
-        [disabled]="disabled"
-        (nextYears)="next(viewModeYear)"
-        (previousYears)="previous(viewModeYear)"
-        (yearSelect)="onYearSelect($event)"
-      ></bio-calendar-years>
-    </ng-container>
+  <div class="bio-calendar-body">
+    @switch (viewMode) {
+      @case (viewModeDay) {
+        @if ({ days: days$ | async, dayNames: dayNames$ | async }; as dayState) {
+          <bio-calendar-days
+            [days]="dayState.days ?? []"
+            [dayNames]="dayState.dayNames ?? []"
+            [value]="value"
+            [disabled]="disabled"
+            (valueChange)="onDaySelect($event)"
+            (nextMonth)="next()"
+            (previousMonth)="previous()"
+            (nextYear)="next(viewModeMonth)"
+            (previousYear)="previous(viewModeMonth)"
+          ></bio-calendar-days>
+        }
+      }
+      @case (viewModeMonth) {
+        @if (months$ | async; as months) {
+          <bio-calendar-months
+            [months]="months"
+            [value]="value"
+            [disabled]="disabled"
+            (monthSelect)="onMonthSelect($event)"
+            (nextYear)="next(viewModeMonth)"
+            (previousYear)="previous(viewModeMonth)"
+          ></bio-calendar-months>
+        }
+      }
+      @case (viewModeYear) {
+        @if (years$ | async; as years) {
+          <bio-calendar-years
+            [value]="value"
+            [years]="years"
+            [disabled]="disabled"
+            (nextYears)="next(viewModeYear)"
+            (previousYears)="previous(viewModeYear)"
+            (yearSelect)="onYearSelect($event)"
+          ></bio-calendar-years>
+        }
+      }
+    }
   </div>
-  <div class="bio-calendar-footer" *ngIf="calendarFooterDirective">
-    <ng-content select="[bioCalendarFooter],bio-calendar-footer"></ng-content>
-  </div>
-</ng-container>
+  @if (calendarFooterDirective) {
+    <div class="bio-calendar-footer">
+      <ng-content select="[bioCalendarFooter],bio-calendar-footer"></ng-content>
+    </div>
+  }
+}

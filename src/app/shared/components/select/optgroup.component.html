@@ -1,11 +1,12 @@
 <div class="label">
-  <bio-checkbox
-    *ngIf="multiple"
-    [checked]="isSelected"
-    [indeterminate]="isIndeterminate"
-    (checkedChange)="onCheckedChange($event)"
-    [disabled]="isDisabled"
-  ></bio-checkbox>
+  @if (multiple) {
+    <bio-checkbox
+      [checked]="isSelected"
+      [indeterminate]="isIndeterminate"
+      (checkedChange)="onCheckedChange($event)"
+      [disabled]="isDisabled"
+    ></bio-checkbox>
+  }
   {{ label }}
 </div>
 <div class="options">

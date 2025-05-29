@@ -1,42 +1,53 @@
 <bio-card class="scores" [collapsable]="collapsable" [collapsed]="true">
-  <bio-loading *ngIf="loading"></bio-loading>
-  <h3 bioCardTitle *ngIf="title">{{ title }}</h3>
+  @if (loading) {
+    <bio-loading></bio-loading>
+  }
+  @if (title) {
+    <h3 bioCardTitle>{{ title }}</h3>
+  }
   <bio-card-content>
-    <bio-pagination
-      *ngIf="paginationMeta"
-      [meta]="paginationMeta"
-      [itemsPerPageOptions]="itemsPerPageOptions"
-      (currentPageChange)="currentPageChange.emit($event)"
-      (itemsPerPageChange)="itemsPerPageChange.emit($event)"
-      setQueryParamsOnChange
-    ></bio-pagination>
+    @if (paginationMeta) {
+      <bio-pagination
+        [meta]="paginationMeta"
+        [itemsPerPageOptions]="itemsPerPageOptions"
+        (currentPageChange)="currentPageChange.emit($event)"
+        (itemsPerPageChange)="itemsPerPageChange.emit($event)"
+        setQueryParamsOnChange
+      ></bio-pagination>
+    }
     <bio-list selectable>
-      <bio-list-item
-        [disabled]="!!disabledProperty && !!score[disabledProperty]"
-        *ngFor="let score of scores; trackBy: trackByScore"
-        (click)="onClick(score)"
-      >
-        <bio-list-item-line> [{{ score.platformShortName }}] {{ score.gameName }} </bio-list-item-line>
-        <bio-list-item-line> {{ score.miniGameName }} {{ score.modeName }} </bio-list-item-line>
-        <bio-list-item-line>
-          {{ score.stageName }}
-        </bio-list-item-line>
-        <bio-list-item-line *ngFor="let scorePlayer of score.scorePlayers; trackBy: trackById">
-          {{ scorePlayer.characterName }} {{ scorePlayer.characterCostumeName }} ({{ scorePlayer.playerPersonaName }})
-        </bio-list-item-line>
-        <div bioSuffix [bioTooltip]="score.score | number: '1.0-0'">{{ score.score | scoreFormat }}</div>
-      </bio-list-item>
-      <bio-list-item *ngIf="!scores.length">
-        <bio-list-item-line>No data found</bio-list-item-line>
-      </bio-list-item>
+      @for (score of scores; track trackByScore($index, score)) {
+        <bio-list-item
+          [disabled]="!!disabledProperty && !!score[disabledProperty]"
+          (click)="onClick(score)"
+          >
+          <bio-list-item-line> [{{ score.platformShortName }}] {{ score.gameName }} </bio-list-item-line>
+          <bio-list-item-line> {{ score.miniGameName }} {{ score.modeName }} </bio-list-item-line>
+          <bio-list-item-line>
+            {{ score.stageName }}
+          </bio-list-item-line>
+          @for (scorePlayer of score.scorePlayers; track trackById($index, scorePlayer)) {
+            <bio-list-item-line>
+              {{ scorePlayer.characterName }} {{ scorePlayer.characterCostumeName }} ({{ scorePlayer.playerPersonaName }})
+            </bio-list-item-line>
+          }
+          <div bioSuffix [bioTooltip]="score.score | number: '1.0-0'">{{ score.score | scoreFormat }}</div>
+        </bio-list-item>
+      }
+      @if (!scores.length) {
+        <bio-list-item>
+          <bio-list-item-line>No data found</bio-list-item-line>
+        </bio-list-item>
+      }
     </bio-list>
-    <bio-pagination
-      *ngIf="paginationMeta"
-      [meta]="paginationMeta"
-      [itemsPerPageOptions]="itemsPerPageOptions"
-      (currentPageChange)="currentPageChange.emit($event)"
-      (itemsPerPageChange)="itemsPerPageChange.emit($event)"
-      setQueryParamsOnChange
-    ></bio-pagination>
+    @if (paginationMeta) {
+      <bio-pagination
+        [meta]="paginationMeta"
+        [itemsPerPageOptions]="itemsPerPageOptions"
+        (currentPageChange)="currentPageChange.emit($event)"
+        (itemsPerPageChange)="itemsPerPageChange.emit($event)"
+        setQueryParamsOnChange
+      ></bio-pagination>
+    }
   </bio-card-content>
 </bio-card>

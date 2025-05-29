@@ -1,13 +1,15 @@
-<div class="actions" *ngIf="isAdmin">
-  <button bioButton type="button" (click)="openAddEditModal.emit(category.id)" [disabled]="loadingAddEditModal">
-    <bio-icon>edit</bio-icon>
-    Edit category
-  </button>
-  <button bioButton type="button" (click)="openAddEditSubCategory()">
-    <bio-icon>add</bio-icon>
-    Add sub category
-  </button>
-</div>
+@if (isAdmin) {
+  <div class="actions">
+    <button bioButton type="button" (click)="openAddEditModal.emit(category.id)" [disabled]="loadingAddEditModal">
+      <bio-icon>edit</bio-icon>
+      Edit category
+    </button>
+    <button bioButton type="button" (click)="openAddEditSubCategory()">
+      <bio-icon>add</bio-icon>
+      Add sub category
+    </button>
+  </div>
+}
 <bio-list
   selectable
   cdkDropList
@@ -16,39 +18,48 @@
   [cdkDropListConnectedTo]="idCategoriesDropList"
   (cdkDropListDropped)="onCdkDropListDropped($event)"
   [id]="idCategoryDropList"
->
-  <bio-list-item *ngIf="!category.subCategories.length"> No sub categories found! </bio-list-item>
-  <bio-list-item
-    *ngFor="let subCategory of category.subCategories; trackBy: trackById"
-    [routerLink]="['category', category.id, 'sub-category', subCategory.id, 'page', 1]"
-    cdkDrag
-    [cdkDragData]="subCategory"
   >
-    <bio-icon bioPrefix *ngIf="isAdmin" cdkDragHandle> drag_handle </bio-icon>
-    <bio-list-item-line>{{ subCategory.name }}</bio-list-item-line>
-    <bio-list-item-line>{{ subCategory.description }}</bio-list-item-line>
-    <bio-list-item-line *ngIf="!isMobile && subCategory.moderators.length" class="moderators">
-      Moderators:
-      <ng-container *ngFor="let moderator of subCategory.moderators; trackBy: trackById; let $last = last">
-        <a [routerLink]="['/player', moderator.idPlayer]" (click)="$event.stopPropagation()">
-          {{ moderator.playerPersonaName }}<ng-container *ngIf="!$last">, </ng-container>
-        </a>
-      </ng-container>
-    </bio-list-item-line>
+  @if (!category.subCategories.length) {
+    <bio-list-item> No sub categories found! </bio-list-item>
+  }
+  @for (subCategory of category.subCategories; track trackById($index, subCategory)) {
+    <bio-list-item
+      [routerLink]="['category', category.id, 'sub-category', subCategory.id, 'page', 1]"
+      cdkDrag
+      [cdkDragData]="subCategory"
+      >
+      @if (isAdmin) {
+        <bio-icon bioPrefix cdkDragHandle> drag_handle </bio-icon>
+      }
+      <bio-list-item-line>{{ subCategory.name }}</bio-list-item-line>
+      <bio-list-item-line>{{ subCategory.description }}</bio-list-item-line>
+      @if (!isMobile && subCategory.moderators.length) {
+        <bio-list-item-line class="moderators">
+          Moderators:
+          @for (moderator of subCategory.moderators; track trackById($index, moderator)) {
+            <a [routerLink]="['/player', moderator.idPlayer]" (click)="$event.stopPropagation()">
+              {{ moderator.playerPersonaName }}@if (!$last) {
+              ,
+            }
+          </a>
+        }
+      </bio-list-item-line>
+    }
     <div bioSuffix>
       <div>{{ subCategory.postCount | number: '1.0-0' }} Posts</div>
       <div>{{ subCategory.topicCount | number: '1.0-0' }} Topics</div>
     </div>
-    <div bioSuffix *ngIf="subCategory.idLastPost && !isMobile" class="last-post">
-      <div>
-        Last post by
-        <a [routerLink]="['/player', subCategory.idPlayerLastPost]" (click)="$event.stopPropagation()">
-          {{ subCategory.playerPersonaNameLastPost }}
-        </a>
-      </div>
-      <div>
-        in
-        <a
+    @if (subCategory.idLastPost && !isMobile) {
+      <div bioSuffix class="last-post">
+        <div>
+          Last post by
+          <a [routerLink]="['/player', subCategory.idPlayerLastPost]" (click)="$event.stopPropagation()">
+            {{ subCategory.playerPersonaNameLastPost }}
+          </a>
+        </div>
+        <div>
+          in
+          <a
           [routerLink]="[
             'category',
             category.id,
@@ -59,32 +70,36 @@
             'post',
             subCategory.idLastPost
           ]"
-          (click)="$event.stopPropagation()"
-        >
-          {{ subCategory.nameLastPost }}
-        </a>
+            (click)="$event.stopPropagation()"
+            >
+            {{ subCategory.nameLastPost }}
+          </a>
+        </div>
+        <div>on {{ subCategory.lastPostDate | authDateFormat }}</div>
       </div>
-      <div>on {{ subCategory.lastPostDate | authDateFormat }}</div>
-    </div>
-    <div bioSuffix *ngIf="isAdmin">
-      <button
-        bioButton
-        type="button"
-        (click)="openAddEditSubCategory(subCategory.id, $event)"
-        [disabled]="loadingSubCategoryAddEditModal"
-      >
-        <bio-icon>edit</bio-icon>
-        Edit sub category
-      </button>
-      <button
-        bioButton
-        type="button"
-        (click)="openSubCategoryModeratorManagement(subCategory, $event)"
-        [disabled]="loadingSubCategoryModeratorManagement"
-      >
-        <bio-icon [mdi]="mdiAccountTie"></bio-icon>
-        Manage moderators
-      </button>
-    </div>
+    }
+    @if (isAdmin) {
+      <div bioSuffix>
+        <button
+          bioButton
+          type="button"
+          (click)="openAddEditSubCategory(subCategory.id, $event)"
+          [disabled]="loadingSubCategoryAddEditModal"
+          >
+          <bio-icon>edit</bio-icon>
+          Edit sub category
+        </button>
+        <button
+          bioButton
+          type="button"
+          (click)="openSubCategoryModeratorManagement(subCategory, $event)"
+          [disabled]="loadingSubCategoryModeratorManagement"
+          >
+          <bio-icon [mdi]="mdiAccountTie"></bio-icon>
+          Manage moderators
+        </button>
+      </div>
+    }
   </bio-list-item>
+}
 </bio-list>

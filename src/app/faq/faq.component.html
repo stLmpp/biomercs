@@ -8,7 +8,7 @@
     [control]="searchControl"
     autocomplete="off"
     (keydown.arrowDown)="accordionDirective?.focusKeyManager?.setFirstItemActive()"
-  />
+    />
   <bio-icon bioPrefix>search</bio-icon>
 </bio-form-field>
 
@@ -16,13 +16,13 @@
   (itemExpanded)="onItemExpanded($event)"
   [bioFilter]="search$ | async"
   (bioFilterChange)="onFilterChange($event)"
->
+  >
   <bio-accordion-item
     bioFilterItem
     accordionTitle="How can I submit a score?"
     *ngLet="isMobile$ | async as isMobile"
     id="how-can-i-submit-a-score"
-  >
+    >
     There a link in the header (
     <a
       bioButton
@@ -33,9 +33,11 @@
       bioTooltipPosition="bottom"
       small
       [bioTooltipDisabled]="!isMobile"
-    >
+      >
       <bio-icon small>add</bio-icon>
-      <ng-container *ngIf="!isMobile">Submit score</ng-container>
+      @if (!isMobile) {
+        Submit score
+      }
     </a>
     ), that redirects you to the page of score submission.<br />
     There you can select all the parameters of your score (Platform, Game, Stage, etc), and submit it.
@@ -44,7 +46,7 @@
     bioFilterItem
     accordionTitle="After I submitted my score, what happens?"
     id="after-i-submitted-my-score-what-happens"
-  >
+    >
     It depends. <br /><br />
 
     <ol>
@@ -73,21 +75,21 @@
     bioFilterItem
     accordionTitle="What happens when my score is approved?"
     id="what-happens-when-my-score-is-approved"
-  >
+    >
     Your score will be visible to anyone, and will enter the Leaderboards.
   </bio-accordion-item>
   <bio-accordion-item
     bioFilterItem
     accordionTitle="What happens when my score is rejected?"
     id="what-happens-when-my-score-is-rejected"
-  >
+    >
     We will try our best to never do this, but if your score gets rejected, will you have to submit another one.
   </bio-accordion-item>
   <bio-accordion-item
     bioFilterItem
     accordionTitle="What happens when an admin request changes to my score?"
     id="what-happens-when-an-admin-request-changes-to-my-score"
-  >
+    >
     You'll need to change your score and it will be re-submitted to approval.
     <br />
     <small>This is what we will always try to do instead of rejecting the score.</small>

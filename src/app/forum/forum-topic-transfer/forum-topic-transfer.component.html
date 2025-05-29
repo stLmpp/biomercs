@@ -1,12 +1,16 @@
-<bio-loading *ngIf="loading"></bio-loading>
+@if (loading) {
+  <bio-loading></bio-loading>
+}
 <h4 bioModalTitle>Transfer topic</h4>
 <bio-modal-content bioList [(model)]="idSubCategoryTo">
-  <ng-container *ngFor="let category of categories; trackBy: trackById">
+  @for (category of categories; track trackById($index, category)) {
     <h4>{{ category.name }}</h4>
-    <bio-list-item *ngFor="let subCategory of category.subCategories; trackBy: trackById" [value]="subCategory.id">
-      {{ subCategory.name }}
-    </bio-list-item>
-  </ng-container>
+    @for (subCategory of category.subCategories; track trackById($index, subCategory)) {
+      <bio-list-item [value]="subCategory.id">
+        {{ subCategory.name }}
+      </bio-list-item>
+    }
+  }
 </bio-modal-content>
 <bio-modal-actions end>
   <button bioButton type="button" bioModalClose>Close</button>
@@ -16,7 +20,7 @@
     [disabled]="idSubCategoryTo === idSubCategory"
     [loading]="saving"
     (click)="transfer()"
-  >
+    >
     Transfer
   </button>
 </bio-modal-actions>

@@ -1,7 +1,7 @@
 <bio-card class="player" [controlGroup]="form" collapsable>
   <h3 bioCardTitle>
     Player {{ playerNumber }}
-    <ng-container *ngIf="idPlayerPersonaName$ | async as idPlayerPersonaName">
+    @if (idPlayerPersonaName$ | async; as idPlayerPersonaName) {
       (
       {{ idPlayerPersonaName }}
       <bio-icon
@@ -11,11 +11,11 @@
         bioTooltip="Remove player selected"
         tabindex="0"
         (click)="onRemovePlayerSelected($event)"
-      >
+        >
         close
       </bio-icon>
       )
-    </ng-container>
+    }
     <label class="host" (click)="$event.stopPropagation()">
       <input
         [disabled]="disabled"
@@ -24,107 +24,119 @@
         [value]="true"
         controlName="host"
         (change)="onHostChange()"
-      />
+        />
       Host
     </label>
   </h3>
   <bio-card-content>
     <div class="form">
-      <bio-form-field *ngIf="!first || (isAdmin$ | async)" [loading]="playersLoading" [disabled]="disabled">
-        <label class="required">Player</label>
-        <input
-          bioInput
-          controlName="personaName"
-          placeholder="Start typing to search"
-          [bioAutocomplete]="autocomplete"
-          [bioAutocompleteNext]="select"
-          bioAutocompleteSelectFirstOptionOnEnter
-          #bioAutocomplete="bio-autocomplete"
-          (blur)="onPersonaNameBlur()"
-          [bioType]="idPlayerControl.invalid && idPlayerControl.touched ? 'danger' : null"
-        />
-        <bio-autocomplete #autocomplete>
-          <bio-autocomplete-option
-            *ngFor="let player of players$ | async; trackBy: trackById"
-            [value]="player.personaName"
-            (autocompleteSelect)="onPersonaNameAutocompleteSelect(player)"
-          >
-            {{ player.personaName }}
-          </bio-autocomplete-option>
-        </bio-autocomplete>
-        <bio-errors controlError="idPlayer">
-          <bio-error *error="'required'">Player is required</bio-error>
-        </bio-errors>
-        <button
-          type="button"
-          bioButton
-          icon
-          bioSuffix
-          bioTooltip="Advanced search"
-          (click)="openPlayerSearchModal()"
-          [disabled]="playerSearchModalLoading"
-        >
-          <bio-icon>search</bio-icon>
-        </button>
-        <bio-hint *ngIf="!(idPlayerControl.hasErrors$ | async)">
-          You need to select a player, just typing its name doesn't work
-        </bio-hint>
-      </bio-form-field>
+      @if (!first || (isAdmin$ | async)) {
+        <bio-form-field [loading]="playersLoading" [disabled]="disabled">
+          <label class="required">Player</label>
+          <input
+            bioInput
+            controlName="personaName"
+            placeholder="Start typing to search"
+            [bioAutocomplete]="autocomplete"
+            [bioAutocompleteNext]="select"
+            bioAutocompleteSelectFirstOptionOnEnter
+            #bioAutocomplete="bio-autocomplete"
+            (blur)="onPersonaNameBlur()"
+            [bioType]="idPlayerControl.invalid && idPlayerControl.touched ? 'danger' : null"
+            />
+          <bio-autocomplete #autocomplete>
+            @for (player of players$ | async; track trackById($index, player)) {
+              <bio-autocomplete-option
+                [value]="player.personaName"
+                (autocompleteSelect)="onPersonaNameAutocompleteSelect(player)"
+                >
+                {{ player.personaName }}
+              </bio-autocomplete-option>
+            }
+          </bio-autocomplete>
+          <bio-errors controlError="idPlayer">
+            <bio-error *error="'required'">Player is required</bio-error>
+          </bio-errors>
+          <button
+            type="button"
+            bioButton
+            icon
+            bioSuffix
+            bioTooltip="Advanced search"
+            (click)="openPlayerSearchModal()"
+            [disabled]="playerSearchModalLoading"
+            >
+            <bio-icon>search</bio-icon>
+          </button>
+          @if (!(idPlayerControl.hasErrors$ | async)) {
+            <bio-hint>
+              You need to select a player, just typing its name doesn't work
+            </bio-hint>
+          }
+        </bio-form-field>
+      }
       <!--<editor-fold desc="Character">-->
       <bio-form-field [loading]="charactersLoading" [disabled]="disabled" label="Character">
         <bio-select controlName="idCharacterCostume" placeholder="Character" #select>
-          <bio-option disabled *ngIf="charactersLoading">
-            <bio-spinner [size]="0.1"></bio-spinner> Loading...
-          </bio-option>
-          <bio-optgroup
-            *ngFor="let character of characters; trackBy: trackById"
-            [label]="character.name"
-            [title]="character.name"
-          >
-            <bio-option
-              *ngFor="let characterCostume of character.characterCostumes; trackBy: trackById"
-              [value]="characterCostume.id"
-              title="{{ character.name }} {{ characterCostume.name }}"
-            >
-              {{ characterCostume.name }}
+          @if (charactersLoading) {
+            <bio-option disabled>
+              <bio-spinner [size]="0.1"></bio-spinner> Loading...
             </bio-option>
-          </bio-optgroup>
+          }
+          @for (character of characters; track trackById($index, character)) {
+            <bio-optgroup
+              [label]="character.name"
+              [title]="character.name"
+              >
+              @for (characterCostume of character.characterCostumes; track trackById($index, characterCostume)) {
+                <bio-option
+                  [value]="characterCostume.id"
+                  title="{{ character.name }} {{ characterCostume.name }}"
+                  >
+                  {{ characterCostume.name }}
+                </bio-option>
+              }
+            </bio-optgroup>
+          }
         </bio-select>
         <bio-errors>
           <bio-error *error="'required'">Character is required</bio-error>
         </bio-errors>
       </bio-form-field>
-      <!--</editor-fold>-->
-      <bio-form-field label="Description" [disabled]="disabled">
-        <input bioInput controlName="description" placeholder="Description" />
-        <bio-errors>
-          <bio-error *error="'required'">Description is required</bio-error>
-        </bio-errors>
-      </bio-form-field>
-      <bio-form-field label="Bullet kills" [disabled]="disabled">
-        <input bioInput controlName="bulletKills" placeholder="Number of bullet kills" type="number" />
-        <bio-errors>
-          <bio-error *error="'required'">Bullet kills is required</bio-error>
-        </bio-errors>
-      </bio-form-field>
-      <bio-form-field label="Evidence" [disabled]="disabled">
-        <input bioInput controlName="evidence" placeholder="Evidence video URL" type="url" />
-        <bio-errors>
-          <bio-error *error="'required'">Evidence is required</bio-error>
-          <bio-error *error="'url'">Evidence must be an URL</bio-error>
-        </bio-errors>
-      </bio-form-field>
-      <bio-form-field label="Controller" [loading]="platformInputTypeLoading" [disabled]="disabled">
-        <bio-select controlName="idPlatformInputType" placeholder="Controller">
+    <!--</editor-fold>-->
+    <bio-form-field label="Description" [disabled]="disabled">
+      <input bioInput controlName="description" placeholder="Description" />
+      <bio-errors>
+        <bio-error *error="'required'">Description is required</bio-error>
+      </bio-errors>
+    </bio-form-field>
+    <bio-form-field label="Bullet kills" [disabled]="disabled">
+      <input bioInput controlName="bulletKills" placeholder="Number of bullet kills" type="number" />
+      <bio-errors>
+        <bio-error *error="'required'">Bullet kills is required</bio-error>
+      </bio-errors>
+    </bio-form-field>
+    <bio-form-field label="Evidence" [disabled]="disabled">
+      <input bioInput controlName="evidence" placeholder="Evidence video URL" type="url" />
+      <bio-errors>
+        <bio-error *error="'required'">Evidence is required</bio-error>
+        <bio-error *error="'url'">Evidence must be an URL</bio-error>
+      </bio-errors>
+    </bio-form-field>
+    <bio-form-field label="Controller" [loading]="platformInputTypeLoading" [disabled]="disabled">
+      <bio-select controlName="idPlatformInputType" placeholder="Controller">
+        @for (platformInputType of platformInputTypes; track trackById($index, platformInputType)) {
           <bio-option
-            *ngFor="let platformInputType of platformInputTypes; trackBy: trackById"
             [value]="platformInputType.id"
-          >
+            >
             {{ platformInputType.nameInputType }}
           </bio-option>
-        </bio-select>
-      </bio-form-field>
-    </div>
-    <a *ngIf="evidenceControl.valid" bio-url-preview [url]="evidence$ | async"></a>
-  </bio-card-content>
+        }
+      </bio-select>
+    </bio-form-field>
+  </div>
+  @if (evidenceControl.valid) {
+    <a bio-url-preview [url]="evidence$ | async"></a>
+  }
+</bio-card-content>
 </bio-card>
