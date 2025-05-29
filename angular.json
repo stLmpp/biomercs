@@ -116,18 +116,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "biomercs-ng:build",
-            "proxyConfig": "proxy.conf.json"
+            "proxyConfig": "proxy.conf.json",
+            "buildTarget": "biomercs-ng:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "biomercs-ng:build:production"
+              "buildTarget": "biomercs-ng:build:production"
             },
             "development": {
-              "browserTarget": "biomercs-ng:build:development"
+              "buildTarget": "biomercs-ng:build:development"
             },
             "serve": {
-              "browserTarget": "biomercs-ng:build:serve"
+              "buildTarget": "biomercs-ng:build:serve"
             }
           },
           "defaultConfiguration": "serve"
@@ -135,7 +135,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "biomercs-ng:build"
+            "buildTarget": "biomercs-ng:build"
           }
         },
         "test": {
