@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Output, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, input, output } from '@angular/core';
 import { CategoryWithSubCategories } from '@model/forum/category';
 import { SubCategoryModalService } from '../../service/sub-category-modal.service';
 import { arrayUtil } from 'st-utils';
@@ -65,9 +65,9 @@ export class ForumCategoriesCategoryComponent {
   readonly idCategoriesDropList = input<string[]>([]);
   readonly idCategoryDropList = input('');
 
-  @Output() readonly openAddEditModal = new EventEmitter<number>();
-  @Output() readonly categoryChange = new EventEmitter<CategoryWithSubCategories>();
-  @Output() readonly orderChange = new EventEmitter<ForumCategoriesCategoryComponentOrderChangeEvent>();
+  readonly openAddEditModal = output<number>();
+  readonly categoryChange = output<CategoryWithSubCategories>();
+  readonly orderChange = output<ForumCategoriesCategoryComponentOrderChangeEvent>();
 
   loadingSubCategoryAddEditModal = false;
   loadingSubCategoryModeratorManagement = false;

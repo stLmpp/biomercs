@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Output, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
 import { CalendarDay } from '@shared/components/datepicker/calendar-day';
 import { trackByFactory } from '@stlmpp/utils';
 import {
@@ -37,11 +37,11 @@ export class CalendarDaysComponent extends CalendarKeyboardNavigation {
   readonly dayNames = input<string[]>([]);
   readonly disabled = input(false);
 
-  @Output() readonly valueChange = new EventEmitter<Date | null | undefined>();
-  @Output() readonly nextMonth = new EventEmitter<void>();
-  @Output() readonly previousMonth = new EventEmitter<void>();
-  @Output() readonly nextYear = new EventEmitter<void>();
-  @Output() readonly previousYear = new EventEmitter<void>();
+  readonly valueChange = output<Date | null | undefined>();
+  readonly nextMonth = output<void>();
+  readonly previousMonth = output<void>();
+  readonly nextYear = output<void>();
+  readonly previousYear = output<void>();
 
   readonly nowDate = new Date();
 
@@ -75,6 +75,7 @@ export class CalendarDaysComponent extends CalendarKeyboardNavigation {
   handleArrowRight(): void {
     const [, item] = this._getActiveIndexAndItem();
     if (isLastDayOfMonth(item.date)) {
+      // TODO: The 'emit' function requires a mandatory void argument
       this.nextMonth.emit();
       setTimeout(() => {
         this.focusKeyManager.setFirstItemActive();
@@ -87,6 +88,7 @@ export class CalendarDaysComponent extends CalendarKeyboardNavigation {
   handleArrowLeft(): void {
     const [, item] = this._getActiveIndexAndItem();
     if (isFirstDayOfMonth(item.date)) {
+      // TODO: The 'emit' function requires a mandatory void argument
       this.previousMonth.emit();
       setTimeout(() => {
         this.focusKeyManager.setLastItemActive();
@@ -101,6 +103,7 @@ export class CalendarDaysComponent extends CalendarKeyboardNavigation {
     const daysInMonth = getDaysInMonth(item.date);
     if (item.day + daysInWeek > daysInMonth) {
       const nextIndex = this.calendarAdapter.findIndex(addDays(item.date, daysInWeek));
+      // TODO: The 'emit' function requires a mandatory void argument
       this.nextMonth.emit();
       setTimeout(() => {
         this.focusKeyManager.setActiveItem(nextIndex);
@@ -114,6 +117,7 @@ export class CalendarDaysComponent extends CalendarKeyboardNavigation {
     const [activeItemIndex, item] = this._getActiveIndexAndItem();
     if (item.day - daysInWeek <= 0) {
       const previousIndex = this.calendarAdapter.findIndex(subDays(item.date, daysInWeek));
+      // TODO: The 'emit' function requires a mandatory void argument
       this.previousMonth.emit();
       setTimeout(() => {
         this.focusKeyManager.setActiveItem(previousIndex);
@@ -143,9 +147,11 @@ export class CalendarDaysComponent extends CalendarKeyboardNavigation {
     let nextDate: Date;
     if ($event.altKey) {
       nextDate = addYears(item.date, 1);
+      // TODO: The 'emit' function requires a mandatory void argument
       this.nextYear.emit();
     } else {
       nextDate = addMonths(item.date, 1);
+      // TODO: The 'emit' function requires a mandatory void argument
       this.nextMonth.emit();
     }
     this._setActiveWithTimeout(item.day, nextDate);
@@ -156,9 +162,11 @@ export class CalendarDaysComponent extends CalendarKeyboardNavigation {
     let previousDate: Date;
     if ($event.altKey) {
       previousDate = subYears(item.date, 1);
+      // TODO: The 'emit' function requires a mandatory void argument
       this.previousYear.emit();
     } else {
       previousDate = subMonths(item.date, 1);
+      // TODO: The 'emit' function requires a mandatory void argument
       this.previousMonth.emit();
     }
     this._setActiveWithTimeout(item.day, previousDate);

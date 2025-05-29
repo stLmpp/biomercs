@@ -1,4 +1,4 @@
-import { AfterContentInit, ContentChildren, Directive, EventEmitter, Input, Output, QueryList } from '@angular/core';
+import { AfterContentInit, ContentChildren, Directive, Input, QueryList, output } from '@angular/core';
 import { FilterItemDirective } from '@shared/filter/filter-item.directive';
 import { combineLatest, map, Observable, ReplaySubject, startWith, takeUntil } from 'rxjs';
 import { normalizeString } from 'st-utils';
@@ -16,7 +16,7 @@ export class FilterDirective extends Destroyable implements AfterContentInit {
     this._bioFilter$.next(bioFilter);
   }
 
-  @Output() readonly bioFilterChange = new EventEmitter<FilterItemDirective[]>();
+  readonly bioFilterChange = output<FilterItemDirective[]>();
 
   ngAfterContentInit(): void {
     const items$: Observable<QueryList<FilterItemDirective>> = this.filterItemDirectives.changes.pipe(

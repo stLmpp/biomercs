@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, Output, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, input, output } from '@angular/core';
 import { debounce, Subject, Subscription, timer } from 'rxjs';
 import { BooleanInput, coerceBooleanProperty, coerceNumberProperty, NumberInput } from 'st-utils';
 import { FormFieldComponent } from '../components/form/form-field.component';
@@ -46,7 +46,7 @@ export class MultiSelectItemsComponent implements OnDestroy {
   }
 
   readonly search = input('');
-  @Output() readonly searchChange = new EventEmitter<string>();
+  readonly searchChange = output<string>();
 
   private _startDebounce(): void {
     if (!this._debounceTime || this._debounceTime <= 0) {

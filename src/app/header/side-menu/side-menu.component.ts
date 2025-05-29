@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostListener, Output, EventEmitter, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, inject, input, output } from '@angular/core';
 import { Animations } from '@shared/animations/animations';
 import { User } from '@model/user';
 import { HeaderQuery } from '../header.query';
@@ -40,7 +40,7 @@ export class SideMenuComponent {
   readonly user = input.required<User>();
   readonly isMobile = input(false);
 
-  @Output() readonly menuSelected = new EventEmitter<MouseEvent>();
+  readonly menuSelected = output<MouseEvent>();
 
   readonly mdiTrophy = mdiTrophy;
   readonly mdiEmailSyncOutline = mdiEmailSyncOutline;

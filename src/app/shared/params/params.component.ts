@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges, inject, input, output } from '@angular/core';
 import {
   Control,
   ControlBuilder,
@@ -170,21 +170,21 @@ export class ParamsComponent extends Destroyable implements OnChanges, OnInit {
     this._approval$.next(coerceBooleanProperty(approval));
   }
 
-  @Output() readonly idPlatformChange = new EventEmitter<number | null | undefined>();
-  @Output() readonly idGameChange = new EventEmitter<number | null | undefined>();
-  @Output() readonly idMiniGameChange = new EventEmitter<number | null | undefined>();
-  @Output() readonly idModeChange = new EventEmitter<number | null | undefined>();
-  @Output() readonly idStageChange = new EventEmitter<number | null | undefined>();
-  @Output() readonly idCharacterCostumeChange = new EventEmitter<number | null | undefined>();
+  readonly idPlatformChange = output<number | null | undefined>();
+  readonly idGameChange = output<number | null | undefined>();
+  readonly idMiniGameChange = output<number | null | undefined>();
+  readonly idModeChange = output<number | null | undefined>();
+  readonly idStageChange = output<number | null | undefined>();
+  readonly idCharacterCostumeChange = output<number | null | undefined>();
 
-  @Output() readonly platformChange = new EventEmitter<Platform | null | undefined>();
-  @Output() readonly gameChange = new EventEmitter<Game | null | undefined>();
-  @Output() readonly miniGameChange = new EventEmitter<MiniGame | null | undefined>();
-  @Output() readonly modeChange = new EventEmitter<Mode | null | undefined>();
-  @Output() readonly stageChange = new EventEmitter<Stage | null | undefined>();
-  @Output() readonly characterCostumeChange = new EventEmitter<CharacterCostume | null | undefined>();
+  readonly platformChange = output<Platform | null | undefined>();
+  readonly gameChange = output<Game | null | undefined>();
+  readonly miniGameChange = output<MiniGame | null | undefined>();
+  readonly modeChange = output<Mode | null | undefined>();
+  readonly stageChange = output<Stage | null | undefined>();
+  readonly characterCostumeChange = output<CharacterCostume | null | undefined>();
 
-  @Output() readonly paramsChange = new EventEmitter<ParamsForm>();
+  readonly paramsChange = output<ParamsForm>();
 
   formsConfig = defaultConfigs;
 

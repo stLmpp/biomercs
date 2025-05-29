@@ -1,4 +1,18 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, Directive, ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, Output, QueryList, ViewChildren, inject, input } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  Directive,
+  ElementRef,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  QueryList,
+  ViewChildren,
+  inject,
+  input,
+  output,
+} from '@angular/core';
 import {
   ControlArray,
   ControlBuilder,
@@ -20,7 +34,6 @@ import { FormFieldErrorComponent } from '../../../shared/components/form/error.c
 @Directive({ selector: 'input[confirmationCodeInput]' })
 export class ConfirmationCodeInputDirective implements FocusableOption {
   private elementRef = inject<ElementRef<HTMLInputElement>>(ElementRef);
-
 
   focus(): void {
     this.elementRef.nativeElement.focus();
@@ -50,11 +63,10 @@ export class ConfirmationCodeInputComponent
 {
   private controlBuilder = inject(ControlBuilder);
 
-
   private readonly _destroy$ = new Subject<void>();
 
   @ViewChildren(ConfirmationCodeInputDirective) readonly inputList!: QueryList<ConfirmationCodeInputDirective>;
-  @Output() readonly focusoutLastItem = new EventEmitter<void>();
+  readonly focusoutLastItem = output<void>();
 
   readonly length = input(6);
   readonly label = input<string>();
@@ -94,6 +106,7 @@ export class ConfirmationCodeInputComponent
             if (!/^[0-9]$/.test(value)) {
               input.setValue('', { emitChange: false });
             } else if (i === len - 1) {
+              // TODO: The 'emit' function requires a mandatory void argument
               this.focusoutLastItem.emit();
             } else {
               this.focusManager.setNextItemActive();

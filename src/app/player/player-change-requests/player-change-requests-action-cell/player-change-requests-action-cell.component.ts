@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Output, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, output } from '@angular/core';
 import { TableCell } from '@shared/components/table/type';
 import { ColDefInternal } from '@shared/components/table/col-def';
 import { ScoreWithScoreChangeRequests } from '@model/score-change-request';
@@ -24,7 +24,7 @@ export class PlayerChangeRequestsActionCellComponent implements TableCell<ScoreW
   private changeDetectorRef = inject(ChangeDetectorRef);
 
 
-  @Output() readonly notifyChange = new EventEmitter<any>();
+  readonly notifyChange = output<any>();
 
   colDef!: ColDefInternal<ScoreWithScoreChangeRequests, keyof ScoreWithScoreChangeRequests>;
   item!: ScoreWithScoreChangeRequests;

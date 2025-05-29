@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, HostBinding, Output, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding, inject, input, output } from '@angular/core';
 import { mdiPin, mdiPinOff } from '@mdi/js';
 import { Topic } from '@model/forum/topic';
 import { TopicService } from '../../service/topic.service';
@@ -34,8 +34,8 @@ export class ForumSubCategoryTopicComponent {
 
   readonly topic = input.required<Topic>();
 
-  @Output() readonly topicChange = new EventEmitter<Topic>();
-  @Output() readonly reloadSubCategory = new EventEmitter<void>();
+  readonly topicChange = output<Topic>();
+  readonly reloadSubCategory = output<void>();
 
   @HostBinding('class.is-moderator')
   get isModerator(): boolean {
@@ -85,6 +85,7 @@ export class ForumSubCategoryTopicComponent {
         })
       )
       .subscribe(() => {
+        // TODO: The 'emit' function requires a mandatory void argument
         this.reloadSubCategory.emit();
       });
   }

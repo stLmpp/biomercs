@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, input, output } from '@angular/core';
 import { Score } from '@model/score';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { PaginationMeta } from '@model/pagination';
@@ -56,9 +56,9 @@ export class ScoreListComponent<T extends Score = Score> {
     this._collapsable = coerceBooleanProperty(collapsable);
   }
 
-  @Output() readonly currentPageChange = new EventEmitter<number>();
-  @Output() readonly itemsPerPageChange = new EventEmitter<number>();
-  @Output() readonly scoreClicked = new EventEmitter<T>();
+  readonly currentPageChange = output<number>();
+  readonly itemsPerPageChange = output<number>();
+  readonly scoreClicked = output<T>();
 
   readonly trackByScore = trackByFactory<T>('id');
   readonly trackById = trackById;

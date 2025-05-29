@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ComponentRef, EventEmitter, HostBinding, OnChanges, Output, ViewChild, ViewContainerRef, ViewEncapsulation, inject, input } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ComponentRef, HostBinding, OnChanges, ViewChild, ViewContainerRef, ViewEncapsulation, inject, input, output } from '@angular/core';
 import { ColDefInternal } from '@shared/components/table/col-def';
 import { CdkPortalOutlet, ComponentPortal } from '@angular/cdk/portal';
 import { TableCell, TableCellNotifyChange } from '@shared/components/table/type';
@@ -44,7 +44,7 @@ export class TableCellComponent<T extends Record<any, any>, K extends keyof T>
   readonly item = input.required<T>();
   readonly metadata = input<any>();
 
-  @Output() readonly notifyChange = new EventEmitter<TableCellNotifyChange<any, T, K>>();
+  readonly notifyChange = output<TableCellNotifyChange<any, T, K>>();
 
   @HostBinding('class.flex-grow-0')
   get classFlexGrow0(): boolean {

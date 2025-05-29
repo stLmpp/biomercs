@@ -1,12 +1,11 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
   Input,
-  Output,
   TrackByFunction,
   ViewEncapsulation,
-  input
+  input,
+  output
 } from '@angular/core';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { PaginationMeta } from '@model/pagination';
@@ -76,10 +75,10 @@ export class TableComponent<T extends Record<any, any>, K extends keyof T> {
     this._updateColDefsInternal();
   }
 
-  @Output() readonly currentPageChange = new EventEmitter<number>();
-  @Output() readonly itemsPerPageChange = new EventEmitter<number>();
-  @Output() readonly orderChange = new EventEmitter<TableOrder<T>>();
-  @Output() readonly notifyChange = new EventEmitter<TableCellNotifyChange<any, T, K>>();
+  readonly currentPageChange = output<number>();
+  readonly itemsPerPageChange = output<number>();
+  readonly orderChange = output<TableOrder<T>>();
+  readonly notifyChange = output<TableCellNotifyChange<any, T, K>>();
 
   colDefsInternal: ColDefInternal<T, K>[] = [];
 

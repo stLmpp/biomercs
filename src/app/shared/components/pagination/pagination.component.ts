@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, inject, input, output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { PaginationMeta } from '@model/pagination';
@@ -77,12 +77,12 @@ export class PaginationComponent implements OnChanges, PaginationMeta {
     this._disabled = coerceBooleanProperty(disabled);
   }
 
-  @Output() readonly nextPage = new EventEmitter<number>();
-  @Output() readonly previousPage = new EventEmitter<number>();
-  @Output() readonly firstPage = new EventEmitter<number>();
-  @Output() readonly lastPage = new EventEmitter<number>();
-  @Output() readonly itemsPerPageChange = new EventEmitter<number>();
-  @Output() readonly currentPageChange = new EventEmitter<number>();
+  readonly nextPage = output<number>();
+  readonly previousPage = output<number>();
+  readonly firstPage = output<number>();
+  readonly lastPage = output<number>();
+  readonly itemsPerPageChange = output<number>();
+  readonly currentPageChange = output<number>();
 
   readonly trackByNumber = trackByFactory<number>();
 

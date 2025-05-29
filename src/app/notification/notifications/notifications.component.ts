@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, OnInit, Output, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject, input, output } from '@angular/core';
 import { NotificationService } from '../notification.service';
 import { Destroyable } from '@shared/components/common/destroyable-component';
 import {
@@ -74,13 +74,13 @@ export class NotificationsComponent extends Destroyable implements OnInit {
 
 
   readonly notifications = input<NotificationCustom[]>([]);
-  @Output() readonly notificationsChange = new EventEmitter<NotificationCustom[]>();
+  readonly notificationsChange = output<NotificationCustom[]>();
   readonly page = input(1);
   readonly meta = input.required<PaginationMeta>();
-  @Output() readonly pageChange = new EventEmitter<number>();
+  readonly pageChange = output<number>();
   readonly loading = input(false);
   readonly loadingMore = input(false);
-  @Output() readonly closeOverlay = new EventEmitter<void>();
+  readonly closeOverlay = output<void>();
 
   readAllLoading = false;
   deleteAllLoading = false;
@@ -184,6 +184,7 @@ export class NotificationsComponent extends Destroyable implements OnInit {
     }
     this._updateNotification(id, { loading: true });
     await lastValueFrom(this._maskAsRead(notification));
+    // TODO: The 'emit' function requires a mandatory void argument
     this.closeOverlay.emit();
     await this.router.navigate(
       [

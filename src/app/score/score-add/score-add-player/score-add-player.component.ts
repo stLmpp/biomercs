@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnInit, ViewChild, inject, input, output } from '@angular/core';
 import { debounceTime, filter, finalize, Observable, pluck, switchMap, takeUntil } from 'rxjs';
 import { CharacterWithCharacterCostumes } from '@model/character';
 import { CharacterCostume } from '@model/character-costume';
@@ -91,8 +91,8 @@ export class ScoreAddPlayerComponent extends Destroyable implements OnInit, OnCh
     this.form.setValue(player);
   }
 
-  @Output() readonly playerChange = new EventEmitter<ScorePlayerAddForm>();
-  @Output() readonly hostChange = new EventEmitter<void>();
+  readonly playerChange = output<ScorePlayerAddForm>();
+  readonly hostChange = output<void>();
 
   @ViewChild('bioAutocomplete') readonly bioAutocomplete!: AutocompleteDirective;
 
@@ -146,6 +146,7 @@ export class ScoreAddPlayerComponent extends Destroyable implements OnInit, OnCh
   }
 
   onHostChange(): void {
+    // TODO: The 'emit' function requires a mandatory void argument
     this.hostChange.emit();
   }
 

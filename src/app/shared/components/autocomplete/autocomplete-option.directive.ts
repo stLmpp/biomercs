@@ -1,4 +1,4 @@
-import { Directive, ElementRef, EventEmitter, HostBinding, HostListener, Input, Output, inject, input } from '@angular/core';
+import { Directive, ElementRef, HostBinding, HostListener, Input, inject, input, output } from '@angular/core';
 import { FocusableOption } from '@angular/cdk/a11y';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { Autocomplete } from '@shared/components/autocomplete/autocomplete';
@@ -25,7 +25,7 @@ export class AutocompleteOptionDirective implements FocusableOption {
     return this._disabled;
   }
 
-  @Output() readonly autocompleteSelect = new EventEmitter<string>();
+  readonly autocompleteSelect = output<string>();
 
   @HostBinding('attr.tabindex')
   get tabindex(): number {

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ContentChild, EventEmitter, HostBinding, HostListener, Input, LOCALE_ID, OnInit, Output, ViewChild, ViewEncapsulation, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ContentChild, HostBinding, HostListener, Input, LOCALE_ID, OnInit, ViewChild, ViewEncapsulation, inject, input, output } from '@angular/core';
 import { LocalState } from '@stlmpp/store';
 import { addMonths, addYears, setMonth, setYear, subMonths, subYears } from 'date-fns';
 import { combineLatest, distinctUntilChanged, map, Subject } from 'rxjs';
@@ -65,8 +65,8 @@ export class CalendarComponent
   readonly value = input<Date | null>();
   readonly viewMode = input<CalendarViewModeEnum>(CalendarViewModeEnum.day);
   readonly locale = input(this.getState('locale'));
-  @Output() readonly valueChange = new EventEmitter<Date | null | undefined>();
-  @Output() readonly viewModeChange = new EventEmitter<CalendarViewModeEnum>();
+  readonly valueChange = output<Date | null | undefined>();
+  readonly viewModeChange = output<CalendarViewModeEnum>();
 
   @Input()
   @HostBinding('attr.aria-disabled')

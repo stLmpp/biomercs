@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostBinding, OnChanges, Output, inject, input } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostBinding, OnChanges, inject, input, output } from '@angular/core';
 import { Post, PostUpdateDto } from '@model/forum/post';
 import { PlayerService } from '../../../player/player.service';
 import { PostService } from '../../service/post.service';
@@ -37,10 +37,10 @@ export class ForumTopicPostComponent implements AfterViewInit, OnChanges {
 readonly odd = input(false);
   readonly loadingReply = input(false);
 
-  @Output() readonly postChange = new EventEmitter<Post>();
-  @Output() readonly postDelete = new EventEmitter<Post>();
-  @Output() readonly postQuote = new EventEmitter<Post>();
-  @Output() readonly topicDelete = new EventEmitter<void>();
+  readonly postChange = output<Post>();
+  readonly postDelete = output<Post>();
+  readonly postQuote = output<Post>();
+  readonly topicDelete = output<void>();
 
   readonly isOnline$ = combineLatest([this._post$, this.forumService.usersOnline$]).pipe(
     map(([post, usersOnline]) => usersOnline.some(user => user.idPlayer === post.idPlayer))
@@ -116,6 +116,7 @@ readonly odd = input(false);
             action: () =>
               this.topicService.delete(this.idSubCategory(), this.post().idTopic).pipe(
                 tap(() => {
+                  // TODO: The 'emit' function requires a mandatory void argument
                   this.topicDelete.emit();
                 })
               ),

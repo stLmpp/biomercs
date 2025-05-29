@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, inject, input, output } from '@angular/core';
 import {
   BreakpointObserverService,
   MediaQueryEnum,
@@ -47,11 +47,11 @@ export class ScoreListResponsiveComponent<T extends Score = Score> {
     this._collapsable = coerceBooleanProperty(collapsable);
   }
 
-  @Output() readonly currentPageChange = new EventEmitter<number>();
-  @Output() readonly itemsPerPageChange = new EventEmitter<number>();
-  @Output() readonly orderChange = new EventEmitter<TableOrder<T>>();
-  @Output() readonly notifyChange = new EventEmitter<TableCellNotifyChange<any, T>>();
-  @Output() readonly scoreClicked = new EventEmitter<T>();
+  readonly currentPageChange = output<number>();
+  readonly itemsPerPageChange = output<number>();
+  readonly orderChange = output<TableOrder<T>>();
+  readonly notifyChange = output<TableCellNotifyChange<any, T>>();
+  readonly scoreClicked = output<T>();
 
   readonly isSmall$ = this.breakpointObserverService.observe([MediaQueryEnum.md]).pipe(map(isMd => !isMd));
 
