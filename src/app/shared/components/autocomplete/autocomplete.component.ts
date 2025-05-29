@@ -1,4 +1,17 @@
-import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, QueryList, Renderer2, TemplateRef, ViewEncapsulation, inject, input, viewChild, contentChildren } from '@angular/core';
+import {
+  AfterContentInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  QueryList,
+  Renderer2,
+  TemplateRef,
+  ViewEncapsulation,
+  inject,
+  input,
+  viewChild,
+  contentChildren,
+} from '@angular/core';
 import { Animations } from '@shared/animations/animations';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { AnimationEvent } from '@angular/animations';
@@ -24,7 +37,6 @@ import { AsyncPipe } from '@angular/common';
 export class AutocompleteComponent extends Autocomplete implements AfterContentInit {
   private renderer2 = inject(Renderer2);
   changeDetectorRef = inject(ChangeDetectorRef);
-
 
   readonly templateRef = viewChild.required(TemplateRef);
   readonly autocompleteOptions = contentChildren(AutocompleteOptionDirective, { descendants: true });

@@ -7,7 +7,6 @@ import { SteamService } from '@shared/services/steam/steam.service';
 export class SteamIdExistsValidator extends ControlValidator<string | undefined, boolean> {
   private steamService = inject(SteamService);
 
-
   readonly name = 'steamIdExists';
   override readonly async = true;
 

@@ -36,7 +36,6 @@ import { AsyncPipe } from '@angular/common';
 export class SideMenuComponent {
   headerQuery = inject(HeaderQuery);
 
-
   readonly user = input.required<User>();
   readonly isMobile = input(false);
 

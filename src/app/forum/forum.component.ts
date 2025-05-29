@@ -13,7 +13,6 @@ import { RouterOutlet } from '@angular/router';
 export class ForumComponent implements OnInit, OnDestroy {
   private forumService = inject(ForumService);
 
-
   ngOnInit(): void {
     this.forumService.init();
   }

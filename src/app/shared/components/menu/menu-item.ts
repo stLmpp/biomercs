@@ -7,7 +7,6 @@ export abstract class MenuItem implements FocusableOption {
   menu = inject(Menu);
   elementRef = inject(ElementRef);
 
-
   @HostListener('click')
   onClick(): void {
     this.menu.close();

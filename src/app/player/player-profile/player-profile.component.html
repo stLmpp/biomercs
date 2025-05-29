@@ -10,7 +10,7 @@
             #inputFile
             [model]="avatarFile"
             (modelChange)="onChangeAvatar($event)"
-            />
+          />
           <button
             bioButton
             icon
@@ -19,7 +19,7 @@
             bioTooltip="Edit"
             (click)="inputFile.click()"
             [disabled]="avatarLoading"
-            >
+          >
             <bio-icon class="edit" small>edit</bio-icon>
           </button>
           @if (player.avatar) {
@@ -31,7 +31,7 @@
               bioTooltip="Remove"
               (click)="onRemoveAvatar()"
               [disabled]="avatarLoading"
-              >
+            >
               <bio-icon class="clear" small>clear</bio-icon>
             </button>
           }
@@ -49,7 +49,7 @@
         (click)="openModalSelectRegion()"
         (mouseenter)="preloadRegions()"
         aria-label="Change region"
-        >
+      >
         <ng-container *ngTemplateOutlet="flagTemplate"></ng-container>
       </button>
     } @else {
@@ -60,13 +60,7 @@
     </ng-template>
     <h3>{{ player.personaName }}</h3>
     @if (player.steamProfile) {
-      <a
-        class="steam"
-        bioButton
-        icon
-        [href]="player.steamProfile.profileurl"
-        bioTooltip="Steam profile"
-        >
+      <a class="steam" bioButton icon [href]="player.steamProfile.profileurl" bioTooltip="Steam profile">
         <bio-icon [mdi]="mdiSteam"></bio-icon>
       </a>
     }
@@ -83,7 +77,7 @@
           label="Persona name"
           [loading]="personaNameModel.isPending"
           *ngLet="player.lastUpdatedPersonaNameDate | playerCanUpdatePersonaName as canUpdatePersonaName"
-          >
+        >
           <input
             bioInput
             #personaNameModel="model"
@@ -94,13 +88,13 @@
             [personaNameExistsIgnore]="player.personaName"
             [disabled]="!canUpdatePersonaName || saving"
             (modelChange)="updatePersonaName($event)"
-            />
+          />
           <bio-hint>
             @if (canUpdatePersonaName) {
               The persona name can be updated one time per week
             } @else {
               Persona name will be available again in
-              {{ player.lastUpdatedPersonaNameDate | dateDifference: todayMinusSevenDate:['days', 'hours'] }}
+              {{ player.lastUpdatedPersonaNameDate | dateDifference: todayMinusSevenDate : ['days', 'hours'] }}
             }
           </bio-hint>
           <bio-hint end>{{ personaNameModel.model?.length }} / 100</bio-hint>
@@ -113,7 +107,7 @@
             [model]="player.idInputType"
             (modelChange)="updatePlayer('idInputType', $event)"
             placeholder="Preferred controller"
-            >
+          >
             @for (inputType of inputTypes$ | async; track trackById($index, inputType)) {
               <bio-option [value]="inputType.id">
                 {{ inputType.name }}
@@ -131,7 +125,7 @@
             modelUpdateOn="blur"
             [disabled]="saving"
             #titleModel="model"
-            />
+          />
           <bio-hint end>{{ titleModel.model?.length }} / 250</bio-hint>
         </bio-form-field>
         <bio-form-field label="About me">
@@ -162,7 +156,7 @@
           (click)="linkSteam(player.id)"
           [loading]="loadingLinkSteam"
           [disabled]="saving"
-          >
+        >
           Link steam
         </button>
       }
@@ -173,12 +167,12 @@
           type="button"
           (click)="save()"
           [loading]="saving"
-        [disabled]="
-          personaNameModelRef()?.isPending ||
-          personaNameModelRef()?.isInvalid ||
-          (player | playerProfileInvalid: update:newPersonaName)
-        "
-          >
+          [disabled]="
+            personaNameModelRef()?.isPending ||
+            personaNameModelRef()?.isInvalid ||
+            (player | playerProfileInvalid: update : newPersonaName)
+          "
+        >
           Save
         </button>
         <button bioButton primary type="button" (click)="setEditMode(false)" [disabled]="saving">Cancel</button>
@@ -190,11 +184,12 @@
 </bio-card>
 
 @for (status of scoreGroupedByStatus; track trackByScoreGroupByStatus($index, status)) {
-  <bio-score-list-responsive [scores]="status.scores"
+  <bio-score-list-responsive
+    [scores]="status.scores"
     title="{{ status.description }} ({{ status.scores.length }})"
     [colDefs]="colDefs"
     [disabledProperty]="'disabled'"
     (scoreClicked)="openScoreInfo($event)"
     collapsable
-     />
+  />
 }

@@ -11,7 +11,6 @@ export class AutocompleteOptionDirective implements FocusableOption {
   private elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
   private autocomplete = inject(Autocomplete, { host: true });
 
-
   private _disabled = false;
 
   readonly value = input.required<string>();

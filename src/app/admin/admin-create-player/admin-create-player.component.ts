@@ -70,7 +70,6 @@ export class AdminCreatePlayerComponent {
   private changeDetectorRef = inject(ChangeDetectorRef);
   private activatedRoute = inject(ActivatedRoute);
 
-
   loading = false;
 
   readonly form = new ControlGroup<PlayerAdd>({

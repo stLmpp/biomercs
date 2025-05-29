@@ -5,9 +5,8 @@ import { Observable } from 'rxjs';
 import { Region } from '@model/region';
 
 @Injectable({ providedIn: 'root' })
-export class RegionResolver  {
+export class RegionResolver {
   private regionService = inject(RegionService);
-
 
   resolve(
     route: ActivatedRouteSnapshot,

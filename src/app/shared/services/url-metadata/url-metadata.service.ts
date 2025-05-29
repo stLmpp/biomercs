@@ -10,7 +10,6 @@ export class UrlMetadataService {
   private http = inject(HttpClient);
   private cacheService = inject(CacheService);
 
-
   private readonly _cache = this.cacheService.createCache();
 
   readonly endPoint = 'url-metadata';

@@ -17,7 +17,6 @@ import { AsyncPipe } from '@angular/common';
 export class BreadcrumbsComponent {
   private breadcrumbsService = inject(BreadcrumbsService);
 
-
   readonly breadcrumbs$: Observable<BreadcrumbsItem[]> = this.breadcrumbsService.breadcrumbs$;
 
   trackBy = trackByIndex;

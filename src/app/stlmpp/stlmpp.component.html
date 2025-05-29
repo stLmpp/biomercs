@@ -1,9 +1,6 @@
 <bio-card *ngLet="fragment$ | async as fragment" class="center-block-mobile">
   @if (fragment) {
-    <div
-      @fadeInOut
-      class="cdk-overlay-backdrop cdk-overlay-dark-backdrop cdk-overlay-backdrop-showing"
-    ></div>
+    <div @fadeInOut class="cdk-overlay-backdrop cdk-overlay-dark-backdrop cdk-overlay-backdrop-showing"></div>
   }
   <h3 bioCardTitle>stLmpp</h3>
   <div bioCardSubtitle>Creator of biomercs.net</div>

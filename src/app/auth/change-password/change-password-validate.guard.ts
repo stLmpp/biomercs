@@ -5,10 +5,9 @@ import { map, Observable } from 'rxjs';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 
 @Injectable({ providedIn: 'root' })
-export class ChangePasswordValidateGuard  {
+export class ChangePasswordValidateGuard {
   private authService = inject(AuthService);
   private router = inject(Router);
-
 
   canActivate(
     route: ActivatedRouteSnapshot,

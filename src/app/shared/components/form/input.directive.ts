@@ -15,9 +15,8 @@ export class InputDirective extends AbstractComponent implements FocusableOption
   controlDirective? = inject(ControlDirective, { optional: true, self: true });
   modelDirective? = inject(ModelDirective, { optional: true, self: true });
 
-
   @HostBinding('attr.id')
-readonly id = input<number | string>();
+  readonly id = input<number | string>();
 
   override get primaryClass(): boolean {
     return !this.dangerClass && (this.bioType() || 'primary') === 'primary';

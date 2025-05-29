@@ -7,7 +7,6 @@ import { AuthQuery } from './auth.query';
 export class AuthInterceptor implements HttpInterceptor {
   private authQuery = inject(AuthQuery);
 
-
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = this.authQuery.getToken();
     const headers = req.headers.append('Authorization', `Bearer ${token}`);

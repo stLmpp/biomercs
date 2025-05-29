@@ -8,7 +8,6 @@ import { Observable } from 'rxjs';
 export class UsersOnlineResolver implements Resolve<UserOnline[]> {
   private userService = inject(UserService);
 
-
   resolve(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot

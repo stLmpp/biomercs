@@ -19,7 +19,6 @@ export class ForumTopicNewComponent {
   private topicService = inject(TopicService);
   private changeDetectorRef = inject(ChangeDetectorRef);
 
-
   readonly form = new ControlGroup<TopicAddDto>({
     name: new Control('', { validators: [Validators.required, Validators.maxLength(150)] }),
     content: new Control('<p></p>', { validators: [Validators.required] }),

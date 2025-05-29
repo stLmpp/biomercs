@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding, inject, input, output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  HostBinding,
+  inject,
+  input,
+  output,
+} from '@angular/core';
 import { mdiPin, mdiPinOff } from '@mdi/js';
 import { Topic } from '@model/forum/topic';
 import { TopicService } from '../../service/topic.service';
@@ -30,7 +38,6 @@ import { AuthDateFormatPipe } from '../../../auth/shared/auth-date-format.pipe';
 export class ForumSubCategoryTopicComponent {
   private topicService = inject(TopicService);
   private changeDetectorRef = inject(ChangeDetectorRef);
-
 
   readonly topic = input.required<Topic>();
 

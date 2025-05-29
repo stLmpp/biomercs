@@ -16,9 +16,8 @@ export interface UnsavedData {
 }
 
 @Injectable({ providedIn: 'root' })
-export class UnsavedDataGuard<T extends UnsavedData = any>  {
+export class UnsavedDataGuard<T extends UnsavedData = any> {
   private dialogService = inject(DialogService);
-
 
   private _resolveData(data: UnsavedDataType): Observable<boolean> {
     if (isNil(data) || data === false) {

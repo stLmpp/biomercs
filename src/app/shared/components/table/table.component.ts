@@ -5,7 +5,7 @@ import {
   TrackByFunction,
   ViewEncapsulation,
   input,
-  output
+  output,
 } from '@angular/core';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { PaginationMeta } from '@model/pagination';

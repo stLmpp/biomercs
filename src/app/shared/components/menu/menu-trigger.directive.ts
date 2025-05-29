@@ -15,7 +15,6 @@ export class MenuTriggerDirective extends Destroyable {
   private viewContainerRef = inject(ViewContainerRef);
   private document = inject<Document>(DOCUMENT);
 
-
   private _lastFocusedElement?: Element | null;
 
   readonly bioMenuTrigger = input.required<MenuComponent>();

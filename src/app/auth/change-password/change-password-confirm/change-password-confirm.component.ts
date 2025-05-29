@@ -69,7 +69,6 @@ export class ChangePasswordConfirmComponent {
   private router = inject(Router);
   private changeDetectorRef = inject(ChangeDetectorRef);
 
-
   hideOldPassword = true;
   hideConfirmPassword = true;
   hidePassword = true;

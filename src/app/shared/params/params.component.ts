@@ -1,4 +1,16 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges, inject, input, output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChange,
+  SimpleChanges,
+  inject,
+  input,
+  output,
+} from '@angular/core';
 import {
   Control,
   ControlBuilder,
@@ -118,7 +130,6 @@ export class ParamsComponent extends Destroyable implements OnChanges, OnInit {
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
   private changeDetectorRef = inject(ChangeDetectorRef);
-
 
   private _setQueryParamsOnChange = false;
   private _selectParamIfOne = true;

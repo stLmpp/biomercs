@@ -10,7 +10,6 @@ export class StageService {
   private http = inject(HttpClient);
   private cacheService = inject(CacheService);
 
-
   private readonly _cache = this.cacheService.createCache();
 
   readonly endPoint = 'stage';

@@ -8,7 +8,6 @@ import { ignoreErrorContext } from '../auth/auth-error.interceptor';
 export class ContactService {
   private http = inject(HttpClient);
 
-
   endPoint = 'contact';
 
   sendMail(dto: ContactSendMail): Observable<void> {

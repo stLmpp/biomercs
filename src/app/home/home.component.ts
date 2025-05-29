@@ -23,7 +23,6 @@ export class HomeComponent {
   private headerQuery = inject(HeaderQuery);
   private breakpointObserverService = inject(BreakpointObserverService);
 
-
   readonly isLogged$ = this.authQuery.isLogged$;
   readonly isAdmin$ = this.authQuery.isAdmin$;
   readonly adminApprovalCount$ = this.headerQuery.adminApprovalCount$;

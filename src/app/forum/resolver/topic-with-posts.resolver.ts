@@ -7,10 +7,9 @@ import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { refreshMap } from '@util/operators/refresh-map';
 
 @Injectable({ providedIn: 'root' })
-export class TopicWithPostsResolver  {
+export class TopicWithPostsResolver {
   private topicService = inject(TopicService);
   private router = inject(Router);
-
 
   resolve(
     route: ActivatedRouteSnapshot,

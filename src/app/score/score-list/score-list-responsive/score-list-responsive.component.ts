@@ -24,7 +24,6 @@ import { AsyncPipe } from '@angular/common';
 export class ScoreListResponsiveComponent<T extends Score = Score> {
   private breakpointObserverService = inject(BreakpointObserverService);
 
-
   private _collapsable = false;
 
   readonly scores = input<T[]>([]);

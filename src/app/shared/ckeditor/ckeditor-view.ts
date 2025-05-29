@@ -11,7 +11,6 @@ export class CKEditorView implements AfterViewInit {
   private domSanitizer = inject(DomSanitizer);
   private elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
 
-
   private _afterViewInit = false;
 
   @Input()

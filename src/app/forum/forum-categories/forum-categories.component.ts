@@ -71,7 +71,6 @@ export class ForumCategoriesComponent {
   private moderatorModalService = inject(ModeratorModalService);
   private subCategoryService = inject(SubCategoryService);
 
-
   private readonly _categories$ = new BehaviorSubject<CategoryWithSubCategories[]>(
     this._getCategoriesWithRecentTopicsFromRoute().categories
   );

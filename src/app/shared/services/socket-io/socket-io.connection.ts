@@ -2,7 +2,10 @@ import { Socket } from 'socket.io-client';
 import { finalize, Observable, Subject, take } from 'rxjs';
 
 export class SocketIOConnection {
-  constructor(private connection: Socket, public readonly auth = true) {}
+  constructor(
+    private connection: Socket,
+    public readonly auth = true
+  ) {}
 
   private readonly _events = new Map<string, Subject<any>>();
 

@@ -9,7 +9,7 @@
         [checked]="topic.notifications"
         (checkedChange)="onNotificationsChange($event)"
         [disabled]="loadingNotifications"
-        >
+      >
         Notifications
       </bio-checkbox>
       @if (!topic.lockedDate || topic.isModerator) {
@@ -26,7 +26,8 @@
       }
     </div>
     @for (post of topic.posts.items; track trackById($index, post)) {
-      <bio-forum-topic-post [idSubCategory]="topic.idSubCategory"
+      <bio-forum-topic-post
+        [idSubCategory]="topic.idSubCategory"
         [post]="post"
         [odd]="$odd"
         [topicLocked]="!!topic.lockedDate && !topic.isModerator"
@@ -35,13 +36,10 @@
         (postDelete)="onPostDelete()"
         (postQuote)="onReply($event)"
         (topicDelete)="onTopicDelete()"
-       />
+      />
     }
   </bio-card-content>
   <bio-card-actions end>
-    <bio-pagination [meta]="topic.posts.meta"
-      itemsPerPageHidden
-      (currentPageChange)="onPageChange($event)"
-     />
+    <bio-pagination [meta]="topic.posts.meta" itemsPerPageHidden (currentPageChange)="onPageChange($event)" />
   </bio-card-actions>
 </bio-card>

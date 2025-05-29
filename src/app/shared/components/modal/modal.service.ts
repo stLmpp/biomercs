@@ -1,4 +1,14 @@
-import { ElementRef, Injectable, Injector, OnDestroy, TemplateRef, Type, ViewContainerRef, DOCUMENT, inject } from '@angular/core';
+import {
+  ElementRef,
+  Injectable,
+  Injector,
+  OnDestroy,
+  TemplateRef,
+  Type,
+  ViewContainerRef,
+  DOCUMENT,
+  inject,
+} from '@angular/core';
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ModalRef } from './modal-ref';
 import {
@@ -21,7 +31,6 @@ export class ModalService implements OnDestroy {
   private injector = inject(Injector);
   private document = inject<Document>(DOCUMENT);
   private dynamicLoaderService = inject(DynamicLoaderService);
-
 
   private _modalMap = new Map<string, ModalRef>();
 

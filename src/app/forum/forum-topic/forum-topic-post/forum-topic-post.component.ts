@@ -1,4 +1,15 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostBinding, OnChanges, inject, input, output } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  HostBinding,
+  OnChanges,
+  inject,
+  input,
+  output,
+} from '@angular/core';
 import { Post, PostUpdateDto } from '@model/forum/post';
 import { PlayerService } from '../../../player/player.service';
 import { PostService } from '../../service/post.service';
@@ -27,14 +38,13 @@ export class ForumTopicPostComponent implements AfterViewInit, OnChanges {
   private activatedRoute = inject(ActivatedRoute);
   private forumService = inject(ForumService);
 
-
   private readonly _post$ = new ReplaySubject<Post>();
 
   readonly idSubCategory = input.required<number>();
   readonly post = input.required<Post>();
   readonly topicLocked = input(false);
   @HostBinding('class.odd')
-readonly odd = input(false);
+  readonly odd = input(false);
   readonly loadingReply = input(false);
 
   readonly postChange = output<Post>();

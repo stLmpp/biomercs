@@ -14,14 +14,14 @@
         }
         @for (character of scoreTopTable.scoreTables; track trackByScoreTableWithoutUndefined($index, character)) {
           <bio-score-list
-        title="{{ character.characterName }}{{
-          character.characterCostumeName !== character.characterName ? ' ' + character.characterCostumeName : ''
-        }}"
+            title="{{ character.characterName }}{{
+              character.characterCostumeName !== character.characterName ? ' ' + character.characterCostumeName : ''
+            }}"
             collapsable
             [scores]="character.scores"
             class="card-score-list"
             (scoreClicked)="openScoreInfo($event)"
-            >
+          >
           </bio-score-list>
         }
       </div>
@@ -34,7 +34,7 @@
             <div
               class="header"
               *ngLet="order.orderByDirection === 'desc' ? 'arrow_drop_up' : 'arrow_drop_down' as arrow"
-              >
+            >
               <div class="character" (click)="updateOrderByCharacter()">
                 Character
                 @if (order.orderByCharacter) {
@@ -44,11 +44,7 @@
                 }
               </div>
               @for (stage of scoreTopTable.stages; track trackById($index, stage)) {
-                <div
-                  [bioTooltip]="stage.name"
-                  (click)="updateOrderByIdStage(stage.id)"
-                  class="stage"
-                  >
+                <div [bioTooltip]="stage.name" (click)="updateOrderByIdStage(stage.id)" class="stage">
                   {{ stage.shortName }}
                   @if (order.orderByStage === stage.id) {
                     <bio-icon class="order-icon" small>
@@ -79,7 +75,7 @@
                       block
                       bioButton
                       (click)="openScoreInfo(score!)"
-                      >
+                    >
                       {{ score?.score || 0 | number: '1.0-0' }}
                     </button>
                   </div>

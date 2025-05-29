@@ -2,11 +2,12 @@
 <bio-card>
   <h3 bioCardTitle>Parameters</h3>
   <bio-card-content>
-    <bio-params [params]="form.valueChanges$ | async"
+    <bio-params
+      [params]="form.valueChanges$ | async"
       (paramsChange)="paramsChange($event)"
       [config]="paramsConfig"
       setQueryParamsOnChange
-     />
+    />
   </bio-card-content>
 </bio-card>
 <bio-card *ngLet="tableLoading$ | async as tableLoading" [bioLoading]="tableLoading" class="top-table flex-table">
@@ -24,10 +25,7 @@
             }
           </div>
           @for (stage of scores.stages; track trackById($index, stage)) {
-            <div
-              (click)="updateOrderByStage(stage.id)"
-              [bioTooltip]="stage.name"
-              >
+            <div (click)="updateOrderByStage(stage.id)" [bioTooltip]="stage.name">
               {{ stage.shortName }}
               @if (order.orderBy === stage.id) {
                 <bio-icon class="order-icon" small>
@@ -79,12 +77,13 @@
   </bio-card-content>
   <bio-card-actions end>
     @if (paginationMeta$ | async; as paginationMeta) {
-      <bio-pagination [meta]="paginationMeta"
+      <bio-pagination
+        [meta]="paginationMeta"
         (currentPageChange)="changePage($event)"
         (itemsPerPageChange)="changeItemsPerPage($event)"
         [itemsPerPageOptions]="itemsPerPageOptions"
         setQueryParamsOnChange
-       />
+      />
     }
   </bio-card-actions>
 </bio-card>

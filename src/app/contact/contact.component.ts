@@ -64,7 +64,6 @@ export class ContactComponent {
   private authQuery = inject(AuthQuery);
   private changeDetectorRef = inject(ChangeDetectorRef);
 
-
   readonly mail = 'support@biomercs.net';
   readonly subject = 'Give me a good subject';
   readonly body = 'Describe your question(s) or suggestion(s)';

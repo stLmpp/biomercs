@@ -5,9 +5,8 @@ import { Observable } from 'rxjs';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 
 @Injectable({ providedIn: 'root' })
-export class TopicIncreaseViewsResolver  {
+export class TopicIncreaseViewsResolver {
   private topicService = inject(TopicService);
-
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<void> | Promise<void> | void {
     const idSubCategory = +(route.paramMap.get(RouteParamEnum.idSubCategory) ?? 0);

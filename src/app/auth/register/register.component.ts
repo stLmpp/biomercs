@@ -71,7 +71,6 @@ export class RegisterComponent extends Destroyable {
   private usernameExistsValidator = inject(UsernameExistsValidator);
   private changeDetectorRef = inject(ChangeDetectorRef);
 
-
   private _idUser = 0;
 
   loading = false;

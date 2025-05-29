@@ -22,13 +22,9 @@
       [cdkDropListData]="categories"
       [cdkDropListDisabled]="updatingOrder || !isAdmin"
       (cdkDropListDropped)="onCdkDropListDropped($event)"
-      >
+    >
       @for (category of categories | forumFilterDeleted: hideDeleted; track trackById($index, category)) {
-        <bio-accordion-item
-          cdkDrag
-          [cdkDragData]="category"
-          expanded
-          >
+        <bio-accordion-item cdkDrag [cdkDragData]="category" expanded>
           <div bioAccordionItemTitle>
             @if (isAdmin) {
               <bio-icon cdkDragHandle> drag_handle </bio-icon>
@@ -38,7 +34,8 @@
               - Deleted at {{ category.deletedDate | authDateFormat }}
             }
           </div>
-          <bio-forum-categories-category [category]="category"
+          <bio-forum-categories-category
+            [category]="category"
             [isAdmin]="isAdmin"
             [loadingAddEditModal]="loadingAddEditModal"
             [isMobile]="isMobile$ | asyncDefault: false"
@@ -47,7 +44,7 @@
             (openAddEditModal)="openAddEditModal($event)"
             (categoryChange)="onCategoryChange($event)"
             (orderChange)="onSubCategoryOrderChange($event)"
-           />
+          />
         </bio-accordion-item>
       }
       <bio-accordion-item accordionTitle="Recent posts" expanded>

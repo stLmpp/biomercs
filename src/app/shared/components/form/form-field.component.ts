@@ -1,4 +1,16 @@
-import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnChanges, OnDestroy, ViewEncapsulation, inject, input, contentChild, contentChildren } from '@angular/core';
+import {
+  AfterContentInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnChanges,
+  OnDestroy,
+  ViewEncapsulation,
+  inject,
+  input,
+  contentChild,
+  contentChildren,
+} from '@angular/core';
 import { LabelDirective } from './label.directive';
 import { InputDirective } from './input.directive';
 import { SimpleChangesCustom } from '@util/util';
@@ -30,7 +42,6 @@ let uniqueId = 0;
 })
 export class FormFieldComponent implements AfterContentInit, OnChanges, OnDestroy {
   private changeDetectorRef = inject(ChangeDetectorRef);
-
 
   private readonly _destroy$ = new Subject<void>();
 
@@ -79,9 +90,11 @@ export class FormFieldComponent implements AfterContentInit, OnChanges, OnDestro
         this.control.disable(!!disabled);
       }
     }
-    this.formFieldChildren().changes.pipe(takeUntil(this._destroy$), auditTime(50)).subscribe(() => {
-      this.changeDetectorRef.markForCheck();
-    });
+    this.formFieldChildren()
+      .changes.pipe(takeUntil(this._destroy$), auditTime(50))
+      .subscribe(() => {
+        this.changeDetectorRef.markForCheck();
+      });
   }
 
   ngOnChanges(changes: SimpleChangesCustom<FormFieldComponent>): void {

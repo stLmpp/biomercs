@@ -29,7 +29,6 @@ import { AsyncPipe } from '@angular/common';
 export class NotFoundComponent {
   private activatedRoute = inject(ActivatedRoute);
 
-
   readonly possiblePaths$: Observable<PossiblePath[]> = this.activatedRoute.data.pipe(
     pluck(RouteDataEnum.possiblePaths),
     map(possiblePaths => possiblePaths ?? []),

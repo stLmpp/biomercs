@@ -13,7 +13,7 @@ import { RouterLink } from '@angular/router';
 })
 export class FooterComponent {
   @HostBinding('class.mobile')
-readonly mobile = input<BooleanInput>(false);
+  readonly mobile = input<BooleanInput>(false);
 
   readonly version = packageJson.version;
 

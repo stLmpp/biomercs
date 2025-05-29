@@ -7,10 +7,9 @@ import { Observable } from 'rxjs';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 
 @Injectable({ providedIn: 'root' })
-export class PlayerRejectedPendingScoresResolver  {
+export class PlayerRejectedPendingScoresResolver {
   private scoreService = inject(ScoreService);
   private authQuery = inject(AuthQuery);
-
 
   resolve(
     route: ActivatedRouteSnapshot,

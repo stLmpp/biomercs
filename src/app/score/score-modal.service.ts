@@ -19,7 +19,6 @@ import type {
 export class ScoreModalService {
   private modalService = inject(ModalService);
 
-
   async openModalScoreApproval(
     data: ScoreApprovalModalData
   ): Promise<ModalRef<ScoreApprovalModalComponent, ScoreApprovalModalData, ScoreApprovalPagination>> {

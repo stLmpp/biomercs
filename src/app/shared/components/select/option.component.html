@@ -1,9 +1,5 @@
 @if (multiple) {
-  <bio-checkbox
-    [checked]="isSelected"
-    (checkedChange)="onCheckedChange()"
-    [disabled]="disabled"
-    >
+  <bio-checkbox [checked]="isSelected" (checkedChange)="onCheckedChange()" [disabled]="disabled">
     <ng-container [ngTemplateOutlet]="single" />
   </bio-checkbox>
 } @else {

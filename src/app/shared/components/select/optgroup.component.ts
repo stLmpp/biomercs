@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding, HostListener, ViewEncapsulation, inject, input, contentChildren } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  HostBinding,
+  HostListener,
+  ViewEncapsulation,
+  inject,
+  input,
+  contentChildren,
+} from '@angular/core';
 import { Select } from '@shared/components/select/select';
 import { Option } from '@shared/components/select/option';
 import { CheckboxComponent } from '../checkbox/checkbox.component';

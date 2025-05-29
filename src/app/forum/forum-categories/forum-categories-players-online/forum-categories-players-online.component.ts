@@ -14,7 +14,6 @@ import { AsyncPipe } from '@angular/common';
 export class ForumCategoriesPlayersOnlineComponent {
   private forumService = inject(ForumService);
 
-
   readonly usersOnline$ = this.forumService.usersOnline$;
   readonly trackById = trackById;
 }

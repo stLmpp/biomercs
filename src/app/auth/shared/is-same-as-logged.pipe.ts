@@ -7,7 +7,6 @@ import { isNumber } from 'st-utils';
 export class IsSameAsLoggedPipe implements PipeTransform {
   private authQuery = inject(AuthQuery);
 
-
   transform(value: number | Player): boolean {
     const idPlayer = isNumber(value) ? value : value.id;
     return idPlayer === this.authQuery.getUser()?.idPlayer;

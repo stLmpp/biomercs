@@ -7,12 +7,12 @@
   <input id="search" placeholder="Search" bioInput type="search" [control]="searchControl" autocomplete="off" />
 </div>
 <bio-list bioModalContent [(model)]="idRegion">
-  @if (regions | search: 'name':(search$ | async); as all) {
-    <cdk-virtual-scroll-viewport
-      itemSize="44"
-      (keydown.control.s)="onSave($event)"
+  @if (regions | search: 'name' : (search$ | async); as all) {
+    <cdk-virtual-scroll-viewport itemSize="44" (keydown.control.s)="onSave($event)">
+      <bio-list-item
+        [value]="region.id"
+        *cdkVirtualFor="let region of all; trackBy: trackByRegion; templateCacheSize: 0"
       >
-      <bio-list-item [value]="region.id" *cdkVirtualFor="let region of all; trackBy: trackByRegion; templateCacheSize: 0">
         <bio-icon bioPrefix [flag]="region.shortName" />
         {{ region.name }}
       </bio-list-item>

@@ -10,7 +10,7 @@ import {
   inject,
   input,
   output,
-  viewChildren
+  viewChildren,
 } from '@angular/core';
 import {
   ControlArray,

@@ -51,14 +51,9 @@
       <bio-form-field [loading]="characterLoading" label="Characters">
         <bio-select placeholder="Characters" multiple controlName="idCharacterCostumes">
           @for (character of characters$ | async; track trackById($index, character)) {
-            <bio-optgroup
-              [label]="character.name"
-              [title]="character.name"
-              >
+            <bio-optgroup [label]="character.name" [title]="character.name">
               @for (characterCostume of character.characterCostumes; track trackById($index, characterCostume)) {
-                <bio-option
-                  [value]="characterCostume.id"
-                  >
+                <bio-option [value]="characterCostume.id">
                   {{ characterCostume.name }}
                 </bio-option>
               }
@@ -79,11 +74,12 @@
     </bio-card-actions>
   </bio-card>
 </form>
-<bio-score-list-responsive [scores]="scores"
+<bio-score-list-responsive
+  [scores]="scores"
   [colDefs]="colDefs"
   [paginationMeta]="paginationMeta"
   [loading]="loading"
   (currentPageChange)="onCurrentPageChange($event)"
   (itemsPerPageChange)="onItemsPerPageChange($event)"
   (scoreClicked)="openInfoScore($event)"
-   />
+/>

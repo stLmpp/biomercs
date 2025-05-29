@@ -46,7 +46,10 @@ export interface ForumTopicTransferComponentResponse {
   ],
 })
 export class ForumTopicTransferComponent implements OnInit {
-  private modalRef = inject<ModalRef<ForumTopicTransferComponent, ForumTopicTransferComponentData, ForumTopicTransferComponentResponse>>(ModalRef);
+  private modalRef =
+    inject<ModalRef<ForumTopicTransferComponent, ForumTopicTransferComponentData, ForumTopicTransferComponentResponse>>(
+      ModalRef
+    );
   private categoryService = inject(CategoryService);
   private changeDetectorRef = inject(ChangeDetectorRef);
   private topicService = inject(TopicService);

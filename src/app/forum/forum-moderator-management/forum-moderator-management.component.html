@@ -8,7 +8,7 @@
     (allSelected)="onAllSelected()"
     [disabledRemoveAll]="!moderatorsSelected.length"
     [disabledSelectAll]="!moderators.length"
-    >
+  >
     <bio-list
       bioMultiSelectItems
       items
@@ -16,7 +16,7 @@
       debounceTime="400"
       [bioLoading]="loadingPlayers"
       hint="Type at least 3 characters to start searching"
-      >
+    >
       @if (!loadingPlayers && !moderators.length) {
         <bio-list-item>No data found</bio-list-item>
       }
@@ -34,12 +34,13 @@
         <bio-list-item>No data found</bio-list-item>
       }
       @for (
-        moderator of moderatorsSelected | search: 'playerPersonaName':moderatorsSelectedSearch; track trackById($index,
-        moderator)) {
+        moderator of moderatorsSelected | search: 'playerPersonaName' : moderatorsSelectedSearch;
+        track trackById($index, moderator)
+      ) {
         <bio-list-item
           bioTooltip="Moderator is assigned to some sub category, and can't be deleted"
           [bioTooltipDisabled]="moderator.deleteAllowed"
-          >
+        >
           <button
             bioButton
             type="button"
@@ -47,7 +48,7 @@
             icon
             (click)="onRemoveItem(moderator)"
             [disabled]="!moderator.deleteAllowed"
-            >
+          >
             <bio-icon>chevron_left</bio-icon>
           </button>
           <bio-list-item-line>{{ moderator.playerPersonaName }}</bio-list-item-line>
@@ -64,7 +65,7 @@
     (click)="save()"
     [loading]="saving"
     [disabled]="!moderatorsDeletedMap.size && (moderatorsSelected | forumModeratorManagementValidation)"
-    >
+  >
     Save
   </button>
 </bio-modal-actions>

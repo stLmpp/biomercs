@@ -59,7 +59,6 @@ export class ForumModeratorManagementComponent extends Destroyable implements On
   private playerService = inject(PlayerService);
   private modalRef = inject(ModalRef);
 
-
   loading = true;
   saving = false;
   loadingPlayers = false;

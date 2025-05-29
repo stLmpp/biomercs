@@ -19,10 +19,7 @@
           <bio-loading />
         }
         @for (player of state.players; track trackByPlayer($index, player)) {
-          <bio-list-item
-            [value]="player.id"
-            [bioModalClose]="player"
-            >
+          <bio-list-item [value]="player.id" [bioModalClose]="player">
             {{ player.personaName }}
           </bio-list-item>
         }
@@ -30,10 +27,11 @@
     </bio-modal-content>
   }
   <bio-modal-actions>
-    <bio-pagination [meta]="paginationMeta$ | async"
+    <bio-pagination
+      [meta]="paginationMeta$ | async"
       (itemsPerPageChange)="onItemsPerPageChange($event)"
       (currentPageChange)="onCurrentPageChange($event)"
-       />
+    />
     <button bioButton type="button" bioModalClose>Close</button>
   </bio-modal-actions>
 </ng-container>

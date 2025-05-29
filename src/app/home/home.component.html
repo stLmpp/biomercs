@@ -13,11 +13,7 @@
     }
     @if (isAdmin$ | async) {
       @if (adminApprovalCount$ | async; as adminApprovalCount) {
-        <a
-          bioCardMenu
-          [bioBadge]="adminApprovalCount"
-          routerLink="/admin/approval"
-          >
+        <a bioCardMenu [bioBadge]="adminApprovalCount" routerLink="/admin/approval">
           <bio-icon>checklist</bio-icon>
           Check the pending scores (Admin)
         </a>
@@ -25,11 +21,7 @@
     }
     @if (idPlayer$ | async; as idPlayer) {
       @if (playerRequestChangesCount$ | async; as playerRequestChangesCount) {
-        <a
-          bioCardMenu
-          [bioBadge]="playerRequestChangesCount"
-          [routerLink]="['/player', idPlayer, 'change-requests']"
-          >
+        <a bioCardMenu [bioBadge]="playerRequestChangesCount" [routerLink]="['/player', idPlayer, 'change-requests']">
           <bio-icon>sync_alt</bio-icon>
           Check your pending changes list
         </a>

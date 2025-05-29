@@ -62,7 +62,6 @@ export class SteamRegisterComponent implements OnDestroy, OnInit {
   private emailExistsValidator = inject(EmailExistsValidator);
   private steamRegisterNameExistsValidator = inject(SteamRegisterNameExistsValidator);
 
-
   get steamid(): string {
     // This component is only accessible when there's a steamid in the route
     return this.activatedRoute.snapshot.paramMap.get(RouteParamEnum.steamid)!;

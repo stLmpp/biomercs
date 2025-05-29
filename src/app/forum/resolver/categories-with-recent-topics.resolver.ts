@@ -5,9 +5,8 @@ import { CategoryService } from '../service/category.service';
 import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
-export class CategoriesWithRecentTopicsResolver  {
+export class CategoriesWithRecentTopicsResolver {
   private categoryService = inject(CategoryService);
-
 
   resolve(
     route: ActivatedRouteSnapshot,

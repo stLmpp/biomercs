@@ -7,7 +7,6 @@ import { PlayerService } from '../../player/player.service';
 export class PersonaNameExistsValidator extends ControlValidator<string, boolean> {
   private playerService = inject(PlayerService);
 
-
   readonly name = 'personaNameExists';
   override readonly async = true;
 
@@ -28,7 +27,6 @@ export class PersonaNameExistsValidator extends ControlValidator<string, boolean
 })
 export class PersonaNameExistsValidatorDirective extends ControlValidator<string, boolean> {
   private personaNameExistsValidator = inject(PersonaNameExistsValidator);
-
 
   readonly personaNameExistsIgnore = input<string>();
 

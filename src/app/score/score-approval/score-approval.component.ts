@@ -81,7 +81,7 @@ export class ScoreApprovalComponent extends LocalState<ScoreApprovalComponentSta
           | null) ?? 'asc',
       orderBy: activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.orderBy) ?? 'creationDate',
     });
-  
+
     this.activatedRoute = activatedRoute;
   }
 

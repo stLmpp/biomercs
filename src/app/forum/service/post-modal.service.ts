@@ -10,7 +10,6 @@ import { ModalRef } from '@shared/components/modal/modal-ref';
 export class PostModalService {
   private modalService = inject(ModalService);
 
-
   async openReply(
     data: ForumTopicPostReplyComponentData
   ): Promise<ModalRef<ForumTopicPostReplyComponent, ForumTopicPostReplyComponentData>> {

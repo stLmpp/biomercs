@@ -7,11 +7,7 @@
       @if (possiblePaths.length) {
         <small>Similar pages: </small>
         @for (possiblePath of possiblePaths; track trackBy($index, possiblePath)) {
-          <a
-            bioButton
-            [routerLink]="possiblePath.path"
-            primary
-            >
+          <a bioButton [routerLink]="possiblePath.path" primary>
             {{ possiblePath.title }}
           </a>
         }

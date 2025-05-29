@@ -6,9 +6,8 @@ import { Observable } from 'rxjs';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 
 @Injectable({ providedIn: 'root' })
-export class SteamValidateNamesResolver  {
+export class SteamValidateNamesResolver {
   private authService = inject(AuthService);
-
 
   resolve(
     route: ActivatedRouteSnapshot,

@@ -10,7 +10,6 @@ export class CharacterService {
   private http = inject(HttpClient);
   private cacheService = inject(CacheService);
 
-
   private readonly _cache = this.cacheService.createCache();
 
   readonly endPoint = 'character';
@@ -22,9 +21,9 @@ export class CharacterService {
     idMode: number
   ): Observable<CharacterWithCharacterCostumes[]> {
     return this.http
-      .get<CharacterWithCharacterCostumes[]>(
-        `${this.endPoint}/platform/${idPlatform}/game/${idGame}/mini-game/${idMiniGame}/mode/${idMode}`
-      )
+      .get<
+        CharacterWithCharacterCostumes[]
+      >(`${this.endPoint}/platform/${idPlatform}/game/${idGame}/mini-game/${idMiniGame}/mode/${idMode}`)
       .pipe(this._cache.use(idPlatform, idGame, idMiniGame, idMode));
   }
 

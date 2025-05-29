@@ -1,4 +1,18 @@
-import { ChangeDetectionStrategy, Component, HostBinding, HostListener, Input, LOCALE_ID, OnInit, ViewEncapsulation, inject, input, output, viewChild, contentChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  HostBinding,
+  HostListener,
+  Input,
+  LOCALE_ID,
+  OnInit,
+  ViewEncapsulation,
+  inject,
+  input,
+  output,
+  viewChild,
+  contentChild,
+} from '@angular/core';
 import { LocalState } from '@stlmpp/store';
 import { addMonths, addYears, setMonth, setYear, subMonths, subYears } from 'date-fns';
 import { combineLatest, distinctUntilChanged, map, Subject } from 'rxjs';

@@ -30,12 +30,7 @@
     @if (!editing) {
       <div class="actions">
         @if (!topicLocked() && !post().deletedDate) {
-          <button
-            bioButton
-            type="button"
-            (click)="postQuote.emit(post())"
-            [disabled]="loadingReply()"
-            >
+          <button bioButton type="button" (click)="postQuote.emit(post())" [disabled]="loadingReply()">
             <bio-icon>format_quote</bio-icon>
             Quote
           </button>

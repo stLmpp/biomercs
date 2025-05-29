@@ -39,7 +39,6 @@ export class ForumSubCategoryComponent extends Destroyable implements OnInit {
   private subCategoryService = inject(SubCategoryService);
   private router = inject(Router);
 
-
   page = +(this.activatedRoute.snapshot.paramMap.get(RouteParamEnum.pageSubCategory) ?? 1);
   loading = false;
   subCategory: SubCategoryWithTopics = this.activatedRoute.snapshot.data[RouteDataEnum.subCategoryWithTopics];

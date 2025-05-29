@@ -17,11 +17,7 @@
             <h5>No rules found</h5>
           }
           @for (ruleControl of rulesControl; track trackByControl($index, ruleControl)) {
-            <div
-              class="item"
-              [controlGroupName]="$index"
-              cdkDrag
-              >
+            <div class="item" [controlGroupName]="$index" cdkDrag>
               <div class="icon-wrapper drag">
                 <bio-icon cdkDragHandle>drag_handle</bio-icon>
               </div>
@@ -60,7 +56,7 @@
           type="submit"
           [disabled]="(form.invalid || form.pristine) && !deletedValue.length"
           [loading]="saving"
-          >
+        >
           Save
         </button>
         <button bioButton primary type="reset" [disabled]="form.pristine && !deletedValue.length">Reset</button>

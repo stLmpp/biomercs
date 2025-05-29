@@ -18,7 +18,6 @@ export class TitleService {
   private title = inject(Title);
   private injector = inject(Injector);
 
-
   readonly title$ = this.globalListenersService.routerActivationEnd$.pipe(
     filter(event => !!event.snapshot.data[RouteDataEnum.title]),
     distinctUntilChanged(({ snapshot: { data: dataA } }, { snapshot: { data: dataB } }) => {

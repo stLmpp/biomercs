@@ -15,7 +15,6 @@ export class CollapseComponent {
   private renderer2 = inject(Renderer2);
   private elementRef = inject(ElementRef);
 
-
   private _bioCollapsed = false;
   private _isRunning = 0;
 

@@ -12,7 +12,6 @@ export class MetaService extends Destroyable {
   private routerQuery = inject(RouterQuery);
   private keyValueDiffers = inject(KeyValueDiffers);
 
-
   readonly keyValueDiffer = this.keyValueDiffers.find(new Map<string, string>()).create<string, string>();
 
   init(): void {

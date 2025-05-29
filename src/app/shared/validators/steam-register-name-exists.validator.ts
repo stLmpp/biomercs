@@ -7,7 +7,6 @@ import { AuthService } from '../../auth/auth.service';
 export class SteamRegisterNameExistsValidator extends ControlValidator<string | null | undefined, boolean> {
   private authService = inject(AuthService);
 
-
   readonly name = 'steamRegisterNameExists';
   override readonly async = true;
 

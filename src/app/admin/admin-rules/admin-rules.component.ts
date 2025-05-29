@@ -81,7 +81,6 @@ export class AdminRulesComponent implements UnsavedData {
   private snackBarService = inject(SnackBarService);
   private changeDetectorRef = inject(ChangeDetectorRef);
 
-
   private _rules: Rule[] = this.activatedRoute.snapshot.data[RouteDataEnum.rules] ?? [];
   saving = false;
   loadingType = false;

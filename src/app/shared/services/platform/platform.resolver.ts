@@ -5,9 +5,8 @@ import { Observable } from 'rxjs';
 import { Platform } from '@model/platform';
 
 @Injectable({ providedIn: 'root' })
-export class PlatformResolver  {
+export class PlatformResolver {
   private platformService = inject(PlatformService);
-
 
   resolve(
     route: ActivatedRouteSnapshot,

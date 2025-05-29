@@ -13,7 +13,6 @@ export class NotificationService {
   private socketIOService = inject(SocketIOService);
   private authQuery = inject(AuthQuery);
 
-
   private readonly _socketConnection = this.socketIOService.createConnection('notification');
   private readonly _unseenCount$ = new BehaviorSubject(0);
   readonly endPoint = 'notification';

@@ -8,7 +8,6 @@ import { FocusableOption } from '@angular/cdk/a11y';
 export class CardMenuDirective implements FocusableOption {
   private elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
 
-
   focus(): void {
     this.elementRef.nativeElement.focus();
   }

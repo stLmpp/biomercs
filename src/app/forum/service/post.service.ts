@@ -7,7 +7,6 @@ import { Post, PostAddDto, PostUpdateDto } from '@model/forum/post';
 export class PostService {
   private http = inject(HttpClient);
 
-
   getEndPoint(idSubCategory: number, idTopic: number): string {
     return `forum/sub-category/${idSubCategory}/topic/${idTopic}/post`;
   }

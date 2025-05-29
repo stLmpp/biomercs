@@ -17,7 +17,6 @@ import { Player } from '@model/player';
 export class PlayerModalService {
   private modalService = inject(ModalService);
 
-
   async openPlayerChangeRequestsModal(
     data: PlayerChangeRequestsModalData
   ): Promise<

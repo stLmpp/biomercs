@@ -3,18 +3,17 @@
   <bio-card class="params" collapsable>
     <h3 bioCardTitle>Parameters</h3>
     <bio-card-content>
-      <bio-params [params]="params$ | async"
+      <bio-params
+        [params]="params$ | async"
         (paramsChange)="form.patchValue($event)"
         [config]="paramsConfig"
         setQueryParamsOnChange
         (modeChange)="onModeChange($event)"
-       />
+      />
     </bio-card-content>
   </bio-card>
   <form [controlGroup]="form" (groupSubmit)="onSubmit()">
-    @for (
-      scorePlayerControl of scorePlayersControl; track trackByScorePlayerControl($index,
-      scorePlayerControl)) {
+    @for (scorePlayerControl of scorePlayersControl; track trackByScorePlayerControl($index, scorePlayerControl)) {
       @if (scorePlayerControl.value$ | async; as player) {
         <bio-score-add-player
           [disabled]="!state.hasMode"
@@ -56,7 +55,7 @@
             [dropSpecialCharacters]="false"
             [patterns]="maskTimePattern"
             autocomplete="off"
-            />
+          />
           <bio-errors>
             <bio-error *error="'required'">Time is required</bio-error>
           </bio-errors>
@@ -68,7 +67,7 @@
             autocomplete="off"
             [bioDatepicker]="datepicker"
             placeholder="Achieved date"
-            />
+          />
           <button bioButton icon bioSuffix [bioDatepickerTrigger]="datepicker">
             <bio-icon>calendar_today</bio-icon>
           </button>

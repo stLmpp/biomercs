@@ -63,7 +63,6 @@ export class HeaderComponent extends Destroyable implements OnInit {
   private globalListenersService = inject(GlobalListenersService);
   private changeDetectorRef = inject(ChangeDetectorRef);
 
-
   readonly user$ = this.authQuery.user$;
   readonly isLogged$ = this.authQuery.isLogged$;
   readonly isMobile$ = this.breakpointObserverService.isMobile$;

@@ -5,10 +5,9 @@ import { map, Observable } from 'rxjs';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 
 @Injectable({ providedIn: 'root' })
-export class ForumRedirectTopicPostGuard  {
+export class ForumRedirectTopicPostGuard {
   private topicService = inject(TopicService);
   private router = inject(Router);
-
 
   canActivate(
     route: ActivatedRouteSnapshot,

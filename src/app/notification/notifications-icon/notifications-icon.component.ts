@@ -45,7 +45,6 @@ export class NotificationsIconComponent extends Destroyable implements OnInit {
   private breakpointObserverService = inject(BreakpointObserverService);
   private dynamicLoaderService = inject(DynamicLoaderService);
 
-
   private _preloaded = false;
 
   readonly unseenCount$ = this.notificationService.unseenCount$.pipe(

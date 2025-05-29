@@ -62,7 +62,8 @@ export interface ForumSubCategoryAddEditComponentData {
 export class ForumSubCategoryAddEditComponent implements OnInit {
   private subCategoryService = inject(SubCategoryService);
   private changeDetectorRef = inject(ChangeDetectorRef);
-  private modalRef = inject<ModalRef<ForumSubCategoryAddEditComponent, ForumSubCategoryAddEditComponentData, SubCategory>>(ModalRef);
+  private modalRef =
+    inject<ModalRef<ForumSubCategoryAddEditComponent, ForumSubCategoryAddEditComponentData, SubCategory>>(ModalRef);
 
   constructor() {
     this.idSubCategory = idSubCategory;

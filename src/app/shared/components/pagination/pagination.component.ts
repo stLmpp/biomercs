@@ -31,7 +31,6 @@ import { IconComponent } from '../icon/icon.component';
 export class PaginationComponent implements OnChanges, PaginationMeta {
   private router = inject(Router);
 
-
   private _setQueryParamsOnChange = false;
   private _itemsPerPageHidden = false;
   private _disabled = false;

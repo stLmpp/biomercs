@@ -34,7 +34,7 @@ export class BadgeDirective extends BadgeBase implements AfterViewInit {
     return this._bioBadge;
   }
   set bioBadge(bioBadge: any) {
-    this._bioBadge = isNil(bioBadge) ? '' : bioBadge.toString?.() ?? `${bioBadge}`;
+    this._bioBadge = isNil(bioBadge) ? '' : (bioBadge.toString?.() ?? `${bioBadge}`);
     this._buildBadge();
   }
 
@@ -95,7 +95,7 @@ export class BadgeDirective extends BadgeBase implements AfterViewInit {
   }
 
   @HostBinding('class.badge-container-overlap')
-readonly bioBadgeOverlap = input(true);
+  readonly bioBadgeOverlap = input(true);
 
   private _setPosition(): void {
     let position = '';

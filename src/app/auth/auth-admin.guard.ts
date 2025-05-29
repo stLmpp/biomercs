@@ -4,10 +4,9 @@ import { Observable } from 'rxjs';
 import { AuthQuery } from './auth.query';
 
 @Injectable({ providedIn: 'root' })
-export class AuthAdminGuard  {
+export class AuthAdminGuard {
   private authQuery = inject(AuthQuery);
   private router = inject(Router);
-
 
   private _validateAdmin(): boolean | UrlTree {
     return this.authQuery.getIsAdmin() || this.router.createUrlTree(['/']);

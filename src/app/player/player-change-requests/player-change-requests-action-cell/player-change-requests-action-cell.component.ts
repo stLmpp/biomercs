@@ -23,7 +23,6 @@ export class PlayerChangeRequestsActionCellComponent implements TableCell<ScoreW
   private playerModalService = inject(PlayerModalService);
   private changeDetectorRef = inject(ChangeDetectorRef);
 
-
   readonly notifyChange = output<any>();
 
   colDef!: ColDefInternal<ScoreWithScoreChangeRequests, keyof ScoreWithScoreChangeRequests>;

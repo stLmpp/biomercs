@@ -4,7 +4,7 @@
   [tabIndex]="disabled ? -1 : 0"
   #header
   (keydown)="onKeydown($event)"
-  >
+>
   @if (accordionItemTitleDirectives?.length) {
     <ng-content select="[bioAccordionItemTitle], bio-accordion-item-title"></ng-content>
   } @else {

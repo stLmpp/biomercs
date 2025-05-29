@@ -7,7 +7,7 @@ export class LabelDirective {
   private _danger = false;
 
   @HostBinding('attr.for')
-readonly for = input<string | number>();
+  readonly for = input<string | number>();
 
   @Input()
   @HostBinding('class.danger')

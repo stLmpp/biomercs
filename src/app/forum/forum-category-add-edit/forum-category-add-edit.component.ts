@@ -56,7 +56,6 @@ export class ForumCategoryAddEditComponent implements OnInit {
   private changeDetectorRef = inject(ChangeDetectorRef);
   private modalRef = inject<ModalRef<ForumCategoryAddEditComponent, number | undefined, Category>>(ModalRef);
 
-
   loading = false;
   saving = false;
   category: Category = { id: -1, name: '', order: -1 };

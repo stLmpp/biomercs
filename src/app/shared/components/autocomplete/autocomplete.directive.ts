@@ -1,4 +1,14 @@
-import { Directive, ElementRef, HostListener, Input, QueryList, ViewContainerRef, DOCUMENT, inject, input } from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  HostListener,
+  Input,
+  QueryList,
+  ViewContainerRef,
+  DOCUMENT,
+  inject,
+  input,
+} from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 
 import { cdkOverlayTransparentBackdrop } from '@util/overlay';
@@ -23,7 +33,6 @@ export class AutocompleteDirective extends Destroyable {
   private document = inject<Document>(DOCUMENT);
   private controlDirective = inject(ControlDirective, { optional: true, self: true });
 
-
   private _isSubscribed = false;
   private _onFocus$ = new Subject<boolean>();
   private _bioAutocompleteFocusOnFirstItem = false;
@@ -41,7 +50,7 @@ export class AutocompleteDirective extends Destroyable {
   readonly bioAutocompleteActionAfterSelect = input<'focusOnOrigin' | 'focusNext' | 'focusout'>('focusNext');
   readonly bioAutocompleteNext = input<{
     focus(...args: any[]): void;
-} | null>(null);
+  } | null>(null);
 
   opened = false;
   hasFocus = false;
@@ -70,8 +79,9 @@ export class AutocompleteDirective extends Destroyable {
       return;
     }
     this._isSubscribed = true;
-    const optionsChanges: Observable<QueryList<AutocompleteOptionDirective>> =
-      bioAutocomplete.autocompleteOptions().changes.pipe(startWith(bioAutocomplete.autocompleteOptions()));
+    const optionsChanges: Observable<QueryList<AutocompleteOptionDirective>> = bioAutocomplete
+      .autocompleteOptions()
+      .changes.pipe(startWith(bioAutocomplete.autocompleteOptions()));
     combineLatest([this._onFocus$, optionsChanges])
       .pipe(takeUntil(this.destroy$))
       .subscribe(([focused, changes]) => {
@@ -105,8 +115,8 @@ export class AutocompleteDirective extends Destroyable {
       .subscribe(() => {
         this.opened = false;
       });
-    this.bioAutocomplete().onSelect$
-      .pipe(
+    this.bioAutocomplete()
+      .onSelect$.pipe(
         takeUntil(this.destroy$),
         filter(() => this.bioAutocomplete().closeOnSelect())
       )
@@ -156,11 +166,7 @@ export class AutocompleteDirective extends Destroyable {
   onKeydownEnter(): void {
     const bioAutocomplete = this.bioAutocomplete();
     const autocompleteOptions = bioAutocomplete.autocompleteOptions();
-    if (
-      this.opened &&
-      this._bioAutocompleteSelectFirstOptionOnEnter &&
-      autocompleteOptions.length
-    ) {
+    if (this.opened && this._bioAutocompleteSelectFirstOptionOnEnter && autocompleteOptions.length) {
       autocompleteOptions.find(option => !option.disabled)?.onSelect();
     }
   }

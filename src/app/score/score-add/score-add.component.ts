@@ -93,7 +93,6 @@ export class ScoreAddComponent {
   private changeDetectorRef = inject(ChangeDetectorRef);
   private platformInputTypeService = inject(PlatformInputTypeService);
 
-
   readonly scoreAddPlayerComponents = viewChildren(ScoreAddPlayerComponent);
   readonly paramsComponent = viewChild.required(ParamsComponent);
 

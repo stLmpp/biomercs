@@ -21,7 +21,7 @@
         [topic]="topic"
         (topicChange)="onTopicChange($event)"
         (reloadSubCategory)="onReloadSubcategory()"
-        >
+      >
       </a>
     }
     @if (!subCategory.topics.items.length) {
@@ -29,10 +29,11 @@
     }
   </bio-card-content>
   <bio-card-actions end>
-    <bio-pagination [(currentPage)]="page"
+    <bio-pagination
+      [(currentPage)]="page"
       (currentPageChange)="onPageChange($event)"
       [meta]="subCategory.topics.meta"
       itemsPerPageHidden
-     />
+    />
   </bio-card-actions>
 </bio-card>

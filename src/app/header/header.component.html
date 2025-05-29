@@ -1,10 +1,7 @@
 <ng-container *ngLet="user$ | async as user">
   <ng-container *ngLet="isMobile$ | async as isMobile">
     @if (sideMenuOpened && user) {
-      <bio-side-menu [user]="user"
-        [isMobile]="isMobile"
-        (menuSelected)="toggleSideMenu($event)"
-       />
+      <bio-side-menu [user]="user" [isMobile]="isMobile" (menuSelected)="toggleSideMenu($event)" />
     }
     <div class="brand-wrapper">
       @if (user) {
@@ -25,7 +22,7 @@
           bioTooltip="Submit score"
           bioTooltipPosition="bottom"
           [bioTooltipDisabled]="!isMobile"
-          >
+        >
           <bio-icon>add</bio-icon>
           @if (!isMobile) {
             Submit score
@@ -40,9 +37,7 @@
         </button>
         <bio-menu #menu>
           @if (user.idPlayer) {
-            <a bioButton bioMenuItem [routerLink]="['/player', user.idPlayer]">
-              <bio-icon>person</bio-icon> Profile
-            </a>
+            <a bioButton bioMenuItem [routerLink]="['/player', user.idPlayer]"> <bio-icon>person</bio-icon> Profile </a>
           }
           <a bioButton bioMenuItem routerLink="/auth/change-password"> <bio-icon>vpn_key</bio-icon> Change password</a>
           <button type="button" bioButton bioMenuItem (click)="logout()">

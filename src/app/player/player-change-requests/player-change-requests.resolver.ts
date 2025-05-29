@@ -6,9 +6,8 @@ import { Observable } from 'rxjs';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 
 @Injectable({ providedIn: 'root' })
-export class PlayerChangeRequestsResolver  {
+export class PlayerChangeRequestsResolver {
   private scoreService = inject(ScoreService);
-
 
   resolve(
     route: ActivatedRouteSnapshot,

@@ -16,7 +16,6 @@ export class BreakpointObserverService {
   private window = inject<Window>(WINDOW);
   private globalListenersService = inject(GlobalListenersService);
 
-
   private readonly _resize$ = this.globalListenersService.windowResize$.pipe(auditTime(300), shareReplay());
 
   readonly isMobile$ = this.observe([MediaQueryEnum.sm]).pipe(map(isSmallScreen => !isSmallScreen));

@@ -16,20 +16,15 @@
             <bio-form-field [loading]="loadingCharacters" label="Character">
               <bio-select controlName="idCharacterCostume" placeholder="Character">
                 @if (loadingCharacters) {
-                  <bio-option disabled>
-                    <bio-spinner [size]="0.1"></bio-spinner> Loading...
-                  </bio-option>
+                  <bio-option disabled> <bio-spinner [size]="0.1"></bio-spinner> Loading... </bio-option>
                 }
                 @for (character of characters$ | async; track trackById($index, character)) {
-                  <bio-optgroup
-                    [label]="character.name"
-                    [title]="character.name"
-                    >
+                  <bio-optgroup [label]="character.name" [title]="character.name">
                     @for (characterCostume of character.characterCostumes; track trackById($index, characterCostume)) {
                       <bio-option
                         [value]="characterCostume.id"
                         title="{{ character.name }} {{ characterCostume.name }}"
-                        >
+                      >
                         {{ characterCostume.name }}
                       </bio-option>
                     }
@@ -40,113 +35,109 @@
                 <bio-error *error="'required'">Character is required</bio-error>
               </bio-errors>
             </bio-form-field>
-          <!--</editor-fold>-->
-          <bio-form-field label="Description">
-            <input bioInput controlName="description" placeholder="Description" />
-            <bio-errors>
-              <bio-error *error="'required'">Description is required</bio-error>
-            </bio-errors>
-          </bio-form-field>
-          <bio-form-field label="Bullet kills">
-            <input bioInput controlName="bulletKills" placeholder="Number of bullet kills" type="number" />
-            <bio-errors>
-              <bio-error *error="'required'">Bullet kills is required</bio-error>
-            </bio-errors>
-          </bio-form-field>
-          <bio-form-field label="Evidence">
-            <input bioInput controlName="evidence" placeholder="Evidence video URL" type="url" />
-            <bio-errors>
-              <bio-error *error="'required'">Evidence is required</bio-error>
-              <bio-error *error="'url'">Evidence must be an URL</bio-error>
-            </bio-errors>
-          </bio-form-field>
-          <bio-form-field label="Controller" [loading]="loadingInputTypes">
-            <bio-select controlName="idPlatformInputType" placeholder="Controller">
-              @for (platformInputType of platformInputTypes$ | async; track trackById($index, platformInputType)) {
-                <bio-option
-                  [value]="platformInputType.id"
-                  >
-                  {{ platformInputType.nameInputType }}
-                </bio-option>
-              }
-            </bio-select>
-          </bio-form-field>
-        </div>
-        @if (scorePlayersControl.get($index)!; as playerControl) {
-          <div>
-            <ng-container *ngLet="playerControl.value$ | async as playerUpdate">
-              @if (playerControl.get('evidence')!.valid) {
-                <a bio-url-preview [url]="playerUpdate.evidence || null"></a>
-              }
-            </ng-container>
+            <!--</editor-fold>-->
+            <bio-form-field label="Description">
+              <input bioInput controlName="description" placeholder="Description" />
+              <bio-errors>
+                <bio-error *error="'required'">Description is required</bio-error>
+              </bio-errors>
+            </bio-form-field>
+            <bio-form-field label="Bullet kills">
+              <input bioInput controlName="bulletKills" placeholder="Number of bullet kills" type="number" />
+              <bio-errors>
+                <bio-error *error="'required'">Bullet kills is required</bio-error>
+              </bio-errors>
+            </bio-form-field>
+            <bio-form-field label="Evidence">
+              <input bioInput controlName="evidence" placeholder="Evidence video URL" type="url" />
+              <bio-errors>
+                <bio-error *error="'required'">Evidence is required</bio-error>
+                <bio-error *error="'url'">Evidence must be an URL</bio-error>
+              </bio-errors>
+            </bio-form-field>
+            <bio-form-field label="Controller" [loading]="loadingInputTypes">
+              <bio-select controlName="idPlatformInputType" placeholder="Controller">
+                @for (platformInputType of platformInputTypes$ | async; track trackById($index, platformInputType)) {
+                  <bio-option [value]="platformInputType.id">
+                    {{ platformInputType.nameInputType }}
+                  </bio-option>
+                }
+              </bio-select>
+            </bio-form-field>
           </div>
-        }
-      </div>
-      <hr />
-    }
-  </div>
-  <div class="score-info body">
-    <bio-form-field label="Score">
-      <input bioInput controlName="score" bioCurrencyMask placeholder="Score" autocomplete="off" />
-      <bio-errors>
-        <bio-error *error="'required'">Score is required</bio-error>
-      </bio-errors>
-    </bio-form-field>
-    <bio-form-field label="Max combo">
-      <input bioInput controlName="maxCombo" type="number" autocomplete="off" />
-      <bio-errors>
-        <bio-error *error="'required'">Max combo is required</bio-error>
-        <bio-error *error="'min'">Max combo can't be negative</bio-error>
-        <bio-error *error="'max'">Max combo can't surpass 400</bio-error>
-      </bio-errors>
-    </bio-form-field>
-    <bio-form-field label="Time">
-      <input
-        bioInput
-        controlName="time"
-        [bioMask]="maskEnum.time"
-        [dropSpecialCharacters]="false"
-        [patterns]="maskTimePattern"
-        autocomplete="off"
+          @if (scorePlayersControl.get($index)!; as playerControl) {
+            <div>
+              <ng-container *ngLet="playerControl.value$ | async as playerUpdate">
+                @if (playerControl.get('evidence')!.valid) {
+                  <a bio-url-preview [url]="playerUpdate.evidence || null"></a>
+                }
+              </ng-container>
+            </div>
+          }
+        </div>
+        <hr />
+      }
+    </div>
+    <div class="score-info body">
+      <bio-form-field label="Score">
+        <input bioInput controlName="score" bioCurrencyMask placeholder="Score" autocomplete="off" />
+        <bio-errors>
+          <bio-error *error="'required'">Score is required</bio-error>
+        </bio-errors>
+      </bio-form-field>
+      <bio-form-field label="Max combo">
+        <input bioInput controlName="maxCombo" type="number" autocomplete="off" />
+        <bio-errors>
+          <bio-error *error="'required'">Max combo is required</bio-error>
+          <bio-error *error="'min'">Max combo can't be negative</bio-error>
+          <bio-error *error="'max'">Max combo can't surpass 400</bio-error>
+        </bio-errors>
+      </bio-form-field>
+      <bio-form-field label="Time">
+        <input
+          bioInput
+          controlName="time"
+          [bioMask]="maskEnum.time"
+          [dropSpecialCharacters]="false"
+          [patterns]="maskTimePattern"
+          autocomplete="off"
         />
-      <bio-errors>
-        <bio-error *error="'required'">Time is required</bio-error>
-      </bio-errors>
-    </bio-form-field>
-  </div>
-  <hr />
-  <h5>Changes Requested</h5>
-  <div class="score-changes" controlArrayName="idsScoreChangeRequests">
-    @for (scoreChangeRequest of data.score.scoreChangeRequests; track trackById($index, scoreChangeRequest)) {
-      <div
-        [controlGroupName]="$index"
-        >
-        <bio-checkbox controlName="checked">{{ scoreChangeRequest.description }}</bio-checkbox>
-      </div>
-    }
-  </div>
-  <hr />
-</bio-modal-content>
-<bio-modal-actions end>
-  <button bioButton type="button" (click)="modalRef.close()" [disabled]="loading">Close</button>
-  <button
-    bioButton
-    type="submit"
-    [disabled]="form.invalid || (noChangeRequestsSelected$ | async)"
-    [loading]="loading"
-    primary
+        <bio-errors>
+          <bio-error *error="'required'">Time is required</bio-error>
+        </bio-errors>
+      </bio-form-field>
+    </div>
+    <hr />
+    <h5>Changes Requested</h5>
+    <div class="score-changes" controlArrayName="idsScoreChangeRequests">
+      @for (scoreChangeRequest of data.score.scoreChangeRequests; track trackById($index, scoreChangeRequest)) {
+        <div [controlGroupName]="$index">
+          <bio-checkbox controlName="checked">{{ scoreChangeRequest.description }}</bio-checkbox>
+        </div>
+      }
+    </div>
+    <hr />
+  </bio-modal-content>
+  <bio-modal-actions end>
+    <button bioButton type="button" (click)="modalRef.close()" [disabled]="loading">Close</button>
+    <button
+      bioButton
+      type="submit"
+      [disabled]="form.invalid || (noChangeRequestsSelected$ | async)"
+      [loading]="loading"
+      primary
     >
-    Submit
-  </button>
-  <button
-    bioButton
-    type="button"
-    [disabled]="loading"
-    danger
-    (click)="onCancelScore()"
-    [loading]="loadingCancelScore"
+      Submit
+    </button>
+    <button
+      bioButton
+      type="button"
+      [disabled]="loading"
+      danger
+      (click)="onCancelScore()"
+      [loading]="loadingCancelScore"
     >
-    Cancel score
-  </button>
-</bio-modal-actions>
+      Cancel score
+    </button>
+  </bio-modal-actions>
 </form>

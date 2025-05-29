@@ -57,7 +57,14 @@ export interface ForumSubCategoryModeratorManagementComponentData {
   ],
 })
 export class ForumSubCategoryModeratorManagementComponent implements OnInit {
-  private modalRef = inject<ModalRef<ForumSubCategoryModeratorManagementComponent, ForumSubCategoryModeratorManagementComponentData, Moderator[]>>(ModalRef);
+  private modalRef =
+    inject<
+      ModalRef<
+        ForumSubCategoryModeratorManagementComponent,
+        ForumSubCategoryModeratorManagementComponentData,
+        Moderator[]
+      >
+    >(ModalRef);
   private subCategoryModeratorService = inject(SubCategoryModeratorService);
   private changeDetectorRef = inject(ChangeDetectorRef);
   private moderatorService = inject(ModeratorService);

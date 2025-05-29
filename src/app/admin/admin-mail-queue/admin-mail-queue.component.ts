@@ -22,7 +22,6 @@ export class AdminMailQueueComponent {
   private mailService = inject(MailService);
   private changeDetectorRef = inject(ChangeDetectorRef);
 
-
   restartingQueue = false;
   statusQueue: MailStatusQueue = this.activatedRoute.snapshot.data[RouteDataEnum.mailQueue];
 

@@ -87,14 +87,16 @@ interface ScoreChangeRequestsFulfilForm extends Omit<ScoreChangeRequestsFulfilDt
 })
 export class PlayerChangeRequestsModalComponent {
   data = inject<PlayerChangeRequestsModalData>(MODAL_DATA);
-  modalRef = inject<ModalRef<PlayerChangeRequestsModalComponent, PlayerChangeRequestsModalData, ScoreChangeRequestsPagination>>(ModalRef);
+  modalRef =
+    inject<ModalRef<PlayerChangeRequestsModalComponent, PlayerChangeRequestsModalData, ScoreChangeRequestsPagination>>(
+      ModalRef
+    );
   private scoreService = inject(ScoreService);
   private snackBarService = inject(SnackBarService);
   private dialogService = inject(DialogService);
   private changeDetectorRef = inject(ChangeDetectorRef);
   private characterService = inject(CharacterService);
   private platformInputTypeService = inject(PlatformInputTypeService);
-
 
   loading = false;
   loadingCancelScore = false;

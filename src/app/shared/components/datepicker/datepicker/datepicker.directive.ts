@@ -15,7 +15,6 @@ export class DatepickerDirective extends ControlValue<Date | null | undefined> i
   private authQuery = inject(AuthQuery);
   private inputmaskService = inject(InputmaskService);
 
-
   private readonly _mask = this.inputmaskService.createMask('datetime', {
     inputFormat: this._getDateFormat().toLowerCase(),
     placeholder: this._getDateFormat().toUpperCase(),

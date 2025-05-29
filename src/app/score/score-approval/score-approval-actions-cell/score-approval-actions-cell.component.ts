@@ -21,7 +21,6 @@ export class ScoreApprovalActionsCellComponent implements TableCell<Score> {
   private scoreModalService = inject(ScoreModalService);
   private changeDetectorRef = inject(ChangeDetectorRef);
 
-
   readonly notifyChange = output<ScoreApprovalPagination>();
 
   colDef!: ColDefInternal<Score, keyof Score>;

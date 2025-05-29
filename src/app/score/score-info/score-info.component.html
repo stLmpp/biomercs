@@ -13,18 +13,10 @@
   {{ score().score | number: '1.0-0' }}
   @if (showWorldRecord) {
     @if (score().isWorldRecord) {
-      <bio-icon
-        [mdi]="mdiTrophy"
-        bioTooltip="World Record"
-        bioTooltipPosition="right"
-      ></bio-icon>
+      <bio-icon [mdi]="mdiTrophy" bioTooltip="World Record" bioTooltipPosition="right"></bio-icon>
     }
     @if (score().isCombinationWorldRecord) {
-      <bio-icon
-        [mdi]="mdiTrophyAward"
-        bioTooltip="Combination World Record"
-        bioTooltipPosition="right"
-      ></bio-icon>
+      <bio-icon [mdi]="mdiTrophyAward" bioTooltip="Combination World Record" bioTooltipPosition="right"></bio-icon>
     }
   }
 </div>
@@ -57,11 +49,7 @@
   <div class="value">
     {{ player.characterName }} {{ player.characterCostumeName }}
     @if (showWorldRecord && player.isCharacterWorldRecord) {
-      <bio-icon
-        [mdi]="mdiAccountStar"
-        bioTooltip="Character World Record"
-        bioTooltipPosition="right"
-      ></bio-icon>
+      <bio-icon [mdi]="mdiAccountStar" bioTooltip="Character World Record" bioTooltipPosition="right"></bio-icon>
     }
   </div>
   <a bio-url-preview [url]="player.evidence"></a>

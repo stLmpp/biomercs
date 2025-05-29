@@ -1,4 +1,14 @@
-import { Directive, ElementRef, Injectable, Input, OnChanges, Renderer2, SimpleChanges, DOCUMENT, inject } from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  Injectable,
+  Input,
+  OnChanges,
+  Renderer2,
+  SimpleChanges,
+  DOCUMENT,
+  inject,
+} from '@angular/core';
 import { ControlValue } from '@stlmpp/control';
 import { IConfig, initialConfig, MaskDirective as _MaskDirective, MaskService as _MaskService } from 'ngx-mask';
 import { Subject } from 'rxjs';

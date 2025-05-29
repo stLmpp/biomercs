@@ -5,7 +5,6 @@ import { CalendarComponent } from '@shared/components/datepicker/calendar/calend
 export class CalendarFooterClearDirective {
   private readonly calendarComponent = inject(CalendarComponent, { host: true });
 
-
   @HostListener('click')
   onClick(): void {
     if (this.calendarComponent.disabled) {

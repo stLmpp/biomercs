@@ -78,7 +78,6 @@ export class ScoreSearchComponent extends Destroyable implements OnInit {
   private scoreModalService = inject(ScoreModalService);
   private changeDetectorRef = inject(ChangeDetectorRef);
 
-
   gameLoading = false;
   miniGameLoading = false;
   modeLoading = false;

@@ -1,4 +1,20 @@
-import { AfterContentInit, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostBinding, HostListener, TemplateRef, ViewContainerRef, ViewEncapsulation, inject, input, viewChild, contentChildren } from '@angular/core';
+import {
+  AfterContentInit,
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  HostBinding,
+  HostListener,
+  TemplateRef,
+  ViewContainerRef,
+  ViewEncapsulation,
+  inject,
+  input,
+  viewChild,
+  contentChildren,
+} from '@angular/core';
 import { ControlValue } from '@stlmpp/control';
 import { Select } from './select';
 import { auditTime, startWith, Subject, takeUntil } from 'rxjs';
@@ -38,7 +54,6 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
   private overlay = inject(Overlay);
   private viewContainerRef = inject(ViewContainerRef);
   elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
-
 
   private _afterViewInit = false;
   private _isInvalid = false;
@@ -207,9 +222,11 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
   }
 
   ngAfterContentInit(): void {
-    this.options().changes.pipe(takeUntil(this.destroy$), auditTime(100), startWith(this.options())).subscribe(() => {
-      this._setViewValueFromOptions(this.value);
-    });
+    this.options()
+      .changes.pipe(takeUntil(this.destroy$), auditTime(100), startWith(this.options()))
+      .subscribe(() => {
+        this._setViewValueFromOptions(this.value);
+      });
   }
 
   static ngAcceptInputType_multiple: BooleanInput;

@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, Renderer2, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Input,
+  Renderer2,
+  inject,
+} from '@angular/core';
 import { UrlMetadataService } from '@shared/services/url-metadata/url-metadata.service';
 import { filterNil } from '@util/operators/filter';
 import { debounceTime, finalize, ReplaySubject, switchMap } from 'rxjs';
@@ -20,7 +28,6 @@ export class UrlPreviewComponent {
   private changeDetectorRef = inject(ChangeDetectorRef);
   private renderer2 = inject(Renderer2);
   private elementRef = inject<ElementRef<HTMLAnchorElement>>(ElementRef);
-
 
   private readonly _url$ = new ReplaySubject<string | null>();
 

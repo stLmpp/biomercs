@@ -7,11 +7,10 @@ import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { CacheService } from '@shared/cache/cache';
 
 @Injectable({ providedIn: 'root' })
-export class SubCategoryWithTopicsResolver  {
+export class SubCategoryWithTopicsResolver {
   private subCategoryService = inject(SubCategoryService);
   private router = inject(Router);
   private cacheService = inject(CacheService);
-
 
   private readonly _cache = this.cacheService.createCache(5000);
 

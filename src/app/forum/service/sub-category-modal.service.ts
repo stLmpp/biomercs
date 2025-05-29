@@ -11,7 +11,6 @@ import { ModalService } from '@shared/components/modal/modal.service';
 export class SubCategoryModalService {
   private modalService = inject(ModalService);
 
-
   async openAddEdit(
     data: ForumSubCategoryAddEditComponentData
   ): Promise<ModalRef<ForumSubCategoryAddEditComponent, ForumSubCategoryAddEditComponentData, SubCategory>> {

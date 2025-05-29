@@ -8,7 +8,7 @@
     (allSelected)="onAllSelected()"
     [disabledRemoveAll]="!subCategoryModeratorsSelected.length"
     [disabledSelectAll]="!subCategoryModerators.length"
-    >
+  >
     <bio-list
       bioMultiSelectItems
       items
@@ -16,7 +16,7 @@
       debounceTime="400"
       [bioLoading]="loadingModerators"
       hint="Type at least 3 characters to start searching"
-      >
+    >
       @if (!loadingModerators && !subCategoryModerators.length) {
         <bio-list-item>No data found</bio-list-item>
       }
@@ -35,10 +35,10 @@
       }
       @for (
         subCategoryModerator of subCategoryModeratorsSelected
-        | search: 'playerPersonaName':subCategoryModeratorsSelectedSearch; track trackById($index,
-        subCategoryModerator)) {
-        <bio-list-item
-          >
+          | search: 'playerPersonaName' : subCategoryModeratorsSelectedSearch;
+        track trackById($index, subCategoryModerator)
+      ) {
+        <bio-list-item>
           <button bioButton type="button" bioPrefix icon (click)="onRemoveItem(subCategoryModerator)">
             <bio-icon>chevron_left</bio-icon>
           </button>
@@ -59,7 +59,7 @@
       !subCategoryModeratorsDeletedMap.size &&
       (subCategoryModeratorsSelected | forumSubCategoryModeratorManagementValidation)
     "
-    >
+  >
     Save
   </button>
 </bio-modal-actions>

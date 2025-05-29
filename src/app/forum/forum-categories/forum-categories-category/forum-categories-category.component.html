@@ -18,7 +18,7 @@
   [cdkDropListConnectedTo]="idCategoriesDropList()"
   (cdkDropListDropped)="onCdkDropListDropped($event)"
   [id]="idCategoryDropList()"
-  >
+>
   @if (!category().subCategories.length) {
     <bio-list-item> No sub categories found! </bio-list-item>
   }
@@ -27,7 +27,7 @@
       [routerLink]="['category', category().id, 'sub-category', subCategory.id, 'page', 1]"
       cdkDrag
       [cdkDragData]="subCategory"
-      >
+    >
       @if (isAdmin()) {
         <bio-icon bioPrefix cdkDragHandle> drag_handle </bio-icon>
       }
@@ -38,68 +38,69 @@
           Moderators:
           @for (moderator of subCategory.moderators; track trackById($index, moderator)) {
             <a [routerLink]="['/player', moderator.idPlayer]" (click)="$event.stopPropagation()">
-              {{ moderator.playerPersonaName }}@if (!$last) {
-              ,
-            }
-          </a>
-        }
-      </bio-list-item-line>
-    }
-    <div bioSuffix>
-      <div>{{ subCategory.postCount | number: '1.0-0' }} Posts</div>
-      <div>{{ subCategory.topicCount | number: '1.0-0' }} Topics</div>
-    </div>
-    @if (subCategory.idLastPost && !isMobile()) {
-      <div bioSuffix class="last-post">
-        <div>
-          Last post by
-          <a [routerLink]="['/player', subCategory.idPlayerLastPost]" (click)="$event.stopPropagation()">
-            {{ subCategory.playerPersonaNameLastPost }}
-          </a>
-        </div>
-        <div>
-          in
-          <a
-          [routerLink]="[
-            'category',
-            category().id,
-            'sub-category',
-            subCategory.id,
-            'topic',
-            subCategory.idTopicLastPost,
-            'post',
-            subCategory.idLastPost
-          ]"
-            (click)="$event.stopPropagation()"
-            >
-            {{ subCategory.nameLastPost }}
-          </a>
-        </div>
-        <div>on {{ subCategory.lastPostDate | authDateFormat }}</div>
-      </div>
-    }
-    @if (isAdmin()) {
+              {{ moderator.playerPersonaName }}
+              @if (!$last) {
+                ,
+              }
+            </a>
+          }
+        </bio-list-item-line>
+      }
       <div bioSuffix>
-        <button
-          bioButton
-          type="button"
-          (click)="openAddEditSubCategory(subCategory.id, $event)"
-          [disabled]="loadingSubCategoryAddEditModal"
-          >
-          <bio-icon>edit</bio-icon>
-          Edit sub category
-        </button>
-        <button
-          bioButton
-          type="button"
-          (click)="openSubCategoryModeratorManagement(subCategory, $event)"
-          [disabled]="loadingSubCategoryModeratorManagement"
-          >
-          <bio-icon [mdi]="mdiAccountTie"></bio-icon>
-          Manage moderators
-        </button>
+        <div>{{ subCategory.postCount | number: '1.0-0' }} Posts</div>
+        <div>{{ subCategory.topicCount | number: '1.0-0' }} Topics</div>
       </div>
-    }
-  </bio-list-item>
-}
+      @if (subCategory.idLastPost && !isMobile()) {
+        <div bioSuffix class="last-post">
+          <div>
+            Last post by
+            <a [routerLink]="['/player', subCategory.idPlayerLastPost]" (click)="$event.stopPropagation()">
+              {{ subCategory.playerPersonaNameLastPost }}
+            </a>
+          </div>
+          <div>
+            in
+            <a
+              [routerLink]="[
+                'category',
+                category().id,
+                'sub-category',
+                subCategory.id,
+                'topic',
+                subCategory.idTopicLastPost,
+                'post',
+                subCategory.idLastPost,
+              ]"
+              (click)="$event.stopPropagation()"
+            >
+              {{ subCategory.nameLastPost }}
+            </a>
+          </div>
+          <div>on {{ subCategory.lastPostDate | authDateFormat }}</div>
+        </div>
+      }
+      @if (isAdmin()) {
+        <div bioSuffix>
+          <button
+            bioButton
+            type="button"
+            (click)="openAddEditSubCategory(subCategory.id, $event)"
+            [disabled]="loadingSubCategoryAddEditModal"
+          >
+            <bio-icon>edit</bio-icon>
+            Edit sub category
+          </button>
+          <button
+            bioButton
+            type="button"
+            (click)="openSubCategoryModeratorManagement(subCategory, $event)"
+            [disabled]="loadingSubCategoryModeratorManagement"
+          >
+            <bio-icon [mdi]="mdiAccountTie"></bio-icon>
+            Manage moderators
+          </button>
+        </div>
+      }
+    </bio-list-item>
+  }
 </bio-list>

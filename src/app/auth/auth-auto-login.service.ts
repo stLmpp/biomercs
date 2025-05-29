@@ -11,7 +11,6 @@ export class AuthAutoLoginService {
   private http = inject(HttpClient);
   private authStore = inject(AuthStore);
 
-
   readonly endPoint = 'auth';
 
   autoLogin(): Observable<User | null> {

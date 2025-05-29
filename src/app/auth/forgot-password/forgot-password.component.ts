@@ -61,7 +61,6 @@ export class ForgotPasswordComponent {
   private snackBarService = inject(SnackBarService);
   private changeDetectorRef = inject(ChangeDetectorRef);
 
-
   readonly emailForm = new ControlGroup<ForgotPasswordForm>({
     email: new Control('', [Validators.required, Validators.email]),
     password: new Control(''),

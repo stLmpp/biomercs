@@ -27,7 +27,6 @@ export class ForumTopicComponent extends Destroyable implements OnInit {
   private postModalService = inject(PostModalService);
   private topicModalService = inject(TopicModalService);
 
-
   topic: TopicWithPosts = this.activatedRoute.snapshot.data[RouteDataEnum.topicWithPosts];
   loading = false;
   loadingReply = false;

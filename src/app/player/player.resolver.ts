@@ -6,9 +6,8 @@ import { Player } from '@model/player';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 
 @Injectable({ providedIn: 'root' })
-export class PlayerResolver  {
+export class PlayerResolver {
   private playerService = inject(PlayerService);
-
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Player> | Promise<Player> | Player {
     const idPlayer = +route.paramMap.get(RouteParamEnum.idPlayer)!;

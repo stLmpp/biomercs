@@ -9,7 +9,7 @@
           type="search"
           controlName="term"
           autocomplete="off"
-          />
+        />
       </bio-form-field>
     </bio-card-content>
   </bio-card>
@@ -29,7 +29,7 @@
             [bioTooltip]="user.tooltip"
             [bioTooltipDisabled]="user.tooltipDisabled"
             (click)="action(user)"
-            >
+          >
             <bio-icon bioPrefix outlined>{{ user.bannedDate ? 'lock' : 'lock_open' }}</bio-icon>
             <bio-list-item-line>
               {{ user.username }}

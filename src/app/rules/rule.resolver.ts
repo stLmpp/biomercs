@@ -5,9 +5,8 @@ import { RuleService } from './rule.service';
 import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
-export class RuleResolver  {
+export class RuleResolver {
   private ruleService = inject(RuleService);
-
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Rule[]> | Promise<Rule[]> | Rule[] {
     return this.ruleService.get();

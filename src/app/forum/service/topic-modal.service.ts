@@ -11,7 +11,6 @@ import type {
 export class TopicModalService {
   private modalService = inject(ModalService);
 
-
   async openTransferModal(
     idSubCategory: number,
     idTopic: number

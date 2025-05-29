@@ -25,7 +25,8 @@
     cdkConnectedOverlayHasBackdrop
     (backdropClick)="overlayIsOpen = !overlayIsOpen"
   >
-    <bio-notifications [(notifications)]="notifications"
+    <bio-notifications
+      [(notifications)]="notifications"
       [page]="page"
       (pageChange)="pageChange($event)"
       [meta]="meta"
@@ -34,6 +35,6 @@
       (closeOverlay)="overlayIsOpen = false"
       @fadeInOut
       @scaleIn
-     />
+    />
   </ng-template>
 </ng-container>

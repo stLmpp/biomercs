@@ -1,4 +1,17 @@
-import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostBinding, Input, ViewEncapsulation, inject, input, output, contentChildren } from '@angular/core';
+import {
+  AfterContentInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  HostBinding,
+  Input,
+  ViewEncapsulation,
+  inject,
+  input,
+  output,
+  contentChildren,
+} from '@angular/core';
 import { CardTitleDirective } from './card-title.directive';
 import { CardContentDirective } from './card-content.directive';
 import { CardActionsDirective } from './card-actions.directive';
@@ -26,7 +39,6 @@ import { NgTemplateOutlet } from '@angular/common';
 export class CardComponent extends Destroyable implements AfterContentInit {
   private changeDetectorRef = inject(ChangeDetectorRef);
   elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
-
 
   private _collapsable = false;
   private _dark = false;
@@ -78,9 +90,11 @@ export class CardComponent extends Destroyable implements AfterContentInit {
   }
 
   ngAfterContentInit(): void {
-    this.cardChildren().changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.changeDetectorRef.markForCheck();
-    });
+    this.cardChildren()
+      .changes.pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.changeDetectorRef.markForCheck();
+      });
   }
 
   static ngAcceptInputType_collapsable: BooleanInput;

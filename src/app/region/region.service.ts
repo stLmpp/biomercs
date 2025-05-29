@@ -9,7 +9,6 @@ export class RegionService {
   private http = inject(HttpClient);
   private cacheService = inject(CacheService);
 
-
   private _cache = this.cacheService.createCache();
 
   endPoint = 'region';

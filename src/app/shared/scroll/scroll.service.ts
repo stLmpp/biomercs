@@ -5,7 +5,6 @@ import { WINDOW } from '../../core/window.service';
 export class ScrollService {
   private window = inject<Window>(WINDOW);
 
-
   scrollIntoViewOffset(element: HTMLElement | ElementRef, offset: number): void {
     if (!element) {
       return;

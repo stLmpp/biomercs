@@ -57,7 +57,6 @@ export class ForumCategoriesCategoryComponent {
   private changeDetectorRef = inject(ChangeDetectorRef);
   private subCategoryModeratorModalService = inject(SubCategoryModeratorModalService);
 
-
   readonly category = input.required<CategoryWithSubCategories>();
   readonly isAdmin = input(false);
   readonly isMobile = input(false);

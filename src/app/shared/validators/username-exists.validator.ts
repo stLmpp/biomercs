@@ -7,7 +7,6 @@ import { map, Observable, switchMap, timer } from 'rxjs';
 export class UsernameExistsValidator extends ControlValidator<string, boolean> {
   private authService = inject(AuthService);
 
-
   readonly name = 'usernameExists';
   override readonly async = true;
 

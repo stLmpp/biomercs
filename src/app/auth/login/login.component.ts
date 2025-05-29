@@ -72,7 +72,6 @@ export class LoginComponent extends Destroyable implements OnInit {
   private modalService = inject(ModalService);
   private changeDetectorRef = inject(ChangeDetectorRef);
 
-
   loading = false;
   loadingSteam = false;
   error: string | null = null;

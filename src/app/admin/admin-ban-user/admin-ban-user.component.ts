@@ -79,7 +79,6 @@ export class AdminBanUserComponent extends Destroyable implements OnInit {
   private dialogService = inject(DialogService);
   private changeDetectorRef = inject(ChangeDetectorRef);
 
-
   readonly dateMinus7 = subDays(new Date(), 7);
   readonly mdiShieldAccount = mdiShieldAccount;
 

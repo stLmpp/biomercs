@@ -29,7 +29,6 @@ import { AsyncPipe } from '@angular/common';
 export class AdminComponent {
   private headerQuery = inject(HeaderQuery);
 
-
   readonly adminApprovalCount$ = this.headerQuery.adminApprovalCount$;
   readonly mdiEmailSyncOutline = mdiEmailSyncOutline;
   readonly mdiAccountLock = mdiAccountLock;

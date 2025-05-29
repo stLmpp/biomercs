@@ -17,81 +17,74 @@
             <bio-error *error="'required'">Username is required</bio-error>
             <bio-error *error="'minLength'; let error"
               >Username must have at least {{ error.required }} characters</bio-error
-              >
-              <bio-error *error="'usernameExists'">Username already exists</bio-error>
-            </bio-errors>
-            <bio-hint end> {{ usernameLength$ | async }} / 100 </bio-hint>
-          </bio-form-field>
-          <bio-form-field label="E-mail" [loading]="emailControl.pending">
-            <input bioInput placeholder="E-mail" controlName="email" type="email" autocomplete="email" />
-            <bio-errors>
-              <bio-error *error="'required'">E-mail is required</bio-error>
-              <bio-error *error="'email'">E-mail not valid</bio-error>
-              <bio-error *error="'emailExists'">E-mail already exists</bio-error>
-            </bio-errors>
-          </bio-form-field>
-          <bio-form-field label="Password">
-            <input
-              bioInput
-              placeholder="Password"
-              controlName="password"
-              [type]="hidePassword ? 'password' : 'text'"
-              autocomplete="new-password"
-              />
-            <button bioSuffix bioButton icon type="button" (click)="hidePassword = !hidePassword">
-              <bio-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</bio-icon>
-            </button>
-            <bio-errors>
-              <bio-error *error="'required'">Password is required</bio-error>
-              <bio-error *error="'minLength'; let error"
-                >Password must have at least {{ error.required }} characters</bio-error
-                >
-              </bio-errors>
-            </bio-form-field>
-            <bio-password-strong [password]="password$ | async"></bio-password-strong>
-            <bio-form-field label="Confirm password">
-              <input
-                bioInput
-                placeholder="Confirm password"
-                controlName="confirmPassword"
-                [type]="hideConfirmPassword ? 'password' : 'text'"
-                autocomplete="off"
-                />
-              <button bioSuffix bioButton icon type="button" (click)="hideConfirmPassword = !hideConfirmPassword">
-                <bio-icon>{{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}</bio-icon>
-              </button>
-              <bio-errors>
-                <bio-error *error="'required'">Password is required</bio-error>
-                <bio-error *error="'minLength'; let error"
-                  >Password must have at least {{ error.required }} characters</bio-error
-                  >
-                  <bio-error *error="'siblingEquals'">Passwords doesn't match</bio-error>
-                </bio-errors>
-              </bio-form-field>
-            }
-          </bio-card-content>
-          <bio-card-actions end>
-            @if (!emailSent) {
-              <button
-                bioButton
-                primary
-                type="button"
-                (click)="registerSteam()"
-                [loading]="loadingSteam"
-                [disabled]="loading"
-                >
-                Register with Steam
-              </button>
-            }
-            <button
-              bioButton
-              primary
-              type="submit"
-              [disabled]="loadingSteam || form.invalid || form.pending"
-              [loading]="loading"
-              >
-              {{ emailSent ? 'Confirm code' : 'Register' }}
-            </button>
-          </bio-card-actions>
-        </bio-card>
-      </form>
+            >
+            <bio-error *error="'usernameExists'">Username already exists</bio-error>
+          </bio-errors>
+          <bio-hint end> {{ usernameLength$ | async }} / 100 </bio-hint>
+        </bio-form-field>
+        <bio-form-field label="E-mail" [loading]="emailControl.pending">
+          <input bioInput placeholder="E-mail" controlName="email" type="email" autocomplete="email" />
+          <bio-errors>
+            <bio-error *error="'required'">E-mail is required</bio-error>
+            <bio-error *error="'email'">E-mail not valid</bio-error>
+            <bio-error *error="'emailExists'">E-mail already exists</bio-error>
+          </bio-errors>
+        </bio-form-field>
+        <bio-form-field label="Password">
+          <input
+            bioInput
+            placeholder="Password"
+            controlName="password"
+            [type]="hidePassword ? 'password' : 'text'"
+            autocomplete="new-password"
+          />
+          <button bioSuffix bioButton icon type="button" (click)="hidePassword = !hidePassword">
+            <bio-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</bio-icon>
+          </button>
+          <bio-errors>
+            <bio-error *error="'required'">Password is required</bio-error>
+            <bio-error *error="'minLength'; let error"
+              >Password must have at least {{ error.required }} characters</bio-error
+            >
+          </bio-errors>
+        </bio-form-field>
+        <bio-password-strong [password]="password$ | async"></bio-password-strong>
+        <bio-form-field label="Confirm password">
+          <input
+            bioInput
+            placeholder="Confirm password"
+            controlName="confirmPassword"
+            [type]="hideConfirmPassword ? 'password' : 'text'"
+            autocomplete="off"
+          />
+          <button bioSuffix bioButton icon type="button" (click)="hideConfirmPassword = !hideConfirmPassword">
+            <bio-icon>{{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}</bio-icon>
+          </button>
+          <bio-errors>
+            <bio-error *error="'required'">Password is required</bio-error>
+            <bio-error *error="'minLength'; let error"
+              >Password must have at least {{ error.required }} characters</bio-error
+            >
+            <bio-error *error="'siblingEquals'">Passwords doesn't match</bio-error>
+          </bio-errors>
+        </bio-form-field>
+      }
+    </bio-card-content>
+    <bio-card-actions end>
+      @if (!emailSent) {
+        <button bioButton primary type="button" (click)="registerSteam()" [loading]="loadingSteam" [disabled]="loading">
+          Register with Steam
+        </button>
+      }
+      <button
+        bioButton
+        primary
+        type="submit"
+        [disabled]="loadingSteam || form.invalid || form.pending"
+        [loading]="loading"
+      >
+        {{ emailSent ? 'Confirm code' : 'Register' }}
+      </button>
+    </bio-card-actions>
+  </bio-card>
+</form>

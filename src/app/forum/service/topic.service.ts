@@ -8,7 +8,6 @@ import { HttpParams } from '@util/http-params';
 export class TopicService {
   private http = inject(HttpClient);
 
-
   getEndPoint(idSubCategory: number): string {
     return `forum/sub-category/${idSubCategory}/topic`;
   }

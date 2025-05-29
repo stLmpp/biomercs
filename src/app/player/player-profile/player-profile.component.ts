@@ -115,7 +115,6 @@ export class PlayerProfileComponent extends Destroyable implements OnInit {
   private changeDetectorRef = inject(ChangeDetectorRef);
   private inputTypeService = inject(InputTypeService);
 
-
   private readonly _idPlayer$ = this.activatedRoute.paramMap.pipe(
     mapToParam(RouteParamEnum.idPlayer),
     filterNil(),

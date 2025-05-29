@@ -13,7 +13,6 @@ export type DialogRef = ModalRef<DialogComponent, DialogData, boolean>;
 export class DialogService {
   private modalService = inject(ModalService);
 
-
   private async _getModalRef(data: DialogData, config?: Partial<ModalConfig<DialogData>>): Promise<DialogRef> {
     return this.modalService.openLazy(() => import('./dialog.component').then(c => c.DialogComponent), {
       ...config,

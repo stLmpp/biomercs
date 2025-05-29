@@ -8,7 +8,6 @@ import { Category } from '@model/forum/category';
 export class CategoryModalService {
   private modalService = inject(ModalService);
 
-
   async openAddEdit(
     idCategory?: number
   ): Promise<ModalRef<ForumCategoryAddEditComponent, number | undefined, Category>> {

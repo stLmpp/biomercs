@@ -10,7 +10,6 @@ export class GameService {
   private http = inject(HttpClient);
   private cacheService = inject(CacheService);
 
-
   private readonly _cache = this.cacheService.createCache();
 
   readonly endPoint = 'game';

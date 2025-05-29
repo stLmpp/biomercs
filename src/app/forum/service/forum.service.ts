@@ -10,7 +10,6 @@ export class ForumService {
   private authService = inject(AuthService);
   private userService = inject(UserService);
 
-
   private readonly _destroy$ = new Subject<void>();
   private readonly _usersOnline$ = new BehaviorSubject<UserOnline[]>([]);
 

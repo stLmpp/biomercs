@@ -7,10 +7,9 @@ import { RouteParamEnum } from '@model/enum/route-param.enum';
 @Injectable({
   providedIn: 'root',
 })
-export class SteamRegisterGuard  {
+export class SteamRegisterGuard {
   private authService = inject(AuthService);
   private router = inject(Router);
-
 
   canActivate(
     route: ActivatedRouteSnapshot,

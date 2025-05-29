@@ -9,7 +9,6 @@ export class DynamicLoaderService {
   private compiler = inject(Compiler);
   private navigatorConnection = inject(NavigatorConnection);
 
-
   private readonly _loaded = new Set<Type<any>>();
   private readonly _loading = new Map<Type<any>, boolean>();
 

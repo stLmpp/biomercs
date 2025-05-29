@@ -39,7 +39,6 @@ export class LoginConfirmCodeModalComponent {
   private router = inject(Router);
   private changeDetectorRef = inject(ChangeDetectorRef);
 
-
   readonly form = this.controlBuilder.group<LoginConfirmationForm>({ code: [null, [Validators.required]] });
   loading = false;
   error: string | null = null;

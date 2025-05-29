@@ -1,5 +1,13 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpContext, HttpContextToken, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpStatusCode } from '@angular/common/http';
+import {
+  HttpContext,
+  HttpContextToken,
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+  HttpStatusCode,
+} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { catchAndThrow } from '@util/operators/catch-and-throw';
@@ -12,7 +20,6 @@ export const ignoreErrorContext = (): HttpContext => new HttpContext().set(Ignor
 export class AuthErrorInterceptor implements HttpInterceptor {
   private router = inject(Router);
   private dialogService = inject(DialogService);
-
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let request$ = next.handle(req);

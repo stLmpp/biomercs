@@ -61,12 +61,14 @@ export class SelectMultipleComponent extends SelectComponent implements AfterCon
   }
 
   override ngAfterContentInit(): void {
-    this.options().changes.pipe(takeUntil(this.destroy$), auditTime(100), startWith(this.options())).subscribe(options => {
-      for (const option of options) {
-        option.isSelected = this.value.some(value => this.compareWith()(value, option.value));
-        option.changeDetectorRef.markForCheck();
-        option.optgroupComponent?.changeDetectorRef.markForCheck();
-      }
-    });
+    this.options()
+      .changes.pipe(takeUntil(this.destroy$), auditTime(100), startWith(this.options()))
+      .subscribe(options => {
+        for (const option of options) {
+          option.isSelected = this.value.some(value => this.compareWith()(value, option.value));
+          option.changeDetectorRef.markForCheck();
+          option.optgroupComponent?.changeDetectorRef.markForCheck();
+        }
+      });
   }
 }

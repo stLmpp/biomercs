@@ -4,10 +4,9 @@ import { Observable } from 'rxjs';
 import { AuthQuery } from './auth.query';
 
 @Injectable({ providedIn: 'root' })
-export class AuthNotLoggedGuard  {
+export class AuthNotLoggedGuard {
   private authQuery = inject(AuthQuery);
   private router = inject(Router);
-
 
   private _validateIsNotLogged(): boolean | UrlTree {
     return !this.authQuery.getIsLogged() || this.router.createUrlTree(['/']);

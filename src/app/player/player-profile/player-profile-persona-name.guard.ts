@@ -7,10 +7,9 @@ import { RouteParamEnum } from '@model/enum/route-param.enum';
 @Injectable({
   providedIn: 'root',
 })
-export class PlayerProfilePersonaNameGuard  {
+export class PlayerProfilePersonaNameGuard {
   private playerService = inject(PlayerService);
   private router = inject(Router);
-
 
   canActivate(
     route: ActivatedRouteSnapshot,

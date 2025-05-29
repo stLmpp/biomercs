@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, ViewEncapsulation, inject, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  HostBinding,
+  Input,
+  ViewEncapsulation,
+  inject,
+  input,
+} from '@angular/core';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { AbstractComponent } from '../core/abstract-component';
 import { FocusableOption } from '@angular/cdk/a11y';
@@ -15,7 +24,6 @@ import { SpinnerComponent } from '../spinner/spinner.component';
 })
 export class ButtonComponent extends AbstractComponent implements FocusableOption {
   private elementRef = inject<ElementRef<HTMLButtonElement>>(ElementRef);
-
 
   private _loading = false;
   private _tabindex = 0;

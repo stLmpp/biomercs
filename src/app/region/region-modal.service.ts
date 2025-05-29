@@ -8,7 +8,6 @@ import { ModalService } from '@shared/components/modal/modal.service';
 export class RegionModalService {
   private modalService = inject(ModalService);
 
-
   async showSelectModal(
     idRegion: number,
     onSelect: (idRegion: number) => Observable<any>

@@ -9,7 +9,6 @@ import { HttpParams } from '@util/http-params';
 export class UserService {
   private http = inject(HttpClient);
 
-
   readonly endPoint = 'user';
 
   banUser(idUser: number): Observable<void> {

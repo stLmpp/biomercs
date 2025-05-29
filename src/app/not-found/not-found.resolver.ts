@@ -12,9 +12,8 @@ export interface PossiblePath {
 }
 
 @Injectable({ providedIn: 'root' })
-export class NotFoundResolver  {
+export class NotFoundResolver {
   private authQuery = inject(AuthQuery);
-
 
   possibleRoutes: PossiblePath[] = [
     { path: '/auth/login', title: 'Login', type: 'not-logged' },

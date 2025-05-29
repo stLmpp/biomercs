@@ -7,7 +7,6 @@ import { MailStatusQueue } from '@model/mail';
 export class MailService {
   private http = inject(HttpClient);
 
-
   readonly endPoint = 'mail';
 
   statusQueue(): Observable<MailStatusQueue> {

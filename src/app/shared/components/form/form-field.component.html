@@ -6,7 +6,7 @@
       [danger]="inputDirective()?.dangerClass || select()?.dangerClass"
       [for]="id()"
       [class.required]="forceRequired() || (control | hasValidators: ['required'])"
-      >
+    >
       {{ label() }}
     </label>
   }
@@ -17,9 +17,9 @@
     'has-prefix': !!prefixDirective(),
     'has-suffix': !!suffixDirective(),
     disabled: controlState?.disabled,
-    'is-select': !!select()
+    'is-select': !!select(),
   }"
-  >
+>
   <div class="spinner-wrapper">
     @if (loading()) {
       <bio-spinner [size]="0.1"></bio-spinner>

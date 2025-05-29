@@ -7,7 +7,6 @@ import type { ForumModeratorManagementComponent } from '../forum-moderator-manag
 export class ModeratorModalService {
   private modalService = inject(ModalService);
 
-
   management(): Promise<ModalRef<ForumModeratorManagementComponent>> {
     return this.modalService.openLazy(
       () =>

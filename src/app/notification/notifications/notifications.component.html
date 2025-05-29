@@ -9,7 +9,7 @@
     itemSize="90"
     (scrolledIndexChange)="onScrolledIndexChange($event)"
     [class.viewport-no-data-found]="!notifications().length && !loading()"
-    >
+  >
     @if (!notifications().length && !loading()) {
       <div class="no-data-found">Nothing here to see</div>
     }
@@ -19,7 +19,7 @@
       (click)="openModal(notification)"
       [title]="notification.content"
       [class.unread]="!notification.read"
-      >
+    >
       <bio-list-item-line> {{ notification.content }} </bio-list-item-line>
       @if (notification.loading) {
         <bio-spinner bioSuffix [size]="0.1" />
@@ -32,7 +32,7 @@
           [bioMenuTrigger]="menu"
           [loading]="notification.readLoading || notification.deleteLoading"
           (click)="$event.stopPropagation()"
-          >
+        >
           <bio-icon>more_vert</bio-icon>
         </button>
       </div>
@@ -43,7 +43,7 @@
           bioButton
           [loading]="notification.readLoading"
           (click)="toggleRead(notification)"
-          >
+        >
           <bio-icon>{{ notification.read ? 'drafts' : 'markunread' }}</bio-icon>
           {{ notification.read ? 'Unread' : 'Read' }}
         </button>
@@ -53,7 +53,7 @@
           bioButton
           [loading]="notification.deleteLoading"
           (click)="delete(notification)"
-          >
+        >
           <bio-icon>delete</bio-icon>
           Delete
         </button>

@@ -19,7 +19,6 @@ import { AsyncPipe } from '@angular/common';
 export class ScoreOpenInfoCellComponent extends TableCell<Score> {
   private scoreModalService = inject(ScoreModalService);
 
-
   readonly loading$ = new BehaviorSubject(false);
 
   async openScoreInfo(): Promise<void> {

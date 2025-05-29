@@ -9,7 +9,6 @@ export class FilterItemDirective {
   private changeDetectorRef = inject(ChangeDetectorRef);
   private elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
 
-
   private _bioFilterItem: BioFilterBy = 'textContent';
 
   @Input()

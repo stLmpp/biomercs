@@ -1,4 +1,17 @@
-import { AfterViewInit, ComponentFactoryResolver, Directive, ElementRef, HostBinding, Injector, Input, OnDestroy, OnInit, Renderer2, ViewContainerRef, inject } from '@angular/core';
+import {
+  AfterViewInit,
+  ComponentFactoryResolver,
+  Directive,
+  ElementRef,
+  HostBinding,
+  Injector,
+  Input,
+  OnDestroy,
+  OnInit,
+  Renderer2,
+  ViewContainerRef,
+  inject,
+} from '@angular/core';
 import { LoadingComponent } from './loading.component';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 
@@ -12,7 +25,6 @@ export class LoadingDirective implements OnInit, AfterViewInit, OnDestroy {
   private injector = inject(Injector);
   private renderer2 = inject(Renderer2);
   private elementRef = inject(ElementRef);
-
 
   private readonly _componentFactory = this.componentFactoryResolver.resolveComponentFactory(LoadingComponent);
   private readonly _componentRef = this.viewContainerRef.createComponent(this._componentFactory);

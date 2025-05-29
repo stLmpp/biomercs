@@ -31,7 +31,6 @@ import { DateEqualPipe } from '../../../date/date-equal.pipe';
 export class CalendarDaysComponent extends CalendarKeyboardNavigation {
   private readonly calendarAdapter = inject(CalendarAdapter);
 
-
   readonly value = input<Date | null>();
   readonly days = input<CalendarDay[]>([]);
   readonly dayNames = input<string[]>([]);

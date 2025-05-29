@@ -7,9 +7,8 @@ import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { Pagination } from '@model/pagination';
 
 @Injectable({ providedIn: 'root' })
-export class ErrorResolver  {
+export class ErrorResolver {
   private errorService = inject(ErrorService);
-
 
   resolve(
     route: ActivatedRouteSnapshot,

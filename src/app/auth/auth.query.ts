@@ -16,7 +16,7 @@ export class AuthQuery extends Query<Auth> {
     const authStore = inject(AuthStore);
 
     super(authStore);
-  
+
     this.authStore = authStore;
   }
 

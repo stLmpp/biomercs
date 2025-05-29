@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, Component, HostBinding, HostListener, OnDestroy, OnInit, ViewEncapsulation, inject, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  HostBinding,
+  HostListener,
+  OnDestroy,
+  OnInit,
+  ViewEncapsulation,
+  inject,
+  input,
+} from '@angular/core';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { SnackBarConfig } from './snack-bar.config';
 import { BehaviorSubject, isObservable, Observable, Subject, take, takeUntil, timer } from 'rxjs';
@@ -20,7 +30,6 @@ import { AsyncPipe } from '@angular/common';
 export class SnackBarComponent implements OnInit, OnDestroy {
   private overlayRef = inject(OverlayRef);
   private snackBarConfig = inject(SnackBarConfig);
-
 
   private _cancelTimeout$ = new Subject<void>();
 

@@ -17,7 +17,6 @@ export class BreadcrumbsService {
   private activatedRoute = inject(ActivatedRoute);
   private injector = inject(Injector);
 
-
   private readonly _breadcrumbs$ = new ReplaySubject<BreadcrumbsItem[]>();
 
   private _breadcrumbsSubscription = Subscription.EMPTY;

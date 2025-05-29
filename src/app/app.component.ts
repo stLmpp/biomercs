@@ -28,7 +28,6 @@ export class AppComponent extends Destroyable implements OnInit, OnDestroy {
   private swUpdate = inject(SwUpdate);
   private dialogService = inject(DialogService);
 
-
   readonly isMobile$ = this.breakpointObserverService.isMobile$;
 
   private _getVh(): number {

@@ -44,7 +44,6 @@ export class AdminErrorsComponent extends Destroyable {
   private clipboard = inject(Clipboard);
   private changeDetectorRef = inject(ChangeDetectorRef);
 
-
   private _page = +(this.activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.page) ?? 1);
   private _itemsPerPage = +(this.activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.itemsPerPage) ?? 10);
 

@@ -10,7 +10,6 @@ export class SteamService {
   private http = inject(HttpClient);
   private socketIOService = inject(SocketIOService);
 
-
   private readonly _socketConnection = this.socketIOService.createConnection('steam');
 
   readonly endPoint = 'steam';

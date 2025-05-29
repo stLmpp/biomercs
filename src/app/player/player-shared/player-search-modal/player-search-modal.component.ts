@@ -64,7 +64,8 @@ interface PlayerSearchModalComponentForm {
   ],
 })
 export class PlayerSearchModalComponent {
-  private modalRef = inject<ModalRef<PlayerSearchModalComponent, PlayerSearchModalComponentData, Player | undefined>>(ModalRef);
+  private modalRef =
+    inject<ModalRef<PlayerSearchModalComponent, PlayerSearchModalComponentData, Player | undefined>>(ModalRef);
   private playerService = inject(PlayerService);
   private changeDetectorRef = inject(ChangeDetectorRef);
 

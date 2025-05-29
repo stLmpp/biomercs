@@ -41,7 +41,6 @@ export class RulesComponent {
   private authQuery = inject(AuthQuery);
   private activatedRoute = inject(ActivatedRoute);
 
-
   readonly trackBy = trackById;
   readonly isAdmin$ = this.authQuery.isAdmin$;
   readonly ruleTypeEnum = RuleTypeEnum;

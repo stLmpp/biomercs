@@ -1,4 +1,15 @@
-import { ChangeDetectionStrategy, Component, HostBinding, Input, LOCALE_ID, TemplateRef, ViewContainerRef, inject, input, viewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  HostBinding,
+  Input,
+  LOCALE_ID,
+  TemplateRef,
+  ViewContainerRef,
+  inject,
+  input,
+  viewChild,
+} from '@angular/core';
 import { CalendarViewModeEnum } from '@shared/components/datepicker/calendar-view-mode.enum';
 import { coerceBooleanProperty } from 'st-utils';
 import { Animations } from '@shared/animations/animations';

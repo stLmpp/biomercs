@@ -49,7 +49,7 @@ export class PlayerChangeRequestsComponent extends LocalState<PlayerChangeReques
       loading: false,
       data: activatedRoute.snapshot.data.data,
     });
-  
+
     this.activatedRoute = activatedRoute;
   }
 

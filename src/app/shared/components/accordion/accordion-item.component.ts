@@ -1,4 +1,18 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, ElementRef, HostBinding, OnDestroy, OnInit, QueryList, ViewChild, ViewEncapsulation, inject, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ContentChildren,
+  ElementRef,
+  HostBinding,
+  OnDestroy,
+  OnInit,
+  QueryList,
+  ViewChild,
+  ViewEncapsulation,
+  inject,
+  input,
+} from '@angular/core';
 import { CdkAccordionItem } from '@angular/cdk/accordion';
 import { AccordionItemTitleDirective } from '@shared/components/accordion/accordion-item-title.directive';
 import { Animations } from '@shared/animations/animations';
@@ -31,7 +45,7 @@ export class AccordionItemComponent extends CdkAccordionItem implements OnInit, 
     const uniqueSelectionDispatcher = inject(UniqueSelectionDispatcher);
 
     super(_accordion, changeDetectorRef, uniqueSelectionDispatcher);
-  
+
     this._accordion = _accordion;
   }
 

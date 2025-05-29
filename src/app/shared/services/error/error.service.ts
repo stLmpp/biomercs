@@ -9,7 +9,6 @@ import { HttpParams } from '@util/http-params';
 export class ErrorService {
   private http = inject(HttpClient);
 
-
   readonly endPoint = 'error';
 
   paginate(page: number, limit: number): Observable<Pagination<AdminError>> {

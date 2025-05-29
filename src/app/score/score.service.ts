@@ -30,7 +30,6 @@ export class ScoreService {
   private headerStore = inject(HeaderStore);
   private socketIOService = inject(SocketIOService);
 
-
   private readonly _socketConnection = this.socketIOService.createConnection('score');
 
   readonly endPoint = 'score';

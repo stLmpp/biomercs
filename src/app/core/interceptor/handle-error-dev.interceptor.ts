@@ -14,7 +14,6 @@ export class HandleErrorDevInterceptor implements HttpInterceptor {
   private modalService = inject(ModalService);
   private authQuery = inject(AuthQuery);
 
-
   private _snackBar(message: string, button: string, data: HttpError, isAdmin: boolean): void {
     const snack = this.snackBarService.open(message, { action: button });
     if (isAdmin) {

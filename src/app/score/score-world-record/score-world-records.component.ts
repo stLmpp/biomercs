@@ -88,7 +88,7 @@ export class ScoreWorldRecordsComponent extends LocalState<ScoreWorldRecordTable
       idPlatform: null,
       orderByDirection: 'desc',
     });
-  
+
     this.activatedRoute = activatedRoute;
   }
 

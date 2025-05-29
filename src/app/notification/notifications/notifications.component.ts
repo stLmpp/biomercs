@@ -72,7 +72,6 @@ export class NotificationsComponent extends Destroyable implements OnInit {
   private playerModalService = inject(PlayerModalService);
   private router = inject(Router);
 
-
   readonly notifications = input<NotificationCustom[]>([]);
   readonly notificationsChange = output<NotificationCustom[]>();
   readonly page = input(1);

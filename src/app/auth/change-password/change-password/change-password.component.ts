@@ -27,7 +27,6 @@ export class ChangePasswordComponent {
   private authService = inject(AuthService);
   private changeDetectorRef = inject(ChangeDetectorRef);
 
-
   sendingEmail = false;
   sentEmail = false;
 

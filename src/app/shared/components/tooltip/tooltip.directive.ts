@@ -1,4 +1,15 @@
-import { ComponentRef, Directive, ElementRef, HostBinding, HostListener, Input, OnDestroy, ViewContainerRef, inject, input } from '@angular/core';
+import {
+  ComponentRef,
+  Directive,
+  ElementRef,
+  HostBinding,
+  HostListener,
+  Input,
+  OnDestroy,
+  ViewContainerRef,
+  inject,
+  input,
+} from '@angular/core';
 import { BooleanInput, coerceBooleanProperty, coerceNumberProperty, NumberInput } from 'st-utils';
 import { ConnectedPosition, Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { overlayPositionsArray } from '@util/overlay';
@@ -18,7 +29,6 @@ export class TooltipDirective implements OnDestroy {
   private viewContainerRef = inject(ViewContainerRef);
   private tooltipDefaultConfig = inject<TooltipConfig>(TOOLTIP_DEFAULT_CONFIG);
 
-
   private _disabled = false;
   private _overlayRef?: OverlayRef;
   private _componentRef?: ComponentRef<TooltipComponent>;
@@ -31,7 +41,9 @@ export class TooltipDirective implements OnDestroy {
   readonly bioTooltipShowDelay = input(0);
   readonly bioTooltipHideDelay = input(0);
   readonly bioTooltipDelay = input(0);
-  readonly bioTooltipScrollStrategy = input(this.overlay.scrollStrategies.reposition({ autoClose: true, scrollThrottle: 5 }));
+  readonly bioTooltipScrollStrategy = input(
+    this.overlay.scrollStrategies.reposition({ autoClose: true, scrollThrottle: 5 })
+  );
   readonly bioTooltipAriaLabelDisabled = input(false);
 
   @HostBinding('attr.aria-label')

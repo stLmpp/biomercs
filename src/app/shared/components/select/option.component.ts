@@ -1,4 +1,16 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostBinding, HostListener, Input, SecurityContext, ViewEncapsulation, inject, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  HostBinding,
+  HostListener,
+  Input,
+  SecurityContext,
+  ViewEncapsulation,
+  inject,
+  input,
+} from '@angular/core';
 import { Select } from './select';
 import { FocusableOption } from '@angular/cdk/a11y';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
@@ -70,9 +82,15 @@ export class OptionComponent extends Option implements FocusableOption {
     }
   }
 
-  readonly labelFn = input<(optionComponent: OptionComponent) => string | SafeHtml>(optionComponent => this.domSanitizer.sanitize(SecurityContext.HTML, this.optgroupComponent
-    ? `${this.optgroupComponent.label} ${this.elementRef.nativeElement.innerHTML}`
-    : optionComponent.elementRef.nativeElement.innerHTML) ?? '');
+  readonly labelFn = input<(optionComponent: OptionComponent) => string | SafeHtml>(
+    optionComponent =>
+      this.domSanitizer.sanitize(
+        SecurityContext.HTML,
+        this.optgroupComponent
+          ? `${this.optgroupComponent.label} ${this.elementRef.nativeElement.innerHTML}`
+          : optionComponent.elementRef.nativeElement.innerHTML
+      ) ?? ''
+  );
 
   @HostListener('click', ['$event'])
   onClick($event: MouseEvent): void {

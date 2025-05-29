@@ -6,7 +6,6 @@ import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 export class BadgeBase {
   private bioBadgeConfig = inject(BioBadgeConfig);
 
-
   readonly bioType = input<BioTypeInput>(this.bioBadgeConfig?.bioType ?? 'accent');
 
   @HostBinding('class.badge-primary')

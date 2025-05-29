@@ -24,7 +24,10 @@ export interface ScoreApprovalActionsModalData {
   imports: [ModalContentDirective, ButtonComponent, TooltipDirective, IconComponent],
 })
 export class ScoreApprovalActionsModalComponent {
-  private modalRef = inject<ModalRef<ScoreApprovalActionsModalComponent, ScoreApprovalActionsModalData, ScoreApprovalPagination | null>>(ModalRef);
+  private modalRef =
+    inject<ModalRef<ScoreApprovalActionsModalComponent, ScoreApprovalActionsModalData, ScoreApprovalPagination | null>>(
+      ModalRef
+    );
   private scoreModalService = inject(ScoreModalService);
   private changeDetectorRef = inject(ChangeDetectorRef);
 

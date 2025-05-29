@@ -36,7 +36,6 @@ export class AuthService {
   private socketIOService = inject(SocketIOService);
   private authAutoLoginService = inject(AuthAutoLoginService);
 
-
   private readonly _steamidAuthMap = new Map<string, [string, number?]>();
   private _socketConnection = this.socketIOService.createConnection('auth', false);
   private _socketConnectionWithAuth = this.socketIOService.createConnection('auth');

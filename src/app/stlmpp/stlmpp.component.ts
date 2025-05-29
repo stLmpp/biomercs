@@ -38,7 +38,6 @@ export class StlmppComponent extends Destroyable implements AfterViewInit {
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
 
-
   readonly fragments = viewChildren<ElementRef<HTMLElement>>('fragment');
 
   readonly mail = 'gui.stlmpp@hotmail.com';

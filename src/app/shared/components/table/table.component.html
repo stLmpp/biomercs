@@ -10,7 +10,7 @@
       class="header"
       [class.header-order]="order()"
       *ngLet="order()?.orderByDirection === 'desc' ? 'arrow_drop_up' : 'arrow_drop_down' as arrow"
-      >
+    >
       @for (colDef of colDefsInternal; track trackByColDef($index, colDef)) {
         <div
           [style.flex-basis]="colDef.width"
@@ -18,7 +18,7 @@
           [ngStyle]="colDef.headerStyle"
           [class.order-by]="colDef.orderBy"
           (click)="changeOrder(colDef.orderByKey)"
-          >
+        >
           {{ colDef.title }}
           @if (colDef.orderBy && order()?.orderBy === colDef.orderByKey) {
             <bio-icon class="order-icon" small>
@@ -51,12 +51,13 @@
   </bio-card-content>
   @if (paginationMeta()) {
     <bio-card-actions end>
-      <bio-pagination [meta]="paginationMeta()"
+      <bio-pagination
+        [meta]="paginationMeta()"
         [itemsPerPageOptions]="itemsPerPageOptions()"
         (currentPageChange)="currentPageChange.emit($event)"
         (itemsPerPageChange)="itemsPerPageChange.emit($event)"
         setQueryParamsOnChange
-       />
+      />
     </bio-card-actions>
   }
 </bio-card>

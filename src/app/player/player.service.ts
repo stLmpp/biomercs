@@ -16,7 +16,6 @@ export class PlayerService {
   private steamService = inject(SteamService);
   private dialogService = inject(DialogService);
 
-
   readonly endPoint = 'player';
 
   getById(idPlayer: number): Observable<Player> {

@@ -12,7 +12,6 @@ export class SnackBarService {
   private defaultSnackBarConfig = inject<SnackBarConfig>(SNACK_BAR_DEFAULT_CONFIG);
   private injector = inject(Injector);
 
-
   private _snackBarMap = new Map<string, SnackBarComponent>();
 
   open(title: string, _config?: Partial<SnackBarConfig>): SnackBarComponent {

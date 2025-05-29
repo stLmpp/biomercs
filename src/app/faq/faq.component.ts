@@ -51,7 +51,6 @@ export class FaqComponent extends Destroyable implements AfterViewInit {
   private activatedRoute = inject(ActivatedRoute);
   private router = inject(Router);
 
-
   readonly accordionDirective = viewChild(AccordionDirective);
 
   readonly isMobile$ = this.breakpointObserverService.isMobile$;

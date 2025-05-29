@@ -8,9 +8,8 @@ export class ModalCloseDirective<T = any> implements OnInit {
   private modalService = inject(ModalService);
   private modalRef = inject(ModalRef, { optional: true });
 
-
   @HostBinding('attr.type')
-readonly type = input('button');
+  readonly type = input('button');
 
   readonly bioModalClose = input<T | ''>();
 
