@@ -21,12 +21,15 @@
       "prefix": "bio",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/biomercs-ng",
+            "outputPath": {
+              "base": "dist/biomercs-ng"
+            },
             "index": "src/index.html",
-            "main": "src/main.ts",
-            "polyfills": "src/polyfills.ts",
+            "polyfills": [
+              "src/polyfills.ts"
+            ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
@@ -47,9 +50,7 @@
                 "src/styles"
               ]
             },
-            "vendorChunk": false,
-            "serviceWorker": true,
-            "ngswConfigPath": "ngsw-config.json",
+            "serviceWorker": "ngsw-config.json",
             "optimization": {
               "fonts": {
                 "inline": false
@@ -62,7 +63,6 @@
             "sourceMap": false,
             "namedChunks": false,
             "extractLicenses": true,
-            "buildOptimizer": true,
             "budgets": [
               {
                 "type": "initial",
@@ -74,7 +74,8 @@
                 "maximumWarning": "2kb",
                 "maximumError": "4kb"
               }
-            ]
+            ],
+            "browser": "src/main.ts"
           },
           "configurations": {
             "production": {
@@ -96,7 +97,6 @@
             },
             "serve": {
               "extractLicenses": false,
-              "buildOptimizer": false,
               "sourceMap": true,
               "optimization": false,
               "namedChunks": true,

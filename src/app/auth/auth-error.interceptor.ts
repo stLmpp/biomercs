@@ -1,13 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  HttpContext,
-  HttpContextToken,
-  HttpEvent,
-  HttpHandler,
-  HttpInterceptor,
-  HttpRequest,
-  HttpStatusCode,
-} from '@angular/common/http';
+import { HttpContext, HttpContextToken, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpStatusCode } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { catchAndThrow } from '@util/operators/catch-and-throw';

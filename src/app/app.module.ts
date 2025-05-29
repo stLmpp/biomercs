@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from '@environment/environment';
 import { HeaderModule } from './header/header.module';
@@ -14,11 +14,11 @@ import { FooterModule } from './footer/footer.module';
 
 @NgModule({
   declarations: [AppComponent],
+  bootstrap: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    HttpClientModule,
     CoreModule.forRoot(),
     HeaderModule,
     NgProgressModule.withConfig({ color: '#00acff', spinner: false, debounceTime: 100 }),
@@ -31,6 +31,6 @@ import { FooterModule } from './footer/footer.module';
     }),
     FooterModule,
   ],
-  bootstrap: [AppComponent],
+  providers: [provideHttpClient(withInterceptorsFromDi())],
 })
 export class AppModule {}
