@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import { ScoreInfoComponent } from '../score-info.component';
 import { Score } from '@model/score';
@@ -21,10 +21,9 @@ export interface ScoreInfoModalData {
   imports: [ModalContentDirective, ScoreInfoComponent, ModalActionsDirective, ButtonComponent],
 })
 export class ScoreInfoModalComponent {
-  constructor(
-    @Inject(MODAL_DATA) { score, showWorldRecord, showApprovalDate }: ScoreInfoModalData,
-    public modalRef: ModalRef<ScoreInfoComponent, Score>
-  ) {
+  modalRef = inject<ModalRef<ScoreInfoComponent, Score>>(ModalRef);
+
+  constructor() {
     this.score = score;
     this.showWorldRecord = showWorldRecord ?? false;
     this.showApprovalDate = showApprovalDate ?? false;

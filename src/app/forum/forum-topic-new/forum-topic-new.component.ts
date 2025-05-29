@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { Control, ControlGroup, Validators } from '@stlmpp/control';
 import { TopicAddDto } from '@model/forum/topic';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,12 +14,11 @@ import { finalize } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ForumTopicNewComponent {
-  constructor(
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private topicService: TopicService,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {}
+  private router = inject(Router);
+  private activatedRoute = inject(ActivatedRoute);
+  private topicService = inject(TopicService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+
 
   readonly form = new ControlGroup<TopicAddDto>({
     name: new Control('', { validators: [Validators.required, Validators.maxLength(150)] }),

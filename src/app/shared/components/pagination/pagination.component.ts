@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { PaginationMeta } from '@model/pagination';
@@ -29,7 +29,8 @@ import { IconComponent } from '../icon/icon.component';
   ],
 })
 export class PaginationComponent implements OnChanges, PaginationMeta {
-  constructor(private router: Router) {}
+  private router = inject(Router);
+
 
   private _setQueryParamsOnChange = false;
   private _itemsPerPageHidden = false;

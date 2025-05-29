@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Output, inject } from '@angular/core';
 import { TableCell } from '@shared/components/table/type';
 import { ColDefInternal } from '@shared/components/table/col-def';
 import { ScoreWithScoreChangeRequests } from '@model/score-change-request';
@@ -20,7 +20,9 @@ export interface PlayerChangeRequestsActionCellComponentMetadata {
   imports: [ButtonComponent, TooltipDirective, IconComponent],
 })
 export class PlayerChangeRequestsActionCellComponent implements TableCell<ScoreWithScoreChangeRequests> {
-  constructor(private playerModalService: PlayerModalService, private changeDetectorRef: ChangeDetectorRef) {}
+  private playerModalService = inject(PlayerModalService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+
 
   @Output() readonly notifyChange = new EventEmitter<any>();
 

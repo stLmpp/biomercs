@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { AuthQuery } from '../auth/auth.query';
 import { AuthService } from '../auth/auth.service';
 import { SnackBarService } from '@shared/components/snack-bar/snack-bar.service';
@@ -54,18 +54,15 @@ import { AsyncPipe } from '@angular/common';
   ],
 })
 export class HeaderComponent extends Destroyable implements OnInit {
-  constructor(
-    private authQuery: AuthQuery,
-    private authService: AuthService,
-    private snackBarService: SnackBarService,
-    private breakpointObserverService: BreakpointObserverService,
-    private router: Router,
-    private scoreService: ScoreService,
-    private globalListenersService: GlobalListenersService,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {
-    super();
-  }
+  private authQuery = inject(AuthQuery);
+  private authService = inject(AuthService);
+  private snackBarService = inject(SnackBarService);
+  private breakpointObserverService = inject(BreakpointObserverService);
+  private router = inject(Router);
+  private scoreService = inject(ScoreService);
+  private globalListenersService = inject(GlobalListenersService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+
 
   readonly user$ = this.authQuery.user$;
   readonly isLogged$ = this.authQuery.isLogged$;

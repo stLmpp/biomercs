@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, Renderer2 } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, Renderer2, inject } from '@angular/core';
 import { Animations } from '@shared/animations/animations';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { AnimationEvent } from '@angular/animations';
@@ -12,7 +12,9 @@ import { AnimationEvent } from '@angular/animations';
   host: { '[@skipFirstAnimation]': '' },
 })
 export class CollapseComponent {
-  constructor(private renderer2: Renderer2, private elementRef: ElementRef) {}
+  private renderer2 = inject(Renderer2);
+  private elementRef = inject(ElementRef);
+
 
   private _bioCollapsed = false;
   private _isRunning = 0;

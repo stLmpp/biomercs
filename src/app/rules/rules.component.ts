@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { AuthQuery } from '../auth/auth.query';
 import { Rule, RuleTypeEnum } from '@model/rule';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -38,7 +38,9 @@ import { AsyncPipe } from '@angular/common';
   ],
 })
 export class RulesComponent {
-  constructor(private authQuery: AuthQuery, private activatedRoute: ActivatedRoute) {}
+  private authQuery = inject(AuthQuery);
+  private activatedRoute = inject(ActivatedRoute);
+
 
   readonly trackBy = trackById;
   readonly isAdmin$ = this.authQuery.isAdmin$;

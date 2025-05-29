@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { mdiAccountLock, mdiEmailSyncOutline } from '@mdi/js';
 import { HeaderQuery } from '../header/header.query';
 import { PageTitleComponent } from '../shared/title/page-title.component';
@@ -27,7 +27,8 @@ import { AsyncPipe } from '@angular/common';
   ],
 })
 export class AdminComponent {
-  constructor(private headerQuery: HeaderQuery) {}
+  private headerQuery = inject(HeaderQuery);
+
 
   readonly adminApprovalCount$ = this.headerQuery.adminApprovalCount$;
   readonly mdiEmailSyncOutline = mdiEmailSyncOutline;

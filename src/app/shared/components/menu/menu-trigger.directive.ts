@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostListener, Inject, Input, ViewContainerRef, DOCUMENT } from '@angular/core';
+import { Directive, ElementRef, HostListener, Input, ViewContainerRef, DOCUMENT, inject } from '@angular/core';
 import { MenuComponent } from './menu.component';
 import { Overlay } from '@angular/cdk/overlay';
 import { cdkOverlayTransparentBackdrop } from '@util/overlay';
@@ -10,14 +10,11 @@ import { getOverlayPositionMenu } from '@shared/components/menu/util';
 
 @Directive({ selector: '[bioMenuTrigger]' })
 export class MenuTriggerDirective extends Destroyable {
-  constructor(
-    private overlay: Overlay,
-    private elementRef: ElementRef,
-    private viewContainerRef: ViewContainerRef,
-    @Inject(DOCUMENT) private document: Document
-  ) {
-    super();
-  }
+  private overlay = inject(Overlay);
+  private elementRef = inject(ElementRef);
+  private viewContainerRef = inject(ViewContainerRef);
+  private document = inject<Document>(DOCUMENT);
+
 
   private _lastFocusedElement?: Element | null;
 

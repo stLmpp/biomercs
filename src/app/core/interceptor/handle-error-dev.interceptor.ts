@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpStatusCode } from '@angular/common/http';
 import { Observable, OperatorFunction } from 'rxjs';
 import { environment } from '@environment/environment';
@@ -10,11 +10,10 @@ import { AuthQuery } from '../../auth/auth.query';
 
 @Injectable({ providedIn: 'root' })
 export class HandleErrorDevInterceptor implements HttpInterceptor {
-  constructor(
-    private snackBarService: SnackBarService,
-    private modalService: ModalService,
-    private authQuery: AuthQuery
-  ) {}
+  private snackBarService = inject(SnackBarService);
+  private modalService = inject(ModalService);
+  private authQuery = inject(AuthQuery);
+
 
   private _snackBar(message: string, button: string, data: HttpError, isAdmin: boolean): void {
     const snack = this.snackBarService.open(message, { action: button });

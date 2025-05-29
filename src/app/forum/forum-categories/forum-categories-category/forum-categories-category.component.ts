@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { CategoryWithSubCategories } from '@model/forum/category';
 import { SubCategoryModalService } from '../../service/sub-category-modal.service';
 import { arrayUtil } from 'st-utils';
@@ -53,11 +53,10 @@ export interface ForumCategoriesCategoryComponentOrderChangeEvent {
   ],
 })
 export class ForumCategoriesCategoryComponent {
-  constructor(
-    private subCategoryModalService: SubCategoryModalService,
-    private changeDetectorRef: ChangeDetectorRef,
-    private subCategoryModeratorModalService: SubCategoryModeratorModalService
-  ) {}
+  private subCategoryModalService = inject(SubCategoryModalService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+  private subCategoryModeratorModalService = inject(SubCategoryModeratorModalService);
+
 
   @Input() category!: CategoryWithSubCategories;
   @Input() isAdmin = false;

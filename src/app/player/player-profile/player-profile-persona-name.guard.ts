@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { map, Observable } from 'rxjs';
 import { PlayerService } from '../player.service';
@@ -8,7 +8,9 @@ import { RouteParamEnum } from '@model/enum/route-param.enum';
   providedIn: 'root',
 })
 export class PlayerProfilePersonaNameGuard  {
-  constructor(private playerService: PlayerService, private router: Router) {}
+  private playerService = inject(PlayerService);
+  private router = inject(Router);
+
 
   canActivate(
     route: ActivatedRouteSnapshot,

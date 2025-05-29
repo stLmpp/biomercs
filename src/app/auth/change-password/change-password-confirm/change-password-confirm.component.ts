@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import {
   Control,
   ControlGroup,
@@ -63,13 +63,12 @@ interface AuthChangePasswordForm {
   ],
 })
 export class ChangePasswordConfirmComponent {
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private authService: AuthService,
-    private snackBarService: SnackBarService,
-    private router: Router,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {}
+  private activatedRoute = inject(ActivatedRoute);
+  private authService = inject(AuthService);
+  private snackBarService = inject(SnackBarService);
+  private router = inject(Router);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+
 
   hideOldPassword = true;
   hideConfirmPassword = true;

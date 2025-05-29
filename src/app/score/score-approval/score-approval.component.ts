@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { PARAMS_FORM_NULL, ParamsConfig, ParamsForm } from '@shared/params/params.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ScoreService } from '../score.service';
@@ -58,13 +58,15 @@ export interface ScoreApprovalComponentState extends ParamsForm {
   ],
 })
 export class ScoreApprovalComponent extends LocalState<ScoreApprovalComponentState> implements OnInit {
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private scoreService: ScoreService,
-    private router: Router,
-    private authDateFormatPipe: AuthDateFormatPipe,
-    private modalService: ModalService
-  ) {
+  private activatedRoute: ActivatedRoute;
+  private scoreService = inject(ScoreService);
+  private router = inject(Router);
+  private authDateFormatPipe = inject(AuthDateFormatPipe);
+  private modalService = inject(ModalService);
+
+  constructor() {
+    const activatedRoute = inject(ActivatedRoute);
+
     super({
       itemsPerPage: PaginationComponent.getItemsPerPageFromRoute(activatedRoute),
       page: +(activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.page) ?? 1),
@@ -79,6 +81,8 @@ export class ScoreApprovalComponent extends LocalState<ScoreApprovalComponentSta
           | null) ?? 'asc',
       orderBy: activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.orderBy) ?? 'creationDate',
     });
+  
+    this.activatedRoute = activatedRoute;
   }
 
   private _data$ = this.selectState('data').pipe(filterNil());

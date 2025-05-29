@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, TrackByFunction } from '@angular/core';
+import { ChangeDetectionStrategy, Component, TrackByFunction, inject } from '@angular/core';
 import { ScoreService } from '../score.service';
 import { ControlBuilder, Validators } from '@stlmpp/control';
 import { ParamsConfig, ParamsForm } from '@shared/params/params.component';
@@ -67,14 +67,16 @@ export interface ScoreWorldRecordTableState {
   ],
 })
 export class ScoreWorldRecordsComponent extends LocalState<ScoreWorldRecordTableState> {
-  constructor(
-    private scoreService: ScoreService,
-    private controlBuilder: ControlBuilder,
-    private activatedRoute: ActivatedRoute,
-    private router: Router,
-    private breakpointObserverService: BreakpointObserverService,
-    private scoreModalService: ScoreModalService
-  ) {
+  private scoreService = inject(ScoreService);
+  private controlBuilder = inject(ControlBuilder);
+  private activatedRoute: ActivatedRoute;
+  private router = inject(Router);
+  private breakpointObserverService = inject(BreakpointObserverService);
+  private scoreModalService = inject(ScoreModalService);
+
+  constructor() {
+    const activatedRoute = inject(ActivatedRoute);
+
     super({
       tableLoading: false,
       loadingInfoModal: false,
@@ -86,6 +88,8 @@ export class ScoreWorldRecordsComponent extends LocalState<ScoreWorldRecordTable
       idPlatform: null,
       orderByDirection: 'desc',
     });
+  
+    this.activatedRoute = activatedRoute;
   }
 
   private readonly _scoreTopTable$ = this.selectState(['idPlatform', 'idGame', 'idMiniGame', 'idMode']).pipe(

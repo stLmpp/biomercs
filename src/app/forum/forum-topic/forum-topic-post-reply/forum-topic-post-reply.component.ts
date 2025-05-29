@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import ClassicEditor from '@shared/ckeditor/ckeditor';
 import { Control, ControlGroup, Validators } from '@stlmpp/control';
 import { Post, PostAddDto } from '@model/forum/post';
@@ -23,13 +23,12 @@ export interface ForumTopicPostReplyComponentData {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ForumTopicPostReplyComponent {
-  constructor(
-    private modalRef: ModalRef<ForumTopicPostReplyComponent, ForumTopicPostReplyComponentData, Post>,
-    @Inject(MODAL_DATA) { quote, topicName, idTopic, idSubCategory }: ForumTopicPostReplyComponentData,
-    private authQuery: AuthQuery,
-    private postService: PostService,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {
+  private modalRef = inject<ModalRef<ForumTopicPostReplyComponent, ForumTopicPostReplyComponentData, Post>>(ModalRef);
+  private authQuery = inject(AuthQuery);
+  private postService = inject(PostService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+
+  constructor() {
     this._idSubCategory = idSubCategory;
     this._idTopic = idTopic;
     this._topicName = topicName;

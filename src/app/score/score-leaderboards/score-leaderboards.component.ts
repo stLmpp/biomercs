@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, TrackByFunction } from '@angular/core';
+import { ChangeDetectionStrategy, Component, TrackByFunction, inject } from '@angular/core';
 import { ParamsConfig, ParamsForm } from '@shared/params/params.component';
 import { ControlBuilder, Validators } from '@stlmpp/control';
 import { ScoreService } from '../score.service';
@@ -73,12 +73,12 @@ export interface ScoreLeaderboardsState {
   ],
 })
 export class ScoreLeaderboardsComponent extends LocalState<ScoreLeaderboardsState> {
-  constructor(
-    private controlBuilder: ControlBuilder,
-    private scoreService: ScoreService,
-    private activatedRoute: ActivatedRoute,
-    private scoreModalService: ScoreModalService
-  ) {
+  private controlBuilder = inject(ControlBuilder);
+  private scoreService = inject(ScoreService);
+  private activatedRoute = inject(ActivatedRoute);
+  private scoreModalService = inject(ScoreModalService);
+
+  constructor() {
     super({ tableLoading: false, orderByDirection: 'desc', orderByType: 'total', loadingInfo: false });
   }
 

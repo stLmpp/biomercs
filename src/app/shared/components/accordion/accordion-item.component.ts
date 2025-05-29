@@ -1,19 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  ContentChildren,
-  ElementRef,
-  Host,
-  HostBinding,
-  Input,
-  OnDestroy,
-  OnInit,
-  Optional,
-  QueryList,
-  ViewChild,
-  ViewEncapsulation,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, ElementRef, HostBinding, Input, OnDestroy, OnInit, QueryList, ViewChild, ViewEncapsulation, inject } from '@angular/core';
 import { CdkAccordionItem } from '@angular/cdk/accordion';
 import { AccordionItemTitleDirective } from '@shared/components/accordion/accordion-item-title.directive';
 import { Animations } from '@shared/animations/animations';
@@ -38,12 +23,16 @@ import { CollapseComponent } from '../collapse/collapse.component';
   imports: [IconComponent, CollapseComponent],
 })
 export class AccordionItemComponent extends CdkAccordionItem implements OnInit, OnDestroy, FocusableOption {
-  constructor(
-    @Host() @Optional() private _accordion: Accordion,
-    changeDetectorRef: ChangeDetectorRef,
-    uniqueSelectionDispatcher: UniqueSelectionDispatcher
-  ) {
+  private _accordion: Accordion;
+
+  constructor() {
+    const _accordion = inject(Accordion, { host: true, optional: true });
+    const changeDetectorRef = inject(ChangeDetectorRef);
+    const uniqueSelectionDispatcher = inject(UniqueSelectionDispatcher);
+
     super(_accordion, changeDetectorRef, uniqueSelectionDispatcher);
+  
+    this._accordion = _accordion;
   }
 
   private readonly _destroy$ = new Subject<void>();

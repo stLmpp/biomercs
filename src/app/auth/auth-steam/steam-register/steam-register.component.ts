@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { AuthService } from '../../auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
@@ -55,14 +55,13 @@ interface SteamRegisterForm {
   ],
 })
 export class SteamRegisterComponent implements OnDestroy, OnInit {
-  constructor(
-    private authService: AuthService,
-    private activatedRoute: ActivatedRoute,
-    private controlBuilder: ControlBuilder,
-    private changeDetectorRef: ChangeDetectorRef,
-    private emailExistsValidator: EmailExistsValidator,
-    private steamRegisterNameExistsValidator: SteamRegisterNameExistsValidator
-  ) {}
+  private authService = inject(AuthService);
+  private activatedRoute = inject(ActivatedRoute);
+  private controlBuilder = inject(ControlBuilder);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+  private emailExistsValidator = inject(EmailExistsValidator);
+  private steamRegisterNameExistsValidator = inject(SteamRegisterNameExistsValidator);
+
 
   get steamid(): string {
     // This component is only accessible when there's a steamid in the route

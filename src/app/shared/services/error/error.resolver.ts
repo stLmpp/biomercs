@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { AdminError } from '@model/admin-error';
 import { ErrorService } from '@shared/services/error/error.service';
@@ -8,7 +8,8 @@ import { Pagination } from '@model/pagination';
 
 @Injectable({ providedIn: 'root' })
 export class ErrorResolver  {
-  constructor(private errorService: ErrorService) {}
+  private errorService = inject(ErrorService);
+
 
   resolve(
     route: ActivatedRouteSnapshot,

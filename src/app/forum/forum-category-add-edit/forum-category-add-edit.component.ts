@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import { CategoryService } from '../service/category.service';
 import { Category, CategoryUpdateDto } from '@model/forum/category';
@@ -51,12 +51,11 @@ import { AsyncPipe } from '@angular/common';
   ],
 })
 export class ForumCategoryAddEditComponent implements OnInit {
-  constructor(
-    @Inject(MODAL_DATA) public idCategory: number | undefined,
-    private categoryService: CategoryService,
-    private changeDetectorRef: ChangeDetectorRef,
-    private modalRef: ModalRef<ForumCategoryAddEditComponent, number | undefined, Category>
-  ) {}
+  idCategory = inject(MODAL_DATA);
+  private categoryService = inject(CategoryService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+  private modalRef = inject<ModalRef<ForumCategoryAddEditComponent, number | undefined, Category>>(ModalRef);
+
 
   loading = false;
   saving = false;

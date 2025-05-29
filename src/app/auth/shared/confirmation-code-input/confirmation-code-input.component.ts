@@ -1,18 +1,4 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  Component,
-  Directive,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Output,
-  QueryList,
-  ViewChildren,
-} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, Directive, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, QueryList, ViewChildren, inject } from '@angular/core';
 import {
   ControlArray,
   ControlBuilder,
@@ -33,7 +19,8 @@ import { FormFieldErrorComponent } from '../../../shared/components/form/error.c
 
 @Directive({ selector: 'input[confirmationCodeInput]' })
 export class ConfirmationCodeInputDirective implements FocusableOption {
-  constructor(private elementRef: ElementRef<HTMLInputElement>) {}
+  private elementRef = inject<ElementRef<HTMLInputElement>>(ElementRef);
+
 
   focus(): void {
     this.elementRef.nativeElement.focus();
@@ -61,9 +48,8 @@ export class ConfirmationCodeInputComponent
   extends ControlValue
   implements AfterViewInit, OnInit, OnDestroy, OnChanges
 {
-  constructor(private controlBuilder: ControlBuilder) {
-    super();
-  }
+  private controlBuilder = inject(ControlBuilder);
+
 
   private readonly _destroy$ = new Subject<void>();
 

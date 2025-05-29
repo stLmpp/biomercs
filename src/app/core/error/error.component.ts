@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { HttpError } from '@model/http-error';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import { ModalTitleDirective } from '../../shared/components/modal/modal-title.directive';
@@ -22,5 +22,5 @@ import { KeyValuePipe } from '@angular/common';
   ],
 })
 export class ErrorComponent {
-  constructor(@Inject(MODAL_DATA) public httpError: HttpError) {}
+  httpError = inject<HttpError>(MODAL_DATA);
 }

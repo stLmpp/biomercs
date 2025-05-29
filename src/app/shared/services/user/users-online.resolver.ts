@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { UserOnline } from '@model/user';
 import { UserService } from '@shared/services/user/user.service';
@@ -6,7 +6,8 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class UsersOnlineResolver implements Resolve<UserOnline[]> {
-  constructor(private userService: UserService) {}
+  private userService = inject(UserService);
+
 
   resolve(
     route: ActivatedRouteSnapshot,

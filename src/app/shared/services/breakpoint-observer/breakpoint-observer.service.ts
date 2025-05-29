@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { WINDOW } from '../../../core/window.service';
 import { auditTime, map, Observable, shareReplay, startWith } from 'rxjs';
 import { GlobalListenersService } from '@shared/services/global-listeners/global-listeners.service';
@@ -13,7 +13,9 @@ export enum MediaQueryEnum {
 
 @Injectable({ providedIn: 'root' })
 export class BreakpointObserverService {
-  constructor(@Inject(WINDOW) private window: Window, private globalListenersService: GlobalListenersService) {}
+  private window = inject<Window>(WINDOW);
+  private globalListenersService = inject(GlobalListenersService);
+
 
   private readonly _resize$ = this.globalListenersService.windowResize$.pipe(auditTime(300), shareReplay());
 

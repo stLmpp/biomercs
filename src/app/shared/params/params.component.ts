@@ -1,15 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChange,
-  SimpleChanges,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges, inject } from '@angular/core';
 import {
   Control,
   ControlBuilder,
@@ -120,19 +109,16 @@ const defaultConfigs: ParamsConfig = {
   ],
 })
 export class ParamsComponent extends Destroyable implements OnChanges, OnInit {
-  constructor(
-    private controlBuilder: ControlBuilder,
-    private gameService: GameService,
-    private miniGameService: MiniGameService,
-    private modeService: ModeService,
-    private stageService: StageService,
-    private characterService: CharacterService,
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {
-    super();
-  }
+  private controlBuilder = inject(ControlBuilder);
+  private gameService = inject(GameService);
+  private miniGameService = inject(MiniGameService);
+  private modeService = inject(ModeService);
+  private stageService = inject(StageService);
+  private characterService = inject(CharacterService);
+  private router = inject(Router);
+  private activatedRoute = inject(ActivatedRoute);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+
 
   private _setQueryParamsOnChange = false;
   private _selectParamIfOne = true;

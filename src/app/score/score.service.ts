@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import type { Score } from '@model/score';
 import {
@@ -26,7 +26,10 @@ import { ScoreGroupedByStatus } from '@model/score-grouped-by-status';
 
 @Injectable({ providedIn: 'root' })
 export class ScoreService {
-  constructor(private http: HttpClient, private headerStore: HeaderStore, private socketIOService: SocketIOService) {}
+  private http = inject(HttpClient);
+  private headerStore = inject(HeaderStore);
+  private socketIOService = inject(SocketIOService);
+
 
   private readonly _socketConnection = this.socketIOService.createConnection('score');
 

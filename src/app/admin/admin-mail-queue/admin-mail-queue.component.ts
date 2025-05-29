@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MailStatusQueue } from '@model/mail';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
@@ -18,11 +18,10 @@ import { ButtonComponent } from '../../shared/components/button/button.component
   imports: [CardComponent, CardTitleDirective, CardContentDirective, CardActionsDirective, ButtonComponent],
 })
 export class AdminMailQueueComponent {
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private mailService: MailService,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {}
+  private activatedRoute = inject(ActivatedRoute);
+  private mailService = inject(MailService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+
 
   restartingQueue = false;
   statusQueue: MailStatusQueue = this.activatedRoute.snapshot.data[RouteDataEnum.mailQueue];

@@ -1,14 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild, inject } from '@angular/core';
 import { debounceTime, filter, finalize, Observable, pluck, switchMap, takeUntil } from 'rxjs';
 import { CharacterWithCharacterCostumes } from '@model/character';
 import { CharacterCostume } from '@model/character-costume';
@@ -81,14 +71,11 @@ import { AsyncPipe } from '@angular/common';
   ],
 })
 export class ScoreAddPlayerComponent extends Destroyable implements OnInit, OnChanges {
-  constructor(
-    private playerService: PlayerService,
-    private authQuery: AuthQuery,
-    private playerModalService: PlayerModalService,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {
-    super();
-  }
+  private playerService = inject(PlayerService);
+  private authQuery = inject(AuthQuery);
+  private playerModalService = inject(PlayerModalService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+
 
   @Input() idPlayersSelected: number[] = [];
   @Input() playerNumber!: number;

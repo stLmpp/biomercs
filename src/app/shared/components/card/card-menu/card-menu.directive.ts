@@ -1,4 +1,4 @@
-import { Directive, ElementRef } from '@angular/core';
+import { Directive, ElementRef, inject } from '@angular/core';
 import { FocusableOption } from '@angular/cdk/a11y';
 
 @Directive({
@@ -6,7 +6,8 @@ import { FocusableOption } from '@angular/cdk/a11y';
   host: { class: 'card-menu', '[attr.tab-index]': `'0'` },
 })
 export class CardMenuDirective implements FocusableOption {
-  constructor(private elementRef: ElementRef<HTMLElement>) {}
+  private elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+
 
   focus(): void {
     this.elementRef.nativeElement.focus();

@@ -1,4 +1,4 @@
-import { AfterContentInit, Directive, Host, KeyValueDiffers, OnInit, Optional } from '@angular/core';
+import { AfterContentInit, Directive, KeyValueDiffers, OnInit, inject } from '@angular/core';
 import { ControlError, ControlParent } from '@stlmpp/control';
 import { FormFieldComponent } from './form-field.component';
 
@@ -8,12 +8,16 @@ import { FormFieldComponent } from './form-field.component';
   providers: [{ provide: ControlError, useExisting: FormFieldErrorsDirective }],
 })
 export class FormFieldErrorsDirective extends ControlError implements AfterContentInit, OnInit {
-  constructor(
-    @Host() private formFieldComponent: FormFieldComponent,
-    keyValueDiffers: KeyValueDiffers,
-    @Optional() @Host() private _controlParent?: ControlParent
-  ) {
+  private formFieldComponent = inject(FormFieldComponent, { host: true });
+  private _controlParent: ControlParent;
+
+  constructor() {
+    const keyValueDiffers = inject(KeyValueDiffers);
+    const _controlParent = inject(ControlParent, { optional: true, host: true });
+
     super(keyValueDiffers, _controlParent);
+  
+    this._controlParent = _controlParent;
   }
 
   override ngOnInit(): void {

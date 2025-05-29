@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { ControlBuilder, Validators, StControlModule, StControlCommonModule } from '@stlmpp/control';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
@@ -32,14 +32,13 @@ interface LoginConfirmationForm {
   ],
 })
 export class LoginConfirmCodeModalComponent {
-  constructor(
-    public modalRef: ModalRef<LoginConfirmCodeModalComponent, number>,
-    private controlBuilder: ControlBuilder,
-    @Inject(MODAL_DATA) private idUser: number,
-    private authService: AuthService,
-    private router: Router,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {}
+  modalRef = inject<ModalRef<LoginConfirmCodeModalComponent, number>>(ModalRef);
+  private controlBuilder = inject(ControlBuilder);
+  private idUser = inject(MODAL_DATA);
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+
 
   readonly form = this.controlBuilder.group<LoginConfirmationForm>({ code: [null, [Validators.required]] });
   loading = false;

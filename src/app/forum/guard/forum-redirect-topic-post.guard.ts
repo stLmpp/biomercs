@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { TopicService } from '../service/topic.service';
 import { map, Observable } from 'rxjs';
@@ -6,7 +6,9 @@ import { RouteParamEnum } from '@model/enum/route-param.enum';
 
 @Injectable({ providedIn: 'root' })
 export class ForumRedirectTopicPostGuard  {
-  constructor(private topicService: TopicService, private router: Router) {}
+  private topicService = inject(TopicService);
+  private router = inject(Router);
+
 
   canActivate(
     route: ActivatedRouteSnapshot,

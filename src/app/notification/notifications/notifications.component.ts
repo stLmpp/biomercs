@@ -1,12 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { NotificationService } from '../notification.service';
 import { Destroyable } from '@shared/components/common/destroyable-component';
 import {
@@ -72,17 +64,14 @@ interface NotificationCustom extends Notification {
   ],
 })
 export class NotificationsComponent extends Destroyable implements OnInit {
-  constructor(
-    private notificationService: NotificationService,
-    private changeDetectorRef: ChangeDetectorRef,
-    private scoreService: ScoreService,
-    private scoreModalService: ScoreModalService,
-    private dialogService: DialogService,
-    private playerModalService: PlayerModalService,
-    private router: Router
-  ) {
-    super();
-  }
+  private notificationService = inject(NotificationService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+  private scoreService = inject(ScoreService);
+  private scoreModalService = inject(ScoreModalService);
+  private dialogService = inject(DialogService);
+  private playerModalService = inject(PlayerModalService);
+  private router = inject(Router);
+
 
   @Input() notifications: NotificationCustom[] = [];
   @Output() readonly notificationsChange = new EventEmitter<NotificationCustom[]>();

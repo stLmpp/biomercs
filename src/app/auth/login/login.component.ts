@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import {
   Control,
   ControlGroup,
@@ -63,18 +63,15 @@ import { CardActionsDirective } from '../../shared/components/card/card-actions.
   ],
 })
 export class LoginComponent extends Destroyable implements OnInit {
-  constructor(
-    private authService: AuthService,
-    @Inject(WINDOW) private window: Window,
-    private dialogService: DialogService,
-    private router: Router,
-    private snackBarService: SnackBarService,
-    private activatedRoute: ActivatedRoute,
-    private modalService: ModalService,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {
-    super();
-  }
+  private authService = inject(AuthService);
+  private window = inject<Window>(WINDOW);
+  private dialogService = inject(DialogService);
+  private router = inject(Router);
+  private snackBarService = inject(SnackBarService);
+  private activatedRoute = inject(ActivatedRoute);
+  private modalService = inject(ModalService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+
 
   loading = false;
   loadingSteam = false;

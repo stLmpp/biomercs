@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { SubCategoryService } from '../service/sub-category.service';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import { SubCategory, SubCategoryAddDto, SubCategoryUpdateDto } from '@model/forum/sub-category';
@@ -60,12 +60,11 @@ export interface ForumSubCategoryAddEditComponentData {
   ],
 })
 export class ForumSubCategoryAddEditComponent implements OnInit {
-  constructor(
-    @Inject(MODAL_DATA) { idSubCategory, idCategory }: ForumSubCategoryAddEditComponentData,
-    private subCategoryService: SubCategoryService,
-    private changeDetectorRef: ChangeDetectorRef,
-    private modalRef: ModalRef<ForumSubCategoryAddEditComponent, ForumSubCategoryAddEditComponentData, SubCategory>
-  ) {
+  private subCategoryService = inject(SubCategoryService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+  private modalRef = inject<ModalRef<ForumSubCategoryAddEditComponent, ForumSubCategoryAddEditComponentData, SubCategory>>(ModalRef);
+
+  constructor() {
     this.idSubCategory = idSubCategory;
     this.idCategory = idCategory;
     this.subCategory = { id: -1, idCategory: this.idCategory, order: -1, name: '', description: '' };

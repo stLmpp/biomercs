@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AdminError } from '@model/admin-error';
 import { PaginationMeta } from '@model/pagination';
@@ -39,14 +39,11 @@ import { DatePipe } from '@angular/common';
   ],
 })
 export class AdminErrorsComponent extends Destroyable {
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private errorService: ErrorService,
-    private clipboard: Clipboard,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {
-    super();
-  }
+  private activatedRoute = inject(ActivatedRoute);
+  private errorService = inject(ErrorService);
+  private clipboard = inject(Clipboard);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+
 
   private _page = +(this.activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.page) ?? 1);
   private _itemsPerPage = +(this.activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.itemsPerPage) ?? 10);

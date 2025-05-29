@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ModalService } from '@shared/components/modal/modal.service';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import type {
@@ -9,7 +9,8 @@ import type {
 
 @Injectable({ providedIn: 'root' })
 export class TopicModalService {
-  constructor(private modalService: ModalService) {}
+  private modalService = inject(ModalService);
+
 
   async openTransferModal(
     idSubCategory: number,

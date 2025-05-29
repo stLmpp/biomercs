@@ -1,15 +1,4 @@
-import {
-  Directive,
-  ElementRef,
-  HostListener,
-  Inject,
-  Input,
-  Optional,
-  QueryList,
-  Self,
-  ViewContainerRef,
-  DOCUMENT,
-} from '@angular/core';
+import { Directive, ElementRef, HostListener, Input, QueryList, ViewContainerRef, DOCUMENT, inject } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 
 import { cdkOverlayTransparentBackdrop } from '@util/overlay';
@@ -28,15 +17,12 @@ import { BooleanInput, coerceBooleanProperty } from 'st-utils';
   exportAs: 'bio-autocomplete',
 })
 export class AutocompleteDirective extends Destroyable {
-  constructor(
-    private overlay: Overlay,
-    private elementRef: ElementRef<HTMLInputElement>,
-    private viewContainerRef: ViewContainerRef,
-    @Inject(DOCUMENT) private document: Document,
-    @Optional() @Self() private controlDirective?: ControlDirective
-  ) {
-    super();
-  }
+  private overlay = inject(Overlay);
+  private elementRef = inject<ElementRef<HTMLInputElement>>(ElementRef);
+  private viewContainerRef = inject(ViewContainerRef);
+  private document = inject<Document>(DOCUMENT);
+  private controlDirective = inject(ControlDirective, { optional: true, self: true });
+
 
   private _isSubscribed = false;
   private _onFocus$ = new Subject<boolean>();

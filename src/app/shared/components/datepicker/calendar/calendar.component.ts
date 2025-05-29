@@ -1,19 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  ContentChild,
-  EventEmitter,
-  HostBinding,
-  HostListener,
-  Inject,
-  Input,
-  LOCALE_ID,
-  OnInit,
-  Optional,
-  Output,
-  ViewChild,
-  ViewEncapsulation,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, ContentChild, EventEmitter, HostBinding, HostListener, Input, LOCALE_ID, OnInit, Output, ViewChild, ViewEncapsulation, inject } from '@angular/core';
 import { LocalState } from '@stlmpp/store';
 import { addMonths, addYears, setMonth, setYear, subMonths, subYears } from 'date-fns';
 import { combineLatest, distinctUntilChanged, map, Subject } from 'rxjs';
@@ -60,11 +45,12 @@ export class CalendarComponent
   extends LocalState<CalendarComponentState>
   implements OnInit, ControlValue<Date | null | undefined>
 {
-  constructor(
-    private readonly calendarAdapter: CalendarAdapter,
-    @Inject(LOCALE_ID) localeId: string,
-    @Optional() @Inject(CALENDAR_LOCALE) locale?: string
-  ) {
+  private readonly calendarAdapter = inject(CalendarAdapter);
+
+  constructor() {
+    const localeId = inject(LOCALE_ID);
+    const locale = inject(CALENDAR_LOCALE, { optional: true });
+
     super(
       { date: new Date(), viewMode: CalendarViewModeEnum.day, locale: locale ?? localeId, value: null },
       { inputs: ['viewMode', 'locale', 'value'] }

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Query } from '@stlmpp/store';
 import { AuthStore } from './auth.store';
 import { Auth } from '@model/auth';
@@ -10,8 +10,14 @@ import { filterNil } from '@util/operators/filter';
 
 @Injectable({ providedIn: 'root' })
 export class AuthQuery extends Query<Auth> {
-  constructor(private authStore: AuthStore) {
+  private authStore: AuthStore;
+
+  constructor() {
+    const authStore = inject(AuthStore);
+
     super(authStore);
+  
+    this.authStore = authStore;
   }
 
   readonly isLogged$ = this.select('user').pipe(

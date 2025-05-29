@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit, DOCUMENT } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, DOCUMENT, inject } from '@angular/core';
 import { TitleService } from '@shared/title/title.service';
 import { BreakpointObserverService } from '@shared/services/breakpoint-observer/breakpoint-observer.service';
 import { MetaService } from '@shared/meta/meta.service';
@@ -18,19 +18,16 @@ import { DialogService } from '@shared/components/modal/dialog/dialog.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent extends Destroyable implements OnInit, OnDestroy {
-  constructor(
-    private titleService: TitleService,
-    private breakpointObserverService: BreakpointObserverService,
-    private metaService: MetaService,
-    private globalListenersService: GlobalListenersService,
-    @Inject(DOCUMENT) private document: Document,
-    @Inject(WINDOW) private window: Window,
-    private breadcrumbsService: BreadcrumbsService,
-    private swUpdate: SwUpdate,
-    private dialogService: DialogService
-  ) {
-    super();
-  }
+  private titleService = inject(TitleService);
+  private breakpointObserverService = inject(BreakpointObserverService);
+  private metaService = inject(MetaService);
+  private globalListenersService = inject(GlobalListenersService);
+  private document = inject<Document>(DOCUMENT);
+  private window = inject<Window>(WINDOW);
+  private breadcrumbsService = inject(BreadcrumbsService);
+  private swUpdate = inject(SwUpdate);
+  private dialogService = inject(DialogService);
+
 
   readonly isMobile$ = this.breakpointObserverService.isMobile$;
 

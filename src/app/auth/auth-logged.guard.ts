@@ -1,11 +1,13 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, UrlSegment, Route, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthQuery } from './auth.query';
 
 @Injectable({ providedIn: 'root' })
 export class AuthLoggedGuard  {
-  constructor(private authQuery: AuthQuery, private router: Router) {}
+  private authQuery = inject(AuthQuery);
+  private router = inject(Router);
+
 
   private _validateIsLogged(): boolean | UrlTree {
     return this.authQuery.getIsLogged() || this.router.createUrlTree(['/auth/login']);

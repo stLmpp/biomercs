@@ -1,10 +1,11 @@
-import { Directive, HostBinding, Input } from '@angular/core';
+import { Directive, HostBinding, Input, inject } from '@angular/core';
 import { BioTypeInput } from '@shared/components/core/types';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 
 @Directive()
 export class BadgeBase {
-  constructor(private bioBadgeConfig?: BioBadgeConfig) {}
+  private bioBadgeConfig = inject(BioBadgeConfig);
+
 
   @Input() bioType: BioTypeInput = this.bioBadgeConfig?.bioType ?? 'accent';
 

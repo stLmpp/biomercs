@@ -1,16 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  Host,
-  HostBinding,
-  HostListener,
-  Input,
-  Optional,
-  SecurityContext,
-  ViewEncapsulation,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostBinding, HostListener, Input, SecurityContext, ViewEncapsulation, inject } from '@angular/core';
 import { Select } from './select';
 import { FocusableOption } from '@angular/cdk/a11y';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
@@ -31,14 +19,16 @@ import { NgTemplateOutlet } from '@angular/common';
   imports: [CheckboxComponent, NgTemplateOutlet],
 })
 export class OptionComponent extends Option implements FocusableOption {
-  constructor(
-    private elementRef: ElementRef<HTMLElement>,
-    @Host() private select: Select,
-    public changeDetectorRef: ChangeDetectorRef,
-    private domSanitizer: DomSanitizer,
-    @Host() @Optional() public optgroupComponent?: OptgroupComponent
-  ) {
+  private elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+  private select = inject(Select, { host: true });
+  changeDetectorRef = inject(ChangeDetectorRef);
+  private domSanitizer = inject(DomSanitizer);
+  optgroupComponent? = inject(OptgroupComponent, { host: true, optional: true });
+
+  constructor() {
     super();
+    const select = this.select;
+
     this.multiple = select.multiple;
   }
 

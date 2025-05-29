@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TableCell } from '@shared/components/table/type';
 import { Score } from '@model/score';
 import { BehaviorSubject } from 'rxjs';
@@ -17,9 +17,8 @@ import { AsyncPipe } from '@angular/common';
   imports: [ButtonComponent, TooltipDirective, IconComponent, AsyncPipe],
 })
 export class ScoreOpenInfoCellComponent extends TableCell<Score> {
-  constructor(private scoreModalService: ScoreModalService) {
-    super();
-  }
+  private scoreModalService = inject(ScoreModalService);
+
 
   readonly loading$ = new BehaviorSubject(false);
 

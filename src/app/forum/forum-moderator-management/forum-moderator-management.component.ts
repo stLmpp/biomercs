@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { finalize, map, OperatorFunction } from 'rxjs';
 import { ModeratorService } from '../service/moderator.service';
 import { ModeratorWithInfo } from '@model/forum/moderator';
@@ -54,14 +54,11 @@ let uid = -1;
   ],
 })
 export class ForumModeratorManagementComponent extends Destroyable implements OnInit {
-  constructor(
-    private moderatorService: ModeratorService,
-    private changeDetectorRef: ChangeDetectorRef,
-    private playerService: PlayerService,
-    private modalRef: ModalRef
-  ) {
-    super();
-  }
+  private moderatorService = inject(ModeratorService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+  private playerService = inject(PlayerService);
+  private modalRef = inject(ModalRef);
+
 
   loading = true;
   saving = false;

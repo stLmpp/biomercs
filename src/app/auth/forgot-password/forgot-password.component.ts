@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import {
   Control,
   ControlGroup,
@@ -56,12 +56,11 @@ interface ForgotPasswordForm {
   ],
 })
 export class ForgotPasswordComponent {
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-    private snackBarService: SnackBarService,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {}
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private snackBarService = inject(SnackBarService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+
 
   readonly emailForm = new ControlGroup<ForgotPasswordForm>({
     email: new Control('', [Validators.required, Validators.email]),

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Rule, RuleTypeEnum, RuleUpsert } from '@model/rule';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
@@ -75,13 +75,12 @@ interface RulesForm {
   ],
 })
 export class AdminRulesComponent implements UnsavedData {
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private ruleService: RuleService,
-    private controlBuilder: ControlBuilder,
-    private snackBarService: SnackBarService,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {}
+  private activatedRoute = inject(ActivatedRoute);
+  private ruleService = inject(RuleService);
+  private controlBuilder = inject(ControlBuilder);
+  private snackBarService = inject(SnackBarService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+
 
   private _rules: Rule[] = this.activatedRoute.snapshot.data[RouteDataEnum.rules] ?? [];
   saving = false;

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { AuthService } from '../../auth.service';
 import { finalize, tap } from 'rxjs';
 import { CardComponent } from '../../../shared/components/card/card.component';
@@ -24,7 +24,9 @@ import { ButtonComponent } from '../../../shared/components/button/button.compon
   ],
 })
 export class ChangePasswordComponent {
-  constructor(private authService: AuthService, private changeDetectorRef: ChangeDetectorRef) {}
+  private authService = inject(AuthService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+
 
   sendingEmail = false;
   sentEmail = false;

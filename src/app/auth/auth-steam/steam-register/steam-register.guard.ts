@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { map, Observable } from 'rxjs';
 import { AuthService } from '../../auth.service';
@@ -8,7 +8,9 @@ import { RouteParamEnum } from '@model/enum/route-param.enum';
   providedIn: 'root',
 })
 export class SteamRegisterGuard  {
-  constructor(private authService: AuthService, private router: Router) {}
+  private authService = inject(AuthService);
+  private router = inject(Router);
+
 
   canActivate(
     route: ActivatedRouteSnapshot,

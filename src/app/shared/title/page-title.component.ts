@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TitleService } from '@shared/title/title.service';
 import { AsyncPipe } from '@angular/common';
 
@@ -10,5 +10,5 @@ import { AsyncPipe } from '@angular/common';
   imports: [AsyncPipe],
 })
 export class PageTitleComponent {
-  constructor(public titleService: TitleService) {}
+  titleService = inject(TitleService);
 }

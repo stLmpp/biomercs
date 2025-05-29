@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, QueryList, ViewChildren, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { fromEvent, race, shareReplay, take, takeUntil, timer } from 'rxjs';
 import { Destroyable } from '@shared/components/common/destroyable-component';
@@ -35,9 +35,9 @@ import { AsyncPipe } from '@angular/common';
   ],
 })
 export class StlmppComponent extends Destroyable implements AfterViewInit {
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) {
-    super();
-  }
+  private router = inject(Router);
+  private activatedRoute = inject(ActivatedRoute);
+
 
   @ViewChildren('fragment') fragments!: QueryList<ElementRef<HTMLElement>>;
 

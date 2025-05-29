@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild, inject } from '@angular/core';
 import { concat, distinctUntilChanged, finalize, map, share, switchMap, takeUntil, tap } from 'rxjs';
 import { PlayerService } from '../player.service';
 import { Animations } from '@shared/animations/animations';
@@ -104,20 +104,17 @@ import { PlayerCanUpdatePersonaNamePipe } from './player-can-update-persona-name
   ],
 })
 export class PlayerProfileComponent extends Destroyable implements OnInit {
-  constructor(
-    private playerService: PlayerService,
-    private authQuery: AuthQuery,
-    private regionService: RegionService,
-    private dynamicLoaderService: DynamicLoaderService,
-    private activatedRoute: ActivatedRoute,
-    private authDateFormatPipe: AuthDateFormatPipe,
-    private regionModalService: RegionModalService,
-    private scoreModalService: ScoreModalService,
-    private changeDetectorRef: ChangeDetectorRef,
-    private inputTypeService: InputTypeService
-  ) {
-    super();
-  }
+  private playerService = inject(PlayerService);
+  private authQuery = inject(AuthQuery);
+  private regionService = inject(RegionService);
+  private dynamicLoaderService = inject(DynamicLoaderService);
+  private activatedRoute = inject(ActivatedRoute);
+  private authDateFormatPipe = inject(AuthDateFormatPipe);
+  private regionModalService = inject(RegionModalService);
+  private scoreModalService = inject(ScoreModalService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+  private inputTypeService = inject(InputTypeService);
+
 
   private readonly _idPlayer$ = this.activatedRoute.paramMap.pipe(
     mapToParam(RouteParamEnum.idPlayer),

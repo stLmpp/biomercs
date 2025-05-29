@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { ScoreChangeRequestsPagination, ScoreWithScoreChangeRequests } from '@model/score-change-request';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import {
@@ -86,20 +86,15 @@ interface ScoreChangeRequestsFulfilForm extends Omit<ScoreChangeRequestsFulfilDt
   ],
 })
 export class PlayerChangeRequestsModalComponent {
-  constructor(
-    @Inject(MODAL_DATA) public data: PlayerChangeRequestsModalData,
-    public modalRef: ModalRef<
-      PlayerChangeRequestsModalComponent,
-      PlayerChangeRequestsModalData,
-      ScoreChangeRequestsPagination
-    >,
-    private scoreService: ScoreService,
-    private snackBarService: SnackBarService,
-    private dialogService: DialogService,
-    private changeDetectorRef: ChangeDetectorRef,
-    private characterService: CharacterService,
-    private platformInputTypeService: PlatformInputTypeService
-  ) {}
+  data = inject<PlayerChangeRequestsModalData>(MODAL_DATA);
+  modalRef = inject<ModalRef<PlayerChangeRequestsModalComponent, PlayerChangeRequestsModalData, ScoreChangeRequestsPagination>>(ModalRef);
+  private scoreService = inject(ScoreService);
+  private snackBarService = inject(SnackBarService);
+  private dialogService = inject(DialogService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+  private characterService = inject(CharacterService);
+  private platformInputTypeService = inject(PlatformInputTypeService);
+
 
   loading = false;
   loadingCancelScore = false;

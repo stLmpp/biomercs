@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Output, inject } from '@angular/core';
 import { TableCell } from '@shared/components/table/type';
 import { Score } from '@model/score';
 import { ScoreApprovalActionEnum } from '@model/enum/score-approval-action.enum';
@@ -18,7 +18,9 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
   imports: [ButtonComponent, TooltipDirective, IconComponent],
 })
 export class ScoreApprovalActionsCellComponent implements TableCell<Score> {
-  constructor(private scoreModalService: ScoreModalService, private changeDetectorRef: ChangeDetectorRef) {}
+  private scoreModalService = inject(ScoreModalService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+
 
   @Output() readonly notifyChange = new EventEmitter<ScoreApprovalPagination>();
 

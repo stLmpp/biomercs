@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import { Moderator } from '@model/forum/moderator';
@@ -57,17 +57,12 @@ export interface ForumSubCategoryModeratorManagementComponentData {
   ],
 })
 export class ForumSubCategoryModeratorManagementComponent implements OnInit {
-  constructor(
-    @Inject(MODAL_DATA) { nameSubCategory, idSubCategory }: ForumSubCategoryModeratorManagementComponentData,
-    private modalRef: ModalRef<
-      ForumSubCategoryModeratorManagementComponent,
-      ForumSubCategoryModeratorManagementComponentData,
-      Moderator[]
-    >,
-    private subCategoryModeratorService: SubCategoryModeratorService,
-    private changeDetectorRef: ChangeDetectorRef,
-    private moderatorService: ModeratorService
-  ) {
+  private modalRef = inject<ModalRef<ForumSubCategoryModeratorManagementComponent, ForumSubCategoryModeratorManagementComponentData, Moderator[]>>(ModalRef);
+  private subCategoryModeratorService = inject(SubCategoryModeratorService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+  private moderatorService = inject(ModeratorService);
+
+  constructor() {
     this.idSubCategory = idSubCategory;
     this.nameSubCategory = nameSubCategory;
   }

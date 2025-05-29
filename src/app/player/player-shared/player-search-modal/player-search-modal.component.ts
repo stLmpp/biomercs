@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import { Player } from '@model/player';
 import {
@@ -64,12 +64,11 @@ interface PlayerSearchModalComponentForm {
   ],
 })
 export class PlayerSearchModalComponent {
-  constructor(
-    private modalRef: ModalRef<PlayerSearchModalComponent, PlayerSearchModalComponentData, Player | undefined>,
-    @Inject(MODAL_DATA) { idPlayer, idPlayersSelected }: PlayerSearchModalComponentData,
-    private playerService: PlayerService,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {
+  private modalRef = inject<ModalRef<PlayerSearchModalComponent, PlayerSearchModalComponentData, Player | undefined>>(ModalRef);
+  private playerService = inject(PlayerService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+
+  constructor() {
     this.idPlayer = idPlayer;
     this.idPlayersSelected = idPlayersSelected;
   }

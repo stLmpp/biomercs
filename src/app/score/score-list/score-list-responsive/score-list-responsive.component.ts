@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import {
   BreakpointObserverService,
   MediaQueryEnum,
@@ -22,7 +22,8 @@ import { AsyncPipe } from '@angular/common';
   imports: [ScoreListComponent, TableComponent, AsyncPipe],
 })
 export class ScoreListResponsiveComponent<T extends Score = Score> {
-  constructor(private breakpointObserverService: BreakpointObserverService) {}
+  private breakpointObserverService = inject(BreakpointObserverService);
+
 
   private _collapsable = false;
 

@@ -1,15 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  ContentChildren,
-  Host,
-  HostBinding,
-  HostListener,
-  Input,
-  QueryList,
-  ViewEncapsulation,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, HostBinding, HostListener, Input, QueryList, ViewEncapsulation, inject } from '@angular/core';
 import { Select } from '@shared/components/select/select';
 import { Option } from '@shared/components/select/option';
 import { CheckboxComponent } from '../checkbox/checkbox.component';
@@ -24,7 +13,12 @@ import { CheckboxComponent } from '../checkbox/checkbox.component';
   imports: [CheckboxComponent],
 })
 export class OptgroupComponent {
-  constructor(@Host() private select: Select, public changeDetectorRef: ChangeDetectorRef) {
+  private select = inject(Select, { host: true });
+  changeDetectorRef = inject(ChangeDetectorRef);
+
+  constructor() {
+    const select = this.select;
+
     this.multiple = select.multiple;
   }
 

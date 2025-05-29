@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { TopicWithPosts } from '@model/forum/topic';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
@@ -20,16 +20,13 @@ import { catchAndThrow } from '@util/operators/catch-and-throw';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ForumTopicComponent extends Destroyable implements OnInit {
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private router: Router,
-    private changeDetectorRef: ChangeDetectorRef,
-    private topicService: TopicService,
-    private postModalService: PostModalService,
-    private topicModalService: TopicModalService
-  ) {
-    super();
-  }
+  private activatedRoute = inject(ActivatedRoute);
+  private router = inject(Router);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+  private topicService = inject(TopicService);
+  private postModalService = inject(PostModalService);
+  private topicModalService = inject(TopicModalService);
+
 
   topic: TopicWithPosts = this.activatedRoute.snapshot.data[RouteDataEnum.topicWithPosts];
   loading = false;

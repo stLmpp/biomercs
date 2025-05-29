@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, Renderer2 } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, Renderer2, inject } from '@angular/core';
 import { UrlMetadataService } from '@shared/services/url-metadata/url-metadata.service';
 import { filterNil } from '@util/operators/filter';
 import { debounceTime, finalize, ReplaySubject, switchMap } from 'rxjs';
@@ -16,12 +16,11 @@ import { AsyncPipe } from '@angular/common';
   imports: [NgLetModule, IconComponent, SpinnerComponent, AsyncPipe],
 })
 export class UrlPreviewComponent {
-  constructor(
-    private urlMetadataService: UrlMetadataService,
-    private changeDetectorRef: ChangeDetectorRef,
-    private renderer2: Renderer2,
-    private elementRef: ElementRef<HTMLAnchorElement>
-  ) {}
+  private urlMetadataService = inject(UrlMetadataService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+  private renderer2 = inject(Renderer2);
+  private elementRef = inject<ElementRef<HTMLAnchorElement>>(ElementRef);
+
 
   private readonly _url$ = new ReplaySubject<string | null>();
 

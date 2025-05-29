@@ -1,16 +1,4 @@
-import {
-  AfterContentInit,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  ContentChildren,
-  Input,
-  QueryList,
-  Renderer2,
-  TemplateRef,
-  ViewChild,
-  ViewEncapsulation,
-} from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, Input, QueryList, Renderer2, TemplateRef, ViewChild, ViewEncapsulation, inject } from '@angular/core';
 import { Animations } from '@shared/animations/animations';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { AnimationEvent } from '@angular/animations';
@@ -34,9 +22,9 @@ import { AsyncPipe } from '@angular/common';
   imports: [CdkTrapFocus, AsyncPipe],
 })
 export class AutocompleteComponent extends Autocomplete implements AfterContentInit {
-  constructor(private renderer2: Renderer2, public changeDetectorRef: ChangeDetectorRef) {
-    super();
-  }
+  private renderer2 = inject(Renderer2);
+  changeDetectorRef = inject(ChangeDetectorRef);
+
 
   @ViewChild(TemplateRef) readonly templateRef!: TemplateRef<any>;
   @ContentChildren(AutocompleteOptionDirective, { descendants: true })

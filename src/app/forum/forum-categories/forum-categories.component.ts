@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CategoriesWithRecentTopics, CategoryWithSubCategories } from '@model/forum/category';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
@@ -62,16 +62,15 @@ import { ForumFilterDeletedPipe } from './forum-filter-deleted.pipe';
   ],
 })
 export class ForumCategoriesComponent {
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private authQuery: AuthQuery,
-    private categoryModalService: CategoryModalService,
-    private changeDetectorRef: ChangeDetectorRef,
-    private categoryService: CategoryService,
-    private breakpointObserverService: BreakpointObserverService,
-    private moderatorModalService: ModeratorModalService,
-    private subCategoryService: SubCategoryService
-  ) {}
+  private activatedRoute = inject(ActivatedRoute);
+  private authQuery = inject(AuthQuery);
+  private categoryModalService = inject(CategoryModalService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+  private categoryService = inject(CategoryService);
+  private breakpointObserverService = inject(BreakpointObserverService);
+  private moderatorModalService = inject(ModeratorModalService);
+  private subCategoryService = inject(SubCategoryService);
+
 
   private readonly _categories$ = new BehaviorSubject<CategoryWithSubCategories[]>(
     this._getCategoriesWithRecentTopicsFromRoute().categories

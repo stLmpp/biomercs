@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostListener, Input, OnInit, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, HostListener, Input, OnInit, Renderer2, inject } from '@angular/core';
 import { DatepickerComponent } from '@shared/components/datepicker/datepicker/datepicker.component';
 import { ControlValue } from '@stlmpp/control';
 import { parse } from 'date-fns';
@@ -10,14 +10,11 @@ import { InputmaskService } from '@shared/inputmask/inputmask.service';
   providers: [{ provide: ControlValue, useExisting: DatepickerDirective, multi: false }],
 })
 export class DatepickerDirective extends ControlValue<Date | null | undefined> implements OnInit {
-  constructor(
-    public elementRef: ElementRef<HTMLInputElement>,
-    private renderer2: Renderer2,
-    private authQuery: AuthQuery,
-    private inputmaskService: InputmaskService
-  ) {
-    super();
-  }
+  elementRef = inject<ElementRef<HTMLInputElement>>(ElementRef);
+  private renderer2 = inject(Renderer2);
+  private authQuery = inject(AuthQuery);
+  private inputmaskService = inject(InputmaskService);
+
 
   private readonly _mask = this.inputmaskService.createMask('datetime', {
     inputFormat: this._getDateFormat().toLowerCase(),

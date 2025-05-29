@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Optional } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { BadgeBase, BioBadgeConfig } from '@shared/components/badge/badge';
 
 @Component({
@@ -9,7 +9,9 @@ import { BadgeBase, BioBadgeConfig } from '@shared/components/badge/badge';
   host: { class: 'badge' },
 })
 export class BadgeComponent extends BadgeBase {
-  constructor(@Optional() bioBadgeConfig: BioBadgeConfig) {
+  constructor() {
+    const bioBadgeConfig = inject(BioBadgeConfig, { optional: true });
+
     super(bioBadgeConfig);
   }
 }

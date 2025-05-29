@@ -1,14 +1,4 @@
-import {
-  ComponentRef,
-  Directive,
-  ElementRef,
-  HostBinding,
-  HostListener,
-  Inject,
-  Input,
-  OnDestroy,
-  ViewContainerRef,
-} from '@angular/core';
+import { ComponentRef, Directive, ElementRef, HostBinding, HostListener, Input, OnDestroy, ViewContainerRef, inject } from '@angular/core';
 import { BooleanInput, coerceBooleanProperty, coerceNumberProperty, NumberInput } from 'st-utils';
 import { ConnectedPosition, Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { overlayPositionsArray } from '@util/overlay';
@@ -23,12 +13,11 @@ export type TooltipPosition = 'top' | 'right' | 'bottom' | 'left';
   exportAs: 'tooltip',
 })
 export class TooltipDirective implements OnDestroy {
-  constructor(
-    private overlay: Overlay,
-    private elementRef: ElementRef<HTMLElement>,
-    private viewContainerRef: ViewContainerRef,
-    @Inject(TOOLTIP_DEFAULT_CONFIG) private tooltipDefaultConfig: TooltipConfig
-  ) {}
+  private overlay = inject(Overlay);
+  private elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+  private viewContainerRef = inject(ViewContainerRef);
+  private tooltipDefaultConfig = inject<TooltipConfig>(TOOLTIP_DEFAULT_CONFIG);
+
 
   private _disabled = false;
   private _overlayRef?: OverlayRef;

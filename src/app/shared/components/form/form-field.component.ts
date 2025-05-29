@@ -1,16 +1,4 @@
-import {
-  AfterContentInit,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  ContentChild,
-  ContentChildren,
-  Input,
-  OnChanges,
-  OnDestroy,
-  QueryList,
-  ViewEncapsulation,
-} from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChild, ContentChildren, Input, OnChanges, OnDestroy, QueryList, ViewEncapsulation, inject } from '@angular/core';
 import { LabelDirective } from './label.directive';
 import { InputDirective } from './input.directive';
 import { SimpleChangesCustom } from '@util/util';
@@ -41,7 +29,8 @@ let uniqueId = 0;
   imports: [LabelDirective, NgClass, SpinnerComponent, AsyncPipe, HasValidatorsPipe],
 })
 export class FormFieldComponent implements AfterContentInit, OnChanges, OnDestroy {
-  constructor(private changeDetectorRef: ChangeDetectorRef) {}
+  private changeDetectorRef = inject(ChangeDetectorRef);
+
 
   private readonly _destroy$ = new Subject<void>();
 

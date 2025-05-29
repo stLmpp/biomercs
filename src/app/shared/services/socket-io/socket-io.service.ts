@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Manager } from 'socket.io-client';
 import { environment } from '@environment/environment';
 import { SocketIOConnection } from '@shared/services/socket-io/socket-io.connection';
@@ -7,7 +7,9 @@ import { asyncScheduler, observeOn } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class SocketIOService {
-  constructor(private authQuery: AuthQuery) {
+  private authQuery = inject(AuthQuery);
+
+  constructor() {
     this.authQuery.token$.pipe(observeOn(asyncScheduler)).subscribe(token => {
       this._manager.opts.extraHeaders!.authorization = token ? `Bearer ${token}` : '';
       this._manager.opts.query!.token = token ?? '';

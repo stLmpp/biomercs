@@ -1,14 +1,4 @@
-import {
-  ElementRef,
-  Inject,
-  Injectable,
-  Injector,
-  OnDestroy,
-  TemplateRef,
-  Type,
-  ViewContainerRef,
-  DOCUMENT
-} from '@angular/core';
+import { ElementRef, Injectable, Injector, OnDestroy, TemplateRef, Type, ViewContainerRef, DOCUMENT, inject } from '@angular/core';
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ModalRef } from './modal-ref';
 import {
@@ -26,13 +16,12 @@ import { DynamicLoaderService, LazyFn } from '../../../core/dynamic-loader.servi
 
 @Injectable({ providedIn: 'root' })
 export class ModalService implements OnDestroy {
-  constructor(
-    @Inject(MODAL_DEFAULT_CONFIG) private modalDefaultConfig: ModalConfig,
-    private overlay: Overlay,
-    private injector: Injector,
-    @Inject(DOCUMENT) private document: Document,
-    private dynamicLoaderService: DynamicLoaderService
-  ) {}
+  private modalDefaultConfig = inject<ModalConfig>(MODAL_DEFAULT_CONFIG);
+  private overlay = inject(Overlay);
+  private injector = inject(Injector);
+  private document = inject<Document>(DOCUMENT);
+  private dynamicLoaderService = inject(DynamicLoaderService);
+
 
   private _modalMap = new Map<string, ModalRef>();
 

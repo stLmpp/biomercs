@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { TopicWithPosts } from '@model/forum/topic';
 import { TopicService } from '../service/topic.service';
@@ -8,7 +8,9 @@ import { refreshMap } from '@util/operators/refresh-map';
 
 @Injectable({ providedIn: 'root' })
 export class TopicWithPostsResolver  {
-  constructor(private topicService: TopicService, private router: Router) {}
+  private topicService = inject(TopicService);
+  private router = inject(Router);
+
 
   resolve(
     route: ActivatedRouteSnapshot,

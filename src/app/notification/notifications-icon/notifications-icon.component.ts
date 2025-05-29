@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { NotificationService } from '../notification.service';
 import { finalize, map, Observable, takeUntil, tap } from 'rxjs';
 import { Animations } from '@shared/animations/animations';
@@ -40,14 +40,11 @@ interface NotificationCustom extends Notification {
   ],
 })
 export class NotificationsIconComponent extends Destroyable implements OnInit {
-  constructor(
-    private notificationService: NotificationService,
-    private changeDetectorRef: ChangeDetectorRef,
-    private breakpointObserverService: BreakpointObserverService,
-    private dynamicLoaderService: DynamicLoaderService
-  ) {
-    super();
-  }
+  private notificationService = inject(NotificationService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+  private breakpointObserverService = inject(BreakpointObserverService);
+  private dynamicLoaderService = inject(DynamicLoaderService);
+
 
   private _preloaded = false;
 

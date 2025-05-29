@@ -3,7 +3,7 @@ import {
   CurrencyMaskDirective as _CurrencyMaskDirective,
   CurrencyMaskInputMode,
 } from 'ngx-currency';
-import { Directive, ElementRef, Inject, KeyValueDiffers, OnInit, Optional } from '@angular/core';
+import { Directive, ElementRef, KeyValueDiffers, OnInit, inject } from '@angular/core';
 import { ControlValue } from '@stlmpp/control';
 import { Subject } from 'rxjs';
 import { CURRENCY_MASK_CONFIG } from '@shared/currency-mask/currency-mask-config.token';
@@ -13,11 +13,11 @@ import { CURRENCY_MASK_CONFIG } from '@shared/currency-mask/currency-mask-config
   providers: [{ provide: ControlValue, useExisting: CurrencyMaskDirective, multi: false }],
 })
 export class CurrencyMaskDirective extends _CurrencyMaskDirective implements ControlValue<number>, OnInit {
-  constructor(
-    elementRef: ElementRef,
-    keyValueDiffers: KeyValueDiffers,
-    @Optional() @Inject(CURRENCY_MASK_CONFIG) currencyMaskOptions?: Partial<CurrencyMaskConfig>
-  ) {
+  constructor() {
+    const elementRef = inject(ElementRef);
+    const keyValueDiffers = inject(KeyValueDiffers);
+    const currencyMaskOptions = inject<Partial<CurrencyMaskConfig>>(CURRENCY_MASK_CONFIG, { optional: true });
+
     super(
       {
         align: 'right',

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { PaginationMeta } from '@model/pagination';
 import { Score, ScoreSearch } from '@model/score';
 import { combineLatest, debounceTime, finalize, switchMap, takeUntil, tap } from 'rxjs';
@@ -65,22 +65,19 @@ import { AsyncPipe } from '@angular/common';
   ],
 })
 export class ScoreSearchComponent extends Destroyable implements OnInit {
-  constructor(
-    private authQuery: AuthQuery,
-    private scoreService: ScoreService,
-    private authDateFormatPipe: AuthDateFormatPipe,
-    private gameService: GameService,
-    private miniGameService: MiniGameService,
-    private modeService: ModeService,
-    private stageService: StageService,
-    private characterService: CharacterService,
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private scoreModalService: ScoreModalService,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {
-    super();
-  }
+  private authQuery = inject(AuthQuery);
+  private scoreService = inject(ScoreService);
+  private authDateFormatPipe = inject(AuthDateFormatPipe);
+  private gameService = inject(GameService);
+  private miniGameService = inject(MiniGameService);
+  private modeService = inject(ModeService);
+  private stageService = inject(StageService);
+  private characterService = inject(CharacterService);
+  private router = inject(Router);
+  private activatedRoute = inject(ActivatedRoute);
+  private scoreModalService = inject(ScoreModalService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+
 
   gameLoading = false;
   miniGameLoading = false;

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding, OnInit, inject } from '@angular/core';
 import { ModalRef } from '../modal-ref';
 import { filter, finalize, isObservable, Observable, take, takeUntil, tap } from 'rxjs';
 import { MODAL_DATA } from '../modal.config';
@@ -53,12 +53,14 @@ function mapDialogDataButtonToInternal(buttons: DialogDataButtonType[] | undefin
   ],
 })
 export class DialogComponent extends Destroyable implements OnInit {
-  constructor(
-    private modalRef: ModalRef<DialogComponent, DialogData, boolean>,
-    @Inject(MODAL_DATA) public data: DialogData,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {
+  private modalRef = inject<ModalRef<DialogComponent, DialogData, boolean>>(ModalRef);
+  data = inject<DialogData>(MODAL_DATA);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+
+  constructor() {
     super();
+    const data = this.data;
+
     this.buttons = mapDialogDataButtonToInternal(data.buttons);
   }
 

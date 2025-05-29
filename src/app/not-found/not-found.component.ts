@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { map, Observable, pluck, shareReplay } from 'rxjs';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
@@ -27,7 +27,8 @@ import { AsyncPipe } from '@angular/common';
   ],
 })
 export class NotFoundComponent {
-  constructor(private activatedRoute: ActivatedRoute) {}
+  private activatedRoute = inject(ActivatedRoute);
+
 
   readonly possiblePaths$: Observable<PossiblePath[]> = this.activatedRoute.data.pipe(
     pluck(RouteDataEnum.possiblePaths),

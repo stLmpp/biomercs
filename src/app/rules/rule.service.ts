@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Rule, RuleAdd, RuleUpsert } from '@model/rule';
@@ -6,7 +6,9 @@ import { CacheService } from '@shared/cache/cache';
 
 @Injectable({ providedIn: 'root' })
 export class RuleService {
-  constructor(private http: HttpClient, private cacheService: CacheService) {}
+  private http = inject(HttpClient);
+  private cacheService = inject(CacheService);
+
 
   private readonly _cache = this.cacheService.createCache();
 

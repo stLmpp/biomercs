@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { SubCategoryWithTopics } from '@model/forum/sub-category';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
@@ -34,14 +34,11 @@ import { PaginationComponent } from '../../shared/components/pagination/paginati
   ],
 })
 export class ForumSubCategoryComponent extends Destroyable implements OnInit {
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private changeDetectorRef: ChangeDetectorRef,
-    private subCategoryService: SubCategoryService,
-    private router: Router
-  ) {
-    super();
-  }
+  private activatedRoute = inject(ActivatedRoute);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+  private subCategoryService = inject(SubCategoryService);
+  private router = inject(Router);
+
 
   page = +(this.activatedRoute.snapshot.paramMap.get(RouteParamEnum.pageSubCategory) ?? 1);
   loading = false;

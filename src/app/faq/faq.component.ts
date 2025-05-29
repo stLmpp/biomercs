@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ViewChild, inject } from '@angular/core';
 import { BreakpointObserverService } from '@shared/services/breakpoint-observer/breakpoint-observer.service';
 import { AccordionDirective } from '@shared/components/accordion/accordion.directive';
 import { Destroyable } from '@shared/components/common/destroyable-component';
@@ -47,13 +47,10 @@ import { AsyncPipe } from '@angular/common';
   ],
 })
 export class FaqComponent extends Destroyable implements AfterViewInit {
-  constructor(
-    private breakpointObserverService: BreakpointObserverService,
-    private activatedRoute: ActivatedRoute,
-    private router: Router
-  ) {
-    super();
-  }
+  private breakpointObserverService = inject(BreakpointObserverService);
+  private activatedRoute = inject(ActivatedRoute);
+  private router = inject(Router);
+
 
   @ViewChild(AccordionDirective) readonly accordionDirective?: AccordionDirective;
 

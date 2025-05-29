@@ -1,12 +1,4 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Inject,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild, inject } from '@angular/core';
 import { debounceTime, finalize, Observable, tap } from 'rxjs';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
@@ -71,12 +63,11 @@ export interface RegionSelectData {
   ],
 })
 export class RegionSelectComponent implements OnInit, AfterViewInit {
-  constructor(
-    private modalRef: ModalRef,
-    @Inject(MODAL_DATA) { idRegion, onSelect }: RegionSelectData,
-    private regionService: RegionService,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {
+  private modalRef = inject(ModalRef);
+  private regionService = inject(RegionService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+
+  constructor() {
     this.idRegion = idRegion;
     this.idRegionOrigin = idRegion;
     this.onSelect = onSelect;

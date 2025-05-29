@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { first, Observable, of, switchMapTo, tap } from 'rxjs';
 import { User } from '@model/user';
 import { ignoreErrorContext } from './auth-error.interceptor';
@@ -8,7 +8,9 @@ import { AuthStore } from './auth.store';
 
 @Injectable({ providedIn: 'root' })
 export class AuthAutoLoginService {
-  constructor(private http: HttpClient, private authStore: AuthStore) {}
+  private http = inject(HttpClient);
+  private authStore = inject(AuthStore);
+
 
   readonly endPoint = 'auth';
 

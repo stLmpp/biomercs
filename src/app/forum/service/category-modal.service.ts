@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ModalService } from '@shared/components/modal/modal.service';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import type { ForumCategoryAddEditComponent } from '../forum-category-add-edit/forum-category-add-edit.component';
@@ -6,7 +6,8 @@ import { Category } from '@model/forum/category';
 
 @Injectable({ providedIn: 'root' })
 export class CategoryModalService {
-  constructor(private modalService: ModalService) {}
+  private modalService = inject(ModalService);
+
 
   async openAddEdit(
     idCategory?: number

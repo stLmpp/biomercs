@@ -1,17 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  ComponentRef,
-  ElementRef,
-  EmbeddedViewRef,
-  HostBinding,
-  HostListener,
-  Inject,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-  ViewEncapsulation,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, ComponentRef, ElementRef, EmbeddedViewRef, HostBinding, HostListener, OnDestroy, OnInit, ViewChild, ViewEncapsulation, inject } from '@angular/core';
 import { CdkPortalOutlet, ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { MODAL_LAST_FOCUSED_ELEMENT, ModalConfig } from './modal.config';
@@ -30,13 +17,12 @@ import { Animations } from '../../animations/animations';
   imports: [CdkPortalOutlet],
 })
 export class ModalComponent<R = any> implements OnInit, OnDestroy {
-  constructor(
-    private modalConfig: ModalConfig,
-    private overlayRef: OverlayRef,
-    @Inject(MODAL_LAST_FOCUSED_ELEMENT) private lastFocusedElement: Element | null,
-    private configurableFocusTrapFactory: ConfigurableFocusTrapFactory,
-    private elementRef: ElementRef
-  ) {}
+  private modalConfig = inject(ModalConfig);
+  private overlayRef = inject(OverlayRef);
+  private lastFocusedElement = inject<Element | null>(MODAL_LAST_FOCUSED_ELEMENT);
+  private configurableFocusTrapFactory = inject(ConfigurableFocusTrapFactory);
+  private elementRef = inject(ElementRef);
+
 
   private _focusTrap?: ConfigurableFocusTrap;
 

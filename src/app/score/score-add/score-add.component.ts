@@ -1,11 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  QueryList,
-  ViewChild,
-  ViewChildren,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, QueryList, ViewChild, ViewChildren, inject } from '@angular/core';
 import {
   Control,
   ControlArray,
@@ -92,15 +85,14 @@ import { AsyncDefaultPipe } from '../../shared/async-default/async-default.pipe'
   ],
 })
 export class ScoreAddComponent {
-  constructor(
-    private authQuery: AuthQuery,
-    private characterService: CharacterService,
-    private scoreService: ScoreService,
-    private dialogService: DialogService,
-    private router: Router,
-    private changeDetectorRef: ChangeDetectorRef,
-    private platformInputTypeService: PlatformInputTypeService
-  ) {}
+  private authQuery = inject(AuthQuery);
+  private characterService = inject(CharacterService);
+  private scoreService = inject(ScoreService);
+  private dialogService = inject(DialogService);
+  private router = inject(Router);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+  private platformInputTypeService = inject(PlatformInputTypeService);
+
 
   @ViewChildren(ScoreAddPlayerComponent) readonly scoreAddPlayerComponents!: QueryList<ScoreAddPlayerComponent>;
   @ViewChild(ParamsComponent) readonly paramsComponent!: ParamsComponent;

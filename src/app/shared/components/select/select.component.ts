@@ -1,20 +1,4 @@
-import {
-  AfterContentInit,
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  ContentChildren,
-  ElementRef,
-  HostBinding,
-  HostListener,
-  Input,
-  QueryList,
-  TemplateRef,
-  ViewChild,
-  ViewContainerRef,
-  ViewEncapsulation,
-} from '@angular/core';
+import { AfterContentInit, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, ElementRef, HostBinding, HostListener, Input, QueryList, TemplateRef, ViewChild, ViewContainerRef, ViewEncapsulation, inject } from '@angular/core';
 import { ControlValue } from '@stlmpp/control';
 import { Select } from './select';
 import { auditTime, startWith, Subject, takeUntil } from 'rxjs';
@@ -50,14 +34,11 @@ import { IconComponent } from '../icon/icon.component';
 })
 // I had to do "implements", instead of "extends", so I can use the "Select" abstract class
 export class SelectComponent extends Select implements ControlValue, AfterContentInit, AfterViewInit {
-  constructor(
-    protected changeDetectorRef: ChangeDetectorRef,
-    private overlay: Overlay,
-    private viewContainerRef: ViewContainerRef,
-    public elementRef: ElementRef<HTMLElement>
-  ) {
-    super();
-  }
+  protected changeDetectorRef = inject(ChangeDetectorRef);
+  private overlay = inject(Overlay);
+  private viewContainerRef = inject(ViewContainerRef);
+  elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+
 
   private _afterViewInit = false;
   private _isInvalid = false;

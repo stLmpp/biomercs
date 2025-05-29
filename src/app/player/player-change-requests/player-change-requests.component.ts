@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { ScoreService } from '../../score/score.service';
 import { ActivatedRoute } from '@angular/router';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
@@ -35,18 +35,22 @@ export interface PlayerChangeRequestsState {
   imports: [PageTitleComponent, ScoreListResponsiveComponent, AsyncPipe],
 })
 export class PlayerChangeRequestsComponent extends LocalState<PlayerChangeRequestsState> implements OnInit {
-  constructor(
-    private scoreService: ScoreService,
-    private activatedRoute: ActivatedRoute,
-    private authDateFormatPipe: AuthDateFormatPipe,
-    private playerModalService: PlayerModalService
-  ) {
+  private scoreService = inject(ScoreService);
+  private activatedRoute: ActivatedRoute;
+  private authDateFormatPipe = inject(AuthDateFormatPipe);
+  private playerModalService = inject(PlayerModalService);
+
+  constructor() {
+    const activatedRoute = inject(ActivatedRoute);
+
     super({
       page: +(activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.page) ?? 1),
       itemsPerPage: +(activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.itemsPerPage) ?? 10),
       loading: false,
       data: activatedRoute.snapshot.data.data,
     });
+  
+    this.activatedRoute = activatedRoute;
   }
 
   private readonly _data$: Observable<ScoreChangeRequestsPagination> = this.selectState('data');

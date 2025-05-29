@@ -1,11 +1,12 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { MailStatusQueue } from '@model/mail';
 
 @Injectable({ providedIn: 'root' })
 export class MailService {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
+
 
   readonly endPoint = 'mail';
 

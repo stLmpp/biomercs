@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { Score } from '@model/score';
 import { ScoreApprovalActionEnum } from '@model/enum/score-approval-action.enum';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
@@ -62,14 +62,13 @@ export interface ScoreApprovalModalData {
   ],
 })
 export class ScoreApprovalModalComponent {
-  constructor(
-    @Inject(MODAL_DATA) { action, score, scoreApprovalComponentState }: ScoreApprovalModalData,
-    private scoreService: ScoreService,
-    public modalRef: ModalRef<ScoreApprovalModalComponent, ScoreApprovalModalData, ScoreApprovalPagination>,
-    private scoreApprovalService: ScoreApprovalMotiveService,
-    private controlBuilder: ControlBuilder,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {
+  private scoreService = inject(ScoreService);
+  modalRef = inject<ModalRef<ScoreApprovalModalComponent, ScoreApprovalModalData, ScoreApprovalPagination>>(ModalRef);
+  private scoreApprovalService = inject(ScoreApprovalMotiveService);
+  private controlBuilder = inject(ControlBuilder);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+
+  constructor() {
     this.score = score;
     this.action = action;
     this.scoreApprovalComponentState = scoreApprovalComponentState;

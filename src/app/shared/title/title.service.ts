@@ -1,4 +1,4 @@
-import { Injectable, Injector, Type } from '@angular/core';
+import { Injectable, Injector, Type, inject } from '@angular/core';
 import { GlobalListenersService } from '@shared/services/global-listeners/global-listeners.service';
 import { distinctUntilChanged, filter, isObservable, shareReplay, switchMap, tap } from 'rxjs';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
@@ -14,11 +14,10 @@ function isTitleResolver(type: any): type is Type<TitleResolver> {
 
 @Injectable({ providedIn: 'root' })
 export class TitleService {
-  constructor(
-    private globalListenersService: GlobalListenersService,
-    private title: Title,
-    private injector: Injector
-  ) {}
+  private globalListenersService = inject(GlobalListenersService);
+  private title = inject(Title);
+  private injector = inject(Injector);
+
 
   readonly title$ = this.globalListenersService.routerActivationEnd$.pipe(
     filter(event => !!event.snapshot.data[RouteDataEnum.title]),

@@ -1,4 +1,4 @@
-import { Directive, ElementRef, EventEmitter, Host, HostBinding, HostListener, Input, Output } from '@angular/core';
+import { Directive, ElementRef, EventEmitter, HostBinding, HostListener, Input, Output, inject } from '@angular/core';
 import { FocusableOption } from '@angular/cdk/a11y';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { Autocomplete } from '@shared/components/autocomplete/autocomplete';
@@ -8,7 +8,9 @@ import { Autocomplete } from '@shared/components/autocomplete/autocomplete';
   host: { class: 'autocomplete-option' },
 })
 export class AutocompleteOptionDirective implements FocusableOption {
-  constructor(private elementRef: ElementRef<HTMLElement>, @Host() private autocomplete: Autocomplete) {}
+  private elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+  private autocomplete = inject(Autocomplete, { host: true });
+
 
   private _disabled = false;
 

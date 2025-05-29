@@ -1,17 +1,4 @@
-import {
-  AfterContentInit,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  ContentChildren,
-  ElementRef,
-  EventEmitter,
-  HostBinding,
-  Input,
-  Output,
-  QueryList,
-  ViewEncapsulation,
-} from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, ElementRef, EventEmitter, HostBinding, Input, Output, QueryList, ViewEncapsulation, inject } from '@angular/core';
 import { CardTitleDirective } from './card-title.directive';
 import { CardContentDirective } from './card-content.directive';
 import { CardActionsDirective } from './card-actions.directive';
@@ -37,9 +24,9 @@ import { NgTemplateOutlet } from '@angular/common';
   imports: [IconComponent, CollapseComponent, NgTemplateOutlet],
 })
 export class CardComponent extends Destroyable implements AfterContentInit {
-  constructor(private changeDetectorRef: ChangeDetectorRef, public elementRef: ElementRef<HTMLElement>) {
-    super();
-  }
+  private changeDetectorRef = inject(ChangeDetectorRef);
+  elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+
 
   private _collapsable = false;
   private _dark = false;

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import { CategoryService } from '../service/category.service';
@@ -46,17 +46,12 @@ export interface ForumTopicTransferComponentResponse {
   ],
 })
 export class ForumTopicTransferComponent implements OnInit {
-  constructor(
-    @Inject(MODAL_DATA) { idTopic, idSubCategory }: ForumTopicTransferComponentData,
-    private modalRef: ModalRef<
-      ForumTopicTransferComponent,
-      ForumTopicTransferComponentData,
-      ForumTopicTransferComponentResponse
-    >,
-    private categoryService: CategoryService,
-    private changeDetectorRef: ChangeDetectorRef,
-    private topicService: TopicService
-  ) {
+  private modalRef = inject<ModalRef<ForumTopicTransferComponent, ForumTopicTransferComponentData, ForumTopicTransferComponentResponse>>(ModalRef);
+  private categoryService = inject(CategoryService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+  private topicService = inject(TopicService);
+
+  constructor() {
     this.idSubCategory = idSubCategory;
     this._idTopic = idTopic;
     this.idSubCategoryTo = idSubCategory;

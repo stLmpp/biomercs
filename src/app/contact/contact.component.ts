@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import {
   Control,
   ControlGroup,
@@ -57,14 +57,13 @@ import { AsyncPipe } from '@angular/common';
   ],
 })
 export class ContactComponent {
-  constructor(
-    private contactService: ContactService,
-    private router: Router,
-    private snackBarService: SnackBarService,
-    private dialogService: DialogService,
-    private authQuery: AuthQuery,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {}
+  private contactService = inject(ContactService);
+  private router = inject(Router);
+  private snackBarService = inject(SnackBarService);
+  private dialogService = inject(DialogService);
+  private authQuery = inject(AuthQuery);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+
 
   readonly mail = 'support@biomercs.net';
   readonly subject = 'Give me a good subject';

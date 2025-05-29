@@ -1,4 +1,4 @@
-import { Inject, Injectable, Injector } from '@angular/core';
+import { Injectable, Injector, inject } from '@angular/core';
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { SnackBarComponent } from './snack-bar.component';
 import { SNACK_BAR_DEFAULT_CONFIG, SnackBarConfig } from './snack-bar.config';
@@ -8,11 +8,10 @@ import { take } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class SnackBarService {
-  constructor(
-    private overlay: Overlay,
-    @Inject(SNACK_BAR_DEFAULT_CONFIG) private defaultSnackBarConfig: SnackBarConfig,
-    private injector: Injector
-  ) {}
+  private overlay = inject(Overlay);
+  private defaultSnackBarConfig = inject<SnackBarConfig>(SNACK_BAR_DEFAULT_CONFIG);
+  private injector = inject(Injector);
+
 
   private _snackBarMap = new Map<string, SnackBarComponent>();
 

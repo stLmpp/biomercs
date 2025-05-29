@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { AuthQuery } from '../auth/auth.query';
 import { HeaderQuery } from '../header/header.query';
 import { filterNil } from '@util/operators/filter';
@@ -19,11 +19,10 @@ import { AsyncPipe } from '@angular/common';
   imports: [CardMenusDirective, CardMenuDirective, RouterLink, IconComponent, BadgeDirective, AsyncPipe],
 })
 export class HomeComponent {
-  constructor(
-    private authQuery: AuthQuery,
-    private headerQuery: HeaderQuery,
-    private breakpointObserverService: BreakpointObserverService
-  ) {}
+  private authQuery = inject(AuthQuery);
+  private headerQuery = inject(HeaderQuery);
+  private breakpointObserverService = inject(BreakpointObserverService);
+
 
   readonly isLogged$ = this.authQuery.isLogged$;
   readonly isAdmin$ = this.authQuery.isAdmin$;

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Directive, ElementRef, HostBinding, Input } from '@angular/core';
+import { ChangeDetectorRef, Directive, ElementRef, HostBinding, Input, inject } from '@angular/core';
 import { BioFilterBy } from '@shared/filter/filter';
 
 @Directive({
@@ -6,7 +6,9 @@ import { BioFilterBy } from '@shared/filter/filter';
   host: { class: 'bio-filter-item' },
 })
 export class FilterItemDirective {
-  constructor(private changeDetectorRef: ChangeDetectorRef, private elementRef: ElementRef<HTMLElement>) {}
+  private changeDetectorRef = inject(ChangeDetectorRef);
+  private elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+
 
   private _bioFilterItem: BioFilterBy = 'textContent';
 

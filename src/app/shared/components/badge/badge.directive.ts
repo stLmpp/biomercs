@@ -1,4 +1,4 @@
-import { AfterViewInit, Directive, ElementRef, HostBinding, Input, Optional, Renderer2 } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, HostBinding, Input, Renderer2, inject } from '@angular/core';
 import { BooleanInput, coerceBooleanProperty, isNil } from 'st-utils';
 import { BadgeBase, BioBadgeConfig } from '@shared/components/badge/badge';
 import { VerticalHorizontalPosition } from '@shared/components/common/positions';
@@ -11,11 +11,12 @@ import { VerticalHorizontalPosition } from '@shared/components/common/positions'
   },
 })
 export class BadgeDirective extends BadgeBase implements AfterViewInit {
-  constructor(
-    private renderer2: Renderer2,
-    private elementRef: ElementRef,
-    @Optional() bioBadgeConfig: BioBadgeConfig
-  ) {
+  private renderer2 = inject(Renderer2);
+  private elementRef = inject(ElementRef);
+
+  constructor() {
+    const bioBadgeConfig = inject(BioBadgeConfig, { optional: true });
+
     super(bioBadgeConfig);
   }
 

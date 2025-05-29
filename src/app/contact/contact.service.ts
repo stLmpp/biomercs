@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ContactSendMail } from '@model/contact';
 import { Observable } from 'rxjs';
@@ -6,7 +6,8 @@ import { ignoreErrorContext } from '../auth/auth-error.interceptor';
 
 @Injectable({ providedIn: 'root' })
 export class ContactService {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
+
 
   endPoint = 'contact';
 

@@ -1,13 +1,4 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Inject,
-  OnInit,
-  QueryList,
-  ViewChildren,
-} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, QueryList, ViewChildren, inject } from '@angular/core';
 import { Score } from '@model/score';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import {
@@ -75,13 +66,12 @@ export interface TextAreaEvent {
   ],
 })
 export class ScoreRequestChangesModalComponent implements OnInit, AfterViewInit {
-  constructor(
-    @Inject(MODAL_DATA) { score, scoreApprovalComponentState }: ScoreRequestChangesModalData,
-    private controlBuilder: ControlBuilder,
-    public modalRef: ModalRef<ScoreRequestChangesModalComponent, ScoreRequestChangesModalForm, ScoreApprovalPagination>,
-    private scoreService: ScoreService,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {
+  private controlBuilder = inject(ControlBuilder);
+  modalRef = inject<ModalRef<ScoreRequestChangesModalComponent, ScoreRequestChangesModalForm, ScoreApprovalPagination>>(ModalRef);
+  private scoreService = inject(ScoreService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+
+  constructor() {
     this.score = score;
     this.scoreApprovalComponentState = scoreApprovalComponentState;
   }

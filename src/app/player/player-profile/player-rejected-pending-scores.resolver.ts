@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { ScoreGroupedByStatus } from '@model/score-grouped-by-status';
 import { ScoreService } from '../../score/score.service';
@@ -8,7 +8,9 @@ import { RouteParamEnum } from '@model/enum/route-param.enum';
 
 @Injectable({ providedIn: 'root' })
 export class PlayerRejectedPendingScoresResolver  {
-  constructor(private scoreService: ScoreService, private authQuery: AuthQuery) {}
+  private scoreService = inject(ScoreService);
+  private authQuery = inject(AuthQuery);
+
 
   resolve(
     route: ActivatedRouteSnapshot,

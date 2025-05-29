@@ -1,17 +1,4 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  Component,
-  ComponentRef,
-  EventEmitter,
-  HostBinding,
-  Input,
-  OnChanges,
-  Output,
-  ViewChild,
-  ViewContainerRef,
-  ViewEncapsulation,
-} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ComponentRef, EventEmitter, HostBinding, Input, OnChanges, Output, ViewChild, ViewContainerRef, ViewEncapsulation, inject } from '@angular/core';
 import { ColDefInternal } from '@shared/components/table/col-def';
 import { CdkPortalOutlet, ComponentPortal } from '@angular/cdk/portal';
 import { TableCell, TableCellNotifyChange } from '@shared/components/table/type';
@@ -44,9 +31,8 @@ export class TableCellComponent<T extends Record<any, any>, K extends keyof T>
   extends Destroyable
   implements AfterViewInit, OnChanges
 {
-  constructor(private viewContainerRef: ViewContainerRef) {
-    super();
-  }
+  private viewContainerRef = inject(ViewContainerRef);
+
 
   private _viewInitialized = false;
   private _componentPortal!: ComponentPortal<TableCell<T, K>>;

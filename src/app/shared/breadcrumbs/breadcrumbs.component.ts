@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { BreadcrumbsService } from '@shared/breadcrumbs/breadcrumbs.service';
 import { Observable } from 'rxjs';
 import { BreadcrumbsItem } from '@shared/breadcrumbs/breadcrumbs';
@@ -15,7 +15,8 @@ import { AsyncPipe } from '@angular/common';
   imports: [RouterLink, AsyncPipe],
 })
 export class BreadcrumbsComponent {
-  constructor(private breadcrumbsService: BreadcrumbsService) {}
+  private breadcrumbsService = inject(BreadcrumbsService);
+
 
   readonly breadcrumbs$: Observable<BreadcrumbsItem[]> = this.breadcrumbsService.breadcrumbs$;
 

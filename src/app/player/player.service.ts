@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { WINDOW } from '../core/window.service';
 import { SteamService } from '@shared/services/steam/steam.service';
@@ -11,12 +11,11 @@ import { SteamPlayerLinkedSocketViewModel } from '@model/steam-profile';
 
 @Injectable({ providedIn: 'root' })
 export class PlayerService {
-  constructor(
-    private http: HttpClient,
-    @Inject(WINDOW) private window: Window,
-    private steamService: SteamService,
-    private dialogService: DialogService
-  ) {}
+  private http = inject(HttpClient);
+  private window = inject<Window>(WINDOW);
+  private steamService = inject(SteamService);
+  private dialogService = inject(DialogService);
+
 
   readonly endPoint = 'player';
 

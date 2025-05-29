@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ScoreApprovalActionEnum } from '@model/enum/score-approval-action.enum';
 import { Observable } from 'rxjs';
@@ -8,7 +8,9 @@ import { CacheService } from '@shared/cache/cache';
 
 @Injectable({ providedIn: 'root' })
 export class ScoreApprovalMotiveService {
-  constructor(private http: HttpClient, private cacheService: CacheService) {}
+  private http = inject(HttpClient);
+  private cacheService = inject(CacheService);
+
 
   private readonly _cache = this.cacheService.createCache();
 

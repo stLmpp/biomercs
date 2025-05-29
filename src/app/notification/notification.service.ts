@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { SocketIOService } from '@shared/services/socket-io/socket-io.service';
 import { BehaviorSubject, Observable, switchMap, tap } from 'rxjs';
@@ -9,7 +9,10 @@ import { Pagination } from '@model/pagination';
 
 @Injectable({ providedIn: 'root' })
 export class NotificationService {
-  constructor(private http: HttpClient, private socketIOService: SocketIOService, private authQuery: AuthQuery) {}
+  private http = inject(HttpClient);
+  private socketIOService = inject(SocketIOService);
+  private authQuery = inject(AuthQuery);
+
 
   private readonly _socketConnection = this.socketIOService.createConnection('notification');
   private readonly _unseenCount$ = new BehaviorSubject(0);

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Mode } from '@model/mode';
@@ -7,7 +7,9 @@ import { CacheService } from '@shared/cache/cache';
 
 @Injectable({ providedIn: 'root' })
 export class ModeService {
-  constructor(private http: HttpClient, private cacheService: CacheService) {}
+  private http = inject(HttpClient);
+  private cacheService = inject(CacheService);
+
 
   private readonly _cache = this.cacheService.createCache();
 

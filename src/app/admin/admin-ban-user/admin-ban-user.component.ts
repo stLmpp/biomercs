@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { UserService } from '@shared/services/user/user.service';
 import { Control, ControlGroup, StControlModule, StControlCommonModule, StControlValueModule } from '@stlmpp/control';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -73,15 +73,12 @@ interface UserBan extends User {
   ],
 })
 export class AdminBanUserComponent extends Destroyable implements OnInit {
-  constructor(
-    private userService: UserService,
-    private activatedRoute: ActivatedRoute,
-    private router: Router,
-    private dialogService: DialogService,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {
-    super();
-  }
+  private userService = inject(UserService);
+  private activatedRoute = inject(ActivatedRoute);
+  private router = inject(Router);
+  private dialogService = inject(DialogService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+
 
   readonly dateMinus7 = subDays(new Date(), 7);
   readonly mdiShieldAccount = mdiShieldAccount;

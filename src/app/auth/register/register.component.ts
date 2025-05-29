@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { debounceTime, finalize, Observable, pluck, tap } from 'rxjs';
 import { AuthService } from '../auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -63,17 +63,14 @@ interface AuthRegisterForm extends AuthRegister {
   ],
 })
 export class RegisterComponent extends Destroyable {
-  constructor(
-    private authService: AuthService,
-    private activatedRoute: ActivatedRoute,
-    private controlBuilder: ControlBuilder,
-    private router: Router,
-    private emailExistsValidator: EmailExistsValidator,
-    private usernameExistsValidator: UsernameExistsValidator,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {
-    super();
-  }
+  private authService = inject(AuthService);
+  private activatedRoute = inject(ActivatedRoute);
+  private controlBuilder = inject(ControlBuilder);
+  private router = inject(Router);
+  private emailExistsValidator = inject(EmailExistsValidator);
+  private usernameExistsValidator = inject(UsernameExistsValidator);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+
 
   private _idUser = 0;
 

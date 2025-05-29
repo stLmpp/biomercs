@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { CalendarDay } from '@shared/components/datepicker/calendar-day';
 import { trackByFactory } from '@stlmpp/utils';
 import {
@@ -29,9 +29,8 @@ import { DateEqualPipe } from '../../../date/date-equal.pipe';
   imports: [ButtonComponent, DateEqualPipe],
 })
 export class CalendarDaysComponent extends CalendarKeyboardNavigation {
-  constructor(private readonly calendarAdapter: CalendarAdapter) {
-    super();
-  }
+  private readonly calendarAdapter = inject(CalendarAdapter);
+
 
   @Input() value: Date | null | undefined;
   @Input() days: CalendarDay[] = [];

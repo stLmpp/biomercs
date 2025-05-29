@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import type {
   ScoreApprovalModalComponent,
   ScoreApprovalModalData,
@@ -17,7 +17,8 @@ import type {
 
 @Injectable({ providedIn: 'root' })
 export class ScoreModalService {
-  constructor(private modalService: ModalService) {}
+  private modalService = inject(ModalService);
+
 
   async openModalScoreApproval(
     data: ScoreApprovalModalData

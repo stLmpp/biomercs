@@ -1,12 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  HostBinding,
-  Input,
-  Output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, HostBinding, Input, Output, inject } from '@angular/core';
 import { mdiPin, mdiPinOff } from '@mdi/js';
 import { Topic } from '@model/forum/topic';
 import { TopicService } from '../../service/topic.service';
@@ -36,7 +28,9 @@ import { AuthDateFormatPipe } from '../../../auth/shared/auth-date-format.pipe';
   ],
 })
 export class ForumSubCategoryTopicComponent {
-  constructor(private topicService: TopicService, private changeDetectorRef: ChangeDetectorRef) {}
+  private topicService = inject(TopicService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+
 
   @Input() topic!: Topic;
 

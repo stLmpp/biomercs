@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Pagination } from '@model/pagination';
@@ -7,7 +7,8 @@ import { HttpParams } from '@util/http-params';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
+
 
   readonly endPoint = 'user';
 

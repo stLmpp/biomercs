@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { CategoriesWithRecentTopics } from '@model/forum/category';
 import { CategoryService } from '../service/category.service';
@@ -6,7 +6,8 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class CategoriesWithRecentTopicsResolver  {
-  constructor(private categoryService: CategoryService) {}
+  private categoryService = inject(CategoryService);
+
 
   resolve(
     route: ActivatedRouteSnapshot,

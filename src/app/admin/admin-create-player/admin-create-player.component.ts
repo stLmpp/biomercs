@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import {
   Control,
   ControlGroup,
@@ -62,15 +62,14 @@ import { AsyncPipe } from '@angular/common';
   ],
 })
 export class AdminCreatePlayerComponent {
-  constructor(
-    private playerService: PlayerService,
-    private personaNameExistsValidator: PersonaNameExistsValidator,
-    private steamIdExistsValidator: SteamIdExistsValidator,
-    private dialogService: DialogService,
-    private router: Router,
-    private changeDetectorRef: ChangeDetectorRef,
-    private activatedRoute: ActivatedRoute
-  ) {}
+  private playerService = inject(PlayerService);
+  private personaNameExistsValidator = inject(PersonaNameExistsValidator);
+  private steamIdExistsValidator = inject(SteamIdExistsValidator);
+  private dialogService = inject(DialogService);
+  private router = inject(Router);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+  private activatedRoute = inject(ActivatedRoute);
+
 
   loading = false;
 

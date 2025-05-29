@@ -1,15 +1,4 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  EventEmitter,
-  HostBinding,
-  Input,
-  OnChanges,
-  Output,
-} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostBinding, Input, OnChanges, Output, inject } from '@angular/core';
 import { Post, PostUpdateDto } from '@model/forum/post';
 import { PlayerService } from '../../../player/player.service';
 import { PostService } from '../../service/post.service';
@@ -29,16 +18,15 @@ import { ForumService } from '../../service/forum.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ForumTopicPostComponent implements AfterViewInit, OnChanges {
-  constructor(
-    private playerService: PlayerService,
-    private postService: PostService,
-    private changeDetectorRef: ChangeDetectorRef,
-    private dialogService: DialogService,
-    private topicService: TopicService,
-    private elementRef: ElementRef<HTMLElement>,
-    private activatedRoute: ActivatedRoute,
-    private forumService: ForumService
-  ) {}
+  private playerService = inject(PlayerService);
+  private postService = inject(PostService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+  private dialogService = inject(DialogService);
+  private topicService = inject(TopicService);
+  private elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+  private activatedRoute = inject(ActivatedRoute);
+  private forumService = inject(ForumService);
+
 
   private readonly _post$ = new ReplaySubject<Post>();
 

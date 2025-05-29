@@ -1,15 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  HostBinding,
-  Inject,
-  Input,
-  LOCALE_ID,
-  Optional,
-  TemplateRef,
-  ViewChild,
-  ViewContainerRef,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input, LOCALE_ID, TemplateRef, ViewChild, ViewContainerRef, inject } from '@angular/core';
 import { CalendarViewModeEnum } from '@shared/components/datepicker/calendar-view-mode.enum';
 import { coerceBooleanProperty } from 'st-utils';
 import { Animations } from '@shared/animations/animations';
@@ -35,13 +24,14 @@ import { CdkTrapFocus } from '@angular/cdk/a11y';
   imports: [CalendarComponent, CdkTrapFocus],
 })
 export class DatepickerComponent extends Destroyable {
-  constructor(
-    private overlay: Overlay,
-    private scrollStrategyOptions: ScrollStrategyOptions,
-    private viewContainerRef: ViewContainerRef,
-    @Inject(LOCALE_ID) localeId: string,
-    @Optional() @Inject(CALENDAR_LOCALE) locale?: string
-  ) {
+  private overlay = inject(Overlay);
+  private scrollStrategyOptions = inject(ScrollStrategyOptions);
+  private viewContainerRef = inject(ViewContainerRef);
+
+  constructor() {
+    const localeId = inject(LOCALE_ID);
+    const locale = inject(CALENDAR_LOCALE, { optional: true });
+
     super();
     this.locale = locale ?? localeId;
   }
