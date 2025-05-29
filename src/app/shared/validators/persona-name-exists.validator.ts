@@ -1,4 +1,4 @@
-import { Directive, Injectable, Input, inject } from '@angular/core';
+import { Directive, Injectable, inject, input } from '@angular/core';
 import { Control, ControlValidator } from '@stlmpp/control';
 import { map, Observable, switchMap, timer } from 'rxjs';
 import { PlayerService } from '../../player/player.service';
@@ -30,13 +30,13 @@ export class PersonaNameExistsValidatorDirective extends ControlValidator<string
   private personaNameExistsValidator = inject(PersonaNameExistsValidator);
 
 
-  @Input() personaNameExistsIgnore?: string;
+  readonly personaNameExistsIgnore = input<string>();
 
   override async = true;
   name = 'personaNameExists';
 
   validate(control: Control<string>): Observable<boolean | null> | boolean | null {
-    if (control.value === this.personaNameExistsIgnore) {
+    if (control.value === this.personaNameExistsIgnore()) {
       return null;
     }
     return this.personaNameExistsValidator.validate(control);

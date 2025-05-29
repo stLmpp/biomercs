@@ -64,7 +64,7 @@ export class FaqComponent extends Destroyable implements AfterViewInit {
 
   onFilterChange($event: FilterItemDirective[]): void {
     if ($event.length === 1 && this.accordionDirective) {
-      this.accordionDirective.expandItem($event[0].id + '');
+      this.accordionDirective.expandItem($event[0].id() + '');
     }
   }
 

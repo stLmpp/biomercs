@@ -1,20 +1,20 @@
-@if (notifications.length) {
+@if (notifications().length) {
   <div class="actions">
     <button bioButton type="button" (click)="deleteAll()" [loading]="deleteAllLoading" danger>Delete all</button>
     <button bioButton type="button" (click)="readAll()" [loading]="readAllLoading" primary>Read all</button>
   </div>
 }
-<bio-list selectable [bioLoading]="loading">
+<bio-list selectable [bioLoading]="loading()">
   <cdk-virtual-scroll-viewport
     itemSize="90"
     (scrolledIndexChange)="onScrolledIndexChange($event)"
-    [class.viewport-no-data-found]="!notifications.length && !loading"
+    [class.viewport-no-data-found]="!notifications().length && !loading()"
     >
-    @if (!notifications.length && !loading) {
+    @if (!notifications().length && !loading()) {
       <div class="no-data-found">Nothing here to see</div>
     }
     <bio-list-item
-      *cdkVirtualFor="let notification of notifications; trackBy: trackById"
+      *cdkVirtualFor="let notification of notifications(); trackBy: trackById"
       [disabled]="notification.loading"
       (click)="openModal(notification)"
       [title]="notification.content"
@@ -59,7 +59,7 @@
         </button>
       </bio-menu>
     </bio-list-item>
-    @if (loadingMore) {
+    @if (loadingMore()) {
       <bio-list-item>
         <bio-list-item-line>Loading...</bio-list-item-line>
         <bio-spinner bioSuffix [size]="0.1"></bio-spinner>

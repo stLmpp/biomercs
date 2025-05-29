@@ -29,7 +29,7 @@ export class SelectMultipleComponent extends SelectComponent implements AfterCon
   override value: any[] = [];
 
   private _setControlValueNoEmit(valueSelected: any): void {
-    const indexSelected = this.value.findIndex(value => this.compareWith(value, valueSelected));
+    const indexSelected = this.value.findIndex(value => this.compareWith()(value, valueSelected));
     if (indexSelected !== -1) {
       this.value = this.value.filter((_, index) => indexSelected !== index);
     } else {
@@ -63,7 +63,7 @@ export class SelectMultipleComponent extends SelectComponent implements AfterCon
   override ngAfterContentInit(): void {
     this.options.changes.pipe(takeUntil(this.destroy$), auditTime(100), startWith(this.options)).subscribe(options => {
       for (const option of options) {
-        option.isSelected = this.value.some(value => this.compareWith(value, option.value));
+        option.isSelected = this.value.some(value => this.compareWith()(value, option.value));
         option.changeDetectorRef.markForCheck();
         option.optgroupComponent?.changeDetectorRef.markForCheck();
       }

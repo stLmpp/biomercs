@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, inject, input } from '@angular/core';
 import {
   BreakpointObserverService,
   MediaQueryEnum,
@@ -27,17 +27,17 @@ export class ScoreListResponsiveComponent<T extends Score = Score> {
 
   private _collapsable = false;
 
-  @Input() scores: T[] = [];
+  readonly scores = input<T[]>([]);
 
-  @Input() loading: BooleanInput = false;
-  @Input() paginationMeta?: PaginationMeta | null;
-  @Input() itemsPerPageOptions: number[] = PaginationComponent.defaultItemsPerPageOptions;
-  @Input() order?: TableOrder<T> | null;
-  @Input() colDefs!: ColDef<T>[];
-  @Input() colDefDefault: Partial<ColDef<T>> = {};
-  @Input() metadata: any;
-  @Input() title?: string;
-  @Input() disabledProperty?: keyof T;
+  readonly loading = input<BooleanInput>(false);
+  readonly paginationMeta = input<PaginationMeta | null>();
+  readonly itemsPerPageOptions = input<number[]>(PaginationComponent.defaultItemsPerPageOptions);
+  readonly order = input<TableOrder<T> | null>();
+  readonly colDefs = input.required<ColDef<T>[]>();
+  readonly colDefDefault = input<Partial<ColDef<T>>>({});
+  readonly metadata = input<any>();
+  readonly title = input<string>();
+  readonly disabledProperty = input<keyof T>();
 
   @Input()
   get collapsable(): boolean {

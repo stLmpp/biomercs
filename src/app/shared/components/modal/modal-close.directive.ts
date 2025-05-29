@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostBinding, HostListener, Input, OnInit, inject } from '@angular/core';
+import { Directive, ElementRef, HostBinding, HostListener, OnInit, inject, input } from '@angular/core';
 import { ModalRef } from './modal-ref';
 import { ModalService } from './modal.service';
 
@@ -9,13 +9,14 @@ export class ModalCloseDirective<T = any> implements OnInit {
   private modalRef = inject(ModalRef, { optional: true });
 
 
-  @Input() @HostBinding('attr.type') type = 'button';
+  @HostBinding('attr.type')
+readonly type = input('button');
 
-  @Input() bioModalClose?: T | '';
+  readonly bioModalClose = input<T | ''>();
 
   @HostListener('click')
   onClick(): void {
-    this.modalRef?.close(this.bioModalClose);
+    this.modalRef?.close(this.bioModalClose());
   }
 
   ngOnInit(): void {

@@ -1,4 +1,4 @@
-@if (!mobile) {
+@if (!mobile()) {
   <div class="start">Biomercs v{{ version }}</div>
 }
 <div class="links">
@@ -7,6 +7,6 @@
   <a bioButton small routerLink="/contact">Contact</a>
   <a bioButton small routerLink="/stlmpp" fragment="support">Buy me a coffee</a>
 </div>
-@if (!mobile) {
+@if (!mobile()) {
   <div class="end">Powered by <a class="white" routerLink="/stlmpp">stLmpp</a> {{ copyright }}</div>
 }

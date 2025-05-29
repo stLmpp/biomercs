@@ -4,13 +4,13 @@
     <ng-content select="[bioCardSubtitle]"></ng-content>
     @if (collapsable) {
       <div class="collapse-icon-wrapper">
-        <bio-icon [@collapseIcon]="collapsed ? 'collapsed' : 'expanded'">expand_less</bio-icon>
+        <bio-icon [@collapseIcon]="collapsed() ? 'collapsed' : 'expanded'">expand_less</bio-icon>
       </div>
     }
   </div>
 }
 @if (collapsable) {
-  <div [bioCollapsed]="collapsed">
+  <div [bioCollapsed]="collapsed()">
     <ng-container *ngTemplateOutlet="cardContent"></ng-container>
   </div>
 } @else {

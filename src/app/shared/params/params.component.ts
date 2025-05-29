@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges, inject, input } from '@angular/core';
 import {
   Control,
   ControlBuilder,
@@ -125,12 +125,12 @@ export class ParamsComponent extends Destroyable implements OnChanges, OnInit {
   private _clearable = false;
   private readonly _approval$ = new BehaviorSubject(false);
 
-  @Input() idPlatform: number | null = null;
-  @Input() idGame: number | null = null;
-  @Input() idMiniGame: number | null = null;
-  @Input() idMode: number | null = null;
-  @Input() idStage: number | null = null;
-  @Input() idCharacterCostume: number | null = null;
+  readonly idPlatform = input<number | null>(null);
+  readonly idGame = input<number | null>(null);
+  readonly idMiniGame = input<number | null>(null);
+  readonly idMode = input<number | null>(null);
+  readonly idStage = input<number | null>(null);
+  readonly idCharacterCostume = input<number | null>(null);
 
   @Input()
   get clearable(): boolean {

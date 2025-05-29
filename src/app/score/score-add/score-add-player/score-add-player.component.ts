@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild, inject, input } from '@angular/core';
 import { debounceTime, filter, finalize, Observable, pluck, switchMap, takeUntil } from 'rxjs';
 import { CharacterWithCharacterCostumes } from '@model/character';
 import { CharacterCostume } from '@model/character-costume';
@@ -77,14 +77,14 @@ export class ScoreAddPlayerComponent extends Destroyable implements OnInit, OnCh
   private changeDetectorRef = inject(ChangeDetectorRef);
 
 
-  @Input() idPlayersSelected: number[] = [];
-  @Input() playerNumber!: number;
-  @Input() disabled = false;
-  @Input() first = false;
-  @Input() charactersLoading: BooleanInput = false;
-  @Input() platformInputTypeLoading: BooleanInput = false;
-  @Input() characters: CharacterWithCharacterCostumes[] = [];
-  @Input() platformInputTypes: PlatformInputType[] = [];
+  readonly idPlayersSelected = input<number[]>([]);
+  readonly playerNumber = input.required<number>();
+  readonly disabled = input(false);
+  readonly first = input(false);
+  readonly charactersLoading = input<BooleanInput>(false);
+  readonly platformInputTypeLoading = input<BooleanInput>(false);
+  readonly characters = input<CharacterWithCharacterCostumes[]>([]);
+  readonly platformInputTypes = input<PlatformInputType[]>([]);
 
   @Input()
   set player(player: ScorePlayerAddForm) {
@@ -111,7 +111,7 @@ export class ScoreAddPlayerComponent extends Destroyable implements OnInit, OnCh
     switchMap(personaName => {
       this.playersLoading = true;
       this.changeDetectorRef.markForCheck();
-      return this.playerService.searchPaginated(personaName, 1, 8, this.idPlayersSelected).pipe(
+      return this.playerService.searchPaginated(personaName, 1, 8, this.idPlayersSelected()).pipe(
         finalize(() => {
           this.playersLoading = false;
           this.changeDetectorRef.markForCheck();
@@ -131,7 +131,7 @@ export class ScoreAddPlayerComponent extends Destroyable implements OnInit, OnCh
     const idPlayer = this.idPlayerControl.value;
     const modalRef = await this.playerModalService.openPlayerSearchModal({
       idPlayer,
-      idPlayersSelected: this.idPlayersSelected,
+      idPlayersSelected: this.idPlayersSelected(),
     });
     modalRef.onClose$.subscribe(player => {
       if (player && player.id !== idPlayer) {

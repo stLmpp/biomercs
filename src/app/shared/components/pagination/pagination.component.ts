@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, inject, input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { PaginationMeta } from '@model/pagination';
@@ -41,11 +41,11 @@ export class PaginationComponent implements OnChanges, PaginationMeta {
     this._setQueryParamsOnChange = coerceBooleanProperty(setQueryParamsOnChange);
   }
 
-  @Input() currentPage!: number;
-  @Input() itemCount!: number;
-  @Input() itemsPerPage!: number;
-  @Input() totalItems!: number;
-  @Input() totalPages!: number;
+  readonly currentPage = input.required<number>();
+  readonly itemCount = input.required<number>();
+  readonly itemsPerPage = input.required<number>();
+  readonly totalItems = input.required<number>();
+  readonly totalPages = input.required<number>();
   @Input()
   get itemsPerPageHidden(): boolean {
     return this._itemsPerPageHidden;
@@ -54,7 +54,7 @@ export class PaginationComponent implements OnChanges, PaginationMeta {
     this._itemsPerPageHidden = coerceBooleanProperty(itemsPerPageHidden);
   }
 
-  @Input() itemsPerPageOptions = [5, 10, 25, 50, 100];
+  readonly itemsPerPageOptions = input([5, 10, 25, 50, 100]);
 
   @Input()
   set meta(paginationMeta: PaginationMeta | null | undefined) {
@@ -92,37 +92,39 @@ export class PaginationComponent implements OnChanges, PaginationMeta {
     }
     this.router
       .navigate([], {
-        queryParams: { [RouteParamEnum.page]: this.currentPage, [RouteParamEnum.itemsPerPage]: this.itemsPerPage },
+        queryParams: { [RouteParamEnum.page]: this.currentPage(), [RouteParamEnum.itemsPerPage]: this.itemsPerPage() },
         queryParamsHandling: 'merge',
       })
       .then();
   }
 
   onNextPage(): void {
-    this.currentPage++;
-    this.nextPage.emit(this.currentPage);
-    this.currentPageChange.emit(this.currentPage);
+    currentPage++;
+    this.nextPage.emit(currentPage);
+    this.currentPageChange.emit(currentPage);
     this._setQueryParams();
   }
 
   onPreviousPage(): void {
-    this.currentPage--;
-    this.previousPage.emit(this.currentPage);
-    this.currentPageChange.emit(this.currentPage);
+    currentPage--;
+    this.previousPage.emit(currentPage);
+    this.currentPageChange.emit(currentPage);
     this._setQueryParams();
   }
 
   onFirstPage(): void {
     this.currentPage = 1;
-    this.firstPage.emit(this.currentPage);
-    this.currentPageChange.emit(this.currentPage);
+    const currentPage = this.currentPage();
+    this.firstPage.emit(currentPage);
+    this.currentPageChange.emit(currentPage);
     this._setQueryParams();
   }
 
   onLastPage(): void {
-    this.currentPage = this.totalPages;
-    this.lastPage.emit(this.currentPage);
-    this.currentPageChange.emit(this.currentPage);
+    this.currentPage = this.totalPages();
+    const currentPage = this.currentPage();
+    this.lastPage.emit(currentPage);
+    this.currentPageChange.emit(currentPage);
     this._setQueryParams();
   }
 

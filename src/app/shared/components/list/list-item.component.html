@@ -1,13 +1,13 @@
-@if (listParentControl && value) {
+@if (listParentControl && value()) {
   <input
     #control
     class="control"
     type="radio"
     [name]="name"
-    [value]="value"
-    [checked]="model === value"
+    [value]="value()"
+    [checked]="model === value()"
     [disabled]="disabled"
-    (change)="onChange(value)"
+    (change)="onChange(value())"
     (blur)="onTouched()"
     tabindex="-1"
     />

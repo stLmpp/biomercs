@@ -1,4 +1,4 @@
-import { ComponentRef, Directive, ElementRef, HostBinding, HostListener, Input, OnDestroy, ViewContainerRef, inject } from '@angular/core';
+import { ComponentRef, Directive, ElementRef, HostBinding, HostListener, Input, OnDestroy, ViewContainerRef, inject, input } from '@angular/core';
 import { BooleanInput, coerceBooleanProperty, coerceNumberProperty, NumberInput } from 'st-utils';
 import { ConnectedPosition, Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { overlayPositionsArray } from '@util/overlay';
@@ -26,17 +26,17 @@ export class TooltipDirective implements OnDestroy {
   private _hideTimeout: any;
   private _hasShown = false;
 
-  @Input() bioTooltip!: string | number | null | undefined;
-  @Input() bioTooltipPositions: ConnectedPosition[] = overlayPositionsArray('top');
-  @Input() bioTooltipShowDelay = 0;
-  @Input() bioTooltipHideDelay = 0;
-  @Input() bioTooltipDelay = 0;
-  @Input() bioTooltipScrollStrategy = this.overlay.scrollStrategies.reposition({ autoClose: true, scrollThrottle: 5 });
-  @Input() bioTooltipAriaLabelDisabled = false;
+  readonly bioTooltip = input.required<string | number | null | undefined>();
+  readonly bioTooltipPositions = input<ConnectedPosition[]>(overlayPositionsArray('top'));
+  readonly bioTooltipShowDelay = input(0);
+  readonly bioTooltipHideDelay = input(0);
+  readonly bioTooltipDelay = input(0);
+  readonly bioTooltipScrollStrategy = input(this.overlay.scrollStrategies.reposition({ autoClose: true, scrollThrottle: 5 }));
+  readonly bioTooltipAriaLabelDisabled = input(false);
 
   @HostBinding('attr.aria-label')
   get ariaLabel(): number | string | null | undefined {
-    return this.bioTooltipAriaLabelDisabled ? null : this.bioTooltip;
+    return this.bioTooltipAriaLabelDisabled() ? null : this.bioTooltip();
   }
 
   @Input()
@@ -59,8 +59,8 @@ export class TooltipDirective implements OnDestroy {
 
   private _getShowDelay(): number {
     return coerceNumberProperty(
-      this.bioTooltipShowDelay ||
-        this.bioTooltipDelay ||
+      this.bioTooltipShowDelay() ||
+        this.bioTooltipDelay() ||
         this.tooltipDefaultConfig.showDelay ||
         this.tooltipDefaultConfig.delay
     );
@@ -68,8 +68,8 @@ export class TooltipDirective implements OnDestroy {
 
   private _getHideDelay(): number {
     return coerceNumberProperty(
-      this.bioTooltipHideDelay ||
-        this.bioTooltipDelay ||
+      this.bioTooltipHideDelay() ||
+        this.bioTooltipDelay() ||
         this.tooltipDefaultConfig.hideDelay ||
         this.tooltipDefaultConfig.delay
     );
@@ -105,11 +105,11 @@ export class TooltipDirective implements OnDestroy {
         positionStrategy: this.overlay
           .position()
           .flexibleConnectedTo(this.elementRef.nativeElement)
-          .withPositions(this.bioTooltipPositions),
-        scrollStrategy: this.bioTooltipScrollStrategy,
+          .withPositions(this.bioTooltipPositions()),
+        scrollStrategy: this.bioTooltipScrollStrategy(),
       });
       this._componentRef = this._overlayRef.attach(new ComponentPortal(TooltipComponent, this.viewContainerRef));
-      this._componentRef.instance.content = this.bioTooltip;
+      this._componentRef.instance.content = this.bioTooltip();
       this._componentRef.changeDetectorRef.markForCheck();
       this.isOpen = true;
     }, delay);

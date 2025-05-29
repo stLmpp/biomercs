@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, ElementRef, HostBinding, Input, OnDestroy, OnInit, QueryList, ViewChild, ViewEncapsulation, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, ElementRef, HostBinding, OnDestroy, OnInit, QueryList, ViewChild, ViewEncapsulation, inject, input } from '@angular/core';
 import { CdkAccordionItem } from '@angular/cdk/accordion';
 import { AccordionItemTitleDirective } from '@shared/components/accordion/accordion-item-title.directive';
 import { Animations } from '@shared/animations/animations';
@@ -37,7 +37,7 @@ export class AccordionItemComponent extends CdkAccordionItem implements OnInit, 
 
   private readonly _destroy$ = new Subject<void>();
 
-  @Input() accordionTitle?: string;
+  readonly accordionTitle = input<string>();
 
   @ContentChildren(AccordionItemTitleDirective)
   readonly accordionItemTitleDirectives!: QueryList<AccordionItemTitleDirective>;

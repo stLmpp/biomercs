@@ -9,8 +9,8 @@
       type="search"
       />
     <bio-icon bioSuffix>search</bio-icon>
-    @if (hint) {
-      <bio-hint>{{ hint }}</bio-hint>
+    @if (hint()) {
+      <bio-hint>{{ hint() }}</bio-hint>
     }
   </bio-form-field>
 </div>

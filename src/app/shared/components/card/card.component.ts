@@ -1,4 +1,4 @@
-import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, ElementRef, EventEmitter, HostBinding, Input, Output, QueryList, ViewEncapsulation, inject } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, ElementRef, EventEmitter, HostBinding, Input, Output, QueryList, ViewEncapsulation, inject, input } from '@angular/core';
 import { CardTitleDirective } from './card-title.directive';
 import { CardContentDirective } from './card-content.directive';
 import { CardActionsDirective } from './card-actions.directive';
@@ -46,7 +46,7 @@ export class CardComponent extends Destroyable implements AfterContentInit {
     this._collapsable = coerceBooleanProperty(collapsable);
   }
 
-  @Input() collapsed = false;
+  readonly collapsed = input(false);
   @Output() readonly collapsedChange = new EventEmitter<boolean>();
 
   @Input()
@@ -72,8 +72,8 @@ export class CardComponent extends Destroyable implements AfterContentInit {
     if (!this._collapsable) {
       return;
     }
-    this.collapsed = !this.collapsed;
-    this.collapsedChange.emit(this.collapsed);
+    this.collapsed = !this.collapsed();
+    this.collapsedChange.emit(this.collapsed());
     this.changeDetectorRef.markForCheck();
   }
 

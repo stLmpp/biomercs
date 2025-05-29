@@ -8,7 +8,7 @@
   @if (accordionItemTitleDirectives?.length) {
     <ng-content select="[bioAccordionItemTitle], bio-accordion-item-title"></ng-content>
   } @else {
-    <div class="accordion-item-title">{{ accordionTitle }}</div>
+    <div class="accordion-item-title">{{ accordionTitle() }}</div>
   }
   <div class="accordion-item-icon">
     <bio-icon [@collapseIcon]="expanded ? 'expanded' : 'collapsed'">expand_less</bio-icon>

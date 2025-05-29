@@ -1,4 +1,4 @@
-import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChild, ContentChildren, Input, OnChanges, OnDestroy, QueryList, ViewEncapsulation, inject } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChild, ContentChildren, OnChanges, OnDestroy, QueryList, ViewEncapsulation, inject, input } from '@angular/core';
 import { LabelDirective } from './label.directive';
 import { InputDirective } from './input.directive';
 import { SimpleChangesCustom } from '@util/util';
@@ -45,12 +45,12 @@ export class FormFieldComponent implements AfterContentInit, OnChanges, OnDestro
   @ContentChild(Select) readonly select?: Select;
   @ContentChildren(FormFieldChild, { descendants: true }) readonly formFieldChildren!: QueryList<FormFieldChild>;
 
-  @Input() label?: string;
-  @Input() id: string | number = uniqueId++;
+  readonly label = input<string>();
+  readonly id = input<string | number>(uniqueId++);
 
-  @Input() loading?: BooleanInput;
-  @Input() disabled?: BooleanInput;
-  @Input() forceRequired = false;
+  readonly loading = input<BooleanInput>();
+  readonly disabled = input<BooleanInput>();
+  readonly forceRequired = input(false);
 
   get control(): Control | undefined {
     return this.controlDirective?.control ?? this.modelDirective?.control;
@@ -60,11 +60,11 @@ export class FormFieldComponent implements AfterContentInit, OnChanges, OnDestro
 
   ngAfterContentInit(): void {
     if (this.labelDirective) {
-      this.labelDirective.for = this.id;
+      this.labelDirective.for = this.id();
     }
     if (this.inputDirective) {
       const inputDirective = this.inputDirective;
-      inputDirective.id = this.id;
+      inputDirective.id = this.id();
       if (this.control) {
         this.control.stateChanged$.pipe(takeUntil(this._destroy$), auditTime(50)).subscribe(state => {
           this.controlState = state;
@@ -73,8 +73,9 @@ export class FormFieldComponent implements AfterContentInit, OnChanges, OnDestro
       }
     }
     if (this.control) {
-      if (!isNil(this.disabled)) {
-        this.control.disable(!!this.disabled);
+      const disabled = this.disabled();
+      if (!isNil(disabled)) {
+        this.control.disable(!!disabled);
       }
     }
     this.formFieldChildren.changes.pipe(takeUntil(this._destroy$), auditTime(50)).subscribe(() => {

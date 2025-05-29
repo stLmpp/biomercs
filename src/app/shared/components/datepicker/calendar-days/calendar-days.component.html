@@ -1,17 +1,17 @@
-@for (dayName of dayNames; track trackByString($index, dayName)) {
+@for (dayName of dayNames(); track trackByString($index, dayName)) {
   <div class="day-name">
     {{ dayName }}
   </div>
 }
-@for (day of days; track trackByDay($index, day)) {
+@for (day of days(); track trackByDay($index, day)) {
   <button
     bioButton
     fab
     type="button"
-    [disabled]="day.disabled || disabled"
+    [disabled]="day.disabled || disabled()"
     [class.weekend]="day.weekend"
     [class.today]="day.date | dateEqual: nowDate"
-    [class.selected]="day.date | dateEqual: value"
+    [class.selected]="day.date | dateEqual: value()"
     (click)="onClick(day, $index)"
     >
     {{ day.day }}

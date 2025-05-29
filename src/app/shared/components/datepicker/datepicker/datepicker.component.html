@@ -4,10 +4,10 @@
     @scaleIn
     (@fadeInOut.done)="onFadeDone($event)"
     cdkTrapFocus
-    [(value)]="value"
+    [(value)]="value()"
     (valueChange)="onValueChange($event)"
-    [(viewMode)]="viewMode"
+    [(viewMode)]="viewMode()"
     [disabled]="disabled"
-    [locale]="locale"
+    [locale]="locale()"
   ></bio-calendar>
 </ng-template>

@@ -1,4 +1,4 @@
-@for (recentTopic of recentTopics; track trackBy($index, recentTopic)) {
+@for (recentTopic of recentTopics(); track trackBy($index, recentTopic)) {
   <div>
     <a
     [routerLink]="[

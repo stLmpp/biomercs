@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostListener, Input, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, ViewEncapsulation, input } from '@angular/core';
 import { Animations } from '../../animations/animations';
 import { Subject } from 'rxjs';
 import { AnimationEvent } from '@angular/animations';
@@ -13,7 +13,7 @@ import { AnimationEvent } from '@angular/animations';
   animations: [Animations.scale.in(), Animations.fade.inOut()],
 })
 export class TooltipComponent {
-  @Input() content!: string | number | null | undefined;
+  readonly content = input.required<string | number | null | undefined>();
 
   readonly onAnimationEnd$ = new Subject<void>();
 

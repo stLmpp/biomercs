@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { TopicRecent } from '@model/forum/topic';
 import { trackById } from '@util/track-by';
 import { RouterLink } from '@angular/router';
@@ -12,7 +12,7 @@ import { AuthDateFormatPipe } from '../../../auth/shared/auth-date-format.pipe';
   imports: [RouterLink, AuthDateFormatPipe],
 })
 export class ForumCategoriesRecentTopicsComponent {
-  @Input() recentTopics: TopicRecent[] = [];
+  readonly recentTopics = input<TopicRecent[]>([]);
 
   readonly trackBy = trackById;
 }

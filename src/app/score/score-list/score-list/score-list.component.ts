@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, input } from '@angular/core';
 import { Score } from '@model/score';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { PaginationMeta } from '@model/pagination';
@@ -41,12 +41,12 @@ import { ScoreFormatPipe } from '../../score-format/score-format.pipe';
 export class ScoreListComponent<T extends Score = Score> {
   private _collapsable = false;
 
-  @Input() scores: T[] = [];
-  @Input() loading: BooleanInput = false;
-  @Input() paginationMeta?: PaginationMeta | null;
-  @Input() itemsPerPageOptions: number[] = [];
-  @Input() title?: string;
-  @Input() disabledProperty?: keyof T;
+  readonly scores = input<T[]>([]);
+  readonly loading = input<BooleanInput>(false);
+  readonly paginationMeta = input<PaginationMeta | null>();
+  readonly itemsPerPageOptions = input<number[]>([]);
+  readonly title = input<string>();
+  readonly disabledProperty = input<keyof T>();
 
   @Input()
   get collapsable(): boolean {
@@ -64,7 +64,8 @@ export class ScoreListComponent<T extends Score = Score> {
   readonly trackById = trackById;
 
   onClick(score: T): void {
-    if (this.disabledProperty && score[this.disabledProperty]) {
+    const disabledProperty = this.disabledProperty();
+    if (disabledProperty && score[disabledProperty]) {
       return;
     }
     this.scoreClicked.emit(score);

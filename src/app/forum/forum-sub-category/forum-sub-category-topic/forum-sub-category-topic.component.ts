@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, HostBinding, Input, Output, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, HostBinding, Output, inject, input } from '@angular/core';
 import { mdiPin, mdiPinOff } from '@mdi/js';
 import { Topic } from '@model/forum/topic';
 import { TopicService } from '../../service/topic.service';
@@ -32,14 +32,14 @@ export class ForumSubCategoryTopicComponent {
   private changeDetectorRef = inject(ChangeDetectorRef);
 
 
-  @Input() topic!: Topic;
+  readonly topic = input.required<Topic>();
 
   @Output() readonly topicChange = new EventEmitter<Topic>();
   @Output() readonly reloadSubCategory = new EventEmitter<void>();
 
   @HostBinding('class.is-moderator')
   get isModerator(): boolean {
-    return this.topic.isModerator;
+    return this.topic().isModerator;
   }
 
   readonly mdiPin = mdiPin;
@@ -52,11 +52,11 @@ export class ForumSubCategoryTopicComponent {
     $event.stopPropagation();
     $event.preventDefault();
     this.locking = true;
-    const isLocked = !!this.topic.lockedDate;
+    const isLocked = !!this.topic().lockedDate;
     const newLockedDate = isLocked ? null : new Date();
     const http$ = isLocked
-      ? this.topicService.unlock(this.topic.idSubCategory, this.topic.id)
-      : this.topicService.lock(this.topic.idSubCategory, this.topic.id);
+      ? this.topicService.unlock(this.topic().idSubCategory, this.topic().id)
+      : this.topicService.lock(this.topic().idSubCategory, this.topic().id);
     http$
       .pipe(
         finalize(() => {
@@ -65,7 +65,7 @@ export class ForumSubCategoryTopicComponent {
         })
       )
       .subscribe(() => {
-        this.topicChange.emit({ ...this.topic, lockedDate: newLockedDate });
+        this.topicChange.emit({ ...this.topic(), lockedDate: newLockedDate });
       });
   }
 
@@ -73,9 +73,10 @@ export class ForumSubCategoryTopicComponent {
     $event.stopPropagation();
     $event.preventDefault();
     this.pinning = true;
-    const http$ = this.topic.pinned
-      ? this.topicService.unpin(this.topic.idSubCategory, this.topic.id)
-      : this.topicService.pin(this.topic.idSubCategory, this.topic.id);
+    const topic = this.topic();
+    const http$ = topic.pinned
+      ? this.topicService.unpin(topic.idSubCategory, topic.id)
+      : this.topicService.pin(topic.idSubCategory, topic.id);
     http$
       .pipe(
         finalize(() => {

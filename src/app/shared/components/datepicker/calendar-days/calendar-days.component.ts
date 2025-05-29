@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Output, inject, input } from '@angular/core';
 import { CalendarDay } from '@shared/components/datepicker/calendar-day';
 import { trackByFactory } from '@stlmpp/utils';
 import {
@@ -32,10 +32,10 @@ export class CalendarDaysComponent extends CalendarKeyboardNavigation {
   private readonly calendarAdapter = inject(CalendarAdapter);
 
 
-  @Input() value: Date | null | undefined;
-  @Input() days: CalendarDay[] = [];
-  @Input() dayNames: string[] = [];
-  @Input() disabled = false;
+  readonly value = input<Date | null>();
+  readonly days = input<CalendarDay[]>([]);
+  readonly dayNames = input<string[]>([]);
+  readonly disabled = input(false);
 
   @Output() readonly valueChange = new EventEmitter<Date | null | undefined>();
   @Output() readonly nextMonth = new EventEmitter<void>();
@@ -50,12 +50,12 @@ export class CalendarDaysComponent extends CalendarKeyboardNavigation {
 
   private _daySelected(day: CalendarDay): void {
     this.value = day.date;
-    this.valueChange.emit(this.value);
+    this.valueChange.emit(this.value());
   }
 
   private _getActiveIndexAndItem(): [number, CalendarDay] {
     const activeItemIndex = this.focusKeyManager.activeItemIndex ?? 0;
-    const item = this.days[activeItemIndex];
+    const item = this.days()[activeItemIndex];
     return [activeItemIndex, item];
   }
 
@@ -124,8 +124,8 @@ export class CalendarDaysComponent extends CalendarKeyboardNavigation {
   }
 
   handleEnter(): void {
-    const item = this.days[this.focusKeyManager.activeItemIndex ?? -1];
-    if (item && item.date !== this.value) {
+    const item = this.days()[this.focusKeyManager.activeItemIndex ?? -1];
+    if (item && item.date !== this.value()) {
       this._daySelected(item);
     }
   }
@@ -165,7 +165,7 @@ export class CalendarDaysComponent extends CalendarKeyboardNavigation {
   }
 
   onClick(day: CalendarDay, index: number): void {
-    if (this.value === day.date) {
+    if (this.value() === day.date) {
       return;
     }
     this._daySelected(day);

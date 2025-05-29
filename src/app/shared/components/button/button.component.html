@@ -1,5 +1,5 @@
 @if (loading) {
-  <bio-spinner [size]="bioSize === 'large' ? 0.2 : 0.1"></bio-spinner>
+  <bio-spinner [size]="bioSize() === 'large' ? 0.2 : 0.1"></bio-spinner>
 }
 <span class="button-content-wrapper">
   <ng-content></ng-content>

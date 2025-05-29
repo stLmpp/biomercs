@@ -1,4 +1,4 @@
-import { Directive, HostBinding, Input, inject } from '@angular/core';
+import { Directive, HostBinding, Input, inject, input } from '@angular/core';
 import { BioTypeInput } from '@shared/components/core/types';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 
@@ -7,21 +7,21 @@ export class BadgeBase {
   private bioBadgeConfig = inject(BioBadgeConfig);
 
 
-  @Input() bioType: BioTypeInput = this.bioBadgeConfig?.bioType ?? 'accent';
+  readonly bioType = input<BioTypeInput>(this.bioBadgeConfig?.bioType ?? 'accent');
 
   @HostBinding('class.badge-primary')
   get primaryClass(): boolean {
-    return this.bioType === 'primary';
+    return this.bioType() === 'primary';
   }
 
   @HostBinding('class.badge-accent')
   get accentClass(): boolean {
-    return this.bioType === 'accent';
+    return this.bioType() === 'accent';
   }
 
   @HostBinding('class.badge-danger')
   get dangerClass(): boolean {
-    return this.bioType === 'danger';
+    return this.bioType() === 'danger';
   }
 
   @Input()

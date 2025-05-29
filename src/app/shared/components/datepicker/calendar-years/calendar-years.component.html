@@ -1,11 +1,11 @@
-@for (year of years; track trackBy($index, year)) {
+@for (year of years(); track trackBy($index, year)) {
   <button
     bioButton
     fab
     type="button"
     [class.same-year]="year === todayYear"
     [class.selected]="year === valueYear"
-    [disabled]="disabled"
+    [disabled]="disabled()"
     (click)="yearSelect.emit(year)"
     >
     {{ year }}

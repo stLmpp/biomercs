@@ -1,6 +1,6 @@
 <form [controlGroup]="form">
-  @if (label) {
-    <label (click)="focusManager.setFirstItemActive()">{{ label }}</label>
+  @if (label()) {
+    <label (click)="focusManager.setFirstItemActive()">{{ label() }}</label>
   }
   <div controlArrayName="array" (keydown)="focusManager.onKeydown($event)">
     @for (input of arrayControl; track trackByControl($index, input)) {
@@ -22,8 +22,8 @@
     @if (arrayControl.invalid && isTouched) {
       <bio-error>Invalid code</bio-error>
     }
-    @if (codeError) {
-      <span class="error">{{ codeError }}</span>
+    @if (codeError()) {
+      <span class="error">{{ codeError() }}</span>
     }
   </div>
 </form>

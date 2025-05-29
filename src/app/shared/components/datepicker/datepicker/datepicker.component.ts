@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostBinding, Input, LOCALE_ID, TemplateRef, ViewChild, ViewContainerRef, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input, LOCALE_ID, TemplateRef, ViewChild, ViewContainerRef, inject, input } from '@angular/core';
 import { CalendarViewModeEnum } from '@shared/components/datepicker/calendar-view-mode.enum';
 import { coerceBooleanProperty } from 'st-utils';
 import { Animations } from '@shared/animations/animations';
@@ -43,9 +43,9 @@ export class DatepickerComponent extends Destroyable {
 
   @ViewChild(TemplateRef) templateRef!: TemplateRef<any>;
 
-  @Input() value: Date | null | undefined;
-  @Input() viewMode: CalendarViewModeEnum = CalendarViewModeEnum.day;
-  @Input() locale: string;
+  readonly value = input<Date | null>();
+  readonly viewMode = input<CalendarViewModeEnum>(CalendarViewModeEnum.day);
+  readonly locale = input<string>();
 
   @Input()
   @HostBinding('attr.aria-disabled')

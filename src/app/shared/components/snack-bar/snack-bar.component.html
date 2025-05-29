@@ -1,10 +1,10 @@
 <div class="message">
-  {{ message }}
+  {{ message() }}
 </div>
-@if (action) {
+@if (action()) {
   <div class="action">
     <button bioButton type="button" (click)="onAction()" [loading]="loading$ | async">
-      {{ action }}
+      {{ action() }}
     </button>
   </div>
 }

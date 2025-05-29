@@ -1,4 +1,4 @@
-import { Directive, ElementRef, EventEmitter, HostBinding, HostListener, Input, Output, inject } from '@angular/core';
+import { Directive, ElementRef, EventEmitter, HostBinding, HostListener, Input, Output, inject, input } from '@angular/core';
 import { FocusableOption } from '@angular/cdk/a11y';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { Autocomplete } from '@shared/components/autocomplete/autocomplete';
@@ -14,7 +14,7 @@ export class AutocompleteOptionDirective implements FocusableOption {
 
   private _disabled = false;
 
-  @Input() value!: string;
+  readonly value = input.required<string>();
 
   @HostBinding('class.disabled')
   @Input()
@@ -34,15 +34,16 @@ export class AutocompleteOptionDirective implements FocusableOption {
 
   @HostBinding('class.selected')
   get selectedClass(): boolean {
-    return this.autocomplete.isSelected(this.value);
+    return this.autocomplete.isSelected(this.value());
   }
 
   @HostListener('click')
   @HostListener('keydown.enter')
   onSelect(): void {
     if (!this._disabled) {
-      this.autocomplete.select(this.value);
-      this.autocompleteSelect.emit(this.value);
+      const value = this.value();
+      this.autocomplete.select(value);
+      this.autocompleteSelect.emit(value);
     }
   }
 

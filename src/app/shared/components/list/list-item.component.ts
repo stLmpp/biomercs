@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostBinding, HostListener, Input, OnInit, ViewChild, ViewEncapsulation, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostBinding, HostListener, Input, OnInit, ViewChild, ViewEncapsulation, inject, input } from '@angular/core';
 import { ListParentControl } from './list-config';
 import { FocusableOption } from '@angular/cdk/a11y';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
@@ -21,7 +21,7 @@ export class ListItemComponent implements OnInit, FocusableOption {
 
   @ViewChild('control') readonly controlInput?: ElementRef<HTMLInputElement>;
 
-  @Input() value: any;
+  readonly value = input<any>();
 
   @Input()
   @HostBinding('class.disabled')

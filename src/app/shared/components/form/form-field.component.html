@@ -1,13 +1,13 @@
 @if (labelDirective) {
   <ng-content select="label"></ng-content>
 } @else {
-  @if (label) {
+  @if (label()) {
     <label
       [danger]="inputDirective?.dangerClass || select?.dangerClass"
-      [for]="id"
-      [class.required]="forceRequired || (control | hasValidators: ['required'])"
+      [for]="id()"
+      [class.required]="forceRequired() || (control | hasValidators: ['required'])"
       >
-      {{ label }}
+      {{ label() }}
     </label>
   }
 }
@@ -21,7 +21,7 @@
   }"
   >
   <div class="spinner-wrapper">
-    @if (loading) {
+    @if (loading()) {
       <bio-spinner [size]="0.1"></bio-spinner>
     }
   </div>

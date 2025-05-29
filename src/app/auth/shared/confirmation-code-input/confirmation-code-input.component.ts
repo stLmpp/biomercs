@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, Directive, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, QueryList, ViewChildren, inject } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, Directive, ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, Output, QueryList, ViewChildren, inject, input } from '@angular/core';
 import {
   ControlArray,
   ControlBuilder,
@@ -56,15 +56,15 @@ export class ConfirmationCodeInputComponent
   @ViewChildren(ConfirmationCodeInputDirective) readonly inputList!: QueryList<ConfirmationCodeInputDirective>;
   @Output() readonly focusoutLastItem = new EventEmitter<void>();
 
-  @Input() length = 6;
-  @Input() label?: string;
-  @Input() codeError: string | null = null;
+  readonly length = input(6);
+  readonly label = input<string>();
+  readonly codeError = input<string | null>(null);
 
   focusManager!: FocusKeyManager<ConfirmationCodeInputDirective>;
 
   form = this.controlBuilder.group<{ array: string[] }>({
     array: this.controlBuilder.array<string>(
-      Array.from({ length: this.length }).map(() =>
+      Array.from({ length: this.length() }).map(() =>
         this.controlBuilder.control(['', [Validators.required, Validators.maxLength(1)]])
       )
     ),
@@ -148,7 +148,7 @@ export class ConfirmationCodeInputComponent
       const arrayValues = this.arrayControl.value;
       this.form = this.controlBuilder.group<{ array: string[] }>({
         array: this.controlBuilder.array<string>(
-          Array.from({ length: this.length }).map((_, index) =>
+          Array.from({ length: this.length() }).map((_, index) =>
             this.controlBuilder.control([arrayValues[index], [Validators.required, Validators.maxLength(1)]])
           )
         ),

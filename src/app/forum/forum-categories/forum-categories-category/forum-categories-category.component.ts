@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Output, inject, input } from '@angular/core';
 import { CategoryWithSubCategories } from '@model/forum/category';
 import { SubCategoryModalService } from '../../service/sub-category-modal.service';
 import { arrayUtil } from 'st-utils';
@@ -58,12 +58,12 @@ export class ForumCategoriesCategoryComponent {
   private subCategoryModeratorModalService = inject(SubCategoryModeratorModalService);
 
 
-  @Input() category!: CategoryWithSubCategories;
-  @Input() isAdmin = false;
-  @Input() isMobile = false;
-  @Input() loadingAddEditModal = false;
-  @Input() idCategoriesDropList: string[] = [];
-  @Input() idCategoryDropList = '';
+  readonly category = input.required<CategoryWithSubCategories>();
+  readonly isAdmin = input(false);
+  readonly isMobile = input(false);
+  readonly loadingAddEditModal = input(false);
+  readonly idCategoriesDropList = input<string[]>([]);
+  readonly idCategoryDropList = input('');
 
   @Output() readonly openAddEditModal = new EventEmitter<number>();
   @Output() readonly categoryChange = new EventEmitter<CategoryWithSubCategories>();
@@ -81,17 +81,17 @@ export class ForumCategoriesCategoryComponent {
       $event.preventDefault();
     }
     this.loadingSubCategoryAddEditModal = true;
-    const modalRef = await this.subCategoryModalService.openAddEdit({ idSubCategory, idCategory: this.category.id });
+    const modalRef = await this.subCategoryModalService.openAddEdit({ idSubCategory, idCategory: this.category().id });
     modalRef.onClose$.subscribe(subCategory => {
       if (!subCategory) {
         return;
       }
-      const subCategories = arrayUtil(this.category.subCategories)
+      const subCategories = arrayUtil(this.category().subCategories)
         .upsert(subCategory.id, subCategory)
         .orderBy('order')
         .toArray();
-      this.category = { ...this.category, subCategories };
-      this.categoryChange.emit(this.category);
+      this.category = { ...this.category(), subCategories };
+      this.categoryChange.emit(this.category());
     });
     this.loadingSubCategoryAddEditModal = false;
     this.changeDetectorRef.markForCheck();
@@ -109,9 +109,9 @@ export class ForumCategoriesCategoryComponent {
       if (!moderators) {
         return;
       }
-      const subCategories = arrayUtil(this.category.subCategories).update(subCategory.id, { moderators }).toArray();
-      this.category = { ...this.category, subCategories };
-      this.categoryChange.emit(this.category);
+      const subCategories = arrayUtil(this.category().subCategories).update(subCategory.id, { moderators }).toArray();
+      this.category = { ...this.category(), subCategories };
+      this.categoryChange.emit(this.category());
     });
     this.loadingSubCategoryModeratorManagement = false;
     this.changeDetectorRef.markForCheck();
@@ -130,6 +130,6 @@ export class ForumCategoriesCategoryComponent {
     ) {
       return;
     }
-    this.orderChange.emit({ cdkDragDrop, idCategory: this.category.id });
+    this.orderChange.emit({ cdkDragDrop, idCategory: this.category().id });
   }
 }

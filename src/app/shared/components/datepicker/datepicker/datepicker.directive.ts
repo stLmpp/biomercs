@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostListener, Input, OnInit, Renderer2, inject } from '@angular/core';
+import { Directive, ElementRef, HostListener, OnInit, Renderer2, inject, input } from '@angular/core';
 import { DatepickerComponent } from '@shared/components/datepicker/datepicker/datepicker.component';
 import { ControlValue } from '@stlmpp/control';
 import { parse } from 'date-fns';
@@ -22,11 +22,11 @@ export class DatepickerDirective extends ControlValue<Date | null | undefined> i
     oncomplete: () => {
       const date = parse(this.elementRef.nativeElement.value, this._getDateFormat(), new Date());
       this.onChange$.next(date);
-      this.bioDatepicker.value = date;
+      this.bioDatepicker().value = date;
     },
   });
 
-  @Input() bioDatepicker!: DatepickerComponent;
+  readonly bioDatepicker = input.required<DatepickerComponent>();
 
   private _getDateFormat(): string {
     return this.authQuery.getUser()?.dateFormat ?? 'dd/MM/yyyy';
@@ -38,17 +38,17 @@ export class DatepickerDirective extends ControlValue<Date | null | undefined> i
   }
 
   setValue(value: Date | null | undefined): void {
-    this.bioDatepicker.value = value;
+    this.bioDatepicker().value = value;
     this.renderer2.setProperty(this.elementRef.nativeElement, 'value', value ?? '');
   }
 
   override setDisabled(disabled: boolean): void {
-    this.bioDatepicker.disabled = disabled;
+    this.bioDatepicker().disabled = disabled;
     this.renderer2.setProperty(this.elementRef.nativeElement, 'disabled', disabled);
   }
 
   ngOnInit(): void {
-    this.bioDatepicker.setInput(this);
+    this.bioDatepicker().setInput(this);
     this._mask.mask(this.elementRef.nativeElement);
   }
 }

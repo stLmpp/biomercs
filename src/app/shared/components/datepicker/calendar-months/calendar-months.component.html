@@ -1,11 +1,11 @@
-@for (month of months; track trackBy($index, month)) {
+@for (month of months(); track trackBy($index, month)) {
   <button
     bioButton
     fab
     type="button"
     [class.same-month]="month.month === todayMonth"
     [class.selected]="month.month === valueMonth"
-    [disabled]="disabled"
+    [disabled]="disabled()"
     (click)="monthSelect.emit(month.month)"
     >
     {{ month.name }}

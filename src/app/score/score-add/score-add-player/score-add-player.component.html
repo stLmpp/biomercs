@@ -1,6 +1,6 @@
 <bio-card class="player" [controlGroup]="form" collapsable>
   <h3 bioCardTitle>
-    Player {{ playerNumber }}
+    Player {{ playerNumber() }}
     @if (idPlayerPersonaName$ | async; as idPlayerPersonaName) {
       (
       {{ idPlayerPersonaName }}
@@ -18,7 +18,7 @@
     }
     <label class="host" (click)="$event.stopPropagation()">
       <input
-        [disabled]="disabled"
+        [disabled]="disabled()"
         type="radio"
         name="host"
         [value]="true"
@@ -30,8 +30,8 @@
   </h3>
   <bio-card-content>
     <div class="form">
-      @if (!first || (isAdmin$ | async)) {
-        <bio-form-field [loading]="playersLoading" [disabled]="disabled">
+      @if (!first() || (isAdmin$ | async)) {
+        <bio-form-field [loading]="playersLoading" [disabled]="disabled()">
           <label class="required">Player</label>
           <input
             bioInput
@@ -76,14 +76,14 @@
         </bio-form-field>
       }
       <!--<editor-fold desc="Character">-->
-      <bio-form-field [loading]="charactersLoading" [disabled]="disabled" label="Character">
+      <bio-form-field [loading]="charactersLoading()" [disabled]="disabled()" label="Character">
         <bio-select controlName="idCharacterCostume" placeholder="Character" #select>
-          @if (charactersLoading) {
+          @if (charactersLoading()) {
             <bio-option disabled>
               <bio-spinner [size]="0.1"></bio-spinner> Loading...
             </bio-option>
           }
-          @for (character of characters; track trackById($index, character)) {
+          @for (character of characters(); track trackById($index, character)) {
             <bio-optgroup
               [label]="character.name"
               [title]="character.name"
@@ -104,28 +104,28 @@
         </bio-errors>
       </bio-form-field>
     <!--</editor-fold>-->
-    <bio-form-field label="Description" [disabled]="disabled">
+    <bio-form-field label="Description" [disabled]="disabled()">
       <input bioInput controlName="description" placeholder="Description" />
       <bio-errors>
         <bio-error *error="'required'">Description is required</bio-error>
       </bio-errors>
     </bio-form-field>
-    <bio-form-field label="Bullet kills" [disabled]="disabled">
+    <bio-form-field label="Bullet kills" [disabled]="disabled()">
       <input bioInput controlName="bulletKills" placeholder="Number of bullet kills" type="number" />
       <bio-errors>
         <bio-error *error="'required'">Bullet kills is required</bio-error>
       </bio-errors>
     </bio-form-field>
-    <bio-form-field label="Evidence" [disabled]="disabled">
+    <bio-form-field label="Evidence" [disabled]="disabled()">
       <input bioInput controlName="evidence" placeholder="Evidence video URL" type="url" />
       <bio-errors>
         <bio-error *error="'required'">Evidence is required</bio-error>
         <bio-error *error="'url'">Evidence must be an URL</bio-error>
       </bio-errors>
     </bio-form-field>
-    <bio-form-field label="Controller" [loading]="platformInputTypeLoading" [disabled]="disabled">
+    <bio-form-field label="Controller" [loading]="platformInputTypeLoading()" [disabled]="disabled()">
       <bio-select controlName="idPlatformInputType" placeholder="Controller">
-        @for (platformInputType of platformInputTypes; track trackById($index, platformInputType)) {
+        @for (platformInputType of platformInputTypes(); track trackById($index, platformInputType)) {
           <bio-option
             [value]="platformInputType.id"
             >

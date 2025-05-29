@@ -8,7 +8,7 @@
     Search scores
   </a>
   <!--TODO add better Leaderboards layout to support mobile, for now it's disabled-->
-  @if (!isMobile) {
+  @if (!isMobile()) {
     <a
       bioListItem
       routerLink="/score/leaderboards"
@@ -29,10 +29,10 @@
     <bio-icon bioPrefix [mdi]="mdiTrophy"></bio-icon>
     World records
   </a>
-  @if (user.idPlayer) {
+  @if (user().idPlayer) {
     <a
       bioListItem
-      [routerLink]="['/player', user.idPlayer, 'change-requests']"
+      [routerLink]="['/player', user().idPlayer, 'change-requests']"
       queryParamsHandling="preserve"
       (click)="onMenuSelected($event)"
       >
@@ -45,7 +45,7 @@
     <bio-icon bioPrefix>forum</bio-icon>
     Forum
   </a>
-  @if (user.admin) {
+  @if (user().admin) {
     <a class="admin-list-item" bioListItem routerLink="/admin" (click)="onMenuSelected($event)">
       <bio-icon bioPrefix>admin_panel_settings</bio-icon>
       Admin

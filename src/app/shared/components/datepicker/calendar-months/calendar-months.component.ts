@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, input } from '@angular/core';
 import { CalendarKeyboardNavigation } from '@shared/components/datepicker/calendar-keyboard-navigation';
 import { CalendarMonth } from '@shared/components/datepicker/calendar-month';
 import { ButtonComponent } from '../../button/button.component';
@@ -12,14 +12,14 @@ import { ButtonComponent } from '../../button/button.component';
   imports: [ButtonComponent],
 })
 export class CalendarMonthsComponent extends CalendarKeyboardNavigation {
-  @Input() months: CalendarMonth[] = [];
+  readonly months = input<CalendarMonth[]>([]);
 
   @Input()
   set value(value: Date | null | undefined) {
     this.valueMonth = (value ?? new Date()).getMonth();
   }
 
-  @Input() disabled = false;
+  readonly disabled = input(false);
 
   @Output() readonly monthSelect = new EventEmitter<number>();
   @Output() readonly nextYear = new EventEmitter<void>();
@@ -72,7 +72,7 @@ export class CalendarMonthsComponent extends CalendarKeyboardNavigation {
 
   handleEnter($event: KeyboardEvent): void {
     const activeIndex = this.focusKeyManager.activeItemIndex ?? -1;
-    const item = this.months[activeIndex];
+    const item = this.months()[activeIndex];
     if (item) {
       this.monthSelect.emit(item.month);
     }

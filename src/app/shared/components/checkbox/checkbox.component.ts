@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, HostListener, Input, Output, ViewEncapsulation, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, HostListener, Input, Output, ViewEncapsulation, inject, input } from '@angular/core';
 import { ControlValue } from '@stlmpp/control';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { HorizontalPosition } from '@shared/components/common/positions';
@@ -46,8 +46,8 @@ export class CheckboxComponent extends ControlValue<boolean> {
     this._disabled = coerceBooleanProperty(disabled);
   }
 
-  @Input() labelPosition: HorizontalPosition = 'right';
-  @Input() name?: string;
+  readonly labelPosition = input<HorizontalPosition>('right');
+  readonly name = input<string>();
 
   @Output() readonly checkedChange = new EventEmitter<boolean>();
 

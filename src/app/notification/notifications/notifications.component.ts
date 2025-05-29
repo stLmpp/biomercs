@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, OnInit, Output, inject, input } from '@angular/core';
 import { NotificationService } from '../notification.service';
 import { Destroyable } from '@shared/components/common/destroyable-component';
 import {
@@ -73,13 +73,13 @@ export class NotificationsComponent extends Destroyable implements OnInit {
   private router = inject(Router);
 
 
-  @Input() notifications: NotificationCustom[] = [];
+  readonly notifications = input<NotificationCustom[]>([]);
   @Output() readonly notificationsChange = new EventEmitter<NotificationCustom[]>();
-  @Input() page = 1;
-  @Input() meta!: PaginationMeta;
+  readonly page = input(1);
+  readonly meta = input.required<PaginationMeta>();
   @Output() readonly pageChange = new EventEmitter<number>();
-  @Input() loading = false;
-  @Input() loadingMore = false;
+  readonly loading = input(false);
+  readonly loadingMore = input(false);
   @Output() readonly closeOverlay = new EventEmitter<void>();
 
   readAllLoading = false;
@@ -88,8 +88,8 @@ export class NotificationsComponent extends Destroyable implements OnInit {
   readonly trackById = trackById;
 
   private _setNotifications(callback: (notifications: NotificationCustom[]) => NotificationCustom[]): void {
-    this.notifications = callback(this.notifications);
-    this.notificationsChange.emit(this.notifications);
+    this.notifications = callback(this.notifications());
+    this.notificationsChange.emit(this.notifications());
     this.changeDetectorRef.markForCheck();
   }
 
@@ -212,8 +212,8 @@ export class NotificationsComponent extends Destroyable implements OnInit {
      *
      * !this.loadingMore: and for last check if the notifications are being fetched already
      */
-    if (firstIndex + 12 >= this.notifications.length && this.page < this.meta.totalPages && !this.loadingMore) {
-      this.pageChange.emit(this.page + 1);
+    if (firstIndex + 12 >= this.notifications().length && this.page() < this.meta().totalPages && !this.loadingMore()) {
+      this.pageChange.emit(this.page() + 1);
     }
   }
 

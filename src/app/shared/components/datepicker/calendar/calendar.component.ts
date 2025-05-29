@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ContentChild, EventEmitter, HostBinding, HostListener, Input, LOCALE_ID, OnInit, Output, ViewChild, ViewEncapsulation, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ContentChild, EventEmitter, HostBinding, HostListener, Input, LOCALE_ID, OnInit, Output, ViewChild, ViewEncapsulation, inject, input } from '@angular/core';
 import { LocalState } from '@stlmpp/store';
 import { addMonths, addYears, setMonth, setYear, subMonths, subYears } from 'date-fns';
 import { combineLatest, distinctUntilChanged, map, Subject } from 'rxjs';
@@ -62,9 +62,9 @@ export class CalendarComponent
   @ViewChild(CalendarKeyboardNavigation) readonly calendarKeyboardNavigation!: CalendarKeyboardNavigation;
   @ContentChild(CalendarFooterDirective) readonly calendarFooterDirective?: CalendarFooterDirective;
 
-  @Input() value: Date | null | undefined;
-  @Input() viewMode: CalendarViewModeEnum = CalendarViewModeEnum.day;
-  @Input() locale = this.getState('locale');
+  readonly value = input<Date | null>();
+  readonly viewMode = input<CalendarViewModeEnum>(CalendarViewModeEnum.day);
+  readonly locale = input(this.getState('locale'));
   @Output() readonly valueChange = new EventEmitter<Date | null | undefined>();
   @Output() readonly viewModeChange = new EventEmitter<CalendarViewModeEnum>();
 
@@ -201,9 +201,10 @@ export class CalendarComponent
 
   onDaySelect($event: Date | null | undefined): void {
     this.value = $event;
-    this.valueChange.emit(this.value);
+    const value = this.value();
+    this.valueChange.emit(value);
     this.updateState(state => ({ ...state, date: $event ?? state.date, value: $event }));
-    this.onChange$.next(this.value);
+    this.onChange$.next(value);
   }
 
   onMonthSelect($event: number): void {
@@ -216,7 +217,7 @@ export class CalendarComponent
 
   setValue(date: Date | null | undefined): void {
     this.value = date;
-    this.valueChange.emit(this.value);
+    this.valueChange.emit(this.value());
     this.updateState(state => ({ ...state, value: date, date: date ?? state.date }));
   }
 
@@ -231,8 +232,9 @@ export class CalendarComponent
   stateChanged(state: ControlState): void {}
 
   ngOnInit(): void {
-    if (this.value) {
-      this.updateState({ date: this.value });
+    const value = this.value();
+    if (value) {
+      this.updateState({ date: value });
     }
   }
 

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, input } from '@angular/core';
 import { Score } from '@model/score';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { mdiAccountStar, mdiTrophy, mdiTrophyAward } from '@mdi/js';
@@ -32,7 +32,7 @@ export class ScoreInfoComponent {
   private _showWorldRecord = false;
   private _showApprovalDate = false;
 
-  @Input() score!: Score;
+  readonly score = input.required<Score>();
 
   @Input()
   get showWorldRecord(): boolean {

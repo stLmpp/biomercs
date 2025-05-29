@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostListener, Input, ViewContainerRef, DOCUMENT, inject } from '@angular/core';
+import { Directive, ElementRef, HostListener, ViewContainerRef, DOCUMENT, inject, input } from '@angular/core';
 import { MenuComponent } from './menu.component';
 import { Overlay } from '@angular/cdk/overlay';
 import { cdkOverlayTransparentBackdrop } from '@util/overlay';
@@ -18,13 +18,13 @@ export class MenuTriggerDirective extends Destroyable {
 
   private _lastFocusedElement?: Element | null;
 
-  @Input() bioMenuTrigger!: MenuComponent;
-  @Input() bioMenuTriggerOn: 'hover' | 'click' = 'click';
+  readonly bioMenuTrigger = input.required<MenuComponent>();
+  readonly bioMenuTriggerOn = input<'hover' | 'click'>('click');
 
   opened = false;
 
   private _isClick(): boolean {
-    return this.bioMenuTriggerOn === 'click';
+    return this.bioMenuTriggerOn() === 'click';
   }
 
   private _createOverlay(): void {
@@ -55,11 +55,11 @@ export class MenuTriggerDirective extends Destroyable {
         this.opened = false;
         overlayRef?.detach();
       });
-    this.bioMenuTrigger.overlayRef = overlayRef;
-    this.bioMenuTrigger.trigger = this.bioMenuTriggerOn;
-    const templatePortal = new TemplatePortal(this.bioMenuTrigger.templateRef, this.viewContainerRef);
+    bioMenuTrigger.overlayRef = overlayRef;
+    bioMenuTrigger.trigger = this.bioMenuTriggerOn();
+    const templatePortal = new TemplatePortal(bioMenuTrigger.templateRef, this.viewContainerRef);
     overlayRef.attach(templatePortal);
-    this.bioMenuTrigger.initFocus();
+    bioMenuTrigger.initFocus();
     this.opened = true;
   }
 

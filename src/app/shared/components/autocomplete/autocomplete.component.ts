@@ -1,4 +1,4 @@
-import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, Input, QueryList, Renderer2, TemplateRef, ViewChild, ViewEncapsulation, inject } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, QueryList, Renderer2, TemplateRef, ViewChild, ViewEncapsulation, inject, input } from '@angular/core';
 import { Animations } from '@shared/animations/animations';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { AnimationEvent } from '@angular/animations';
@@ -30,8 +30,8 @@ export class AutocompleteComponent extends Autocomplete implements AfterContentI
   @ContentChildren(AutocompleteOptionDirective, { descendants: true })
   readonly autocompleteOptions!: QueryList<AutocompleteOptionDirective>;
 
-  @Input() closeOnSelect = true;
-  @Input() replaceInputWithValue = true;
+  readonly closeOnSelect = input(true);
+  readonly replaceInputWithValue = input(true);
 
   overlayRef?: OverlayRef;
   focusManager?: FocusKeyManager<AutocompleteOptionDirective>;
@@ -74,7 +74,7 @@ export class AutocompleteComponent extends Autocomplete implements AfterContentI
   }
 
   select(value: string): void {
-    if (this.replaceInputWithValue) {
+    if (this.replaceInputWithValue()) {
       if (this.control) {
         this.control.setValue(value);
       } else if (this.origin) {
@@ -82,7 +82,7 @@ export class AutocompleteComponent extends Autocomplete implements AfterContentI
       }
     }
     this.onSelect$.next();
-    if (this.closeOnSelect) {
+    if (this.closeOnSelect()) {
       this.onSelect$.complete();
       this.overlayRef?.detach();
     }

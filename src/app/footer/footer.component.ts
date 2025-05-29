@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, input } from '@angular/core';
 import { BooleanInput } from 'st-utils';
 import packageJson from '../../../package.json';
 import { ButtonComponent } from '../shared/components/button/button.component';
@@ -12,9 +12,8 @@ import { RouterLink } from '@angular/router';
   imports: [ButtonComponent, RouterLink],
 })
 export class FooterComponent {
-  @Input()
   @HostBinding('class.mobile')
-  mobile: BooleanInput = false;
+readonly mobile = input<BooleanInput>(false);
 
   readonly version = packageJson.version;
 

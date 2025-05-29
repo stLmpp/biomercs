@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Directive, ElementRef, HostBinding, Input, inject } from '@angular/core';
+import { ChangeDetectorRef, Directive, ElementRef, HostBinding, Input, inject, input } from '@angular/core';
 import { BioFilterBy } from '@shared/filter/filter';
 
 @Directive({
@@ -22,8 +22,8 @@ export class FilterItemDirective {
     }
   }
 
-  @Input() id?: string | number;
-  @Input() bioFilterItemFn?: (filterItemDirective: FilterItemDirective) => string;
+  readonly id = input<string | number>();
+  readonly bioFilterItemFn = input<(filterItemDirective: FilterItemDirective) => string>();
 
   @HostBinding('class.bio-filter-item-hidden') hidden = false;
 
@@ -34,12 +34,13 @@ export class FilterItemDirective {
 
   getFilterText(): string {
     let label: string | null | undefined;
+    const id = this.id();
     switch (this._bioFilterItem) {
       case 'function':
-        label = this.bioFilterItemFn?.(this);
+        label = this.bioFilterItemFn()?.(this);
         break;
       case 'id':
-        label = this.id ? '' + this.id : null;
+        label = id ? '' + id : null;
         break;
       case 'innerText':
         label = this.elementRef.nativeElement.innerText;

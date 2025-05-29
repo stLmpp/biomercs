@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ComponentRef, EventEmitter, HostBinding, Input, OnChanges, Output, ViewChild, ViewContainerRef, ViewEncapsulation, inject } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ComponentRef, EventEmitter, HostBinding, OnChanges, Output, ViewChild, ViewContainerRef, ViewEncapsulation, inject, input } from '@angular/core';
 import { ColDefInternal } from '@shared/components/table/col-def';
 import { CdkPortalOutlet, ComponentPortal } from '@angular/cdk/portal';
 import { TableCell, TableCellNotifyChange } from '@shared/components/table/type';
@@ -40,20 +40,20 @@ export class TableCellComponent<T extends Record<any, any>, K extends keyof T>
 
   @ViewChild(CdkPortalOutlet) cdkPortalOutlet!: CdkPortalOutlet;
 
-  @Input() colDef!: ColDefInternal<T, K>;
-  @Input() item!: T;
-  @Input() metadata: any;
+  readonly colDef = input.required<ColDefInternal<T, K>>();
+  readonly item = input.required<T>();
+  readonly metadata = input<any>();
 
   @Output() readonly notifyChange = new EventEmitter<TableCellNotifyChange<any, T, K>>();
 
   @HostBinding('class.flex-grow-0')
   get classFlexGrow0(): boolean {
-    return !!this.colDef.width;
+    return !!this.colDef().width;
   }
 
   @HostBinding('style.flex-basis')
   get styleFlexBasis(): string | undefined {
-    return this.colDef.width;
+    return this.colDef().width;
   }
 
   private _createComponentPortal(): void {
@@ -64,15 +64,16 @@ export class TableCellComponent<T extends Record<any, any>, K extends keyof T>
       this.cdkPortalOutlet.detach();
     }
     this.destroy$.next();
-    if (this.colDef.component) {
-      this._componentPortal = new ComponentPortal(this.colDef.component, this.viewContainerRef);
+    const colDef = this.colDef();
+    if (colDef.component) {
+      this._componentPortal = new ComponentPortal(colDef.component, this.viewContainerRef);
       this._componentRef = this.cdkPortalOutlet.attachComponentPortal(this._componentPortal);
-      this._componentRef.instance.colDef = this.colDef;
-      this._componentRef.instance.item = this.item;
-      this._componentRef.instance.metadata = this.metadata;
+      this._componentRef.instance.colDef = colDef;
+      this._componentRef.instance.item = this.item();
+      this._componentRef.instance.metadata = this.metadata();
       this._componentRef.changeDetectorRef.detectChanges();
       this._componentRef.instance.notifyChange.pipe(takeUntil(this.destroy$)).subscribe(data => {
-        this.notifyChange.emit({ data, colDef: this.colDef, item: this.item });
+        this.notifyChange.emit({ data, colDef: this.colDef(), item: this.item() });
       });
     }
   }

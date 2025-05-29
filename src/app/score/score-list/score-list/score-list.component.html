@@ -1,24 +1,24 @@
 <bio-card class="scores" [collapsable]="collapsable" [collapsed]="true">
-  @if (loading) {
+  @if (loading()) {
     <bio-loading></bio-loading>
   }
-  @if (title) {
-    <h3 bioCardTitle>{{ title }}</h3>
+  @if (title()) {
+    <h3 bioCardTitle>{{ title() }}</h3>
   }
   <bio-card-content>
-    @if (paginationMeta) {
+    @if (paginationMeta()) {
       <bio-pagination
-        [meta]="paginationMeta"
-        [itemsPerPageOptions]="itemsPerPageOptions"
+        [meta]="paginationMeta()"
+        [itemsPerPageOptions]="itemsPerPageOptions()"
         (currentPageChange)="currentPageChange.emit($event)"
         (itemsPerPageChange)="itemsPerPageChange.emit($event)"
         setQueryParamsOnChange
       ></bio-pagination>
     }
     <bio-list selectable>
-      @for (score of scores; track trackByScore($index, score)) {
+      @for (score of scores(); track trackByScore($index, score)) {
         <bio-list-item
-          [disabled]="!!disabledProperty && !!score[disabledProperty]"
+          [disabled]="!!disabledProperty() && !!score[disabledProperty()]"
           (click)="onClick(score)"
           >
           <bio-list-item-line> [{{ score.platformShortName }}] {{ score.gameName }} </bio-list-item-line>
@@ -34,16 +34,16 @@
           <div bioSuffix [bioTooltip]="score.score | number: '1.0-0'">{{ score.score | scoreFormat }}</div>
         </bio-list-item>
       }
-      @if (!scores.length) {
+      @if (!scores().length) {
         <bio-list-item>
           <bio-list-item-line>No data found</bio-list-item-line>
         </bio-list-item>
       }
     </bio-list>
-    @if (paginationMeta) {
+    @if (paginationMeta()) {
       <bio-pagination
-        [meta]="paginationMeta"
-        [itemsPerPageOptions]="itemsPerPageOptions"
+        [meta]="paginationMeta()"
+        [itemsPerPageOptions]="itemsPerPageOptions()"
         (currentPageChange)="currentPageChange.emit($event)"
         (itemsPerPageChange)="itemsPerPageChange.emit($event)"
         setQueryParamsOnChange

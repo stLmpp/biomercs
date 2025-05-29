@@ -1,8 +1,8 @@
-<div class="select-value" [class.placeholder]="!value.length && placeholder">
+<div class="select-value" [class.placeholder]="!value.length && placeholder()">
   @if (value.length) {
     {{ value.length }} items selected
   } @else {
-    {{ placeholder }}
+    {{ placeholder() }}
   }
 </div>
 <div class="select-icon">

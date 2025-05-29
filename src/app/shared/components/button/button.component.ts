@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, ViewEncapsulation, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, ViewEncapsulation, inject, input } from '@angular/core';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { AbstractComponent } from '../core/abstract-component';
 import { FocusableOption } from '@angular/cdk/a11y';
@@ -48,18 +48,18 @@ export class ButtonComponent extends AbstractComponent implements FocusableOptio
     this._loading = coerceBooleanProperty(loading);
   }
 
-  @Input() icon: BooleanInput;
+  readonly icon = input<BooleanInput>();
 
   @HostBinding('class.button-icon')
   get isIcon(): boolean {
-    return coerceBooleanProperty(this.icon);
+    return coerceBooleanProperty(this.icon());
   }
 
-  @Input() fab: BooleanInput;
+  readonly fab = input<BooleanInput>();
 
   @HostBinding('class.fab')
   get isFab(): boolean {
-    return coerceBooleanProperty(this.fab);
+    return coerceBooleanProperty(this.fab());
   }
 
   @Input()

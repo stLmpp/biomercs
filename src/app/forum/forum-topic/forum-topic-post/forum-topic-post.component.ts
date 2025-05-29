@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostBinding, Input, OnChanges, Output, inject } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostBinding, OnChanges, Output, inject, input } from '@angular/core';
 import { Post, PostUpdateDto } from '@model/forum/post';
 import { PlayerService } from '../../../player/player.service';
 import { PostService } from '../../service/post.service';
@@ -30,11 +30,12 @@ export class ForumTopicPostComponent implements AfterViewInit, OnChanges {
 
   private readonly _post$ = new ReplaySubject<Post>();
 
-  @Input() idSubCategory!: number;
-  @Input() post!: Post;
-  @Input() topicLocked = false;
-  @Input() @HostBinding('class.odd') odd = false;
-  @Input() loadingReply = false;
+  readonly idSubCategory = input.required<number>();
+  readonly post = input.required<Post>();
+  readonly topicLocked = input(false);
+  @HostBinding('class.odd')
+readonly odd = input(false);
+  readonly loadingReply = input(false);
 
   @Output() readonly postChange = new EventEmitter<Post>();
   @Output() readonly postDelete = new EventEmitter<Post>();
@@ -47,7 +48,7 @@ export class ForumTopicPostComponent implements AfterViewInit, OnChanges {
 
   @HostBinding('class.highlight')
   get highlight(): boolean {
-    return this.post.id === this._getFragment();
+    return this.post().id === this._getFragment();
   }
 
   readonly editor = ClassicEditor;
@@ -67,7 +68,7 @@ export class ForumTopicPostComponent implements AfterViewInit, OnChanges {
   }
 
   openEdit(): void {
-    this.form.setValue({ name: this.post.name, content: this.post.content });
+    this.form.setValue({ name: this.post().name, content: this.post().content });
     this.editing = true;
   }
 
@@ -90,7 +91,7 @@ export class ForumTopicPostComponent implements AfterViewInit, OnChanges {
     }
     this.saving = true;
     this.postService
-      .update(this.idSubCategory, this.post.idTopic, this.post.id, postUpdateDto)
+      .update(this.idSubCategory(), this.post().idTopic, this.post().id, postUpdateDto)
       .pipe(
         finalize(() => {
           this.saving = false;
@@ -98,13 +99,13 @@ export class ForumTopicPostComponent implements AfterViewInit, OnChanges {
         })
       )
       .subscribe(() => {
-        this.postChange.emit({ ...this.post, ...postUpdateDto });
+        this.postChange.emit({ ...this.post(), ...postUpdateDto });
         this.closeEdit();
       });
   }
 
   delete(): void {
-    if (this.post.firstPost) {
+    if (this.post().firstPost) {
       this.dialogService.confirm({
         title: 'Delete topic?',
         content: `This action can't be undone`,
@@ -113,7 +114,7 @@ export class ForumTopicPostComponent implements AfterViewInit, OnChanges {
           {
             title: 'Delete',
             action: () =>
-              this.topicService.delete(this.idSubCategory, this.post.idTopic).pipe(
+              this.topicService.delete(this.idSubCategory(), this.post().idTopic).pipe(
                 tap(() => {
                   this.topicDelete.emit();
                 })
@@ -130,9 +131,9 @@ export class ForumTopicPostComponent implements AfterViewInit, OnChanges {
           {
             title: 'Delete',
             action: () =>
-              this.postService.delete(this.idSubCategory, this.post.idTopic, this.post.id).pipe(
+              this.postService.delete(this.idSubCategory(), this.post().idTopic, this.post().id).pipe(
                 tap(() => {
-                  this.postDelete.emit(this.post);
+                  this.postDelete.emit(this.post());
                 })
               ),
           },
@@ -146,7 +147,7 @@ export class ForumTopicPostComponent implements AfterViewInit, OnChanges {
     if (!idPost) {
       return;
     }
-    if (idPost === this.post.id) {
+    if (idPost === this.post().id) {
       setTimeout(() => {
         this.elementRef.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
       });

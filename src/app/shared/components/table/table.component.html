@@ -1,15 +1,15 @@
 <bio-card class="bio-table" [collapsable]="collapsable" [collapsed]="true">
-  @if (loading) {
+  @if (loading()) {
     <bio-loading></bio-loading>
   }
-  @if (title) {
-    <h3 bioCardTitle>{{ title }}</h3>
+  @if (title()) {
+    <h3 bioCardTitle>{{ title() }}</h3>
   }
   <bio-card-content>
     <div
       class="header"
-      [class.header-order]="order"
-      *ngLet="order?.orderByDirection === 'desc' ? 'arrow_drop_up' : 'arrow_drop_down' as arrow"
+      [class.header-order]="order()"
+      *ngLet="order()?.orderByDirection === 'desc' ? 'arrow_drop_up' : 'arrow_drop_down' as arrow"
       >
       @for (colDef of colDefsInternal; track trackByColDef($index, colDef)) {
         <div
@@ -20,7 +20,7 @@
           (click)="changeOrder(colDef.orderByKey)"
           >
           {{ colDef.title }}
-          @if (colDef.orderBy && order?.orderBy === colDef.orderByKey) {
+          @if (colDef.orderBy && order()?.orderBy === colDef.orderByKey) {
             <bio-icon class="order-icon" small>
               {{ arrow }}
             </bio-icon>
@@ -30,17 +30,17 @@
     </div>
     <hr />
     <div class="body">
-      @if (!data.length) {
+      @if (!data().length) {
         <div class="no-data-found">No data found</div>
       }
-      @for (item of data; track trackBy($index, item)) {
+      @for (item of data(); track trackBy()($index, item)) {
         <div>
           @for (colDef of colDefsInternal; track trackByColDef($index, colDef)) {
             <bio-cell
               [ngStyle]="colDef.bodyStyle"
               [colDef]="colDef"
               [item]="item"
-              [metadata]="metadata"
+              [metadata]="metadata()"
               (notifyChange)="notifyChange.emit($event)"
             ></bio-cell>
           }
@@ -49,11 +49,11 @@
       }
     </div>
   </bio-card-content>
-  @if (paginationMeta) {
+  @if (paginationMeta()) {
     <bio-card-actions end>
       <bio-pagination
-        [meta]="paginationMeta"
-        [itemsPerPageOptions]="itemsPerPageOptions"
+        [meta]="paginationMeta()"
+        [itemsPerPageOptions]="itemsPerPageOptions()"
         (currentPageChange)="currentPageChange.emit($event)"
         (itemsPerPageChange)="itemsPerPageChange.emit($event)"
         setQueryParamsOnChange

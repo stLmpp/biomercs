@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostBinding, HostListener, Input, OnDestroy, OnInit, ViewEncapsulation, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, HostListener, OnDestroy, OnInit, ViewEncapsulation, inject, input } from '@angular/core';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { SnackBarConfig } from './snack-bar.config';
 import { BehaviorSubject, isObservable, Observable, Subject, take, takeUntil, timer } from 'rxjs';
@@ -24,14 +24,14 @@ export class SnackBarComponent implements OnInit, OnDestroy {
 
   private _cancelTimeout$ = new Subject<void>();
 
-  @Input() message?: string;
-  @Input() action?: string | null;
-  @Input() actionObservable?: Observable<any>;
-  @Input() showAction = true;
+  readonly message = input<string>();
+  readonly action = input<string | null>();
+  readonly actionObservable = input<Observable<any>>();
+  readonly showAction = input(true);
 
   @HostBinding('class.no-action')
   get noActionClass(): boolean {
-    return !this.action;
+    return !this.action();
   }
 
   readonly onClose$ = new Subject<void>();
@@ -76,9 +76,10 @@ export class SnackBarComponent implements OnInit, OnDestroy {
   }
 
   closeWithObservable(): void {
-    if (this.actionObservable && isObservable(this.actionObservable)) {
+    const actionObservable = this.actionObservable();
+    if (actionObservable && isObservable(actionObservable)) {
       this.loading$.next(true);
-      this.actionObservable.pipe(take(1)).subscribe(() => {
+      actionObservable.pipe(take(1)).subscribe(() => {
         this.loading$.next(false);
         this.close();
       });

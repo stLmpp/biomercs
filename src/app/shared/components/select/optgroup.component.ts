@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, HostBinding, HostListener, Input, QueryList, ViewEncapsulation, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, HostBinding, HostListener, QueryList, ViewEncapsulation, inject, input } from '@angular/core';
 import { Select } from '@shared/components/select/select';
 import { Option } from '@shared/components/select/option';
 import { CheckboxComponent } from '../checkbox/checkbox.component';
@@ -22,7 +22,7 @@ export class OptgroupComponent {
     this.multiple = select.multiple;
   }
 
-  @Input() label!: string;
+  readonly label = input.required<string>();
 
   @ContentChildren(Option, { descendants: true }) options?: QueryList<Option>;
 

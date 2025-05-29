@@ -1,6 +1,7 @@
-import { Directive, HostBinding, Input } from '@angular/core';
+import { Directive, HostBinding, input } from '@angular/core';
 
 @Directive({ selector: 'textarea[bioInput]' })
 export class TextareaDirective {
-  @Input() @HostBinding('style.resize') resize: 'vertical' | 'horizontal' | undefined;
+  @HostBinding('style.resize')
+readonly resize = input<'vertical' | 'horizontal'>();
 }

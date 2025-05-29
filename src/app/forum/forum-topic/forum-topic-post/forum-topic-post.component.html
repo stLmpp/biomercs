@@ -1,22 +1,22 @@
 <div class="player-info">
   <div class="name">
-    <bio-icon [flag]="post.shortNameRegion" small [bioTooltip]="post.nameRegion"></bio-icon>
-    <a [routerLink]="['/player', post.idPlayer]">{{ post.personaNamePlayer }}</a>
+    <bio-icon [flag]="post().shortNameRegion" small [bioTooltip]="post().nameRegion"></bio-icon>
+    <a [routerLink]="['/player', post().idPlayer]">{{ post().personaNamePlayer }}</a>
   </div>
   <div class="status" *ngLet="isOnline$ | async as isOnline">
     <span class="indicator" [class.online]="isOnline" [class.offline]="!isOnline"></span>
     {{ isOnline ? 'Online' : 'Offline' }}
   </div>
-  <div class="posts">Posts: {{ post.postCount | number: '1.0-0' }}</div>
+  <div class="posts">Posts: {{ post().postCount | number: '1.0-0' }}</div>
   <div class="avatar">
-    <bio-player-avatar [personaName]="post.personaNamePlayer" [avatar]="post.avatarPlayer"></bio-player-avatar>
+    <bio-player-avatar [personaName]="post().personaNamePlayer" [avatar]="post().avatarPlayer"></bio-player-avatar>
   </div>
 </div>
 <form class="post" [controlGroup]="form" (groupSubmit)="save()">
   <div class="header">
     <span class="title">
       @if (!editing) {
-        {{ post.name }}
+        {{ post().name }}
       } @else {
         <bio-form-field label="Name">
           <input bioInput controlName="name" placeholder="Name" />
@@ -29,24 +29,24 @@
     </span>
     @if (!editing) {
       <div class="actions">
-        @if (!topicLocked && !post.deletedDate) {
+        @if (!topicLocked() && !post().deletedDate) {
           <button
             bioButton
             type="button"
-            (click)="postQuote.emit(post)"
-            [disabled]="loadingReply"
+            (click)="postQuote.emit(post())"
+            [disabled]="loadingReply()"
             >
             <bio-icon>format_quote</bio-icon>
             Quote
           </button>
         }
-        @if (post.editAllowed) {
+        @if (post().editAllowed) {
           <button bioButton type="button" (click)="openEdit()">
             <bio-icon>edit</bio-icon>
             Edit
           </button>
         }
-        @if (post.deleteAllowed) {
+        @if (post().deleteAllowed) {
           <button bioButton type="button" (click)="delete()">
             <bio-icon>delete</bio-icon>
             Delete
@@ -57,7 +57,7 @@
   </div>
   <div class="content">
     @if (!editing) {
-      <ckeditor-view [content]="post.content"></ckeditor-view>
+      <ckeditor-view [content]="post().content"></ckeditor-view>
     } @else {
       <ckeditor [editor]="editor" controlName="content"></ckeditor>
       <div class="actions">

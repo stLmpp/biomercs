@@ -43,7 +43,7 @@
           <bio-calendar-days
             [days]="dayState.days ?? []"
             [dayNames]="dayState.dayNames ?? []"
-            [value]="value"
+            [value]="value()"
             [disabled]="disabled"
             (valueChange)="onDaySelect($event)"
             (nextMonth)="next()"
@@ -57,7 +57,7 @@
         @if (months$ | async; as months) {
           <bio-calendar-months
             [months]="months"
-            [value]="value"
+            [value]="value()"
             [disabled]="disabled"
             (monthSelect)="onMonthSelect($event)"
             (nextYear)="next(viewModeMonth)"
@@ -68,7 +68,7 @@
       @case (viewModeYear) {
         @if (years$ | async; as years) {
           <bio-calendar-years
-            [value]="value"
+            [value]="value()"
             [years]="years"
             [disabled]="disabled"
             (nextYears)="next(viewModeYear)"

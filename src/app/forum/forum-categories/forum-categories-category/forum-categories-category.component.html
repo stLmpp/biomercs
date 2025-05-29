@@ -1,6 +1,6 @@
-@if (isAdmin) {
+@if (isAdmin()) {
   <div class="actions">
-    <button bioButton type="button" (click)="openAddEditModal.emit(category.id)" [disabled]="loadingAddEditModal">
+    <button bioButton type="button" (click)="openAddEditModal.emit(category().id)" [disabled]="loadingAddEditModal()">
       <bio-icon>edit</bio-icon>
       Edit category
     </button>
@@ -13,27 +13,27 @@
 <bio-list
   selectable
   cdkDropList
-  [cdkDropListDisabled]="!isAdmin"
-  [cdkDropListData]="category.subCategories"
-  [cdkDropListConnectedTo]="idCategoriesDropList"
+  [cdkDropListDisabled]="!isAdmin()"
+  [cdkDropListData]="category().subCategories"
+  [cdkDropListConnectedTo]="idCategoriesDropList()"
   (cdkDropListDropped)="onCdkDropListDropped($event)"
-  [id]="idCategoryDropList"
+  [id]="idCategoryDropList()"
   >
-  @if (!category.subCategories.length) {
+  @if (!category().subCategories.length) {
     <bio-list-item> No sub categories found! </bio-list-item>
   }
-  @for (subCategory of category.subCategories; track trackById($index, subCategory)) {
+  @for (subCategory of category().subCategories; track trackById($index, subCategory)) {
     <bio-list-item
-      [routerLink]="['category', category.id, 'sub-category', subCategory.id, 'page', 1]"
+      [routerLink]="['category', category().id, 'sub-category', subCategory.id, 'page', 1]"
       cdkDrag
       [cdkDragData]="subCategory"
       >
-      @if (isAdmin) {
+      @if (isAdmin()) {
         <bio-icon bioPrefix cdkDragHandle> drag_handle </bio-icon>
       }
       <bio-list-item-line>{{ subCategory.name }}</bio-list-item-line>
       <bio-list-item-line>{{ subCategory.description }}</bio-list-item-line>
-      @if (!isMobile && subCategory.moderators.length) {
+      @if (!isMobile() && subCategory.moderators.length) {
         <bio-list-item-line class="moderators">
           Moderators:
           @for (moderator of subCategory.moderators; track trackById($index, moderator)) {
@@ -49,7 +49,7 @@
       <div>{{ subCategory.postCount | number: '1.0-0' }} Posts</div>
       <div>{{ subCategory.topicCount | number: '1.0-0' }} Topics</div>
     </div>
-    @if (subCategory.idLastPost && !isMobile) {
+    @if (subCategory.idLastPost && !isMobile()) {
       <div bioSuffix class="last-post">
         <div>
           Last post by
@@ -62,7 +62,7 @@
           <a
           [routerLink]="[
             'category',
-            category.id,
+            category().id,
             'sub-category',
             subCategory.id,
             'topic',
@@ -78,7 +78,7 @@
         <div>on {{ subCategory.lastPostDate | authDateFormat }}</div>
       </div>
     }
-    @if (isAdmin) {
+    @if (isAdmin()) {
       <div bioSuffix>
         <button
           bioButton

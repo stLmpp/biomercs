@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostBinding, Input, inject } from '@angular/core';
+import { Directive, ElementRef, HostBinding, inject, input } from '@angular/core';
 import { AbstractComponent } from '../core/abstract-component';
 import { Control, ControlDirective, ModelDirective } from '@stlmpp/control';
 import { FocusableOption } from '@angular/cdk/a11y';
@@ -16,14 +16,15 @@ export class InputDirective extends AbstractComponent implements FocusableOption
   modelDirective? = inject(ModelDirective, { optional: true, self: true });
 
 
-  @Input() @HostBinding('attr.id') id?: number | string;
+  @HostBinding('attr.id')
+readonly id = input<number | string>();
 
   override get primaryClass(): boolean {
-    return !this.dangerClass && (this.bioType || 'primary') === 'primary';
+    return !this.dangerClass && (this.bioType() || 'primary') === 'primary';
   }
 
   override get dangerClass(): boolean {
-    return this.bioType === 'danger' || !!(this.control?.touched && this.control.invalid);
+    return this.bioType() === 'danger' || !!(this.control?.touched && this.control.invalid);
   }
 
   get control(): Control | undefined {
