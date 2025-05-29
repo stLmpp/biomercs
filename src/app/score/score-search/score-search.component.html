@@ -79,13 +79,11 @@
     </bio-card-actions>
   </bio-card>
 </form>
-<bio-score-list-responsive
-  [scores]="scores"
+<bio-score-list-responsive [scores]="scores"
   [colDefs]="colDefs"
   [paginationMeta]="paginationMeta"
   [loading]="loading"
   (currentPageChange)="onCurrentPageChange($event)"
   (itemsPerPageChange)="onItemsPerPageChange($event)"
   (scoreClicked)="openInfoScore($event)"
-  >
-</bio-score-list-responsive>
+   />

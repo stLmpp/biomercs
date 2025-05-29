@@ -3,13 +3,12 @@
   <bio-card class="params" collapsable>
     <h3 bioCardTitle>Parameters</h3>
     <bio-card-content>
-      <bio-params
-        [params]="params$ | async"
+      <bio-params [params]="params$ | async"
         (paramsChange)="form.patchValue($event)"
         [config]="paramsConfig"
         setQueryParamsOnChange
         (modeChange)="onModeChange($event)"
-      ></bio-params>
+       />
     </bio-card-content>
   </bio-card>
   <form [controlGroup]="form" (groupSubmit)="onSubmit()">

@@ -1,20 +1,18 @@
 <bio-card class="params" collapsable>
   <h3 bioCardTitle>Parameters</h3>
   <bio-card-content>
-    <bio-params
-      [config]="paramsConfig"
+    <bio-params [config]="paramsConfig"
       [params]="params$ | async"
       (paramsChange)="updateParams($event)"
       setQueryParamsOnChange
       clearable
       approval
-    ></bio-params>
+     />
   </bio-card-content>
 </bio-card>
 <ng-container *ngLet="order$ | async as order">
   @if (scores$ | async; as scores) {
-    <bio-score-list-responsive
-      [loading]="tableLoading$ | async"
+    <bio-score-list-responsive [loading]="tableLoading$ | async"
       [colDefs]="colDefs"
       [paginationMeta]="meta$ | async"
       [itemsPerPageOptions]="itemsPerPageOptions"
@@ -26,6 +24,6 @@
       (orderChange)="changeOrder($event)"
       (notifyChange)="onNotifyChange($event)"
       (scoreClicked)="openModalSelectApprovalType($event)"
-    ></bio-score-list-responsive>
+     />
   }
 </ng-container>

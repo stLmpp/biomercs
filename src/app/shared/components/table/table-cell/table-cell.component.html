@@ -1,10 +1,8 @@
 @if (!colDef().component) {
   @if (colDef().template) {
-    <ng-container
-      [ngTemplateOutlet]="colDef().template"
+    <ng-container [ngTemplateOutlet]="colDef().template"
       [ngTemplateOutletContext]="{ item: item(), colDef: colDef() }"
-      >
-    </ng-container>
+       />
   } @else {
     <span
       *ngLet="item()[colDef().property] | tableCellFormatter: colDef().formatter as value"
@@ -16,4 +14,4 @@
     </span>
   }
 }
-<ng-template cdkPortalOutlet></ng-template>
+<ng-template cdkPortalOutlet />

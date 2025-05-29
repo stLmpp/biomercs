@@ -1,7 +1,6 @@
 <h4 bioPageTitle></h4>
 @if (scores$ | async; as scores) {
-  <bio-score-list-responsive
-    [scores]="scores"
+  <bio-score-list-responsive [scores]="scores"
     [paginationMeta]="paginationMeta$ | async"
     [colDefs]="colDefs"
     [loading]="loading$ | async"
@@ -10,5 +9,5 @@
     (notifyChange)="onNotifyChange($event)"
     (currentPageChange)="onCurrentPageChange($event)"
     (itemsPerPageChange)="onItemsPerPageChange($event)"
-  ></bio-score-list-responsive>
+   />
 }

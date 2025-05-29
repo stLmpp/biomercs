@@ -4,8 +4,8 @@
     (checkedChange)="onCheckedChange()"
     [disabled]="disabled"
     >
-    <ng-container [ngTemplateOutlet]="single"></ng-container>
+    <ng-container [ngTemplateOutlet]="single" />
   </bio-checkbox>
 } @else {
-  <ng-content></ng-content>
+  <ng-content />
 }

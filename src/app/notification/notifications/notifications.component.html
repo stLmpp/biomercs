@@ -22,7 +22,7 @@
       >
       <bio-list-item-line> {{ notification.content }} </bio-list-item-line>
       @if (notification.loading) {
-        <bio-spinner bioSuffix [size]="0.1"></bio-spinner>
+        <bio-spinner bioSuffix [size]="0.1" />
       }
       <div bioSuffix>
         <button
@@ -62,7 +62,7 @@
     @if (loadingMore()) {
       <bio-list-item>
         <bio-list-item-line>Loading...</bio-list-item-line>
-        <bio-spinner bioSuffix [size]="0.1"></bio-spinner>
+        <bio-spinner bioSuffix [size]="0.1" />
       </bio-list-item>
     }
   </cdk-virtual-scroll-viewport>

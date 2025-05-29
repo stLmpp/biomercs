@@ -1,11 +1,10 @@
 <ng-container *ngLet="user$ | async as user">
   <ng-container *ngLet="isMobile$ | async as isMobile">
     @if (sideMenuOpened && user) {
-      <bio-side-menu
-        [user]="user"
+      <bio-side-menu [user]="user"
         [isMobile]="isMobile"
         (menuSelected)="toggleSideMenu($event)"
-      ></bio-side-menu>
+       />
     }
     <div class="brand-wrapper">
       @if (user) {

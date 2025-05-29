@@ -1,6 +1,6 @@
 <bio-card dark>
   @if (loading) {
-    <bio-loading></bio-loading>
+    <bio-loading />
   }
   <h4 bioCardTitle>{{ topic.name }}</h4>
   <bio-card-content>
@@ -26,8 +26,7 @@
       }
     </div>
     @for (post of topic.posts.items; track trackById($index, post)) {
-      <bio-forum-topic-post
-        [idSubCategory]="topic.idSubCategory"
+      <bio-forum-topic-post [idSubCategory]="topic.idSubCategory"
         [post]="post"
         [odd]="$odd"
         [topicLocked]="!!topic.lockedDate && !topic.isModerator"
@@ -36,14 +35,13 @@
         (postDelete)="onPostDelete()"
         (postQuote)="onReply($event)"
         (topicDelete)="onTopicDelete()"
-      ></bio-forum-topic-post>
+       />
     }
   </bio-card-content>
   <bio-card-actions end>
-    <bio-pagination
-      [meta]="topic.posts.meta"
+    <bio-pagination [meta]="topic.posts.meta"
       itemsPerPageHidden
       (currentPageChange)="onPageChange($event)"
-    ></bio-pagination>
+     />
   </bio-card-actions>
 </bio-card>

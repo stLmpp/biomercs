@@ -38,8 +38,7 @@
               - Deleted at {{ category.deletedDate | authDateFormat }}
             }
           </div>
-          <bio-forum-categories-category
-            [category]="category"
+          <bio-forum-categories-category [category]="category"
             [isAdmin]="isAdmin"
             [loadingAddEditModal]="loadingAddEditModal"
             [isMobile]="isMobile$ | asyncDefault: false"
@@ -48,14 +47,14 @@
             (openAddEditModal)="openAddEditModal($event)"
             (categoryChange)="onCategoryChange($event)"
             (orderChange)="onSubCategoryOrderChange($event)"
-          ></bio-forum-categories-category>
+           />
         </bio-accordion-item>
       }
       <bio-accordion-item accordionTitle="Recent posts" expanded>
-        <bio-forum-categories-recent-topics [recentTopics]="recentTopics"></bio-forum-categories-recent-topics>
+        <bio-forum-categories-recent-topics [recentTopics]="recentTopics" />
       </bio-accordion-item>
       <bio-accordion-item accordionTitle="Players online" expanded>
-        <bio-forum-categories-players-online></bio-forum-categories-players-online>
+        <bio-forum-categories-players-online />
       </bio-accordion-item>
     </bio-accordion>
   }

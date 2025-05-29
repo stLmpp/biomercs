@@ -190,13 +190,11 @@
 </bio-card>
 
 @for (status of scoreGroupedByStatus; track trackByScoreGroupByStatus($index, status)) {
-  <bio-score-list-responsive
-    [scores]="status.scores"
+  <bio-score-list-responsive [scores]="status.scores"
     title="{{ status.description }} ({{ status.scores.length }})"
     [colDefs]="colDefs"
     [disabledProperty]="'disabled'"
     (scoreClicked)="openScoreInfo($event)"
     collapsable
-    >
-  </bio-score-list-responsive>
+     />
 }

@@ -1,6 +1,6 @@
 <bio-card class="bio-table" [collapsable]="collapsable" [collapsed]="true">
   @if (loading()) {
-    <bio-loading></bio-loading>
+    <bio-loading />
   }
   @if (title()) {
     <h3 bioCardTitle>{{ title() }}</h3>
@@ -51,13 +51,12 @@
   </bio-card-content>
   @if (paginationMeta()) {
     <bio-card-actions end>
-      <bio-pagination
-        [meta]="paginationMeta()"
+      <bio-pagination [meta]="paginationMeta()"
         [itemsPerPageOptions]="itemsPerPageOptions()"
         (currentPageChange)="currentPageChange.emit($event)"
         (itemsPerPageChange)="itemsPerPageChange.emit($event)"
         setQueryParamsOnChange
-      ></bio-pagination>
+       />
     </bio-card-actions>
   }
 </bio-card>

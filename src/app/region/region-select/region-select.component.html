@@ -1,5 +1,5 @@
 @if (loading) {
-  <bio-loading></bio-loading>
+  <bio-loading />
 }
 <h3 bioModalTitle>Region</h3>
 <div bioModalTitle>
@@ -13,7 +13,7 @@
       (keydown.control.s)="onSave($event)"
       >
       <bio-list-item [value]="region.id" *cdkVirtualFor="let region of all; trackBy: trackByRegion; templateCacheSize: 0">
-        <bio-icon bioPrefix [flag]="region.shortName"></bio-icon>
+        <bio-icon bioPrefix [flag]="region.shortName" />
         {{ region.name }}
       </bio-list-item>
       @if (!all.length) {

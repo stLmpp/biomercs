@@ -1,6 +1,6 @@
 <bio-card dark>
   @if (loading) {
-    <bio-loading></bio-loading>
+    <bio-loading />
   }
   <bio-card-content>
     <div class="actions">
@@ -29,11 +29,10 @@
     }
   </bio-card-content>
   <bio-card-actions end>
-    <bio-pagination
-      [(currentPage)]="page"
+    <bio-pagination [(currentPage)]="page"
       (currentPageChange)="onPageChange($event)"
       [meta]="subCategory.topics.meta"
       itemsPerPageHidden
-    ></bio-pagination>
+     />
   </bio-card-actions>
 </bio-card>

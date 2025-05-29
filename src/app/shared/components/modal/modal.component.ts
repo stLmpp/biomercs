@@ -8,7 +8,7 @@ import { Animations } from '../../animations/animations';
 
 @Component({
   selector: 'bio-modal',
-  template: '<ng-template cdkPortalOutlet></ng-template>',
+  template: '<ng-template cdkPortalOutlet />',
   styleUrls: ['./modal.component.scss'],
   encapsulation: ViewEncapsulation.None,
   host: { class: 'modal', '[attr.modal]': `''`, '[@scaleIn]': '', '[@fadeOut]': '' },

@@ -1,19 +1,18 @@
 <bio-card class="scores" [collapsable]="collapsable" [collapsed]="true">
   @if (loading()) {
-    <bio-loading></bio-loading>
+    <bio-loading />
   }
   @if (title()) {
     <h3 bioCardTitle>{{ title() }}</h3>
   }
   <bio-card-content>
     @if (paginationMeta()) {
-      <bio-pagination
-        [meta]="paginationMeta()"
+      <bio-pagination [meta]="paginationMeta()"
         [itemsPerPageOptions]="itemsPerPageOptions()"
         (currentPageChange)="currentPageChange.emit($event)"
         (itemsPerPageChange)="itemsPerPageChange.emit($event)"
         setQueryParamsOnChange
-      ></bio-pagination>
+       />
     }
     <bio-list selectable>
       @for (score of scores(); track trackByScore($index, score)) {
@@ -41,13 +40,12 @@
       }
     </bio-list>
     @if (paginationMeta()) {
-      <bio-pagination
-        [meta]="paginationMeta()"
+      <bio-pagination [meta]="paginationMeta()"
         [itemsPerPageOptions]="itemsPerPageOptions()"
         (currentPageChange)="currentPageChange.emit($event)"
         (itemsPerPageChange)="itemsPerPageChange.emit($event)"
         setQueryParamsOnChange
-      ></bio-pagination>
+       />
     }
   </bio-card-content>
 </bio-card>

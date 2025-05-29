@@ -2,7 +2,7 @@
 <bio-card collapsable>
   <h3 bioCardTitle>Parameters</h3>
   <bio-card-content>
-    <bio-params (paramsChange)="paramsChange($event)" [config]="paramsConfig" setQueryParamsOnChange></bio-params>
+    <bio-params (paramsChange)="paramsChange($event)" [config]="paramsConfig" setQueryParamsOnChange />
   </bio-card-content>
 </bio-card>
 <ng-container *ngLet="tableLoading$ | async as tableLoading">
