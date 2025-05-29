@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostBinding, Input, LOCALE_ID, TemplateRef, ViewChild, ViewContainerRef, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input, LOCALE_ID, TemplateRef, ViewContainerRef, inject, input, viewChild } from '@angular/core';
 import { CalendarViewModeEnum } from '@shared/components/datepicker/calendar-view-mode.enum';
 import { coerceBooleanProperty } from 'st-utils';
 import { Animations } from '@shared/animations/animations';
@@ -41,7 +41,7 @@ export class DatepickerComponent extends Destroyable {
   private _disabled = false;
   private _overlayRef?: OverlayRef;
 
-  @ViewChild(TemplateRef) templateRef!: TemplateRef<any>;
+  readonly templateRef = viewChild.required(TemplateRef);
 
   readonly value = input<Date | null>();
   readonly viewMode = input<CalendarViewModeEnum>(CalendarViewModeEnum.day);
@@ -89,7 +89,7 @@ export class DatepickerComponent extends Destroyable {
         .withPositions(getDatepickerOverlayPositions()),
       scrollStrategy: this.scrollStrategyOptions.block(),
     });
-    const portal = new TemplatePortal(this.templateRef, this.viewContainerRef);
+    const portal = new TemplatePortal(this.templateRef(), this.viewContainerRef);
     this._overlayRef.attach(portal);
     this._overlayRef
       .backdropClick()

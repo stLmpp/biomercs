@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ContentChild, HostBinding, HostListener, Input, LOCALE_ID, OnInit, ViewChild, ViewEncapsulation, inject, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, HostListener, Input, LOCALE_ID, OnInit, ViewEncapsulation, inject, input, output, viewChild, contentChild } from '@angular/core';
 import { LocalState } from '@stlmpp/store';
 import { addMonths, addYears, setMonth, setYear, subMonths, subYears } from 'date-fns';
 import { combineLatest, distinctUntilChanged, map, Subject } from 'rxjs';
@@ -59,8 +59,8 @@ export class CalendarComponent
 
   private _disabled = false;
 
-  @ViewChild(CalendarKeyboardNavigation) readonly calendarKeyboardNavigation!: CalendarKeyboardNavigation;
-  @ContentChild(CalendarFooterDirective) readonly calendarFooterDirective?: CalendarFooterDirective;
+  readonly calendarKeyboardNavigation = viewChild.required(CalendarKeyboardNavigation);
+  readonly calendarFooterDirective = contentChild(CalendarFooterDirective);
 
   readonly value = input<Date | null>();
   readonly viewMode = input<CalendarViewModeEnum>(CalendarViewModeEnum.day);
@@ -222,7 +222,7 @@ export class CalendarComponent
   }
 
   focus(): void {
-    this.calendarKeyboardNavigation.focusKeyManager.setFirstItemActive();
+    this.calendarKeyboardNavigation().focusKeyManager.setFirstItemActive();
   }
 
   setDisabled(disabled: boolean): void {

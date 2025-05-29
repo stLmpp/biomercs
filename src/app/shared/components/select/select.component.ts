@@ -1,4 +1,4 @@
-import { AfterContentInit, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, ElementRef, HostBinding, HostListener, QueryList, TemplateRef, ViewChild, ViewContainerRef, ViewEncapsulation, inject, input } from '@angular/core';
+import { AfterContentInit, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostBinding, HostListener, TemplateRef, ViewContainerRef, ViewEncapsulation, inject, input, viewChild, contentChildren } from '@angular/core';
 import { ControlValue } from '@stlmpp/control';
 import { Select } from './select';
 import { auditTime, startWith, Subject, takeUntil } from 'rxjs';
@@ -47,9 +47,9 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
   private _overlayRef?: OverlayRef;
   private _focusManager?: FocusKeyManager<OptionComponent>;
 
-  @ViewChild('panel', { read: TemplateRef }) readonly panelTemplateRef!: TemplateRef<any>;
-  @ContentChildren(OptionComponent, { descendants: true }) readonly options!: QueryList<OptionComponent>;
-  @ContentChildren(OptgroupComponent, { descendants: true }) readonly optgroups!: QueryList<OptgroupComponent>;
+  readonly panelTemplateRef = viewChild.required('panel', { read: TemplateRef });
+  readonly options = contentChildren(OptionComponent, { descendants: true });
+  readonly optgroups = contentChildren(OptgroupComponent, { descendants: true });
 
   readonly compareWith = input<(valueA: any, valueB: any) => boolean>(Object.is);
   readonly placeholder = input<string>();
@@ -80,7 +80,7 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
   }
 
   private _setViewValueFromOptions(value: any): void {
-    const optionSelected = this.options?.find(option => this.compareWith()(option.value(), value));
+    const optionSelected = this.options()?.find(option => this.compareWith()(option.value(), value));
     if (optionSelected) {
       this.setViewValue(optionSelected.getViewValue());
     } else {
@@ -89,9 +89,9 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
   }
 
   private _initFocus(): void {
-    this._focusManager = new FocusKeyManager(this.options).withVerticalOrientation().withTypeAhead(400);
+    this._focusManager = new FocusKeyManager(this.options()).withVerticalOrientation().withTypeAhead(400);
     if (!isNil(this.value)) {
-      const optionSelected = this.options.toArray().findIndex(option => this.compareWith()(option.value(), this.value));
+      const optionSelected = this.options.findIndex(option => this.compareWith()(option.value(), this.value));
       this._focusManager.setActiveItem(Math.max(optionSelected, 0));
     } else {
       this._focusManager.setFirstItemActive();
@@ -146,7 +146,7 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
       width: this.elementRef.nativeElement.getBoundingClientRect().width,
       hasBackdrop: true,
     });
-    const portal = new TemplatePortal(this.panelTemplateRef, this.viewContainerRef);
+    const portal = new TemplatePortal(this.panelTemplateRef(), this.viewContainerRef);
     this._overlayRef.attach(portal);
     this._overlayRef
       .backdropClick()
@@ -207,7 +207,7 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
   }
 
   ngAfterContentInit(): void {
-    this.options.changes.pipe(takeUntil(this.destroy$), auditTime(100), startWith(this.options)).subscribe(() => {
+    this.options().changes.pipe(takeUntil(this.destroy$), auditTime(100), startWith(this.options())).subscribe(() => {
       this._setViewValueFromOptions(this.value);
     });
   }

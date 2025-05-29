@@ -1,9 +1,9 @@
-@if (labelDirective) {
+@if (labelDirective()) {
   <ng-content select="label"></ng-content>
 } @else {
   @if (label()) {
     <label
-      [danger]="inputDirective?.dangerClass || select?.dangerClass"
+      [danger]="inputDirective()?.dangerClass || select()?.dangerClass"
       [for]="id()"
       [class.required]="forceRequired() || (control | hasValidators: ['required'])"
       >
@@ -14,10 +14,10 @@
 <div
   class="input-wrapper"
   [ngClass]="{
-    'has-prefix': !!prefixDirective,
-    'has-suffix': !!suffixDirective,
+    'has-prefix': !!prefixDirective(),
+    'has-suffix': !!suffixDirective(),
     disabled: controlState?.disabled,
-    'is-select': !!select
+    'is-select': !!select()
   }"
   >
   <div class="spinner-wrapper">
@@ -25,13 +25,13 @@
       <bio-spinner [size]="0.1"></bio-spinner>
     }
   </div>
-  @if (prefixDirective) {
+  @if (prefixDirective()) {
     <div class="prefix-wrapper" (click)="$event.stopPropagation()">
       <ng-content select="[bioPrefix]"></ng-content>
     </div>
   }
   <ng-content></ng-content>
-  @if (suffixDirective) {
+  @if (suffixDirective()) {
     <div class="suffix-wrapper" (click)="$event.stopPropagation()">
       <ng-content select="[bioSuffix]"></ng-content>
     </div>

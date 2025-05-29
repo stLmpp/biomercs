@@ -1,4 +1,4 @@
-import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, QueryList, Renderer2, TemplateRef, ViewChild, ViewEncapsulation, inject, input } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, QueryList, Renderer2, TemplateRef, ViewEncapsulation, inject, input, viewChild, contentChildren } from '@angular/core';
 import { Animations } from '@shared/animations/animations';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { AnimationEvent } from '@angular/animations';
@@ -26,9 +26,8 @@ export class AutocompleteComponent extends Autocomplete implements AfterContentI
   changeDetectorRef = inject(ChangeDetectorRef);
 
 
-  @ViewChild(TemplateRef) readonly templateRef!: TemplateRef<any>;
-  @ContentChildren(AutocompleteOptionDirective, { descendants: true })
-  readonly autocompleteOptions!: QueryList<AutocompleteOptionDirective>;
+  readonly templateRef = viewChild.required(TemplateRef);
+  readonly autocompleteOptions = contentChildren(AutocompleteOptionDirective, { descendants: true });
 
   readonly closeOnSelect = input(true);
   readonly replaceInputWithValue = input(true);
@@ -49,7 +48,7 @@ export class AutocompleteComponent extends Autocomplete implements AfterContentI
   }
 
   init(): void {
-    this.focusManager = new FocusKeyManager(this.autocompleteOptions)
+    this.focusManager = new FocusKeyManager(this.autocompleteOptions())
       .withVerticalOrientation()
       .skipPredicate(element => element.disabled);
   }
@@ -89,8 +88,8 @@ export class AutocompleteComponent extends Autocomplete implements AfterContentI
   }
 
   ngAfterContentInit(): void {
-    const optionsChanges: Observable<QueryList<AutocompleteOptionDirective>> = this.autocompleteOptions.changes.pipe(
-      startWith(this.autocompleteOptions)
+    const optionsChanges: Observable<QueryList<AutocompleteOptionDirective>> = this.autocompleteOptions().changes.pipe(
+      startWith(this.autocompleteOptions())
     );
     this.optionsCount$ = optionsChanges.pipe(pluck('length'));
   }

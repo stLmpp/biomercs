@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject, viewChild } from '@angular/core';
 import { debounceTime, finalize, Observable, tap } from 'rxjs';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
@@ -75,7 +75,7 @@ export class RegionSelectComponent implements OnInit, AfterViewInit {
 
   private _viewInitialized = false;
   private _scrolled = false;
-  @ViewChild(CdkVirtualScrollViewport) cdkVirtualScrollViewport?: CdkVirtualScrollViewport;
+  readonly cdkVirtualScrollViewport = viewChild(CdkVirtualScrollViewport);
 
   regions: Region[] = [];
 
@@ -92,8 +92,9 @@ export class RegionSelectComponent implements OnInit, AfterViewInit {
 
   private _scrollToIdRegionSelected(): void {
     const index = this.regions.findIndex(region => region.id === this.idRegion);
-    if (index > -1 && this.cdkVirtualScrollViewport) {
-      this.cdkVirtualScrollViewport.scrollToIndex(index);
+    const cdkVirtualScrollViewport = this.cdkVirtualScrollViewport();
+    if (index > -1 && cdkVirtualScrollViewport) {
+      cdkVirtualScrollViewport.scrollToIndex(index);
     }
     this._scrolled = true;
   }

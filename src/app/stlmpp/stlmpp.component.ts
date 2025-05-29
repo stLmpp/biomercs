@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, QueryList, ViewChildren, inject } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, inject, viewChildren } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { fromEvent, race, shareReplay, take, takeUntil, timer } from 'rxjs';
 import { Destroyable } from '@shared/components/common/destroyable-component';
@@ -39,7 +39,7 @@ export class StlmppComponent extends Destroyable implements AfterViewInit {
   private activatedRoute = inject(ActivatedRoute);
 
 
-  @ViewChildren('fragment') fragments!: QueryList<ElementRef<HTMLElement>>;
+  readonly fragments = viewChildren<ElementRef<HTMLElement>>('fragment');
 
   readonly mail = 'gui.stlmpp@hotmail.com';
   readonly mail2 = 'gui.stlmpp@gmail.com';
@@ -59,7 +59,7 @@ export class StlmppComponent extends Destroyable implements AfterViewInit {
     if (!fragmentRouter) {
       return;
     }
-    const fragmentElement = this.fragments.find(fragment => fragment.nativeElement.id === fragmentRouter);
+    const fragmentElement = this.fragments().find(fragment => fragment.nativeElement.id === fragmentRouter);
     if (!fragmentElement) {
       return;
     }

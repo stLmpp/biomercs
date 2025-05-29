@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject, viewChild } from '@angular/core';
 import { BreakpointObserverService } from '@shared/services/breakpoint-observer/breakpoint-observer.service';
 import { AccordionDirective } from '@shared/components/accordion/accordion.directive';
 import { Destroyable } from '@shared/components/common/destroyable-component';
@@ -52,7 +52,7 @@ export class FaqComponent extends Destroyable implements AfterViewInit {
   private router = inject(Router);
 
 
-  @ViewChild(AccordionDirective) readonly accordionDirective?: AccordionDirective;
+  readonly accordionDirective = viewChild(AccordionDirective);
 
   readonly isMobile$ = this.breakpointObserverService.isMobile$;
   readonly searchControl = new Control<string>('', { initialFocus: true });
@@ -63,8 +63,9 @@ export class FaqComponent extends Destroyable implements AfterViewInit {
   }
 
   onFilterChange($event: FilterItemDirective[]): void {
-    if ($event.length === 1 && this.accordionDirective) {
-      this.accordionDirective.expandItem($event[0].id() + '');
+    const accordionDirective = this.accordionDirective();
+    if ($event.length === 1 && accordionDirective) {
+      accordionDirective.expandItem($event[0].id() + '');
     }
   }
 
@@ -74,9 +75,9 @@ export class FaqComponent extends Destroyable implements AfterViewInit {
       .pipe(observeOn(asyncScheduler), takeUntil(this.destroy$), filterNil(), distinctUntilChanged())
       .subscribe(fragment => {
         if (isFirstChange) {
-          this.accordionDirective?.focusItem(fragment);
+          this.accordionDirective()?.focusItem(fragment);
         }
-        this.accordionDirective?.expandItem(fragment);
+        this.accordionDirective()?.expandItem(fragment);
         isFirstChange = false;
       });
   }

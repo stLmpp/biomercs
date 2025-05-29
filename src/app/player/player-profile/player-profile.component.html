@@ -174,8 +174,8 @@
           (click)="save()"
           [loading]="saving"
         [disabled]="
-          personaNameModelRef?.isPending ||
-          personaNameModelRef?.isInvalid ||
+          personaNameModelRef()?.isPending ||
+          personaNameModelRef()?.isInvalid ||
           (player | playerProfileInvalid: update:newPersonaName)
         "
           >

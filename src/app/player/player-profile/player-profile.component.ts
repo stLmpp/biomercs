@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject, viewChild } from '@angular/core';
 import { concat, distinctUntilChanged, finalize, map, share, switchMap, takeUntil, tap } from 'rxjs';
 import { PlayerService } from '../player.service';
 import { Animations } from '@shared/animations/animations';
@@ -123,7 +123,7 @@ export class PlayerProfileComponent extends Destroyable implements OnInit {
     distinctUntilChanged()
   );
 
-  @ViewChild('personaNameModel') readonly personaNameModelRef?: ModelDirective<string | null | undefined>;
+  readonly personaNameModelRef = viewChild<ModelDirective<string | null | undefined>>('personaNameModel');
 
   readonly isSameAsLogged$ = this._idPlayer$.pipe(switchMap(idPlayer => this.authQuery.selectIsSameAsLogged(idPlayer)));
 

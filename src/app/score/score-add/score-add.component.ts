@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, QueryList, ViewChild, ViewChildren, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, viewChildren, viewChild } from '@angular/core';
 import {
   Control,
   ControlArray,
@@ -94,8 +94,8 @@ export class ScoreAddComponent {
   private platformInputTypeService = inject(PlatformInputTypeService);
 
 
-  @ViewChildren(ScoreAddPlayerComponent) readonly scoreAddPlayerComponents!: QueryList<ScoreAddPlayerComponent>;
-  @ViewChild(ParamsComponent) readonly paramsComponent!: ParamsComponent;
+  readonly scoreAddPlayerComponents = viewChildren(ScoreAddPlayerComponent);
+  readonly paramsComponent = viewChild.required(ParamsComponent);
 
   readonly maskEnum = MaskEnum;
   readonly maskTimePattern = MaskEnumPatterns[MaskEnum.time]!;
@@ -216,8 +216,8 @@ export class ScoreAddComponent {
 
   private _changeAllForms(callback: (form: ControlGroup<any>) => void): void {
     callback(this.form);
-    callback(this.paramsComponent.form);
-    for (const scoreAddPlayerComponent of this.scoreAddPlayerComponents) {
+    callback(this.paramsComponent().form);
+    for (const scoreAddPlayerComponent of this.scoreAddPlayerComponents()) {
       callback(scoreAddPlayerComponent.form);
     }
   }

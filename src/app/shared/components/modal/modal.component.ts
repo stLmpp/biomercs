@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ComponentRef, ElementRef, EmbeddedViewRef, HostBinding, HostListener, OnDestroy, OnInit, ViewChild, ViewEncapsulation, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ComponentRef, ElementRef, EmbeddedViewRef, HostBinding, HostListener, OnDestroy, OnInit, ViewEncapsulation, inject, viewChild } from '@angular/core';
 import { CdkPortalOutlet, ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { MODAL_LAST_FOCUSED_ELEMENT, ModalConfig } from './modal.config';
@@ -26,7 +26,7 @@ export class ModalComponent<R = any> implements OnInit, OnDestroy {
 
   private _focusTrap?: ConfigurableFocusTrap;
 
-  @ViewChild(CdkPortalOutlet, { static: true }) readonly portalOutlet!: CdkPortalOutlet;
+  readonly portalOutlet = viewChild.required(CdkPortalOutlet);
 
   @HostBinding('attr.id') get id(): string {
     return this.modalConfig.id;
@@ -47,11 +47,11 @@ export class ModalComponent<R = any> implements OnInit, OnDestroy {
   }
 
   attachTemplate<T>(templatePortal: TemplatePortal<T>): EmbeddedViewRef<T> {
-    return this.portalOutlet.attachTemplatePortal(templatePortal);
+    return this.portalOutlet().attachTemplatePortal(templatePortal);
   }
 
   attachComponent<T>(componentPortal: ComponentPortal<T>): ComponentRef<T> {
-    return this.portalOutlet.attachComponentPortal(componentPortal);
+    return this.portalOutlet().attachComponentPortal(componentPortal);
   }
 
   async ngOnInit(): Promise<void> {

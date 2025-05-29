@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, QueryList, ViewChildren, inject } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject, viewChildren } from '@angular/core';
 import { Score } from '@model/score';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import {
@@ -79,7 +79,7 @@ export class ScoreRequestChangesModalComponent implements OnInit, AfterViewInit 
   private readonly _keydownTextArea$ = new Subject<TextAreaEvent>();
   private _focusKeyManager!: FocusKeyManager<InputDirective>;
 
-  @ViewChildren('change') readonly changesRef!: QueryList<InputDirective>;
+  readonly changesRef = viewChildren<InputDirective>('change');
 
   saving = false;
 
@@ -171,7 +171,7 @@ export class ScoreRequestChangesModalComponent implements OnInit, AfterViewInit 
   }
 
   ngAfterViewInit(): void {
-    this._focusKeyManager = new FocusKeyManager<InputDirective>(this.changesRef)
+    this._focusKeyManager = new FocusKeyManager<InputDirective>(this.changesRef())
       .withVerticalOrientation(true)
       .withWrap();
     this._focusKeyManager.setFirstItemActive();

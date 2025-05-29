@@ -79,7 +79,7 @@
       }
     }
   </div>
-  @if (calendarFooterDirective) {
+  @if (calendarFooterDirective()) {
     <div class="bio-calendar-footer">
       <ng-content select="[bioCalendarFooter],bio-calendar-footer"></ng-content>
     </div>

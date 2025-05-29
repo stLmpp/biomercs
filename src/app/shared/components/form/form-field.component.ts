@@ -1,4 +1,4 @@
-import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChild, ContentChildren, OnChanges, OnDestroy, QueryList, ViewEncapsulation, inject, input } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnChanges, OnDestroy, ViewEncapsulation, inject, input, contentChild, contentChildren } from '@angular/core';
 import { LabelDirective } from './label.directive';
 import { InputDirective } from './input.directive';
 import { SimpleChangesCustom } from '@util/util';
@@ -34,16 +34,15 @@ export class FormFieldComponent implements AfterContentInit, OnChanges, OnDestro
 
   private readonly _destroy$ = new Subject<void>();
 
-  @ContentChild(LabelDirective) readonly labelDirective?: LabelDirective;
-  @ContentChild(InputDirective) readonly inputDirective?: InputDirective;
-  @ContentChild(ControlDirective) readonly controlDirective?: ControlDirective;
-  @ContentChild(ModelDirective) readonly modelDirective?: ModelDirective;
-  @ContentChildren(FormFieldErrorComponent, { descendants: true })
-  readonly errorComponents!: QueryList<FormFieldErrorComponent>;
-  @ContentChild(PrefixDirective) readonly prefixDirective?: PrefixDirective;
-  @ContentChild(SuffixDirective) readonly suffixDirective?: SuffixDirective;
-  @ContentChild(Select) readonly select?: Select;
-  @ContentChildren(FormFieldChild, { descendants: true }) readonly formFieldChildren!: QueryList<FormFieldChild>;
+  readonly labelDirective = contentChild(LabelDirective);
+  readonly inputDirective = contentChild(InputDirective);
+  readonly controlDirective = contentChild(ControlDirective);
+  readonly modelDirective = contentChild(ModelDirective);
+  readonly errorComponents = contentChildren(FormFieldErrorComponent, { descendants: true });
+  readonly prefixDirective = contentChild(PrefixDirective);
+  readonly suffixDirective = contentChild(SuffixDirective);
+  readonly select = contentChild(Select);
+  readonly formFieldChildren = contentChildren(FormFieldChild, { descendants: true });
 
   readonly label = input<string>();
   readonly id = input<string | number>(uniqueId++);
@@ -53,17 +52,19 @@ export class FormFieldComponent implements AfterContentInit, OnChanges, OnDestro
   readonly forceRequired = input(false);
 
   get control(): Control | undefined {
-    return this.controlDirective?.control ?? this.modelDirective?.control;
+    return this.controlDirective()?.control ?? this.modelDirective()?.control;
   }
 
   controlState?: ControlState;
 
   ngAfterContentInit(): void {
-    if (this.labelDirective) {
-      this.labelDirective.for = this.id();
+    const labelDirective = this.labelDirective();
+    if (labelDirective) {
+      labelDirective.for = this.id();
     }
-    if (this.inputDirective) {
-      const inputDirective = this.inputDirective;
+    const inputDirectiveValue = this.inputDirective();
+    if (inputDirectiveValue) {
+      const inputDirective = inputDirectiveValue;
       inputDirective.id = this.id();
       if (this.control) {
         this.control.stateChanged$.pipe(takeUntil(this._destroy$), auditTime(50)).subscribe(state => {
@@ -78,7 +79,7 @@ export class FormFieldComponent implements AfterContentInit, OnChanges, OnDestro
         this.control.disable(!!disabled);
       }
     }
-    this.formFieldChildren.changes.pipe(takeUntil(this._destroy$), auditTime(50)).subscribe(() => {
+    this.formFieldChildren().changes.pipe(takeUntil(this._destroy$), auditTime(50)).subscribe(() => {
       this.changeDetectorRef.markForCheck();
     });
   }

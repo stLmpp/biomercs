@@ -1,4 +1,4 @@
-import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, ElementRef, HostBinding, Input, QueryList, ViewEncapsulation, inject, input, output } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostBinding, Input, ViewEncapsulation, inject, input, output, contentChildren } from '@angular/core';
 import { CardTitleDirective } from './card-title.directive';
 import { CardContentDirective } from './card-content.directive';
 import { CardActionsDirective } from './card-actions.directive';
@@ -31,11 +31,11 @@ export class CardComponent extends Destroyable implements AfterContentInit {
   private _collapsable = false;
   private _dark = false;
 
-  @ContentChildren(CardTitleDirective) readonly cardTitleDirectives!: QueryList<CardTitleDirective>;
-  @ContentChildren(CardSubtitleDirective) readonly cardSubtitleDirective!: QueryList<CardSubtitleDirective>;
-  @ContentChildren(CardContentDirective) readonly cardContentDirectives!: QueryList<CardContentDirective>;
-  @ContentChildren(CardActionsDirective) readonly cardActionsDirective!: QueryList<CardActionsDirective>;
-  @ContentChildren(CardChild) readonly cardChildren!: QueryList<CardChild>;
+  readonly cardTitleDirectives = contentChildren(CardTitleDirective);
+  readonly cardSubtitleDirective = contentChildren(CardSubtitleDirective);
+  readonly cardContentDirectives = contentChildren(CardContentDirective);
+  readonly cardActionsDirective = contentChildren(CardActionsDirective);
+  readonly cardChildren = contentChildren(CardChild);
 
   @Input()
   @HostBinding('class.collapsable')
@@ -60,12 +60,12 @@ export class CardComponent extends Destroyable implements AfterContentInit {
 
   @HostBinding('class.has-header')
   get hasHeaderClass(): boolean {
-    return !!this.cardTitleDirectives?.length || !!this.cardSubtitleDirective?.length;
+    return !!this.cardTitleDirectives()?.length || !!this.cardSubtitleDirective()?.length;
   }
 
   @HostBinding('class.has-actions')
   get hasActionsClass(): boolean {
-    return !!this.cardActionsDirective?.length;
+    return !!this.cardActionsDirective()?.length;
   }
 
   onCollapseToggle(): void {
@@ -78,7 +78,7 @@ export class CardComponent extends Destroyable implements AfterContentInit {
   }
 
   ngAfterContentInit(): void {
-    this.cardChildren.changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.cardChildren().changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.changeDetectorRef.markForCheck();
     });
   }

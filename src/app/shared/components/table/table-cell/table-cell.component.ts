@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ComponentRef, HostBinding, OnChanges, ViewChild, ViewContainerRef, ViewEncapsulation, inject, input, output } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ComponentRef, HostBinding, OnChanges, ViewContainerRef, ViewEncapsulation, inject, input, output, viewChild } from '@angular/core';
 import { ColDefInternal } from '@shared/components/table/col-def';
 import { CdkPortalOutlet, ComponentPortal } from '@angular/cdk/portal';
 import { TableCell, TableCellNotifyChange } from '@shared/components/table/type';
@@ -38,7 +38,7 @@ export class TableCellComponent<T extends Record<any, any>, K extends keyof T>
   private _componentPortal!: ComponentPortal<TableCell<T, K>>;
   private _componentRef!: ComponentRef<TableCell<T, K>>;
 
-  @ViewChild(CdkPortalOutlet) cdkPortalOutlet!: CdkPortalOutlet;
+  readonly cdkPortalOutlet = viewChild.required(CdkPortalOutlet);
 
   readonly colDef = input.required<ColDefInternal<T, K>>();
   readonly item = input.required<T>();
@@ -60,14 +60,15 @@ export class TableCellComponent<T extends Record<any, any>, K extends keyof T>
     if (!this._viewInitialized) {
       return;
     }
-    if (this.cdkPortalOutlet.hasAttached()) {
-      this.cdkPortalOutlet.detach();
+    const cdkPortalOutlet = this.cdkPortalOutlet();
+    if (cdkPortalOutlet.hasAttached()) {
+      cdkPortalOutlet.detach();
     }
     this.destroy$.next();
     const colDef = this.colDef();
     if (colDef.component) {
       this._componentPortal = new ComponentPortal(colDef.component, this.viewContainerRef);
-      this._componentRef = this.cdkPortalOutlet.attachComponentPortal(this._componentPortal);
+      this._componentRef = cdkPortalOutlet.attachComponentPortal(this._componentPortal);
       this._componentRef.instance.colDef = colDef;
       this._componentRef.instance.item = this.item();
       this._componentRef.instance.metadata = this.metadata();

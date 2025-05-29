@@ -7,11 +7,10 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  QueryList,
-  ViewChildren,
   inject,
   input,
   output,
+  viewChildren
 } from '@angular/core';
 import {
   ControlArray,
@@ -65,7 +64,7 @@ export class ConfirmationCodeInputComponent
 
   private readonly _destroy$ = new Subject<void>();
 
-  @ViewChildren(ConfirmationCodeInputDirective) readonly inputList!: QueryList<ConfirmationCodeInputDirective>;
+  readonly inputList = viewChildren(ConfirmationCodeInputDirective);
   readonly focusoutLastItem = output<void>();
 
   readonly length = input(6);
@@ -152,7 +151,7 @@ export class ConfirmationCodeInputComponent
   }
 
   ngAfterViewInit(): void {
-    this.focusManager = new FocusKeyManager(this.inputList).withHorizontalOrientation('ltr');
+    this.focusManager = new FocusKeyManager(this.inputList()).withHorizontalOrientation('ltr');
     this.focusManager.setFirstItemActive();
   }
 

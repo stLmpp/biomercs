@@ -7,7 +7,7 @@
     placeholder="Search"
     [control]="searchControl"
     autocomplete="off"
-    (keydown.arrowDown)="accordionDirective?.focusKeyManager?.setFirstItemActive()"
+    (keydown.arrowDown)="accordionDirective()?.focusKeyManager?.setFirstItemActive()"
     />
   <bio-icon bioPrefix>search</bio-icon>
 </bio-form-field>

@@ -1,4 +1,4 @@
-import { AfterContentInit, ContentChildren, Directive, HostListener, OnDestroy, QueryList } from '@angular/core';
+import { AfterContentInit, Directive, HostListener, OnDestroy, contentChildren } from '@angular/core';
 import { ControlValue } from '@stlmpp/control';
 import { ListItemComponent } from './list-item.component';
 import { Subject } from 'rxjs';
@@ -29,7 +29,7 @@ export class ListSelectable {}
 export class ListControlValue extends ListParentControl implements OnDestroy, AfterContentInit {
   private readonly _destroy$ = new Subject<void>();
 
-  @ContentChildren(ListItemComponent, { descendants: true }) readonly listItemComponents!: QueryList<ListItemComponent>;
+  readonly listItemComponents = contentChildren(ListItemComponent, { descendants: true });
 
   focusManager?: FocusKeyManager<ListItemComponent>;
 
@@ -48,15 +48,16 @@ export class ListControlValue extends ListParentControl implements OnDestroy, Af
 
   setValue(value: any): void {
     this.value = value;
-    if (this.listItemComponents?.length) {
-      for (const item of this.listItemComponents) {
+    const listItemComponents = this.listItemComponents();
+    if (listItemComponents?.length) {
+      for (const item of listItemComponents) {
         item.setValue(this.value);
       }
     }
   }
 
   ngAfterContentInit(): void {
-    this.focusManager = new FocusKeyManager<ListItemComponent>(this.listItemComponents).withVerticalOrientation();
+    this.focusManager = new FocusKeyManager<ListItemComponent>(this.listItemComponents()).withVerticalOrientation();
   }
 
   ngOnDestroy(): void {

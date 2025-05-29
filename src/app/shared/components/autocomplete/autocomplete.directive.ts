@@ -71,7 +71,7 @@ export class AutocompleteDirective extends Destroyable {
     }
     this._isSubscribed = true;
     const optionsChanges: Observable<QueryList<AutocompleteOptionDirective>> =
-      bioAutocomplete.autocompleteOptions.changes.pipe(startWith(bioAutocomplete.autocompleteOptions));
+      bioAutocomplete.autocompleteOptions().changes.pipe(startWith(bioAutocomplete.autocompleteOptions()));
     combineLatest([this._onFocus$, optionsChanges])
       .pipe(takeUntil(this.destroy$))
       .subscribe(([focused, changes]) => {
@@ -155,12 +155,13 @@ export class AutocompleteDirective extends Destroyable {
   @HostListener('keydown.enter')
   onKeydownEnter(): void {
     const bioAutocomplete = this.bioAutocomplete();
+    const autocompleteOptions = bioAutocomplete.autocompleteOptions();
     if (
       this.opened &&
       this._bioAutocompleteSelectFirstOptionOnEnter &&
-      bioAutocomplete.autocompleteOptions.length
+      autocompleteOptions.length
     ) {
-      bioAutocomplete.autocompleteOptions.find(option => !option.disabled)?.onSelect();
+      autocompleteOptions.find(option => !option.disabled)?.onSelect();
     }
   }
 

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, HostBinding, HostListener, QueryList, ViewEncapsulation, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding, HostListener, ViewEncapsulation, inject, input, contentChildren } from '@angular/core';
 import { Select } from '@shared/components/select/select';
 import { Option } from '@shared/components/select/option';
 import { CheckboxComponent } from '../checkbox/checkbox.component';
@@ -24,12 +24,12 @@ export class OptgroupComponent {
 
   readonly label = input.required<string>();
 
-  @ContentChildren(Option, { descendants: true }) options?: QueryList<Option>;
+  readonly options = contentChildren(Option, { descendants: true });
 
   @HostBinding('class.multiple') multiple: boolean;
 
   get optionsWithoutDisabled(): Option[] {
-    return (this.options ?? []).filter(option => !option.disabled);
+    return (this.options() ?? []).filter(option => !option.disabled);
   }
 
   get isSelected(): boolean {
@@ -44,7 +44,7 @@ export class OptgroupComponent {
   }
 
   get isDisabled(): boolean {
-    for (const option of this.options ?? []) {
+    for (const option of this.options() ?? []) {
       if (!option.disabled) {
         return false;
       }

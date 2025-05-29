@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnInit, ViewChild, inject, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnInit, inject, input, output, viewChild } from '@angular/core';
 import { debounceTime, filter, finalize, Observable, pluck, switchMap, takeUntil } from 'rxjs';
 import { CharacterWithCharacterCostumes } from '@model/character';
 import { CharacterCostume } from '@model/character-costume';
@@ -94,7 +94,7 @@ export class ScoreAddPlayerComponent extends Destroyable implements OnInit, OnCh
   readonly playerChange = output<ScorePlayerAddForm>();
   readonly hostChange = output<void>();
 
-  @ViewChild('bioAutocomplete') readonly bioAutocomplete!: AutocompleteDirective;
+  readonly bioAutocomplete = viewChild.required<AutocompleteDirective>('bioAutocomplete');
 
   readonly isAdmin$ = this.authQuery.isAdmin$;
 
@@ -107,7 +107,7 @@ export class ScoreAddPlayerComponent extends Destroyable implements OnInit, OnCh
   readonly evidence$ = this.evidenceControl.value$.pipe(debounceTime(400));
   readonly players$: Observable<Player[]> = this.personaNameControl.value$.pipe(
     debounceTime(500),
-    filter(personaName => !!personaName && !!this.bioAutocomplete?.hasFocus),
+    filter(personaName => !!personaName && !!this.bioAutocomplete()?.hasFocus),
     switchMap(personaName => {
       this.playersLoading = true;
       this.changeDetectorRef.markForCheck();
