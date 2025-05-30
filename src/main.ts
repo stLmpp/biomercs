@@ -1,5 +1,4 @@
 import { ApplicationRef, enableProdMode, importProvidersFrom } from '@angular/core';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { environment } from '@environment/environment';
 import { enableDebugTools, BrowserModule, bootstrapApplication } from '@angular/platform-browser';
@@ -8,8 +7,8 @@ import { AppRoutingModule } from './app/app-routing.module';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { CoreModule } from './app/core/core.module';
 import { HeaderModule } from './app/header/header.module';
-import { NgProgressModule } from 'ngx-progressbar';
-import { NgProgressRouterModule } from 'ngx-progressbar/router';
+import { provideNgProgressOptions } from 'ngx-progressbar';
+import { provideNgProgressRouter } from 'ngx-progressbar/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { FooterModule } from './app/footer/footer.module';
 import { AppComponent } from './app/app.component';
@@ -20,13 +19,16 @@ if (environment.production) {
 
 bootstrapApplication(AppComponent, {
   providers: [
+    provideNgProgressOptions({
+      spinner: false,
+      debounceTime: 100,
+    }),
+    provideNgProgressRouter({}),
     importProvidersFrom(
       BrowserModule,
       AppRoutingModule,
       CoreModule.forRoot(),
       HeaderModule,
-      NgProgressModule.withConfig({ color: '#00acff', spinner: false, debounceTime: 100 }),
-      NgProgressRouterModule,
       ServiceWorkerModule.register('ngsw-worker.js', {
         enabled: environment.production,
         // Register the ServiceWorker as soon as the app is stable

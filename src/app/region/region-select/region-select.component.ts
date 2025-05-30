@@ -34,7 +34,7 @@ import { PrefixDirective } from '../../shared/components/common/prefix.directive
 import { ModalActionsDirective } from '../../shared/components/modal/modal-actions.directive';
 import { ButtonComponent } from '../../shared/components/button/button.component';
 import { AsyncPipe } from '@angular/common';
-import { StUtilsArrayModule } from '@stlmpp/utils';
+import { StUtilsArrayModule, trackByFactory } from '@stlmpp/utils';
 
 export interface RegionSelectData {
   idRegion: number;
@@ -97,7 +97,7 @@ export class RegionSelectComponent implements OnInit, AfterViewInit {
   readonly searchControl = new Control<string>('');
   readonly search$ = this.searchControl.value$.pipe(debounceTime(400));
 
-  readonly trackByRegion = trackById;
+  readonly trackByRegion = trackByFactory<Region>('id');
 
   private _scrollToIdRegionSelected(): void {
     const index = this.regions.findIndex(region => region.id === this.idRegion);

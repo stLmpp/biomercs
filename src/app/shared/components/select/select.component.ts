@@ -4,32 +4,31 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  contentChildren,
   ElementRef,
   HostBinding,
   HostListener,
-  TemplateRef,
-  ViewContainerRef,
-  ViewEncapsulation,
   inject,
   input,
+  TemplateRef,
   viewChild,
-  contentChildren,
+  ViewContainerRef,
+  ViewEncapsulation,
 } from '@angular/core';
-import { ControlValue } from '@stlmpp/control';
+import { ControlState, ControlValue } from '@stlmpp/control';
 import { Select } from './select';
 import { auditTime, startWith, Subject, takeUntil } from 'rxjs';
 import { OptionComponent } from './option.component';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { cdkOverlayTransparentBackdrop } from '@util/overlay';
-import { FocusKeyManager, CdkTrapFocus } from '@angular/cdk/a11y';
+import { CdkTrapFocus, FocusKeyManager } from '@angular/cdk/a11y';
 import { Animations } from '../../animations/animations';
 import { AnimationEvent } from '@angular/animations';
 import { OptgroupComponent } from './optgroup.component';
 import { BooleanInput, isNil } from 'st-utils';
 import { Key } from '@model/enum/key';
 import { getOverlayPositionMenu } from '@shared/components/menu/util';
-import { ControlState } from '@stlmpp/control/lib/control/control';
 import { FormFieldChild } from '@shared/components/form/form-field-child';
 import { IconComponent } from '../icon/icon.component';
 import { toObservable } from '@angular/core/rxjs-interop';

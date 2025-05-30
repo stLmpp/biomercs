@@ -3,13 +3,13 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  contentChild,
+  contentChildren,
+  inject,
+  input,
   OnChanges,
   OnDestroy,
   ViewEncapsulation,
-  inject,
-  input,
-  contentChild,
-  contentChildren,
 } from '@angular/core';
 import { LabelDirective } from './label.directive';
 import { InputDirective } from './input.directive';
@@ -19,12 +19,11 @@ import { auditTime, Subject, takeUntil } from 'rxjs';
 import { FormFieldErrorComponent } from './error.component';
 import { PrefixDirective } from '../common/prefix.directive';
 import { SuffixDirective } from '../common/suffix.directive';
-import { Control, ControlDirective, ModelDirective } from '@stlmpp/control';
+import { Control, ControlDirective, ControlState, ModelDirective } from '@stlmpp/control';
 import { BooleanInput, isNil } from 'st-utils';
 import { Select } from '@shared/components/select/select';
 import { FormFieldChild } from '@shared/components/form/form-field-child';
-import { ControlState } from '@stlmpp/control/lib/control/control';
-import { NgClass, AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { SpinnerComponent } from '../spinner/spinner.component';
 import { HasValidatorsPipe } from '@shared/validators/has-validators.pipe';
 import { toObservable } from '@angular/core/rxjs-interop';

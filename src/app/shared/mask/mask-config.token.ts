@@ -1,4 +1,4 @@
 import { InjectionToken } from '@angular/core';
-import { IConfig } from 'ngx-mask';
+import { NgxMaskConfig } from 'ngx-mask';
 
-export const MASK_CONFIG = new InjectionToken<Partial<IConfig>>('MASK_CONFIG');
+export const MASK_CONFIG = new InjectionToken<Partial<NgxMaskConfig>>('MASK_CONFIG');

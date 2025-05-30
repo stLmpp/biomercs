@@ -1,16 +1,16 @@
-import { CurrencyMaskConfig, CurrencyMaskInputMode } from 'ngx-currency';
+import { NgxCurrencyInputMode, NgxCurrencyConfig } from 'ngx-currency';
 import { ColDef } from '@shared/components/table/col-def';
 import { Score } from '@model/score';
 import { formatNumber } from '@angular/common';
 import { ScorePlayer } from '@model/score-player';
 import { AuthDateFormatPipe } from '../auth/shared/auth-date-format.pipe';
 
-export const scoreCurrencyMask: Partial<CurrencyMaskConfig> = {
+export const scoreCurrencyMask: Partial<NgxCurrencyConfig> = {
   align: 'left',
   allowNegative: false,
   nullable: true,
   allowZero: true,
-  inputMode: CurrencyMaskInputMode.NATURAL,
+  inputMode: NgxCurrencyInputMode.Natural,
   precision: 0,
 };
 
