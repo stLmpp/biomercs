@@ -34,17 +34,12 @@ export class SnackBarService {
         { provide: OverlayRef, useValue: overlayRef },
       ],
     });
-    const componentPortal = new ComponentPortal(
-      SnackBarComponent,
-      config.viewContainerRef,
-      injector,
-      config.componentFactoryResolver
-    );
+    const componentPortal = new ComponentPortal(SnackBarComponent, config.viewContainerRef, injector);
     const componentRef = overlayRef.attach(componentPortal);
-    componentRef.instance.actionObservable = config.actionObservable;
-    componentRef.instance.action = config.action;
-    componentRef.instance.message = config.message;
-    componentRef.instance.showAction = config.showAction;
+    componentRef.instance.actionObservable.set(config.actionObservable);
+    componentRef.instance.action.set(config.action);
+    componentRef.instance.message.set(config.message);
+    componentRef.instance.showAction.set(config.showAction);
     componentRef.changeDetectorRef.markForCheck();
     this._snackBarMap.set(config.id, componentRef.instance);
     componentRef.instance.onClose$.pipe(take(1)).subscribe(() => {

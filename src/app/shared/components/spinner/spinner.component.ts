@@ -32,13 +32,13 @@ export class SpinnerComponent implements OnChanges {
   readonly large = input<BooleanInput>();
 
   ngOnChanges(changes: SimpleChangesCustom<SpinnerComponent>): void {
-    if (changes.small && coerceBooleanProperty(changes.small.currentValue)) {
+    if (changes.small && coerceBooleanProperty(changes.small.currentValue())) {
       this.size = 0.15;
     }
-    if (changes.medium && coerceBooleanProperty(changes.medium.currentValue)) {
+    if (changes.medium && coerceBooleanProperty(changes.medium.currentValue())) {
       this.size = 0.3;
     }
-    if (changes.large && coerceBooleanProperty(changes.large.currentValue)) {
+    if (changes.large && coerceBooleanProperty(changes.large.currentValue())) {
       this.size = 0.6;
     }
   }

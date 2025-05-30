@@ -60,4 +60,8 @@ export class MenuComponent extends Menu {
       .skipPredicate((element: MenuItem) => element.isDisabled());
     this.focusManager.setFirstItemActive();
   }
+
+  onKeydown($event: KeyboardEvent) {
+    this.focusManager?.onKeydown($event);
+  }
 }

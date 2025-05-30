@@ -21,7 +21,7 @@ export class DatepickerDirective extends ControlValue<Date | null | undefined> i
     oncomplete: () => {
       const date = parse(this.elementRef.nativeElement.value, this._getDateFormat(), new Date());
       this.onChange$.next(date);
-      this.bioDatepicker().value = date;
+      this.bioDatepicker().value.set(date);
     },
   });
 
@@ -37,7 +37,7 @@ export class DatepickerDirective extends ControlValue<Date | null | undefined> i
   }
 
   setValue(value: Date | null | undefined): void {
-    this.bioDatepicker().value = value;
+    this.bioDatepicker().value.set(value);
     this.renderer2.setProperty(this.elementRef.nativeElement, 'value', value ?? '');
   }
 

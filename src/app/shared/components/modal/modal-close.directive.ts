@@ -20,7 +20,7 @@ export class ModalCloseDirective<T = any> implements OnInit {
 
   ngOnInit(): void {
     if (!this.modalRef) {
-      this.modalRef = this.modalService.findClosestModal(this.elementRef);
+      this.modalRef = this.modalService.findClosestModal(this.elementRef) ?? null;
     }
   }
 }

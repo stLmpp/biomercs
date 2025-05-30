@@ -12,6 +12,7 @@ import {
   output,
   viewChild,
   contentChild,
+  model,
 } from '@angular/core';
 import { LocalState } from '@stlmpp/store';
 import { addMonths, addYears, setMonth, setYear, subMonths, subYears } from 'date-fns';
@@ -76,7 +77,7 @@ export class CalendarComponent
   readonly calendarKeyboardNavigation = viewChild.required(CalendarKeyboardNavigation);
   readonly calendarFooterDirective = contentChild(CalendarFooterDirective);
 
-  readonly value = input<Date | null>();
+  readonly value = model<Date | null>();
   readonly viewMode = input<CalendarViewModeEnum>(CalendarViewModeEnum.day);
   readonly locale = input(this.getState('locale'));
   readonly valueChange = output<Date | null | undefined>();
@@ -214,7 +215,7 @@ export class CalendarComponent
   }
 
   onDaySelect($event: Date | null | undefined): void {
-    this.value = $event;
+    this.value.set($event);
     const value = this.value();
     this.valueChange.emit(value);
     this.updateState(state => ({ ...state, date: $event ?? state.date, value: $event }));
@@ -230,7 +231,7 @@ export class CalendarComponent
   }
 
   setValue(date: Date | null | undefined): void {
-    this.value = date;
+    this.value.set(date);
     this.valueChange.emit(this.value());
     this.updateState(state => ({ ...state, value: date, date: date ?? state.date }));
   }

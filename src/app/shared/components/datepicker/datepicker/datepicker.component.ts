@@ -9,6 +9,7 @@ import {
   inject,
   input,
   viewChild,
+  model,
 } from '@angular/core';
 import { CalendarViewModeEnum } from '@shared/components/datepicker/calendar-view-mode.enum';
 import { coerceBooleanProperty } from 'st-utils';
@@ -44,7 +45,7 @@ export class DatepickerComponent extends Destroyable {
     const locale = inject(CALENDAR_LOCALE, { optional: true });
 
     super();
-    this.locale = locale ?? localeId;
+    this.locale.set(locale ?? localeId);
   }
 
   private _input?: DatepickerDirective;
@@ -54,9 +55,9 @@ export class DatepickerComponent extends Destroyable {
 
   readonly templateRef = viewChild.required(TemplateRef);
 
-  readonly value = input<Date | null>();
+  readonly value = model<Date | null>();
   readonly viewMode = input<CalendarViewModeEnum>(CalendarViewModeEnum.day);
-  readonly locale = input.required<string>();
+  readonly locale = model.required<string>();
 
   @Input()
   @HostBinding('attr.aria-disabled')

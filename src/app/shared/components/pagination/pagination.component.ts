@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, Input, input, OnChanges, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, input, model, OnChanges, output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { PaginationMeta } from '@model/pagination';
@@ -40,11 +40,11 @@ export class PaginationComponent implements OnChanges {
     this._setQueryParamsOnChange = coerceBooleanProperty(setQueryParamsOnChange);
   }
 
-  readonly currentPage = input.required<number>();
-  readonly itemCount = input.required<number>();
-  readonly itemsPerPage = input.required<number>();
-  readonly totalItems = input.required<number>();
-  readonly totalPages = input.required<number>();
+  readonly currentPage = model.required<number>();
+  readonly itemCount = model.required<number>();
+  readonly itemsPerPage = model.required<number>();
+  readonly totalItems = model.required<number>();
+  readonly totalPages = model.required<number>();
   @Input()
   get itemsPerPageHidden(): boolean {
     return this._itemsPerPageHidden;
@@ -61,11 +61,11 @@ export class PaginationComponent implements OnChanges {
       paginationMeta = { currentPage: 1, itemsPerPage: 10, totalItems: 0, totalPages: 0, itemCount: 0 };
     }
     const { totalPages, totalItems, itemsPerPage, itemCount, currentPage } = paginationMeta;
-    this.currentPage = currentPage;
-    this.itemCount = itemCount;
-    this.itemsPerPage = itemsPerPage;
-    this.totalItems = totalItems;
-    this.totalPages = totalPages;
+    this.currentPage.set(currentPage);
+    this.itemCount.set(itemCount);
+    this.itemsPerPage.set(itemsPerPage);
+    this.totalItems.set(totalItems);
+    this.totalPages.set(totalPages);
   }
 
   @Input()
@@ -98,21 +98,21 @@ export class PaginationComponent implements OnChanges {
   }
 
   onNextPage(): void {
-    currentPage++;
-    this.nextPage.emit(currentPage);
-    this.currentPageChange.emit(currentPage);
+    this.currentPage.update(value => value + 1);
+    this.nextPage.emit(this.currentPage());
+    this.currentPageChange.emit(this.currentPage());
     this._setQueryParams();
   }
 
   onPreviousPage(): void {
-    currentPage--;
-    this.previousPage.emit(currentPage);
-    this.currentPageChange.emit(currentPage);
+    this.currentPage.update(value => value - 1);
+    this.previousPage.emit(this.currentPage());
+    this.currentPageChange.emit(this.currentPage());
     this._setQueryParams();
   }
 
   onFirstPage(): void {
-    this.currentPage = 1;
+    this.currentPage.set(1);
     const currentPage = this.currentPage();
     this.firstPage.emit(currentPage);
     this.currentPageChange.emit(currentPage);
@@ -120,7 +120,7 @@ export class PaginationComponent implements OnChanges {
   }
 
   onLastPage(): void {
-    this.currentPage = this.totalPages();
+    this.currentPage.set(this.totalPages());
     const currentPage = this.currentPage();
     this.lastPage.emit(currentPage);
     this.currentPageChange.emit(currentPage);

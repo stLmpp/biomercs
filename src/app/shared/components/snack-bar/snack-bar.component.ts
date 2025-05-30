@@ -8,6 +8,7 @@ import {
   ViewEncapsulation,
   inject,
   input,
+  model,
 } from '@angular/core';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { SnackBarConfig } from './snack-bar.config';
@@ -33,10 +34,10 @@ export class SnackBarComponent implements OnInit, OnDestroy {
 
   private _cancelTimeout$ = new Subject<void>();
 
-  readonly message = input<string>();
-  readonly action = input<string | null>();
-  readonly actionObservable = input<Observable<any>>();
-  readonly showAction = input(true);
+  readonly message = model<string>();
+  readonly action = model<string | null>();
+  readonly actionObservable = model<Observable<any>>();
+  readonly showAction = model(true);
 
   @HostBinding('class.no-action')
   get noActionClass(): boolean {

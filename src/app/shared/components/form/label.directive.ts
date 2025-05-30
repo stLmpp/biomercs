@@ -1,4 +1,4 @@
-import { Directive, HostBinding, Input, input } from '@angular/core';
+import { Directive, HostBinding, Input, input, model } from '@angular/core';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 
 @Directive({ selector: 'label' })
@@ -7,7 +7,7 @@ export class LabelDirective {
   private _danger = false;
 
   @HostBinding('attr.for')
-  readonly for = input<string | number>();
+  readonly for = model<string | number>();
 
   @Input()
   @HostBinding('class.danger')

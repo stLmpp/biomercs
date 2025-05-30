@@ -68,7 +68,7 @@ export class ModalService implements OnDestroy {
         { provide: MODAL_DATA, useValue: config.data },
       ],
     });
-    return new ComponentPortal(ModalComponent, config.viewContainerRef, injector, config.componentFactoryResolver);
+    return new ComponentPortal(ModalComponent, config.viewContainerRef, injector);
   }
 
   private _createComponentPortal<T = any, D = any>(
@@ -76,7 +76,7 @@ export class ModalService implements OnDestroy {
     config: ModalConfig<D>,
     injector: Injector
   ): ComponentPortal<T> {
-    return new ComponentPortal<T>(component, config.viewContainerRef, injector, config.componentFactoryResolver);
+    return new ComponentPortal<T>(component, config.viewContainerRef, injector);
   }
 
   private _createTemplatePortal<T = any, D = any>(

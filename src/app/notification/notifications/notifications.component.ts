@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject, input, output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  inject,
+  input,
+  output,
+  model,
+} from '@angular/core';
 import { NotificationService } from '../notification.service';
 import { Destroyable } from '@shared/components/common/destroyable-component';
 import {
@@ -72,7 +81,7 @@ export class NotificationsComponent extends Destroyable implements OnInit {
   private playerModalService = inject(PlayerModalService);
   private router = inject(Router);
 
-  readonly notifications = input<NotificationCustom[]>([]);
+  readonly notifications = model<NotificationCustom[]>([]);
   readonly notificationsChange = output<NotificationCustom[]>();
   readonly page = input(1);
   readonly meta = input.required<PaginationMeta>();
@@ -87,7 +96,7 @@ export class NotificationsComponent extends Destroyable implements OnInit {
   readonly trackById = trackById;
 
   private _setNotifications(callback: (notifications: NotificationCustom[]) => NotificationCustom[]): void {
-    this.notifications = callback(this.notifications());
+    this.notifications.update(value => callback(value));
     this.notificationsChange.emit(this.notifications());
     this.changeDetectorRef.markForCheck();
   }

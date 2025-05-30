@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, input, model, output } from '@angular/core';
 import { CategoryWithSubCategories } from '@model/forum/category';
 import { SubCategoryModalService } from '../../service/sub-category-modal.service';
 import { arrayUtil } from 'st-utils';
@@ -56,7 +56,7 @@ export class ForumCategoriesCategoryComponent {
   private changeDetectorRef = inject(ChangeDetectorRef);
   private subCategoryModeratorModalService = inject(SubCategoryModeratorModalService);
 
-  readonly category = input.required<CategoryWithSubCategories>();
+  readonly category = model.required<CategoryWithSubCategories>({});
   readonly isAdmin = input(false);
   readonly isMobile = input(false);
   readonly loadingAddEditModal = input(false);
@@ -88,7 +88,7 @@ export class ForumCategoriesCategoryComponent {
         .upsert(subCategory.id, subCategory)
         .orderBy('order')
         .toArray();
-      this.category = { ...this.category(), subCategories };
+      this.category.set({ ...this.category(), subCategories });
       this.categoryChange.emit(this.category());
     });
     this.loadingSubCategoryAddEditModal = false;
@@ -108,7 +108,7 @@ export class ForumCategoriesCategoryComponent {
         return;
       }
       const subCategories = arrayUtil(this.category().subCategories).update(subCategory.id, { moderators }).toArray();
-      this.category = { ...this.category(), subCategories };
+      this.category.update(value => ({ ...value, subCategories }));
       this.categoryChange.emit(this.category());
     });
     this.loadingSubCategoryModeratorManagement = false;

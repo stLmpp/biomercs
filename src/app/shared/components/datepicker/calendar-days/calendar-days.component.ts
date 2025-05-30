@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, model, output } from '@angular/core';
 import { CalendarDay } from '@shared/components/datepicker/calendar-day';
 import { trackByFactory } from '@stlmpp/utils';
 import {
@@ -31,7 +31,7 @@ import { DateEqualPipe } from '../../../date/date-equal.pipe';
 export class CalendarDaysComponent extends CalendarKeyboardNavigation {
   private readonly calendarAdapter = inject(CalendarAdapter);
 
-  readonly value = input<Date | null>();
+  readonly value = model<Date | null>();
   readonly days = input<CalendarDay[]>([]);
   readonly dayNames = input<string[]>([]);
   readonly disabled = input(false);
@@ -48,7 +48,7 @@ export class CalendarDaysComponent extends CalendarKeyboardNavigation {
   readonly trackByDay = CalendarDay.trackBy;
 
   private _daySelected(day: CalendarDay): void {
-    this.value = day.date;
+    this.value.set(day.date);
     this.valueChange.emit(this.value());
   }
 

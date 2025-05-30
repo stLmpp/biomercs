@@ -27,6 +27,7 @@ import { ControlState } from '@stlmpp/control/lib/control/control';
 import { NgClass, AsyncPipe } from '@angular/common';
 import { SpinnerComponent } from '../spinner/spinner.component';
 import { HasValidatorsPipe } from '@shared/validators/has-validators.pipe';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 let uniqueId = 0;
 
@@ -71,12 +72,12 @@ export class FormFieldComponent implements AfterContentInit, OnChanges, OnDestro
   ngAfterContentInit(): void {
     const labelDirective = this.labelDirective();
     if (labelDirective) {
-      labelDirective.for = this.id();
+      labelDirective.for.set(this.id());
     }
     const inputDirectiveValue = this.inputDirective();
     if (inputDirectiveValue) {
       const inputDirective = inputDirectiveValue;
-      inputDirective.id = this.id();
+      inputDirective.id.set(this.id());
       if (this.control) {
         this.control.stateChanged$.pipe(takeUntil(this._destroy$), auditTime(50)).subscribe(state => {
           this.controlState = state;
@@ -90,8 +91,8 @@ export class FormFieldComponent implements AfterContentInit, OnChanges, OnDestro
         this.control.disable(!!disabled);
       }
     }
-    this.formFieldChildren()
-      .changes.pipe(takeUntil(this._destroy$), auditTime(50))
+    toObservable(this.formFieldChildren)
+      .pipe(takeUntil(this._destroy$), auditTime(50))
       .subscribe(() => {
         this.changeDetectorRef.markForCheck();
       });

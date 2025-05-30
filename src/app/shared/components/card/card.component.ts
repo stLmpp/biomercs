@@ -11,6 +11,7 @@ import {
   input,
   output,
   contentChildren,
+  model,
 } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { CardTitleDirective } from './card-title.directive';
@@ -59,7 +60,7 @@ export class CardComponent extends Destroyable implements AfterContentInit {
     this._collapsable = coerceBooleanProperty(collapsable);
   }
 
-  readonly collapsed = input(false);
+  readonly collapsed = model(false);
   readonly collapsedChange = output<boolean>();
 
   @Input()
@@ -85,7 +86,7 @@ export class CardComponent extends Destroyable implements AfterContentInit {
     if (!this._collapsable) {
       return;
     }
-    this.collapsed = !this.collapsed();
+    this.collapsed.update(value => !value);
     this.collapsedChange.emit(this.collapsed());
     this.changeDetectorRef.markForCheck();
   }

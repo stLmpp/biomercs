@@ -1,6 +1,6 @@
 import { OrderByDirection } from 'st-utils';
 import { ColDefInternal } from '@shared/components/table/col-def';
-import { Directive, EventEmitter, Output, Type } from '@angular/core';
+import { Directive, EventEmitter, output, Output, Type } from '@angular/core';
 
 export interface TableOrder<T extends Record<any, any>> {
   orderBy?: keyof T | string | null;
@@ -9,7 +9,7 @@ export interface TableOrder<T extends Record<any, any>> {
 
 @Directive()
 export abstract class TableCell<T extends Record<any, any>, K extends keyof T = keyof T> {
-  @Output() readonly notifyChange = new EventEmitter<any>();
+  readonly notifyChange = output<any>();
 
   item!: T;
   colDef!: ColDefInternal<T, K>;

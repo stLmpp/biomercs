@@ -167,7 +167,7 @@ export class ForumTopicPostComponent implements AfterViewInit, OnChanges {
 
   ngOnChanges(changes: SimpleChangesCustom<ForumTopicPostComponent>): void {
     if (changes.post?.currentValue) {
-      this._post$.next(changes.post.currentValue);
+      this._post$.next(changes.post.currentValue());
     }
   }
 }

@@ -12,6 +12,7 @@ import {
   output,
   viewChild,
 } from '@angular/core';
+import { outputToObservable } from '@angular/core/rxjs-interop';
 import { ColDefInternal } from '@shared/components/table/col-def';
 import { CdkPortalOutlet, ComponentPortal } from '@angular/cdk/portal';
 import { TableCell, TableCellNotifyChange } from '@shared/components/table/type';
@@ -85,9 +86,11 @@ export class TableCellComponent<T extends Record<any, any>, K extends keyof T>
       this._componentRef.instance.item = this.item();
       this._componentRef.instance.metadata = this.metadata();
       this._componentRef.changeDetectorRef.detectChanges();
-      this._componentRef.instance.notifyChange.pipe(takeUntil(this.destroy$)).subscribe(data => {
-        this.notifyChange.emit({ data, colDef: this.colDef(), item: this.item() });
-      });
+      outputToObservable(this._componentRef.instance.notifyChange)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(data => {
+          this.notifyChange.emit({ data, colDef: this.colDef(), item: this.item() });
+        });
     }
   }
 

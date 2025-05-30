@@ -1,4 +1,4 @@
-import { Directive, HostBinding, Input, input } from '@angular/core';
+import { Directive, HostBinding, Input, input, model } from '@angular/core';
 import { BioSizeInput } from './types';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { AbstractColorComponent } from '@shared/components/core/abstract-color-component';
@@ -14,7 +14,7 @@ export abstract class AbstractComponent extends AbstractColorComponent {
   }
   protected _disabled = false;
 
-  readonly bioSize = input<BioSizeInput>();
+  readonly bioSize = model<BioSizeInput>();
 
   @HostBinding('class.disabled')
   get disabledClass(): boolean | null {
@@ -43,19 +43,19 @@ export abstract class AbstractComponent extends AbstractColorComponent {
 
   @Input() set small(small: BooleanInput) {
     if (coerceBooleanProperty(small)) {
-      this.bioSize = 'small';
+      this.bioSize.set('small');
     }
   }
 
   @Input() set medium(medium: BooleanInput) {
     if (coerceBooleanProperty(medium)) {
-      this.bioSize = 'medium';
+      this.bioSize.set('medium');
     }
   }
 
   @Input() set large(large: BooleanInput) {
     if (coerceBooleanProperty(large)) {
-      this.bioSize = 'large';
+      this.bioSize.set('large');
     }
   }
 

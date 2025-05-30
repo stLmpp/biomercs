@@ -9,6 +9,7 @@ import {
   ViewContainerRef,
   inject,
   input,
+  model,
 } from '@angular/core';
 import { BooleanInput, coerceBooleanProperty, coerceNumberProperty, NumberInput } from 'st-utils';
 import { ConnectedPosition, Overlay, OverlayRef } from '@angular/cdk/overlay';
@@ -37,7 +38,7 @@ export class TooltipDirective implements OnDestroy {
   private _hasShown = false;
 
   readonly bioTooltip = input.required<string | number | null | undefined>();
-  readonly bioTooltipPositions = input<ConnectedPosition[]>(overlayPositionsArray('top'));
+  readonly bioTooltipPositions = model<ConnectedPosition[]>(overlayPositionsArray('top'));
   readonly bioTooltipShowDelay = input(0);
   readonly bioTooltipHideDelay = input(0);
   readonly bioTooltipDelay = input(0);
@@ -53,7 +54,7 @@ export class TooltipDirective implements OnDestroy {
 
   @Input()
   set bioTooltipPosition(position: TooltipPosition | undefined) {
-    this.bioTooltipPositions = overlayPositionsArray(position);
+    this.bioTooltipPositions.set(overlayPositionsArray(position));
   }
 
   @Input()
@@ -121,7 +122,7 @@ export class TooltipDirective implements OnDestroy {
         scrollStrategy: this.bioTooltipScrollStrategy(),
       });
       this._componentRef = this._overlayRef.attach(new ComponentPortal(TooltipComponent, this.viewContainerRef));
-      this._componentRef.instance.content = this.bioTooltip();
+      this._componentRef.instance.content.set(this.bioTooltip());
       this._componentRef.changeDetectorRef.markForCheck();
       this.isOpen = true;
     }, delay);
