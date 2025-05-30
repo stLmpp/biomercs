@@ -12,7 +12,7 @@ import {
   StControlCommonModule,
   StControlValueModule,
 } from '@stlmpp/control';
-import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { RuleService } from '../../rules/rule.service';
 import { finalize, tap } from 'rxjs';
 import { SnackBarService } from '@shared/components/snack-bar/snack-bar.service';

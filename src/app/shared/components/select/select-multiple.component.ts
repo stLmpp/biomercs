@@ -7,6 +7,7 @@ import { auditTime, startWith, takeUntil } from 'rxjs';
 import { FormFieldChild } from '@shared/components/form/form-field-child';
 import { IconComponent } from '../icon/icon.component';
 import { CdkTrapFocus } from '@angular/cdk/a11y';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'bio-select[multiple]',
@@ -61,8 +62,8 @@ export class SelectMultipleComponent extends SelectComponent implements AfterCon
   }
 
   override ngAfterContentInit(): void {
-    this.options()
-      .changes.pipe(takeUntil(this.destroy$), auditTime(100), startWith(this.options()))
+    toObservable(this.options)
+      .pipe(takeUntil(this.destroy$), auditTime(100), startWith(this.options()))
       .subscribe(options => {
         for (const option of options) {
           option.isSelected = this.value.some(value => this.compareWith()(value, option.value));

@@ -3,26 +3,26 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  QueryList,
-  Renderer2,
-  TemplateRef,
-  ViewEncapsulation,
+  contentChildren,
   inject,
   input,
+  Renderer2,
+  TemplateRef,
   viewChild,
-  contentChildren,
+  ViewEncapsulation,
 } from '@angular/core';
 import { Animations } from '@shared/animations/animations';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { AnimationEvent } from '@angular/animations';
 import { AutocompleteOptionDirective } from '@shared/components/autocomplete/autocomplete-option.directive';
-import { FocusKeyManager, CdkTrapFocus } from '@angular/cdk/a11y';
+import { CdkTrapFocus, FocusKeyManager } from '@angular/cdk/a11y';
 import { Autocomplete } from '@shared/components/autocomplete/autocomplete';
 import { Control } from '@stlmpp/control';
 import { noop } from 'st-utils';
 import { Key } from '@model/enum/key';
-import { Observable, of, pluck, startWith, Subject } from 'rxjs';
+import { of, pluck, startWith, Subject } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'bio-autocomplete',
@@ -100,9 +100,7 @@ export class AutocompleteComponent extends Autocomplete implements AfterContentI
   }
 
   ngAfterContentInit(): void {
-    const optionsChanges: Observable<QueryList<AutocompleteOptionDirective>> = this.autocompleteOptions().changes.pipe(
-      startWith(this.autocompleteOptions())
-    );
+    const optionsChanges = toObservable(this.autocompleteOptions).pipe(startWith(this.autocompleteOptions()));
     this.optionsCount$ = optionsChanges.pipe(pluck('length'));
   }
 }

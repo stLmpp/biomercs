@@ -29,6 +29,7 @@ export class ForumTopicPostReplyComponent {
   private changeDetectorRef = inject(ChangeDetectorRef);
 
   constructor() {
+    const { quote, topicName, idTopic, idSubCategory } = inject<ForumTopicPostReplyComponentData>(MODAL_DATA);
     this._idSubCategory = idSubCategory;
     this._idTopic = idTopic;
     this._topicName = topicName;

@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, inject, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, input, OnChanges, output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { PaginationMeta } from '@model/pagination';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
-import { trackByFactory, StUtilsNumberModule } from '@stlmpp/utils';
+import { StUtilsNumberModule, trackByFactory } from '@stlmpp/utils';
 import { SelectComponent } from '../select/select.component';
 import { StControlCommonModule, StControlModelModule } from '@stlmpp/control';
 import { OptionComponent } from '../select/option.component';
@@ -28,7 +28,7 @@ import { IconComponent } from '../icon/icon.component';
     StUtilsNumberModule,
   ],
 })
-export class PaginationComponent implements OnChanges, PaginationMeta {
+export class PaginationComponent implements OnChanges {
   private router = inject(Router);
 
   private _setQueryParamsOnChange = false;

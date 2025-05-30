@@ -49,7 +49,7 @@ export class AppComponent extends Destroyable implements OnInit, OnDestroy {
   }
 
   private _listenToSwUpdate(): void {
-    this.swUpdate.available.pipe(this.takeUntilDestroy()).subscribe(() => {
+    this.swUpdate.versionUpdates.pipe(this.takeUntilDestroy()).subscribe(() => {
       this.dialogService
         .info({
           title: `There's a new version of the app`,

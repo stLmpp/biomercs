@@ -70,6 +70,7 @@ export class ForumSubCategoryModeratorManagementComponent implements OnInit {
   private moderatorService = inject(ModeratorService);
 
   constructor() {
+    const { idSubCategory, nameSubCategory } = inject<ForumSubCategoryModeratorManagementComponentData>(MODAL_DATA);
     this.idSubCategory = idSubCategory;
     this.nameSubCategory = nameSubCategory;
   }

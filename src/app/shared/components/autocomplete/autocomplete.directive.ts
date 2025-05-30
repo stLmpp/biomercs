@@ -9,6 +9,7 @@ import {
   inject,
   input,
 } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 import { Overlay } from '@angular/cdk/overlay';
 
 import { cdkOverlayTransparentBackdrop } from '@util/overlay';
@@ -79,9 +80,9 @@ export class AutocompleteDirective extends Destroyable {
       return;
     }
     this._isSubscribed = true;
-    const optionsChanges: Observable<QueryList<AutocompleteOptionDirective>> = bioAutocomplete
-      .autocompleteOptions()
-      .changes.pipe(startWith(bioAutocomplete.autocompleteOptions()));
+    const optionsChanges = toObservable(bioAutocomplete.autocompleteOptions).pipe(
+      startWith(bioAutocomplete.autocompleteOptions())
+    );
     combineLatest([this._onFocus$, optionsChanges])
       .pipe(takeUntil(this.destroy$))
       .subscribe(([focused, changes]) => {
@@ -123,11 +124,11 @@ export class AutocompleteDirective extends Destroyable {
       .subscribe(() => {
         this._actionAfterSelect();
       });
-    bioAutocomplete.overlayRef = overlayRef;
-    bioAutocomplete.origin = this.elementRef.nativeElement;
-    bioAutocomplete.control = this.controlDirective?.control;
-    bioAutocomplete.setFocusOnOrigin = () => this.elementRef.nativeElement.focus();
-    const templatePortal = new TemplatePortal(bioAutocomplete.templateRef, this.viewContainerRef);
+    this.bioAutocomplete().overlayRef = overlayRef;
+    this.bioAutocomplete().origin = this.elementRef.nativeElement;
+    this.bioAutocomplete().control = this.controlDirective?.control;
+    this.bioAutocomplete().setFocusOnOrigin = () => this.elementRef.nativeElement.focus();
+    const templatePortal = new TemplatePortal(this.bioAutocomplete().templateRef(), this.viewContainerRef);
     overlayRef.attach(templatePortal);
     fromEvent<MouseEvent>(this.document, 'click')
       .pipe(
@@ -143,7 +144,7 @@ export class AutocompleteDirective extends Destroyable {
         overlayRef.detach();
         this._actionAfterSelect();
       });
-    bioAutocomplete.init();
+    this.bioAutocomplete().init();
     this.opened = true;
   }
 

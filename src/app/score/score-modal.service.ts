@@ -30,7 +30,6 @@ export class ScoreModalService {
       {
         data,
         minWidth: '30vw',
-        module: () => import('./score-approval/score-approval.module').then(m => m.ScoreApprovalModule),
       }
     );
   }
@@ -46,10 +45,6 @@ export class ScoreModalService {
       {
         data,
         minWidth: '30vw',
-        module: () =>
-          import('./score-request-changes-modal/score-request-changes-modal.module').then(
-            m => m.ScoreRequestChangesModalModule
-          ),
       }
     );
   }
@@ -60,7 +55,6 @@ export class ScoreModalService {
       {
         data,
         minWidth: '30vw',
-        module: () => import('./score-info/score-info.module').then(m => m.ScoreInfoModule),
       }
     );
   }

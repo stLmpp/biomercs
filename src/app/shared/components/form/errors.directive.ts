@@ -9,13 +9,13 @@ import { FormFieldComponent } from './form-field.component';
 })
 export class FormFieldErrorsDirective extends ControlError implements AfterContentInit, OnInit {
   private formFieldComponent = inject(FormFieldComponent, { host: true });
-  private _controlParent: ControlParent;
+  private _controlParent: ControlParent | null;
 
   constructor() {
     const keyValueDiffers = inject(KeyValueDiffers);
     const _controlParent = inject(ControlParent, { optional: true, host: true });
 
-    super(keyValueDiffers, _controlParent);
+    super(keyValueDiffers, _controlParent ?? undefined);
 
     this._controlParent = _controlParent;
   }

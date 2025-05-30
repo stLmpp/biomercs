@@ -55,6 +55,7 @@ export class ForumTopicTransferComponent implements OnInit {
   private topicService = inject(TopicService);
 
   constructor() {
+    const { idTopic, idSubCategory } = inject<ForumTopicTransferComponentData>(MODAL_DATA);
     this.idSubCategory = idSubCategory;
     this._idTopic = idTopic;
     this.idSubCategoryTo = idSubCategory;

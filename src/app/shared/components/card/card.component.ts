@@ -12,6 +12,7 @@ import {
   output,
   contentChildren,
 } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 import { CardTitleDirective } from './card-title.directive';
 import { CardContentDirective } from './card-content.directive';
 import { CardActionsDirective } from './card-actions.directive';
@@ -90,8 +91,8 @@ export class CardComponent extends Destroyable implements AfterContentInit {
   }
 
   ngAfterContentInit(): void {
-    this.cardChildren()
-      .changes.pipe(takeUntil(this.destroy$))
+    toObservable(this.cardChildren)
+      .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.changeDetectorRef.markForCheck();
       });

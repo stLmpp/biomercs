@@ -70,6 +70,7 @@ export class PlayerSearchModalComponent {
   private changeDetectorRef = inject(ChangeDetectorRef);
 
   constructor() {
+    const { idPlayer, idPlayersSelected } = inject<PlayerSearchModalComponentData>(MODAL_DATA);
     this.idPlayer = idPlayer;
     this.idPlayersSelected = idPlayersSelected;
   }

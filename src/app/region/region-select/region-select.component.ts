@@ -76,6 +76,7 @@ export class RegionSelectComponent implements OnInit, AfterViewInit {
   private changeDetectorRef = inject(ChangeDetectorRef);
 
   constructor() {
+    const { idRegion, onSelect } = inject<RegionSelectData>(MODAL_DATA);
     this.idRegion = idRegion;
     this.idRegionOrigin = idRegion;
     this.onSelect = onSelect;

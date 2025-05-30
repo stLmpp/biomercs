@@ -37,7 +37,7 @@ import { CollapseComponent } from '../collapse/collapse.component';
   imports: [IconComponent, CollapseComponent],
 })
 export class AccordionItemComponent extends CdkAccordionItem implements OnInit, OnDestroy, FocusableOption {
-  private _accordion: Accordion;
+  private readonly _accordion: Accordion | null;
 
   constructor() {
     const _accordion = inject(Accordion, { host: true, optional: true });
@@ -84,15 +84,15 @@ export class AccordionItemComponent extends CdkAccordionItem implements OnInit, 
     this.headerElementRef.nativeElement?.focus();
   }
 
-  ngOnInit(): void {
+  override ngOnInit(): void {
     if (!this._accordion) {
       return;
     }
     this.expandedChange.pipe(takeUntil(this._destroy$)).subscribe(expanded => {
       if (expanded) {
-        this._accordion.itemExpanded.emit(this.id);
+        this._accordion?.itemExpanded.emit(this.id);
       } else {
-        this._accordion.itemCollapsed.emit(this.id);
+        this._accordion?.itemCollapsed.emit(this.id);
       }
     });
   }

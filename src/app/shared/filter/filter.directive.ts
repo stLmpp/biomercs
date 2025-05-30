@@ -1,8 +1,9 @@
-import { AfterContentInit, Directive, Input, QueryList, output, contentChildren } from '@angular/core';
+import { AfterContentInit, contentChildren, Directive, Input, output } from '@angular/core';
 import { FilterItemDirective } from '@shared/filter/filter-item.directive';
-import { combineLatest, map, Observable, ReplaySubject, startWith, takeUntil } from 'rxjs';
+import { combineLatest, map, ReplaySubject, startWith, takeUntil } from 'rxjs';
 import { normalizeString } from 'st-utils';
 import { Destroyable } from '@shared/components/common/destroyable-component';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 @Directive({ selector: '[bioFilter]' })
 export class FilterDirective extends Destroyable implements AfterContentInit {
@@ -18,9 +19,7 @@ export class FilterDirective extends Destroyable implements AfterContentInit {
   readonly bioFilterChange = output<FilterItemDirective[]>();
 
   ngAfterContentInit(): void {
-    const items$: Observable<QueryList<FilterItemDirective>> = this.filterItemDirectives().changes.pipe(
-      startWith(this.filterItemDirectives())
-    );
+    const items$ = toObservable(this.filterItemDirectives).pipe(startWith(this.filterItemDirectives()));
     const filterBy$ = this._bioFilter$.pipe(map(filterBy => filterBy && normalizeString(filterBy).toLowerCase()));
     combineLatest([items$, filterBy$])
       .pipe(takeUntil(this.destroy$))

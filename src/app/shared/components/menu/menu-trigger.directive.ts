@@ -54,11 +54,11 @@ export class MenuTriggerDirective extends Destroyable {
         this.opened = false;
         overlayRef?.detach();
       });
-    bioMenuTrigger.overlayRef = overlayRef;
-    bioMenuTrigger.trigger = this.bioMenuTriggerOn();
-    const templatePortal = new TemplatePortal(bioMenuTrigger.templateRef, this.viewContainerRef);
+    this.bioMenuTrigger().overlayRef = overlayRef;
+    this.bioMenuTrigger().trigger = this.bioMenuTriggerOn();
+    const templatePortal = new TemplatePortal(this.bioMenuTrigger().templateRef, this.viewContainerRef);
     overlayRef.attach(templatePortal);
-    bioMenuTrigger.initFocus();
+    this.bioMenuTrigger().initFocus();
     this.opened = true;
   }
 

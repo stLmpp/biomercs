@@ -32,6 +32,7 @@ import { getOverlayPositionMenu } from '@shared/components/menu/util';
 import { ControlState } from '@stlmpp/control/lib/control/control';
 import { FormFieldChild } from '@shared/components/form/form-field-child';
 import { IconComponent } from '../icon/icon.component';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'bio-select:not([multiple])',
@@ -106,7 +107,7 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
   private _initFocus(): void {
     this._focusManager = new FocusKeyManager(this.options()).withVerticalOrientation().withTypeAhead(400);
     if (!isNil(this.value)) {
-      const optionSelected = this.options.findIndex(option => this.compareWith()(option.value(), this.value));
+      const optionSelected = this.options().findIndex(option => this.compareWith()(option.value(), this.value));
       this._focusManager.setActiveItem(Math.max(optionSelected, 0));
     } else {
       this._focusManager.setFirstItemActive();
@@ -222,8 +223,8 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
   }
 
   ngAfterContentInit(): void {
-    this.options()
-      .changes.pipe(takeUntil(this.destroy$), auditTime(100), startWith(this.options()))
+    toObservable(this.options)
+      .pipe(takeUntil(this.destroy$), auditTime(100), startWith(this.options()))
       .subscribe(() => {
         this._setViewValueFromOptions(this.value);
       });

@@ -1,6 +1,6 @@
-import { AfterViewInit, Directive, ElementRef, HostBinding, Input, Renderer2, inject, input } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, HostBinding, inject, Input, input, Renderer2 } from '@angular/core';
 import { BooleanInput, coerceBooleanProperty, isNil } from 'st-utils';
-import { BadgeBase, BioBadgeConfig } from '@shared/components/badge/badge';
+import { BadgeBase } from '@shared/components/badge/badge';
 import { VerticalHorizontalPosition } from '@shared/components/common/positions';
 
 @Directive({
@@ -13,12 +13,6 @@ import { VerticalHorizontalPosition } from '@shared/components/common/positions'
 export class BadgeDirective extends BadgeBase implements AfterViewInit {
   private renderer2 = inject(Renderer2);
   private elementRef = inject(ElementRef);
-
-  constructor() {
-    const bioBadgeConfig = inject(BioBadgeConfig, { optional: true });
-
-    super(bioBadgeConfig);
-  }
 
   private _bioBadge = '';
   private _bioBadgeTop = true;
@@ -34,7 +28,7 @@ export class BadgeDirective extends BadgeBase implements AfterViewInit {
     return this._bioBadge;
   }
   set bioBadge(bioBadge: any) {
-    this._bioBadge = isNil(bioBadge) ? '' : (bioBadge.toString?.() ?? `${bioBadge}`);
+    this._bioBadge = isNil(bioBadge) ? '' : bioBadge.toString?.() ?? `${bioBadge}`;
     this._buildBadge();
   }
 

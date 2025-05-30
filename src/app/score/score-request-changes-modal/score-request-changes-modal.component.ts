@@ -76,13 +76,14 @@ export interface TextAreaEvent {
 export class ScoreRequestChangesModalComponent implements OnInit, AfterViewInit {
   private controlBuilder = inject(ControlBuilder);
   modalRef =
-    inject<ModalRef<ScoreRequestChangesModalComponent, ScoreRequestChangesModalForm, ScoreApprovalPagination>>(
+    inject<ModalRef<ScoreRequestChangesModalComponent, ScoreRequestChangesModalData, ScoreApprovalPagination>>(
       ModalRef
     );
   private scoreService = inject(ScoreService);
   private changeDetectorRef = inject(ChangeDetectorRef);
 
   constructor() {
+    const { scoreApprovalComponentState, score } = inject<ScoreRequestChangesModalData>(MODAL_DATA);
     this.score = score;
     this.scoreApprovalComponentState = scoreApprovalComponentState;
   }

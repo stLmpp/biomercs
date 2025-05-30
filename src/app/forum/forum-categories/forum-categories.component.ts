@@ -6,7 +6,7 @@ import { trackById } from '@util/track-by';
 import { AuthQuery } from '../../auth/auth.query';
 import { CategoryModalService } from '../service/category-modal.service';
 import { arrayUtil, isFunction } from 'st-utils';
-import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
+import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList } from '@angular/cdk/drag-drop';
 import { CategoryService } from '../service/category.service';
 import { BehaviorSubject, finalize, map } from 'rxjs';
 import { BreakpointObserverService } from '@shared/services/breakpoint-observer/breakpoint-observer.service';
@@ -14,8 +14,8 @@ import { mdiAccountTie } from '@mdi/js';
 import { ModeratorModalService } from '../service/moderator-modal.service';
 import { SubCategoryOrderDto } from '@model/forum/sub-category';
 import {
-  ForumCategoriesCategoryComponentOrderChangeEvent,
   ForumCategoriesCategoryComponent,
+  ForumCategoriesCategoryComponentOrderChangeEvent,
 } from './forum-categories-category/forum-categories-category.component';
 import { SubCategoryService } from '../service/sub-category.service';
 import { TopicRecent } from '@model/forum/topic';
@@ -25,7 +25,6 @@ import { ButtonComponent } from '../../shared/components/button/button.component
 import { IconMdiComponent } from '../../shared/components/icon/icon-mdi.component';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 import { AccordionDirective } from '../../shared/components/accordion/accordion.directive';
-import { CdkDropList, CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { AccordionItemComponent } from '../../shared/components/accordion/accordion-item.component';
 import { AccordionItemTitleDirective } from '../../shared/components/accordion/accordion-item-title.directive';
 import { ForumCategoriesRecentTopicsComponent } from './forum-categories-recent-topics/forum-categories-recent-topics.component';

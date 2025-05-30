@@ -56,7 +56,7 @@ export class DatepickerComponent extends Destroyable {
 
   readonly value = input<Date | null>();
   readonly viewMode = input<CalendarViewModeEnum>(CalendarViewModeEnum.day);
-  readonly locale = input<string>();
+  readonly locale = input.required<string>();
 
   @Input()
   @HostBinding('attr.aria-disabled')

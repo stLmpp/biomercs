@@ -21,9 +21,10 @@ export interface ScoreInfoModalData {
   imports: [ModalContentDirective, ScoreInfoComponent, ModalActionsDirective, ButtonComponent],
 })
 export class ScoreInfoModalComponent {
-  modalRef = inject<ModalRef<ScoreInfoComponent, Score>>(ModalRef);
+  modalRef = inject<ModalRef<ScoreInfoComponent, ScoreInfoModalData>>(ModalRef);
 
   constructor() {
+    const { score, showWorldRecord, showApprovalDate } = inject<ScoreInfoModalData>(MODAL_DATA);
     this.score = score;
     this.showWorldRecord = showWorldRecord ?? false;
     this.showApprovalDate = showApprovalDate ?? false;

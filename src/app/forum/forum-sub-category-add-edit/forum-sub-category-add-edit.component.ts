@@ -66,6 +66,7 @@ export class ForumSubCategoryAddEditComponent implements OnInit {
     inject<ModalRef<ForumSubCategoryAddEditComponent, ForumSubCategoryAddEditComponentData, SubCategory>>(ModalRef);
 
   constructor() {
+    const { idSubCategory, idCategory } = inject<ForumSubCategoryAddEditComponentData>(MODAL_DATA);
     this.idSubCategory = idSubCategory;
     this.idCategory = idCategory;
     this.subCategory = { id: -1, idCategory: this.idCategory, order: -1, name: '', description: '' };

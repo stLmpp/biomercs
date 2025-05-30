@@ -99,16 +99,16 @@ export class TableCellComponent<T extends Record<any, any>, K extends keyof T>
   ngOnChanges(changes: SimpleChangesCustom<TableCellComponent<T, K>>): void {
     const colDefChanges = changes.colDef;
     if (colDefChanges) {
-      if (colDefChanges.currentValue.component !== colDefChanges.currentValue.component) {
+      if (colDefChanges.currentValue().component !== colDefChanges.currentValue().component) {
         this._createComponentPortal();
       } else if (this._componentRef) {
-        this._componentRef.instance.colDef = colDefChanges.currentValue;
+        this._componentRef.instance.colDef = colDefChanges.currentValue();
       }
     }
     if (this._componentRef) {
       const itemChanges = changes.item;
       if (itemChanges) {
-        this._componentRef.instance.item = itemChanges.currentValue;
+        this._componentRef.instance.item = itemChanges.currentValue();
       }
       const metadataChanges = changes.metadata;
       if (metadataChanges) {

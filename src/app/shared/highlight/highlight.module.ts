@@ -1,6 +1,5 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
-import { HIGHLIGHT_OPTIONS, HighlightModule as NgxHighlightModule } from 'ngx-highlightjs';
-import { HighlightOptions } from 'ngx-highlightjs/lib/highlight.model';
+import { HIGHLIGHT_OPTIONS, HighlightModule as NgxHighlightModule, HighlightOptions } from 'ngx-highlightjs';
 
 const coreHighlightOptions: HighlightOptions = {
   coreLibraryLoader: () => import('highlight.js/lib/core'),

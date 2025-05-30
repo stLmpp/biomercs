@@ -69,6 +69,7 @@ export class ScoreApprovalModalComponent {
   private changeDetectorRef = inject(ChangeDetectorRef);
 
   constructor() {
+    const { score, scoreApprovalComponentState, action } = inject<ScoreApprovalModalData>(MODAL_DATA);
     this.score = score;
     this.action = action;
     this.scoreApprovalComponentState = scoreApprovalComponentState;

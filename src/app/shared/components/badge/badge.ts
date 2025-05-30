@@ -4,7 +4,7 @@ import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 
 @Directive()
 export class BadgeBase {
-  private bioBadgeConfig = inject(BioBadgeConfig);
+  private bioBadgeConfig = inject(BioBadgeConfig, { optional: true });
 
   readonly bioType = input<BioTypeInput>(this.bioBadgeConfig?.bioType ?? 'accent');
 
