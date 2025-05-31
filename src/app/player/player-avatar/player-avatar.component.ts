@@ -20,7 +20,7 @@ export class PlayerAvatarComponent implements OnChanges {
     if (avatar) {
       this.avatarUrl = `${environment.avatar}/${avatar}`;
     } else {
-      this.avatarUrl = `https://avatars.dicebear.com/api/identicon/${personaName}.svg`;
+      this.avatarUrl = `https://api.dicebear.com/9.x/pixel-art/svg?seed=${personaName}`;
     }
   }
 }
