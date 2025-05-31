@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Post, PostAddDto, PostUpdateDto } from '@model/forum/post';
 
 @Injectable({ providedIn: 'root' })
 export class PostService {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   getEndPoint(idSubCategory: number, idTopic: number): string {
     return `forum/sub-category/${idSubCategory}/topic/${idTopic}/post`;

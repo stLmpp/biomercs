@@ -1,15 +1,21 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { NotificationService } from '../notification.service';
 import { finalize, map, Observable, takeUntil, tap } from 'rxjs';
 import { Animations } from '@shared/animations/animations';
 import { overlayPositions } from '@util/overlay';
-import { ConnectedPosition } from '@angular/cdk/overlay';
+import { ConnectedPosition, CdkOverlayOrigin, CdkConnectedOverlay } from '@angular/cdk/overlay';
 import { Notification } from '@model/notification';
 import { Pagination, PaginationMeta } from '@model/pagination';
 import { Destroyable } from '@shared/components/common/destroyable-component';
 import { BreakpointObserverService } from '@shared/services/breakpoint-observer/breakpoint-observer.service';
 import { DynamicLoaderService } from '../../core/dynamic-loader.service';
 import { arrayUtil } from 'st-utils';
+import { NgLetModule } from '@stlmpp/utils';
+import { ButtonComponent } from '../../shared/components/button/button.component';
+import { BadgeDirective } from '../../shared/components/badge/badge.directive';
+import { IconComponent } from '../../shared/components/icon/icon.component';
+import { NotificationsComponent } from '../notifications/notifications.component';
+import { AsyncPipe } from '@angular/common';
 
 interface NotificationCustom extends Notification {
   loading?: boolean;
@@ -22,16 +28,22 @@ interface NotificationCustom extends Notification {
   styleUrls: ['./notifications-icon.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [Animations.fade.inOut(100), Animations.scale.in(100, 0.8)],
+  imports: [
+    NgLetModule,
+    ButtonComponent,
+    CdkOverlayOrigin,
+    BadgeDirective,
+    IconComponent,
+    CdkConnectedOverlay,
+    NotificationsComponent,
+    AsyncPipe,
+  ],
 })
 export class NotificationsIconComponent extends Destroyable implements OnInit {
-  constructor(
-    private notificationService: NotificationService,
-    private changeDetectorRef: ChangeDetectorRef,
-    private breakpointObserverService: BreakpointObserverService,
-    private dynamicLoaderService: DynamicLoaderService
-  ) {
-    super();
-  }
+  private notificationService = inject(NotificationService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+  private breakpointObserverService = inject(BreakpointObserverService);
+  private dynamicLoaderService = inject(DynamicLoaderService);
 
   private _preloaded = false;
 

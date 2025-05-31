@@ -8,8 +8,7 @@ const DECLARATIONS = [ButtonComponent];
 const MODULES = [CommonModule, SpinnerModule, IconModule];
 
 @NgModule({
-  declarations: [...DECLARATIONS],
-  imports: [...MODULES],
+  imports: [...MODULES, ...DECLARATIONS],
   exports: [...DECLARATIONS, ...MODULES],
 })
 export class ButtonModule {}

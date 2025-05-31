@@ -6,26 +6,37 @@
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
+    "esModuleInterop": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
     "declaration": false,
-    "downlevelIteration": true,
     "experimentalDecorators": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "importHelpers": true,
-    "target": "ES2015",
-    "module": "ES2020",
-    "lib": ["ES2020", "DOM"],
+    "target": "ES2022",
+    "module": "ES2022",
+    "lib": [
+      "ES2022",
+      "DOM"
+    ],
     "paths": {
-      "@util/*": ["./src/app/util/*"],
-      "@model/*": ["./src/app/model/*"],
-      "@shared/*": ["./src/app/shared/*"],
-      "@environment/*": ["./src/environments/*"]
+      "@util/*": [
+        "./src/app/util/*"
+      ],
+      "@model/*": [
+        "./src/app/model/*"
+      ],
+      "@shared/*": [
+        "./src/app/shared/*"
+      ],
+      "@environment/*": [
+        "./src/environments/*"
+      ]
     },
     "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true,
-    "noImplicitOverride": true
+    "noImplicitOverride": true,
+    "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

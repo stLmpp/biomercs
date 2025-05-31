@@ -1,8 +1,11 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, output } from '@angular/core';
 import { TableCell } from '@shared/components/table/type';
 import { ColDefInternal } from '@shared/components/table/col-def';
 import { ScoreWithScoreChangeRequests } from '@model/score-change-request';
 import { PlayerModalService } from '../../player-modal.service';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { TooltipDirective } from '../../../shared/components/tooltip/tooltip.directive';
+import { IconComponent } from '../../../shared/components/icon/icon.component';
 
 export interface PlayerChangeRequestsActionCellComponentMetadata {
   page: number;
@@ -14,11 +17,13 @@ export interface PlayerChangeRequestsActionCellComponentMetadata {
   templateUrl: './player-change-requests-action-cell.component.html',
   styleUrls: ['./player-change-requests-action-cell.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [ButtonComponent, TooltipDirective, IconComponent],
 })
 export class PlayerChangeRequestsActionCellComponent implements TableCell<ScoreWithScoreChangeRequests> {
-  constructor(private playerModalService: PlayerModalService, private changeDetectorRef: ChangeDetectorRef) {}
+  private playerModalService = inject(PlayerModalService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
 
-  @Output() readonly notifyChange = new EventEmitter<any>();
+  readonly notifyChange = output<any>();
 
   colDef!: ColDefInternal<ScoreWithScoreChangeRequests, keyof ScoreWithScoreChangeRequests>;
   item!: ScoreWithScoreChangeRequests;

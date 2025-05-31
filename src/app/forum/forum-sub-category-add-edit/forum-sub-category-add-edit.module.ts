@@ -9,7 +9,15 @@ import { ButtonModule } from '@shared/components/button/button.module';
 import { CheckboxModule } from '@shared/components/checkbox/checkbox.module';
 
 @NgModule({
-  declarations: [ForumSubCategoryAddEditComponent],
-  imports: [CommonModule, ModalModule, StControlModule, FormModule, TextFieldModule, ButtonModule, CheckboxModule],
+  imports: [
+    CommonModule,
+    ModalModule,
+    StControlModule,
+    FormModule,
+    TextFieldModule,
+    ButtonModule,
+    CheckboxModule,
+    ForumSubCategoryAddEditComponent,
+  ],
 })
 export class ForumSubCategoryAddEditModule {}

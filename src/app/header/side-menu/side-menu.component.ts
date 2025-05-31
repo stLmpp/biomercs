@@ -1,8 +1,17 @@
-import { ChangeDetectionStrategy, Component, HostListener, Input, Output, EventEmitter } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, inject, input, output } from '@angular/core';
 import { Animations } from '@shared/animations/animations';
 import { User } from '@model/user';
 import { HeaderQuery } from '../header.query';
 import { mdiAccountLock, mdiEmailSyncOutline, mdiTrophy } from '@mdi/js';
+import { ListDirective, ListSelectable } from '../../shared/components/list/list.directive';
+import { ListItemComponent } from '../../shared/components/list/list-item.component';
+import { RouterLink } from '@angular/router';
+import { IconComponent } from '../../shared/components/icon/icon.component';
+import { PrefixDirective } from '../../shared/components/common/prefix.directive';
+import { IconMdiComponent } from '../../shared/components/icon/icon-mdi.component';
+import { BadgeComponent } from '../../shared/components/badge/badge.component';
+import { SuffixDirective } from '../../shared/components/common/suffix.directive';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'bio-side-menu',
@@ -11,14 +20,26 @@ import { mdiAccountLock, mdiEmailSyncOutline, mdiTrophy } from '@mdi/js';
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [Animations.slide.inOut({ axis: 'X', opacity: false })],
   host: { '[@slideInOut]': '' },
+  imports: [
+    ListDirective,
+    ListSelectable,
+    ListItemComponent,
+    RouterLink,
+    IconComponent,
+    PrefixDirective,
+    IconMdiComponent,
+    BadgeComponent,
+    SuffixDirective,
+    AsyncPipe,
+  ],
 })
 export class SideMenuComponent {
-  constructor(public headerQuery: HeaderQuery) {}
+  headerQuery = inject(HeaderQuery);
 
-  @Input() user!: User;
-  @Input() isMobile = false;
+  readonly user = input.required<User>();
+  readonly isMobile = input(false);
 
-  @Output() readonly menuSelected = new EventEmitter<MouseEvent>();
+  readonly menuSelected = output<MouseEvent>();
 
   readonly mdiTrophy = mdiTrophy;
   readonly mdiEmailSyncOutline = mdiEmailSyncOutline;

@@ -1,10 +1,12 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Query } from '@stlmpp/store';
 import { HeaderState, HeaderStore } from './header.store';
 
 @Injectable({ providedIn: 'root' })
 export class HeaderQuery extends Query<HeaderState> {
-  constructor(headerStore: HeaderStore) {
+  constructor() {
+    const headerStore = inject(HeaderStore);
+
     super(headerStore);
   }
 

@@ -3,24 +3,26 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ContentChildren,
-  Input,
-  QueryList,
+  contentChildren,
+  inject,
+  input,
   Renderer2,
   TemplateRef,
-  ViewChild,
+  viewChild,
   ViewEncapsulation,
 } from '@angular/core';
 import { Animations } from '@shared/animations/animations';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { AnimationEvent } from '@angular/animations';
 import { AutocompleteOptionDirective } from '@shared/components/autocomplete/autocomplete-option.directive';
-import { FocusKeyManager } from '@angular/cdk/a11y';
+import { CdkTrapFocus, FocusKeyManager } from '@angular/cdk/a11y';
 import { Autocomplete } from '@shared/components/autocomplete/autocomplete';
 import { Control } from '@stlmpp/control';
 import { noop } from 'st-utils';
 import { Key } from '@model/enum/key';
-import { Observable, of, pluck, startWith, Subject } from 'rxjs';
+import { of, pluck, startWith, Subject } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'bio-autocomplete',
@@ -30,18 +32,17 @@ import { Observable, of, pluck, startWith, Subject } from 'rxjs';
   animations: [Animations.fade.inOut(100), Animations.scale.in(100, 0.8)],
   encapsulation: ViewEncapsulation.None,
   providers: [{ provide: Autocomplete, useExisting: AutocompleteComponent }],
+  imports: [CdkTrapFocus, AsyncPipe],
 })
 export class AutocompleteComponent extends Autocomplete implements AfterContentInit {
-  constructor(private renderer2: Renderer2, public changeDetectorRef: ChangeDetectorRef) {
-    super();
-  }
+  private renderer2 = inject(Renderer2);
+  changeDetectorRef = inject(ChangeDetectorRef);
 
-  @ViewChild(TemplateRef) readonly templateRef!: TemplateRef<any>;
-  @ContentChildren(AutocompleteOptionDirective, { descendants: true })
-  readonly autocompleteOptions!: QueryList<AutocompleteOptionDirective>;
+  readonly templateRef = viewChild.required(TemplateRef);
+  readonly autocompleteOptions = contentChildren(AutocompleteOptionDirective, { descendants: true });
 
-  @Input() closeOnSelect = true;
-  @Input() replaceInputWithValue = true;
+  readonly closeOnSelect = input(true);
+  readonly replaceInputWithValue = input(true);
 
   overlayRef?: OverlayRef;
   focusManager?: FocusKeyManager<AutocompleteOptionDirective>;
@@ -59,7 +60,7 @@ export class AutocompleteComponent extends Autocomplete implements AfterContentI
   }
 
   init(): void {
-    this.focusManager = new FocusKeyManager(this.autocompleteOptions)
+    this.focusManager = new FocusKeyManager(this.autocompleteOptions())
       .withVerticalOrientation()
       .skipPredicate(element => element.disabled);
   }
@@ -84,7 +85,7 @@ export class AutocompleteComponent extends Autocomplete implements AfterContentI
   }
 
   select(value: string): void {
-    if (this.replaceInputWithValue) {
+    if (this.replaceInputWithValue()) {
       if (this.control) {
         this.control.setValue(value);
       } else if (this.origin) {
@@ -92,16 +93,14 @@ export class AutocompleteComponent extends Autocomplete implements AfterContentI
       }
     }
     this.onSelect$.next();
-    if (this.closeOnSelect) {
+    if (this.closeOnSelect()) {
       this.onSelect$.complete();
       this.overlayRef?.detach();
     }
   }
 
   ngAfterContentInit(): void {
-    const optionsChanges: Observable<QueryList<AutocompleteOptionDirective>> = this.autocompleteOptions.changes.pipe(
-      startWith(this.autocompleteOptions)
-    );
+    const optionsChanges = toObservable(this.autocompleteOptions).pipe(startWith(this.autocompleteOptions()));
     this.optionsCount$ = optionsChanges.pipe(pluck('length'));
   }
 }

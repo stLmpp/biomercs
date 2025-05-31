@@ -1,5 +1,6 @@
 @use 'variables' as v;
 @use 'functions' as f;
+@use 'sass:color';
 
 .bio-loading.bio-loading-backdrop {
   z-index: f.get-z-index(loading);
@@ -15,6 +16,6 @@
     align-items: center;
     justify-content: center;
     border-radius: v.$radius;
-    background-color: transparentize(v.$light-grey, 0.1);
+    background-color: color.adjust(v.$light-grey, $alpha: -0.1, $space: hsl);
   }
 }

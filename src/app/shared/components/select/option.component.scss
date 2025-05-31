@@ -3,17 +3,17 @@
 .bio-option {
   height: 35px;
   min-height: 35px;
-  @media only screen and (max-width: v.$mobile-width) {
-    height: 40px;
-    min-height: 40px;
-  }
-
   padding: 0.5rem 1rem;
   outline: none;
   cursor: pointer;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  @media only screen and (max-width: v.$mobile-width) {
+    height: 40px;
+    min-height: 40px;
+  }
 
   &.selected {
     font-weight: 500;

@@ -4,29 +4,34 @@
     <label class="cdk-visually-hidden" for="search">Search</label>
     <input id="search" autocomplete="off" type="search" bioInput placeholder="Search" controlName="term" />
   </div>
-  <bio-modal-content *ngIf="{ players: players$ | async, term: term$ | async } as state">
-    <ng-container *ngIf="!state.players?.length && !loading">
-      <p *ngIf="!state.term">Type something to start searching</p>
-      <p *ngIf="state.term">No data found</p>
-    </ng-container>
-    <bio-list [model]="idPlayer">
-      <bio-loading *ngIf="loading"></bio-loading>
-      <bio-list-item
-        *ngFor="let player of state.players; trackBy: trackByPlayer"
-        [value]="player.id"
-        [bioModalClose]="player"
-      >
-        {{ player.personaName }}
-      </bio-list-item>
-    </bio-list>
-  </bio-modal-content>
+  @if ({ players: players$ | async, term: term$ | async }; as state) {
+    <bio-modal-content>
+      @if (!state.players?.length && !loading) {
+        @if (!state.term) {
+          <p>Type something to start searching</p>
+        }
+        @if (state.term) {
+          <p>No data found</p>
+        }
+      }
+      <bio-list [model]="idPlayer">
+        @if (loading) {
+          <bio-loading />
+        }
+        @for (player of state.players; track trackByPlayer($index, player)) {
+          <bio-list-item [value]="player.id" [bioModalClose]="player">
+            {{ player.personaName }}
+          </bio-list-item>
+        }
+      </bio-list>
+    </bio-modal-content>
+  }
   <bio-modal-actions>
     <bio-pagination
       [meta]="paginationMeta$ | async"
       (itemsPerPageChange)="onItemsPerPageChange($event)"
       (currentPageChange)="onCurrentPageChange($event)"
-    >
-    </bio-pagination>
+    />
     <button bioButton type="button" bioModalClose>Close</button>
   </bio-modal-actions>
 </ng-container>

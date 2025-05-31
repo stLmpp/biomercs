@@ -2,12 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { UrlMetadata } from '@model/url-metadata';
 import { HttpParams } from '@util/http-params';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { CacheService } from '@shared/cache/cache';
 
 @Injectable({ providedIn: 'root' })
 export class UrlMetadataService {
-  constructor(private http: HttpClient, private cacheService: CacheService) {}
+  private http = inject(HttpClient);
+  private cacheService = inject(CacheService);
 
   private readonly _cache = this.cacheService.createCache();
 

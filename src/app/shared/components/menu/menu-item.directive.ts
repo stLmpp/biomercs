@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Host, HostBinding, Input, Self } from '@angular/core';
+import { Directive, HostBinding, inject, Input } from '@angular/core';
 import { MenuComponent } from './menu.component';
 import { MenuItem } from './menu-item';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
@@ -10,8 +10,10 @@ import { ButtonComponent } from '../button/button.component';
   providers: [{ provide: MenuItem, useExisting: MenuItemDirective }],
 })
 export class MenuItemDirective extends MenuItem {
-  constructor(@Host() menu: MenuComponent, elementRef: ElementRef) {
-    super(menu, elementRef);
+  constructor() {
+    const menu = inject(MenuComponent, { host: true });
+
+    super();
     this.menu = menu;
   }
 
@@ -42,8 +44,12 @@ export class MenuItemDirective extends MenuItem {
   providers: [{ provide: MenuItem, useExisting: MenuItemButtonDirective }],
 })
 export class MenuItemButtonDirective extends MenuItem {
-  constructor(@Host() menu: MenuComponent, elementRef: ElementRef, @Self() private buttonComponent: ButtonComponent) {
-    super(menu, elementRef);
+  private buttonComponent = inject(ButtonComponent, { self: true });
+
+  constructor() {
+    const menu = inject(MenuComponent, { host: true });
+
+    super();
     this.menu = menu;
   }
 

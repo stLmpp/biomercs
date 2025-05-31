@@ -8,7 +8,6 @@ import { BadgeModule } from '@shared/components/badge/badge.module';
 import { CardModule } from '@shared/components/card/card.module';
 
 @NgModule({
-  declarations: [HomeComponent],
-  imports: [CommonModule, HomeRoutingModule, IconModule, BadgeModule, CardModule],
+  imports: [CommonModule, HomeRoutingModule, IconModule, BadgeModule, CardModule, HomeComponent],
 })
 export class HomeModule {}

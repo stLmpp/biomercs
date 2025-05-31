@@ -1,0 +1,7 @@
+onlyBuiltDependencies:
+  - '@angular/cli'
+  - '@parcel/watcher'
+  - core-js
+  - core-js-pure
+  - esbuild
+  - nx

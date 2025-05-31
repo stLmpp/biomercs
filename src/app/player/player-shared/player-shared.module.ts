@@ -11,8 +11,7 @@ const DECLARATIONS = [PlayerSearchModalComponent];
 const MODULES = [ListModule, PaginationModule, ModalModule, FormModule, StControlModule];
 
 @NgModule({
-  declarations: [...DECLARATIONS],
-  imports: [...MODULES, NgLetModule],
+  imports: [...MODULES, NgLetModule, ...DECLARATIONS],
   exports: [...DECLARATIONS, ...MODULES],
 })
 export class PlayerSharedModule {}

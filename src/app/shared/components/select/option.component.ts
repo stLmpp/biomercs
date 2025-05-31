@@ -3,13 +3,13 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  Host,
   HostBinding,
   HostListener,
   Input,
-  Optional,
   SecurityContext,
   ViewEncapsulation,
+  inject,
+  input,
 } from '@angular/core';
 import { Select } from './select';
 import { FocusableOption } from '@angular/cdk/a11y';
@@ -17,6 +17,8 @@ import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { OptgroupComponent } from './optgroup.component';
 import { Option } from '@shared/components/select/option';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { CheckboxComponent } from '../checkbox/checkbox.component';
+import { NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'bio-option',
@@ -26,16 +28,19 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   host: { class: 'bio-option' },
   encapsulation: ViewEncapsulation.None,
   providers: [{ provide: Option, useExisting: OptionComponent }],
+  imports: [CheckboxComponent, NgTemplateOutlet],
 })
 export class OptionComponent extends Option implements FocusableOption {
-  constructor(
-    private elementRef: ElementRef<HTMLElement>,
-    @Host() private select: Select,
-    public changeDetectorRef: ChangeDetectorRef,
-    private domSanitizer: DomSanitizer,
-    @Host() @Optional() public optgroupComponent?: OptgroupComponent
-  ) {
+  private elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+  private select = inject(Select, { host: true });
+  changeDetectorRef = inject(ChangeDetectorRef);
+  private domSanitizer = inject(DomSanitizer);
+  optgroupComponent? = inject(OptgroupComponent, { host: true, optional: true });
+
+  constructor() {
     super();
+    const select = this.select;
+
     this.multiple = select.multiple;
   }
 
@@ -43,8 +48,8 @@ export class OptionComponent extends Option implements FocusableOption {
 
   @HostBinding('class.multiple') multiple: boolean;
 
-  @Input() value: any;
-  @Input() labelTypeahead?: string;
+  readonly value = input<any>();
+  readonly labelTypeahead = input<string>();
 
   isSelected = false;
 
@@ -68,7 +73,7 @@ export class OptionComponent extends Option implements FocusableOption {
   }
 
   private _setValueSelect(): void {
-    this.select.setControlValue(this.value);
+    this.select.setControlValue(this.value());
     if (!this.multiple) {
       this.select.setViewValue(this.getViewValue());
     } else {
@@ -77,13 +82,15 @@ export class OptionComponent extends Option implements FocusableOption {
     }
   }
 
-  @Input() labelFn: (optionComponent: OptionComponent) => string | SafeHtml = optionComponent =>
-    this.domSanitizer.sanitize(
-      SecurityContext.HTML,
-      this.optgroupComponent
-        ? `${this.optgroupComponent.label} ${this.elementRef.nativeElement.innerHTML}`
-        : optionComponent.elementRef.nativeElement.innerHTML
-    ) ?? '';
+  readonly labelFn = input<(optionComponent: OptionComponent) => string | SafeHtml>(
+    optionComponent =>
+      this.domSanitizer.sanitize(
+        SecurityContext.HTML,
+        this.optgroupComponent
+          ? `${this.optgroupComponent.label} ${this.elementRef.nativeElement.innerHTML}`
+          : optionComponent.elementRef.nativeElement.innerHTML
+      ) ?? ''
+  );
 
   @HostListener('click', ['$event'])
   onClick($event: MouseEvent): void {
@@ -109,7 +116,7 @@ export class OptionComponent extends Option implements FocusableOption {
   }
 
   getViewValue(): string | SafeHtml {
-    return this.labelFn(this);
+    return this.labelFn()(this);
   }
 
   focus(): void {
@@ -117,7 +124,7 @@ export class OptionComponent extends Option implements FocusableOption {
   }
 
   getLabel(): string {
-    return this.labelTypeahead ?? this.elementRef.nativeElement.innerText;
+    return this.labelTypeahead() ?? this.elementRef.nativeElement.innerText;
   }
 
   static ngAcceptInputType_disabled: BooleanInput;

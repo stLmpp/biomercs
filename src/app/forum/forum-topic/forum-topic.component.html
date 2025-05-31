@@ -1,5 +1,7 @@
 <bio-card dark>
-  <bio-loading *ngIf="loading"></bio-loading>
+  @if (loading) {
+    <bio-loading />
+  }
   <h4 bioCardTitle>{{ topic.name }}</h4>
   <bio-card-content>
     <div class="actions">
@@ -10,35 +12,34 @@
       >
         Notifications
       </bio-checkbox>
-      <ng-container *ngIf="!topic.lockedDate || topic.isModerator">
+      @if (!topic.lockedDate || topic.isModerator) {
         <button accent bioButton type="button" (click)="onReply()" [loading]="loadingReply">
           <bio-icon>reply</bio-icon>
           Reply
         </button>
-        <button accent bioButton type="button" (click)="onMove()" [loading]="loadingMove" *ngIf="topic.isModerator">
-          <bio-icon>swap_horiz</bio-icon>
-          Move
-        </button>
-      </ng-container>
+        @if (topic.isModerator) {
+          <button accent bioButton type="button" (click)="onMove()" [loading]="loadingMove">
+            <bio-icon>swap_horiz</bio-icon>
+            Move
+          </button>
+        }
+      }
     </div>
-    <bio-forum-topic-post
-      *ngFor="let post of topic.posts.items; trackBy: trackById; let $odd = odd"
-      [idSubCategory]="topic.idSubCategory"
-      [post]="post"
-      [odd]="$odd"
-      [topicLocked]="!!topic.lockedDate && !topic.isModerator"
-      [loadingReply]="loadingReply"
-      (postChange)="onPostChange($event)"
-      (postDelete)="onPostDelete()"
-      (postQuote)="onReply($event)"
-      (topicDelete)="onTopicDelete()"
-    ></bio-forum-topic-post>
+    @for (post of topic.posts.items; track trackById($index, post)) {
+      <bio-forum-topic-post
+        [idSubCategory]="topic.idSubCategory"
+        [post]="post"
+        [odd]="$odd"
+        [topicLocked]="!!topic.lockedDate && !topic.isModerator"
+        [loadingReply]="loadingReply"
+        (postChange)="onPostChange($event)"
+        (postDelete)="onPostDelete()"
+        (postQuote)="onReply($event)"
+        (topicDelete)="onTopicDelete()"
+      />
+    }
   </bio-card-content>
   <bio-card-actions end>
-    <bio-pagination
-      [meta]="topic.posts.meta"
-      itemsPerPageHidden
-      (currentPageChange)="onPageChange($event)"
-    ></bio-pagination>
+    <bio-pagination [meta]="topic.posts.meta" itemsPerPageHidden (currentPageChange)="onPageChange($event)" />
   </bio-card-actions>
 </bio-card>

@@ -1,12 +1,13 @@
-<button
-  bioButton
-  fab
-  type="button"
-  *ngFor="let month of months; trackBy: trackBy"
-  [class.same-month]="month.month === todayMonth"
-  [class.selected]="month.month === valueMonth"
-  [disabled]="disabled"
-  (click)="monthSelect.emit(month.month)"
->
-  {{ month.name }}
-</button>
+@for (month of months(); track trackBy($index, month)) {
+  <button
+    bioButton
+    fab
+    type="button"
+    [class.same-month]="month.month === todayMonth"
+    [class.selected]="month.month === valueMonth"
+    [disabled]="disabled()"
+    (click)="monthSelect.emit(month.month)"
+  >
+    {{ month.name }}
+  </button>
+}

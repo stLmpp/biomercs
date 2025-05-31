@@ -1,4 +1,4 @@
-import { AfterContentInit, ContentChildren, Directive, QueryList } from '@angular/core';
+import { AfterContentInit, Directive, contentChildren } from '@angular/core';
 import { CdkAccordion } from '@angular/cdk/accordion';
 import { Accordion } from '@shared/components/accordion/accordion';
 import { AccordionItemComponent } from '@shared/components/accordion/accordion-item.component';
@@ -14,12 +14,12 @@ import { FocusKeyManager } from '@angular/cdk/a11y';
   exportAs: 'bioAccordion',
 })
 export class AccordionDirective extends Accordion implements AfterContentInit {
-  @ContentChildren(AccordionItemComponent) accordionItemComponents?: QueryList<AccordionItemComponent>;
+  readonly accordionItemComponents = contentChildren(AccordionItemComponent);
 
   focusKeyManager?: FocusKeyManager<AccordionItemComponent>;
 
   private _findAccordionItem(id: string): AccordionItemComponent | undefined {
-    return this.accordionItemComponents?.find(accordionItemComponent => accordionItemComponent.id === id);
+    return this.accordionItemComponents()?.find(accordionItemComponent => accordionItemComponent.id === id);
   }
 
   toggleItem(id: string): void {
@@ -41,19 +41,18 @@ export class AccordionDirective extends Accordion implements AfterContentInit {
   }
 
   focusItem(id: string): void {
-    const index = this.accordionItemComponents
-      ?.toArray()
-      .findIndex(accordionItemComponent => accordionItemComponent.id === id);
+    const index = this.accordionItemComponents().findIndex(accordionItemComponent => accordionItemComponent.id === id);
     if (index && index > -1) {
       this.focusKeyManager?.setActiveItem(index);
     }
   }
 
   ngAfterContentInit(): void {
-    if (!this.accordionItemComponents) {
+    const accordionItemComponents = this.accordionItemComponents();
+    if (!accordionItemComponents) {
       return;
     }
-    this.focusKeyManager = new FocusKeyManager<AccordionItemComponent>(this.accordionItemComponents)
+    this.focusKeyManager = new FocusKeyManager<AccordionItemComponent>(accordionItemComponents)
       .withVerticalOrientation()
       .skipPredicate(item => item.disabled);
   }

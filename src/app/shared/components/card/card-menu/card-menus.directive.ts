@@ -1,4 +1,4 @@
-import { AfterContentInit, ContentChildren, Directive, Input, QueryList } from '@angular/core';
+import { AfterContentInit, Directive, Input, contentChildren } from '@angular/core';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { CardMenuDirective } from '@shared/components/card/card-menu/card-menu.directive';
 
@@ -9,7 +9,7 @@ import { CardMenuDirective } from '@shared/components/card/card-menu/card-menu.d
 export class CardMenusDirective implements AfterContentInit {
   private _bioCardMenuFocusOnFirstItem = false;
 
-  @ContentChildren(CardMenuDirective) readonly cardMenuDirectives!: QueryList<CardMenuDirective>;
+  readonly cardMenuDirectives = contentChildren(CardMenuDirective);
 
   @Input()
   set bioCardMenuFocusOnFirstItem(bioCardMenuFocusOnFirstItem: boolean) {
@@ -18,7 +18,7 @@ export class CardMenusDirective implements AfterContentInit {
 
   ngAfterContentInit(): void {
     if (this._bioCardMenuFocusOnFirstItem) {
-      this.cardMenuDirectives.first?.focus();
+      this.cardMenuDirectives().at(0)!?.focus();
     }
   }
 

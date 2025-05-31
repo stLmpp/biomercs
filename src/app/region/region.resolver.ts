@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { Injectable, inject } from '@angular/core';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { RegionService } from './region.service';
 import { Observable } from 'rxjs';
 import { Region } from '@model/region';
 
 @Injectable({ providedIn: 'root' })
-export class RegionResolver implements Resolve<Region[]> {
-  constructor(private regionService: RegionService) {}
+export class RegionResolver {
+  private regionService = inject(RegionService);
 
   resolve(
     route: ActivatedRouteSnapshot,

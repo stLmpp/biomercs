@@ -10,8 +10,7 @@ const DECLARATIONS = [AccordionDirective, AccordionItemComponent, AccordionItemT
 const MODULES = [CommonModule, IconModule, CollapseModule];
 
 @NgModule({
-  declarations: [...DECLARATIONS],
-  imports: [...MODULES],
+  imports: [...MODULES, ...DECLARATIONS],
   exports: [...DECLARATIONS, ...MODULES],
 })
 export class AccordionModule {}

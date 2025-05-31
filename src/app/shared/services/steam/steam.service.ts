@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { HttpParams } from '@util/http-params';
@@ -7,7 +7,8 @@ import { SteamGatewayEvents, SteamPlayerLinkedSocketViewModel } from '@model/ste
 
 @Injectable({ providedIn: 'root' })
 export class SteamService {
-  constructor(private http: HttpClient, private socketIOService: SocketIOService) {}
+  private http = inject(HttpClient);
+  private socketIOService = inject(SocketIOService);
 
   private readonly _socketConnection = this.socketIOService.createConnection('steam');
 

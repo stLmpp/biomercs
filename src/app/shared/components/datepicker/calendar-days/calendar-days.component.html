@@ -1,16 +1,19 @@
-<div class="day-name" *ngFor="let dayName of dayNames; trackBy: trackByString">
-  {{ dayName }}
-</div>
-<button
-  *ngFor="let day of days; trackBy: trackByDay; let $index = index"
-  bioButton
-  fab
-  type="button"
-  [disabled]="day.disabled || disabled"
-  [class.weekend]="day.weekend"
-  [class.today]="day.date | dateEqual: nowDate"
-  [class.selected]="day.date | dateEqual: value"
-  (click)="onClick(day, $index)"
->
-  {{ day.day }}
-</button>
+@for (dayName of dayNames(); track trackByString($index, dayName)) {
+  <div class="day-name">
+    {{ dayName }}
+  </div>
+}
+@for (day of days(); track trackByDay($index, day)) {
+  <button
+    bioButton
+    fab
+    type="button"
+    [disabled]="day.disabled || disabled()"
+    [class.weekend]="day.weekend"
+    [class.today]="day.date | dateEqual: nowDate"
+    [class.selected]="day.date | dateEqual: value()"
+    (click)="onClick(day, $index)"
+  >
+    {{ day.day }}
+  </button>
+}

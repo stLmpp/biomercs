@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding, OnInit, inject } from '@angular/core';
 import { ModalRef } from '../modal-ref';
 import { filter, finalize, isObservable, Observable, take, takeUntil, tap } from 'rxjs';
 import { MODAL_DATA } from '../modal.config';
@@ -7,6 +7,13 @@ import { DialogData, DialogDataButton, DialogDataButtonType } from '@shared/comp
 import { DialogType } from '@shared/components/modal/dialog/dialog-type.enum';
 import { trackById } from '@util/track-by';
 import { Destroyable } from '@shared/components/common/destroyable-component';
+import { LoadingComponent } from '../../spinner/loading/loading.component';
+import { ModalTitleDirective } from '../modal-title.directive';
+import { IconComponent } from '../../icon/icon.component';
+import { ModalContentDirective } from '../modal-content.directive';
+import { ModalActionsDirective } from '../modal-actions.directive';
+import { ButtonComponent } from '../../button/button.component';
+import { StUtilsArrayModule } from '@stlmpp/utils';
 
 let uid = 1;
 
@@ -35,14 +42,25 @@ function mapDialogDataButtonToInternal(buttons: DialogDataButtonType[] | undefin
   templateUrl: './dialog.component.html',
   styleUrls: ['./dialog.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    LoadingComponent,
+    ModalTitleDirective,
+    IconComponent,
+    ModalContentDirective,
+    ModalActionsDirective,
+    ButtonComponent,
+    StUtilsArrayModule,
+  ],
 })
 export class DialogComponent extends Destroyable implements OnInit {
-  constructor(
-    private modalRef: ModalRef<DialogComponent, DialogData, boolean>,
-    @Inject(MODAL_DATA) public data: DialogData,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {
+  private modalRef = inject<ModalRef<DialogComponent, DialogData, boolean>>(ModalRef);
+  data = inject<DialogData>(MODAL_DATA);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+
+  constructor() {
     super();
+    const data = this.data;
+
     this.buttons = mapDialogDataButtonToInternal(data.buttons);
   }
 

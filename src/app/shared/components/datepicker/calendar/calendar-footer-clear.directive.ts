@@ -1,9 +1,9 @@
-import { Directive, Host, HostListener } from '@angular/core';
+import { Directive, HostListener, inject } from '@angular/core';
 import { CalendarComponent } from '@shared/components/datepicker/calendar/calendar.component';
 
 @Directive({ selector: '[bioCalendarFooterClear]' })
 export class CalendarFooterClearDirective {
-  constructor(@Host() private readonly calendarComponent: CalendarComponent) {}
+  private readonly calendarComponent = inject(CalendarComponent, { host: true });
 
   @HostListener('click')
   onClick(): void {

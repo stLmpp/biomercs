@@ -8,32 +8,34 @@
         <bio-icon>add_circle</bio-icon>
       </button>
     </div>
-    <div class="change" *ngFor="let change of changesControl; trackBy: trackByControl; let $index = index">
-      <bio-form-field label="Change {{ $index + 1 }}">
-        <textarea
-          bioInput
-          cdkTextareaAutosize
-          [cdkAutosizeMinRows]="1"
-          [cdkAutosizeMaxRows]="5"
-          [controlName]="$index"
-          (keydown)="onTextAreaKeydown($index, $event)"
-          placeholder="Describe what needs to be changed"
-          #change="bio-input"
-        ></textarea>
-      </bio-form-field>
-      <div class="icon-wrapper">
-        <button
-          bioButton
-          type="button"
-          icon
-          (click)="removeChange($index)"
-          bioTooltip="Delete change (CTRL + D)"
-          [disabled]="saving"
-        >
-          <bio-icon>delete</bio-icon>
-        </button>
+    @for (change of changesControl; track trackByControl($index, change)) {
+      <div class="change">
+        <bio-form-field label="Change {{ $index + 1 }}">
+          <textarea
+            bioInput
+            cdkTextareaAutosize
+            [cdkAutosizeMinRows]="1"
+            [cdkAutosizeMaxRows]="5"
+            [controlName]="$index"
+            (keydown)="onTextAreaKeydown($index, $event)"
+            placeholder="Describe what needs to be changed"
+            #change="bio-input"
+          ></textarea>
+        </bio-form-field>
+        <div class="icon-wrapper">
+          <button
+            bioButton
+            type="button"
+            icon
+            (click)="removeChange($index)"
+            bioTooltip="Delete change (CTRL + D)"
+            [disabled]="saving"
+          >
+            <bio-icon>delete</bio-icon>
+          </button>
+        </div>
       </div>
-    </div>
+    }
   </bio-modal-content>
   <bio-modal-actions end>
     <button type="button" bioButton (click)="modalRef.close()" [disabled]="saving">Close</button>

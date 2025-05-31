@@ -20,8 +20,7 @@ const DECLARATIONS = [
 const MODULES = [CommonModule, StControlModule, FormModule];
 
 @NgModule({
-  declarations: [...DECLARATIONS],
-  imports: [...MODULES],
+  imports: [...MODULES, ...DECLARATIONS],
   exports: [...DECLARATIONS, ...MODULES],
 })
 export class AuthSharedModule {}

@@ -11,8 +11,7 @@ const DECLARATIONS = [MultiSelectComponent, MultiSelectItemsComponent, MultiSele
 const MODULES = [FormModule, IconModule, ListModule, ButtonModule];
 
 @NgModule({
-  declarations: [...DECLARATIONS],
-  imports: [...MODULES],
+  imports: [...MODULES, ...DECLARATIONS],
   exports: [...DECLARATIONS, ...MODULES],
 })
 export class MultiSelectModule {}

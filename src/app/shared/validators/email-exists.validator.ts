@@ -1,13 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Control, ControlValidator } from '@stlmpp/control';
 import { AuthService } from '../../auth/auth.service';
 import { map, Observable, switchMap, timer } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class EmailExistsValidator extends ControlValidator<string, boolean> {
-  constructor(private authService: AuthService) {
-    super();
-  }
+  private authService = inject(AuthService);
 
   readonly name = 'emailExists';
   override readonly async = true;

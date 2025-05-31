@@ -6,7 +6,12 @@ import { StUtilsArrayModule } from '@stlmpp/utils';
 import { ForumSubCategoryModeratorManagementValidationPipe } from './forum-sub-category-moderator-management-validation.pipe';
 
 @NgModule({
-  declarations: [ForumSubCategoryModeratorManagementComponent, ForumSubCategoryModeratorManagementValidationPipe],
-  imports: [MultiSelectModule, ModalModule, StUtilsArrayModule],
+  imports: [
+    MultiSelectModule,
+    ModalModule,
+    StUtilsArrayModule,
+    ForumSubCategoryModeratorManagementComponent,
+    ForumSubCategoryModeratorManagementValidationPipe,
+  ],
 })
 export class ForumSubCategoryModeratorManagementModule {}

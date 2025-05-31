@@ -4,25 +4,35 @@ import {
   Component,
   Directive,
   ElementRef,
-  EventEmitter,
-  Input,
   OnChanges,
   OnDestroy,
   OnInit,
-  Output,
-  QueryList,
-  ViewChildren,
+  inject,
+  input,
+  output,
+  viewChildren,
 } from '@angular/core';
-import { ControlArray, ControlBuilder, ControlValue, Validators } from '@stlmpp/control';
+import {
+  ControlArray,
+  ControlBuilder,
+  ControlValue,
+  Validators,
+  StControlModule,
+  StControlCommonModule,
+  StControlValueModule,
+} from '@stlmpp/control';
 import { FocusableOption, FocusKeyManager } from '@angular/cdk/a11y';
 import { filter, Subject, takeUntil } from 'rxjs';
 import { SimpleChangesCustom } from '@util/util';
 import { isNil } from 'st-utils';
 import { trackByControl } from '@util/track-by';
+import { LabelDirective } from '../../../shared/components/form/label.directive';
+import { InputDirective } from '../../../shared/components/form/input.directive';
+import { FormFieldErrorComponent } from '../../../shared/components/form/error.component';
 
 @Directive({ selector: 'input[confirmationCodeInput]' })
 export class ConfirmationCodeInputDirective implements FocusableOption {
-  constructor(private elementRef: ElementRef<HTMLInputElement>) {}
+  private elementRef = inject<ElementRef<HTMLInputElement>>(ElementRef);
 
   focus(): void {
     this.elementRef.nativeElement.focus();
@@ -36,29 +46,36 @@ export class ConfirmationCodeInputDirective implements FocusableOption {
   styleUrls: ['./confirmation-code-input.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [{ provide: ControlValue, useExisting: ConfirmationCodeInputComponent }],
+  imports: [
+    StControlModule,
+    StControlCommonModule,
+    LabelDirective,
+    InputDirective,
+    ConfirmationCodeInputDirective,
+    StControlValueModule,
+    FormFieldErrorComponent,
+  ],
 })
 export class ConfirmationCodeInputComponent
   extends ControlValue
   implements AfterViewInit, OnInit, OnDestroy, OnChanges
 {
-  constructor(private controlBuilder: ControlBuilder) {
-    super();
-  }
+  private controlBuilder = inject(ControlBuilder);
 
   private readonly _destroy$ = new Subject<void>();
 
-  @ViewChildren(ConfirmationCodeInputDirective) readonly inputList!: QueryList<ConfirmationCodeInputDirective>;
-  @Output() readonly focusoutLastItem = new EventEmitter<void>();
+  readonly inputList = viewChildren(ConfirmationCodeInputDirective);
+  readonly focusoutLastItem = output<void>();
 
-  @Input() length = 6;
-  @Input() label?: string;
-  @Input() codeError: string | null = null;
+  readonly length = input(6);
+  readonly label = input<string>();
+  readonly codeError = input<string | null>(null);
 
   focusManager!: FocusKeyManager<ConfirmationCodeInputDirective>;
 
   form = this.controlBuilder.group<{ array: string[] }>({
     array: this.controlBuilder.array<string>(
-      Array.from({ length: this.length }).map(() =>
+      Array.from({ length: this.length() }).map(() =>
         this.controlBuilder.control(['', [Validators.required, Validators.maxLength(1)]])
       )
     ),
@@ -88,6 +105,7 @@ export class ConfirmationCodeInputComponent
             if (!/^[0-9]$/.test(value)) {
               input.setValue('', { emitChange: false });
             } else if (i === len - 1) {
+              // TODO: The 'emit' function requires a mandatory void argument
               this.focusoutLastItem.emit();
             } else {
               this.focusManager.setNextItemActive();
@@ -133,7 +151,7 @@ export class ConfirmationCodeInputComponent
   }
 
   ngAfterViewInit(): void {
-    this.focusManager = new FocusKeyManager(this.inputList).withHorizontalOrientation('ltr');
+    this.focusManager = new FocusKeyManager(this.inputList()).withHorizontalOrientation('ltr');
     this.focusManager.setFirstItemActive();
   }
 
@@ -142,7 +160,7 @@ export class ConfirmationCodeInputComponent
       const arrayValues = this.arrayControl.value;
       this.form = this.controlBuilder.group<{ array: string[] }>({
         array: this.controlBuilder.array<string>(
-          Array.from({ length: this.length }).map((_, index) =>
+          Array.from({ length: this.length() }).map((_, index) =>
             this.controlBuilder.control([arrayValues[index], [Validators.required, Validators.maxLength(1)]])
           )
         ),

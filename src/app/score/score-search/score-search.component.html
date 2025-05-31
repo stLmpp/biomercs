@@ -5,53 +5,60 @@
     <bio-card-content>
       <bio-form-field label="Platforms">
         <bio-select placeholder="Platforms" multiple controlName="idPlatforms">
-          <bio-option *ngFor="let platform of platforms; trackBy: trackById" [value]="platform.id">
-            {{ platform.name }}
-          </bio-option>
+          @for (platform of platforms; track trackById($index, platform)) {
+            <bio-option [value]="platform.id">
+              {{ platform.name }}
+            </bio-option>
+          }
         </bio-select>
       </bio-form-field>
       <bio-form-field label="Games" [loading]="gameLoading">
         <bio-select placeholder="Games" multiple controlName="idGames">
-          <bio-option *ngFor="let game of games$ | async; trackBy: trackById" [value]="game.id">
-            {{ game.name }}
-          </bio-option>
+          @for (game of games$ | async; track trackById($index, game)) {
+            <bio-option [value]="game.id">
+              {{ game.name }}
+            </bio-option>
+          }
         </bio-select>
       </bio-form-field>
       <bio-form-field label="Mini games" [loading]="miniGameLoading">
         <bio-select placeholder="Mini games" multiple controlName="idMiniGames">
-          <bio-option *ngFor="let miniGame of miniGames$ | async; trackBy: trackById" [value]="miniGame.id">
-            {{ miniGame.name }}
-          </bio-option>
+          @for (miniGame of miniGames$ | async; track trackById($index, miniGame)) {
+            <bio-option [value]="miniGame.id">
+              {{ miniGame.name }}
+            </bio-option>
+          }
         </bio-select>
       </bio-form-field>
       <bio-form-field label="Modes" [loading]="modeLoading">
         <bio-select placeholder="Modes" multiple controlName="idModes">
-          <bio-option *ngFor="let mode of modes$ | async; trackBy: trackById" [value]="mode.id">
-            {{ mode.name }}
-          </bio-option>
+          @for (mode of modes$ | async; track trackById($index, mode)) {
+            <bio-option [value]="mode.id">
+              {{ mode.name }}
+            </bio-option>
+          }
         </bio-select>
       </bio-form-field>
       <bio-form-field label="Stages" [loading]="stageLoading">
         <bio-select placeholder="Stages" multiple controlName="idStages">
-          <bio-option *ngFor="let stage of stages$ | async; trackBy: trackById" [value]="stage.id">
-            {{ stage.name }}
-          </bio-option>
+          @for (stage of stages$ | async; track trackById($index, stage)) {
+            <bio-option [value]="stage.id">
+              {{ stage.name }}
+            </bio-option>
+          }
         </bio-select>
       </bio-form-field>
       <bio-form-field [loading]="characterLoading" label="Characters">
         <bio-select placeholder="Characters" multiple controlName="idCharacterCostumes">
-          <bio-optgroup
-            *ngFor="let character of characters$ | async; trackBy: trackById"
-            [label]="character.name"
-            [title]="character.name"
-          >
-            <bio-option
-              *ngFor="let characterCostume of character.characterCostumes; trackBy: trackById"
-              [value]="characterCostume.id"
-            >
-              {{ characterCostume.name }}
-            </bio-option>
-          </bio-optgroup>
+          @for (character of characters$ | async; track trackById($index, character)) {
+            <bio-optgroup [label]="character.name" [title]="character.name">
+              @for (characterCostume of character.characterCostumes; track trackById($index, characterCostume)) {
+                <bio-option [value]="characterCostume.id">
+                  {{ characterCostume.name }}
+                </bio-option>
+              }
+            </bio-optgroup>
+          }
         </bio-select>
       </bio-form-field>
       <bio-form-field label="Score">
@@ -75,5 +82,4 @@
   (currentPageChange)="onCurrentPageChange($event)"
   (itemsPerPageChange)="onItemsPerPageChange($event)"
   (scoreClicked)="openInfoScore($event)"
->
-</bio-score-list-responsive>
+/>

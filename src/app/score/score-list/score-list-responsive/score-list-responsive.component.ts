@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
 import {
   BreakpointObserverService,
   MediaQueryEnum,
@@ -10,43 +10,38 @@ import { PaginationMeta } from '@model/pagination';
 import { TableCellNotifyChange, TableOrder } from '@shared/components/table/type';
 import { ColDef } from '@shared/components/table/col-def';
 import { PaginationComponent } from '@shared/components/pagination/pagination.component';
+import { ScoreListComponent } from '../score-list/score-list.component';
+import { TableComponent } from '../../../shared/components/table/table.component';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'bio-score-list-responsive',
   templateUrl: './score-list-responsive.component.html',
   styleUrls: ['./score-list-responsive.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [ScoreListComponent, TableComponent, AsyncPipe],
 })
 export class ScoreListResponsiveComponent<T extends Score = Score> {
-  constructor(private breakpointObserverService: BreakpointObserverService) {}
+  private breakpointObserverService = inject(BreakpointObserverService);
 
-  private _collapsable = false;
+  readonly scores = input<T[]>([]);
 
-  @Input() scores: T[] = [];
+  readonly loading = input<BooleanInput>(false);
+  readonly paginationMeta = input<PaginationMeta | null>();
+  readonly itemsPerPageOptions = input<number[]>(PaginationComponent.defaultItemsPerPageOptions);
+  readonly order = input<TableOrder<T> | null>();
+  readonly colDefs = input.required<ColDef<T>[]>();
+  readonly colDefDefault = input<Partial<ColDef<T>>>({});
+  readonly metadata = input<any>();
+  readonly title = input<string>();
+  readonly disabledProperty = input<keyof T>();
+  readonly collapsable = input(false, { transform: coerceBooleanProperty });
 
-  @Input() loading: BooleanInput = false;
-  @Input() paginationMeta?: PaginationMeta | null;
-  @Input() itemsPerPageOptions: number[] = PaginationComponent.defaultItemsPerPageOptions;
-  @Input() order?: TableOrder<T> | null;
-  @Input() colDefs!: ColDef<T>[];
-  @Input() colDefDefault: Partial<ColDef<T>> = {};
-  @Input() metadata: any;
-  @Input() title?: string;
-  @Input() disabledProperty?: keyof T;
-
-  @Input()
-  get collapsable(): boolean {
-    return this._collapsable;
-  }
-  set collapsable(collapsable: boolean) {
-    this._collapsable = coerceBooleanProperty(collapsable);
-  }
-
-  @Output() readonly currentPageChange = new EventEmitter<number>();
-  @Output() readonly itemsPerPageChange = new EventEmitter<number>();
-  @Output() readonly orderChange = new EventEmitter<TableOrder<T>>();
-  @Output() readonly notifyChange = new EventEmitter<TableCellNotifyChange<any, T>>();
-  @Output() readonly scoreClicked = new EventEmitter<T>();
+  readonly currentPageChange = output<number>();
+  readonly itemsPerPageChange = output<number>();
+  readonly orderChange = output<TableOrder<T>>();
+  readonly notifyChange = output<TableCellNotifyChange<any, T>>();
+  readonly scoreClicked = output<T>();
 
   readonly isSmall$ = this.breakpointObserverService.observe([MediaQueryEnum.md]).pipe(map(isMd => !isMd));
 

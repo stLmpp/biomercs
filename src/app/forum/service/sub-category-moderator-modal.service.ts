@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import type {
   ForumSubCategoryModeratorManagementComponent,
@@ -9,7 +9,7 @@ import { ModalService } from '@shared/components/modal/modal.service';
 
 @Injectable({ providedIn: 'root' })
 export class SubCategoryModeratorModalService {
-  constructor(private modalService: ModalService) {}
+  private modalService = inject(ModalService);
 
   async openModeratorManagement(
     data: ForumSubCategoryModeratorManagementComponentData

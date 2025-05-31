@@ -1,8 +1,5 @@
-<div
-  *ngIf="!bioCollapsed"
-  @collapse
-  (@collapse.start)="onCollapseStart($event)"
-  (@collapse.done)="onCollapseDone($event)"
->
-  <ng-content></ng-content>
-</div>
+@if (!bioCollapsed) {
+  <div @collapse (@collapse.start)="onCollapseStart($event)" (@collapse.done)="onCollapseDone($event)">
+    <ng-content></ng-content>
+  </div>
+}

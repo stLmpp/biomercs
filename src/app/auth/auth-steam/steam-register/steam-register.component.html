@@ -2,7 +2,7 @@
   <bio-card class="center-block-mobile">
     <h3 bioCardTitle>Register Steam</h3>
     <bio-card-content>
-      <ng-container *ngIf="emailSent; else emailForm">
+      @if (emailSent) {
         <p>Please confirm the code we sent to your e-mail</p>
         <bio-confirmation-code-input
           controlName="code"
@@ -10,9 +10,7 @@
           label="Confirmation code"
           [codeError]="confirmCodeError"
         ></bio-confirmation-code-input>
-      </ng-container>
-
-      <ng-template #emailForm>
+      } @else {
         <p>Fill the box with your e-mail and click register to complete your registration</p>
         <bio-form-field label="E-mail" [loading]="emailControl.pending">
           <input autocomplete="email" placeholder="E-mail" bioInput controlName="email" type="email" />
@@ -22,7 +20,7 @@
             <bio-error *error="'emailExists'">E-mail already registered</bio-error>
           </bio-errors>
         </bio-form-field>
-        <ng-container *ngIf="authSteamValidateNames.newName">
+        @if (authSteamValidateNames.newName) {
           <p class="text-danger">
             There's already a player with your steam profile name ({{ authSteamValidateNames.steamPersonaName }}). You
             will need to choose another name for your account.
@@ -35,8 +33,8 @@
               <bio-error *error="'steamRegisterNameExists'">Name already exists</bio-error>
             </bio-errors>
           </bio-form-field>
-        </ng-container>
-      </ng-template>
+        }
+      }
     </bio-card-content>
     <bio-card-actions end>
       <button bioButton primary type="submit" [disabled]="form.invalid || form.pending" [loading]="loading">

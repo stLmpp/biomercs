@@ -1,36 +1,38 @@
-import { ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, DOCUMENT, inject } from '@angular/core';
 import { TitleService } from '@shared/title/title.service';
 import { BreakpointObserverService } from '@shared/services/breakpoint-observer/breakpoint-observer.service';
 import { MetaService } from '@shared/meta/meta.service';
 import { GlobalListenersService } from '@shared/services/global-listeners/global-listeners.service';
 import { Destroyable } from '@shared/components/common/destroyable-component';
-import { DOCUMENT } from '@angular/common';
+
 import { auditTime, distinctUntilChanged, from, map, startWith } from 'rxjs';
 import { WINDOW } from './core/window.service';
 import { BreadcrumbsService } from '@shared/breadcrumbs/breadcrumbs.service';
 import { SwUpdate } from '@angular/service-worker';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
+import { HeaderComponent } from './header/header.component';
+import { NgProgressbar } from 'ngx-progressbar';
+import { RouterOutlet } from '@angular/router';
+import { FooterComponent } from './footer/footer.component';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'bio-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [HeaderComponent, NgProgressbar, RouterOutlet, FooterComponent, AsyncPipe],
 })
 export class AppComponent extends Destroyable implements OnInit, OnDestroy {
-  constructor(
-    private titleService: TitleService,
-    private breakpointObserverService: BreakpointObserverService,
-    private metaService: MetaService,
-    private globalListenersService: GlobalListenersService,
-    @Inject(DOCUMENT) private document: Document,
-    @Inject(WINDOW) private window: Window,
-    private breadcrumbsService: BreadcrumbsService,
-    private swUpdate: SwUpdate,
-    private dialogService: DialogService
-  ) {
-    super();
-  }
+  private titleService = inject(TitleService);
+  private breakpointObserverService = inject(BreakpointObserverService);
+  private metaService = inject(MetaService);
+  private globalListenersService = inject(GlobalListenersService);
+  private document = inject<Document>(DOCUMENT);
+  private window = inject<Window>(WINDOW);
+  private breadcrumbsService = inject(BreadcrumbsService);
+  private swUpdate = inject(SwUpdate);
+  private dialogService = inject(DialogService);
 
   readonly isMobile$ = this.breakpointObserverService.isMobile$;
 
@@ -53,7 +55,7 @@ export class AppComponent extends Destroyable implements OnInit, OnDestroy {
   }
 
   private _listenToSwUpdate(): void {
-    this.swUpdate.available.pipe(this.takeUntilDestroy()).subscribe(() => {
+    this.swUpdate.versionUpdates.pipe(this.takeUntilDestroy()).subscribe(() => {
       this.dialogService
         .info({
           title: `There's a new version of the app`,

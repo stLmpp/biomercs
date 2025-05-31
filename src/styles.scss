@@ -1,6 +1,10 @@
 @use 'variables' as v;
 @use 'theme';
 
+:root {
+  --ng-progress-color: #00acff;
+}
+
 body {
   background-color: v.$dark;
   margin: 0;

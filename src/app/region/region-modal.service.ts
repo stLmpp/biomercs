@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import type { RegionSelectComponent, RegionSelectData } from './region-select/region-select.component';
@@ -6,7 +6,7 @@ import { ModalService } from '@shared/components/modal/modal.service';
 
 @Injectable({ providedIn: 'root' })
 export class RegionModalService {
-  constructor(private modalService: ModalService) {}
+  private modalService = inject(ModalService);
 
   async showSelectModal(
     idRegion: number,

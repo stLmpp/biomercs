@@ -1,4 +1,4 @@
-import { Injectable, Injector, Type } from '@angular/core';
+import { Injectable, Injector, Type, inject } from '@angular/core';
 import { GlobalListenersService } from '@shared/services/global-listeners/global-listeners.service';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { BreadcrumbsData, BreadcrumbsItem, BreadcrumbsItemInternal } from '@shared/breadcrumbs/breadcrumbs';
@@ -13,11 +13,9 @@ function isBreadcrumbsResolver(resolver: any): resolver is Type<BreadcrumbsResol
 
 @Injectable({ providedIn: 'root' })
 export class BreadcrumbsService {
-  constructor(
-    private globalListenersService: GlobalListenersService,
-    private activatedRoute: ActivatedRoute,
-    private injector: Injector
-  ) {}
+  private globalListenersService = inject(GlobalListenersService);
+  private activatedRoute = inject(ActivatedRoute);
+  private injector = inject(Injector);
 
   private readonly _breadcrumbs$ = new ReplaySubject<BreadcrumbsItem[]>();
 

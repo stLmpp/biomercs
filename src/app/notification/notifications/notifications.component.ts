@@ -2,10 +2,11 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  EventEmitter,
-  Input,
   OnInit,
-  Output,
+  inject,
+  input,
+  output,
+  model,
 } from '@angular/core';
 import { NotificationService } from '../notification.service';
 import { Destroyable } from '@shared/components/common/destroyable-component';
@@ -17,7 +18,6 @@ import {
   NotificationExtraScore,
 } from '@model/notification';
 import { finalize, lastValueFrom, Observable, of, switchMap, tap } from 'rxjs';
-import { trackById } from '@util/track-by';
 import { ScoreService } from '../../score/score.service';
 import { ScoreModalService } from '../../score/score-modal.service';
 import { PaginationMeta } from '@model/pagination';
@@ -28,6 +28,19 @@ import { ScoreStatusEnum } from '@model/enum/score-status.enum';
 import { PlayerModalService } from '../../player/player-modal.service';
 import { arrayUtil } from 'st-utils';
 import { Router } from '@angular/router';
+import { ButtonComponent } from '../../shared/components/button/button.component';
+import { ListDirective, ListSelectable } from '../../shared/components/list/list.directive';
+import { LoadingDirective } from '../../shared/components/spinner/loading/loading.directive';
+import { ɵɵCdkVirtualScrollViewport, ɵɵCdkFixedSizeVirtualScroll, ɵɵCdkVirtualForOf } from '@angular/cdk/overlay';
+import { ListItemComponent } from '../../shared/components/list/list-item.component';
+import { ListItemLineDirective } from '../../shared/components/list/list-item-line.directive';
+import { SpinnerComponent } from '../../shared/components/spinner/spinner.component';
+import { SuffixDirective } from '../../shared/components/common/suffix.directive';
+import { MenuTriggerDirective } from '../../shared/components/menu/menu-trigger.directive';
+import { IconComponent } from '../../shared/components/icon/icon.component';
+import { MenuComponent } from '../../shared/components/menu/menu.component';
+import { MenuItemButtonDirective } from '../../shared/components/menu/menu-item.directive';
+import { trackByFactory } from '@stlmpp/utils';
 
 interface NotificationCustom extends Notification {
   loading?: boolean;
@@ -41,37 +54,50 @@ interface NotificationCustom extends Notification {
   styleUrls: ['./notifications.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'notifications' },
+  imports: [
+    ButtonComponent,
+    ListDirective,
+    ListSelectable,
+    LoadingDirective,
+    ɵɵCdkVirtualScrollViewport,
+    ɵɵCdkFixedSizeVirtualScroll,
+    ɵɵCdkVirtualForOf,
+    ListItemComponent,
+    ListItemLineDirective,
+    SpinnerComponent,
+    SuffixDirective,
+    MenuTriggerDirective,
+    IconComponent,
+    MenuComponent,
+    MenuItemButtonDirective,
+  ],
 })
 export class NotificationsComponent extends Destroyable implements OnInit {
-  constructor(
-    private notificationService: NotificationService,
-    private changeDetectorRef: ChangeDetectorRef,
-    private scoreService: ScoreService,
-    private scoreModalService: ScoreModalService,
-    private dialogService: DialogService,
-    private playerModalService: PlayerModalService,
-    private router: Router
-  ) {
-    super();
-  }
+  private notificationService = inject(NotificationService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+  private scoreService = inject(ScoreService);
+  private scoreModalService = inject(ScoreModalService);
+  private dialogService = inject(DialogService);
+  private playerModalService = inject(PlayerModalService);
+  private router = inject(Router);
 
-  @Input() notifications: NotificationCustom[] = [];
-  @Output() readonly notificationsChange = new EventEmitter<NotificationCustom[]>();
-  @Input() page = 1;
-  @Input() meta!: PaginationMeta;
-  @Output() readonly pageChange = new EventEmitter<number>();
-  @Input() loading = false;
-  @Input() loadingMore = false;
-  @Output() readonly closeOverlay = new EventEmitter<void>();
+  readonly notifications = model<NotificationCustom[]>([]);
+  readonly notificationsChange = output<NotificationCustom[]>();
+  readonly page = input(1);
+  readonly meta = input.required<PaginationMeta>();
+  readonly pageChange = output<number>();
+  readonly loading = input(false);
+  readonly loadingMore = input(false);
+  readonly closeOverlay = output<void>();
 
   readAllLoading = false;
   deleteAllLoading = false;
 
-  readonly trackById = trackById;
+  readonly trackById = trackByFactory<NotificationCustom>('id');
 
   private _setNotifications(callback: (notifications: NotificationCustom[]) => NotificationCustom[]): void {
-    this.notifications = callback(this.notifications);
-    this.notificationsChange.emit(this.notifications);
+    this.notifications.update(value => callback(value));
+    this.notificationsChange.emit(this.notifications());
     this.changeDetectorRef.markForCheck();
   }
 
@@ -166,6 +192,7 @@ export class NotificationsComponent extends Destroyable implements OnInit {
     }
     this._updateNotification(id, { loading: true });
     await lastValueFrom(this._maskAsRead(notification));
+    // TODO: The 'emit' function requires a mandatory void argument
     this.closeOverlay.emit();
     await this.router.navigate(
       [
@@ -194,8 +221,8 @@ export class NotificationsComponent extends Destroyable implements OnInit {
      *
      * !this.loadingMore: and for last check if the notifications are being fetched already
      */
-    if (firstIndex + 12 >= this.notifications.length && this.page < this.meta.totalPages && !this.loadingMore) {
-      this.pageChange.emit(this.page + 1);
+    if (firstIndex + 12 >= this.notifications().length && this.page() < this.meta().totalPages && !this.loadingMore()) {
+      this.pageChange.emit(this.page() + 1);
     }
   }
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ModalService } from '@shared/components/modal/modal.service';
 import type {
   ForumTopicPostReplyComponent,
@@ -8,7 +8,7 @@ import { ModalRef } from '@shared/components/modal/modal-ref';
 
 @Injectable({ providedIn: 'root' })
 export class PostModalService {
-  constructor(private modalService: ModalService) {}
+  private modalService = inject(ModalService);
 
   async openReply(
     data: ForumTopicPostReplyComponentData

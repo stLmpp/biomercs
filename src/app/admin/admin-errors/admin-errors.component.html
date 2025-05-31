@@ -1,42 +1,50 @@
-<bio-loading *ngIf="loading"></bio-loading>
+@if (loading) {
+  <bio-loading />
+}
 <h4 bioPageTitle></h4>
 <bio-accordion>
-  <bio-accordion-item
-    *ngFor="let error of errors; trackBy: trackBy"
-    accordionTitle="[ {{ error.creationDate | date: 'dd/MM/yyyy HH:mm:ss' }} ] {{ error.id }} - {{ error.name }}"
-  >
-    <p>User: {{ error.createdByUsername ?? 'Not logged' }}</p>
-    <pre><code [highlight]="error.message"></code></pre>
-    <pre><code [highlight]="error.stack"></code></pre>
-    <p *ngIf="error.sqlCode">SQL Code: {{ error.sqlCode }}</p>
-    <p *ngIf="error.sqlHint">SQL Hint: {{ error.sqlHint }}</p>
-    <ng-container *ngIf="error.sqlQuery">
-      <div class="sql-query">
-        <button
-          *ngIf="error.sqlQueryWithParameters"
-          class="copy-to-clipboard"
-          bioButton
-          icon
-          type="button"
-          (click)="copyQueryToClipboard(error.sqlQueryWithParameters)"
-          bioTooltip="Copy to clipboard (with parameters)"
-        >
-          <bio-icon>assignment</bio-icon>
-        </button>
-        <pre><code [highlight]="error.sqlQuery" [languages]="['sql']"></code></pre>
-      </div>
-      <ng-container *ngIf="error.sqlParametersFormatted">
-        Parameters:
-        <pre class="sql-parameters">
-          <code [highlight]="error.sqlParametersFormatted" [languages]="['yaml']"></code>
-        </pre>
-      </ng-container>
-    </ng-container>
-  </bio-accordion-item>
+  @for (error of errors; track trackBy($index, error)) {
+    <bio-accordion-item
+      accordionTitle="[ {{ error.creationDate | date: 'dd/MM/yyyy HH:mm:ss' }} ] {{ error.id }} - {{ error.name }}"
+    >
+      <p>User: {{ error.createdByUsername ?? 'Not logged' }}</p>
+      <pre><code [highlight]="error.message" [language]="'JavaScript'"></code></pre>
+      <pre><code [highlight]="error.stack" [language]="'JavaScript'"></code></pre>
+      @if (error.sqlCode) {
+        <p>SQL Code: {{ error.sqlCode }}</p>
+      }
+      @if (error.sqlHint) {
+        <p>SQL Hint: {{ error.sqlHint }}</p>
+      }
+      @if (error.sqlQuery) {
+        <div class="sql-query">
+          @if (error.sqlQueryWithParameters) {
+            <button
+              class="copy-to-clipboard"
+              bioButton
+              icon
+              type="button"
+              (click)="copyQueryToClipboard(error.sqlQueryWithParameters)"
+              bioTooltip="Copy to clipboard (with parameters)"
+            >
+              <bio-icon>assignment</bio-icon>
+            </button>
+          }
+          <pre><code [highlight]="error.sqlQuery" [languages]="['sql']"></code></pre>
+        </div>
+        @if (error.sqlParametersFormatted) {
+          Parameters:
+          <pre class="sql-parameters">
+            <code [highlight]="error.sqlParametersFormatted" [languages]="['yaml']"></code>
+          </pre>
+        }
+      }
+    </bio-accordion-item>
+  }
 </bio-accordion>
 <bio-pagination
   [meta]="meta"
   setQueryParamsOnChange
   (itemsPerPageChange)="onItemsPerPage($event)"
   (currentPageChange)="onCurrentPageChange($event)"
-></bio-pagination>
+/>

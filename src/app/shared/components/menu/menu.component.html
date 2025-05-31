@@ -6,7 +6,7 @@
     (@fadeInOut.done)="onFadeDone($event)"
     class="menu"
     (mouseleave)="onMouseleave()"
-    (keydown)="focusManager?.onKeydown($event)"
+    (keydown)="onKeydown($event)"
   >
     <ng-content></ng-content>
   </div>

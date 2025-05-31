@@ -1,188 +1,196 @@
-<bio-card class="player" *ngLet="isSameAsLogged$ | async as isSameAsLogged">
+@let isSameAsLogged = isSameAsLogged$ | async;
+<bio-card class="player">
   <div bioCardTitle>
-    <div class="avatar" *ngIf="isSameAsLogged; else avatarTemplate">
-      <ng-container [ngTemplateOutlet]="avatarTemplate"></ng-container>
-      <div class="overlay">
-        <input
-          class="cdk-visually-hidden"
-          type="file"
-          #inputFile
-          [model]="avatarFile"
-          (modelChange)="onChangeAvatar($event)"
-        />
-        <button
-          bioButton
-          icon
-          small
-          type="button"
-          bioTooltip="Edit"
-          (click)="inputFile.click()"
-          [disabled]="avatarLoading"
-        >
-          <bio-icon class="edit" small>edit</bio-icon>
-        </button>
-        <button
-          *ngIf="player.avatar"
-          bioButton
-          icon
-          small
-          type="button"
-          bioTooltip="Remove"
-          (click)="onRemoveAvatar()"
-          [disabled]="avatarLoading"
-        >
-          <bio-icon class="clear" small>clear</bio-icon>
-        </button>
+    @if (isSameAsLogged) {
+      <div class="avatar">
+        <ng-template #avatarTemplate>
+          <bio-player-avatar [avatar]="player.avatar" [personaName]="player.personaName"></bio-player-avatar>
+        </ng-template>
+        <ng-container [ngTemplateOutlet]="avatarTemplate"></ng-container>
+        <div class="overlay">
+          <input
+            class="cdk-visually-hidden"
+            type="file"
+            #inputFile
+            [model]="avatarFile"
+            (modelChange)="onChangeAvatar($event)"
+          />
+          <button
+            bioButton
+            icon
+            small
+            type="button"
+            bioTooltip="Edit"
+            (click)="inputFile.click()"
+            [disabled]="avatarLoading"
+          >
+            <bio-icon class="edit" small>edit</bio-icon>
+          </button>
+          @if (player.avatar) {
+            <button
+              bioButton
+              icon
+              small
+              type="button"
+              bioTooltip="Remove"
+              (click)="onRemoveAvatar()"
+              [disabled]="avatarLoading"
+            >
+              <bio-icon class="clear" small>clear</bio-icon>
+            </button>
+          }
+        </div>
       </div>
-    </div>
-    <ng-template #avatarTemplate>
+    } @else {
       <bio-player-avatar [avatar]="player.avatar" [personaName]="player.personaName"></bio-player-avatar>
-    </ng-template>
-    <button
-      *ngIf="isSameAsLogged; else flagTemplate"
-      class="flag"
-      bioButton
-      icon
-      [disabled]="loadingRegion"
-      (click)="openModalSelectRegion()"
-      (mouseenter)="preloadRegions()"
-      aria-label="Change region"
-    >
-      <ng-container *ngTemplateOutlet="flagTemplate"></ng-container>
-    </button>
+    }
+    @if (isSameAsLogged) {
+      <button
+        class="flag"
+        bioButton
+        icon
+        [disabled]="loadingRegion"
+        (click)="openModalSelectRegion()"
+        (mouseenter)="preloadRegions()"
+        aria-label="Change region"
+      >
+        <ng-container *ngTemplateOutlet="flagTemplate"></ng-container>
+      </button>
+    } @else {
+      <bio-icon class="flag" small [flag]="player.region?.shortName" [bioTooltip]="player.region?.name"></bio-icon>
+    }
     <ng-template #flagTemplate>
       <bio-icon class="flag" small [flag]="player.region?.shortName" [bioTooltip]="player.region?.name"></bio-icon>
     </ng-template>
     <h3>{{ player.personaName }}</h3>
-    <a
-      class="steam"
-      bioButton
-      icon
-      *ngIf="player.steamProfile"
-      [href]="player.steamProfile.profileurl"
-      bioTooltip="Steam profile"
-    >
-      <bio-icon [mdi]="mdiSteam"></bio-icon>
-    </a>
+    @if (player.steamProfile) {
+      <a class="steam" bioButton icon [href]="player.steamProfile.profileurl" bioTooltip="Steam profile">
+        <bio-icon [mdi]="mdiSteam"></bio-icon>
+      </a>
+    }
   </div>
-  <div bioCardSubtitle *ngIf="player.inputTypeName">{{ player.inputTypeName }}</div>
+  @if (player.inputTypeName) {
+    <div bioCardSubtitle>{{ player.inputTypeName }}</div>
+  }
   <div bioCardSubtitle>{{ player.title }}</div>
   <div bioCardSubtitle class="about-me">{{ player.aboutMe }}</div>
   <bio-card-content>
-    <div *ngIf="isSameAsLogged && editMode" @fadeIn>
-      <bio-form-field
-        label="Persona name"
-        [loading]="personaNameModel.isPending"
-        *ngLet="player.lastUpdatedPersonaNameDate | playerCanUpdatePersonaName as canUpdatePersonaName"
-      >
-        <input
-          bioInput
-          #personaNameModel="model"
-          [model]="player.personaName"
-          [maxLength]="100"
-          placeholder="Persona name"
-          personaNameExists
-          [personaNameExistsIgnore]="player.personaName"
-          [disabled]="!canUpdatePersonaName || saving"
-          (modelChange)="updatePersonaName($event)"
-        />
-        <bio-hint>
-          <ng-container *ngIf="canUpdatePersonaName; else cantUpdatePersonaName">
-            The persona name can be updated one time per week
-          </ng-container>
-          <ng-template #cantUpdatePersonaName>
-            Persona name will be available again in
-            {{ player.lastUpdatedPersonaNameDate | dateDifference: todayMinusSevenDate:['days', 'hours'] }}
-          </ng-template>
-        </bio-hint>
-        <bio-hint end>{{ personaNameModel.model?.length }} / 100</bio-hint>
-        <bio-errors>
-          <bio-error *error="'personaNameExists'">Player name already exists</bio-error>
-        </bio-errors>
-      </bio-form-field>
-      <bio-form-field label="Preferred controller" [loading]="inputTypeLoading">
-        <bio-select
-          [model]="player.idInputType"
-          (modelChange)="updatePlayer('idInputType', $event)"
-          placeholder="Preferred controller"
-        >
-          <bio-option [value]="inputType.id" *ngFor="let inputType of inputTypes$ | async; trackBy: trackById">
-            {{ inputType.name }}
-          </bio-option>
-        </bio-select>
-      </bio-form-field>
-      <bio-form-field label="Title">
-        <input
-          bioInput
-          [model]="player.title"
-          placeholder="Title"
-          [maxLength]="250"
-          (modelChange)="updatePlayer('title', $event)"
-          modelUpdateOn="blur"
-          [disabled]="saving"
-          #titleModel="model"
-        />
-        <bio-hint end>{{ titleModel.model?.length }} / 250</bio-hint>
-      </bio-form-field>
-      <bio-form-field label="About me">
-        <textarea
-          bioInput
-          resize="vertical"
-          rows="3"
-          [model]="player.aboutMe"
-          #aboutMeModel="model"
-          placeholder="About me"
-          [maxLength]="2000"
-          (modelChange)="updatePlayer('aboutMe', $event)"
-          modelUpdateOn="blur"
-          [disabled]="saving"
-        ></textarea>
-        <bio-hint end> {{ aboutMeModel.model?.length }} / 2000 </bio-hint>
-      </bio-form-field>
-    </div>
+    @if (isSameAsLogged && editMode) {
+      <div @fadeIn>
+        @let canUpdatePersonaName = player.lastUpdatedPersonaNameDate | playerCanUpdatePersonaName;
+        <bio-form-field label="Persona name" [loading]="personaNameModel.isPending">
+          <input
+            bioInput
+            #personaNameModel="model"
+            [model]="player.personaName"
+            [maxLength]="100"
+            placeholder="Persona name"
+            personaNameExists
+            [personaNameExistsIgnore]="player.personaName"
+            [disabled]="!canUpdatePersonaName || saving"
+            (modelChange)="updatePersonaName($event)"
+          />
+          <bio-hint>
+            @if (canUpdatePersonaName) {
+              The persona name can be updated one time per week
+            } @else {
+              Persona name will be available again in
+              {{ player.lastUpdatedPersonaNameDate | dateDifference: todayMinusSevenDate : ['days', 'hours'] }}
+            }
+          </bio-hint>
+          <bio-hint end>{{ personaNameModel.model.length }} / 100</bio-hint>
+          <bio-errors>
+            <bio-error *error="'personaNameExists'">Player name already exists</bio-error>
+          </bio-errors>
+        </bio-form-field>
+        <bio-form-field label="Preferred controller" [loading]="inputTypeLoading">
+          <bio-select
+            [model]="player.idInputType"
+            (modelChange)="updatePlayer('idInputType', $event)"
+            placeholder="Preferred controller"
+          >
+            @for (inputType of inputTypes$ | async; track trackById($index, inputType)) {
+              <bio-option [value]="inputType.id">
+                {{ inputType.name }}
+              </bio-option>
+            }
+          </bio-select>
+        </bio-form-field>
+        <bio-form-field label="Title">
+          <input
+            bioInput
+            [model]="player.title"
+            placeholder="Title"
+            [maxLength]="250"
+            (modelChange)="updatePlayer('title', $event)"
+            modelUpdateOn="blur"
+            [disabled]="saving"
+            #titleModel="model"
+          />
+          <bio-hint end>{{ titleModel.model?.length }} / 250</bio-hint>
+        </bio-form-field>
+        <bio-form-field label="About me">
+          <textarea
+            bioInput
+            resize="vertical"
+            rows="3"
+            [model]="player.aboutMe"
+            #aboutMeModel="model"
+            placeholder="About me"
+            [maxLength]="2000"
+            (modelChange)="updatePlayer('aboutMe', $event)"
+            modelUpdateOn="blur"
+            [disabled]="saving"
+          ></textarea>
+          <bio-hint end> {{ aboutMeModel.model?.length }} / 2000 </bio-hint>
+        </bio-form-field>
+      </div>
+    }
   </bio-card-content>
-  <bio-card-actions *ngIf="isSameAsLogged">
-    <button
-      *ngIf="!player.idSteamProfile"
-      bioButton
-      primary
-      type="button"
-      (click)="linkSteam(player.id)"
-      [loading]="loadingLinkSteam"
-      [disabled]="saving"
-    >
-      Link steam
-    </button>
-    <ng-container *ngIf="editMode; else notEditMode">
-      <button
-        bioButton
-        primary
-        type="button"
-        (click)="save()"
-        [loading]="saving"
-        [disabled]="
-          personaNameModelRef?.isPending ||
-          personaNameModelRef?.isInvalid ||
-          (player | playerProfileInvalid: update:newPersonaName)
-        "
-      >
-        Save
-      </button>
-      <button bioButton primary type="button" (click)="setEditMode(false)" [disabled]="saving">Cancel</button>
-    </ng-container>
-    <ng-template #notEditMode>
-      <button bioButton primary type="button" (click)="setEditMode(true)" [disabled]="saving">Edit profile</button>
-    </ng-template>
-  </bio-card-actions>
+  @if (isSameAsLogged) {
+    <bio-card-actions>
+      @if (!player.idSteamProfile) {
+        <button
+          bioButton
+          primary
+          type="button"
+          (click)="linkSteam(player.id)"
+          [loading]="loadingLinkSteam"
+          [disabled]="saving"
+        >
+          Link steam
+        </button>
+      }
+      @if (editMode) {
+        <button
+          bioButton
+          primary
+          type="button"
+          (click)="save()"
+          [loading]="saving"
+          [disabled]="
+            personaNameModelRef()?.isPending ||
+            personaNameModelRef()?.isInvalid ||
+            (player | playerProfileInvalid: update : newPersonaName)
+          "
+        >
+          Save
+        </button>
+        <button bioButton primary type="button" (click)="setEditMode(false)" [disabled]="saving">Cancel</button>
+      } @else {
+        <button bioButton primary type="button" (click)="setEditMode(true)" [disabled]="saving">Edit profile</button>
+      }
+    </bio-card-actions>
+  }
 </bio-card>
 
-<bio-score-list-responsive
-  *ngFor="let status of scoreGroupedByStatus; trackBy: trackByScoreGroupByStatus"
-  [scores]="status.scores"
-  title="{{ status.description }} ({{ status.scores.length }})"
-  [colDefs]="colDefs"
-  [disabledProperty]="'disabled'"
-  (scoreClicked)="openScoreInfo($event)"
-  collapsable
->
-</bio-score-list-responsive>
+@for (status of scoreGroupedByStatus; track trackByScoreGroupByStatus($index, status)) {
+  <bio-score-list-responsive
+    [scores]="status.scores"
+    title="{{ status.description }} ({{ status.scores.length }})"
+    [colDefs]="colDefs"
+    [disabledProperty]="'disabled'"
+    (scoreClicked)="openScoreInfo($event)"
+    collapsable
+  />
+}

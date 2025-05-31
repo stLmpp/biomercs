@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { finalize, Observable, of, switchMap, takeUntil, tap, timeout } from 'rxjs';
 import { AuthStore } from './auth.store';
@@ -27,16 +27,14 @@ import { AuthAutoLoginService } from './auth-auto-login.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  constructor(
-    private http: HttpClient,
-    private authStore: AuthStore,
-    private dialogService: DialogService,
-    @Inject(WINDOW) private window: Window,
-    private snackBarService: SnackBarService,
-    private router: Router,
-    private socketIOService: SocketIOService,
-    private authAutoLoginService: AuthAutoLoginService
-  ) {}
+  private http = inject(HttpClient);
+  private authStore = inject(AuthStore);
+  private dialogService = inject(DialogService);
+  private window = inject<Window>(WINDOW);
+  private snackBarService = inject(SnackBarService);
+  private router = inject(Router);
+  private socketIOService = inject(SocketIOService);
+  private authAutoLoginService = inject(AuthAutoLoginService);
 
   private readonly _steamidAuthMap = new Map<string, [string, number?]>();
   private _socketConnection = this.socketIOService.createConnection('auth', false);

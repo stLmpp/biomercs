@@ -5,6 +5,9 @@ import { ControlValue } from '@stlmpp/control';
 import { Animations } from '@shared/animations/animations';
 import { auditTime, startWith, takeUntil } from 'rxjs';
 import { FormFieldChild } from '@shared/components/form/form-field-child';
+import { IconComponent } from '../icon/icon.component';
+import { CdkTrapFocus } from '@angular/cdk/a11y';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'bio-select[multiple]',
@@ -19,6 +22,7 @@ import { FormFieldChild } from '@shared/components/form/form-field-child';
     { provide: FormFieldChild, useExisting: SelectMultipleComponent },
   ],
   animations: [Animations.fade.inOut(100), Animations.scale.in(100, 0.8)],
+  imports: [IconComponent, CdkTrapFocus],
 })
 export class SelectMultipleComponent extends SelectComponent implements AfterContentInit {
   override multiple = true;
@@ -26,7 +30,7 @@ export class SelectMultipleComponent extends SelectComponent implements AfterCon
   override value: any[] = [];
 
   private _setControlValueNoEmit(valueSelected: any): void {
-    const indexSelected = this.value.findIndex(value => this.compareWith(value, valueSelected));
+    const indexSelected = this.value.findIndex(value => this.compareWith()(value, valueSelected));
     if (indexSelected !== -1) {
       this.value = this.value.filter((_, index) => indexSelected !== index);
     } else {
@@ -58,12 +62,14 @@ export class SelectMultipleComponent extends SelectComponent implements AfterCon
   }
 
   override ngAfterContentInit(): void {
-    this.options.changes.pipe(takeUntil(this.destroy$), auditTime(100), startWith(this.options)).subscribe(options => {
-      for (const option of options) {
-        option.isSelected = this.value.some(value => this.compareWith(value, option.value));
-        option.changeDetectorRef.markForCheck();
-        option.optgroupComponent?.changeDetectorRef.markForCheck();
-      }
-    });
+    toObservable(this.options)
+      .pipe(takeUntil(this.destroy$), auditTime(100), startWith(this.options()))
+      .subscribe(options => {
+        for (const option of options) {
+          option.isSelected = this.value.some(value => this.compareWith()(value, option.value));
+          option.changeDetectorRef.markForCheck();
+          option.optgroupComponent?.changeDetectorRef.markForCheck();
+        }
+      });
   }
 }

@@ -1,4 +1,5 @@
 @use 'variables' as v;
+@use 'sass:color';
 
 @function get-color($type: v.$primary-type, $level: 0) {
   @if $type == v.$primary-type {
@@ -11,7 +12,7 @@
 }
 
 @function get-disabled-color($color) {
-  @return lighten($color, 20);
+  @return color.adjust($color, $lightness: 20, $space: hsl);
 }
 
 @function get-z-index($name) {

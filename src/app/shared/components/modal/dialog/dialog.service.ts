@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ModalService } from '../modal.service';
 import { ModalRef } from '../modal-ref';
 import { DialogComponent } from './dialog.component';
@@ -11,7 +11,7 @@ export type DialogRef = ModalRef<DialogComponent, DialogData, boolean>;
 
 @Injectable({ providedIn: 'root' })
 export class DialogService {
-  constructor(private modalService: ModalService) {}
+  private modalService = inject(ModalService);
 
   private async _getModalRef(data: DialogData, config?: Partial<ModalConfig<DialogData>>): Promise<DialogRef> {
     return this.modalService.openLazy(() => import('./dialog.component').then(c => c.DialogComponent), {

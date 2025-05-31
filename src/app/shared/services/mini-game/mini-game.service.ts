@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { MiniGame } from '@model/mini-game';
@@ -7,7 +7,8 @@ import { CacheService } from '@shared/cache/cache';
 
 @Injectable({ providedIn: 'root' })
 export class MiniGameService {
-  constructor(private http: HttpClient, private cacheService: CacheService) {}
+  private http = inject(HttpClient);
+  private cacheService = inject(CacheService);
 
   private readonly _cache = this.cacheService.createCache();
 

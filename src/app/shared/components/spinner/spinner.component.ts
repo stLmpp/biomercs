@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, ViewEncapsulation, input } from '@angular/core';
 import { BooleanInput, coerceBooleanProperty, coerceNumberProperty, NumberInput } from 'st-utils';
 import { Animations } from '../../animations/animations';
 import { SimpleChangesCustom } from '@util/util';
@@ -26,19 +26,19 @@ export class SpinnerComponent implements OnChanges {
   }
   private _size = 1;
 
-  @Input() baseSize = 200;
-  @Input() small: BooleanInput;
-  @Input() medium: BooleanInput;
-  @Input() large: BooleanInput;
+  readonly baseSize = input(200);
+  readonly small = input<BooleanInput>();
+  readonly medium = input<BooleanInput>();
+  readonly large = input<BooleanInput>();
 
   ngOnChanges(changes: SimpleChangesCustom<SpinnerComponent>): void {
-    if (changes.small && coerceBooleanProperty(changes.small.currentValue)) {
+    if (changes.small && coerceBooleanProperty(changes.small.currentValue())) {
       this.size = 0.15;
     }
-    if (changes.medium && coerceBooleanProperty(changes.medium.currentValue)) {
+    if (changes.medium && coerceBooleanProperty(changes.medium.currentValue())) {
       this.size = 0.3;
     }
-    if (changes.large && coerceBooleanProperty(changes.large.currentValue)) {
+    if (changes.large && coerceBooleanProperty(changes.large.currentValue())) {
       this.size = 0.6;
     }
   }

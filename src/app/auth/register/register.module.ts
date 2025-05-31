@@ -7,7 +7,6 @@ import { CardModule } from '@shared/components/card/card.module';
 import { ButtonModule } from '@shared/components/button/button.module';
 
 @NgModule({
-  declarations: [RegisterComponent],
-  imports: [RegisterRoutingModule, AuthSharedModule, CardModule, ButtonModule],
+  imports: [RegisterRoutingModule, AuthSharedModule, CardModule, ButtonModule, RegisterComponent],
 })
 export class RegisterModule {}

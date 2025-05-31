@@ -1,17 +1,27 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
   Input,
-  Output,
   TrackByFunction,
   ViewEncapsulation,
+  input,
+  output,
 } from '@angular/core';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { PaginationMeta } from '@model/pagination';
 import { ColDef, ColDefInternal } from '@shared/components/table/col-def';
 import { TableCellNotifyChange, TableOrder } from '@shared/components/table/type';
 import { trackById } from '@util/track-by';
+import { CardComponent } from '../card/card.component';
+import { LoadingComponent } from '../spinner/loading/loading.component';
+import { CardTitleDirective } from '../card/card-title.directive';
+import { CardContentDirective } from '../card/card-content.directive';
+import { NgLetModule } from '@stlmpp/utils';
+import { NgStyle } from '@angular/common';
+import { IconComponent } from '../icon/icon.component';
+import { TableCellComponent } from './table-cell/table-cell.component';
+import { CardActionsDirective } from '../card/card-actions.directive';
+import { PaginationComponent } from '../pagination/pagination.component';
 
 @Component({
   selector: 'bio-table',
@@ -19,27 +29,32 @@ import { trackById } from '@util/track-by';
   styleUrls: ['./table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
+  imports: [
+    CardComponent,
+    LoadingComponent,
+    CardTitleDirective,
+    CardContentDirective,
+    NgLetModule,
+    NgStyle,
+    IconComponent,
+    TableCellComponent,
+    CardActionsDirective,
+    PaginationComponent,
+  ],
 })
 export class TableComponent<T extends Record<any, any>, K extends keyof T> {
-  private _collapsable = false;
   private _colDefs: ColDefInternal<T, K>[] = [];
   private _colDefDefault: Partial<ColDef<T, K>> = {};
 
-  @Input() loading: BooleanInput = false;
-  @Input() data: T[] = [];
-  @Input() paginationMeta?: PaginationMeta | null;
-  @Input() itemsPerPageOptions: number[] = [];
-  @Input() order?: TableOrder<T> | null;
-  @Input() metadata: any;
-  @Input() title?: string;
+  readonly loading = input<BooleanInput>(false);
+  readonly data = input<T[]>([]);
+  readonly paginationMeta = input<PaginationMeta | null>();
+  readonly itemsPerPageOptions = input<number[]>([]);
+  readonly order = input<TableOrder<T> | null>();
+  readonly metadata = input<any>();
+  readonly title = input<string>();
 
-  @Input()
-  get collapsable(): boolean {
-    return this._collapsable;
-  }
-  set collapsable(collapsable: boolean) {
-    this._collapsable = coerceBooleanProperty(collapsable);
-  }
+  readonly collapsable = input(false, { transform: coerceBooleanProperty });
 
   @Input()
   set colDefs(colDefs: ColDef<T, K>[]) {
@@ -53,10 +68,10 @@ export class TableComponent<T extends Record<any, any>, K extends keyof T> {
     this._updateColDefsInternal();
   }
 
-  @Output() readonly currentPageChange = new EventEmitter<number>();
-  @Output() readonly itemsPerPageChange = new EventEmitter<number>();
-  @Output() readonly orderChange = new EventEmitter<TableOrder<T>>();
-  @Output() readonly notifyChange = new EventEmitter<TableCellNotifyChange<any, T, K>>();
+  readonly currentPageChange = output<number>();
+  readonly itemsPerPageChange = output<number>();
+  readonly orderChange = output<TableOrder<T>>();
+  readonly notifyChange = output<TableCellNotifyChange<any, T, K>>();
 
   colDefsInternal: ColDefInternal<T, K>[] = [];
 
@@ -66,17 +81,18 @@ export class TableComponent<T extends Record<any, any>, K extends keyof T> {
     this.colDefsInternal = this._colDefs.map(colDef => ({ ...colDef, ...this._colDefDefault }));
   }
 
-  @Input() trackBy: TrackByFunction<T> = index => index;
+  readonly trackBy = input<TrackByFunction<T>>(index => index);
 
   changeOrder(orderBy: keyof T | string): void {
-    if (this.order) {
-      if (this.order.orderBy === orderBy) {
+    const order = this.order();
+    if (order) {
+      if (order.orderBy === orderBy) {
         this.orderChange.emit({
-          ...this.order,
-          orderByDirection: this.order.orderByDirection === 'asc' ? 'desc' : 'asc',
+          ...order,
+          orderByDirection: order.orderByDirection === 'asc' ? 'desc' : 'asc',
         });
       } else {
-        this.orderChange.emit({ ...this.order, orderBy });
+        this.orderChange.emit({ ...order, orderBy });
       }
     }
   }

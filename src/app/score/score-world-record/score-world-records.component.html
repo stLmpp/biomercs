@@ -2,85 +2,94 @@
 <bio-card collapsable>
   <h3 bioCardTitle>Parameters</h3>
   <bio-card-content>
-    <bio-params (paramsChange)="paramsChange($event)" [config]="paramsConfig" setQueryParamsOnChange></bio-params>
+    <bio-params (paramsChange)="paramsChange($event)" [config]="paramsConfig" setQueryParamsOnChange />
   </bio-card-content>
 </bio-card>
-<ng-container *ngLet="tableLoading$ | async as tableLoading">
-  <ng-container *ngIf="isMobile$ | async; else notMobile">
-    <div class="score-list" *ngIf="scoreTopTableList$ | async as scoreTopTable">
-      <bio-loading *ngIf="tableLoading"></bio-loading>
-      <bio-score-list
-        title="{{ character.characterName }}{{
-          character.characterCostumeName !== character.characterName ? ' ' + character.characterCostumeName : ''
-        }}"
-        *ngFor="let character of scoreTopTable.scoreTables; trackBy: trackByScoreTableWithoutUndefined"
-        collapsable
-        [scores]="character.scores"
-        class="card-score-list"
-        (scoreClicked)="openScoreInfo($event)"
-      >
-      </bio-score-list>
-    </div>
-  </ng-container>
-  <ng-template #notMobile>
+@let tableLoading = tableLoading$ | async;
+<ng-container>
+  @if (isMobile$ | async) {
+    @if (scoreTopTableList$ | async; as scoreTopTable) {
+      <div class="score-list">
+        @if (tableLoading) {
+          <bio-loading></bio-loading>
+        }
+        @for (character of scoreTopTable.scoreTables; track trackByScoreTableWithoutUndefined($index, character)) {
+          <bio-score-list
+            title="{{ character.characterName }}{{
+              character.characterCostumeName !== character.characterName ? ' ' + character.characterCostumeName : ''
+            }}"
+            collapsable
+            [scores]="character.scores"
+            class="card-score-list"
+            (scoreClicked)="openScoreInfo($event)"
+          >
+          </bio-score-list>
+        }
+      </div>
+    }
+  } @else {
     <bio-card [bioLoading]="tableLoading" class="top-table flex-table">
       <bio-card-content>
-        <ng-container *ngIf="scoreTopTable$ | async as scoreTopTable; else noParams">
-          <ng-container *ngLet="orderBy$ | async as order">
-            <div
-              class="header"
-              *ngLet="order.orderByDirection === 'desc' ? 'arrow_drop_up' : 'arrow_drop_down' as arrow"
-            >
+        @if (scoreTopTable$ | async; as scoreTopTable) {
+          @let order = orderBy$ | async;
+          <ng-container>
+            @let arrow = order?.orderByDirection === 'desc' ? 'arrow_drop_up' : 'arrow_drop_down';
+            <div class="header">
               <div class="character" (click)="updateOrderByCharacter()">
                 Character
-                <bio-icon class="order-icon" *ngIf="order.orderByCharacter" small>
-                  {{ arrow }}
-                </bio-icon>
+                @if (order?.orderByCharacter) {
+                  <bio-icon class="order-icon" small>
+                    {{ arrow }}
+                  </bio-icon>
+                }
               </div>
-              <div
-                *ngFor="let stage of scoreTopTable.stages; trackBy: trackById"
-                [bioTooltip]="stage.name"
-                (click)="updateOrderByIdStage(stage.id)"
-                class="stage"
-              >
-                {{ stage.shortName }}
-                <bio-icon class="order-icon" *ngIf="order.orderByStage === stage.id" small>
-                  {{ arrow }}
-                </bio-icon>
-              </div>
+              @for (stage of scoreTopTable.stages; track trackById($index, stage)) {
+                <div [bioTooltip]="stage.name" (click)="updateOrderByIdStage(stage.id)" class="stage">
+                  {{ stage.shortName }}
+                  @if (order?.orderByStage === stage.id) {
+                    <bio-icon class="order-icon" small>
+                      {{ arrow }}
+                    </bio-icon>
+                  }
+                </div>
+              }
             </div>
           </ng-container>
-
           <hr />
           <div class="body">
-            <div class="no-data-found" *ngIf="!scoreTopTable.scoreTables.length">No scores found</div>
-            <ng-container *ngFor="let character of scoreTopTable.scoreTables; trackBy: trackByScoreTable">
+            @if (!scoreTopTable.scoreTables.length) {
+              <div class="no-data-found">No scores found</div>
+            }
+            @for (character of scoreTopTable.scoreTables; track trackByScoreTable($index, character)) {
               <div>
                 <div class="character">
                   {{ character.characterName }}
-                  <ng-container *ngIf="character.characterCostumeName !== character.characterName">
+                  @if (character.characterCostumeName !== character.characterName) {
                     {{ character.characterCostumeName }}
-                  </ng-container>
+                  }
                 </div>
-                <div class="score" *ngFor="let score of character.scores; trackBy: trackByScore">
-                  <button
-                    [disabled]="!score || (loadingInfoModal$ | async)"
-                    block
-                    bioButton
-                    (click)="openScoreInfo(score!)"
-                  >
-                    {{ score?.score || 0 | number: '1.0-0' }}
-                  </button>
-                </div>
+                @for (score of character.scores; track trackByScore($index, score)) {
+                  <div class="score">
+                    <button
+                      [disabled]="!score || (loadingInfoModal$ | async)"
+                      block
+                      bioButton
+                      (click)="openScoreInfo(score!)"
+                    >
+                      {{ score?.score || 0 | number: '1.0-0' }}
+                    </button>
+                  </div>
+                }
               </div>
               <hr />
-            </ng-container>
+            }
           </div>
-        </ng-container>
-        <ng-template #noParams>
-          <div class="no-params" *ngIf="!tableLoading">Select the params above to search the world records</div>
-        </ng-template>
+        } @else {
+          @if (!tableLoading) {
+            <div class="no-params">Select the params above to search the world records</div>
+          }
+        }
       </bio-card-content>
     </bio-card>
-  </ng-template>
+  }
 </ng-container>

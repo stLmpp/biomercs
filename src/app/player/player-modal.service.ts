@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ModalService } from '@shared/components/modal/modal.service';
 import type {
   PlayerChangeRequestsModalComponent,
@@ -15,7 +15,7 @@ import { Player } from '@model/player';
 
 @Injectable({ providedIn: 'root' })
 export class PlayerModalService {
-  constructor(private modalService: ModalService) {}
+  private modalService = inject(ModalService);
 
   async openPlayerChangeRequestsModal(
     data: PlayerChangeRequestsModalData

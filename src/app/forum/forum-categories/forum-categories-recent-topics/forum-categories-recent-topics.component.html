@@ -1,22 +1,24 @@
-<div *ngFor="let recentTopic of recentTopics; trackBy: trackBy">
-  <a
-    [routerLink]="[
-      'category',
-      recentTopic.idCategory,
-      'sub-category',
-      recentTopic.idSubCategory,
-      'topic',
-      recentTopic.id,
-      'post',
-      recentTopic.idPost
-    ]"
-  >
-    {{ recentTopic.postName }}
-  </a>
-  by
-  <a [routerLink]="['/player', recentTopic.idPlayer]">{{ recentTopic.playerPersonaName }}</a>
-  (<a [routerLink]="['category', recentTopic.idCategory, 'sub-category', recentTopic.idSubCategory, 'page', 1]">{{
-    recentTopic.nameSubCategory
-  }}</a
-  >) on {{ recentTopic.postDate | authDateFormat }}
-</div>
+@for (recentTopic of recentTopics(); track trackBy($index, recentTopic)) {
+  <div>
+    <a
+      [routerLink]="[
+        'category',
+        recentTopic.idCategory,
+        'sub-category',
+        recentTopic.idSubCategory,
+        'topic',
+        recentTopic.id,
+        'post',
+        recentTopic.idPost,
+      ]"
+    >
+      {{ recentTopic.postName }}
+    </a>
+    by
+    <a [routerLink]="['/player', recentTopic.idPlayer]">{{ recentTopic.playerPersonaName }}</a>
+    (<a [routerLink]="['category', recentTopic.idCategory, 'sub-category', recentTopic.idSubCategory, 'page', 1]">{{
+      recentTopic.nameSubCategory
+    }}</a
+    >) on {{ recentTopic.postDate | authDateFormat }}
+  </div>
+}

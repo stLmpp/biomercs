@@ -1,4 +1,4 @@
-<ng-content select="[bioMultiSelectItems][items]"></ng-content>
+<ng-content select="[bioMultiSelectItems][items]" />
 <div class="middle">
   <button type="button" bioButton icon (click)="allSelected.emit()" [disabled]="disabledSelectAll">
     <bio-icon>keyboard_double_arrow_right</bio-icon>
@@ -7,4 +7,4 @@
     <bio-icon>keyboard_double_arrow_left</bio-icon>
   </button>
 </div>
-<ng-content select="[bioMultiSelectItems][selected]"></ng-content>
+<ng-content select="[bioMultiSelectItems][selected]" />

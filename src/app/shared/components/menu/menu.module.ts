@@ -9,8 +9,7 @@ const DECLARATIONS = [MenuTriggerDirective, MenuComponent, MenuItemDirective, Me
 const MODULES = [CommonModule, A11yModule];
 
 @NgModule({
-  declarations: [...DECLARATIONS],
-  imports: [...MODULES],
+  imports: [...MODULES, ...DECLARATIONS],
   exports: [...DECLARATIONS, ...MODULES],
 })
 export class MenuModule {}

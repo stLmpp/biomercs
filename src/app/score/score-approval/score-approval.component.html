@@ -8,23 +8,25 @@
       setQueryParamsOnChange
       clearable
       approval
-    ></bio-params>
+    />
   </bio-card-content>
 </bio-card>
-<ng-container *ngLet="order$ | async as order">
-  <bio-score-list-responsive
-    *ngIf="scores$ | async as scores"
-    [loading]="tableLoading$ | async"
-    [colDefs]="colDefs"
-    [paginationMeta]="meta$ | async"
-    [itemsPerPageOptions]="itemsPerPageOptions"
-    [scores]="scores"
-    [metadata]="metadata$ | async"
-    [order]="order"
-    (itemsPerPageChange)="changeItemsPerPage($event)"
-    (currentPageChange)="changeCurrentPage($event)"
-    (orderChange)="changeOrder($event)"
-    (notifyChange)="onNotifyChange($event)"
-    (scoreClicked)="openModalSelectApprovalType($event)"
-  ></bio-score-list-responsive>
+@let order = order$ | async;
+<ng-container>
+  @if (scores$ | async; as scores) {
+    <bio-score-list-responsive
+      [loading]="tableLoading$ | async"
+      [colDefs]="colDefs"
+      [paginationMeta]="meta$ | async"
+      [itemsPerPageOptions]="itemsPerPageOptions"
+      [scores]="scores"
+      [metadata]="metadata$ | async"
+      [order]="order"
+      (itemsPerPageChange)="changeItemsPerPage($event)"
+      (currentPageChange)="changeCurrentPage($event)"
+      (orderChange)="changeOrder($event)"
+      (notifyChange)="onNotifyChange($event)"
+      (scoreClicked)="openModalSelectApprovalType($event)"
+    />
+  }
 </ng-container>

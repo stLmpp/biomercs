@@ -3,21 +3,27 @@ import {
   ChangeDetectionStrategy,
   Component,
   ComponentRef,
-  EventEmitter,
   HostBinding,
-  Input,
   OnChanges,
-  Output,
-  ViewChild,
   ViewContainerRef,
   ViewEncapsulation,
+  inject,
+  input,
+  output,
+  viewChild,
 } from '@angular/core';
+import { outputToObservable } from '@angular/core/rxjs-interop';
 import { ColDefInternal } from '@shared/components/table/col-def';
 import { CdkPortalOutlet, ComponentPortal } from '@angular/cdk/portal';
 import { TableCell, TableCellNotifyChange } from '@shared/components/table/type';
 import { SimpleChangesCustom } from '@util/util';
 import { Destroyable } from '@shared/components/common/destroyable-component';
 import { takeUntil } from 'rxjs';
+import { NgTemplateOutlet } from '@angular/common';
+import { NgLetModule } from '@stlmpp/utils';
+import { TooltipDirective } from '../../tooltip/tooltip.directive';
+import { TableCellFormatterPipe } from '../table-cell-formatter.pipe';
+import { TableCellTooltipPipe } from '../table-cell-tooltip.pipe';
 
 @Component({
   selector: 'bio-cell',
@@ -26,55 +32,65 @@ import { takeUntil } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: { class: 'bio-cell' },
+  imports: [
+    NgTemplateOutlet,
+    NgLetModule,
+    TooltipDirective,
+    CdkPortalOutlet,
+    TableCellFormatterPipe,
+    TableCellTooltipPipe,
+  ],
 })
 export class TableCellComponent<T extends Record<any, any>, K extends keyof T>
   extends Destroyable
   implements AfterViewInit, OnChanges
 {
-  constructor(private viewContainerRef: ViewContainerRef) {
-    super();
-  }
+  private viewContainerRef = inject(ViewContainerRef);
 
   private _viewInitialized = false;
   private _componentPortal!: ComponentPortal<TableCell<T, K>>;
   private _componentRef!: ComponentRef<TableCell<T, K>>;
 
-  @ViewChild(CdkPortalOutlet) cdkPortalOutlet!: CdkPortalOutlet;
+  readonly cdkPortalOutlet = viewChild.required(CdkPortalOutlet);
 
-  @Input() colDef!: ColDefInternal<T, K>;
-  @Input() item!: T;
-  @Input() metadata: any;
+  readonly colDef = input.required<ColDefInternal<T, K>>();
+  readonly item = input.required<T>();
+  readonly metadata = input<any>();
 
-  @Output() readonly notifyChange = new EventEmitter<TableCellNotifyChange<any, T, K>>();
+  readonly notifyChange = output<TableCellNotifyChange<any, T, K>>();
 
   @HostBinding('class.flex-grow-0')
   get classFlexGrow0(): boolean {
-    return !!this.colDef.width;
+    return !!this.colDef().width;
   }
 
   @HostBinding('style.flex-basis')
   get styleFlexBasis(): string | undefined {
-    return this.colDef.width;
+    return this.colDef().width;
   }
 
   private _createComponentPortal(): void {
     if (!this._viewInitialized) {
       return;
     }
-    if (this.cdkPortalOutlet.hasAttached()) {
-      this.cdkPortalOutlet.detach();
+    const cdkPortalOutlet = this.cdkPortalOutlet();
+    if (cdkPortalOutlet.hasAttached()) {
+      cdkPortalOutlet.detach();
     }
     this.destroy$.next();
-    if (this.colDef.component) {
-      this._componentPortal = new ComponentPortal(this.colDef.component, this.viewContainerRef);
-      this._componentRef = this.cdkPortalOutlet.attachComponentPortal(this._componentPortal);
-      this._componentRef.instance.colDef = this.colDef;
-      this._componentRef.instance.item = this.item;
-      this._componentRef.instance.metadata = this.metadata;
+    const colDef = this.colDef();
+    if (colDef.component) {
+      this._componentPortal = new ComponentPortal(colDef.component, this.viewContainerRef);
+      this._componentRef = cdkPortalOutlet.attachComponentPortal(this._componentPortal);
+      this._componentRef.instance.colDef = colDef;
+      this._componentRef.instance.item = this.item();
+      this._componentRef.instance.metadata = this.metadata();
       this._componentRef.changeDetectorRef.detectChanges();
-      this._componentRef.instance.notifyChange.pipe(takeUntil(this.destroy$)).subscribe(data => {
-        this.notifyChange.emit({ data, colDef: this.colDef, item: this.item });
-      });
+      outputToObservable(this._componentRef.instance.notifyChange)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(data => {
+          this.notifyChange.emit({ data, colDef: this.colDef(), item: this.item() });
+        });
     }
   }
 
@@ -86,16 +102,16 @@ export class TableCellComponent<T extends Record<any, any>, K extends keyof T>
   ngOnChanges(changes: SimpleChangesCustom<TableCellComponent<T, K>>): void {
     const colDefChanges = changes.colDef;
     if (colDefChanges) {
-      if (colDefChanges.currentValue.component !== colDefChanges.currentValue.component) {
+      if (colDefChanges.currentValue().component !== colDefChanges.currentValue().component) {
         this._createComponentPortal();
       } else if (this._componentRef) {
-        this._componentRef.instance.colDef = colDefChanges.currentValue;
+        this._componentRef.instance.colDef = colDefChanges.currentValue();
       }
     }
     if (this._componentRef) {
       const itemChanges = changes.item;
       if (itemChanges) {
-        this._componentRef.instance.item = itemChanges.currentValue;
+        this._componentRef.instance.item = itemChanges.currentValue();
       }
       const metadataChanges = changes.metadata;
       if (metadataChanges) {

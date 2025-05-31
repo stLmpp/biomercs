@@ -1,11 +1,10 @@
-<bio-checkbox
-  *ngIf="multiple; else single"
-  [checked]="isSelected"
-  (checkedChange)="onCheckedChange()"
-  [disabled]="disabled"
->
-  <ng-container [ngTemplateOutlet]="single"></ng-container>
-</bio-checkbox>
+@if (multiple) {
+  <bio-checkbox [checked]="isSelected" (checkedChange)="onCheckedChange()" [disabled]="disabled">
+    <ng-container [ngTemplateOutlet]="single"></ng-container>
+  </bio-checkbox>
+} @else {
+  <ng-content></ng-content>
+}
 <ng-template #single>
   <ng-content></ng-content>
 </ng-template>

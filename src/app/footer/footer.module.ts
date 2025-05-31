@@ -5,8 +5,7 @@ import { ButtonModule } from '@shared/components/button/button.module';
 import { RouterModule } from '@angular/router';
 
 @NgModule({
-  declarations: [FooterComponent],
   exports: [FooterComponent],
-  imports: [CommonModule, ButtonModule, RouterModule],
+  imports: [CommonModule, ButtonModule, RouterModule, FooterComponent],
 })
 export class FooterModule {}

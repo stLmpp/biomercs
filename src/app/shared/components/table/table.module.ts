@@ -14,8 +14,7 @@ const MODULES = [CommonModule, CardModule, PaginationModule, NgLetModule, Portal
 const EXPORTS = [TableComponent, CommonModule, CardModule, PaginationModule, NgLetModule, PortalModule];
 
 @NgModule({
-  declarations: [...DECLARATIONS],
-  imports: [...MODULES],
+  imports: [...MODULES, ...DECLARATIONS],
   exports: [...EXPORTS],
 })
 export class TableModule {}

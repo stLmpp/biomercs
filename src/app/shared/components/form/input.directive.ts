@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostBinding, Input, Optional, Self } from '@angular/core';
+import { Directive, ElementRef, HostBinding, inject, model } from '@angular/core';
 import { AbstractComponent } from '../core/abstract-component';
 import { Control, ControlDirective, ModelDirective } from '@stlmpp/control';
 import { FocusableOption } from '@angular/cdk/a11y';
@@ -11,22 +11,19 @@ import { FormFieldChild } from '@shared/components/form/form-field-child';
   providers: [{ provide: FormFieldChild, useExisting: InputDirective }],
 })
 export class InputDirective extends AbstractComponent implements FocusableOption {
-  constructor(
-    public elementRef: ElementRef<HTMLInputElement | HTMLTextAreaElement>,
-    @Optional() @Self() public controlDirective?: ControlDirective,
-    @Optional() @Self() public modelDirective?: ModelDirective
-  ) {
-    super();
-  }
+  elementRef = inject<ElementRef<HTMLInputElement | HTMLTextAreaElement>>(ElementRef);
+  controlDirective? = inject(ControlDirective, { optional: true, self: true });
+  modelDirective? = inject(ModelDirective, { optional: true, self: true });
 
-  @Input() @HostBinding('attr.id') id?: number | string;
+  @HostBinding('attr.id')
+  readonly id = model<number | string>();
 
   override get primaryClass(): boolean {
-    return !this.dangerClass && (this.bioType || 'primary') === 'primary';
+    return !this.dangerClass && (this.bioType() || 'primary') === 'primary';
   }
 
   override get dangerClass(): boolean {
-    return this.bioType === 'danger' || !!(this.control?.touched && this.control.invalid);
+    return this.bioType() === 'danger' || !!(this.control?.touched && this.control.invalid);
   }
 
   get control(): Control | undefined {

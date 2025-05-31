@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { TopicAddDto, TopicPostPage, TopicWithPosts } from '@model/forum/topic';
@@ -6,7 +6,7 @@ import { HttpParams } from '@util/http-params';
 
 @Injectable({ providedIn: 'root' })
 export class TopicService {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   getEndPoint(idSubCategory: number): string {
     return `forum/sub-category/${idSubCategory}/topic`;

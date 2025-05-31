@@ -4,33 +4,34 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ContentChildren,
+  contentChildren,
   ElementRef,
   HostBinding,
   HostListener,
-  Input,
-  QueryList,
+  inject,
+  input,
   TemplateRef,
-  ViewChild,
+  viewChild,
   ViewContainerRef,
   ViewEncapsulation,
 } from '@angular/core';
-import { ControlValue } from '@stlmpp/control';
+import { ControlState, ControlValue } from '@stlmpp/control';
 import { Select } from './select';
 import { auditTime, startWith, Subject, takeUntil } from 'rxjs';
 import { OptionComponent } from './option.component';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { cdkOverlayTransparentBackdrop } from '@util/overlay';
-import { FocusKeyManager } from '@angular/cdk/a11y';
+import { CdkTrapFocus, FocusKeyManager } from '@angular/cdk/a11y';
 import { Animations } from '../../animations/animations';
 import { AnimationEvent } from '@angular/animations';
 import { OptgroupComponent } from './optgroup.component';
 import { BooleanInput, isNil } from 'st-utils';
 import { Key } from '@model/enum/key';
 import { getOverlayPositionMenu } from '@shared/components/menu/util';
-import { ControlState } from '@stlmpp/control/lib/control/control';
 import { FormFieldChild } from '@shared/components/form/form-field-child';
+import { IconComponent } from '../icon/icon.component';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'bio-select:not([multiple])',
@@ -45,17 +46,14 @@ import { FormFieldChild } from '@shared/components/form/form-field-child';
     { provide: FormFieldChild, useExisting: SelectComponent },
   ],
   animations: [Animations.fade.inOut(100), Animations.scale.in(100, 0.8)],
+  imports: [IconComponent, CdkTrapFocus],
 })
 // I had to do "implements", instead of "extends", so I can use the "Select" abstract class
 export class SelectComponent extends Select implements ControlValue, AfterContentInit, AfterViewInit {
-  constructor(
-    protected changeDetectorRef: ChangeDetectorRef,
-    private overlay: Overlay,
-    private viewContainerRef: ViewContainerRef,
-    public elementRef: ElementRef<HTMLElement>
-  ) {
-    super();
-  }
+  protected changeDetectorRef = inject(ChangeDetectorRef);
+  private overlay = inject(Overlay);
+  private viewContainerRef = inject(ViewContainerRef);
+  elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
 
   private _afterViewInit = false;
   private _isInvalid = false;
@@ -64,12 +62,12 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
   private _overlayRef?: OverlayRef;
   private _focusManager?: FocusKeyManager<OptionComponent>;
 
-  @ViewChild('panel', { read: TemplateRef }) readonly panelTemplateRef!: TemplateRef<any>;
-  @ContentChildren(OptionComponent, { descendants: true }) readonly options!: QueryList<OptionComponent>;
-  @ContentChildren(OptgroupComponent, { descendants: true }) readonly optgroups!: QueryList<OptgroupComponent>;
+  readonly panelTemplateRef = viewChild.required('panel', { read: TemplateRef });
+  readonly options = contentChildren(OptionComponent, { descendants: true });
+  readonly optgroups = contentChildren(OptgroupComponent, { descendants: true });
 
-  @Input() compareWith: (valueA: any, valueB: any) => boolean = Object.is;
-  @Input() placeholder?: string;
+  readonly compareWith = input<(valueA: any, valueB: any) => boolean>(Object.is);
+  readonly placeholder = input<string>();
 
   @HostBinding('attr.title') viewValue = '';
 
@@ -79,7 +77,7 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
   value: any;
 
   override get primaryClass(): boolean {
-    return !this.dangerClass && (this.bioType || 'primary') === 'primary';
+    return !this.dangerClass && (this.bioType() || 'primary') === 'primary';
   }
 
   override get dangerClass(): boolean {
@@ -97,7 +95,7 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
   }
 
   private _setViewValueFromOptions(value: any): void {
-    const optionSelected = this.options?.find(option => this.compareWith(option.value, value));
+    const optionSelected = this.options()?.find(option => this.compareWith()(option.value(), value));
     if (optionSelected) {
       this.setViewValue(optionSelected.getViewValue());
     } else {
@@ -106,9 +104,9 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
   }
 
   private _initFocus(): void {
-    this._focusManager = new FocusKeyManager(this.options).withVerticalOrientation().withTypeAhead(400);
+    this._focusManager = new FocusKeyManager(this.options()).withVerticalOrientation().withTypeAhead(400);
     if (!isNil(this.value)) {
-      const optionSelected = this.options.toArray().findIndex(option => this.compareWith(option.value, this.value));
+      const optionSelected = this.options().findIndex(option => this.compareWith()(option.value(), this.value));
       this._focusManager.setActiveItem(Math.max(optionSelected, 0));
     } else {
       this._focusManager.setFirstItemActive();
@@ -139,7 +137,7 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
   }
 
   isSelected(option: OptionComponent): boolean {
-    return this.compareWith(this.value, option.value);
+    return this.compareWith()(this.value, option.value());
   }
 
   onPanelKeydown($event: KeyboardEvent): void {
@@ -163,7 +161,7 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
       width: this.elementRef.nativeElement.getBoundingClientRect().width,
       hasBackdrop: true,
     });
-    const portal = new TemplatePortal(this.panelTemplateRef, this.viewContainerRef);
+    const portal = new TemplatePortal(this.panelTemplateRef(), this.viewContainerRef);
     this._overlayRef.attach(portal);
     this._overlayRef
       .backdropClick()
@@ -189,7 +187,7 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
   }
 
   setControlValue(value: any): void {
-    if (!this.compareWith(value, this.value)) {
+    if (!this.compareWith()(value, this.value)) {
       this.onChange$.next(value);
       this.value = value;
     }
@@ -224,9 +222,11 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
   }
 
   ngAfterContentInit(): void {
-    this.options.changes.pipe(takeUntil(this.destroy$), auditTime(100), startWith(this.options)).subscribe(() => {
-      this._setViewValueFromOptions(this.value);
-    });
+    toObservable(this.options)
+      .pipe(takeUntil(this.destroy$), auditTime(100), startWith(this.options()))
+      .subscribe(() => {
+        this._setViewValueFromOptions(this.value);
+      });
   }
 
   static ngAcceptInputType_multiple: BooleanInput;

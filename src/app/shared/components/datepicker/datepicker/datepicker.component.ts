@@ -2,12 +2,13 @@ import {
   ChangeDetectionStrategy,
   Component,
   HostBinding,
-  Inject,
+  inject,
   Input,
+  input,
   LOCALE_ID,
-  Optional,
+  model,
   TemplateRef,
-  ViewChild,
+  viewChild,
   ViewContainerRef,
 } from '@angular/core';
 import { CalendarViewModeEnum } from '@shared/components/datepicker/calendar-view-mode.enum';
@@ -23,6 +24,8 @@ import { Destroyable } from '@shared/components/common/destroyable-component';
 import { take, takeUntil } from 'rxjs';
 import { AnimationEvent } from '@angular/animations';
 import { getDatepickerOverlayPositions } from '@shared/components/datepicker/datepicker/datepicker';
+import { CalendarComponent } from '../calendar/calendar.component';
+import { CdkTrapFocus } from '@angular/cdk/a11y';
 
 @Component({
   selector: 'bio-datepicker',
@@ -30,29 +33,25 @@ import { getDatepickerOverlayPositions } from '@shared/components/datepicker/dat
   styleUrls: ['./datepicker.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [Animations.fade.inOut(), Animations.scale.in()],
+  imports: [CalendarComponent, CdkTrapFocus],
 })
 export class DatepickerComponent extends Destroyable {
-  constructor(
-    private overlay: Overlay,
-    private scrollStrategyOptions: ScrollStrategyOptions,
-    private viewContainerRef: ViewContainerRef,
-    @Inject(LOCALE_ID) localeId: string,
-    @Optional() @Inject(CALENDAR_LOCALE) locale?: string
-  ) {
-    super();
-    this.locale = locale ?? localeId;
-  }
+  private overlay = inject(Overlay);
+  private scrollStrategyOptions = inject(ScrollStrategyOptions);
+  private viewContainerRef = inject(ViewContainerRef);
+  private readonly localeId = inject(LOCALE_ID);
+  private readonly calendarLocale = inject(CALENDAR_LOCALE, { optional: true });
 
   private _input?: DatepickerDirective;
   private _trigger?: DatepickerTriggerDirective;
   private _disabled = false;
   private _overlayRef?: OverlayRef;
 
-  @ViewChild(TemplateRef) templateRef!: TemplateRef<any>;
+  readonly templateRef = viewChild.required(TemplateRef);
 
-  @Input() value: Date | null | undefined;
-  @Input() viewMode: CalendarViewModeEnum = CalendarViewModeEnum.day;
-  @Input() locale: string;
+  readonly value = model<Date | null>();
+  readonly viewMode = model<CalendarViewModeEnum>(CalendarViewModeEnum.day);
+  readonly locale = input<string>(this.calendarLocale ?? this.localeId);
 
   @Input()
   @HostBinding('attr.aria-disabled')
@@ -96,7 +95,7 @@ export class DatepickerComponent extends Destroyable {
         .withPositions(getDatepickerOverlayPositions()),
       scrollStrategy: this.scrollStrategyOptions.block(),
     });
-    const portal = new TemplatePortal(this.templateRef, this.viewContainerRef);
+    const portal = new TemplatePortal(this.templateRef(), this.viewContainerRef);
     this._overlayRef.attach(portal);
     this._overlayRef
       .backdropClick()

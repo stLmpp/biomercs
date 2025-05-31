@@ -6,11 +6,11 @@ import {
   EmbeddedViewRef,
   HostBinding,
   HostListener,
-  Inject,
   OnDestroy,
   OnInit,
-  ViewChild,
   ViewEncapsulation,
+  inject,
+  viewChild,
 } from '@angular/core';
 import { CdkPortalOutlet, ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
 import { OverlayRef } from '@angular/cdk/overlay';
@@ -21,25 +21,24 @@ import { Animations } from '../../animations/animations';
 
 @Component({
   selector: 'bio-modal',
-  template: '<ng-template cdkPortalOutlet></ng-template>',
+  template: '<ng-template cdkPortalOutlet />',
   styleUrls: ['./modal.component.scss'],
   encapsulation: ViewEncapsulation.None,
   host: { class: 'modal', '[attr.modal]': `''`, '[@scaleIn]': '', '[@fadeOut]': '' },
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [Animations.scale.in(), Animations.fade.out(100)],
+  imports: [CdkPortalOutlet],
 })
 export class ModalComponent<R = any> implements OnInit, OnDestroy {
-  constructor(
-    private modalConfig: ModalConfig,
-    private overlayRef: OverlayRef,
-    @Inject(MODAL_LAST_FOCUSED_ELEMENT) private lastFocusedElement: Element | null,
-    private configurableFocusTrapFactory: ConfigurableFocusTrapFactory,
-    private elementRef: ElementRef
-  ) {}
+  private modalConfig = inject(ModalConfig);
+  private overlayRef = inject(OverlayRef);
+  private lastFocusedElement = inject<Element | null>(MODAL_LAST_FOCUSED_ELEMENT);
+  private configurableFocusTrapFactory = inject(ConfigurableFocusTrapFactory);
+  private elementRef = inject(ElementRef);
 
   private _focusTrap?: ConfigurableFocusTrap;
 
-  @ViewChild(CdkPortalOutlet, { static: true }) readonly portalOutlet!: CdkPortalOutlet;
+  readonly portalOutlet = viewChild.required(CdkPortalOutlet);
 
   @HostBinding('attr.id') get id(): string {
     return this.modalConfig.id;
@@ -60,11 +59,11 @@ export class ModalComponent<R = any> implements OnInit, OnDestroy {
   }
 
   attachTemplate<T>(templatePortal: TemplatePortal<T>): EmbeddedViewRef<T> {
-    return this.portalOutlet.attachTemplatePortal(templatePortal);
+    return this.portalOutlet().attachTemplatePortal(templatePortal);
   }
 
   attachComponent<T>(componentPortal: ComponentPortal<T>): ComponentRef<T> {
-    return this.portalOutlet.attachComponentPortal(componentPortal);
+    return this.portalOutlet().attachComponentPortal(componentPortal);
   }
 
   async ngOnInit(): Promise<void> {

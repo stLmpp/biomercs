@@ -1,8 +1,9 @@
-<ng-container *ngFor="let breadcrumb of breadcrumbs$ | async; trackBy: trackBy; let $last = last">
-  <span *ngIf="$last; else notLast" class="item">
-    {{ breadcrumb.name }}
-  </span>
-  <ng-template #notLast>
+@for (breadcrumb of breadcrumbs$ | async; track trackBy($index, breadcrumb)) {
+  @if ($last) {
+    <span class="item">
+      {{ breadcrumb.name }}
+    </span>
+  } @else {
     <a
       class="item"
       [routerLink]="breadcrumb.path"
@@ -13,5 +14,5 @@
       {{ breadcrumb.name }}
     </a>
     <span class="separator">/</span>
-  </ng-template>
-</ng-container>
+  }
+}

@@ -1,6 +1,8 @@
-<ng-container *ngIf="usersOnline$ | async as usersOnline">
-  <a *ngFor="let user of usersOnline; trackBy: trackById; let $last = last" [routerLink]="['/player', user.idPlayer]">
-    {{ user.personaName }}{{ !$last ? ',' : '' }}
-  </a>
-  <p *ngIf="!usersOnline.length">No players online</p>
-</ng-container>
+@if (usersOnline$ | async; as usersOnline) {
+  @for (user of usersOnline; track trackById($index, user)) {
+    <a [routerLink]="['/player', user.idPlayer]"> {{ user.personaName }}{{ !$last ? ',' : '' }} </a>
+  }
+  @if (!usersOnline.length) {
+    <p>No players online</p>
+  }
+}

@@ -1,4 +1,6 @@
-<bio-loading *ngIf="loading"></bio-loading>
+@if (loading) {
+  <bio-loading />
+}
 <h4 bioModalTitle>Manage moderators</h4>
 <bio-modal-content>
   <bio-multi-select
@@ -15,36 +17,43 @@
       [bioLoading]="loadingPlayers"
       hint="Type at least 3 characters to start searching"
     >
-      <bio-list-item *ngIf="!loadingPlayers && !moderators.length">No data found</bio-list-item>
-      <bio-list-item *ngFor="let moderator of moderators; trackBy: trackById">
-        <button bioButton type="button" bioPrefix icon (click)="onSelectItem(moderator)">
-          <bio-icon>chevron_right</bio-icon>
-        </button>
-        <bio-list-item-line>{{ moderator.playerPersonaName }}</bio-list-item-line>
-      </bio-list-item>
+      @if (!loadingPlayers && !moderators.length) {
+        <bio-list-item>No data found</bio-list-item>
+      }
+      @for (moderator of moderators; track trackById($index, moderator)) {
+        <bio-list-item>
+          <button bioButton type="button" bioPrefix icon (click)="onSelectItem(moderator)">
+            <bio-icon>chevron_right</bio-icon>
+          </button>
+          <bio-list-item-line>{{ moderator.playerPersonaName }}</bio-list-item-line>
+        </bio-list-item>
+      }
     </bio-list>
     <bio-list bioMultiSelectItems selected [(search)]="moderatorsSelectedSearch" debounceTime="400">
-      <bio-list-item *ngIf="!moderatorsSelected.length">No data found</bio-list-item>
-      <bio-list-item
-        *ngFor="
-          let moderator of moderatorsSelected | search: 'playerPersonaName':moderatorsSelectedSearch;
-          trackBy: trackById
-        "
-        bioTooltip="Moderator is assigned to some sub category, and can't be deleted"
-        [bioTooltipDisabled]="moderator.deleteAllowed"
-      >
-        <button
-          bioButton
-          type="button"
-          bioPrefix
-          icon
-          (click)="onRemoveItem(moderator)"
-          [disabled]="!moderator.deleteAllowed"
+      @if (!moderatorsSelected.length) {
+        <bio-list-item>No data found</bio-list-item>
+      }
+      @for (
+        moderator of moderatorsSelected | search: 'playerPersonaName' : moderatorsSelectedSearch;
+        track trackById($index, moderator)
+      ) {
+        <bio-list-item
+          bioTooltip="Moderator is assigned to some sub category, and can't be deleted"
+          [bioTooltipDisabled]="moderator.deleteAllowed"
         >
-          <bio-icon>chevron_left</bio-icon>
-        </button>
-        <bio-list-item-line>{{ moderator.playerPersonaName }}</bio-list-item-line>
-      </bio-list-item>
+          <button
+            bioButton
+            type="button"
+            bioPrefix
+            icon
+            (click)="onRemoveItem(moderator)"
+            [disabled]="!moderator.deleteAllowed"
+          >
+            <bio-icon>chevron_left</bio-icon>
+          </button>
+          <bio-list-item-line>{{ moderator.playerPersonaName }}</bio-list-item-line>
+        </bio-list-item>
+      }
     </bio-list>
   </bio-multi-select>
 </bio-modal-content>

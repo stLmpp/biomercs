@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { Injectable, inject } from '@angular/core';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { AuthSteamValidateNames } from '@model/auth';
 import { AuthService } from '../../auth.service';
 import { Observable } from 'rxjs';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 
 @Injectable({ providedIn: 'root' })
-export class SteamValidateNamesResolver implements Resolve<AuthSteamValidateNames> {
-  constructor(private authService: AuthService) {}
+export class SteamValidateNamesResolver {
+  private authService = inject(AuthService);
 
   resolve(
     route: ActivatedRouteSnapshot,

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import { CategoryService } from '../service/category.service';
@@ -6,6 +6,15 @@ import { CategoryWithSubCategoriesAlt } from '@model/forum/category';
 import { finalize } from 'rxjs';
 import { trackById } from '@util/track-by';
 import { TopicService } from '../service/topic.service';
+import { LoadingComponent } from '../../shared/components/spinner/loading/loading.component';
+import { ModalTitleDirective } from '../../shared/components/modal/modal-title.directive';
+import { ModalContentDirective } from '../../shared/components/modal/modal-content.directive';
+import { ListDirective, ListControlValue } from '../../shared/components/list/list.directive';
+import { StControlCommonModule, StControlModelModule } from '@stlmpp/control';
+import { ListItemComponent } from '../../shared/components/list/list-item.component';
+import { ModalActionsDirective } from '../../shared/components/modal/modal-actions.directive';
+import { ButtonComponent } from '../../shared/components/button/button.component';
+import { ModalCloseDirective } from '../../shared/components/modal/modal-close.directive';
 
 export interface ForumTopicTransferComponentData {
   idTopic: number;
@@ -22,19 +31,31 @@ export interface ForumTopicTransferComponentResponse {
   templateUrl: './forum-topic-transfer.component.html',
   styleUrls: ['./forum-topic-transfer.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    LoadingComponent,
+    ModalTitleDirective,
+    ModalContentDirective,
+    ListDirective,
+    ListControlValue,
+    StControlCommonModule,
+    StControlModelModule,
+    ListItemComponent,
+    ModalActionsDirective,
+    ButtonComponent,
+    ModalCloseDirective,
+  ],
 })
 export class ForumTopicTransferComponent implements OnInit {
-  constructor(
-    @Inject(MODAL_DATA) { idTopic, idSubCategory }: ForumTopicTransferComponentData,
-    private modalRef: ModalRef<
-      ForumTopicTransferComponent,
-      ForumTopicTransferComponentData,
-      ForumTopicTransferComponentResponse
-    >,
-    private categoryService: CategoryService,
-    private changeDetectorRef: ChangeDetectorRef,
-    private topicService: TopicService
-  ) {
+  private modalRef =
+    inject<ModalRef<ForumTopicTransferComponent, ForumTopicTransferComponentData, ForumTopicTransferComponentResponse>>(
+      ModalRef
+    );
+  private categoryService = inject(CategoryService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+  private topicService = inject(TopicService);
+
+  constructor() {
+    const { idTopic, idSubCategory } = inject<ForumTopicTransferComponentData>(MODAL_DATA);
     this.idSubCategory = idSubCategory;
     this._idTopic = idTopic;
     this.idSubCategoryTo = idSubCategory;

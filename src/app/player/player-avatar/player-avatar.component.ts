@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnChanges, input } from '@angular/core';
 import { SimpleChangesCustom } from '@util/util';
 import { environment } from '@environment/environment';
 
@@ -9,14 +9,14 @@ import { environment } from '@environment/environment';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlayerAvatarComponent implements OnChanges {
-  @Input() avatar: string | null | undefined;
-  @Input() personaName!: string;
+  readonly avatar = input<string | null>();
+  readonly personaName = input.required<string>();
 
   avatarUrl = '';
 
   ngOnChanges(changes: SimpleChangesCustom<PlayerAvatarComponent>): void {
-    const avatar = changes.avatar?.currentValue ?? this.avatar;
-    const personaName = changes.personaName?.currentValue ?? this.personaName;
+    const avatar = changes.avatar?.currentValue ?? this.avatar();
+    const personaName = changes.personaName?.currentValue ?? this.personaName();
     if (avatar) {
       this.avatarUrl = `${environment.avatar}/${avatar}`;
     } else {

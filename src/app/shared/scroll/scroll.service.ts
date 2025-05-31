@@ -1,9 +1,9 @@
-import { ElementRef, Inject, Injectable } from '@angular/core';
+import { ElementRef, Injectable, inject } from '@angular/core';
 import { WINDOW } from '../../core/window.service';
 
 @Injectable({ providedIn: 'root' })
 export class ScrollService {
-  constructor(@Inject(WINDOW) private window: Window) {}
+  private window = inject<Window>(WINDOW);
 
   scrollIntoViewOffset(element: HTMLElement | ElementRef, offset: number): void {
     if (!element) {

@@ -1,4 +1,4 @@
-import { Compiler, Injectable, Type } from '@angular/core';
+import { Compiler, Injectable, Type, inject } from '@angular/core';
 import { EMPTY, Observable, Subscription } from 'rxjs';
 import { NavigatorConnection } from './navigator-connection';
 
@@ -6,7 +6,8 @@ export type LazyFn = () => Promise<Type<any>>;
 
 @Injectable({ providedIn: 'root' })
 export class DynamicLoaderService {
-  constructor(private compiler: Compiler, private navigatorConnection: NavigatorConnection) {}
+  private compiler = inject(Compiler);
+  private navigatorConnection = inject(NavigatorConnection);
 
   private readonly _loaded = new Set<Type<any>>();
   private readonly _loading = new Map<Type<any>, boolean>();

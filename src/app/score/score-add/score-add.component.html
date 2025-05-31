@@ -1,5 +1,6 @@
 <h4 bioPageTitle></h4>
-<ng-container *ngLet="{ hasMode: hasIdMode$ | async } as state">
+@let state = { hasMode: hasIdMode$ | async };
+<ng-container>
   <bio-card class="params" collapsable>
     <h3 bioCardTitle>Parameters</h3>
     <bio-card-content>
@@ -9,33 +10,27 @@
         [config]="paramsConfig"
         setQueryParamsOnChange
         (modeChange)="onModeChange($event)"
-      ></bio-params>
+      />
     </bio-card-content>
   </bio-card>
   <form [controlGroup]="form" (groupSubmit)="onSubmit()">
-    <ng-container
-      *ngFor="
-        let scorePlayerControl of scorePlayersControl;
-        trackBy: trackByScorePlayerControl;
-        let $index = index;
-        let $first = first
-      "
-    >
-      <bio-score-add-player
-        *ngIf="scorePlayerControl.value$ | async as player"
-        [disabled]="!state.hasMode"
-        (hostChange)="hostChange($index)"
-        (playerChange)="scorePlayerControl.setValue($event)"
-        [player]="player"
-        [characters]="characters$ | asyncDefault: []"
-        [platformInputTypes]="platformInputTypes$ | asyncDefault: []"
-        [charactersLoading]="characterLoading"
-        [platformInputTypeLoading]="platformInputTypeLoading"
-        [first]="$first"
-        [playerNumber]="$index + 1"
-        [idPlayersSelected]="(idPlayersSelected$ | async) ?? []"
-      ></bio-score-add-player>
-    </ng-container>
+    @for (scorePlayerControl of scorePlayersControl; track trackByScorePlayerControl($index, scorePlayerControl)) {
+      @if (scorePlayerControl.value$ | async; as player) {
+        <bio-score-add-player
+          [disabled]="!state.hasMode"
+          (hostChange)="hostChange($index)"
+          (playerChange)="scorePlayerControl.setValue($event)"
+          [player]="player"
+          [characters]="characters$ | asyncDefault: []"
+          [platformInputTypes]="platformInputTypes$ | asyncDefault: []"
+          [charactersLoading]="characterLoading"
+          [platformInputTypeLoading]="platformInputTypeLoading"
+          [first]="$first"
+          [playerNumber]="$index + 1"
+          [idPlayersSelected]="(idPlayersSelected$ | async) ?? []"
+        ></bio-score-add-player>
+      }
+    }
     <bio-card class="score-params" collapsable>
       <h3 bioCardTitle>Score info</h3>
       <bio-card-content>

@@ -1,33 +1,31 @@
-<ng-container *ngIf="isSmall$ | async; else scoreTable">
+@if (isSmall$ | async) {
   <bio-score-list
-    [scores]="scores"
-    [loading]="loading"
-    [itemsPerPageOptions]="itemsPerPageOptions"
-    [paginationMeta]="paginationMeta"
-    [title]="title"
-    [collapsable]="collapsable"
-    [disabledProperty]="disabledProperty"
+    [scores]="scores()"
+    [loading]="loading()"
+    [itemsPerPageOptions]="itemsPerPageOptions()"
+    [paginationMeta]="paginationMeta()"
+    [title]="title()"
+    [collapsable]="collapsable()"
+    [disabledProperty]="disabledProperty()"
     (currentPageChange)="currentPageChange.emit($event)"
     (itemsPerPageChange)="itemsPerPageChange.emit($event)"
     (scoreClicked)="scoreClicked.emit($event)"
-  ></bio-score-list>
-</ng-container>
-<ng-template #scoreTable>
+  />
+} @else {
   <bio-table
-    [title]="title"
-    [colDefs]="colDefs"
-    [order]="order"
-    [colDefDefault]="colDefDefault"
-    [data]="scores"
-    [loading]="loading"
-    [metadata]="metadata"
-    [itemsPerPageOptions]="itemsPerPageOptions"
-    [paginationMeta]="paginationMeta"
-    [collapsable]="collapsable"
+    [title]="title()"
+    [colDefs]="colDefs()"
+    [order]="order()"
+    [colDefDefault]="colDefDefault()"
+    [data]="scores()"
+    [loading]="loading()"
+    [metadata]="metadata()"
+    [itemsPerPageOptions]="itemsPerPageOptions()"
+    [paginationMeta]="paginationMeta()"
+    [collapsable]="collapsable()"
     (currentPageChange)="currentPageChange.emit($event)"
     (itemsPerPageChange)="itemsPerPageChange.emit($event)"
     (orderChange)="orderChange.emit($event)"
     (notifyChange)="notifyChange.emit($event)"
-  >
-  </bio-table>
-</ng-template>
+  />
+}

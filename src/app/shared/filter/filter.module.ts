@@ -6,8 +6,7 @@ import { FilterItemDirective } from './filter-item.directive';
 const DECLARATIONS = [FilterDirective, FilterItemDirective];
 
 @NgModule({
-  declarations: [...DECLARATIONS],
-  imports: [CommonModule],
+  imports: [CommonModule, ...DECLARATIONS],
   exports: [...DECLARATIONS],
 })
 export class FilterModule {}

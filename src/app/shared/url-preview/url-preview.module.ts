@@ -9,8 +9,7 @@ const DECLARATIONS = [UrlPreviewComponent];
 const MODULES = [CommonModule, IconModule, NgLetModule, SpinnerModule];
 
 @NgModule({
-  declarations: [...DECLARATIONS],
-  imports: [...MODULES],
+  imports: [...MODULES, ...DECLARATIONS],
   exports: [...DECLARATIONS, ...MODULES],
 })
 export class UrlPreviewModule {}

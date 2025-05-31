@@ -7,10 +7,8 @@ import { CardModule } from '@shared/components/card/card.module';
 import { StControlModule } from '@stlmpp/control';
 import { ButtonModule } from '@shared/components/button/button.module';
 import { FormModule } from '@shared/components/form/form.module';
-import { CKEditorModule } from '@shared/ckeditor/ckeditor.module';
 
 @NgModule({
-  declarations: [ForumTopicNewComponent],
   imports: [
     CommonModule,
     ForumTopicNewRoutingModule,
@@ -18,7 +16,7 @@ import { CKEditorModule } from '@shared/ckeditor/ckeditor.module';
     StControlModule,
     ButtonModule,
     FormModule,
-    CKEditorModule,
+    ForumTopicNewComponent,
   ],
 })
 export class ForumTopicNewModule {}

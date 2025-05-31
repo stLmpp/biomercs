@@ -7,7 +7,6 @@ import { CardModule } from '@shared/components/card/card.module';
 import { ButtonModule } from '@shared/components/button/button.module';
 
 @NgModule({
-  declarations: [NotFoundComponent],
-  imports: [CommonModule, NotFoundRoutingModule, CardModule, ButtonModule],
+  imports: [CommonModule, NotFoundRoutingModule, CardModule, ButtonModule, NotFoundComponent],
 })
 export class NotFoundModule {}

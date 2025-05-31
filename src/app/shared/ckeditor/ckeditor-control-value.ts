@@ -1,4 +1,4 @@
-import { Directive, Host } from '@angular/core';
+import { Directive, inject } from '@angular/core';
 import { ControlValue } from '@stlmpp/control';
 import { CKEditorComponent } from '@ckeditor/ckeditor5-angular';
 
@@ -7,7 +7,9 @@ import { CKEditorComponent } from '@ckeditor/ckeditor5-angular';
   providers: [{ provide: ControlValue, useExisting: CKEditorControlValue, multi: true }],
 })
 export class CKEditorControlValue extends ControlValue<string | null | undefined> {
-  constructor(@Host() private ckEditorComponent: CKEditorComponent) {
+  private ckEditorComponent = inject(CKEditorComponent, { host: true });
+
+  constructor() {
     super();
     this.ckEditorComponent.registerOnChange((value: string | null | undefined) => this.onChange$.next(value));
     this.ckEditorComponent.registerOnTouched(() => this.onTouched$.next());

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { PARAMS_FORM_NULL, ParamsConfig, ParamsForm } from '@shared/params/params.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ScoreService } from '../score.service';
@@ -23,6 +23,13 @@ import type {
 } from './score-approval-actions-modal/score-approval-actions-modal.component';
 import { filterNil } from '@util/operators/filter';
 import { Validators } from '@stlmpp/control';
+import { CardComponent } from '../../shared/components/card/card.component';
+import { CardTitleDirective } from '../../shared/components/card/card-title.directive';
+import { CardContentDirective } from '../../shared/components/card/card-content.directive';
+import { ParamsComponent } from '../../shared/params/params.component';
+import { NgLetModule } from '@stlmpp/utils';
+import { ScoreListResponsiveComponent } from '../score-list/score-list-responsive/score-list-responsive.component';
+import { AsyncPipe } from '@angular/common';
 
 export interface ScoreApprovalComponentState extends ParamsForm {
   page: number;
@@ -40,15 +47,26 @@ export interface ScoreApprovalComponentState extends ParamsForm {
   templateUrl: './score-approval.component.html',
   styleUrls: ['./score-approval.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    CardComponent,
+    CardTitleDirective,
+    CardContentDirective,
+    ParamsComponent,
+    NgLetModule,
+    ScoreListResponsiveComponent,
+    AsyncPipe,
+  ],
 })
 export class ScoreApprovalComponent extends LocalState<ScoreApprovalComponentState> implements OnInit {
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private scoreService: ScoreService,
-    private router: Router,
-    private authDateFormatPipe: AuthDateFormatPipe,
-    private modalService: ModalService
-  ) {
+  private activatedRoute: ActivatedRoute;
+  private scoreService = inject(ScoreService);
+  private router = inject(Router);
+  private authDateFormatPipe = inject(AuthDateFormatPipe);
+  private modalService = inject(ModalService);
+
+  constructor() {
+    const activatedRoute = inject(ActivatedRoute);
+
     super({
       itemsPerPage: PaginationComponent.getItemsPerPageFromRoute(activatedRoute),
       page: +(activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.page) ?? 1),
@@ -63,6 +81,8 @@ export class ScoreApprovalComponent extends LocalState<ScoreApprovalComponentSta
           | null) ?? 'asc',
       orderBy: activatedRoute.snapshot.queryParamMap.get(RouteParamEnum.orderBy) ?? 'creationDate',
     });
+
+    this.activatedRoute = activatedRoute;
   }
 
   private _data$ = this.selectState('data').pipe(filterNil());

@@ -11,7 +11,6 @@ import { TooltipModule } from '@shared/components/tooltip/tooltip.module';
 import { NotificationModule } from '../notification/notification.module';
 
 @NgModule({
-  declarations: [HeaderComponent, SideMenuComponent],
   imports: [
     MenuModule,
     ListModule,
@@ -21,6 +20,8 @@ import { NotificationModule } from '../notification/notification.module';
     NgLetModule,
     BadgeModule,
     NotificationModule,
+    HeaderComponent,
+    SideMenuComponent,
   ],
   exports: [HeaderComponent],
 })

@@ -4,15 +4,14 @@ import {
   Component,
   ContentChildren,
   ElementRef,
-  Host,
   HostBinding,
-  Input,
   OnDestroy,
   OnInit,
-  Optional,
   QueryList,
   ViewChild,
   ViewEncapsulation,
+  inject,
+  input,
 } from '@angular/core';
 import { CdkAccordionItem } from '@angular/cdk/accordion';
 import { AccordionItemTitleDirective } from '@shared/components/accordion/accordion-item-title.directive';
@@ -22,6 +21,8 @@ import { Accordion } from '@shared/components/accordion/accordion';
 import { Subject, takeUntil } from 'rxjs';
 import { FocusableOption } from '@angular/cdk/a11y';
 import { Key } from '@model/enum/key';
+import { IconComponent } from '../icon/icon.component';
+import { CollapseComponent } from '../collapse/collapse.component';
 
 @Component({
   selector: 'bio-accordion-item',
@@ -33,19 +34,24 @@ import { Key } from '@model/enum/key';
   animations: [Animations.collapse.collapse(), Animations.collapse.collapseIcon()],
   encapsulation: ViewEncapsulation.None,
   inputs: ['id'],
+  imports: [IconComponent, CollapseComponent],
 })
 export class AccordionItemComponent extends CdkAccordionItem implements OnInit, OnDestroy, FocusableOption {
-  constructor(
-    @Host() @Optional() private _accordion: Accordion,
-    changeDetectorRef: ChangeDetectorRef,
-    uniqueSelectionDispatcher: UniqueSelectionDispatcher
-  ) {
+  private readonly _accordion: Accordion | null;
+
+  constructor() {
+    const _accordion = inject(Accordion, { host: true, optional: true });
+    const changeDetectorRef = inject(ChangeDetectorRef);
+    const uniqueSelectionDispatcher = inject(UniqueSelectionDispatcher);
+
     super(_accordion, changeDetectorRef, uniqueSelectionDispatcher);
+
+    this._accordion = _accordion;
   }
 
   private readonly _destroy$ = new Subject<void>();
 
-  @Input() accordionTitle?: string;
+  readonly accordionTitle = input<string>();
 
   @ContentChildren(AccordionItemTitleDirective)
   readonly accordionItemTitleDirectives!: QueryList<AccordionItemTitleDirective>;
@@ -78,15 +84,15 @@ export class AccordionItemComponent extends CdkAccordionItem implements OnInit, 
     this.headerElementRef.nativeElement?.focus();
   }
 
-  ngOnInit(): void {
+  override ngOnInit(): void {
     if (!this._accordion) {
       return;
     }
     this.expandedChange.pipe(takeUntil(this._destroy$)).subscribe(expanded => {
       if (expanded) {
-        this._accordion.itemExpanded.emit(this.id);
+        this._accordion?.itemExpanded.emit(this.id);
       } else {
-        this._accordion.itemCollapsed.emit(this.id);
+        this._accordion?.itemCollapsed.emit(this.id);
       }
     });
   }

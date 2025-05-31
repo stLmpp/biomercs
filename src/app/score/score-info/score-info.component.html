@@ -1,41 +1,39 @@
 <div class="title">Platform:</div>
-<div class="value">{{ score.platformName }}</div>
+<div class="value">{{ score().platformName }}</div>
 <div class="title">Game:</div>
-<div class="value">{{ score.gameName }}</div>
+<div class="value">{{ score().gameName }}</div>
 <div class="title">Mini game:</div>
-<div class="value">{{ score.miniGameName }}</div>
+<div class="value">{{ score().miniGameName }}</div>
 <div class="title">Mode:</div>
-<div class="value">{{ score.modeName }}</div>
+<div class="value">{{ score().modeName }}</div>
 <div class="title">Stage:</div>
-<div class="value">{{ score.stageName }}</div>
+<div class="value">{{ score().stageName }}</div>
 <div class="title">Score:</div>
 <div class="value">
-  {{ score.score | number: '1.0-0' }}
-  <ng-container *ngIf="showWorldRecord">
-    <bio-icon
-      [mdi]="mdiTrophy"
-      *ngIf="score.isWorldRecord"
-      bioTooltip="World Record"
-      bioTooltipPosition="right"
-    ></bio-icon>
-    <bio-icon
-      [mdi]="mdiTrophyAward"
-      *ngIf="score.isCombinationWorldRecord"
-      bioTooltip="Combination World Record"
-      bioTooltipPosition="right"
-    ></bio-icon>
-  </ng-container>
+  {{ score().score | number: '1.0-0' }}
+  @if (showWorldRecord) {
+    @if (score().isWorldRecord) {
+      <bio-icon [mdi]="mdiTrophy" bioTooltip="World Record" bioTooltipPosition="right"></bio-icon>
+    }
+    @if (score().isCombinationWorldRecord) {
+      <bio-icon [mdi]="mdiTrophyAward" bioTooltip="Combination World Record" bioTooltipPosition="right"></bio-icon>
+    }
+  }
 </div>
-<div class="title" *ngIf="showApprovalDate">Approval date:</div>
-<div class="value" *ngIf="showApprovalDate">{{ score.approvalDate | authDateFormat }}</div>
+@if (showApprovalDate) {
+  <div class="title">Approval date:</div>
+}
+@if (showApprovalDate) {
+  <div class="value">{{ score().approvalDate | authDateFormat }}</div>
+}
 <div class="title">Creation date:</div>
-<div class="value">{{ score.creationDate | authDateFormat }}</div>
-<ng-container *ngIf="score.achievedDate">
+<div class="value">{{ score().creationDate | authDateFormat }}</div>
+@if (score().achievedDate) {
   <div class="title">Achieved date:</div>
-  <div class="value">{{ score.achievedDate | authDateFormat }}</div>
-</ng-container>
+  <div class="value">{{ score().achievedDate | authDateFormat }}</div>
+}
 
-<ng-container *ngFor="let player of score.scorePlayers; let $index = index; trackBy: trackById">
+@for (player of score().scorePlayers; track trackById($index, player)) {
   <div class="title">Player {{ $index + 1 }}:</div>
   <div class="value redirect-icon">
     {{ player.playerPersonaName }}
@@ -43,19 +41,16 @@
       <bio-icon small>launch</bio-icon>
     </a>
   </div>
-  <ng-container *ngIf="player.inputTypeName">
+  @if (player.inputTypeName) {
     <div class="title">Controller:</div>
     <div class="value">{{ player.inputTypeName }}</div>
-  </ng-container>
+  }
   <div class="title">Character {{ $index + 1 }}:</div>
   <div class="value">
     {{ player.characterName }} {{ player.characterCostumeName }}
-    <bio-icon
-      [mdi]="mdiAccountStar"
-      *ngIf="showWorldRecord && player.isCharacterWorldRecord"
-      bioTooltip="Character World Record"
-      bioTooltipPosition="right"
-    ></bio-icon>
+    @if (showWorldRecord && player.isCharacterWorldRecord) {
+      <bio-icon [mdi]="mdiAccountStar" bioTooltip="Character World Record" bioTooltipPosition="right"></bio-icon>
+    }
   </div>
   <a bio-url-preview [url]="player.evidence"></a>
-</ng-container>
+}

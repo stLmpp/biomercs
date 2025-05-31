@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import {
@@ -14,7 +14,8 @@ import { HttpParams } from '@util/http-params';
 
 @Injectable({ providedIn: 'root' })
 export class SubCategoryService {
-  constructor(private http: HttpClient, private cacheService: CacheService) {}
+  private http = inject(HttpClient);
+  private cacheService = inject(CacheService);
 
   private readonly _cache = this.cacheService.createCache();
   readonly endPoint = 'forum/sub-category';

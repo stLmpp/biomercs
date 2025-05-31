@@ -2,12 +2,13 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  EventEmitter,
   Input,
   OnChanges,
   OnInit,
-  Output,
-  ViewChild,
+  inject,
+  input,
+  output,
+  viewChild,
 } from '@angular/core';
 import { debounceTime, filter, finalize, Observable, pluck, switchMap, takeUntil } from 'rxjs';
 import { CharacterWithCharacterCostumes } from '@model/character';
@@ -21,44 +22,89 @@ import { BooleanInput } from 'st-utils';
 import { SimpleChangesCustom } from '@util/util';
 import { trackById } from '@util/track-by';
 import { PlayerModalService } from '../../../player/player-modal.service';
-import { Control } from '@stlmpp/control';
+import { Control, StControlCommonModule, StControlModule, StControlValueModule } from '@stlmpp/control';
 import { Destroyable } from '@shared/components/common/destroyable-component';
 import { PlatformInputType } from '@model/platform-input-type';
+import { CardComponent } from '../../../shared/components/card/card.component';
+import { CardTitleDirective } from '../../../shared/components/card/card-title.directive';
+import { IconComponent } from '../../../shared/components/icon/icon.component';
+import { TooltipDirective } from '../../../shared/components/tooltip/tooltip.directive';
+import { LabelDirective } from '../../../shared/components/form/label.directive';
+import { CardContentDirective } from '../../../shared/components/card/card-content.directive';
+import { FormFieldComponent } from '../../../shared/components/form/form-field.component';
+import { InputDirective } from '../../../shared/components/form/input.directive';
+import { AutocompleteDirective as AutocompleteDirective_1 } from '../../../shared/components/autocomplete/autocomplete.directive';
+import { AutocompleteComponent } from '../../../shared/components/autocomplete/autocomplete.component';
+import { AutocompleteOptionDirective } from '../../../shared/components/autocomplete/autocomplete-option.directive';
+import { FormFieldErrorsDirective } from '../../../shared/components/form/errors.directive';
+import { FormFieldErrorComponent } from '../../../shared/components/form/error.component';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { SuffixDirective } from '../../../shared/components/common/suffix.directive';
+import { FormFieldHintDirective } from '../../../shared/components/form/hint.directive';
+import { SelectComponent } from '../../../shared/components/select/select.component';
+import { OptionComponent } from '../../../shared/components/select/option.component';
+import { SpinnerComponent } from '../../../shared/components/spinner/spinner.component';
+import { OptgroupComponent } from '../../../shared/components/select/optgroup.component';
+import { UrlPreviewComponent } from '../../../shared/url-preview/url-preview.component';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'bio-score-add-player',
   templateUrl: './score-add-player.component.html',
   styleUrls: ['./score-add-player.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    CardComponent,
+    StControlCommonModule,
+    StControlModule,
+    CardTitleDirective,
+    IconComponent,
+    TooltipDirective,
+    LabelDirective,
+    StControlValueModule,
+    CardContentDirective,
+    FormFieldComponent,
+    InputDirective,
+    AutocompleteDirective_1,
+    AutocompleteComponent,
+    AutocompleteOptionDirective,
+    FormFieldErrorsDirective,
+    FormFieldErrorComponent,
+    ButtonComponent,
+    SuffixDirective,
+    FormFieldHintDirective,
+    SelectComponent,
+    OptionComponent,
+    SpinnerComponent,
+    OptgroupComponent,
+    UrlPreviewComponent,
+    AsyncPipe,
+  ],
 })
 export class ScoreAddPlayerComponent extends Destroyable implements OnInit, OnChanges {
-  constructor(
-    private playerService: PlayerService,
-    private authQuery: AuthQuery,
-    private playerModalService: PlayerModalService,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {
-    super();
-  }
+  private playerService = inject(PlayerService);
+  private authQuery = inject(AuthQuery);
+  private playerModalService = inject(PlayerModalService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
 
-  @Input() idPlayersSelected: number[] = [];
-  @Input() playerNumber!: number;
-  @Input() disabled = false;
-  @Input() first = false;
-  @Input() charactersLoading: BooleanInput = false;
-  @Input() platformInputTypeLoading: BooleanInput = false;
-  @Input() characters: CharacterWithCharacterCostumes[] = [];
-  @Input() platformInputTypes: PlatformInputType[] = [];
+  readonly idPlayersSelected = input<number[]>([]);
+  readonly playerNumber = input.required<number>();
+  readonly disabled = input(false);
+  readonly first = input(false);
+  readonly charactersLoading = input<BooleanInput>(false);
+  readonly platformInputTypeLoading = input<BooleanInput>(false);
+  readonly characters = input<CharacterWithCharacterCostumes[]>([]);
+  readonly platformInputTypes = input<PlatformInputType[]>([]);
 
   @Input()
   set player(player: ScorePlayerAddForm) {
     this.form.setValue(player);
   }
 
-  @Output() readonly playerChange = new EventEmitter<ScorePlayerAddForm>();
-  @Output() readonly hostChange = new EventEmitter<void>();
+  readonly playerChange = output<ScorePlayerAddForm>();
+  readonly hostChange = output<void>();
 
-  @ViewChild('bioAutocomplete') readonly bioAutocomplete!: AutocompleteDirective;
+  readonly bioAutocomplete = viewChild.required<AutocompleteDirective>('bioAutocomplete');
 
   readonly isAdmin$ = this.authQuery.isAdmin$;
 
@@ -71,11 +117,11 @@ export class ScoreAddPlayerComponent extends Destroyable implements OnInit, OnCh
   readonly evidence$ = this.evidenceControl.value$.pipe(debounceTime(400));
   readonly players$: Observable<Player[]> = this.personaNameControl.value$.pipe(
     debounceTime(500),
-    filter(personaName => !!personaName && !!this.bioAutocomplete?.hasFocus),
+    filter(personaName => !!personaName && !!this.bioAutocomplete()?.hasFocus),
     switchMap(personaName => {
       this.playersLoading = true;
       this.changeDetectorRef.markForCheck();
-      return this.playerService.searchPaginated(personaName, 1, 8, this.idPlayersSelected).pipe(
+      return this.playerService.searchPaginated(personaName, 1, 8, this.idPlayersSelected()).pipe(
         finalize(() => {
           this.playersLoading = false;
           this.changeDetectorRef.markForCheck();
@@ -95,7 +141,7 @@ export class ScoreAddPlayerComponent extends Destroyable implements OnInit, OnCh
     const idPlayer = this.idPlayerControl.value;
     const modalRef = await this.playerModalService.openPlayerSearchModal({
       idPlayer,
-      idPlayersSelected: this.idPlayersSelected,
+      idPlayersSelected: this.idPlayersSelected(),
     });
     modalRef.onClose$.subscribe(player => {
       if (player && player.id !== idPlayer) {
@@ -110,6 +156,7 @@ export class ScoreAddPlayerComponent extends Destroyable implements OnInit, OnCh
   }
 
   onHostChange(): void {
+    // TODO: The 'emit' function requires a mandatory void argument
     this.hostChange.emit();
   }
 

@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
+import { Injectable, inject } from '@angular/core';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { SubCategoryWithTopics } from '@model/forum/sub-category';
 import { SubCategoryService } from '../service/sub-category.service';
 import { Observable, tap } from 'rxjs';
@@ -7,12 +7,10 @@ import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { CacheService } from '@shared/cache/cache';
 
 @Injectable({ providedIn: 'root' })
-export class SubCategoryWithTopicsResolver implements Resolve<SubCategoryWithTopics> {
-  constructor(
-    private subCategoryService: SubCategoryService,
-    private router: Router,
-    private cacheService: CacheService
-  ) {}
+export class SubCategoryWithTopicsResolver {
+  private subCategoryService = inject(SubCategoryService);
+  private router = inject(Router);
+  private cacheService = inject(CacheService);
 
   private readonly _cache = this.cacheService.createCache(5000);
 

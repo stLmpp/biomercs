@@ -1,19 +1,18 @@
-<ng-container *ngIf="!colDef.component">
-  <ng-container
-    *ngIf="colDef.template; else noTemplate"
-    [ngTemplateOutlet]="colDef.template"
-    [ngTemplateOutletContext]="{ item: item, colDef: colDef }"
-  >
-  </ng-container>
-  <ng-template #noTemplate>
+@if (!colDef().component) {
+  @if (colDef().template) {
+    <ng-container
+      [ngTemplateOutlet]="colDef().template"
+      [ngTemplateOutletContext]="{ item: item(), colDef: colDef() }"
+    />
+  } @else {
+    @let value = item()[colDef().property] | tableCellFormatter: colDef().formatter;
     <span
-      *ngLet="item[colDef.property] | tableCellFormatter: colDef.formatter as value"
-      [bioTooltip]="item | tableCellTooltip: colDef.tooltip:value"
-      [bioTooltipPosition]="colDef.tooltipPosition"
-      [bioTooltipDisabled]="!colDef.tooltip"
+      [bioTooltip]="item() | tableCellTooltip: colDef().tooltip : value"
+      [bioTooltipPosition]="colDef().tooltipPosition"
+      [bioTooltipDisabled]="!colDef().tooltip"
     >
       {{ value }}
     </span>
-  </ng-template>
-</ng-container>
-<ng-template cdkPortalOutlet></ng-template>
+  }
+}
+<ng-template cdkPortalOutlet />

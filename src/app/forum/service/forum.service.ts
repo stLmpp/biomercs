@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, filter, Subject, takeUntil } from 'rxjs';
 import { UserOnline } from '@model/user';
 import { AuthService } from '../../auth/auth.service';
@@ -7,7 +7,8 @@ import { UserService } from '@shared/services/user/user.service';
 
 @Injectable({ providedIn: 'root' })
 export class ForumService {
-  constructor(private authService: AuthService, private userService: UserService) {}
+  private authService = inject(AuthService);
+  private userService = inject(UserService);
 
   private readonly _destroy$ = new Subject<void>();
   private readonly _usersOnline$ = new BehaviorSubject<UserOnline[]>([]);

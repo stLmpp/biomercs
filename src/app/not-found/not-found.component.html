@@ -2,17 +2,16 @@
   <h3 bioCardTitle>Page not found</h3>
   <div bioCardSubtitle>We could not find the page you're looking for.</div>
   <div bioCardSubtitle>Maybe you misspelled it?</div>
-  <bio-card-content *ngIf="possiblePaths$ | async as possiblePaths">
-    <ng-container *ngIf="possiblePaths.length">
-      <small>Similar pages: </small>
-      <a
-        *ngFor="let possiblePath of possiblePaths; trackBy: trackBy"
-        bioButton
-        [routerLink]="possiblePath.path"
-        primary
-      >
-        {{ possiblePath.title }}
-      </a>
-    </ng-container>
-  </bio-card-content>
+  @if (possiblePaths$ | async; as possiblePaths) {
+    <bio-card-content>
+      @if (possiblePaths.length) {
+        <small>Similar pages: </small>
+        @for (possiblePath of possiblePaths; track trackBy($index, possiblePath)) {
+          <a bioButton [routerLink]="possiblePath.path" primary>
+            {{ possiblePath.title }}
+          </a>
+        }
+      }
+    </bio-card-content>
+  }
 </bio-card>

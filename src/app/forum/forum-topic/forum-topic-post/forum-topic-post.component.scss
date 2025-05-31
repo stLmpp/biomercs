@@ -1,8 +1,9 @@
 @use 'variables' as v;
+@use 'sass:color';
 
 :host {
   display: flex;
-  background-color: darken(v.$primary-50, 5%);
+  background-color: color.adjust(v.$primary-50, $lightness: 5%, $space: hsl);
 
   &.odd {
     background-color: v.$primary-50;

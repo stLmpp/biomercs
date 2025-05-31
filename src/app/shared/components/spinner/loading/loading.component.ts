@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { Animations } from '@shared/animations/animations';
+import { SpinnerComponent } from '../spinner.component';
 
 @Component({
   selector: 'bio-loading',
@@ -14,6 +15,7 @@ import { Animations } from '@shared/animations/animations';
       'bio-loading bio-loading-backdrop cdk-overlay-backdrop cdk-overlay-dark-backdrop cdk-overlay-backdrop-showing',
   },
   encapsulation: ViewEncapsulation.None,
+  imports: [SpinnerComponent],
 })
 export class LoadingComponent {
   private _noBox = false;

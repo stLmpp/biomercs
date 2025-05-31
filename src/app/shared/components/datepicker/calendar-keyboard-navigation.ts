@@ -1,11 +1,11 @@
-import { AfterViewInit, Directive, HostListener, QueryList, ViewChildren } from '@angular/core';
+import { AfterViewInit, Directive, HostListener, viewChildren } from '@angular/core';
 import { Key } from '@model/enum/key';
 import { FocusKeyManager } from '@angular/cdk/a11y';
 import { ButtonComponent } from '@shared/components/button/button.component';
 
 @Directive()
 export abstract class CalendarKeyboardNavigation implements AfterViewInit {
-  @ViewChildren(ButtonComponent) buttons!: QueryList<ButtonComponent>;
+  readonly buttons = viewChildren(ButtonComponent);
 
   focusKeyManager!: FocusKeyManager<ButtonComponent>;
 
@@ -62,7 +62,7 @@ export abstract class CalendarKeyboardNavigation implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.focusKeyManager = new FocusKeyManager<ButtonComponent>(this.buttons);
+    this.focusKeyManager = new FocusKeyManager<ButtonComponent>(this.buttons());
     this.focusKeyManager.setFirstItemActive();
   }
 

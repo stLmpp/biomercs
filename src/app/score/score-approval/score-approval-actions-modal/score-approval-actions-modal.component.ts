@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { ScoreApprovalActionEnum } from '@model/enum/score-approval-action.enum';
 import { Score } from '@model/score';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
@@ -6,6 +6,10 @@ import { ScoreApprovalComponentState } from '../score-approval.component';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import { ScoreApprovalPagination } from '@model/score-approval';
 import { ScoreModalService } from '../../score-modal.service';
+import { ModalContentDirective } from '../../../shared/components/modal/modal-content.directive';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { TooltipDirective } from '../../../shared/components/tooltip/tooltip.directive';
+import { IconComponent } from '../../../shared/components/icon/icon.component';
 
 export interface ScoreApprovalActionsModalData {
   score: Score;
@@ -17,18 +21,18 @@ export interface ScoreApprovalActionsModalData {
   templateUrl: './score-approval-actions-modal.component.html',
   styleUrls: ['./score-approval-actions-modal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [ModalContentDirective, ButtonComponent, TooltipDirective, IconComponent],
 })
 export class ScoreApprovalActionsModalComponent {
-  constructor(
-    @Inject(MODAL_DATA) { score, scoreApprovalComponentState }: ScoreApprovalActionsModalData,
-    private modalRef: ModalRef<
-      ScoreApprovalActionsModalComponent,
-      ScoreApprovalActionsModalData,
-      ScoreApprovalPagination | null
-    >,
-    private scoreModalService: ScoreModalService,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {
+  private modalRef =
+    inject<ModalRef<ScoreApprovalActionsModalComponent, ScoreApprovalActionsModalData, ScoreApprovalPagination | null>>(
+      ModalRef
+    );
+  private scoreModalService = inject(ScoreModalService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+
+  constructor() {
+    const { score, scoreApprovalComponentState } = inject<ScoreApprovalActionsModalData>(MODAL_DATA);
     this.score = score;
     this.scoreApprovalComponentState = scoreApprovalComponentState;
   }

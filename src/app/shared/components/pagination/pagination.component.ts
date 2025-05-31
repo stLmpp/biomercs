@@ -1,9 +1,15 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, input, model, OnChanges, output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { PaginationMeta } from '@model/pagination';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
-import { trackByFactory } from '@stlmpp/utils';
+import { StUtilsNumberModule, trackByFactory } from '@stlmpp/utils';
+import { SelectComponent } from '../select/select.component';
+import { StControlCommonModule, StControlModelModule } from '@stlmpp/control';
+import { OptionComponent } from '../select/option.component';
+import { ButtonComponent } from '../button/button.component';
+import { TooltipDirective } from '../tooltip/tooltip.directive';
+import { IconComponent } from '../icon/icon.component';
 
 @Component({
   selector: 'bio-pagination',
@@ -11,9 +17,19 @@ import { trackByFactory } from '@stlmpp/utils';
   styleUrls: ['./pagination.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'pagination' },
+  imports: [
+    SelectComponent,
+    StControlCommonModule,
+    StControlModelModule,
+    OptionComponent,
+    ButtonComponent,
+    TooltipDirective,
+    IconComponent,
+    StUtilsNumberModule,
+  ],
 })
-export class PaginationComponent implements OnChanges, PaginationMeta {
-  constructor(private router: Router) {}
+export class PaginationComponent implements OnChanges {
+  private router = inject(Router);
 
   private _setQueryParamsOnChange = false;
   private _itemsPerPageHidden = false;
@@ -24,11 +40,11 @@ export class PaginationComponent implements OnChanges, PaginationMeta {
     this._setQueryParamsOnChange = coerceBooleanProperty(setQueryParamsOnChange);
   }
 
-  @Input() currentPage!: number;
-  @Input() itemCount!: number;
-  @Input() itemsPerPage!: number;
-  @Input() totalItems!: number;
-  @Input() totalPages!: number;
+  readonly currentPage = model<number>(1);
+  readonly itemCount = model<number>(0);
+  readonly itemsPerPage = model<number>(0);
+  readonly totalItems = model<number>(0);
+  readonly totalPages = model<number>(0);
   @Input()
   get itemsPerPageHidden(): boolean {
     return this._itemsPerPageHidden;
@@ -37,7 +53,7 @@ export class PaginationComponent implements OnChanges, PaginationMeta {
     this._itemsPerPageHidden = coerceBooleanProperty(itemsPerPageHidden);
   }
 
-  @Input() itemsPerPageOptions = [5, 10, 25, 50, 100];
+  readonly itemsPerPageOptions = input([5, 10, 25, 50, 100]);
 
   @Input()
   set meta(paginationMeta: PaginationMeta | null | undefined) {
@@ -45,11 +61,11 @@ export class PaginationComponent implements OnChanges, PaginationMeta {
       paginationMeta = { currentPage: 1, itemsPerPage: 10, totalItems: 0, totalPages: 0, itemCount: 0 };
     }
     const { totalPages, totalItems, itemsPerPage, itemCount, currentPage } = paginationMeta;
-    this.currentPage = currentPage;
-    this.itemCount = itemCount;
-    this.itemsPerPage = itemsPerPage;
-    this.totalItems = totalItems;
-    this.totalPages = totalPages;
+    this.currentPage.set(currentPage);
+    this.itemCount.set(itemCount);
+    this.itemsPerPage.set(itemsPerPage);
+    this.totalItems.set(totalItems);
+    this.totalPages.set(totalPages);
   }
 
   @Input()
@@ -60,12 +76,12 @@ export class PaginationComponent implements OnChanges, PaginationMeta {
     this._disabled = coerceBooleanProperty(disabled);
   }
 
-  @Output() readonly nextPage = new EventEmitter<number>();
-  @Output() readonly previousPage = new EventEmitter<number>();
-  @Output() readonly firstPage = new EventEmitter<number>();
-  @Output() readonly lastPage = new EventEmitter<number>();
-  @Output() readonly itemsPerPageChange = new EventEmitter<number>();
-  @Output() readonly currentPageChange = new EventEmitter<number>();
+  readonly nextPage = output<number>();
+  readonly previousPage = output<number>();
+  readonly firstPage = output<number>();
+  readonly lastPage = output<number>();
+  readonly itemsPerPageChange = output<number>();
+  readonly currentPageChange = output<number>();
 
   readonly trackByNumber = trackByFactory<number>();
 
@@ -75,37 +91,39 @@ export class PaginationComponent implements OnChanges, PaginationMeta {
     }
     this.router
       .navigate([], {
-        queryParams: { [RouteParamEnum.page]: this.currentPage, [RouteParamEnum.itemsPerPage]: this.itemsPerPage },
+        queryParams: { [RouteParamEnum.page]: this.currentPage(), [RouteParamEnum.itemsPerPage]: this.itemsPerPage() },
         queryParamsHandling: 'merge',
       })
       .then();
   }
 
   onNextPage(): void {
-    this.currentPage++;
-    this.nextPage.emit(this.currentPage);
-    this.currentPageChange.emit(this.currentPage);
+    this.currentPage.update(value => value + 1);
+    this.nextPage.emit(this.currentPage());
+    this.currentPageChange.emit(this.currentPage());
     this._setQueryParams();
   }
 
   onPreviousPage(): void {
-    this.currentPage--;
-    this.previousPage.emit(this.currentPage);
-    this.currentPageChange.emit(this.currentPage);
+    this.currentPage.update(value => value - 1);
+    this.previousPage.emit(this.currentPage());
+    this.currentPageChange.emit(this.currentPage());
     this._setQueryParams();
   }
 
   onFirstPage(): void {
-    this.currentPage = 1;
-    this.firstPage.emit(this.currentPage);
-    this.currentPageChange.emit(this.currentPage);
+    this.currentPage.set(1);
+    const currentPage = this.currentPage();
+    this.firstPage.emit(currentPage);
+    this.currentPageChange.emit(currentPage);
     this._setQueryParams();
   }
 
   onLastPage(): void {
-    this.currentPage = this.totalPages;
-    this.lastPage.emit(this.currentPage);
-    this.currentPageChange.emit(this.currentPage);
+    this.currentPage.set(this.totalPages());
+    const currentPage = this.currentPage();
+    this.lastPage.emit(currentPage);
+    this.currentPageChange.emit(currentPage);
     this._setQueryParams();
   }
 

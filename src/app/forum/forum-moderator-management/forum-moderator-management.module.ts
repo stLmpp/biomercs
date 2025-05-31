@@ -7,7 +7,13 @@ import { StUtilsArrayModule } from '@stlmpp/utils';
 import { TooltipModule } from '@shared/components/tooltip/tooltip.module';
 
 @NgModule({
-  declarations: [ForumModeratorManagementComponent, ForumModeratorManagementValidationPipe],
-  imports: [MultiSelectModule, ModalModule, StUtilsArrayModule, TooltipModule],
+  imports: [
+    MultiSelectModule,
+    ModalModule,
+    StUtilsArrayModule,
+    TooltipModule,
+    ForumModeratorManagementComponent,
+    ForumModeratorManagementValidationPipe,
+  ],
 })
 export class ForumModeratorManagementModule {}

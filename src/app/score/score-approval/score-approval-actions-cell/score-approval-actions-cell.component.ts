@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, output } from '@angular/core';
 import { TableCell } from '@shared/components/table/type';
 import { Score } from '@model/score';
 import { ScoreApprovalActionEnum } from '@model/enum/score-approval-action.enum';
@@ -6,17 +6,22 @@ import { ColDefInternal } from '@shared/components/table/col-def';
 import { ScoreApprovalComponentState } from '../score-approval.component';
 import { ScoreApprovalPagination } from '@model/score-approval';
 import { ScoreModalService } from '../../score-modal.service';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { TooltipDirective } from '../../../shared/components/tooltip/tooltip.directive';
+import { IconComponent } from '../../../shared/components/icon/icon.component';
 
 @Component({
   selector: 'bio-score-approval-actions-cell',
   templateUrl: './score-approval-actions-cell.component.html',
   styleUrls: ['./score-approval-actions-cell.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [ButtonComponent, TooltipDirective, IconComponent],
 })
 export class ScoreApprovalActionsCellComponent implements TableCell<Score> {
-  constructor(private scoreModalService: ScoreModalService, private changeDetectorRef: ChangeDetectorRef) {}
+  private scoreModalService = inject(ScoreModalService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
 
-  @Output() readonly notifyChange = new EventEmitter<ScoreApprovalPagination>();
+  readonly notifyChange = output<ScoreApprovalPagination>();
 
   colDef!: ColDefInternal<Score, keyof Score>;
   item!: Score;

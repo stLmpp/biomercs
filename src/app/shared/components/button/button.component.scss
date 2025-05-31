@@ -1,6 +1,7 @@
 @use 'variables' as v;
 @use 'mixins' as m;
 @use 'functions' as f;
+@use 'sass:color';
 
 @mixin button($type) {
   &.#{$type} {
@@ -84,15 +85,15 @@
 
   &:not(.disabled) {
     &:focus {
-      box-shadow: 0 0 0 2px transparentize(v.$white, 0.5);
+      box-shadow: 0 0 0 2px color.adjust(v.$white, $alpha: -0.5, $space: hsl);
     }
 
     &:active {
-      box-shadow: 0 0 0 3px transparentize(v.$white, 0.5);
+      box-shadow: 0 0 0 3px color.adjust(v.$white, $alpha: -0.5, $space: hsl);
     }
 
     &:hover {
-      background-color: transparentize(v.$white, 0.9);
+      background-color: color.adjust(v.$white, $alpha: -0.9, $space: hsl);
     }
   }
 

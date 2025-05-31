@@ -1,5 +1,12 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
-import { Control, ControlGroup, Validators } from '@stlmpp/control';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
+import {
+  Control,
+  ControlGroup,
+  Validators,
+  StControlModule,
+  StControlCommonModule,
+  StControlValueModule,
+} from '@stlmpp/control';
 import { ContactSendMail } from '@model/contact';
 import { ContactService } from './contact.service';
 import { finalize, tap } from 'rxjs';
@@ -9,22 +16,53 @@ import { catchAndThrow } from '@util/operators/catch-and-throw';
 import { HttpStatusCode } from '@angular/common/http';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
 import { AuthQuery } from '../auth/auth.query';
+import { CardComponent } from '../shared/components/card/card.component';
+import { CardTitleDirective } from '../shared/components/card/card-title.directive';
+import { CardSubtitleDirective } from '../shared/components/card/card-subtitle.directive';
+import { CardContentDirective } from '../shared/components/card/card-content.directive';
+import { FormFieldComponent } from '../shared/components/form/form-field.component';
+import { InputDirective } from '../shared/components/form/input.directive';
+import { FormFieldErrorsDirective } from '../shared/components/form/errors.directive';
+import { FormFieldErrorComponent } from '../shared/components/form/error.component';
+import { FormFieldHintDirective } from '../shared/components/form/hint.directive';
+import { TextareaDirective } from '../shared/components/form/textarea.directive';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { CardActionsDirective } from '../shared/components/card/card-actions.directive';
+import { ButtonComponent } from '../shared/components/button/button.component';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'bio-contact',
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    StControlModule,
+    StControlCommonModule,
+    CardComponent,
+    CardTitleDirective,
+    CardSubtitleDirective,
+    CardContentDirective,
+    FormFieldComponent,
+    InputDirective,
+    StControlValueModule,
+    FormFieldErrorsDirective,
+    FormFieldErrorComponent,
+    FormFieldHintDirective,
+    TextareaDirective,
+    CdkTextareaAutosize,
+    CardActionsDirective,
+    ButtonComponent,
+    AsyncPipe,
+  ],
 })
 export class ContactComponent {
-  constructor(
-    private contactService: ContactService,
-    private router: Router,
-    private snackBarService: SnackBarService,
-    private dialogService: DialogService,
-    private authQuery: AuthQuery,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {}
+  private contactService = inject(ContactService);
+  private router = inject(Router);
+  private snackBarService = inject(SnackBarService);
+  private dialogService = inject(DialogService);
+  private authQuery = inject(AuthQuery);
+  private changeDetectorRef = inject(ChangeDetectorRef);
 
   readonly mail = 'support@biomercs.net';
   readonly subject = 'Give me a good subject';

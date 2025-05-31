@@ -1,6 +1,7 @@
-<div *ngIf="!noBox; else onlySpinner" class="loading-box">
-  <bio-spinner [size]="0.5"></bio-spinner>
-</div>
-<ng-template #onlySpinner>
-  <bio-spinner></bio-spinner>
-</ng-template>
+@if (!noBox) {
+  <div class="loading-box">
+    <bio-spinner [size]="0.5"></bio-spinner>
+  </div>
+} @else {
+  <bio-spinner />
+}

@@ -1,6 +1,16 @@
-import { AfterViewInit, Directive, ElementRef, HostBinding, Input, Optional, Renderer2 } from '@angular/core';
+import {
+  AfterViewInit,
+  Directive,
+  ElementRef,
+  HostBinding,
+  inject,
+  Input,
+  input,
+  model,
+  Renderer2,
+} from '@angular/core';
 import { BooleanInput, coerceBooleanProperty, isNil } from 'st-utils';
-import { BadgeBase, BioBadgeConfig } from '@shared/components/badge/badge';
+import { BadgeBase } from '@shared/components/badge/badge';
 import { VerticalHorizontalPosition } from '@shared/components/common/positions';
 
 @Directive({
@@ -11,13 +21,8 @@ import { VerticalHorizontalPosition } from '@shared/components/common/positions'
   },
 })
 export class BadgeDirective extends BadgeBase implements AfterViewInit {
-  constructor(
-    private renderer2: Renderer2,
-    private elementRef: ElementRef,
-    @Optional() bioBadgeConfig: BioBadgeConfig
-  ) {
-    super(bioBadgeConfig);
-  }
+  private renderer2 = inject(Renderer2);
+  private elementRef = inject(ElementRef);
 
   private _bioBadge = '';
   private _bioBadgeTop = true;
@@ -51,7 +56,7 @@ export class BadgeDirective extends BadgeBase implements AfterViewInit {
     this._buildBadge();
   }
 
-  @Input() bioBadgePosition: VerticalHorizontalPosition = 'top right';
+  readonly bioBadgePosition = model<VerticalHorizontalPosition>('top right');
 
   @HostBinding('class.badge-container-top')
   @Input()
@@ -94,8 +99,7 @@ export class BadgeDirective extends BadgeBase implements AfterViewInit {
   }
 
   @HostBinding('class.badge-container-overlap')
-  @Input()
-  bioBadgeOverlap = true;
+  readonly bioBadgeOverlap = input(true);
 
   private _setPosition(): void {
     let position = '';
@@ -111,7 +115,7 @@ export class BadgeDirective extends BadgeBase implements AfterViewInit {
     if (this._bioBadgeRight && !position.includes('left')) {
       position += 'right';
     }
-    this.bioBadgePosition = position as VerticalHorizontalPosition;
+    this.bioBadgePosition.set(position as VerticalHorizontalPosition);
     this._buildBadge();
   }
 

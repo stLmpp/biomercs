@@ -1,12 +1,13 @@
 import {
   ElementRef,
-  Inject,
   Injectable,
   Injector,
   OnDestroy,
   TemplateRef,
   Type,
   ViewContainerRef,
+  DOCUMENT,
+  inject,
 } from '@angular/core';
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ModalRef } from './modal-ref';
@@ -20,18 +21,16 @@ import {
 import { coerceArray } from 'st-utils';
 import { ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
 import { ModalComponent } from './modal.component';
-import { DOCUMENT } from '@angular/common';
+
 import { DynamicLoaderService, LazyFn } from '../../../core/dynamic-loader.service';
 
 @Injectable({ providedIn: 'root' })
 export class ModalService implements OnDestroy {
-  constructor(
-    @Inject(MODAL_DEFAULT_CONFIG) private modalDefaultConfig: ModalConfig,
-    private overlay: Overlay,
-    private injector: Injector,
-    @Inject(DOCUMENT) private document: Document,
-    private dynamicLoaderService: DynamicLoaderService
-  ) {}
+  private modalDefaultConfig = inject<ModalConfig>(MODAL_DEFAULT_CONFIG);
+  private overlay = inject(Overlay);
+  private injector = inject(Injector);
+  private document = inject<Document>(DOCUMENT);
+  private dynamicLoaderService = inject(DynamicLoaderService);
 
   private _modalMap = new Map<string, ModalRef>();
 
@@ -69,7 +68,7 @@ export class ModalService implements OnDestroy {
         { provide: MODAL_DATA, useValue: config.data },
       ],
     });
-    return new ComponentPortal(ModalComponent, config.viewContainerRef, injector, config.componentFactoryResolver);
+    return new ComponentPortal(ModalComponent, config.viewContainerRef, injector);
   }
 
   private _createComponentPortal<T = any, D = any>(
@@ -77,7 +76,7 @@ export class ModalService implements OnDestroy {
     config: ModalConfig<D>,
     injector: Injector
   ): ComponentPortal<T> {
-    return new ComponentPortal<T>(component, config.viewContainerRef, injector, config.componentFactoryResolver);
+    return new ComponentPortal<T>(component, config.viewContainerRef, injector);
   }
 
   private _createTemplatePortal<T = any, D = any>(

@@ -1,24 +1,14 @@
-import {
-  Directive,
-  ElementRef,
-  HostListener,
-  Inject,
-  Input,
-  Optional,
-  QueryList,
-  Self,
-  ViewContainerRef,
-} from '@angular/core';
+import { Directive, ElementRef, HostListener, Input, ViewContainerRef, DOCUMENT, inject, input } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 import { Overlay } from '@angular/cdk/overlay';
-import { DOCUMENT } from '@angular/common';
+
 import { cdkOverlayTransparentBackdrop } from '@util/overlay';
-import { combineLatest, filter, fromEvent, Observable, startWith, Subject, takeUntil } from 'rxjs';
+import { combineLatest, filter, fromEvent, startWith, Subject, takeUntil } from 'rxjs';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Destroyable } from '@shared/components/common/destroyable-component';
 import { AutocompleteComponent } from '@shared/components/autocomplete/autocomplete.component';
 import { getOverlayPositionMenu } from '@shared/components/menu/util';
 import { ControlDirective } from '@stlmpp/control';
-import { AutocompleteOptionDirective } from '@shared/components/autocomplete/autocomplete-option.directive';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 
 @Directive({
@@ -27,22 +17,18 @@ import { BooleanInput, coerceBooleanProperty } from 'st-utils';
   exportAs: 'bio-autocomplete',
 })
 export class AutocompleteDirective extends Destroyable {
-  constructor(
-    private overlay: Overlay,
-    private elementRef: ElementRef<HTMLInputElement>,
-    private viewContainerRef: ViewContainerRef,
-    @Inject(DOCUMENT) private document: Document,
-    @Optional() @Self() private controlDirective?: ControlDirective
-  ) {
-    super();
-  }
+  private overlay = inject(Overlay);
+  private elementRef = inject<ElementRef<HTMLInputElement>>(ElementRef);
+  private viewContainerRef = inject(ViewContainerRef);
+  private document = inject<Document>(DOCUMENT);
+  private controlDirective = inject(ControlDirective, { optional: true, self: true });
 
   private _isSubscribed = false;
   private _onFocus$ = new Subject<boolean>();
   private _bioAutocompleteFocusOnFirstItem = false;
   private _bioAutocompleteSelectFirstOptionOnEnter = false;
 
-  @Input() bioAutocomplete!: AutocompleteComponent;
+  readonly bioAutocomplete = input.required<AutocompleteComponent>();
   @Input()
   set bioAutocompleteFocusOnFirstItem(bioAutocompleteFocusOnFirstItem: boolean) {
     this._bioAutocompleteFocusOnFirstItem = coerceBooleanProperty(bioAutocompleteFocusOnFirstItem);
@@ -51,21 +37,24 @@ export class AutocompleteDirective extends Destroyable {
   set bioAutocompleteSelectFirstOptionOnEnter(bioAutocompleteSelectFirstOptionOnEnter: boolean) {
     this._bioAutocompleteSelectFirstOptionOnEnter = coerceBooleanProperty(bioAutocompleteSelectFirstOptionOnEnter);
   }
-  @Input() bioAutocompleteActionAfterSelect: 'focusOnOrigin' | 'focusNext' | 'focusout' = 'focusNext';
-  @Input() bioAutocompleteNext: { focus(...args: any[]): void } | null = null;
+  readonly bioAutocompleteActionAfterSelect = input<'focusOnOrigin' | 'focusNext' | 'focusout'>('focusNext');
+  readonly bioAutocompleteNext = input<{
+    focus(...args: any[]): void;
+  } | null>(null);
 
   opened = false;
   hasFocus = false;
 
   private _actionAfterSelect(): void {
     this._onFocus$.next(false);
-    switch (this.bioAutocompleteActionAfterSelect) {
+    switch (this.bioAutocompleteActionAfterSelect()) {
       case 'focusOnOrigin':
         this.elementRef.nativeElement.focus();
         break;
       case 'focusNext': {
-        if (this.bioAutocompleteNext) {
-          this.bioAutocompleteNext.focus();
+        const bioAutocompleteNext = this.bioAutocompleteNext();
+        if (bioAutocompleteNext) {
+          bioAutocompleteNext.focus();
         }
         break;
       }
@@ -75,12 +64,14 @@ export class AutocompleteDirective extends Destroyable {
   }
 
   private _initSub(): void {
-    if (this._isSubscribed || !this.bioAutocomplete) {
+    const bioAutocomplete = this.bioAutocomplete();
+    if (this._isSubscribed || !bioAutocomplete) {
       return;
     }
     this._isSubscribed = true;
-    const optionsChanges: Observable<QueryList<AutocompleteOptionDirective>> =
-      this.bioAutocomplete.autocompleteOptions.changes.pipe(startWith(this.bioAutocomplete.autocompleteOptions));
+    const optionsChanges = toObservable(bioAutocomplete.autocompleteOptions).pipe(
+      startWith(bioAutocomplete.autocompleteOptions())
+    );
     combineLatest([this._onFocus$, optionsChanges])
       .pipe(takeUntil(this.destroy$))
       .subscribe(([focused, changes]) => {
@@ -88,17 +79,17 @@ export class AutocompleteDirective extends Destroyable {
         if (changes.length && focused) {
           this._createOverlay();
           if (this._bioAutocompleteFocusOnFirstItem) {
-            this.bioAutocomplete.setFocusOnFirstOption();
+            this.bioAutocomplete().setFocusOnFirstOption();
           }
         } else {
-          this.bioAutocomplete.overlayRef?.detach();
+          this.bioAutocomplete().overlayRef?.detach();
         }
       });
   }
 
   private _createOverlay(): void {
     if (this.opened) {
-      Promise.resolve().then(() => this.bioAutocomplete.changeDetectorRef.markForCheck());
+      Promise.resolve().then(() => this.bioAutocomplete().changeDetectorRef.markForCheck());
       return;
     }
     const overlayRef = this.overlay.create({
@@ -114,19 +105,19 @@ export class AutocompleteDirective extends Destroyable {
       .subscribe(() => {
         this.opened = false;
       });
-    this.bioAutocomplete.onSelect$
-      .pipe(
+    this.bioAutocomplete()
+      .onSelect$.pipe(
         takeUntil(this.destroy$),
-        filter(() => this.bioAutocomplete.closeOnSelect)
+        filter(() => this.bioAutocomplete().closeOnSelect())
       )
       .subscribe(() => {
         this._actionAfterSelect();
       });
-    this.bioAutocomplete.overlayRef = overlayRef;
-    this.bioAutocomplete.origin = this.elementRef.nativeElement;
-    this.bioAutocomplete.control = this.controlDirective?.control;
-    this.bioAutocomplete.setFocusOnOrigin = () => this.elementRef.nativeElement.focus();
-    const templatePortal = new TemplatePortal(this.bioAutocomplete.templateRef, this.viewContainerRef);
+    this.bioAutocomplete().overlayRef = overlayRef;
+    this.bioAutocomplete().origin = this.elementRef.nativeElement;
+    this.bioAutocomplete().control = this.controlDirective?.control;
+    this.bioAutocomplete().setFocusOnOrigin = () => this.elementRef.nativeElement.focus();
+    const templatePortal = new TemplatePortal(this.bioAutocomplete().templateRef(), this.viewContainerRef);
     overlayRef.attach(templatePortal);
     fromEvent<MouseEvent>(this.document, 'click')
       .pipe(
@@ -142,14 +133,15 @@ export class AutocompleteDirective extends Destroyable {
         overlayRef.detach();
         this._actionAfterSelect();
       });
-    this.bioAutocomplete.init();
+    this.bioAutocomplete().init();
     this.opened = true;
   }
 
   @HostListener('keydown.arrowdown')
   onKeydownArrowdown(): void {
-    if (this.opened && this.bioAutocomplete) {
-      this.bioAutocomplete.setFocusOnFirstOption();
+    const bioAutocomplete = this.bioAutocomplete();
+    if (this.opened && bioAutocomplete) {
+      bioAutocomplete.setFocusOnFirstOption();
     }
   }
 
@@ -162,12 +154,10 @@ export class AutocompleteDirective extends Destroyable {
 
   @HostListener('keydown.enter')
   onKeydownEnter(): void {
-    if (
-      this.opened &&
-      this._bioAutocompleteSelectFirstOptionOnEnter &&
-      this.bioAutocomplete.autocompleteOptions.length
-    ) {
-      this.bioAutocomplete.autocompleteOptions.find(option => !option.disabled)?.onSelect();
+    const bioAutocomplete = this.bioAutocomplete();
+    const autocompleteOptions = bioAutocomplete.autocompleteOptions();
+    if (this.opened && this._bioAutocompleteSelectFirstOptionOnEnter && autocompleteOptions.length) {
+      autocompleteOptions.find(option => !option.disabled)?.onSelect();
     }
   }
 

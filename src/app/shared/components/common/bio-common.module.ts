@@ -7,8 +7,7 @@ const DECLARATIONS = [SuffixDirective, PrefixDirective];
 const MODULES = [CommonModule];
 
 @NgModule({
-  declarations: [...DECLARATIONS],
-  imports: [...MODULES],
+  imports: [...MODULES, ...DECLARATIONS],
   exports: [...DECLARATIONS, ...MODULES],
 })
 export class BioCommonModule {}

@@ -9,8 +9,7 @@ const DECLARATIONS = [AutocompleteDirective, AutocompleteComponent, Autocomplete
 const MODULES = [CommonModule, A11yModule];
 
 @NgModule({
-  declarations: [...DECLARATIONS],
-  imports: [...MODULES],
+  imports: [...MODULES, ...DECLARATIONS],
   exports: [...DECLARATIONS, ...MODULES],
 })
 export class AutocompleteModule {}

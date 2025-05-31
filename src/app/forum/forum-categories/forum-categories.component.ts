@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CategoriesWithRecentTopics, CategoryWithSubCategories } from '@model/forum/category';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
@@ -6,34 +6,69 @@ import { trackById } from '@util/track-by';
 import { AuthQuery } from '../../auth/auth.query';
 import { CategoryModalService } from '../service/category-modal.service';
 import { arrayUtil, isFunction } from 'st-utils';
-import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
+import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList } from '@angular/cdk/drag-drop';
 import { CategoryService } from '../service/category.service';
 import { BehaviorSubject, finalize, map } from 'rxjs';
 import { BreakpointObserverService } from '@shared/services/breakpoint-observer/breakpoint-observer.service';
 import { mdiAccountTie } from '@mdi/js';
 import { ModeratorModalService } from '../service/moderator-modal.service';
 import { SubCategoryOrderDto } from '@model/forum/sub-category';
-import { ForumCategoriesCategoryComponentOrderChangeEvent } from './forum-categories-category/forum-categories-category.component';
+import {
+  ForumCategoriesCategoryComponent,
+  ForumCategoriesCategoryComponentOrderChangeEvent,
+} from './forum-categories-category/forum-categories-category.component';
 import { SubCategoryService } from '../service/sub-category.service';
 import { TopicRecent } from '@model/forum/topic';
+import { NgLetModule } from '@stlmpp/utils';
+import { CheckboxComponent } from '../../shared/components/checkbox/checkbox.component';
+import { ButtonComponent } from '../../shared/components/button/button.component';
+import { IconMdiComponent } from '../../shared/components/icon/icon-mdi.component';
+import { IconComponent } from '../../shared/components/icon/icon.component';
+import { AccordionDirective } from '../../shared/components/accordion/accordion.directive';
+import { AccordionItemComponent } from '../../shared/components/accordion/accordion-item.component';
+import { AccordionItemTitleDirective } from '../../shared/components/accordion/accordion-item-title.directive';
+import { ForumCategoriesRecentTopicsComponent } from './forum-categories-recent-topics/forum-categories-recent-topics.component';
+import { ForumCategoriesPlayersOnlineComponent } from './forum-categories-players-online/forum-categories-players-online.component';
+import { AsyncPipe } from '@angular/common';
+import { AuthDateFormatPipe } from '../../auth/shared/auth-date-format.pipe';
+import { AsyncDefaultPipe } from '../../shared/async-default/async-default.pipe';
+import { ForumFilterDeletedPipe } from './forum-filter-deleted.pipe';
 
 @Component({
   selector: 'bio-forum-categories',
   templateUrl: './forum-categories.component.html',
   styleUrls: ['./forum-categories.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    NgLetModule,
+    CheckboxComponent,
+    ButtonComponent,
+    IconMdiComponent,
+    IconComponent,
+    AccordionDirective,
+    CdkDropList,
+    AccordionItemComponent,
+    CdkDrag,
+    AccordionItemTitleDirective,
+    CdkDragHandle,
+    ForumCategoriesCategoryComponent,
+    ForumCategoriesRecentTopicsComponent,
+    ForumCategoriesPlayersOnlineComponent,
+    AsyncPipe,
+    AuthDateFormatPipe,
+    AsyncDefaultPipe,
+    ForumFilterDeletedPipe,
+  ],
 })
 export class ForumCategoriesComponent {
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private authQuery: AuthQuery,
-    private categoryModalService: CategoryModalService,
-    private changeDetectorRef: ChangeDetectorRef,
-    private categoryService: CategoryService,
-    private breakpointObserverService: BreakpointObserverService,
-    private moderatorModalService: ModeratorModalService,
-    private subCategoryService: SubCategoryService
-  ) {}
+  private activatedRoute = inject(ActivatedRoute);
+  private authQuery = inject(AuthQuery);
+  private categoryModalService = inject(CategoryModalService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+  private categoryService = inject(CategoryService);
+  private breakpointObserverService = inject(BreakpointObserverService);
+  private moderatorModalService = inject(ModeratorModalService);
+  private subCategoryService = inject(SubCategoryService);
 
   private readonly _categories$ = new BehaviorSubject<CategoryWithSubCategories[]>(
     this._getCategoriesWithRecentTopicsFromRoute().categories

@@ -1,8 +1,10 @@
 <div class="message">
-  {{ message }}
+  {{ message() }}
 </div>
-<div class="action" *ngIf="action">
-  <button bioButton type="button" (click)="onAction()" [loading]="loading$ | async">
-    {{ action }}
-  </button>
-</div>
+@if (action()) {
+  <div class="action">
+    <button bioButton type="button" (click)="onAction()" [loading]="loading$ | async">
+      {{ action() }}
+    </button>
+  </div>
+}

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CharacterWithCharacterCostumes } from '@model/character';
@@ -7,7 +7,8 @@ import { CacheService } from '@shared/cache/cache';
 
 @Injectable({ providedIn: 'root' })
 export class CharacterService {
-  constructor(private http: HttpClient, private cacheService: CacheService) {}
+  private http = inject(HttpClient);
+  private cacheService = inject(CacheService);
 
   private readonly _cache = this.cacheService.createCache();
 
@@ -20,9 +21,9 @@ export class CharacterService {
     idMode: number
   ): Observable<CharacterWithCharacterCostumes[]> {
     return this.http
-      .get<CharacterWithCharacterCostumes[]>(
-        `${this.endPoint}/platform/${idPlatform}/game/${idGame}/mini-game/${idMiniGame}/mode/${idMode}`
-      )
+      .get<
+        CharacterWithCharacterCostumes[]
+      >(`${this.endPoint}/platform/${idPlatform}/game/${idGame}/mini-game/${idMiniGame}/mode/${idMode}`)
       .pipe(this._cache.use(idPlatform, idGame, idMiniGame, idMode));
   }
 

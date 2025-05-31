@@ -7,7 +7,6 @@ import { ListModule } from '@shared/components/list/list.module';
 import { StControlModelModule } from '@stlmpp/control';
 
 @NgModule({
-  declarations: [ForumTopicTransferComponent],
-  imports: [CommonModule, ModalModule, ButtonModule, ListModule, StControlModelModule],
+  imports: [CommonModule, ModalModule, ButtonModule, ListModule, StControlModelModule, ForumTopicTransferComponent],
 })
 export class ForumTopicTransferModule {}

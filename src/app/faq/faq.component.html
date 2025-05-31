@@ -7,7 +7,7 @@
     placeholder="Search"
     [control]="searchControl"
     autocomplete="off"
-    (keydown.arrowDown)="accordionDirective?.focusKeyManager?.setFirstItemActive()"
+    (keydown.arrowDown)="accordionDirective()?.focusKeyManager?.setFirstItemActive()"
   />
   <bio-icon bioPrefix>search</bio-icon>
 </bio-form-field>
@@ -17,12 +17,8 @@
   [bioFilter]="search$ | async"
   (bioFilterChange)="onFilterChange($event)"
 >
-  <bio-accordion-item
-    bioFilterItem
-    accordionTitle="How can I submit a score?"
-    *ngLet="isMobile$ | async as isMobile"
-    id="how-can-i-submit-a-score"
-  >
+  @let isMobile = isMobile$ | async;
+  <bio-accordion-item bioFilterItem accordionTitle="How can I submit a score?" id="how-can-i-submit-a-score">
     There a link in the header (
     <a
       bioButton
@@ -35,7 +31,9 @@
       [bioTooltipDisabled]="!isMobile"
     >
       <bio-icon small>add</bio-icon>
-      <ng-container *ngIf="!isMobile">Submit score</ng-container>
+      @if (!isMobile) {
+        Submit score
+      }
     </a>
     ), that redirects you to the page of score submission.<br />
     There you can select all the parameters of your score (Platform, Game, Stage, etc), and submit it.

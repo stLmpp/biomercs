@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { Injectable, inject } from '@angular/core';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { ScoreChangeRequestsPagination } from '@model/score-change-request';
 import { ScoreService } from '../../score/score.service';
 import { Observable } from 'rxjs';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 
 @Injectable({ providedIn: 'root' })
-export class PlayerChangeRequestsResolver implements Resolve<ScoreChangeRequestsPagination> {
-  constructor(private scoreService: ScoreService) {}
+export class PlayerChangeRequestsResolver {
+  private scoreService = inject(ScoreService);
 
   resolve(
     route: ActivatedRouteSnapshot,

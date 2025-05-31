@@ -3,14 +3,14 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  Host,
   HostBinding,
   HostListener,
   Input,
   OnInit,
-  Optional,
   ViewChild,
   ViewEncapsulation,
+  inject,
+  input,
 } from '@angular/core';
 import { ListParentControl } from './list-config';
 import { FocusableOption } from '@angular/cdk/a11y';
@@ -25,17 +25,15 @@ import { BooleanInput, coerceBooleanProperty } from 'st-utils';
   host: { class: 'list-item', tabindex: '0' },
 })
 export class ListItemComponent implements OnInit, FocusableOption {
-  constructor(
-    public changeDetectorRef: ChangeDetectorRef,
-    public elementRef: ElementRef,
-    @Optional() @Host() public listParentControl?: ListParentControl
-  ) {}
+  changeDetectorRef = inject(ChangeDetectorRef);
+  elementRef = inject(ElementRef);
+  listParentControl? = inject(ListParentControl, { optional: true, host: true });
 
   private _disabled = false;
 
   @ViewChild('control') readonly controlInput?: ElementRef<HTMLInputElement>;
 
-  @Input() value: any;
+  readonly value = input<any>();
 
   @Input()
   @HostBinding('class.disabled')

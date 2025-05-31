@@ -1,11 +1,16 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject } from '@angular/core';
-import { ControlBuilder, Validators } from '@stlmpp/control';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ControlBuilder, Validators, StControlModule, StControlCommonModule } from '@stlmpp/control';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import { AuthService } from '../../auth.service';
 import { finalize, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { catchAndThrow } from '@util/operators/catch-and-throw';
+import { ModalTitleDirective } from '../../../shared/components/modal/modal-title.directive';
+import { ModalContentDirective } from '../../../shared/components/modal/modal-content.directive';
+import { ConfirmationCodeInputComponent } from '../../shared/confirmation-code-input/confirmation-code-input.component';
+import { ModalActionsDirective } from '../../../shared/components/modal/modal-actions.directive';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
 
 interface LoginConfirmationForm {
   code: number | null;
@@ -16,16 +21,23 @@ interface LoginConfirmationForm {
   templateUrl: './login-confirm-code-modal.component.html',
   styleUrls: ['./login-confirm-code-modal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    StControlModule,
+    StControlCommonModule,
+    ModalTitleDirective,
+    ModalContentDirective,
+    ConfirmationCodeInputComponent,
+    ModalActionsDirective,
+    ButtonComponent,
+  ],
 })
 export class LoginConfirmCodeModalComponent {
-  constructor(
-    public modalRef: ModalRef<LoginConfirmCodeModalComponent, number>,
-    private controlBuilder: ControlBuilder,
-    @Inject(MODAL_DATA) private idUser: number,
-    private authService: AuthService,
-    private router: Router,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {}
+  modalRef = inject<ModalRef<LoginConfirmCodeModalComponent, number>>(ModalRef);
+  private controlBuilder = inject(ControlBuilder);
+  private idUser = inject(MODAL_DATA);
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private changeDetectorRef = inject(ChangeDetectorRef);
 
   readonly form = this.controlBuilder.group<LoginConfirmationForm>({ code: [null, [Validators.required]] });
   loading = false;

@@ -1,5 +1,7 @@
 <bio-card dark>
-  <bio-loading *ngIf="loading"></bio-loading>
+  @if (loading) {
+    <bio-loading />
+  }
   <bio-card-content>
     <div class="actions">
       <a bioButton accent [routerLink]="['topic', 'new']">New topic</a>
@@ -12,16 +14,19 @@
       <div class="grid-container__views">Views</div>
       <div class="grid-container__last-post">Last post</div>
     </div>
-    <a
-      bioForumSubCategoryTopic
-      [routerLink]="['topic', topic.id, 'page', 1]"
-      *ngFor="let topic of subCategory.topics.items; trackBy: trackById"
-      [topic]="topic"
-      (topicChange)="onTopicChange($event)"
-      (reloadSubCategory)="onReloadSubcategory()"
-    >
-    </a>
-    <p class="no-data-found" *ngIf="!subCategory.topics.items.length">No topics found</p>
+    @for (topic of subCategory.topics.items; track trackById($index, topic)) {
+      <a
+        bioForumSubCategoryTopic
+        [routerLink]="['topic', topic.id, 'page', 1]"
+        [topic]="topic"
+        (topicChange)="onTopicChange($event)"
+        (reloadSubCategory)="onReloadSubcategory()"
+      >
+      </a>
+    }
+    @if (!subCategory.topics.items.length) {
+      <p class="no-data-found">No topics found</p>
+    }
   </bio-card-content>
   <bio-card-actions end>
     <bio-pagination
@@ -29,6 +34,6 @@
       (currentPageChange)="onPageChange($event)"
       [meta]="subCategory.topics.meta"
       itemsPerPageHidden
-    ></bio-pagination>
+    />
   </bio-card-actions>
 </bio-card>

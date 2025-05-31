@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { UserService } from '@shared/services/user/user.service';
-import { Control, ControlGroup } from '@stlmpp/control';
+import { Control, ControlGroup, StControlModule, StControlCommonModule, StControlValueModule } from '@stlmpp/control';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { combineLatest, debounceTime, distinctUntilChanged, filter, finalize, switchMap, takeUntil, tap } from 'rxjs';
@@ -13,6 +13,23 @@ import { mdiShieldAccount } from '@mdi/js';
 import { trackById } from '@util/track-by';
 import { dateDifference } from '@shared/date/date-difference.pipe';
 import { Destroyable } from '@shared/components/common/destroyable-component';
+import { PageTitleComponent } from '../../shared/title/page-title.component';
+import { CardComponent } from '../../shared/components/card/card.component';
+import { CardContentDirective } from '../../shared/components/card/card-content.directive';
+import { FormFieldComponent } from '../../shared/components/form/form-field.component';
+import { InputDirective } from '../../shared/components/form/input.directive';
+import { LoadingComponent } from '../../shared/components/spinner/loading/loading.component';
+import { ListDirective, ListSelectable } from '../../shared/components/list/list.directive';
+import { ListItemComponent } from '../../shared/components/list/list-item.component';
+import { TooltipDirective } from '../../shared/components/tooltip/tooltip.directive';
+import { IconComponent } from '../../shared/components/icon/icon.component';
+import { PrefixDirective } from '../../shared/components/common/prefix.directive';
+import { ListItemLineDirective } from '../../shared/components/list/list-item-line.directive';
+import { IconMdiComponent } from '../../shared/components/icon/icon-mdi.component';
+import { SuffixDirective } from '../../shared/components/common/suffix.directive';
+import { CardActionsDirective } from '../../shared/components/card/card-actions.directive';
+import { PaginationComponent } from '../../shared/components/pagination/pagination.component';
+import { AuthDateFormatPipe } from '../../auth/shared/auth-date-format.pipe';
 
 interface UserSearchForm {
   term: string;
@@ -31,17 +48,36 @@ interface UserBan extends User {
   templateUrl: './admin-ban-user.component.html',
   styleUrls: ['./admin-ban-user.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    PageTitleComponent,
+    StControlModule,
+    StControlCommonModule,
+    CardComponent,
+    CardContentDirective,
+    FormFieldComponent,
+    InputDirective,
+    StControlValueModule,
+    LoadingComponent,
+    ListDirective,
+    ListSelectable,
+    ListItemComponent,
+    TooltipDirective,
+    IconComponent,
+    PrefixDirective,
+    ListItemLineDirective,
+    IconMdiComponent,
+    SuffixDirective,
+    CardActionsDirective,
+    PaginationComponent,
+    AuthDateFormatPipe,
+  ],
 })
 export class AdminBanUserComponent extends Destroyable implements OnInit {
-  constructor(
-    private userService: UserService,
-    private activatedRoute: ActivatedRoute,
-    private router: Router,
-    private dialogService: DialogService,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {
-    super();
-  }
+  private userService = inject(UserService);
+  private activatedRoute = inject(ActivatedRoute);
+  private router = inject(Router);
+  private dialogService = inject(DialogService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
 
   readonly dateMinus7 = subDays(new Date(), 7);
   readonly mdiShieldAccount = mdiShieldAccount;

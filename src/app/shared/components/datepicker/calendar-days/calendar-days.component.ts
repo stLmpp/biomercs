@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, model, output } from '@angular/core';
 import { CalendarDay } from '@shared/components/datepicker/calendar-day';
 import { trackByFactory } from '@stlmpp/utils';
 import {
@@ -17,6 +17,8 @@ import {
 } from 'date-fns';
 import { CalendarAdapter } from '@shared/components/datepicker/calendar-adapter';
 import { CalendarKeyboardNavigation } from '@shared/components/datepicker/calendar-keyboard-navigation';
+import { ButtonComponent } from '../../button/button.component';
+import { DateEqualPipe } from '../../../date/date-equal.pipe';
 
 @Component({
   selector: 'bio-calendar-days',
@@ -24,22 +26,21 @@ import { CalendarKeyboardNavigation } from '@shared/components/datepicker/calend
   styleUrls: ['./calendar-days.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [{ provide: CalendarKeyboardNavigation, useExisting: CalendarDaysComponent }],
+  imports: [ButtonComponent, DateEqualPipe],
 })
 export class CalendarDaysComponent extends CalendarKeyboardNavigation {
-  constructor(private readonly calendarAdapter: CalendarAdapter) {
-    super();
-  }
+  private readonly calendarAdapter = inject(CalendarAdapter);
 
-  @Input() value: Date | null | undefined;
-  @Input() days: CalendarDay[] = [];
-  @Input() dayNames: string[] = [];
-  @Input() disabled = false;
+  readonly value = model<Date | null>();
+  readonly days = input<CalendarDay[]>([]);
+  readonly dayNames = input<string[]>([]);
+  readonly disabled = input(false);
 
-  @Output() readonly valueChange = new EventEmitter<Date | null | undefined>();
-  @Output() readonly nextMonth = new EventEmitter<void>();
-  @Output() readonly previousMonth = new EventEmitter<void>();
-  @Output() readonly nextYear = new EventEmitter<void>();
-  @Output() readonly previousYear = new EventEmitter<void>();
+  readonly valueChange = output<Date | null | undefined>();
+  readonly nextMonth = output<void>();
+  readonly previousMonth = output<void>();
+  readonly nextYear = output<void>();
+  readonly previousYear = output<void>();
 
   readonly nowDate = new Date();
 
@@ -47,13 +48,13 @@ export class CalendarDaysComponent extends CalendarKeyboardNavigation {
   readonly trackByDay = CalendarDay.trackBy;
 
   private _daySelected(day: CalendarDay): void {
-    this.value = day.date;
-    this.valueChange.emit(this.value);
+    this.value.set(day.date);
+    this.valueChange.emit(this.value());
   }
 
   private _getActiveIndexAndItem(): [number, CalendarDay] {
     const activeItemIndex = this.focusKeyManager.activeItemIndex ?? 0;
-    const item = this.days[activeItemIndex];
+    const item = this.days()[activeItemIndex];
     return [activeItemIndex, item];
   }
 
@@ -73,6 +74,7 @@ export class CalendarDaysComponent extends CalendarKeyboardNavigation {
   handleArrowRight(): void {
     const [, item] = this._getActiveIndexAndItem();
     if (isLastDayOfMonth(item.date)) {
+      // TODO: The 'emit' function requires a mandatory void argument
       this.nextMonth.emit();
       setTimeout(() => {
         this.focusKeyManager.setFirstItemActive();
@@ -85,6 +87,7 @@ export class CalendarDaysComponent extends CalendarKeyboardNavigation {
   handleArrowLeft(): void {
     const [, item] = this._getActiveIndexAndItem();
     if (isFirstDayOfMonth(item.date)) {
+      // TODO: The 'emit' function requires a mandatory void argument
       this.previousMonth.emit();
       setTimeout(() => {
         this.focusKeyManager.setLastItemActive();
@@ -99,6 +102,7 @@ export class CalendarDaysComponent extends CalendarKeyboardNavigation {
     const daysInMonth = getDaysInMonth(item.date);
     if (item.day + daysInWeek > daysInMonth) {
       const nextIndex = this.calendarAdapter.findIndex(addDays(item.date, daysInWeek));
+      // TODO: The 'emit' function requires a mandatory void argument
       this.nextMonth.emit();
       setTimeout(() => {
         this.focusKeyManager.setActiveItem(nextIndex);
@@ -112,6 +116,7 @@ export class CalendarDaysComponent extends CalendarKeyboardNavigation {
     const [activeItemIndex, item] = this._getActiveIndexAndItem();
     if (item.day - daysInWeek <= 0) {
       const previousIndex = this.calendarAdapter.findIndex(subDays(item.date, daysInWeek));
+      // TODO: The 'emit' function requires a mandatory void argument
       this.previousMonth.emit();
       setTimeout(() => {
         this.focusKeyManager.setActiveItem(previousIndex);
@@ -122,8 +127,8 @@ export class CalendarDaysComponent extends CalendarKeyboardNavigation {
   }
 
   handleEnter(): void {
-    const item = this.days[this.focusKeyManager.activeItemIndex ?? -1];
-    if (item && item.date !== this.value) {
+    const item = this.days()[this.focusKeyManager.activeItemIndex ?? -1];
+    if (item && item.date !== this.value()) {
       this._daySelected(item);
     }
   }
@@ -141,9 +146,11 @@ export class CalendarDaysComponent extends CalendarKeyboardNavigation {
     let nextDate: Date;
     if ($event.altKey) {
       nextDate = addYears(item.date, 1);
+      // TODO: The 'emit' function requires a mandatory void argument
       this.nextYear.emit();
     } else {
       nextDate = addMonths(item.date, 1);
+      // TODO: The 'emit' function requires a mandatory void argument
       this.nextMonth.emit();
     }
     this._setActiveWithTimeout(item.day, nextDate);
@@ -154,16 +161,18 @@ export class CalendarDaysComponent extends CalendarKeyboardNavigation {
     let previousDate: Date;
     if ($event.altKey) {
       previousDate = subYears(item.date, 1);
+      // TODO: The 'emit' function requires a mandatory void argument
       this.previousYear.emit();
     } else {
       previousDate = subMonths(item.date, 1);
+      // TODO: The 'emit' function requires a mandatory void argument
       this.previousMonth.emit();
     }
     this._setActiveWithTimeout(item.day, previousDate);
   }
 
   onClick(day: CalendarDay, index: number): void {
-    if (this.value === day.date) {
+    if (this.value() === day.date) {
       return;
     }
     this._daySelected(day);

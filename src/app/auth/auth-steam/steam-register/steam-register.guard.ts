@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { Injectable, inject } from '@angular/core';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { map, Observable } from 'rxjs';
 import { AuthService } from '../../auth.service';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
@@ -7,8 +7,9 @@ import { RouteParamEnum } from '@model/enum/route-param.enum';
 @Injectable({
   providedIn: 'root',
 })
-export class SteamRegisterGuard implements CanActivate {
-  constructor(private authService: AuthService, private router: Router) {}
+export class SteamRegisterGuard {
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
   canActivate(
     route: ActivatedRouteSnapshot,

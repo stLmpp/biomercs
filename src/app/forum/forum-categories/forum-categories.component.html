@@ -1,17 +1,22 @@
-<ng-container *ngLet="isAdmin$ | async as isAdmin">
-  <div class="actions" *ngIf="isAdmin">
-    <bio-checkbox [(checked)]="hideDeleted" [disabled]="hasNoneDeleted$ | async">Hide deleted</bio-checkbox>
-    <button bioButton type="button" (click)="openManageModerators()" [loading]="loadingManageModeratorsModal">
-      <bio-icon [mdi]="mdiAccountTie"></bio-icon>
-      Manage moderators
-    </button>
-    <button bioButton type="button" (click)="openAddEditModal()" [loading]="loadingAddEditModal">
-      <bio-icon>add</bio-icon>
-      Add category
-    </button>
-  </div>
-  <ng-container *ngIf="categories$ | async as categories">
-    <p *ngIf="!categories.length">No categories found</p>
+@let isAdmin = isAdmin$ | async;
+<ng-container>
+  @if (isAdmin) {
+    <div class="actions">
+      <bio-checkbox [(checked)]="hideDeleted" [disabled]="hasNoneDeleted$ | async">Hide deleted</bio-checkbox>
+      <button bioButton type="button" (click)="openManageModerators()" [loading]="loadingManageModeratorsModal">
+        <bio-icon [mdi]="mdiAccountTie"></bio-icon>
+        Manage moderators
+      </button>
+      <button bioButton type="button" (click)="openAddEditModal()" [loading]="loadingAddEditModal">
+        <bio-icon>add</bio-icon>
+        Add category
+      </button>
+    </div>
+  }
+  @if (categories$ | async; as categories) {
+    @if (!categories.length) {
+      <p>No categories found</p>
+    }
     <bio-accordion
       multi
       cdkDropList
@@ -19,37 +24,36 @@
       [cdkDropListDisabled]="updatingOrder || !isAdmin"
       (cdkDropListDropped)="onCdkDropListDropped($event)"
     >
-      <bio-accordion-item
-        *ngFor="let category of categories | forumFilterDeleted: hideDeleted; trackBy: trackById"
-        cdkDrag
-        [cdkDragData]="category"
-        expanded
-      >
-        <div bioAccordionItemTitle>
-          <bio-icon cdkDragHandle *ngIf="isAdmin"> drag_handle </bio-icon>
-          {{ category.name }}
-          <ng-container *ngIf="category.deletedDate">
-            - Deleted at {{ category.deletedDate | authDateFormat }}
-          </ng-container>
-        </div>
-        <bio-forum-categories-category
-          [category]="category"
-          [isAdmin]="isAdmin"
-          [loadingAddEditModal]="loadingAddEditModal"
-          [isMobile]="isMobile$ | asyncDefault: false"
-          [idCategoriesDropList]="idCategories$ | asyncDefault: []"
-          idCategoryDropList="category-drop-list-{{ category.id }}"
-          (openAddEditModal)="openAddEditModal($event)"
-          (categoryChange)="onCategoryChange($event)"
-          (orderChange)="onSubCategoryOrderChange($event)"
-        ></bio-forum-categories-category>
-      </bio-accordion-item>
+      @for (category of categories | forumFilterDeleted: hideDeleted; track trackById($index, category)) {
+        <bio-accordion-item cdkDrag [cdkDragData]="category" expanded>
+          <div bioAccordionItemTitle>
+            @if (isAdmin) {
+              <bio-icon cdkDragHandle> drag_handle </bio-icon>
+            }
+            {{ category.name }}
+            @if (category.deletedDate) {
+              - Deleted at {{ category.deletedDate | authDateFormat }}
+            }
+          </div>
+          <bio-forum-categories-category
+            [category]="category"
+            [isAdmin]="!!isAdmin"
+            [loadingAddEditModal]="loadingAddEditModal"
+            [isMobile]="isMobile$ | asyncDefault: false"
+            [idCategoriesDropList]="idCategories$ | asyncDefault: []"
+            idCategoryDropList="category-drop-list-{{ category.id }}"
+            (openAddEditModal)="openAddEditModal($event)"
+            (categoryChange)="onCategoryChange($event)"
+            (orderChange)="onSubCategoryOrderChange($event)"
+          />
+        </bio-accordion-item>
+      }
       <bio-accordion-item accordionTitle="Recent posts" expanded>
-        <bio-forum-categories-recent-topics [recentTopics]="recentTopics"></bio-forum-categories-recent-topics>
+        <bio-forum-categories-recent-topics [recentTopics]="recentTopics" />
       </bio-accordion-item>
       <bio-accordion-item accordionTitle="Players online" expanded>
-        <bio-forum-categories-players-online></bio-forum-categories-players-online>
+        <bio-forum-categories-players-online />
       </bio-accordion-item>
     </bio-accordion>
-  </ng-container>
+  }
 </ng-container>

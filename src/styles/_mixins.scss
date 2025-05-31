@@ -2,6 +2,7 @@
 @use 'functions' as f;
 @use '@material/elevation/elevation-theme' as mat-elevation;
 @forward '@material/elevation/elevation-theme';
+@use 'sass:color';
 
 @mixin actions($margin-top: 1rem) {
   margin-top: $margin-top;
@@ -35,11 +36,11 @@
     &:not(.disabled):not([disabled]):not(:disabled) {
       &:focus,
       &.is-open {
-        box-shadow: 0 0 0 2px transparentize(f.get-color($type, 300), 0.5);
+        box-shadow: 0 0 0 2px color.adjust(f.get-color($type, 300), $alpha: -0.5, $space: hsl);
       }
 
       &:active {
-        box-shadow: 0 0 0 3px transparentize(f.get-color($type, 300), 0.5);
+        box-shadow: 0 0 0 3px color.adjust(f.get-color($type, 300), $alpha: -0.5, $space: hsl);
       }
     }
   }

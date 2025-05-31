@@ -1,4 +1,4 @@
-import { Injectable, KeyValueDiffers } from '@angular/core';
+import { Injectable, KeyValueDiffers, inject } from '@angular/core';
 import { Meta } from '@angular/platform-browser';
 import { Destroyable } from '@shared/components/common/destroyable-component';
 import { distinctUntilChanged, map, takeUntil } from 'rxjs';
@@ -8,9 +8,9 @@ import { isMap } from 'st-utils';
 
 @Injectable({ providedIn: 'root' })
 export class MetaService extends Destroyable {
-  constructor(private meta: Meta, private routerQuery: RouterQuery, private keyValueDiffers: KeyValueDiffers) {
-    super();
-  }
+  private meta = inject(Meta);
+  private routerQuery = inject(RouterQuery);
+  private keyValueDiffers = inject(KeyValueDiffers);
 
   readonly keyValueDiffer = this.keyValueDiffers.find(new Map<string, string>()).create<string, string>();
 

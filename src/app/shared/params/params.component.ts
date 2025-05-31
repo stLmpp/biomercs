@@ -2,15 +2,23 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  EventEmitter,
   Input,
   OnChanges,
   OnInit,
-  Output,
   SimpleChange,
   SimpleChanges,
+  inject,
+  input,
+  output,
 } from '@angular/core';
-import { Control, ControlBuilder, ControlValidator, ValidatorsKeys } from '@stlmpp/control';
+import {
+  Control,
+  ControlBuilder,
+  ControlValidator,
+  ValidatorsKeys,
+  StControlCommonModule,
+  StControlModule,
+} from '@stlmpp/control';
 import { GameService } from '../services/game/game.service';
 import { MiniGameService } from '../services/mini-game/mini-game.service';
 import { ModeService } from '../services/mode/mode.service';
@@ -30,7 +38,7 @@ import {
   tap,
 } from 'rxjs';
 import { StageService } from '../services/stage/stage.service';
-import { trackByFactory } from '@stlmpp/utils';
+import { trackByFactory, NgLetModule, StUtilsObjectModule } from '@stlmpp/utils';
 import { CharacterService } from '../services/character/character.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
@@ -45,6 +53,14 @@ import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { filterNilArrayOperator } from '@util/operators/filter-nil-array';
 import { trackById } from '@util/track-by';
 import { Destroyable } from '@shared/components/common/destroyable-component';
+import { FormFieldComponent } from '../components/form/form-field.component';
+import { SelectComponent } from '../components/select/select.component';
+import { OptionComponent } from '../components/select/option.component';
+import { FormFieldErrorsDirective } from '../components/form/errors.directive';
+import { FormFieldErrorComponent } from '../components/form/error.component';
+import { SpinnerComponent } from '../components/spinner/spinner.component';
+import { OptgroupComponent } from '../components/select/optgroup.component';
+import { AsyncPipe } from '@angular/common';
 
 export interface ParamsForm {
   idPlatform: number | null | undefined;
@@ -89,33 +105,43 @@ const defaultConfigs: ParamsConfig = {
   templateUrl: './params.component.html',
   styleUrls: ['./params.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    StControlCommonModule,
+    StControlModule,
+    FormFieldComponent,
+    NgLetModule,
+    SelectComponent,
+    OptionComponent,
+    FormFieldErrorsDirective,
+    FormFieldErrorComponent,
+    SpinnerComponent,
+    OptgroupComponent,
+    AsyncPipe,
+    StUtilsObjectModule,
+  ],
 })
 export class ParamsComponent extends Destroyable implements OnChanges, OnInit {
-  constructor(
-    private controlBuilder: ControlBuilder,
-    private gameService: GameService,
-    private miniGameService: MiniGameService,
-    private modeService: ModeService,
-    private stageService: StageService,
-    private characterService: CharacterService,
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {
-    super();
-  }
+  private controlBuilder = inject(ControlBuilder);
+  private gameService = inject(GameService);
+  private miniGameService = inject(MiniGameService);
+  private modeService = inject(ModeService);
+  private stageService = inject(StageService);
+  private characterService = inject(CharacterService);
+  private router = inject(Router);
+  private activatedRoute = inject(ActivatedRoute);
+  private changeDetectorRef = inject(ChangeDetectorRef);
 
   private _setQueryParamsOnChange = false;
   private _selectParamIfOne = true;
   private _clearable = false;
   private readonly _approval$ = new BehaviorSubject(false);
 
-  @Input() idPlatform: number | null = null;
-  @Input() idGame: number | null = null;
-  @Input() idMiniGame: number | null = null;
-  @Input() idMode: number | null = null;
-  @Input() idStage: number | null = null;
-  @Input() idCharacterCostume: number | null = null;
+  readonly idPlatform = input<number | null>(null);
+  readonly idGame = input<number | null>(null);
+  readonly idMiniGame = input<number | null>(null);
+  readonly idMode = input<number | null>(null);
+  readonly idStage = input<number | null>(null);
+  readonly idCharacterCostume = input<number | null>(null);
 
   @Input()
   get clearable(): boolean {
@@ -155,21 +181,21 @@ export class ParamsComponent extends Destroyable implements OnChanges, OnInit {
     this._approval$.next(coerceBooleanProperty(approval));
   }
 
-  @Output() readonly idPlatformChange = new EventEmitter<number | null | undefined>();
-  @Output() readonly idGameChange = new EventEmitter<number | null | undefined>();
-  @Output() readonly idMiniGameChange = new EventEmitter<number | null | undefined>();
-  @Output() readonly idModeChange = new EventEmitter<number | null | undefined>();
-  @Output() readonly idStageChange = new EventEmitter<number | null | undefined>();
-  @Output() readonly idCharacterCostumeChange = new EventEmitter<number | null | undefined>();
+  readonly idPlatformChange = output<number | null | undefined>();
+  readonly idGameChange = output<number | null | undefined>();
+  readonly idMiniGameChange = output<number | null | undefined>();
+  readonly idModeChange = output<number | null | undefined>();
+  readonly idStageChange = output<number | null | undefined>();
+  readonly idCharacterCostumeChange = output<number | null | undefined>();
 
-  @Output() readonly platformChange = new EventEmitter<Platform | null | undefined>();
-  @Output() readonly gameChange = new EventEmitter<Game | null | undefined>();
-  @Output() readonly miniGameChange = new EventEmitter<MiniGame | null | undefined>();
-  @Output() readonly modeChange = new EventEmitter<Mode | null | undefined>();
-  @Output() readonly stageChange = new EventEmitter<Stage | null | undefined>();
-  @Output() readonly characterCostumeChange = new EventEmitter<CharacterCostume | null | undefined>();
+  readonly platformChange = output<Platform | null | undefined>();
+  readonly gameChange = output<Game | null | undefined>();
+  readonly miniGameChange = output<MiniGame | null | undefined>();
+  readonly modeChange = output<Mode | null | undefined>();
+  readonly stageChange = output<Stage | null | undefined>();
+  readonly characterCostumeChange = output<CharacterCostume | null | undefined>();
 
-  @Output() readonly paramsChange = new EventEmitter<ParamsForm>();
+  readonly paramsChange = output<ParamsForm>();
 
   formsConfig = defaultConfigs;
 

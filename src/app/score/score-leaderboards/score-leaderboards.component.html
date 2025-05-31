@@ -7,74 +7,86 @@
       (paramsChange)="paramsChange($event)"
       [config]="paramsConfig"
       setQueryParamsOnChange
-    ></bio-params>
+    />
   </bio-card-content>
 </bio-card>
-<bio-card *ngLet="tableLoading$ | async as tableLoading" [bioLoading]="tableLoading" class="top-table flex-table">
+@let tableLoading = tableLoading$ | async;
+<bio-card [bioLoading]="tableLoading" class="top-table flex-table">
   <bio-card-content>
-    <ng-container *ngIf="scoreTopTableOrdered$ | async as scores; else noParams">
-      <ng-container *ngLet="order$ | async as order">
-        <div class="header" *ngLet="order.orderByDirection === 'desc' ? 'arrow_drop_up' : 'arrow_drop_down' as arrow">
+    @if (scoreTopTableOrdered$ | async; as scores) {
+      @let order = order$ | async;
+      @let arrow = order?.orderByDirection === 'desc' ? 'arrow_drop_up' : 'arrow_drop_down';
+      <ng-container>
+        <div class="header">
           <div></div>
           <div class="player" (click)="updateOrderByPlayer()">
             Player
-            <bio-icon class="order-icon" *ngIf="order.orderByType === 'personaName'" small>
-              {{ arrow }}
-            </bio-icon>
+            @if (order?.orderByType === 'personaName') {
+              <bio-icon class="order-icon" small>
+                {{ arrow }}
+              </bio-icon>
+            }
           </div>
-          <div
-            *ngFor="let stage of scores.stages; trackBy: trackById"
-            (click)="updateOrderByStage(stage.id)"
-            [bioTooltip]="stage.name"
-          >
-            {{ stage.shortName }}
-            <bio-icon class="order-icon" *ngIf="order.orderBy === stage.id" small>
-              {{ arrow }}
-            </bio-icon>
-          </div>
+          @for (stage of scores.stages; track trackById($index, stage)) {
+            <div (click)="updateOrderByStage(stage.id)" [bioTooltip]="stage.name">
+              {{ stage.shortName }}
+              @if (order?.orderBy === stage.id) {
+                <bio-icon class="order-icon" small>
+                  {{ arrow }}
+                </bio-icon>
+              }
+            </div>
+          }
           <div (click)="updateOrderByTotal()">
             Total
-            <bio-icon class="order-icon" *ngIf="order.orderByType === 'total'" small>
-              {{ arrow }}
-            </bio-icon>
+            @if (order?.orderByType === 'total') {
+              <bio-icon class="order-icon" small>
+                {{ arrow }}
+              </bio-icon>
+            }
           </div>
         </div>
       </ng-container>
-
       <hr />
       <div class="body">
-        <div class="no-data-found" *ngIf="!scores.scoreTables.length">No scores found</div>
-        <ng-container *ngFor="let player of scores.scoreTables; trackBy: trackByPlayer">
+        @if (!scores.scoreTables.length) {
+          <div class="no-data-found">No scores found</div>
+        }
+        @for (player of scores.scoreTables; track trackByPlayer($index, player)) {
           <div>
             <div class="pos-{{ player.position }}">{{ player.position }}</div>
             <div class="player">
               <a block bioButton [routerLink]="['/player', player.idPlayer]"> {{ player.personaName }} </a>
             </div>
-            <div class="score" *ngFor="let score of player.scores; trackBy: trackByScore">
-              <button [disabled]="!score || (loadingInfo$ | async)" block bioButton (click)="openScoreInfo(score!)">
-                {{ score?.score || 0 | number: '1.0-0' }}
-              </button>
-            </div>
+            @for (score of player.scores; track trackByScore($index, score)) {
+              <div class="score">
+                <button [disabled]="!score || (loadingInfo$ | async)" block bioButton (click)="openScoreInfo(score!)">
+                  {{ score?.score || 0 | number: '1.0-0' }}
+                </button>
+              </div>
+            }
             <div class="total">
               {{ player.total | number: '1.0-0' }}
             </div>
           </div>
           <hr />
-        </ng-container>
+        }
       </div>
-    </ng-container>
-    <ng-template #noParams>
-      <div class="no-params" *ngIf="!tableLoading">Select the params above to search the leaderboards</div>
-    </ng-template>
+    } @else {
+      @if (!tableLoading) {
+        <div class="no-params">Select the params above to search the leaderboards</div>
+      }
+    }
   </bio-card-content>
   <bio-card-actions end>
-    <bio-pagination
-      *ngIf="paginationMeta$ | async as paginationMeta"
-      [meta]="paginationMeta"
-      (currentPageChange)="changePage($event)"
-      (itemsPerPageChange)="changeItemsPerPage($event)"
-      [itemsPerPageOptions]="itemsPerPageOptions"
-      setQueryParamsOnChange
-    ></bio-pagination>
+    @if (paginationMeta$ | async; as paginationMeta) {
+      <bio-pagination
+        [meta]="paginationMeta"
+        (currentPageChange)="changePage($event)"
+        (itemsPerPageChange)="changeItemsPerPage($event)"
+        [itemsPerPageOptions]="itemsPerPageOptions"
+        setQueryParamsOnChange
+      />
+    }
   </bio-card-actions>
 </bio-card>

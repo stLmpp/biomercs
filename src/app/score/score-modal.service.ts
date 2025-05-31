@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import type {
   ScoreApprovalModalComponent,
   ScoreApprovalModalData,
@@ -17,7 +17,7 @@ import type {
 
 @Injectable({ providedIn: 'root' })
 export class ScoreModalService {
-  constructor(private modalService: ModalService) {}
+  private modalService = inject(ModalService);
 
   async openModalScoreApproval(
     data: ScoreApprovalModalData
@@ -30,7 +30,6 @@ export class ScoreModalService {
       {
         data,
         minWidth: '30vw',
-        module: () => import('./score-approval/score-approval.module').then(m => m.ScoreApprovalModule),
       }
     );
   }
@@ -46,10 +45,6 @@ export class ScoreModalService {
       {
         data,
         minWidth: '30vw',
-        module: () =>
-          import('./score-request-changes-modal/score-request-changes-modal.module').then(
-            m => m.ScoreRequestChangesModalModule
-          ),
       }
     );
   }
@@ -60,7 +55,6 @@ export class ScoreModalService {
       {
         data,
         minWidth: '30vw',
-        module: () => import('./score-info/score-info.module').then(m => m.ScoreInfoModule),
       }
     );
   }

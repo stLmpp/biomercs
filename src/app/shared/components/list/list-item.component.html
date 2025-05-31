@@ -1,18 +1,19 @@
-<input
-  #control
-  class="control"
-  type="radio"
-  [name]="name"
-  [value]="value"
-  [checked]="model === value"
-  [disabled]="disabled"
-  (change)="onChange(value)"
-  (blur)="onTouched()"
-  tabindex="-1"
-  *ngIf="listParentControl && value"
-/>
-<ng-content select="[bioPrefix]"></ng-content>
+@if (listParentControl && value()) {
+  <input
+    #control
+    class="control"
+    type="radio"
+    [name]="name"
+    [value]="value()"
+    [checked]="model === value()"
+    [disabled]="disabled"
+    (change)="onChange(value())"
+    (blur)="onTouched()"
+    tabindex="-1"
+  />
+}
+<ng-content select="[bioPrefix]" />
 <div class="list-item-content">
   <ng-content></ng-content>
 </div>
-<ng-content select="[bioSuffix]"></ng-content>
+<ng-content select="[bioSuffix]" />

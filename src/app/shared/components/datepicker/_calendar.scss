@@ -1,4 +1,5 @@
 @use 'variables' as v;
+@use 'sass:color';
 
 $base-size: 2rem;
 $grid-gap: 0.5rem;
@@ -12,7 +13,7 @@ $grid-gap: 0.5rem;
 }
 
 @mixin same-date-border() {
-  border: 1px solid transparentize(v.$primary, 0.3);
+  border: 1px solid color.adjust(v.$primary, $alpha: -0.3, $space: hsl);
 }
 
 @mixin selected-color() {

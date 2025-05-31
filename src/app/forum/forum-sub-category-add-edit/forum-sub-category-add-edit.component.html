@@ -1,4 +1,6 @@
-<bio-loading *ngIf="loading"></bio-loading>
+@if (loading) {
+  <bio-loading />
+}
 <form [controlGroup]="form" (groupSubmit)="save()">
   <h4 bioModalTitle>{{ idSubCategory ? 'Edit' : 'Add' }} Sub category</h4>
   <bio-modal-content>
@@ -18,10 +20,14 @@
         <bio-error *error="'whiteSpace'">Description is required</bio-error>
       </bio-errors>
     </bio-form-field>
-    <ng-container *ngIf="idSubCategory">
-      <bio-checkbox controlName="deleted" *ngIf="!subCategory.deletedDate">Delete this sub category</bio-checkbox>
-      <bio-checkbox controlName="restored" *ngIf="subCategory.deletedDate">Restore this sub category</bio-checkbox>
-    </ng-container>
+    @if (idSubCategory) {
+      @if (!subCategory.deletedDate) {
+        <bio-checkbox controlName="deleted">Delete this sub category</bio-checkbox>
+      }
+      @if (subCategory.deletedDate) {
+        <bio-checkbox controlName="restored">Restore this sub category</bio-checkbox>
+      }
+    }
   </bio-modal-content>
   <bio-modal-actions end>
     <button type="button" bioButton bioModalClose [disabled]="saving">Close</button>

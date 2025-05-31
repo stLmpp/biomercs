@@ -1,18 +1,18 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  ContentChild,
-  EventEmitter,
   HostBinding,
   HostListener,
-  Inject,
   Input,
   LOCALE_ID,
   OnInit,
-  Optional,
-  Output,
-  ViewChild,
   ViewEncapsulation,
+  inject,
+  input,
+  output,
+  viewChild,
+  contentChild,
+  model,
 } from '@angular/core';
 import { LocalState } from '@stlmpp/store';
 import { addMonths, addYears, setMonth, setYear, subMonths, subYears } from 'date-fns';
@@ -25,6 +25,12 @@ import { ControlState, ControlValue } from '@stlmpp/control';
 import { CalendarKeyboardNavigation } from '@shared/components/datepicker/calendar-keyboard-navigation';
 import { CALENDAR_LOCALE } from '@shared/components/datepicker/calendar-locale.token';
 import { CalendarFooterDirective } from '@shared/components/datepicker/calendar/calendar-footer.directive';
+import { ButtonComponent } from '../../button/button.component';
+import { IconComponent } from '../../icon/icon.component';
+import { CalendarDaysComponent } from '../calendar-days/calendar-days.component';
+import { CalendarMonthsComponent } from '../calendar-months/calendar-months.component';
+import { CalendarYearsComponent } from '../calendar-years/calendar-years.component';
+import { AsyncPipe } from '@angular/common';
 
 interface CalendarComponentState {
   date: Date;
@@ -41,16 +47,25 @@ interface CalendarComponentState {
   encapsulation: ViewEncapsulation.None,
   host: { class: 'bio-calendar' },
   providers: [{ provide: ControlValue, useExisting: CalendarComponent, multi: true }],
+  imports: [
+    ButtonComponent,
+    IconComponent,
+    CalendarDaysComponent,
+    CalendarMonthsComponent,
+    CalendarYearsComponent,
+    AsyncPipe,
+  ],
 })
 export class CalendarComponent
   extends LocalState<CalendarComponentState>
   implements OnInit, ControlValue<Date | null | undefined>
 {
-  constructor(
-    private readonly calendarAdapter: CalendarAdapter,
-    @Inject(LOCALE_ID) localeId: string,
-    @Optional() @Inject(CALENDAR_LOCALE) locale?: string
-  ) {
+  private readonly calendarAdapter = inject(CalendarAdapter);
+
+  constructor() {
+    const localeId = inject(LOCALE_ID);
+    const locale = inject(CALENDAR_LOCALE, { optional: true });
+
     super(
       { date: new Date(), viewMode: CalendarViewModeEnum.day, locale: locale ?? localeId, value: null },
       { inputs: ['viewMode', 'locale', 'value'] }
@@ -59,14 +74,14 @@ export class CalendarComponent
 
   private _disabled = false;
 
-  @ViewChild(CalendarKeyboardNavigation) readonly calendarKeyboardNavigation!: CalendarKeyboardNavigation;
-  @ContentChild(CalendarFooterDirective) readonly calendarFooterDirective?: CalendarFooterDirective;
+  readonly calendarKeyboardNavigation = viewChild.required(CalendarKeyboardNavigation);
+  readonly calendarFooterDirective = contentChild(CalendarFooterDirective);
 
-  @Input() value: Date | null | undefined;
-  @Input() viewMode: CalendarViewModeEnum = CalendarViewModeEnum.day;
-  @Input() locale = this.getState('locale');
-  @Output() readonly valueChange = new EventEmitter<Date | null | undefined>();
-  @Output() readonly viewModeChange = new EventEmitter<CalendarViewModeEnum>();
+  readonly value = model<Date | null>();
+  readonly viewMode = input<CalendarViewModeEnum>(CalendarViewModeEnum.day);
+  readonly locale = input(this.getState('locale'));
+  readonly valueChange = output<Date | null | undefined>();
+  readonly viewModeChange = output<CalendarViewModeEnum>();
 
   @Input()
   @HostBinding('attr.aria-disabled')
@@ -200,10 +215,11 @@ export class CalendarComponent
   }
 
   onDaySelect($event: Date | null | undefined): void {
-    this.value = $event;
-    this.valueChange.emit(this.value);
+    this.value.set($event);
+    const value = this.value();
+    this.valueChange.emit(value);
     this.updateState(state => ({ ...state, date: $event ?? state.date, value: $event }));
-    this.onChange$.next(this.value);
+    this.onChange$.next(value);
   }
 
   onMonthSelect($event: number): void {
@@ -215,13 +231,13 @@ export class CalendarComponent
   }
 
   setValue(date: Date | null | undefined): void {
-    this.value = date;
-    this.valueChange.emit(this.value);
+    this.value.set(date);
+    this.valueChange.emit(this.value());
     this.updateState(state => ({ ...state, value: date, date: date ?? state.date }));
   }
 
   focus(): void {
-    this.calendarKeyboardNavigation.focusKeyManager.setFirstItemActive();
+    this.calendarKeyboardNavigation().focusKeyManager.setFirstItemActive();
   }
 
   setDisabled(disabled: boolean): void {
@@ -231,8 +247,9 @@ export class CalendarComponent
   stateChanged(state: ControlState): void {}
 
   ngOnInit(): void {
-    if (this.value) {
-      this.updateState({ date: this.value });
+    const value = this.value();
+    if (value) {
+      this.updateState({ date: value });
     }
   }
 

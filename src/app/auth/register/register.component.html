@@ -2,7 +2,7 @@
   <bio-card class="center-block-mobile">
     <h3 bioCardTitle>Register</h3>
     <bio-card-content>
-      <ng-container *ngIf="emailSent; else emailNotSent">
+      @if (emailSent) {
         <p>Please confirm the code we sent to your e-mail</p>
         <bio-confirmation-code-input
           controlName="code"
@@ -10,8 +10,7 @@
           [codeError]="errorConfirmationCode"
           (focusoutLastItem)="submit()"
         ></bio-confirmation-code-input>
-      </ng-container>
-      <ng-template #emailNotSent>
+      } @else {
         <bio-form-field label="Username" [loading]="usernameControl.pending">
           <input bioInput placeholder="Username" controlName="username" autocomplete="username" />
           <bio-errors>
@@ -69,20 +68,14 @@
             <bio-error *error="'siblingEquals'">Passwords doesn't match</bio-error>
           </bio-errors>
         </bio-form-field>
-      </ng-template>
+      }
     </bio-card-content>
     <bio-card-actions end>
-      <button
-        bioButton
-        primary
-        type="button"
-        (click)="registerSteam()"
-        [loading]="loadingSteam"
-        [disabled]="loading"
-        *ngIf="!emailSent"
-      >
-        Register with Steam
-      </button>
+      @if (!emailSent) {
+        <button bioButton primary type="button" (click)="registerSteam()" [loading]="loadingSteam" [disabled]="loading">
+          Register with Steam
+        </button>
+      }
       <button
         bioButton
         primary

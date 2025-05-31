@@ -8,7 +8,14 @@ import { TextFieldModule } from '@angular/cdk/text-field';
 import { ButtonModule } from '@shared/components/button/button.module';
 
 @NgModule({
-  declarations: [ContactComponent],
-  imports: [ContactRoutingModule, CardModule, FormModule, ButtonModule, StControlModule, TextFieldModule],
+  imports: [
+    ContactRoutingModule,
+    CardModule,
+    FormModule,
+    ButtonModule,
+    StControlModule,
+    TextFieldModule,
+    ContactComponent,
+  ],
 })
 export class ContactModule {}

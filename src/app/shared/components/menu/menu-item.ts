@@ -1,10 +1,11 @@
 import { FocusableOption } from '@angular/cdk/a11y';
-import { Directive, ElementRef, HostListener } from '@angular/core';
+import { Directive, ElementRef, HostListener, inject } from '@angular/core';
 import { Menu } from './menu';
 
 @Directive()
 export abstract class MenuItem implements FocusableOption {
-  protected constructor(public menu: Menu, public elementRef: ElementRef) {}
+  menu = inject(Menu);
+  elementRef = inject(ElementRef);
 
   @HostListener('click')
   onClick(): void {

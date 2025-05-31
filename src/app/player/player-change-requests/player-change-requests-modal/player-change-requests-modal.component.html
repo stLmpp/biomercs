@@ -2,7 +2,7 @@
   <h4 bioModalTitle>Update score</h4>
   <bio-modal-content>
     <div controlArrayName="scorePlayers">
-      <ng-container *ngFor="let scorePlayer of data.score.scorePlayers; trackBy: trackById; let $index = index">
+      @for (scorePlayer of data.score.scorePlayers; track trackById($index, scorePlayer)) {
         <div [controlGroupName]="$index" class="player">
           <div class="title">
             <h5>Player {{ $index + 1 }} ({{ scorePlayer.idPlayer }})</h5>
@@ -15,22 +15,21 @@
             <!--<editor-fold desc="Character">-->
             <bio-form-field [loading]="loadingCharacters" label="Character">
               <bio-select controlName="idCharacterCostume" placeholder="Character">
-                <bio-option disabled *ngIf="loadingCharacters">
-                  <bio-spinner [size]="0.1"></bio-spinner> Loading...
-                </bio-option>
-                <bio-optgroup
-                  *ngFor="let character of characters$ | async; trackBy: trackById"
-                  [label]="character.name"
-                  [title]="character.name"
-                >
-                  <bio-option
-                    *ngFor="let characterCostume of character.characterCostumes; trackBy: trackById"
-                    [value]="characterCostume.id"
-                    title="{{ character.name }} {{ characterCostume.name }}"
-                  >
-                    {{ characterCostume.name }}
-                  </bio-option>
-                </bio-optgroup>
+                @if (loadingCharacters) {
+                  <bio-option disabled> <bio-spinner [size]="0.1"></bio-spinner> Loading... </bio-option>
+                }
+                @for (character of characters$ | async; track trackById($index, character)) {
+                  <bio-optgroup [label]="character.name" [title]="character.name">
+                    @for (characterCostume of character.characterCostumes; track trackById($index, characterCostume)) {
+                      <bio-option
+                        [value]="characterCostume.id"
+                        title="{{ character.name }} {{ characterCostume.name }}"
+                      >
+                        {{ characterCostume.name }}
+                      </bio-option>
+                    }
+                  </bio-optgroup>
+                }
               </bio-select>
               <bio-errors>
                 <bio-error *error="'required'">Character is required</bio-error>
@@ -58,23 +57,27 @@
             </bio-form-field>
             <bio-form-field label="Controller" [loading]="loadingInputTypes">
               <bio-select controlName="idPlatformInputType" placeholder="Controller">
-                <bio-option
-                  *ngFor="let platformInputType of platformInputTypes$ | async; trackBy: trackById"
-                  [value]="platformInputType.id"
-                >
-                  {{ platformInputType.nameInputType }}
-                </bio-option>
+                @for (platformInputType of platformInputTypes$ | async; track trackById($index, platformInputType)) {
+                  <bio-option [value]="platformInputType.id">
+                    {{ platformInputType.nameInputType }}
+                  </bio-option>
+                }
               </bio-select>
             </bio-form-field>
           </div>
-          <div *ngIf="scorePlayersControl.get($index)! as playerControl">
-            <ng-container *ngLet="playerControl.value$ | async as playerUpdate">
-              <a *ngIf="playerControl.get('evidence')!.valid" bio-url-preview [url]="playerUpdate.evidence || null"></a>
-            </ng-container>
-          </div>
+          @if (scorePlayersControl.get($index)!; as playerControl) {
+            <div>
+              @let playerUpdate = playerControl.value$ | async;
+              <ng-container>
+                @if (playerControl.get('evidence')!.valid) {
+                  <a bio-url-preview [url]="playerUpdate?.evidence || null"></a>
+                }
+              </ng-container>
+            </div>
+          }
         </div>
         <hr />
-      </ng-container>
+      }
     </div>
     <div class="score-info body">
       <bio-form-field label="Score">
@@ -108,12 +111,11 @@
     <hr />
     <h5>Changes Requested</h5>
     <div class="score-changes" controlArrayName="idsScoreChangeRequests">
-      <div
-        *ngFor="let scoreChangeRequest of data.score.scoreChangeRequests; trackBy: trackById; let $index = index"
-        [controlGroupName]="$index"
-      >
-        <bio-checkbox controlName="checked">{{ scoreChangeRequest.description }}</bio-checkbox>
-      </div>
+      @for (scoreChangeRequest of data.score.scoreChangeRequests; track trackById($index, scoreChangeRequest)) {
+        <div [controlGroupName]="$index">
+          <bio-checkbox controlName="checked">{{ scoreChangeRequest.description }}</bio-checkbox>
+        </div>
+      }
     </div>
     <hr />
   </bio-modal-content>

@@ -3,12 +3,12 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ContentChild,
-  ContentChildren,
-  Input,
+  contentChild,
+  contentChildren,
+  inject,
+  input,
   OnChanges,
   OnDestroy,
-  QueryList,
   ViewEncapsulation,
 } from '@angular/core';
 import { LabelDirective } from './label.directive';
@@ -19,11 +19,14 @@ import { auditTime, Subject, takeUntil } from 'rxjs';
 import { FormFieldErrorComponent } from './error.component';
 import { PrefixDirective } from '../common/prefix.directive';
 import { SuffixDirective } from '../common/suffix.directive';
-import { Control, ControlDirective, ModelDirective } from '@stlmpp/control';
+import { Control, ControlDirective, ControlState, ModelDirective } from '@stlmpp/control';
 import { BooleanInput, isNil } from 'st-utils';
 import { Select } from '@shared/components/select/select';
 import { FormFieldChild } from '@shared/components/form/form-field-child';
-import { ControlState } from '@stlmpp/control/lib/control/control';
+import { AsyncPipe, NgClass } from '@angular/common';
+import { SpinnerComponent } from '../spinner/spinner.component';
+import { HasValidatorsPipe } from '@shared/validators/has-validators.pipe';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 let uniqueId = 0;
 
@@ -35,43 +38,44 @@ let uniqueId = 0;
   encapsulation: ViewEncapsulation.None,
   host: { class: 'form-field' },
   animations: [Animations.slide.in(), Animations.fade.in()],
+  imports: [LabelDirective, NgClass, SpinnerComponent, AsyncPipe, HasValidatorsPipe],
 })
 export class FormFieldComponent implements AfterContentInit, OnChanges, OnDestroy {
-  constructor(private changeDetectorRef: ChangeDetectorRef) {}
+  private changeDetectorRef = inject(ChangeDetectorRef);
 
   private readonly _destroy$ = new Subject<void>();
 
-  @ContentChild(LabelDirective) readonly labelDirective?: LabelDirective;
-  @ContentChild(InputDirective) readonly inputDirective?: InputDirective;
-  @ContentChild(ControlDirective) readonly controlDirective?: ControlDirective;
-  @ContentChild(ModelDirective) readonly modelDirective?: ModelDirective;
-  @ContentChildren(FormFieldErrorComponent, { descendants: true })
-  readonly errorComponents!: QueryList<FormFieldErrorComponent>;
-  @ContentChild(PrefixDirective) readonly prefixDirective?: PrefixDirective;
-  @ContentChild(SuffixDirective) readonly suffixDirective?: SuffixDirective;
-  @ContentChild(Select) readonly select?: Select;
-  @ContentChildren(FormFieldChild, { descendants: true }) readonly formFieldChildren!: QueryList<FormFieldChild>;
+  readonly labelDirective = contentChild(LabelDirective);
+  readonly inputDirective = contentChild(InputDirective);
+  readonly controlDirective = contentChild(ControlDirective);
+  readonly modelDirective = contentChild(ModelDirective);
+  readonly errorComponents = contentChildren(FormFieldErrorComponent, { descendants: true });
+  readonly prefixDirective = contentChild(PrefixDirective);
+  readonly suffixDirective = contentChild(SuffixDirective);
+  readonly select = contentChild(Select);
+  readonly formFieldChildren = contentChildren(FormFieldChild, { descendants: true });
 
-  @Input() label?: string;
-  @Input() id: string | number = uniqueId++;
+  readonly label = input<string>();
+  readonly id = input<string | number>(uniqueId++);
 
-  @Input() loading?: BooleanInput;
-  @Input() disabled?: BooleanInput;
-  @Input() forceRequired = false;
+  readonly loading = input<BooleanInput>();
+  readonly disabled = input<BooleanInput>();
+  readonly forceRequired = input(false);
 
   get control(): Control | undefined {
-    return this.controlDirective?.control ?? this.modelDirective?.control;
+    return this.controlDirective()?.control ?? this.modelDirective()?.control;
   }
 
   controlState?: ControlState;
 
   ngAfterContentInit(): void {
-    if (this.labelDirective) {
-      this.labelDirective.for = this.id;
+    const labelDirective = this.labelDirective();
+    if (labelDirective) {
+      labelDirective.for.set(this.id());
     }
-    if (this.inputDirective) {
-      const inputDirective = this.inputDirective;
-      inputDirective.id = this.id;
+    const inputDirectiveValue = this.inputDirective();
+    if (inputDirectiveValue) {
+      inputDirectiveValue.id.set(this.id());
       if (this.control) {
         this.control.stateChanged$.pipe(takeUntil(this._destroy$), auditTime(50)).subscribe(state => {
           this.controlState = state;
@@ -80,13 +84,16 @@ export class FormFieldComponent implements AfterContentInit, OnChanges, OnDestro
       }
     }
     if (this.control) {
-      if (!isNil(this.disabled)) {
-        this.control.disable(!!this.disabled);
+      const disabled = this.disabled();
+      if (!isNil(disabled)) {
+        this.control.disable(!!disabled);
       }
     }
-    this.formFieldChildren.changes.pipe(takeUntil(this._destroy$), auditTime(50)).subscribe(() => {
-      this.changeDetectorRef.markForCheck();
-    });
+    toObservable(this.formFieldChildren)
+      .pipe(takeUntil(this._destroy$), auditTime(50))
+      .subscribe(() => {
+        this.changeDetectorRef.markForCheck();
+      });
   }
 
   ngOnChanges(changes: SimpleChangesCustom<FormFieldComponent>): void {

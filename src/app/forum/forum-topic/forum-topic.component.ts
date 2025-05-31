@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { TopicWithPosts } from '@model/forum/topic';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
@@ -12,24 +12,40 @@ import { PostModalService } from '../service/post-modal.service';
 import { TopicModalService } from '../service/topic-modal.service';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { catchAndThrow } from '@util/operators/catch-and-throw';
+import { CardComponent } from '@shared/components/card/card.component';
+import { LoadingComponent } from '@shared/components/spinner/loading/loading.component';
+import { CardContentDirective } from '@shared/components/card/card-content.directive';
+import { CheckboxComponent } from '@shared/components/checkbox/checkbox.component';
+import { ButtonComponent } from '@shared/components/button/button.component';
+import { IconComponent } from '@shared/components/icon/icon.component';
+import { PaginationComponent } from '@shared/components/pagination/pagination.component';
+import { ForumTopicPostComponent } from './forum-topic-post/forum-topic-post.component';
+import { CardActionsDirective } from '@shared/components/card/card-actions.directive';
 
 @Component({
   selector: 'bio-forum-topic',
   templateUrl: './forum-topic.component.html',
   styleUrls: ['./forum-topic.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    CardComponent,
+    LoadingComponent,
+    CardContentDirective,
+    CheckboxComponent,
+    ButtonComponent,
+    IconComponent,
+    PaginationComponent,
+    ForumTopicPostComponent,
+    CardActionsDirective,
+  ],
 })
 export class ForumTopicComponent extends Destroyable implements OnInit {
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private router: Router,
-    private changeDetectorRef: ChangeDetectorRef,
-    private topicService: TopicService,
-    private postModalService: PostModalService,
-    private topicModalService: TopicModalService
-  ) {
-    super();
-  }
+  private activatedRoute = inject(ActivatedRoute);
+  private router = inject(Router);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+  private topicService = inject(TopicService);
+  private postModalService = inject(PostModalService);
+  private topicModalService = inject(TopicModalService);
 
   topic: TopicWithPosts = this.activatedRoute.snapshot.data[RouteDataEnum.topicWithPosts];
   loading = false;

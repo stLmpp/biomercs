@@ -1,10 +1,17 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
-import { Control, ControlGroup, Validators } from '@stlmpp/control';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import {
+  Control,
+  ControlGroup,
+  Validators,
+  StControlModule,
+  StControlCommonModule,
+  StControlValueModule,
+} from '@stlmpp/control';
 import { AuthService } from '../auth.service';
 import { WINDOW } from '../../core/window.service';
 import { finalize, map, takeUntil } from 'rxjs';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { catchAndThrow } from '@util/operators/catch-and-throw';
 import { SnackBarService } from '@shared/components/snack-bar/snack-bar.service';
 import { ModalService } from '@shared/components/modal/modal.service';
@@ -14,26 +21,56 @@ import { HttpStatusCode } from '@angular/common/http';
 import { AuthCredentials } from '@model/auth';
 import { filterNil } from '@util/operators/filter';
 import { Destroyable } from '@shared/components/common/destroyable-component';
+import { CardComponent } from '../../shared/components/card/card.component';
+import { CardTitleDirective } from '../../shared/components/card/card-title.directive';
+import { CardContentDirective } from '../../shared/components/card/card-content.directive';
+import { FormFieldComponent } from '../../shared/components/form/form-field.component';
+import { LabelDirective } from '../../shared/components/form/label.directive';
+import { InputDirective } from '../../shared/components/form/input.directive';
+import { FormFieldErrorsDirective } from '../../shared/components/form/errors.directive';
+import { FormFieldErrorComponent } from '../../shared/components/form/error.component';
+import { FormFieldHintDirective } from '../../shared/components/form/hint.directive';
+import { ButtonComponent } from '../../shared/components/button/button.component';
+import { SuffixDirective } from '../../shared/components/common/suffix.directive';
+import { IconComponent } from '../../shared/components/icon/icon.component';
+import { CheckboxComponent } from '../../shared/components/checkbox/checkbox.component';
+import { CardActionsDirective } from '../../shared/components/card/card-actions.directive';
 
 @Component({
   selector: 'bio-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    StControlModule,
+    StControlCommonModule,
+    CardComponent,
+    CardTitleDirective,
+    CardContentDirective,
+    FormFieldComponent,
+    LabelDirective,
+    InputDirective,
+    StControlValueModule,
+    FormFieldErrorsDirective,
+    FormFieldErrorComponent,
+    FormFieldHintDirective,
+    RouterLink,
+    ButtonComponent,
+    SuffixDirective,
+    IconComponent,
+    CheckboxComponent,
+    CardActionsDirective,
+  ],
 })
 export class LoginComponent extends Destroyable implements OnInit {
-  constructor(
-    private authService: AuthService,
-    @Inject(WINDOW) private window: Window,
-    private dialogService: DialogService,
-    private router: Router,
-    private snackBarService: SnackBarService,
-    private activatedRoute: ActivatedRoute,
-    private modalService: ModalService,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {
-    super();
-  }
+  private authService = inject(AuthService);
+  private window = inject<Window>(WINDOW);
+  private dialogService = inject(DialogService);
+  private router = inject(Router);
+  private snackBarService = inject(SnackBarService);
+  private activatedRoute = inject(ActivatedRoute);
+  private modalService = inject(ModalService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
 
   loading = false;
   loadingSteam = false;

@@ -9,8 +9,7 @@ const DECLARATIONS = [ListDirective, ListItemComponent, ListControlValue, ListIt
 const MODULES = [CommonModule, BioCommonModule];
 
 @NgModule({
-  declarations: [...DECLARATIONS],
-  imports: [...MODULES],
+  imports: [...MODULES, ...DECLARATIONS],
   exports: [...DECLARATIONS, ...MODULES],
 })
 export class ListModule {}

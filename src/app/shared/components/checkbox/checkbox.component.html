@@ -1,4 +1,4 @@
-<label class="checkbox" [ngClass]="labelPosition">
+<label class="checkbox" [ngClass]="labelPosition()">
   <input
     type="checkbox"
     [checked]="checked"
@@ -7,7 +7,7 @@
     (blur)="onBlur()"
     [disabled]="disabled"
     [attr.aria-disabled]="disabled"
-    [name]="name"
+    [name]="name()"
   />
   <ng-content></ng-content>
 </label>

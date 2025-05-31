@@ -1,9 +1,5 @@
-import {
-  CurrencyMaskConfig,
-  CurrencyMaskDirective as _CurrencyMaskDirective,
-  CurrencyMaskInputMode,
-} from 'ngx-currency';
-import { Directive, ElementRef, Inject, KeyValueDiffers, OnInit, Optional } from '@angular/core';
+import { NgxCurrencyConfig, NgxCurrencyDirective, NgxCurrencyInputMode } from 'ngx-currency';
+import { Directive, ElementRef, KeyValueDiffers, OnInit, inject } from '@angular/core';
 import { ControlValue } from '@stlmpp/control';
 import { Subject } from 'rxjs';
 import { CURRENCY_MASK_CONFIG } from '@shared/currency-mask/currency-mask-config.token';
@@ -12,12 +8,12 @@ import { CURRENCY_MASK_CONFIG } from '@shared/currency-mask/currency-mask-config
   selector: 'input[bioCurrencyMask]',
   providers: [{ provide: ControlValue, useExisting: CurrencyMaskDirective, multi: false }],
 })
-export class CurrencyMaskDirective extends _CurrencyMaskDirective implements ControlValue<number>, OnInit {
-  constructor(
-    elementRef: ElementRef,
-    keyValueDiffers: KeyValueDiffers,
-    @Optional() @Inject(CURRENCY_MASK_CONFIG) currencyMaskOptions?: Partial<CurrencyMaskConfig>
-  ) {
+export class CurrencyMaskDirective extends NgxCurrencyDirective implements ControlValue<number>, OnInit {
+  constructor() {
+    const elementRef = inject(ElementRef);
+    const keyValueDiffers = inject(KeyValueDiffers);
+    const currencyMaskOptions = inject<Partial<NgxCurrencyConfig>>(CURRENCY_MASK_CONFIG, { optional: true });
+
     super(
       {
         align: 'right',
@@ -29,11 +25,11 @@ export class CurrencyMaskDirective extends _CurrencyMaskDirective implements Con
         suffix: '',
         thousands: '.',
         nullable: true,
-        inputMode: CurrencyMaskInputMode.FINANCIAL,
+        inputMode: NgxCurrencyInputMode.Financial,
         ...currencyMaskOptions,
       },
-      elementRef,
-      keyValueDiffers
+      keyValueDiffers,
+      elementRef
     );
   }
 
@@ -49,15 +45,14 @@ export class CurrencyMaskDirective extends _CurrencyMaskDirective implements Con
   }
 
   override registerOnChange(): void {
-    super.registerOnChange((value: number) => this.onChange$.next(value));
+    super.registerOnChange(value => this.onChange$.next(value ?? 0));
   }
 
   override registerOnTouched(): void {
     super.registerOnTouched(() => this.onTouched$.next());
   }
 
-  override ngOnInit(): void {
-    super.ngOnInit();
+  ngOnInit(): void {
     this.registerOnChange();
     this.registerOnTouched();
   }

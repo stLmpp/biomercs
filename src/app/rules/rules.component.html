@@ -7,9 +7,13 @@
         <bio-option [value]="ruleTypeEnum.Forum">Forum</bio-option>
       </bio-select>
     </bio-form-field>
-    <h5 *ngFor="let rule of rules$ | async; trackBy: trackBy">{{ rule.order }} - {{ rule.description }}</h5>
+    @for (rule of rules$ | async; track trackBy($index, rule)) {
+      <h5>{{ rule.order }} - {{ rule.description }}</h5>
+    }
   </bio-card-content>
-  <bio-card-actions *ngIf="isAdmin$ | async">
-    <a bioButton primary routerLink="/admin/rules">Edit rules</a>
-  </bio-card-actions>
+  @if (isAdmin$ | async) {
+    <bio-card-actions>
+      <a bioButton primary routerLink="/admin/rules">Edit rules</a>
+    </bio-card-actions>
+  }
 </bio-card>

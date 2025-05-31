@@ -7,7 +7,6 @@ import { AuthSharedModule } from '../shared/auth-shared.module';
 import { ButtonModule } from '@shared/components/button/button.module';
 
 @NgModule({
-  declarations: [SteamRegisterComponent],
-  imports: [CommonModule, AuthSteamRoutingModule, AuthSharedModule, CardModule, ButtonModule],
+  imports: [CommonModule, AuthSteamRoutingModule, AuthSharedModule, CardModule, ButtonModule, SteamRegisterComponent],
 })
 export class AuthSteamModule {}

@@ -1,13 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Control, ControlValidator } from '@stlmpp/control';
 import { map, Observable, switchMap, timer } from 'rxjs';
 import { AuthService } from '../../auth/auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class SteamRegisterNameExistsValidator extends ControlValidator<string | null | undefined, boolean> {
-  constructor(private authService: AuthService) {
-    super();
-  }
+  private authService = inject(AuthService);
 
   readonly name = 'steamRegisterNameExists';
   override readonly async = true;

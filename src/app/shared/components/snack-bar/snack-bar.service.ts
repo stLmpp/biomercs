@@ -1,4 +1,4 @@
-import { Inject, Injectable, Injector } from '@angular/core';
+import { Injectable, Injector, inject } from '@angular/core';
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { SnackBarComponent } from './snack-bar.component';
 import { SNACK_BAR_DEFAULT_CONFIG, SnackBarConfig } from './snack-bar.config';
@@ -8,11 +8,9 @@ import { take } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class SnackBarService {
-  constructor(
-    private overlay: Overlay,
-    @Inject(SNACK_BAR_DEFAULT_CONFIG) private defaultSnackBarConfig: SnackBarConfig,
-    private injector: Injector
-  ) {}
+  private overlay = inject(Overlay);
+  private defaultSnackBarConfig = inject<SnackBarConfig>(SNACK_BAR_DEFAULT_CONFIG);
+  private injector = inject(Injector);
 
   private _snackBarMap = new Map<string, SnackBarComponent>();
 
@@ -36,17 +34,12 @@ export class SnackBarService {
         { provide: OverlayRef, useValue: overlayRef },
       ],
     });
-    const componentPortal = new ComponentPortal(
-      SnackBarComponent,
-      config.viewContainerRef,
-      injector,
-      config.componentFactoryResolver
-    );
+    const componentPortal = new ComponentPortal(SnackBarComponent, config.viewContainerRef, injector);
     const componentRef = overlayRef.attach(componentPortal);
-    componentRef.instance.actionObservable = config.actionObservable;
-    componentRef.instance.action = config.action;
-    componentRef.instance.message = config.message;
-    componentRef.instance.showAction = config.showAction;
+    componentRef.instance.actionObservable.set(config.actionObservable);
+    componentRef.instance.action.set(config.action);
+    componentRef.instance.message.set(config.message);
+    componentRef.instance.showAction.set(config.showAction);
     componentRef.changeDetectorRef.markForCheck();
     this._snackBarMap.set(config.id, componentRef.instance);
     componentRef.instance.onClose$.pipe(take(1)).subscribe(() => {

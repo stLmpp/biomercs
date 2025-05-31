@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, Optional } from '@angular/core';
-import { BadgeBase, BioBadgeConfig } from '@shared/components/badge/badge';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { BadgeBase } from '@shared/components/badge/badge';
 
 @Component({
   selector: 'bio-badge',
@@ -8,8 +8,4 @@ import { BadgeBase, BioBadgeConfig } from '@shared/components/badge/badge';
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'badge' },
 })
-export class BadgeComponent extends BadgeBase {
-  constructor(@Optional() bioBadgeConfig: BioBadgeConfig) {
-    super(bioBadgeConfig);
-  }
-}
+export class BadgeComponent extends BadgeBase {}

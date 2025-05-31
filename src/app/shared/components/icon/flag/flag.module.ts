@@ -6,8 +6,7 @@ const DECLARATIONS = [FlagComponent];
 const MODULES = [CommonModule];
 
 @NgModule({
-  declarations: [...DECLARATIONS],
-  imports: [...MODULES],
+  imports: [...MODULES, ...DECLARATIONS],
   exports: [...DECLARATIONS, ...MODULES],
 })
 export class FlagModule {}

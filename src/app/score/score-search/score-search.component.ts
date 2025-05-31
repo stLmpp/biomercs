@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { PaginationMeta } from '@model/pagination';
 import { Score, ScoreSearch } from '@model/score';
 import { combineLatest, debounceTime, finalize, switchMap, takeUntil, tap } from 'rxjs';
-import { Control, ControlGroup } from '@stlmpp/control';
+import { Control, ControlGroup, StControlModule, StControlCommonModule, StControlValueModule } from '@stlmpp/control';
 import { AuthQuery } from '../../auth/auth.query';
 import { ScoreService } from '../score.service';
 import { ScoreStatusEnum } from '@model/enum/score-status.enum';
@@ -24,30 +24,59 @@ import { ScoreModalService } from '../score-modal.service';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { Platform } from '@model/platform';
 import { Destroyable } from '@shared/components/common/destroyable-component';
+import { PageTitleComponent } from '../../shared/title/page-title.component';
+import { CardComponent } from '../../shared/components/card/card.component';
+import { CardTitleDirective } from '../../shared/components/card/card-title.directive';
+import { CardContentDirective } from '../../shared/components/card/card-content.directive';
+import { FormFieldComponent } from '../../shared/components/form/form-field.component';
+import { SelectMultipleComponent } from '../../shared/components/select/select-multiple.component';
+import { OptionComponent } from '../../shared/components/select/option.component';
+import { OptgroupComponent } from '../../shared/components/select/optgroup.component';
+import { InputDirective } from '../../shared/components/form/input.directive';
+import { CheckboxComponent } from '../../shared/components/checkbox/checkbox.component';
+import { CardActionsDirective } from '../../shared/components/card/card-actions.directive';
+import { ButtonComponent } from '../../shared/components/button/button.component';
+import { ScoreListResponsiveComponent } from '../score-list/score-list-responsive/score-list-responsive.component';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'bio-score-search',
   templateUrl: './score-search.component.html',
   styleUrls: ['./score-search.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    PageTitleComponent,
+    StControlModule,
+    StControlCommonModule,
+    CardComponent,
+    CardTitleDirective,
+    CardContentDirective,
+    FormFieldComponent,
+    SelectMultipleComponent,
+    OptionComponent,
+    OptgroupComponent,
+    InputDirective,
+    StControlValueModule,
+    CheckboxComponent,
+    CardActionsDirective,
+    ButtonComponent,
+    ScoreListResponsiveComponent,
+    AsyncPipe,
+  ],
 })
 export class ScoreSearchComponent extends Destroyable implements OnInit {
-  constructor(
-    private authQuery: AuthQuery,
-    private scoreService: ScoreService,
-    private authDateFormatPipe: AuthDateFormatPipe,
-    private gameService: GameService,
-    private miniGameService: MiniGameService,
-    private modeService: ModeService,
-    private stageService: StageService,
-    private characterService: CharacterService,
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private scoreModalService: ScoreModalService,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {
-    super();
-  }
+  private authQuery = inject(AuthQuery);
+  private scoreService = inject(ScoreService);
+  private authDateFormatPipe = inject(AuthDateFormatPipe);
+  private gameService = inject(GameService);
+  private miniGameService = inject(MiniGameService);
+  private modeService = inject(ModeService);
+  private stageService = inject(StageService);
+  private characterService = inject(CharacterService);
+  private router = inject(Router);
+  private activatedRoute = inject(ActivatedRoute);
+  private scoreModalService = inject(ScoreModalService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
 
   gameLoading = false;
   miniGameLoading = false;

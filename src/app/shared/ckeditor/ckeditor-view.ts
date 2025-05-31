@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, inject } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
@@ -8,7 +8,8 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CKEditorView implements AfterViewInit {
-  constructor(private domSanitizer: DomSanitizer, private elementRef: ElementRef<HTMLElement>) {}
+  private domSanitizer = inject(DomSanitizer);
+  private elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
 
   private _afterViewInit = false;
 
@@ -39,11 +40,11 @@ export class CKEditorView implements AfterViewInit {
       media.innerHTML = `
         <div class="ck-media__wrapper">
           <div style="position: relative; height: 500px;">
-            <iframe 
-              src="https://www.youtube.com/embed/${videoId}" 
-              style="position: absolute; width: 100%; height: 100%; top: 0; left: 0;" 
-              frameborder="0" 
-              allow="autoplay; encrypted-media" 
+            <iframe
+              src="https://www.youtube.com/embed/${videoId}"
+              style="position: absolute; width: 100%; height: 100%; top: 0; left: 0;"
+              frameborder="0"
+              allow="autoplay; encrypted-media"
               allowfullscreen="">
             </iframe>
           </div>

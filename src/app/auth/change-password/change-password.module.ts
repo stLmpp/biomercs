@@ -8,7 +8,13 @@ import { CardModule } from '@shared/components/card/card.module';
 import { ButtonModule } from '@shared/components/button/button.module';
 
 @NgModule({
-  declarations: [ChangePasswordComponent, ChangePasswordConfirmComponent],
-  imports: [ChangePasswordRoutingModule, AuthSharedModule, CardModule, ButtonModule],
+  imports: [
+    ChangePasswordRoutingModule,
+    AuthSharedModule,
+    CardModule,
+    ButtonModule,
+    ChangePasswordComponent,
+    ChangePasswordConfirmComponent,
+  ],
 })
 export class ChangePasswordModule {}

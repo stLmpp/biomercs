@@ -4,54 +4,86 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  EventEmitter,
   HostBinding,
-  Input,
+  inject,
+  input,
   OnChanges,
-  Output,
+  output,
 } from '@angular/core';
 import { Post, PostUpdateDto } from '@model/forum/post';
 import { PlayerService } from '../../../player/player.service';
 import { PostService } from '../../service/post.service';
 import { combineLatest, finalize, map, ReplaySubject, tap } from 'rxjs';
-import { Control, ControlGroup, Validators } from '@stlmpp/control';
+import { Control, ControlGroup, StControlModule, Validators } from '@stlmpp/control';
 import ClassicEditor from '@shared/ckeditor/ckeditor';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
 import { TopicService } from '../../service/topic.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { SimpleChangesCustom } from '@util/util';
 import { ForumService } from '../../service/forum.service';
+import { FlagComponent } from '@shared/components/icon/flag/flag.component';
+import { PlayerAvatarComponent } from '../../../player/player-avatar/player-avatar.component';
+import { FormFieldComponent } from '@shared/components/form/form-field.component';
+import { FormFieldErrorComponent } from '@shared/components/form/error.component';
+import { CKEditorView } from '@shared/ckeditor/ckeditor-view';
+import { CKEditorControlValue } from '@shared/ckeditor/ckeditor-control-value';
+import { ButtonComponent } from '@shared/components/button/button.component';
+import { IconComponent } from '@shared/components/icon/icon.component';
+import { AsyncDefaultPipe } from '@shared/async-default/async-default.pipe';
+import { AsyncPipe, DecimalPipe } from '@angular/common';
+import { TooltipDirective } from '@shared/components/tooltip/tooltip.directive';
+import { InputDirective } from '@shared/components/form/input.directive';
+import { FormFieldErrorsDirective } from '@shared/components/form/errors.directive';
+import { FormFieldHintDirective } from '@shared/components/form/hint.directive';
 
 @Component({
   selector: 'bio-forum-topic-post',
   templateUrl: './forum-topic-post.component.html',
   styleUrls: ['./forum-topic-post.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    FlagComponent,
+    PlayerAvatarComponent,
+    StControlModule,
+    FormFieldComponent,
+    FormFieldErrorComponent,
+    CKEditorView,
+    CKEditorControlValue,
+    ButtonComponent,
+    IconComponent,
+    AsyncDefaultPipe,
+    DecimalPipe,
+    TooltipDirective,
+    RouterLink,
+    AsyncPipe,
+    InputDirective,
+    FormFieldErrorsDirective,
+    FormFieldHintDirective,
+  ],
 })
 export class ForumTopicPostComponent implements AfterViewInit, OnChanges {
-  constructor(
-    private playerService: PlayerService,
-    private postService: PostService,
-    private changeDetectorRef: ChangeDetectorRef,
-    private dialogService: DialogService,
-    private topicService: TopicService,
-    private elementRef: ElementRef<HTMLElement>,
-    private activatedRoute: ActivatedRoute,
-    private forumService: ForumService
-  ) {}
+  private playerService = inject(PlayerService);
+  private postService = inject(PostService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+  private dialogService = inject(DialogService);
+  private topicService = inject(TopicService);
+  private elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+  private activatedRoute = inject(ActivatedRoute);
+  private forumService = inject(ForumService);
 
   private readonly _post$ = new ReplaySubject<Post>();
 
-  @Input() idSubCategory!: number;
-  @Input() post!: Post;
-  @Input() topicLocked = false;
-  @Input() @HostBinding('class.odd') odd = false;
-  @Input() loadingReply = false;
+  readonly idSubCategory = input.required<number>();
+  readonly post = input.required<Post>();
+  readonly topicLocked = input(false);
+  @HostBinding('class.odd')
+  readonly odd = input(false);
+  readonly loadingReply = input(false);
 
-  @Output() readonly postChange = new EventEmitter<Post>();
-  @Output() readonly postDelete = new EventEmitter<Post>();
-  @Output() readonly postQuote = new EventEmitter<Post>();
-  @Output() readonly topicDelete = new EventEmitter<void>();
+  readonly postChange = output<Post>();
+  readonly postDelete = output<Post>();
+  readonly postQuote = output<Post>();
+  readonly topicDelete = output<void>();
 
   readonly isOnline$ = combineLatest([this._post$, this.forumService.usersOnline$]).pipe(
     map(([post, usersOnline]) => usersOnline.some(user => user.idPlayer === post.idPlayer))
@@ -59,7 +91,7 @@ export class ForumTopicPostComponent implements AfterViewInit, OnChanges {
 
   @HostBinding('class.highlight')
   get highlight(): boolean {
-    return this.post.id === this._getFragment();
+    return this.post().id === this._getFragment();
   }
 
   readonly editor = ClassicEditor;
@@ -79,7 +111,7 @@ export class ForumTopicPostComponent implements AfterViewInit, OnChanges {
   }
 
   openEdit(): void {
-    this.form.setValue({ name: this.post.name, content: this.post.content });
+    this.form.setValue({ name: this.post().name, content: this.post().content });
     this.editing = true;
   }
 
@@ -102,7 +134,7 @@ export class ForumTopicPostComponent implements AfterViewInit, OnChanges {
     }
     this.saving = true;
     this.postService
-      .update(this.idSubCategory, this.post.idTopic, this.post.id, postUpdateDto)
+      .update(this.idSubCategory(), this.post().idTopic, this.post().id, postUpdateDto)
       .pipe(
         finalize(() => {
           this.saving = false;
@@ -110,13 +142,13 @@ export class ForumTopicPostComponent implements AfterViewInit, OnChanges {
         })
       )
       .subscribe(() => {
-        this.postChange.emit({ ...this.post, ...postUpdateDto });
+        this.postChange.emit({ ...this.post(), ...postUpdateDto });
         this.closeEdit();
       });
   }
 
   delete(): void {
-    if (this.post.firstPost) {
+    if (this.post().firstPost) {
       this.dialogService.confirm({
         title: 'Delete topic?',
         content: `This action can't be undone`,
@@ -125,8 +157,9 @@ export class ForumTopicPostComponent implements AfterViewInit, OnChanges {
           {
             title: 'Delete',
             action: () =>
-              this.topicService.delete(this.idSubCategory, this.post.idTopic).pipe(
+              this.topicService.delete(this.idSubCategory(), this.post().idTopic).pipe(
                 tap(() => {
+                  // TODO: The 'emit' function requires a mandatory void argument
                   this.topicDelete.emit();
                 })
               ),
@@ -142,9 +175,9 @@ export class ForumTopicPostComponent implements AfterViewInit, OnChanges {
           {
             title: 'Delete',
             action: () =>
-              this.postService.delete(this.idSubCategory, this.post.idTopic, this.post.id).pipe(
+              this.postService.delete(this.idSubCategory(), this.post().idTopic, this.post().id).pipe(
                 tap(() => {
-                  this.postDelete.emit(this.post);
+                  this.postDelete.emit(this.post());
                 })
               ),
           },
@@ -158,7 +191,7 @@ export class ForumTopicPostComponent implements AfterViewInit, OnChanges {
     if (!idPost) {
       return;
     }
-    if (idPost === this.post.id) {
+    if (idPost === this.post().id) {
       setTimeout(() => {
         this.elementRef.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
       });
@@ -167,7 +200,7 @@ export class ForumTopicPostComponent implements AfterViewInit, OnChanges {
 
   ngOnChanges(changes: SimpleChangesCustom<ForumTopicPostComponent>): void {
     if (changes.post?.currentValue) {
-      this._post$.next(changes.post.currentValue);
+      this._post$.next(changes.post.currentValue());
     }
   }
 }

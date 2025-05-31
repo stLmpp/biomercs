@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject, viewChild } from '@angular/core';
 import { concat, distinctUntilChanged, finalize, map, share, switchMap, takeUntil, tap } from 'rxjs';
 import { PlayerService } from '../player.service';
 import { Animations } from '@shared/animations/animations';
@@ -26,11 +26,42 @@ import { RegionModalService } from '../../region/region-modal.service';
 import { ScoreModalService } from '../../score/score-modal.service';
 import { mapToParam } from '@util/operators/map-to-param';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
-import { ModelDirective } from '@stlmpp/control';
-import { playerProfileValidatePersonaName } from './player-profile-invalid.pipe';
+import {
+  ModelDirective,
+  StControlValueModule,
+  StControlCommonModule,
+  StControlModelModule,
+  StControlModule,
+} from '@stlmpp/control';
+import { playerProfileValidatePersonaName, PlayerProfileInvalidPipe } from './player-profile-invalid.pipe';
 import { Destroyable } from '@shared/components/common/destroyable-component';
 import { InputTypeService } from '@shared/services/input-type/input-type.service';
 import { trackById } from '@util/track-by';
+import { NgLetModule } from '@stlmpp/utils';
+import { CardComponent } from '../../shared/components/card/card.component';
+import { CardTitleDirective } from '../../shared/components/card/card-title.directive';
+import { NgTemplateOutlet, AsyncPipe } from '@angular/common';
+import { ButtonComponent } from '../../shared/components/button/button.component';
+import { TooltipDirective } from '../../shared/components/tooltip/tooltip.directive';
+import { IconComponent } from '../../shared/components/icon/icon.component';
+import { PlayerAvatarComponent } from '../player-avatar/player-avatar.component';
+import { FlagComponent } from '../../shared/components/icon/flag/flag.component';
+import { IconMdiComponent } from '../../shared/components/icon/icon-mdi.component';
+import { CardSubtitleDirective } from '../../shared/components/card/card-subtitle.directive';
+import { CardContentDirective } from '../../shared/components/card/card-content.directive';
+import { FormFieldComponent } from '../../shared/components/form/form-field.component';
+import { InputDirective } from '../../shared/components/form/input.directive';
+import { PersonaNameExistsValidatorDirective } from '../../shared/validators/persona-name-exists.validator';
+import { FormFieldHintDirective } from '../../shared/components/form/hint.directive';
+import { FormFieldErrorsDirective } from '../../shared/components/form/errors.directive';
+import { FormFieldErrorComponent } from '../../shared/components/form/error.component';
+import { SelectComponent } from '../../shared/components/select/select.component';
+import { OptionComponent } from '../../shared/components/select/option.component';
+import { TextareaDirective } from '../../shared/components/form/textarea.directive';
+import { CardActionsDirective } from '../../shared/components/card/card-actions.directive';
+import { ScoreListResponsiveComponent } from '../../score/score-list/score-list-responsive/score-list-responsive.component';
+import { DateDifferencePipe } from '../../shared/date/date-difference.pipe';
+import { PlayerCanUpdatePersonaNamePipe } from './player-can-update-persona-name.pipe';
 
 @Component({
   selector: 'bio-player-profile',
@@ -38,22 +69,52 @@ import { trackById } from '@util/track-by';
   styleUrls: ['./player-profile.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [Animations.fade.in()],
+  imports: [
+    NgLetModule,
+    CardComponent,
+    CardTitleDirective,
+    NgTemplateOutlet,
+    StControlValueModule,
+    StControlCommonModule,
+    StControlModelModule,
+    ButtonComponent,
+    TooltipDirective,
+    IconComponent,
+    PlayerAvatarComponent,
+    FlagComponent,
+    IconMdiComponent,
+    CardSubtitleDirective,
+    CardContentDirective,
+    FormFieldComponent,
+    InputDirective,
+    PersonaNameExistsValidatorDirective,
+    FormFieldHintDirective,
+    FormFieldErrorsDirective,
+    StControlModule,
+    FormFieldErrorComponent,
+    SelectComponent,
+    OptionComponent,
+    TextareaDirective,
+    CardActionsDirective,
+    ScoreListResponsiveComponent,
+    DateDifferencePipe,
+    AsyncPipe,
+    PlayerCanUpdatePersonaNamePipe,
+    PlayerProfileInvalidPipe,
+    ScoreListResponsiveComponent,
+  ],
 })
 export class PlayerProfileComponent extends Destroyable implements OnInit {
-  constructor(
-    private playerService: PlayerService,
-    private authQuery: AuthQuery,
-    private regionService: RegionService,
-    private dynamicLoaderService: DynamicLoaderService,
-    private activatedRoute: ActivatedRoute,
-    private authDateFormatPipe: AuthDateFormatPipe,
-    private regionModalService: RegionModalService,
-    private scoreModalService: ScoreModalService,
-    private changeDetectorRef: ChangeDetectorRef,
-    private inputTypeService: InputTypeService
-  ) {
-    super();
-  }
+  private playerService = inject(PlayerService);
+  private authQuery = inject(AuthQuery);
+  private regionService = inject(RegionService);
+  private dynamicLoaderService = inject(DynamicLoaderService);
+  private activatedRoute = inject(ActivatedRoute);
+  private authDateFormatPipe = inject(AuthDateFormatPipe);
+  private regionModalService = inject(RegionModalService);
+  private scoreModalService = inject(ScoreModalService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+  private inputTypeService = inject(InputTypeService);
 
   private readonly _idPlayer$ = this.activatedRoute.paramMap.pipe(
     mapToParam(RouteParamEnum.idPlayer),
@@ -62,7 +123,7 @@ export class PlayerProfileComponent extends Destroyable implements OnInit {
     distinctUntilChanged()
   );
 
-  @ViewChild('personaNameModel') readonly personaNameModelRef?: ModelDirective<string | null | undefined>;
+  readonly personaNameModelRef = viewChild<ModelDirective<string | null | undefined>>('personaNameModel');
 
   readonly isSameAsLogged$ = this._idPlayer$.pipe(switchMap(idPlayer => this.authQuery.selectIsSameAsLogged(idPlayer)));
 

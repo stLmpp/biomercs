@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewEncapsulation, input } from '@angular/core';
 import { AbstractComponent } from '@shared/components/core/abstract-component';
 
 @Component({
@@ -10,6 +10,6 @@ import { AbstractComponent } from '@shared/components/core/abstract-component';
   host: { class: 'icon icon-mdi' },
 })
 export class IconMdiComponent extends AbstractComponent {
-  @Input() mdi = 'M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z';
-  @Input() size?: number | null;
+  readonly mdi = input('M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z');
+  readonly size = input<number | null>();
 }

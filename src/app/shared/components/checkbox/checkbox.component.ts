@@ -2,15 +2,17 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  EventEmitter,
   HostListener,
   Input,
-  Output,
   ViewEncapsulation,
+  inject,
+  input,
+  output,
 } from '@angular/core';
 import { ControlValue } from '@stlmpp/control';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { HorizontalPosition } from '@shared/components/common/positions';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'bio-checkbox',
@@ -20,11 +22,10 @@ import { HorizontalPosition } from '@shared/components/common/positions';
   encapsulation: ViewEncapsulation.None,
   providers: [{ provide: ControlValue, useExisting: CheckboxComponent }],
   host: { class: 'checkbox-container' },
+  imports: [NgClass],
 })
 export class CheckboxComponent extends ControlValue<boolean> {
-  constructor(private changeDetectorRef: ChangeDetectorRef) {
-    super();
-  }
+  private changeDetectorRef = inject(ChangeDetectorRef);
 
   private _checked = false;
   private _indeterminate = false;
@@ -54,10 +55,10 @@ export class CheckboxComponent extends ControlValue<boolean> {
     this._disabled = coerceBooleanProperty(disabled);
   }
 
-  @Input() labelPosition: HorizontalPosition = 'right';
-  @Input() name?: string;
+  readonly labelPosition = input<HorizontalPosition>('right');
+  readonly name = input<string>();
 
-  @Output() readonly checkedChange = new EventEmitter<boolean>();
+  readonly checkedChange = output<boolean>();
 
   @HostListener('click', ['$event'])
   onClick($event: MouseEvent): void {

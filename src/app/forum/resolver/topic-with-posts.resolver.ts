@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
+import { Injectable, inject } from '@angular/core';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { TopicWithPosts } from '@model/forum/topic';
 import { TopicService } from '../service/topic.service';
 import { Observable, of, tap } from 'rxjs';
@@ -7,8 +7,9 @@ import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { refreshMap } from '@util/operators/refresh-map';
 
 @Injectable({ providedIn: 'root' })
-export class TopicWithPostsResolver implements Resolve<TopicWithPosts> {
-  constructor(private topicService: TopicService, private router: Router) {}
+export class TopicWithPostsResolver {
+  private topicService = inject(TopicService);
+  private router = inject(Router);
 
   resolve(
     route: ActivatedRouteSnapshot,

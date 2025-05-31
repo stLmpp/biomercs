@@ -7,7 +7,13 @@ import { AuthSharedModule } from '../shared/auth-shared.module';
 import { ButtonModule } from '@shared/components/button/button.module';
 
 @NgModule({
-  declarations: [ForgotPasswordComponent],
-  imports: [CommonModule, ForgotPasswordRoutingModule, AuthSharedModule, CardModule, ButtonModule],
+  imports: [
+    CommonModule,
+    ForgotPasswordRoutingModule,
+    AuthSharedModule,
+    CardModule,
+    ButtonModule,
+    ForgotPasswordComponent,
+  ],
 })
 export class ForgotPasswordModule {}

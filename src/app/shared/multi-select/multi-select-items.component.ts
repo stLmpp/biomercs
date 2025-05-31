@@ -1,12 +1,18 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, input, output } from '@angular/core';
 import { debounce, Subject, Subscription, timer } from 'rxjs';
 import { BooleanInput, coerceBooleanProperty, coerceNumberProperty, NumberInput } from 'st-utils';
+import { FormFieldComponent } from '../components/form/form-field.component';
+import { InputDirective } from '../components/form/input.directive';
+import { IconComponent } from '../components/icon/icon.component';
+import { SuffixDirective } from '../components/common/suffix.directive';
+import { FormFieldHintDirective } from '../components/form/hint.directive';
 
 @Component({
   selector: 'bio-list[bioMultiSelectItems][items],bio-list[bioMultiSelectItems][selected]',
   templateUrl: './multi-select-items.component.html',
   styleUrls: ['./multi-select-items.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [FormFieldComponent, InputDirective, IconComponent, SuffixDirective, FormFieldHintDirective],
 })
 export class MultiSelectItemsComponent implements OnDestroy {
   private readonly _search$ = new Subject<string>();
@@ -31,7 +37,7 @@ export class MultiSelectItemsComponent implements OnDestroy {
   set searchInputDisabled(searchInputDisabled: boolean) {
     this._searchInputDisabled = coerceBooleanProperty(searchInputDisabled);
   }
-  @Input() hint?: string;
+  readonly hint = input<string>();
 
   @Input()
   set debounceTime(debounceTime: number) {
@@ -39,8 +45,8 @@ export class MultiSelectItemsComponent implements OnDestroy {
     this._startDebounce();
   }
 
-  @Input() search = '';
-  @Output() readonly searchChange = new EventEmitter<string>();
+  readonly search = input('');
+  readonly searchChange = output<string>();
 
   private _startDebounce(): void {
     if (!this._debounceTime || this._debounceTime <= 0) {

@@ -8,16 +8,12 @@
     Search scores
   </a>
   <!--TODO add better Leaderboards layout to support mobile, for now it's disabled-->
-  <a
-    bioListItem
-    *ngIf="!isMobile"
-    routerLink="/score/leaderboards"
-    queryParamsHandling="preserve"
-    (click)="onMenuSelected($event)"
-  >
-    <bio-icon bioPrefix>leaderboard</bio-icon>
-    Leaderboards
-  </a>
+  @if (!isMobile()) {
+    <a bioListItem routerLink="/score/leaderboards" queryParamsHandling="preserve" (click)="onMenuSelected($event)">
+      <bio-icon bioPrefix>leaderboard</bio-icon>
+      Leaderboards
+    </a>
+  }
   <a
     bioListItem
     routerLink="/score/world-records"
@@ -28,22 +24,23 @@
     <bio-icon bioPrefix [mdi]="mdiTrophy"></bio-icon>
     World records
   </a>
-  <a
-    *ngIf="user.idPlayer"
-    bioListItem
-    [routerLink]="['/player', user.idPlayer, 'change-requests']"
-    queryParamsHandling="preserve"
-    (click)="onMenuSelected($event)"
-  >
-    <bio-icon bioPrefix>sync_alt</bio-icon>
-    Score change requests
-    <bio-badge bioSuffix>{{ headerQuery.playerRequestChangesCount$ | async }}</bio-badge>
-  </a>
+  @if (user().idPlayer) {
+    <a
+      bioListItem
+      [routerLink]="['/player', user().idPlayer, 'change-requests']"
+      queryParamsHandling="preserve"
+      (click)="onMenuSelected($event)"
+    >
+      <bio-icon bioPrefix>sync_alt</bio-icon>
+      Score change requests
+      <bio-badge bioSuffix>{{ headerQuery.playerRequestChangesCount$ | async }}</bio-badge>
+    </a>
+  }
   <a bioListItem routerLink="/forum" (click)="onMenuSelected($event)">
     <bio-icon bioPrefix>forum</bio-icon>
     Forum
   </a>
-  <ng-container *ngIf="user.admin">
+  @if (user().admin) {
     <a class="admin-list-item" bioListItem routerLink="/admin" (click)="onMenuSelected($event)">
       <bio-icon bioPrefix>admin_panel_settings</bio-icon>
       Admin
@@ -73,5 +70,5 @@
       <bio-icon bioPrefix outlined>error_outline</bio-icon>
       Errors
     </a>
-  </ng-container>
+  }
 </bio-list>

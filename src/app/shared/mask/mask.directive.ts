@@ -1,29 +1,29 @@
 import {
   Directive,
   ElementRef,
-  Inject,
   Injectable,
   Input,
   OnChanges,
-  Optional,
   Renderer2,
   SimpleChanges,
+  DOCUMENT,
+  inject,
 } from '@angular/core';
 import { ControlValue } from '@stlmpp/control';
-import { IConfig, initialConfig, MaskDirective as _MaskDirective, MaskService as _MaskService } from 'ngx-mask';
+import { NgxMaskConfig, NgxMaskDirective, NgxMaskService } from 'ngx-mask';
 import { Subject } from 'rxjs';
-import { DOCUMENT } from '@angular/common';
+
 import { MASK_CONFIG } from '@shared/mask/mask-config.token';
 
 @Injectable()
-export class MaskService extends _MaskService {
-  constructor(
-    @Inject(DOCUMENT) document: Document,
-    elementRef: ElementRef,
-    renderer: Renderer2,
-    @Optional() @Inject(MASK_CONFIG) config?: Partial<IConfig>
-  ) {
-    super(document, { ...initialConfig, ...config }, elementRef, renderer);
+export class MaskService extends NgxMaskService {
+  constructor() {
+    const document = inject<Document>(DOCUMENT);
+    const elementRef = inject(ElementRef);
+    const renderer = inject(Renderer2);
+    const config = inject<Partial<NgxMaskConfig>>(MASK_CONFIG, { optional: true });
+    super();
+    // super(document, { ...initialConfig, ...config }, elementRef, renderer); TODO
   }
 }
 
@@ -31,13 +31,13 @@ export class MaskService extends _MaskService {
   selector: 'input[bioMask]',
   providers: [{ provide: ControlValue, useExisting: MaskDirective, multi: false }, MaskService],
 })
-export class MaskDirective extends _MaskDirective implements ControlValue<string>, OnChanges {
-  constructor(
-    @Inject(DOCUMENT) document: Document,
-    maskService: MaskService,
-    @Optional() @Inject(MASK_CONFIG) maskConfig?: Partial<IConfig>
-  ) {
-    super(document, maskService, { ...initialConfig, ...maskConfig });
+export class MaskDirective extends NgxMaskDirective implements ControlValue<string>, OnChanges {
+  constructor() {
+    const document = inject<Document>(DOCUMENT);
+    const maskService = inject(MaskService);
+    const maskConfig = inject<Partial<NgxMaskConfig>>(MASK_CONFIG, { optional: true });
+    super();
+    // super(document, maskService, { ...initialConfig, ...maskConfig }); TODO
     this.registerOnChange((value: string) => {
       this.onChange$.next(value);
     });
@@ -46,7 +46,7 @@ export class MaskDirective extends _MaskDirective implements ControlValue<string
 
   @Input()
   set bioMask(mask: string) {
-    this.maskExpression = mask;
+    // this.mask = mask; TODO change to hostDirective
   }
 
   readonly onChange$ = new Subject<string>();

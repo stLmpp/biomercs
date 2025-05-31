@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { Injectable, inject } from '@angular/core';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { map, Observable } from 'rxjs';
 import { PlayerService } from '../player.service';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
@@ -7,8 +7,9 @@ import { RouteParamEnum } from '@model/enum/route-param.enum';
 @Injectable({
   providedIn: 'root',
 })
-export class PlayerProfilePersonaNameGuard implements CanActivate {
-  constructor(private playerService: PlayerService, private router: Router) {}
+export class PlayerProfilePersonaNameGuard {
+  private playerService = inject(PlayerService);
+  private router = inject(Router);
 
   canActivate(
     route: ActivatedRouteSnapshot,

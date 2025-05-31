@@ -1,7 +1,17 @@
-import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  HostBinding,
+  Input,
+  ViewEncapsulation,
+  inject,
+  input,
+} from '@angular/core';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { AbstractComponent } from '../core/abstract-component';
 import { FocusableOption } from '@angular/cdk/a11y';
+import { SpinnerComponent } from '../spinner/spinner.component';
 
 @Component({
   selector: 'button[bioButton],a[bioButton]',
@@ -10,11 +20,10 @@ import { FocusableOption } from '@angular/cdk/a11y';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'button' },
+  imports: [SpinnerComponent],
 })
 export class ButtonComponent extends AbstractComponent implements FocusableOption {
-  constructor(private elementRef: ElementRef<HTMLButtonElement>) {
-    super();
-  }
+  private elementRef = inject<ElementRef<HTMLButtonElement>>(ElementRef);
 
   private _loading = false;
   private _tabindex = 0;
@@ -47,18 +56,18 @@ export class ButtonComponent extends AbstractComponent implements FocusableOptio
     this._loading = coerceBooleanProperty(loading);
   }
 
-  @Input() icon: BooleanInput;
+  readonly icon = input<BooleanInput>();
 
   @HostBinding('class.button-icon')
   get isIcon(): boolean {
-    return coerceBooleanProperty(this.icon);
+    return coerceBooleanProperty(this.icon());
   }
 
-  @Input() fab: BooleanInput;
+  readonly fab = input<BooleanInput>();
 
   @HostBinding('class.fab')
   get isFab(): boolean {
-    return coerceBooleanProperty(this.fab);
+    return coerceBooleanProperty(this.fab());
   }
 
   @Input()

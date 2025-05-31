@@ -7,7 +7,6 @@ import { CardModule } from '@shared/components/card/card.module';
 import { ButtonModule } from '@shared/components/button/button.module';
 
 @NgModule({
-  declarations: [AdminMailQueueComponent],
-  imports: [CommonModule, AdminMailQueueRoutingModule, CardModule, ButtonModule],
+  imports: [CommonModule, AdminMailQueueRoutingModule, CardModule, ButtonModule, AdminMailQueueComponent],
 })
 export class AdminMailQueueModule {}

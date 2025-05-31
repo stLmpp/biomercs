@@ -11,7 +11,6 @@ import { ForumSubCategoryTopicComponent } from './forum-sub-category-topic/forum
 import { AuthSharedModule } from '../../auth/shared/auth-shared.module';
 
 @NgModule({
-  declarations: [ForumSubCategoryComponent, ForumSubCategoryTopicComponent],
   imports: [
     CommonModule,
     ForumSubCategoryRoutingModule,
@@ -20,6 +19,8 @@ import { AuthSharedModule } from '../../auth/shared/auth-shared.module';
     CardModule,
     PaginationModule,
     AuthSharedModule,
+    ForumSubCategoryComponent,
+    ForumSubCategoryTopicComponent,
   ],
 })
 export class ForumSubCategoryModule {}

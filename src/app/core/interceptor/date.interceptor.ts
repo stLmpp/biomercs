@@ -41,7 +41,7 @@ export class DateInterceptor implements HttpInterceptor {
     }, {});
   }
 
-  handleArray(value: any[]): any {
+  handleArray(value: readonly any[]): any {
     return value.map(item => {
       if (isArray(item)) {
         return this.handleArray(item);

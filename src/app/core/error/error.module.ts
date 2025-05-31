@@ -4,7 +4,6 @@ import { ModalModule } from '@shared/components/modal/modal.module';
 import { ButtonModule } from '@shared/components/button/button.module';
 
 @NgModule({
-  declarations: [ErrorComponent],
-  imports: [ModalModule, ButtonModule],
+  imports: [ModalModule, ButtonModule, ErrorComponent],
 })
 export class ErrorModule {}

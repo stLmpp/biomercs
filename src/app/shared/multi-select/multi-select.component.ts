@@ -1,11 +1,14 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, output } from '@angular/core';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
+import { ButtonComponent } from '../components/button/button.component';
+import { IconComponent } from '../components/icon/icon.component';
 
 @Component({
   selector: 'bio-multi-select',
   templateUrl: './multi-select.component.html',
   styleUrls: ['./multi-select.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [ButtonComponent, IconComponent],
 })
 export class MultiSelectComponent {
   private _disabledSelectAll = false;
@@ -27,8 +30,8 @@ export class MultiSelectComponent {
     this._disabledRemoveAll = coerceBooleanProperty(disabledRemoveAll);
   }
 
-  @Output() readonly allSelected = new EventEmitter<void>();
-  @Output() readonly allRemoved = new EventEmitter<void>();
+  readonly allSelected = output<void>();
+  readonly allRemoved = output<void>();
 
   static ngAcceptInputType_disabledSelectAll: BooleanInput;
   static ngAcceptInputType_disabledRemoveAll: BooleanInput;

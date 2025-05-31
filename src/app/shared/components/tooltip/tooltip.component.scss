@@ -1,12 +1,13 @@
 @use 'variables' as v;
 @use 'mixins' as m;
+@use 'sass:color';
 
 .tooltip {
   margin: 1rem;
   border-radius: v.$radius;
   padding: 0.25rem 0.5rem;
   font-size: 0.85rem;
-  background-color: transparentize(v.$dark-overlay, 0.1);
+  background-color: color.adjust(v.$dark-overlay, $alpha: -0.1, $space: hsl);
   min-width: 50px;
   color: v.$primary-600;
   display: inline-flex;

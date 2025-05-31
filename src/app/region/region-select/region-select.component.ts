@@ -3,18 +3,37 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  Inject,
   OnInit,
-  ViewChild,
+  inject,
+  viewChild,
 } from '@angular/core';
 import { debounceTime, finalize, Observable, tap } from 'rxjs';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import { Region } from '@model/region';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { Control } from '@stlmpp/control';
-import { trackById } from '@util/track-by';
+import {
+  Control,
+  StControlValueModule,
+  StControlCommonModule,
+  StControlModule,
+  StControlModelModule,
+} from '@stlmpp/control';
 import { RegionService } from '../region.service';
+import { LoadingComponent } from '../../shared/components/spinner/loading/loading.component';
+import { ModalTitleDirective } from '../../shared/components/modal/modal-title.directive';
+import { LabelDirective } from '../../shared/components/form/label.directive';
+import { InputDirective } from '../../shared/components/form/input.directive';
+import { ListDirective, ListControlValue } from '../../shared/components/list/list.directive';
+import { ModalContentDirective } from '../../shared/components/modal/modal-content.directive';
+import { ɵɵCdkVirtualScrollViewport, ɵɵCdkFixedSizeVirtualScroll, ɵɵCdkVirtualForOf } from '@angular/cdk/overlay';
+import { ListItemComponent } from '../../shared/components/list/list-item.component';
+import { FlagComponent } from '../../shared/components/icon/flag/flag.component';
+import { PrefixDirective } from '../../shared/components/common/prefix.directive';
+import { ModalActionsDirective } from '../../shared/components/modal/modal-actions.directive';
+import { ButtonComponent } from '../../shared/components/button/button.component';
+import { AsyncPipe } from '@angular/common';
+import { StUtilsArrayModule, trackByFactory } from '@stlmpp/utils';
 
 export interface RegionSelectData {
   idRegion: number;
@@ -26,14 +45,37 @@ export interface RegionSelectData {
   templateUrl: './region-select.component.html',
   styleUrls: ['./region-select.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    LoadingComponent,
+    ModalTitleDirective,
+    LabelDirective,
+    InputDirective,
+    StControlValueModule,
+    StControlCommonModule,
+    StControlModule,
+    ListDirective,
+    ListControlValue,
+    ModalContentDirective,
+    StControlModelModule,
+    ɵɵCdkVirtualScrollViewport,
+    ɵɵCdkFixedSizeVirtualScroll,
+    ɵɵCdkVirtualForOf,
+    ListItemComponent,
+    FlagComponent,
+    PrefixDirective,
+    ModalActionsDirective,
+    ButtonComponent,
+    AsyncPipe,
+    StUtilsArrayModule,
+  ],
 })
 export class RegionSelectComponent implements OnInit, AfterViewInit {
-  constructor(
-    private modalRef: ModalRef,
-    @Inject(MODAL_DATA) { idRegion, onSelect }: RegionSelectData,
-    private regionService: RegionService,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {
+  private modalRef = inject(ModalRef);
+  private regionService = inject(RegionService);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+
+  constructor() {
+    const { idRegion, onSelect } = inject<RegionSelectData>(MODAL_DATA);
     this.idRegion = idRegion;
     this.idRegionOrigin = idRegion;
     this.onSelect = onSelect;
@@ -41,7 +83,7 @@ export class RegionSelectComponent implements OnInit, AfterViewInit {
 
   private _viewInitialized = false;
   private _scrolled = false;
-  @ViewChild(CdkVirtualScrollViewport) cdkVirtualScrollViewport?: CdkVirtualScrollViewport;
+  readonly cdkVirtualScrollViewport = viewChild(CdkVirtualScrollViewport);
 
   regions: Region[] = [];
 
@@ -54,12 +96,13 @@ export class RegionSelectComponent implements OnInit, AfterViewInit {
   readonly searchControl = new Control<string>('');
   readonly search$ = this.searchControl.value$.pipe(debounceTime(400));
 
-  readonly trackByRegion = trackById;
+  readonly trackByRegion = trackByFactory<Region>('id');
 
   private _scrollToIdRegionSelected(): void {
     const index = this.regions.findIndex(region => region.id === this.idRegion);
-    if (index > -1 && this.cdkVirtualScrollViewport) {
-      this.cdkVirtualScrollViewport.scrollToIndex(index);
+    const cdkVirtualScrollViewport = this.cdkVirtualScrollViewport();
+    if (index > -1 && cdkVirtualScrollViewport) {
+      cdkVirtualScrollViewport.scrollToIndex(index);
     }
     this._scrolled = true;
   }

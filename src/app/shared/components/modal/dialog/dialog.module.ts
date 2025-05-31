@@ -20,8 +20,7 @@ const MODULES = [
 const EXPORTS = [ModalModule, ButtonModule, IconModule, StUtilsArrayModule];
 
 @NgModule({
-  declarations: [...DECLARATIONS],
-  imports: [...MODULES],
+  imports: [...MODULES, ...DECLARATIONS],
   exports: [...DECLARATIONS, ...EXPORTS],
 })
 export class DialogModule {}

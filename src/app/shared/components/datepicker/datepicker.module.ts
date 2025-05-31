@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CalendarComponent } from './calendar/calendar.component';
 import { CalendarDaysComponent } from './calendar-days/calendar-days.component';
 import { ButtonModule } from '@shared/components/button/button.module';
-import { DateModule } from '@shared/date/date.module';
+
 import { CalendarMonthsComponent } from './calendar-months/calendar-months.component';
 import { CalendarYearsComponent } from './calendar-years/calendar-years.component';
 import { DatepickerComponent } from './datepicker/datepicker.component';
@@ -27,11 +27,10 @@ const DECLARATIONS = [
   DatepickerTriggerDirective,
 ];
 
-const IMPORTS = [ButtonModule, DateModule, A11yModule, BioCommonModule];
+const IMPORTS = [ButtonModule, A11yModule, BioCommonModule];
 
 @NgModule({
-  declarations: [...DECLARATIONS],
-  imports: [...IMPORTS],
+  imports: [...IMPORTS, ...DECLARATIONS],
   exports: [...DECLARATIONS, ...IMPORTS],
 })
 export class DatepickerModule {}
