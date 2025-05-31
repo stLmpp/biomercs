@@ -8,7 +8,7 @@
 </div>
 <ng-template #panel>
   <div
-    class="select-panel height-{{ (options()?.length || 0) + (optgroups()?.length || 0) }}"
+    class="select-panel height-{{ options().length + optgroups().length }}"
     tabindex="0"
     (keydown)="onPanelKeydown($event)"
     cdkTrapFocus

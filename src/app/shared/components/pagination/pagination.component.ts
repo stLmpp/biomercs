@@ -40,11 +40,11 @@ export class PaginationComponent implements OnChanges {
     this._setQueryParamsOnChange = coerceBooleanProperty(setQueryParamsOnChange);
   }
 
-  readonly currentPage = model.required<number>();
-  readonly itemCount = model.required<number>();
-  readonly itemsPerPage = model.required<number>();
-  readonly totalItems = model.required<number>();
-  readonly totalPages = model.required<number>();
+  readonly currentPage = model<number>(1);
+  readonly itemCount = model<number>(0);
+  readonly itemsPerPage = model<number>(0);
+  readonly totalItems = model<number>(0);
+  readonly totalPages = model<number>(0);
   @Input()
   get itemsPerPageHidden(): boolean {
     return this._itemsPerPageHidden;

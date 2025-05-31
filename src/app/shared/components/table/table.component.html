@@ -1,4 +1,4 @@
-<bio-card class="bio-table" [collapsable]="collapsable" [collapsed]="true">
+<bio-card class="bio-table" [collapsable]="collapsable()" [collapsed]="true">
   @if (loading()) {
     <bio-loading />
   }
@@ -6,11 +6,8 @@
     <h3 bioCardTitle>{{ title() }}</h3>
   }
   <bio-card-content>
-    <div
-      class="header"
-      [class.header-order]="order()"
-      *ngLet="order()?.orderByDirection === 'desc' ? 'arrow_drop_up' : 'arrow_drop_down' as arrow"
-    >
+    @let arrow = order()?.orderByDirection === 'desc' ? 'arrow_drop_up' : 'arrow_drop_down';
+    <div class="header" [class.header-order]="order()">
       @for (colDef of colDefsInternal; track trackByColDef($index, colDef)) {
         <div
           [style.flex-basis]="colDef.width"

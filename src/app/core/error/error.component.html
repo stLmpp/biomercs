@@ -1,9 +1,9 @@
-<h1 bioModalTitle>{{ httpError?.status }}</h1>
+<h1 bioModalTitle>{{ httpError.status }}</h1>
 <bio-modal-content>
-  @if (httpError?.message) {
+  @if (httpError.message) {
     <p>Message: {{ httpError.message }}</p>
   }
-  @if (httpError?.error) {
+  @if (httpError.error) {
     <p>Error: {{ httpError.error }}</p>
   }
   @if (httpError.sqlError) {

@@ -18,7 +18,6 @@ import {
   NotificationExtraScore,
 } from '@model/notification';
 import { finalize, lastValueFrom, Observable, of, switchMap, tap } from 'rxjs';
-import { trackById } from '@util/track-by';
 import { ScoreService } from '../../score/score.service';
 import { ScoreModalService } from '../../score/score-modal.service';
 import { PaginationMeta } from '@model/pagination';
@@ -41,6 +40,7 @@ import { MenuTriggerDirective } from '../../shared/components/menu/menu-trigger.
 import { IconComponent } from '../../shared/components/icon/icon.component';
 import { MenuComponent } from '../../shared/components/menu/menu.component';
 import { MenuItemButtonDirective } from '../../shared/components/menu/menu-item.directive';
+import { trackByFactory } from '@stlmpp/utils';
 
 interface NotificationCustom extends Notification {
   loading?: boolean;
@@ -93,7 +93,7 @@ export class NotificationsComponent extends Destroyable implements OnInit {
   readAllLoading = false;
   deleteAllLoading = false;
 
-  readonly trackById = trackById;
+  readonly trackById = trackByFactory<NotificationCustom>('id');
 
   private _setNotifications(callback: (notifications: NotificationCustom[]) => NotificationCustom[]): void {
     this.notifications.update(value => callback(value));

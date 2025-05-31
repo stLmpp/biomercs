@@ -1,4 +1,4 @@
-<bio-card class="scores" [collapsable]="collapsable" [collapsed]="true">
+<bio-card class="scores" [collapsable]="collapsable()" [collapsed]="true">
   @if (loading()) {
     <bio-loading />
   }
@@ -17,7 +17,8 @@
     }
     <bio-list selectable>
       @for (score of scores(); track trackByScore($index, score)) {
-        <bio-list-item [disabled]="!!disabledProperty() && !!score[disabledProperty()]" (click)="onClick(score)">
+        @let disabledProp = disabledProperty();
+        <bio-list-item [disabled]="!!disabledProp && !!score[disabledProp]" (click)="onClick(score)">
           <bio-list-item-line> [{{ score.platformShortName }}] {{ score.gameName }} </bio-list-item-line>
           <bio-list-item-line> {{ score.miniGameName }} {{ score.modeName }} </bio-list-item-line>
           <bio-list-item-line>

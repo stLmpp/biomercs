@@ -10,15 +10,18 @@
     />
   </bio-card-content>
 </bio-card>
-<bio-card *ngLet="tableLoading$ | async as tableLoading" [bioLoading]="tableLoading" class="top-table flex-table">
+@let tableLoading = tableLoading$ | async;
+<bio-card [bioLoading]="tableLoading" class="top-table flex-table">
   <bio-card-content>
     @if (scoreTopTableOrdered$ | async; as scores) {
-      <ng-container *ngLet="order$ | async as order">
-        <div class="header" *ngLet="order.orderByDirection === 'desc' ? 'arrow_drop_up' : 'arrow_drop_down' as arrow">
+      @let order = order$ | async;
+      @let arrow = order?.orderByDirection === 'desc' ? 'arrow_drop_up' : 'arrow_drop_down';
+      <ng-container>
+        <div class="header">
           <div></div>
           <div class="player" (click)="updateOrderByPlayer()">
             Player
-            @if (order.orderByType === 'personaName') {
+            @if (order?.orderByType === 'personaName') {
               <bio-icon class="order-icon" small>
                 {{ arrow }}
               </bio-icon>
@@ -27,7 +30,7 @@
           @for (stage of scores.stages; track trackById($index, stage)) {
             <div (click)="updateOrderByStage(stage.id)" [bioTooltip]="stage.name">
               {{ stage.shortName }}
-              @if (order.orderBy === stage.id) {
+              @if (order?.orderBy === stage.id) {
                 <bio-icon class="order-icon" small>
                   {{ arrow }}
                 </bio-icon>
@@ -36,7 +39,7 @@
           }
           <div (click)="updateOrderByTotal()">
             Total
-            @if (order.orderByType === 'total') {
+            @if (order?.orderByType === 'total') {
               <bio-icon class="order-icon" small>
                 {{ arrow }}
               </bio-icon>

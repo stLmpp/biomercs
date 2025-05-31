@@ -19,6 +19,7 @@ import { CURRENCY_MASK_CONFIG } from '@shared/currency-mask/currency-mask-config
 import { MODAL_DEFAULT_CONFIG, ModalConfig } from '@shared/components/modal/modal.config';
 import { SNACK_BAR_DEFAULT_CONFIG, SnackBarConfig } from '@shared/components/snack-bar/snack-bar.config';
 import { SnackBarModule } from '@shared/components/snack-bar/snack-bar.module';
+import { provideHighlightOptions } from 'ngx-highlightjs';
 
 const withInterceptors = (...interceptors: any[]): Provider[] =>
   interceptors.map(useExisting => ({ provide: HTTP_INTERCEPTORS, useExisting, multi: true }));
@@ -63,6 +64,13 @@ export class CoreModule {
         { provide: CURRENCY_MASK_CONFIG, useValue: {} },
         { provide: MODAL_DEFAULT_CONFIG, useValue: new ModalConfig<any>() },
         { provide: SNACK_BAR_DEFAULT_CONFIG, useValue: new SnackBarConfig() },
+        provideHighlightOptions({
+          coreLibraryLoader: () => import('highlight.js/lib/core'),
+          languages: {
+            sql: () => import('highlight.js/lib/languages/sql'),
+            yaml: () => import('highlight.js/lib/languages/yaml'),
+          },
+        }),
       ],
     };
   }

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import ClassicEditor from '@shared/ckeditor/ckeditor';
-import { Control, ControlGroup, Validators } from '@stlmpp/control';
+import { Control, ControlGroup, StControlModule, Validators } from '@stlmpp/control';
 import { Post, PostAddDto } from '@model/forum/post';
 import { AuthQuery } from '../../../auth/auth.query';
 import { PostService } from '../../service/post.service';
@@ -8,6 +8,13 @@ import { finalize } from 'rxjs';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import { CKEditor5 } from '@ckeditor/ckeditor5-angular/ckeditor';
 import { ModalRef } from '@shared/components/modal/modal-ref';
+import { ModalTitleDirective } from '@shared/components/modal/modal-title.directive';
+import { ModalContentDirective } from '@shared/components/modal/modal-content.directive';
+import { FormFieldComponent } from '@shared/components/form/form-field.component';
+import { InputDirective } from '@shared/components/form/input.directive';
+import { CKEditorControlValue } from '@shared/ckeditor/ckeditor-control-value';
+import { ModalActionsDirective } from '@shared/components/modal/modal-actions.directive';
+import { ButtonComponent } from '@shared/components/button/button.component';
 
 export interface ForumTopicPostReplyComponentData {
   idSubCategory: number;
@@ -21,6 +28,16 @@ export interface ForumTopicPostReplyComponentData {
   templateUrl: './forum-topic-post-reply.component.html',
   styleUrls: ['./forum-topic-post-reply.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    StControlModule,
+    ModalTitleDirective,
+    ModalContentDirective,
+    FormFieldComponent,
+    InputDirective,
+    CKEditorControlValue,
+    ModalActionsDirective,
+    ButtonComponent,
+  ],
 })
 export class ForumTopicPostReplyComponent {
   private modalRef = inject<ModalRef<ForumTopicPostReplyComponent, ForumTopicPostReplyComponentData, Post>>(ModalRef);

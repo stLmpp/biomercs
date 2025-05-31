@@ -11,7 +11,8 @@
     />
   </bio-card-content>
 </bio-card>
-<ng-container *ngLet="order$ | async as order">
+@let order = order$ | async;
+<ng-container>
   @if (scores$ | async; as scores) {
     <bio-score-list-responsive
       [loading]="tableLoading$ | async"

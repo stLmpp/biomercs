@@ -1,11 +1,12 @@
-<bio-card *ngLet="fragment$ | async as fragment" class="center-block-mobile">
-  @if (fragment) {
+@let fragmentStr = fragment$ | async;
+<bio-card class="center-block-mobile">
+  @if (fragmentStr) {
     <div @fadeInOut class="cdk-overlay-backdrop cdk-overlay-dark-backdrop cdk-overlay-backdrop-showing"></div>
   }
   <h3 bioCardTitle>stLmpp</h3>
   <div bioCardSubtitle>Creator of biomercs.net</div>
   <bio-card-content>
-    <div class="description" id="description" [class.active]="fragment === 'description'" #fragment>
+    <div class="description" id="description" [class.active]="fragmentStr === 'description'" #fragment>
       <p>Hello, I'm stLmpp.</p>
       <p>
         I play The Mercenaries since Resident Evil 4. Peaked at Resident Evil 5 and 6, but always had the same problem
@@ -25,7 +26,7 @@
         launch the site.
       </p>
     </div>
-    <div class="links" id="links" [class.active]="fragment === 'links'" #fragment>
+    <div class="links" id="links" [class.active]="fragmentStr === 'links'" #fragment>
       <a bioButton href="https://github.com/stLmpp">
         <bio-icon [mdi]="mdiGithub"></bio-icon>
         Github
@@ -43,11 +44,11 @@
         My profile
       </a>
     </div>
-    <div class="contact" id="contact" [class.active]="fragment === 'contact'" #fragment>
+    <div class="contact" id="contact" [class.active]="fragmentStr === 'contact'" #fragment>
       Want to contact me? Feel free to send an e-mail to <a [href]="mailTo">{{ mail }}</a> or
       <a [href]="mailTo2">{{ mail2 }}</a>
     </div>
-    <div class="support" id="support" [class.active]="fragment === 'support'" #fragment>
+    <div class="support" id="support" [class.active]="fragmentStr === 'support'" #fragment>
       Want to support the site and me? Buy me a coffee <a href="https://www.buymeacoffee.com/stlmpp">here</a> or
       <a href="https://ko-fi.com/stlmpp">here</a>
     </div>

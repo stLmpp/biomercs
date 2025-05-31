@@ -43,7 +43,6 @@ import { PaginationComponent } from '../pagination/pagination.component';
   ],
 })
 export class TableComponent<T extends Record<any, any>, K extends keyof T> {
-  private _collapsable = false;
   private _colDefs: ColDefInternal<T, K>[] = [];
   private _colDefDefault: Partial<ColDef<T, K>> = {};
 
@@ -55,13 +54,7 @@ export class TableComponent<T extends Record<any, any>, K extends keyof T> {
   readonly metadata = input<any>();
   readonly title = input<string>();
 
-  @Input()
-  get collapsable(): boolean {
-    return this._collapsable;
-  }
-  set collapsable(collapsable: boolean) {
-    this._collapsable = coerceBooleanProperty(collapsable);
-  }
+  readonly collapsable = input(false, { transform: coerceBooleanProperty });
 
   @Input()
   set colDefs(colDefs: ColDef<T, K>[]) {

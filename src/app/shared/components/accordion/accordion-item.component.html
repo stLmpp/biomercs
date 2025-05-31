@@ -5,7 +5,7 @@
   #header
   (keydown)="onKeydown($event)"
 >
-  @if (accordionItemTitleDirectives?.length) {
+  @if (accordionItemTitleDirectives.length) {
     <ng-content select="[bioAccordionItemTitle], bio-accordion-item-title"></ng-content>
   } @else {
     <div class="accordion-item-title">{{ accordionTitle() }}</div>

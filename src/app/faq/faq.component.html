@@ -17,12 +17,8 @@
   [bioFilter]="search$ | async"
   (bioFilterChange)="onFilterChange($event)"
 >
-  <bio-accordion-item
-    bioFilterItem
-    accordionTitle="How can I submit a score?"
-    *ngLet="isMobile$ | async as isMobile"
-    id="how-can-i-submit-a-score"
-  >
+  @let isMobile = isMobile$ | async;
+  <bio-accordion-item bioFilterItem accordionTitle="How can I submit a score?" id="how-can-i-submit-a-score">
     There a link in the header (
     <a
       bioButton

@@ -1,6 +1,7 @@
 <h4 bioPageTitle></h4>
 <form [controlGroup]="form" (groupSubmit)="onSubmit()">
-  <bio-card *ngLet="isInvalid$ | async as isInvalid">
+  @let isInvalid = isInvalid$ | async;
+  <bio-card>
     <h3 bioCardTitle>Create player</h3>
     <bio-card-content>
       <div class="fields">

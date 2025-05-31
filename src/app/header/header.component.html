@@ -1,7 +1,9 @@
-<ng-container *ngLet="user$ | async as user">
-  <ng-container *ngLet="isMobile$ | async as isMobile">
+@let user = user$ | async;
+@let isMobile = isMobile$ | async;
+<ng-container>
+  <ng-container>
     @if (sideMenuOpened && user) {
-      <bio-side-menu [user]="user" [isMobile]="isMobile" (menuSelected)="toggleSideMenu($event)" />
+      <bio-side-menu [user]="user" [isMobile]="!!isMobile" (menuSelected)="toggleSideMenu($event)" />
     }
     <div class="brand-wrapper">
       @if (user) {
@@ -31,13 +33,15 @@
         <button type="button" bioButton [bioMenuTrigger]="menu">
           <bio-icon>person</bio-icon>
           @if (!isMobile) {
-            {{ user.username }}
+            {{ user?.username }}
           }
           <bio-icon class="triangle" [mdi]="mdiTriangle" [size]="8"></bio-icon>
         </button>
         <bio-menu #menu>
-          @if (user.idPlayer) {
-            <a bioButton bioMenuItem [routerLink]="['/player', user.idPlayer]"> <bio-icon>person</bio-icon> Profile </a>
+          @if (user?.idPlayer) {
+            <a bioButton bioMenuItem [routerLink]="['/player', user?.idPlayer]">
+              <bio-icon>person</bio-icon> Profile
+            </a>
           }
           <a bioButton bioMenuItem routerLink="/auth/change-password"> <bio-icon>vpn_key</bio-icon> Change password</a>
           <button type="button" bioButton bioMenuItem (click)="logout()">

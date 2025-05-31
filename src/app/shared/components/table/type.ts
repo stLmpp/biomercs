@@ -1,6 +1,6 @@
 import { OrderByDirection } from 'st-utils';
 import { ColDefInternal } from '@shared/components/table/col-def';
-import { Directive, EventEmitter, output, Output, Type } from '@angular/core';
+import { Directive, output, Type } from '@angular/core';
 
 export interface TableOrder<T extends Record<any, any>> {
   orderBy?: keyof T | string | null;

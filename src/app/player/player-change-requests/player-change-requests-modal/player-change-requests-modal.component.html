@@ -67,9 +67,10 @@
           </div>
           @if (scorePlayersControl.get($index)!; as playerControl) {
             <div>
-              <ng-container *ngLet="playerControl.value$ | async as playerUpdate">
+              @let playerUpdate = playerControl.value$ | async;
+              <ng-container>
                 @if (playerControl.get('evidence')!.valid) {
-                  <a bio-url-preview [url]="playerUpdate.evidence || null"></a>
+                  <a bio-url-preview [url]="playerUpdate?.evidence || null"></a>
                 }
               </ng-container>
             </div>

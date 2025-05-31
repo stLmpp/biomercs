@@ -1,7 +1,11 @@
-<bio-card class="player" *ngLet="isSameAsLogged$ | async as isSameAsLogged">
+@let isSameAsLogged = isSameAsLogged$ | async;
+<bio-card class="player">
   <div bioCardTitle>
     @if (isSameAsLogged) {
       <div class="avatar">
+        <ng-template #avatarTemplate>
+          <bio-player-avatar [avatar]="player.avatar" [personaName]="player.personaName"></bio-player-avatar>
+        </ng-template>
         <ng-container [ngTemplateOutlet]="avatarTemplate"></ng-container>
         <div class="overlay">
           <input
@@ -73,11 +77,8 @@
   <bio-card-content>
     @if (isSameAsLogged && editMode) {
       <div @fadeIn>
-        <bio-form-field
-          label="Persona name"
-          [loading]="personaNameModel.isPending"
-          *ngLet="player.lastUpdatedPersonaNameDate | playerCanUpdatePersonaName as canUpdatePersonaName"
-        >
+        @let canUpdatePersonaName = player.lastUpdatedPersonaNameDate | playerCanUpdatePersonaName;
+        <bio-form-field label="Persona name" [loading]="personaNameModel.isPending">
           <input
             bioInput
             #personaNameModel="model"
@@ -97,7 +98,7 @@
               {{ player.lastUpdatedPersonaNameDate | dateDifference: todayMinusSevenDate : ['days', 'hours'] }}
             }
           </bio-hint>
-          <bio-hint end>{{ personaNameModel.model?.length }} / 100</bio-hint>
+          <bio-hint end>{{ personaNameModel.model.length }} / 100</bio-hint>
           <bio-errors>
             <bio-error *error="'personaNameExists'">Player name already exists</bio-error>
           </bio-errors>

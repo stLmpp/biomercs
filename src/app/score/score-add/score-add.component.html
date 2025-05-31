@@ -1,5 +1,6 @@
 <h4 bioPageTitle></h4>
-<ng-container *ngLet="{ hasMode: hasIdMode$ | async } as state">
+@let state = { hasMode: hasIdMode$ | async };
+<ng-container>
   <bio-card class="params" collapsable>
     <h3 bioCardTitle>Parameters</h3>
     <bio-card-content>

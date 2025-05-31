@@ -75,8 +75,7 @@ export class FormFieldComponent implements AfterContentInit, OnChanges, OnDestro
     }
     const inputDirectiveValue = this.inputDirective();
     if (inputDirectiveValue) {
-      const inputDirective = inputDirectiveValue;
-      inputDirective.id.set(this.id());
+      inputDirectiveValue.id.set(this.id());
       if (this.control) {
         this.control.stateChanged$.pipe(takeUntil(this._destroy$), auditTime(50)).subscribe(state => {
           this.controlState = state;

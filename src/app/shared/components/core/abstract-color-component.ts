@@ -1,4 +1,4 @@
-import { Directive, HostBinding, Input, input, model } from '@angular/core';
+import { Directive, HostBinding, Input, model } from '@angular/core';
 import { Destroyable } from '@shared/components/common/destroyable-component';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { BioTypeInput } from '@shared/components/core/types';

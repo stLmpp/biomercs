@@ -5,28 +5,61 @@ import {
   Component,
   ElementRef,
   HostBinding,
-  OnChanges,
   inject,
   input,
+  OnChanges,
   output,
 } from '@angular/core';
 import { Post, PostUpdateDto } from '@model/forum/post';
 import { PlayerService } from '../../../player/player.service';
 import { PostService } from '../../service/post.service';
 import { combineLatest, finalize, map, ReplaySubject, tap } from 'rxjs';
-import { Control, ControlGroup, Validators } from '@stlmpp/control';
+import { Control, ControlGroup, StControlModule, Validators } from '@stlmpp/control';
 import ClassicEditor from '@shared/ckeditor/ckeditor';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
 import { TopicService } from '../../service/topic.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { SimpleChangesCustom } from '@util/util';
 import { ForumService } from '../../service/forum.service';
+import { FlagComponent } from '@shared/components/icon/flag/flag.component';
+import { PlayerAvatarComponent } from '../../../player/player-avatar/player-avatar.component';
+import { FormFieldComponent } from '@shared/components/form/form-field.component';
+import { FormFieldErrorComponent } from '@shared/components/form/error.component';
+import { CKEditorView } from '@shared/ckeditor/ckeditor-view';
+import { CKEditorControlValue } from '@shared/ckeditor/ckeditor-control-value';
+import { ButtonComponent } from '@shared/components/button/button.component';
+import { IconComponent } from '@shared/components/icon/icon.component';
+import { AsyncDefaultPipe } from '@shared/async-default/async-default.pipe';
+import { AsyncPipe, DecimalPipe } from '@angular/common';
+import { TooltipDirective } from '@shared/components/tooltip/tooltip.directive';
+import { InputDirective } from '@shared/components/form/input.directive';
+import { FormFieldErrorsDirective } from '@shared/components/form/errors.directive';
+import { FormFieldHintDirective } from '@shared/components/form/hint.directive';
 
 @Component({
   selector: 'bio-forum-topic-post',
   templateUrl: './forum-topic-post.component.html',
   styleUrls: ['./forum-topic-post.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    FlagComponent,
+    PlayerAvatarComponent,
+    StControlModule,
+    FormFieldComponent,
+    FormFieldErrorComponent,
+    CKEditorView,
+    CKEditorControlValue,
+    ButtonComponent,
+    IconComponent,
+    AsyncDefaultPipe,
+    DecimalPipe,
+    TooltipDirective,
+    RouterLink,
+    AsyncPipe,
+    InputDirective,
+    FormFieldErrorsDirective,
+    FormFieldHintDirective,
+  ],
 })
 export class ForumTopicPostComponent implements AfterViewInit, OnChanges {
   private playerService = inject(PlayerService);

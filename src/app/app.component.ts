@@ -10,12 +10,18 @@ import { WINDOW } from './core/window.service';
 import { BreadcrumbsService } from '@shared/breadcrumbs/breadcrumbs.service';
 import { SwUpdate } from '@angular/service-worker';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
+import { HeaderComponent } from './header/header.component';
+import { NgProgressbar } from 'ngx-progressbar';
+import { RouterOutlet } from '@angular/router';
+import { FooterComponent } from './footer/footer.component';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'bio-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [HeaderComponent, NgProgressbar, RouterOutlet, FooterComponent, AsyncPipe],
 })
 export class AppComponent extends Destroyable implements OnInit, OnDestroy {
   private titleService = inject(TitleService);

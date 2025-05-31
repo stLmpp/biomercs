@@ -8,8 +8,8 @@
       accordionTitle="[ {{ error.creationDate | date: 'dd/MM/yyyy HH:mm:ss' }} ] {{ error.id }} - {{ error.name }}"
     >
       <p>User: {{ error.createdByUsername ?? 'Not logged' }}</p>
-      <pre><code [highlight]="error.message"></code></pre>
-      <pre><code [highlight]="error.stack"></code></pre>
+      <pre><code [highlight]="error.message" [language]="'JavaScript'"></code></pre>
+      <pre><code [highlight]="error.stack" [language]="'JavaScript'"></code></pre>
       @if (error.sqlCode) {
         <p>SQL Code: {{ error.sqlCode }}</p>
       }

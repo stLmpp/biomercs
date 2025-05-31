@@ -1,37 +1,37 @@
-@if (cardTitleDirectives()?.length || cardSubtitleDirective()?.length) {
+@if (cardTitleDirectives().length || cardSubtitleDirective().length) {
   <div class="header" (click)="onCollapseToggle()">
     <ng-content select="[bioCardTitle]"></ng-content>
     <ng-content select="[bioCardSubtitle]"></ng-content>
-    @if (collapsable) {
+    @if (collapsable()) {
       <div class="collapse-icon-wrapper">
         <bio-icon [@collapseIcon]="collapsed() ? 'collapsed' : 'expanded'">expand_less</bio-icon>
       </div>
     }
   </div>
 }
-@if (collapsable) {
+@if (collapsable()) {
   <div [bioCollapsed]="collapsed()">
     <ng-container *ngTemplateOutlet="cardContent"></ng-container>
   </div>
 } @else {
-  @if (cardContentDirectives()?.length) {
+  @if (cardContentDirectives().length) {
     <div class="content">
       <ng-content></ng-content>
     </div>
   }
-  @if (cardActionsDirective()?.length) {
+  @if (cardActionsDirective().length) {
     <div class="actions">
       <ng-content select="bio-card-actions"></ng-content>
     </div>
   }
 }
 <ng-template #cardContent>
-  @if (cardContentDirectives()?.length) {
+  @if (cardContentDirectives().length) {
     <div class="content">
       <ng-content></ng-content>
     </div>
   }
-  @if (cardActionsDirective()?.length) {
+  @if (cardActionsDirective().length) {
     <div class="actions">
       <ng-content select="bio-card-actions"></ng-content>
     </div>

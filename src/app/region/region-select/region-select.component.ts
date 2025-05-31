@@ -19,7 +19,6 @@ import {
   StControlModule,
   StControlModelModule,
 } from '@stlmpp/control';
-import { trackById } from '@util/track-by';
 import { RegionService } from '../region.service';
 import { LoadingComponent } from '../../shared/components/spinner/loading/loading.component';
 import { ModalTitleDirective } from '../../shared/components/modal/modal-title.directive';

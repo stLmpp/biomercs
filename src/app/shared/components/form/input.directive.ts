@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostBinding, inject, input, model } from '@angular/core';
+import { Directive, ElementRef, HostBinding, inject, model } from '@angular/core';
 import { AbstractComponent } from '../core/abstract-component';
 import { Control, ControlDirective, ModelDirective } from '@stlmpp/control';
 import { FocusableOption } from '@angular/cdk/a11y';

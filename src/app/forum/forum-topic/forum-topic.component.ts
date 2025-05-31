@@ -12,12 +12,32 @@ import { PostModalService } from '../service/post-modal.service';
 import { TopicModalService } from '../service/topic-modal.service';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { catchAndThrow } from '@util/operators/catch-and-throw';
+import { CardComponent } from '@shared/components/card/card.component';
+import { LoadingComponent } from '@shared/components/spinner/loading/loading.component';
+import { CardContentDirective } from '@shared/components/card/card-content.directive';
+import { CheckboxComponent } from '@shared/components/checkbox/checkbox.component';
+import { ButtonComponent } from '@shared/components/button/button.component';
+import { IconComponent } from '@shared/components/icon/icon.component';
+import { PaginationComponent } from '@shared/components/pagination/pagination.component';
+import { ForumTopicPostComponent } from './forum-topic-post/forum-topic-post.component';
+import { CardActionsDirective } from '@shared/components/card/card-actions.directive';
 
 @Component({
   selector: 'bio-forum-topic',
   templateUrl: './forum-topic.component.html',
   styleUrls: ['./forum-topic.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    CardComponent,
+    LoadingComponent,
+    CardContentDirective,
+    CheckboxComponent,
+    ButtonComponent,
+    IconComponent,
+    PaginationComponent,
+    ForumTopicPostComponent,
+    CardActionsDirective,
+  ],
 })
 export class ForumTopicComponent extends Destroyable implements OnInit {
   private activatedRoute = inject(ActivatedRoute);

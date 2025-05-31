@@ -1,8 +1,9 @@
 @use 'variables' as v;
 @use 'mixins' as m;
 @use 'functions' as f;
+@use 'sass:color';
 
-$focus-background-color: lighten(v.$dark-overlay, 5);
+$focus-background-color: color.adjust(v.$dark-overlay, $lightness: 5%, $space: hsl);
 
 .accordion {
   display: grid;

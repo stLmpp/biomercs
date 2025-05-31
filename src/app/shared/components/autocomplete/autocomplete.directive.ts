@@ -1,25 +1,14 @@
-import {
-  Directive,
-  ElementRef,
-  HostListener,
-  Input,
-  QueryList,
-  ViewContainerRef,
-  DOCUMENT,
-  inject,
-  input,
-} from '@angular/core';
+import { Directive, ElementRef, HostListener, Input, ViewContainerRef, DOCUMENT, inject, input } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { Overlay } from '@angular/cdk/overlay';
 
 import { cdkOverlayTransparentBackdrop } from '@util/overlay';
-import { combineLatest, filter, fromEvent, Observable, startWith, Subject, takeUntil } from 'rxjs';
+import { combineLatest, filter, fromEvent, startWith, Subject, takeUntil } from 'rxjs';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Destroyable } from '@shared/components/common/destroyable-component';
 import { AutocompleteComponent } from '@shared/components/autocomplete/autocomplete.component';
 import { getOverlayPositionMenu } from '@shared/components/menu/util';
 import { ControlDirective } from '@stlmpp/control';
-import { AutocompleteOptionDirective } from '@shared/components/autocomplete/autocomplete-option.directive';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 
 @Directive({

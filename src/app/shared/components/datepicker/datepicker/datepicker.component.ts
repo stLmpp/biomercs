@@ -2,14 +2,14 @@ import {
   ChangeDetectionStrategy,
   Component,
   HostBinding,
-  Input,
-  LOCALE_ID,
-  TemplateRef,
-  ViewContainerRef,
   inject,
+  Input,
   input,
-  viewChild,
+  LOCALE_ID,
   model,
+  TemplateRef,
+  viewChild,
+  ViewContainerRef,
 } from '@angular/core';
 import { CalendarViewModeEnum } from '@shared/components/datepicker/calendar-view-mode.enum';
 import { coerceBooleanProperty } from 'st-utils';
@@ -39,14 +39,8 @@ export class DatepickerComponent extends Destroyable {
   private overlay = inject(Overlay);
   private scrollStrategyOptions = inject(ScrollStrategyOptions);
   private viewContainerRef = inject(ViewContainerRef);
-
-  constructor() {
-    const localeId = inject(LOCALE_ID);
-    const locale = inject(CALENDAR_LOCALE, { optional: true });
-
-    super();
-    this.locale.set(locale ?? localeId);
-  }
+  private readonly localeId = inject(LOCALE_ID);
+  private readonly calendarLocale = inject(CALENDAR_LOCALE, { optional: true });
 
   private _input?: DatepickerDirective;
   private _trigger?: DatepickerTriggerDirective;
@@ -56,8 +50,8 @@ export class DatepickerComponent extends Destroyable {
   readonly templateRef = viewChild.required(TemplateRef);
 
   readonly value = model<Date | null>();
-  readonly viewMode = input<CalendarViewModeEnum>(CalendarViewModeEnum.day);
-  readonly locale = model.required<string>();
+  readonly viewMode = model<CalendarViewModeEnum>(CalendarViewModeEnum.day);
+  readonly locale = input<string>(this.calendarLocale ?? this.localeId);
 
   @Input()
   @HostBinding('attr.aria-disabled')

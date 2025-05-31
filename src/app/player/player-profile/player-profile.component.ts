@@ -101,6 +101,7 @@ import { PlayerCanUpdatePersonaNamePipe } from './player-can-update-persona-name
     AsyncPipe,
     PlayerCanUpdatePersonaNamePipe,
     PlayerProfileInvalidPipe,
+    ScoreListResponsiveComponent,
   ],
 })
 export class PlayerProfileComponent extends Destroyable implements OnInit {

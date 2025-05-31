@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostListener, ViewEncapsulation, input, model } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, ViewEncapsulation, model } from '@angular/core';
 import { Animations } from '../../animations/animations';
 import { Subject } from 'rxjs';
 import { AnimationEvent } from '@angular/animations';

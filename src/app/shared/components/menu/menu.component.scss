@@ -1,5 +1,6 @@
 @use 'variables' as v;
 @use 'mixins' as m;
+@use 'sass:color';
 
 .menu {
   min-width: 150px;
@@ -24,12 +25,12 @@
 
       &:focus {
         box-shadow: none;
-        background-color: transparentize(v.$white, 0.9);
+        background-color: color.adjust(v.$white, $alpha: -0.9, $space: hsl);
 
         &.primary,
         &.accent,
         &.danger {
-          background-color: transparentize(v.$white, 0.9);
+          background-color: color.adjust(v.$white, $alpha: -0.9, $space: hsl);
           box-shadow: none;
         }
       }

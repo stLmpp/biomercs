@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, inject, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
 import {
   BreakpointObserverService,
   MediaQueryEnum,
@@ -24,8 +24,6 @@ import { AsyncPipe } from '@angular/common';
 export class ScoreListResponsiveComponent<T extends Score = Score> {
   private breakpointObserverService = inject(BreakpointObserverService);
 
-  private _collapsable = false;
-
   readonly scores = input<T[]>([]);
 
   readonly loading = input<BooleanInput>(false);
@@ -37,14 +35,7 @@ export class ScoreListResponsiveComponent<T extends Score = Score> {
   readonly metadata = input<any>();
   readonly title = input<string>();
   readonly disabledProperty = input<keyof T>();
-
-  @Input()
-  get collapsable(): boolean {
-    return this._collapsable;
-  }
-  set collapsable(collapsable: boolean) {
-    this._collapsable = coerceBooleanProperty(collapsable);
-  }
+  readonly collapsable = input(false, { transform: coerceBooleanProperty });
 
   readonly currentPageChange = output<number>();
   readonly itemsPerPageChange = output<number>();

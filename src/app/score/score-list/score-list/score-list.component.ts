@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { Score } from '@model/score';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { PaginationMeta } from '@model/pagination';
@@ -39,22 +39,13 @@ import { ScoreFormatPipe } from '../../score-format/score-format.pipe';
   ],
 })
 export class ScoreListComponent<T extends Score = Score> {
-  private _collapsable = false;
-
   readonly scores = input<T[]>([]);
   readonly loading = input<BooleanInput>(false);
   readonly paginationMeta = input<PaginationMeta | null>();
   readonly itemsPerPageOptions = input<number[]>([]);
   readonly title = input<string>();
   readonly disabledProperty = input<keyof T>();
-
-  @Input()
-  get collapsable(): boolean {
-    return this._collapsable;
-  }
-  set collapsable(collapsable: boolean) {
-    this._collapsable = coerceBooleanProperty(collapsable);
-  }
+  readonly collapsable = input(false, { transform: coerceBooleanProperty });
 
   readonly currentPageChange = output<number>();
   readonly itemsPerPageChange = output<number>();

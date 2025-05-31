@@ -5,7 +5,8 @@
     <bio-params (paramsChange)="paramsChange($event)" [config]="paramsConfig" setQueryParamsOnChange />
   </bio-card-content>
 </bio-card>
-<ng-container *ngLet="tableLoading$ | async as tableLoading">
+@let tableLoading = tableLoading$ | async;
+<ng-container>
   @if (isMobile$ | async) {
     @if (scoreTopTableList$ | async; as scoreTopTable) {
       <div class="score-list">
@@ -30,14 +31,13 @@
     <bio-card [bioLoading]="tableLoading" class="top-table flex-table">
       <bio-card-content>
         @if (scoreTopTable$ | async; as scoreTopTable) {
-          <ng-container *ngLet="orderBy$ | async as order">
-            <div
-              class="header"
-              *ngLet="order.orderByDirection === 'desc' ? 'arrow_drop_up' : 'arrow_drop_down' as arrow"
-            >
+          @let order = orderBy$ | async;
+          <ng-container>
+            @let arrow = order?.orderByDirection === 'desc' ? 'arrow_drop_up' : 'arrow_drop_down';
+            <div class="header">
               <div class="character" (click)="updateOrderByCharacter()">
                 Character
-                @if (order.orderByCharacter) {
+                @if (order?.orderByCharacter) {
                   <bio-icon class="order-icon" small>
                     {{ arrow }}
                   </bio-icon>
@@ -46,7 +46,7 @@
               @for (stage of scoreTopTable.stages; track trackById($index, stage)) {
                 <div [bioTooltip]="stage.name" (click)="updateOrderByIdStage(stage.id)" class="stage">
                   {{ stage.shortName }}
-                  @if (order.orderByStage === stage.id) {
+                  @if (order?.orderByStage === stage.id) {
                     <bio-icon class="order-icon" small>
                       {{ arrow }}
                     </bio-icon>

@@ -42,7 +42,6 @@ export class CardComponent extends Destroyable implements AfterContentInit {
   private changeDetectorRef = inject(ChangeDetectorRef);
   elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
 
-  private _collapsable = false;
   private _dark = false;
 
   readonly cardTitleDirectives = contentChildren(CardTitleDirective);
@@ -50,15 +49,8 @@ export class CardComponent extends Destroyable implements AfterContentInit {
   readonly cardContentDirectives = contentChildren(CardContentDirective);
   readonly cardActionsDirective = contentChildren(CardActionsDirective);
   readonly cardChildren = contentChildren(CardChild);
-
-  @Input()
   @HostBinding('class.collapsable')
-  get collapsable(): boolean {
-    return this._collapsable;
-  }
-  set collapsable(collapsable: boolean) {
-    this._collapsable = coerceBooleanProperty(collapsable);
-  }
+  readonly collapsable = input(false, { transform: coerceBooleanProperty });
 
   readonly collapsed = model(false);
   readonly collapsedChange = output<boolean>();
@@ -83,7 +75,7 @@ export class CardComponent extends Destroyable implements AfterContentInit {
   }
 
   onCollapseToggle(): void {
-    if (!this._collapsable) {
+    if (!this.collapsable()) {
       return;
     }
     this.collapsed.update(value => !value);

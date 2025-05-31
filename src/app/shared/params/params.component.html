@@ -2,7 +2,8 @@
   <!-- <editor-fold desc="Platform"> -->
   @if (formsConfig.idPlatform.show) {
     <bio-form-field label="Platform">
-      <bio-select controlName="idPlatform" placeholder="Platform" *ngLet="platforms$ | async as platforms">
+      @let platforms = platforms$ | async;
+      <bio-select controlName="idPlatform" placeholder="Platform">
         @if (!platforms?.length) {
           <bio-option disabled>No data found</bio-option>
         }
@@ -30,7 +31,8 @@
   <!-- <editor-fold desc="Game"> -->
   @if (formsConfig.idGame.show) {
     <bio-form-field [loading]="gameLoading" label="Game">
-      <bio-select controlName="idGame" placeholder="Game" *ngLet="games$ | async as games">
+      @let games = games$ | async;
+      <bio-select controlName="idGame" placeholder="Game">
         @if (!games?.length && !gameLoading) {
           <bio-option disabled>No data found</bio-option>
         }
@@ -40,7 +42,7 @@
         @if ((formsConfig.idGame.clearable ?? clearable) && !!(idGame$ | async)) {
           <bio-option [value]="null"> Clear </bio-option>
         }
-        @for (game of games; track trackById($index, game)) {
+        @for (game of games; track game.id) {
           <bio-option [value]="game.id" [title]="game.name" (click)="gameChange.emit(game)">
             {{ game.name }}
           </bio-option>
@@ -59,7 +61,8 @@
   <!-- <editor-fold desc="Mini game"> -->
   @if (formsConfig.idMiniGame.show) {
     <bio-form-field [loading]="miniGameLoading" label="Mini game">
-      <bio-select controlName="idMiniGame" placeholder="Mini Game" *ngLet="miniGames$ | async as miniGames">
+      @let miniGames = miniGames$ | async;
+      <bio-select controlName="idMiniGame" placeholder="Mini Game">
         @if (!miniGames?.length && !miniGameLoading) {
           <bio-option disabled>No data found</bio-option>
         }
@@ -90,7 +93,8 @@
   <!-- <editor-fold desc="Mode"> -->
   @if (formsConfig.idMode.show) {
     <bio-form-field [loading]="modeLoading" label="Mode">
-      <bio-select controlName="idMode" placeholder="Mode" *ngLet="modes$ | async as modes">
+      @let modes = modes$ | async;
+      <bio-select controlName="idMode" placeholder="Mode">
         @if (!modes?.length && !modeLoading) {
           <bio-option disabled>No data found</bio-option>
         }
@@ -119,7 +123,8 @@
   <!-- <editor-fold desc="Stage"> -->
   @if (formsConfig.idStage.show) {
     <bio-form-field [loading]="stageLoading" label="Stage">
-      <bio-select controlName="idStage" placeholder="Stage" *ngLet="stages$ | async as stages">
+      @let stages = stages$ | async;
+      <bio-select controlName="idStage" placeholder="Stage">
         @if (!stages?.length && !stageLoading) {
           <bio-option disabled>No data found</bio-option>
         }
@@ -148,7 +153,8 @@
   <!-- <editor-fold desc="Character"> -->
   @if (formsConfig.idCharacterCostume.show) {
     <bio-form-field [loading]="characterLoading" label="Character">
-      <bio-select controlName="idCharacterCostume" placeholder="Character" *ngLet="characters$ | async as characters">
+      @let characters = characters$ | async;
+      <bio-select controlName="idCharacterCostume" placeholder="Character">
         @if (!characters?.length && !characterLoading) {
           <bio-option disabled>No data found</bio-option>
         }

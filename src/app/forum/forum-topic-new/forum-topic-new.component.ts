@@ -1,17 +1,34 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
-import { Control, ControlGroup, Validators } from '@stlmpp/control';
+import { Control, ControlGroup, StControlModule, Validators } from '@stlmpp/control';
 import { TopicAddDto } from '@model/forum/topic';
 import { ActivatedRoute, Router } from '@angular/router';
 import ClassicEditor from '@shared/ckeditor/ckeditor';
 import { TopicService } from '../service/topic.service';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { finalize } from 'rxjs';
+import { CardComponent } from '@shared/components/card/card.component';
+import { CardContentDirective } from '@shared/components/card/card-content.directive';
+import { FormFieldComponent } from '@shared/components/form/form-field.component';
+import { CKEditorControlValue } from '@shared/ckeditor/ckeditor-control-value';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { InputDirective } from '@shared/components/form/input.directive';
+import { CardActionsDirective } from '@shared/components/card/card-actions.directive';
 
 @Component({
   selector: 'bio-forum-topic-new',
   templateUrl: './forum-topic-new.component.html',
   styleUrls: ['./forum-topic-new.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    CardComponent,
+    StControlModule,
+    CardContentDirective,
+    FormFieldComponent,
+    CKEditorControlValue,
+    CKEditorModule,
+    InputDirective,
+    CardActionsDirective,
+  ],
 })
 export class ForumTopicNewComponent {
   private router = inject(Router);

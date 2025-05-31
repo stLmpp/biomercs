@@ -1,4 +1,4 @@
-import { Directive, HostBinding, Input, input, model } from '@angular/core';
+import { Directive, HostBinding, Input, model } from '@angular/core';
 import { BioSizeInput } from './types';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { AbstractColorComponent } from '@shared/components/core/abstract-color-component';

@@ -7,7 +7,6 @@ import {
   OnInit,
   ViewEncapsulation,
   inject,
-  input,
   model,
 } from '@angular/core';
 import { OverlayRef } from '@angular/cdk/overlay';

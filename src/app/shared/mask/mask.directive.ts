@@ -10,7 +10,7 @@ import {
   inject,
 } from '@angular/core';
 import { ControlValue } from '@stlmpp/control';
-import { NgxMaskConfig, NgxMaskDirective, NgxMaskService, initialConfig } from 'ngx-mask';
+import { NgxMaskConfig, NgxMaskDirective, NgxMaskService } from 'ngx-mask';
 import { Subject } from 'rxjs';
 
 import { MASK_CONFIG } from '@shared/mask/mask-config.token';
