@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { BreadcrumbsService } from '@shared/breadcrumbs/breadcrumbs.service';
 import { Observable } from 'rxjs';
 import { BreadcrumbsItem } from '@shared/breadcrumbs/breadcrumbs';
-import { trackByIndex } from '@util/track-by';
+import { trackByFactory } from '@stlmpp/utils';
 
 @Component({
   selector: 'bio-breadcrumbs',
@@ -16,5 +16,5 @@ export class BreadcrumbsComponent {
 
   readonly breadcrumbs$: Observable<BreadcrumbsItem[]> = this.breadcrumbsService.breadcrumbs$;
 
-  trackBy = trackByIndex;
+  trackBy = trackByFactory<BreadcrumbsItem>();
 }

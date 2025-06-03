@@ -19,11 +19,17 @@ import { CharacterService } from '@shared/services/character/character.service';
 import { coerceBooleanProperty } from 'st-utils';
 import { ColDef } from '@shared/components/table/col-def';
 import { ScoreOpenInfoCellComponent } from '../score-approval/score-open-info-cell/score-open-info-cell.component';
-import { trackById } from '@util/track-by';
 import { ScoreModalService } from '../score-modal.service';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { Platform } from '@model/platform';
 import { Destroyable } from '@shared/components/common/destroyable-component';
+import { trackByFactory } from '@stlmpp/utils';
+import { Game } from '@model/game';
+import { MiniGame } from '@model/mini-game';
+import { Mode } from '@model/mode';
+import { Stage } from '@model/stage';
+import { CharacterWithCharacterCostumes } from '@model/character';
+import { CharacterCostume } from '@model/character-costume';
 
 @Component({
   selector: 'bio-score-search',
@@ -258,7 +264,13 @@ export class ScoreSearchComponent extends Destroyable implements OnInit {
     })
   );
 
-  readonly trackById = trackById;
+  readonly trackByPlatform = trackByFactory<Platform>('id');
+  readonly trackByGame = trackByFactory<Game>('id');
+  readonly trackByMiniGame = trackByFactory<MiniGame>('id');
+  readonly trackByMode = trackByFactory<Mode>('id');
+  readonly trackByStage = trackByFactory<Stage>('id');
+  readonly trackByCharacter = trackByFactory<CharacterWithCharacterCostumes>('id');
+  readonly trackByCharacterCostume = trackByFactory<CharacterCostume>('id');
 
   private _getParamsArrayFromRoute(param: string): number[] {
     const ids = this.activatedRoute.snapshot.queryParamMap.getAll(param) ?? [];

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { TopicRecent } from '@model/forum/topic';
-import { trackById } from '@util/track-by';
+import { trackByFactory } from '@stlmpp/utils';
 
 @Component({
   selector: 'bio-forum-categories-recent-topics',
@@ -11,5 +11,5 @@ import { trackById } from '@util/track-by';
 export class ForumCategoriesRecentTopicsComponent {
   @Input() recentTopics: TopicRecent[] = [];
 
-  readonly trackBy = trackById;
+  readonly trackBy = trackByFactory<TopicRecent>('id');
 }

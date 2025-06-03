@@ -10,9 +10,9 @@ import { arrayUtil } from 'st-utils';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
 import { differenceInHours, subDays } from 'date-fns';
 import { mdiShieldAccount } from '@mdi/js';
-import { trackById } from '@util/track-by';
 import { dateDifference } from '@shared/date/date-difference.pipe';
 import { Destroyable } from '@shared/components/common/destroyable-component';
+import { trackByFactory } from '@stlmpp/utils';
 
 interface UserSearchForm {
   term: string;
@@ -60,7 +60,7 @@ export class AdminBanUserComponent extends Destroyable implements OnInit {
   paginationMeta: PaginationMeta | null = null;
   users: UserBan[] = [];
 
-  readonly trackById = trackById;
+  readonly trackByUser = trackByFactory<UserBan>('id');
 
   private _getNumberParamOrNull(param: string): number | null {
     return this.activatedRoute.snapshot.queryParamMap.has(param)

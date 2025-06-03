@@ -21,7 +21,7 @@
         <bio-list-item *ngIf="!users?.length">No data found</bio-list-item>
         <bio-list-item
           [disabled]="user.disabled"
-          *ngFor="let user of users; trackBy: trackById"
+          *ngFor="let user of users; trackBy: trackByUser"
           [bioTooltip]="user.tooltip"
           [bioTooltipDisabled]="user.tooltipDisabled"
           (click)="action(user)"

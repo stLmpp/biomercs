@@ -2,7 +2,8 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Score } from '@model/score';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { mdiAccountStar, mdiTrophy, mdiTrophyAward } from '@mdi/js';
-import { trackById } from '@util/track-by';
+import { trackByFactory } from '@stlmpp/utils';
+import { ScorePlayer } from '@model/score-player';
 
 @Component({
   selector: 'bio-score-info',
@@ -37,7 +38,7 @@ export class ScoreInfoComponent {
   readonly mdiTrophyAward = mdiTrophyAward;
   readonly mdiAccountStar = mdiAccountStar;
 
-  readonly trackById = trackById;
+  readonly trackByScorePlayer = trackByFactory<ScorePlayer>('id');
 
   static ngAcceptInputType_showWorldRecord: BooleanInput;
   static ngAcceptInputType_showApprovalDate: BooleanInput;

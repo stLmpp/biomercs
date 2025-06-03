@@ -6,7 +6,7 @@ import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import { combineLatest, debounceTime, filter, finalize, Observable, pluck, shareReplay, switchMap } from 'rxjs';
 import { PlayerService } from '../../player.service';
 import { PaginationMeta } from '@model/pagination';
-import { trackById } from '@util/track-by';
+import { trackByFactory } from '@stlmpp/utils';
 
 export interface PlayerSearchModalComponentData {
   idPlayer?: number | null | undefined;
@@ -69,7 +69,7 @@ export class PlayerSearchModalComponent {
 
   loading = false;
 
-  readonly trackByPlayer = trackById;
+  readonly trackByPlayer = trackByFactory<Player>('id');
 
   onCurrentPageChange($event: number): void {
     this.form.get('page').setValue($event);

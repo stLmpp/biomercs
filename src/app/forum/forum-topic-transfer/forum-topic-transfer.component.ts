@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit }
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import { CategoryService } from '../service/category.service';
-import { CategoryWithSubCategoriesAlt } from '@model/forum/category';
+import { CategoryWithSubCategories, CategoryWithSubCategoriesAlt } from '@model/forum/category';
 import { finalize } from 'rxjs';
-import { trackById } from '@util/track-by';
 import { TopicService } from '../service/topic.service';
+import { trackByFactory } from '@stlmpp/utils';
+import { SubCategory } from '@model/forum/sub-category';
 
 export interface ForumTopicTransferComponentData {
   idTopic: number;
@@ -49,7 +50,8 @@ export class ForumTopicTransferComponent implements OnInit {
   categories: CategoryWithSubCategoriesAlt[] = [];
   idSubCategoryTo: number;
 
-  readonly trackById = trackById;
+  readonly trackBySubCategory = trackByFactory<SubCategory>('id');
+  readonly trackByCategory = trackByFactory<CategoryWithSubCategories>('id');
 
   transfer(): void {
     this.saving = true;

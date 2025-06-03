@@ -95,7 +95,7 @@
             {{ player.lastUpdatedPersonaNameDate | dateDifference: todayMinusSevenDate:['days', 'hours'] }}
           </ng-template>
         </bio-hint>
-        <bio-hint end>{{ personaNameModel.model?.length }} / 100</bio-hint>
+        <bio-hint end>{{ personaNameModel.model.length }} / 100</bio-hint>
         <bio-errors>
           <bio-error *error="'personaNameExists'">Player name already exists</bio-error>
         </bio-errors>

@@ -1,9 +1,12 @@
 <bio-loading *ngIf="loading"></bio-loading>
 <h4 bioModalTitle>Transfer topic</h4>
 <bio-modal-content bioList [(model)]="idSubCategoryTo">
-  <ng-container *ngFor="let category of categories; trackBy: trackById">
+  <ng-container *ngFor="let category of categories; trackBy: trackByCategory">
     <h4>{{ category.name }}</h4>
-    <bio-list-item *ngFor="let subCategory of category.subCategories; trackBy: trackById" [value]="subCategory.id">
+    <bio-list-item
+      *ngFor="let subCategory of category.subCategories; trackBy: trackBySubCategory"
+      [value]="subCategory.id"
+    >
       {{ subCategory.name }}
     </bio-list-item>
   </ng-container>

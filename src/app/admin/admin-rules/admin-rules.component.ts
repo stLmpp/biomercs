@@ -3,12 +3,12 @@ import { ActivatedRoute } from '@angular/router';
 import { Rule, RuleTypeEnum, RuleUpsert } from '@model/rule';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { Control, ControlArray, ControlBuilder, ControlGroup, Validators } from '@stlmpp/control';
-import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { RuleService } from '../../rules/rule.service';
 import { finalize, tap } from 'rxjs';
 import { SnackBarService } from '@shared/components/snack-bar/snack-bar.service';
 import { UnsavedData, UnsavedDataType } from '@shared/guards/unsaved-data.guard';
-import { trackByControl } from '@util/track-by';
+import { trackByFactory } from '@stlmpp/utils';
 
 export type RuleUpsertForm = Omit<RuleUpsert, 'deleted'>;
 
@@ -53,7 +53,7 @@ export class AdminRulesComponent implements UnsavedData {
     return this.form.get('type');
   }
 
-  readonly trackByControl = trackByControl;
+  readonly trackByControl = trackByFactory<ControlArray<RuleUpsertForm>>('uniqueId');
 
   private _createForm(type: RuleTypeEnum): ControlGroup<RulesForm> {
     return this.controlBuilder.group<RulesForm>({

@@ -65,8 +65,8 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
   private _focusManager?: FocusKeyManager<OptionComponent>;
 
   @ViewChild('panel', { read: TemplateRef }) readonly panelTemplateRef!: TemplateRef<any>;
-  @ContentChildren(OptionComponent, { descendants: true }) readonly options!: QueryList<OptionComponent>;
-  @ContentChildren(OptgroupComponent, { descendants: true }) readonly optgroups!: QueryList<OptgroupComponent>;
+  @ContentChildren(OptionComponent, { descendants: true }) readonly options?: QueryList<OptionComponent>;
+  @ContentChildren(OptgroupComponent, { descendants: true }) readonly optgroups?: QueryList<OptgroupComponent>;
 
   @Input() compareWith: (valueA: any, valueB: any) => boolean = Object.is;
   @Input() placeholder?: string;
@@ -106,6 +106,9 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
   }
 
   private _initFocus(): void {
+    if (!this.options) {
+      return;
+    }
     this._focusManager = new FocusKeyManager(this.options).withVerticalOrientation().withTypeAhead(400);
     if (!isNil(this.value)) {
       const optionSelected = this.options.toArray().findIndex(option => this.compareWith(option.value, this.value));
@@ -224,7 +227,7 @@ export class SelectComponent extends Select implements ControlValue, AfterConten
   }
 
   ngAfterContentInit(): void {
-    this.options.changes.pipe(takeUntil(this.destroy$), auditTime(100), startWith(this.options)).subscribe(() => {
+    this.options?.changes.pipe(takeUntil(this.destroy$), auditTime(100), startWith(this.options)).subscribe(() => {
       this._setViewValueFromOptions(this.value);
     });
   }

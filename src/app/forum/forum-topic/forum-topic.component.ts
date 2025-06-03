@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { Destroyable } from '@shared/components/common/destroyable-component';
 import { finalize, skip, takeUntil } from 'rxjs';
-import { trackById } from '@util/track-by';
 import { Post } from '@model/forum/post';
 import { arrayUtil } from 'st-utils';
 import { TopicService } from '../service/topic.service';
@@ -12,6 +11,7 @@ import { PostModalService } from '../service/post-modal.service';
 import { TopicModalService } from '../service/topic-modal.service';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { catchAndThrow } from '@util/operators/catch-and-throw';
+import { trackByFactory } from '@stlmpp/utils';
 
 @Component({
   selector: 'bio-forum-topic',
@@ -37,7 +37,7 @@ export class ForumTopicComponent extends Destroyable implements OnInit {
   loadingMove = false;
   loadingNotifications = false;
 
-  readonly trackById = trackById;
+  readonly tracyByPost = trackByFactory<Post>('id');
 
   ngOnInit(): void {
     this.activatedRoute.data.pipe(takeUntil(this.destroy$), skip(1)).subscribe(data => {

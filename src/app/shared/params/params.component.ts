@@ -43,8 +43,8 @@ import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { Platform } from '@model/platform';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { filterNilArrayOperator } from '@util/operators/filter-nil-array';
-import { trackById } from '@util/track-by';
 import { Destroyable } from '@shared/components/common/destroyable-component';
+import { CharacterWithCharacterCostumes } from '@model/character';
 
 export interface ParamsForm {
   idPlatform: number | null | undefined;
@@ -295,7 +295,13 @@ export class ParamsComponent extends Destroyable implements OnChanges, OnInit {
   stageLoading = false;
   characterLoading = false;
 
-  readonly trackById = trackById;
+  readonly trackByPlatform = trackByFactory<Platform>('id');
+  readonly trackByGame = trackByFactory<Game>('id');
+  readonly trackByMiniGame = trackByFactory<MiniGame>('id');
+  readonly trackByMode = trackByFactory<Mode>('id');
+  readonly trackByStage = trackByFactory<Stage>('id');
+  readonly trackByCharacter = trackByFactory<CharacterWithCharacterCostumes>('id');
+  readonly trackByCharacterCostume = trackByFactory<CharacterCostume>('id');
   readonly trackByControlValidator = trackByFactory<ControlValidator>('name');
 
   private _selectPlatforms(): Observable<Platform[]> {

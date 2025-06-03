@@ -19,7 +19,7 @@
 >
   <bio-list-item *ngIf="!category.subCategories.length"> No sub categories found! </bio-list-item>
   <bio-list-item
-    *ngFor="let subCategory of category.subCategories; trackBy: trackById"
+    *ngFor="let subCategory of category.subCategories; trackBy: trackBySubCategory"
     [routerLink]="['category', category.id, 'sub-category', subCategory.id, 'page', 1]"
     cdkDrag
     [cdkDragData]="subCategory"
@@ -29,7 +29,7 @@
     <bio-list-item-line>{{ subCategory.description }}</bio-list-item-line>
     <bio-list-item-line *ngIf="!isMobile && subCategory.moderators.length" class="moderators">
       Moderators:
-      <ng-container *ngFor="let moderator of subCategory.moderators; trackBy: trackById; let $last = last">
+      <ng-container *ngFor="let moderator of subCategory.moderators; trackBy: trackByModerator; let $last = last">
         <a [routerLink]="['/player', moderator.idPlayer]" (click)="$event.stopPropagation()">
           {{ moderator.playerPersonaName }}<ng-container *ngIf="!$last">, </ng-container>
         </a>

@@ -2,11 +2,12 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, In
 import { CategoryWithSubCategories } from '@model/forum/category';
 import { SubCategoryModalService } from '../../service/sub-category-modal.service';
 import { arrayUtil } from 'st-utils';
-import { trackById } from '@util/track-by';
 import { mdiAccountTie } from '@mdi/js';
 import { SubCategoryModeratorModalService } from '../../service/sub-category-moderator-modal.service';
 import { SubCategory, SubCategoryWithModeratorsInfo } from '@model/forum/sub-category';
-import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { trackByFactory } from '@stlmpp/utils';
+import { Moderator } from '@model/forum/moderator';
 
 export interface ForumCategoriesCategoryComponentOrderChangeEvent {
   idCategory: number;
@@ -44,7 +45,8 @@ export class ForumCategoriesCategoryComponent {
   loadingSubCategoryAddEditModal = false;
   loadingSubCategoryModeratorManagement = false;
 
-  readonly trackById = trackById;
+  readonly trackByModerator = trackByFactory<Moderator>('id');
+  readonly trackBySubCategory = trackByFactory<SubCategoryWithModeratorsInfo>('id');
   readonly mdiAccountTie = mdiAccountTie;
 
   async openAddEditSubCategory(idSubCategory?: number, $event?: MouseEvent): Promise<void> {

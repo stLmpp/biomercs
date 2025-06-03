@@ -6,9 +6,9 @@ import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { finalize, takeUntil } from 'rxjs';
 import { ErrorService } from '@shared/services/error/error.service';
-import { trackById } from '@util/track-by';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Destroyable } from '@shared/components/common/destroyable-component';
+import { trackByFactory } from '@stlmpp/utils';
 
 @Component({
   selector: 'bio-admin-errors',
@@ -32,7 +32,7 @@ export class AdminErrorsComponent extends Destroyable {
   loading = false;
   meta: PaginationMeta | null = this.activatedRoute.snapshot.data[RouteDataEnum.errors]?.meta ?? null;
   errors: AdminError[] = this.activatedRoute.snapshot.data[RouteDataEnum.errors]?.items ?? [];
-  readonly trackBy = trackById;
+  readonly trackBy = trackByFactory<AdminError>('id');
 
   private _findErrors(): void {
     this.loading = true;

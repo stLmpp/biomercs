@@ -22,7 +22,7 @@
       </ng-container>
     </div>
     <bio-forum-topic-post
-      *ngFor="let post of topic.posts.items; trackBy: trackById; let $odd = odd"
+      *ngFor="let post of topic.posts.items; trackBy: tracyByPost; let $odd = odd"
       [idSubCategory]="topic.idSubCategory"
       [post]="post"
       [odd]="$odd"

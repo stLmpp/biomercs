@@ -6,8 +6,8 @@ import { Destroyable } from '@shared/components/common/destroyable-component';
 import { PlayerService } from '../../player/player.service';
 import { Player } from '@model/player';
 import { orderBy } from 'st-utils';
-import { trackById } from '@util/track-by';
 import { ModalRef } from '@shared/components/modal/modal-ref';
+import { trackByFactory } from '@stlmpp/utils';
 
 let uid = -1;
 
@@ -37,7 +37,7 @@ export class ForumModeratorManagementComponent extends Destroyable implements On
   moderatorsSelected: ModeratorWithInfo[] = [];
   moderatorsSelectedSearch = '';
 
-  readonly trackById = trackById;
+  readonly trackById = trackByFactory<ModeratorWithInfo>('id');
 
   private _mapPlayersToModerator(): OperatorFunction<Player[], ModeratorWithInfo[]> {
     return map(players =>

@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { Score } from '@model/score';
 import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { PaginationMeta } from '@model/pagination';
-import { trackById } from '@util/track-by';
 import { trackByFactory } from '@stlmpp/utils';
+import { ScorePlayer } from '@model/score-player';
 
 @Component({
   selector: 'bio-score-list',
@@ -34,7 +34,7 @@ export class ScoreListComponent<T extends Score = Score> {
   @Output() readonly scoreClicked = new EventEmitter<T>();
 
   readonly trackByScore = trackByFactory<T>('id');
-  readonly trackById = trackById;
+  readonly trackByScorePlayer = trackByFactory<ScorePlayer>('id');
 
   onClick(score: T): void {
     if (this.disabledProperty && score[this.disabledProperty]) {

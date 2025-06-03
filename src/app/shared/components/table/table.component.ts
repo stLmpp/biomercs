@@ -11,7 +11,7 @@ import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 import { PaginationMeta } from '@model/pagination';
 import { ColDef, ColDefInternal } from '@shared/components/table/col-def';
 import { TableCellNotifyChange, TableOrder } from '@shared/components/table/type';
-import { trackById } from '@util/track-by';
+import { trackByFactory } from '@stlmpp/utils';
 
 @Component({
   selector: 'bio-table',
@@ -60,7 +60,7 @@ export class TableComponent<T extends Record<any, any>, K extends keyof T> {
 
   colDefsInternal: ColDefInternal<T, K>[] = [];
 
-  readonly trackByColDef = trackById;
+  readonly trackByColDef = trackByFactory<ColDefInternal<T, K>>('id');
 
   private _updateColDefsInternal(): void {
     this.colDefsInternal = this._colDefs.map(colDef => ({ ...colDef, ...this._colDefDefault }));

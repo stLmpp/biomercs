@@ -1,10 +1,11 @@
-import { AfterContentInit, ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, Component, QueryList, ViewEncapsulation } from '@angular/core';
 import { SelectComponent } from '@shared/components/select/select.component';
 import { Select } from '@shared/components/select/select';
 import { ControlValue } from '@stlmpp/control';
 import { Animations } from '@shared/animations/animations';
 import { auditTime, startWith, takeUntil } from 'rxjs';
 import { FormFieldChild } from '@shared/components/form/form-field-child';
+import { OptionComponent } from '@shared/components/select/option.component';
 
 @Component({
   selector: 'bio-select[multiple]',
@@ -58,12 +59,14 @@ export class SelectMultipleComponent extends SelectComponent implements AfterCon
   }
 
   override ngAfterContentInit(): void {
-    this.options.changes.pipe(takeUntil(this.destroy$), auditTime(100), startWith(this.options)).subscribe(options => {
-      for (const option of options) {
-        option.isSelected = this.value.some(value => this.compareWith(value, option.value));
-        option.changeDetectorRef.markForCheck();
-        option.optgroupComponent?.changeDetectorRef.markForCheck();
-      }
-    });
+    this.options?.changes
+      .pipe(takeUntil(this.destroy$), auditTime(100), startWith(this.options))
+      .subscribe((options: QueryList<OptionComponent>) => {
+        for (const option of options) {
+          option.isSelected = this.value.some(value => this.compareWith(value, option.value));
+          option.changeDetectorRef.markForCheck();
+          option.optgroupComponent?.changeDetectorRef.markForCheck();
+        }
+      });
   }
 }

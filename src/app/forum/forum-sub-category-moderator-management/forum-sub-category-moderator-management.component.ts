@@ -5,9 +5,9 @@ import { Moderator } from '@model/forum/moderator';
 import { SubCategoryModeratorService } from '../service/sub-category-moderator.service';
 import { finalize, map, OperatorFunction } from 'rxjs';
 import { SubCategoryModerator } from '@model/forum/sub-category-moderator';
-import { trackById } from '@util/track-by';
 import { ModeratorService } from '../service/moderator.service';
 import { orderBy } from 'st-utils';
+import { trackByFactory } from '@stlmpp/utils';
 
 let uid = -1;
 
@@ -49,7 +49,7 @@ export class ForumSubCategoryModeratorManagementComponent implements OnInit {
   loading = true;
   loadingModerators = false;
   saving = false;
-  readonly trackById = trackById;
+  readonly trackById = trackByFactory<SubCategoryModerator>('id');
 
   private _mapModeratorsToSubCategoryModerators(): OperatorFunction<Moderator[], SubCategoryModerator[]> {
     return map(moderators =>

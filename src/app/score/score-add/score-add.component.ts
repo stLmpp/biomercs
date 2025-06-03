@@ -23,10 +23,10 @@ import { Mode } from '@model/mode';
 import { scoreCurrencyMask } from '../util';
 import { Router } from '@angular/router';
 import { filterNilArrayOperator } from '@util/operators/filter-nil-array';
-import { trackByControl } from '@util/track-by';
 import { isNotNil, isObjectEqualShallow } from 'st-utils';
 import { filterNil } from '@util/operators/filter';
 import { PlatformInputTypeService } from '@shared/services/platform-input-type/platform-input-type.service';
+import { trackByFactory } from '@stlmpp/utils';
 
 @Component({
   selector: 'bio-score-add',
@@ -133,7 +133,7 @@ export class ScoreAddComponent {
     })
   );
 
-  readonly trackByScorePlayerControl = trackByControl;
+  readonly trackByScorePlayerControl = trackByFactory<ControlArray<ScorePlayerAddForm>>('uniqueId');
 
   readonly scorePlayersControl = this.form.get('scorePlayers');
 

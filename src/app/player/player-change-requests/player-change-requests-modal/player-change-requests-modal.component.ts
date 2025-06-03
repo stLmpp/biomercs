@@ -1,9 +1,13 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject } from '@angular/core';
-import { ScoreChangeRequestsPagination, ScoreWithScoreChangeRequests } from '@model/score-change-request';
+import {
+  ScoreChangeRequest,
+  ScoreChangeRequestsPagination,
+  ScoreWithScoreChangeRequests,
+} from '@model/score-change-request';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import { Control, ControlArray, ControlGroup, Validators } from '@stlmpp/control';
 import { ScoreChangeRequestsFulfilDto } from '@model/score';
-import { ScorePlayerUpdateDto } from '@model/score-player';
+import { ScorePlayer, ScorePlayerUpdateDto } from '@model/score-player';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import { IdChecked } from '@shared/type/id-checked';
 import { MaskEnum, MaskEnumPatterns } from '@shared/mask/mask.enum';
@@ -12,10 +16,13 @@ import { scoreCurrencyMask } from '../../../score/util';
 import { ScoreService } from '../../../score/score.service';
 import { finalize, map, Observable, of, share, switchMap, tap } from 'rxjs';
 import { SnackBarService } from '@shared/components/snack-bar/snack-bar.service';
-import { trackById } from '@util/track-by';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
 import { CharacterService } from '@shared/services/character/character.service';
 import { PlatformInputTypeService } from '@shared/services/platform-input-type/platform-input-type.service';
+import { trackByFactory } from '@stlmpp/utils';
+import { CharacterWithCharacterCostumes } from '@model/character';
+import { CharacterCostume } from '@model/character-costume';
+import { PlatformInputType } from '@model/platform-input-type';
 
 export interface PlayerChangeRequestsModalData {
   score: ScoreWithScoreChangeRequests;
@@ -111,7 +118,11 @@ export class PlayerChangeRequestsModalComponent {
     share()
   );
 
-  readonly trackById = trackById;
+  readonly trackByScorePlayer = trackByFactory<ScorePlayer>('id');
+  readonly trackByCharacter = trackByFactory<CharacterWithCharacterCostumes>('id');
+  readonly trackByCharacterCostume = trackByFactory<CharacterCostume>('id');
+  readonly trackByPlatformInputType = trackByFactory<PlatformInputType>('id');
+  readonly trackByScoreChangeRequest = trackByFactory<ScoreChangeRequest>('id');
 
   private _getChangeRequests(): Observable<ScoreChangeRequestsPagination | undefined> {
     if (!this.data.page || !this.data.itemsPerPage) {

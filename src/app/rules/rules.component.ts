@@ -3,9 +3,9 @@ import { AuthQuery } from '../auth/auth.query';
 import { Rule, RuleTypeEnum } from '@model/rule';
 import { ActivatedRoute } from '@angular/router';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
-import { trackById } from '@util/track-by';
 import { Control } from '@stlmpp/control';
 import { combineLatest, map } from 'rxjs';
+import { trackByFactory } from '@stlmpp/utils';
 
 @Component({
   selector: 'bio-rules',
@@ -17,7 +17,7 @@ import { combineLatest, map } from 'rxjs';
 export class RulesComponent {
   constructor(private authQuery: AuthQuery, private activatedRoute: ActivatedRoute) {}
 
-  readonly trackBy = trackById;
+  readonly trackBy = trackByFactory<Rule>('id');
   readonly isAdmin$ = this.authQuery.isAdmin$;
   readonly ruleTypeEnum = RuleTypeEnum;
   readonly ruleTypeControl = new Control(RuleTypeEnum.Main);

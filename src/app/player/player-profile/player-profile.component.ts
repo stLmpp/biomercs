@@ -30,7 +30,8 @@ import { ModelDirective } from '@stlmpp/control';
 import { playerProfileValidatePersonaName } from './player-profile-invalid.pipe';
 import { Destroyable } from '@shared/components/common/destroyable-component';
 import { InputTypeService } from '@shared/services/input-type/input-type.service';
-import { trackById } from '@util/track-by';
+import { trackByFactory } from '@stlmpp/utils';
+import { InputType } from '@model/input-type';
 
 @Component({
   selector: 'bio-player-profile',
@@ -92,7 +93,7 @@ export class PlayerProfileComponent extends Destroyable implements OnInit {
   readonly todayMinusSevenDate = subDays(new Date(), 7);
   readonly mdiSteam = mdiSteam;
   readonly trackByScoreGroupByStatus = trackByScoreGroupedByStatus;
-  readonly trackById = trackById;
+  readonly trackById = trackByFactory<InputType>('id');
 
   get idPlayer(): number {
     // idPlayer is required to access this component

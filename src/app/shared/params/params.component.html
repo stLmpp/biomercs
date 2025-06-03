@@ -8,7 +8,7 @@
       </bio-option>
       <bio-option
         [value]="platform.id"
-        *ngFor="let platform of platforms; trackBy: trackById"
+        *ngFor="let platform of platforms; trackBy: trackByPlatform"
         [title]="platform.name"
         (click)="platformChange.emit(platform)"
       >
@@ -32,7 +32,7 @@
       </bio-option>
       <bio-option
         [value]="game.id"
-        *ngFor="let game of games; trackBy: trackById"
+        *ngFor="let game of games; trackBy: trackByGame"
         [title]="game.name"
         (click)="gameChange.emit(game)"
       >
@@ -56,7 +56,7 @@
       </bio-option>
       <bio-option
         [value]="miniGame.id"
-        *ngFor="let miniGame of miniGames$ | async; trackBy: trackById"
+        *ngFor="let miniGame of miniGames$ | async; trackBy: trackByMiniGame"
         [title]="miniGame.name"
         (click)="miniGameChange.emit(miniGame)"
       >
@@ -80,7 +80,7 @@
       </bio-option>
       <bio-option
         [value]="mode.id"
-        *ngFor="let mode of modes; trackBy: trackById"
+        *ngFor="let mode of modes; trackBy: trackByMode"
         [title]="mode.name"
         (click)="modeChange.emit(mode)"
       >
@@ -104,7 +104,7 @@
       </bio-option>
       <bio-option
         [value]="stage.id"
-        *ngFor="let stage of stages; trackBy: trackById"
+        *ngFor="let stage of stages; trackBy: trackByStage"
         [title]="stage.name"
         (click)="stageChange.emit(stage)"
       >
@@ -130,12 +130,12 @@
         Clear
       </bio-option>
       <bio-optgroup
-        *ngFor="let character of characters; trackBy: trackById"
+        *ngFor="let character of characters; trackBy: trackByCharacter"
         [label]="character.name"
         [title]="character.name"
       >
         <bio-option
-          *ngFor="let characterCostume of character.characterCostumes; trackBy: trackById"
+          *ngFor="let characterCostume of character.characterCostumes; trackBy: trackByCharacterCostume"
           [value]="characterCostume.id"
           title="{{ character.name }} {{ characterCostume.name }}"
           (click)="characterCostumeChange.emit(characterCostume)"

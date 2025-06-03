@@ -18,7 +18,7 @@ import { FocusableOption, FocusKeyManager } from '@angular/cdk/a11y';
 import { filter, Subject, takeUntil } from 'rxjs';
 import { SimpleChangesCustom } from '@util/util';
 import { isNil } from 'st-utils';
-import { trackByControl } from '@util/track-by';
+import { trackByFactory } from '@stlmpp/utils';
 
 @Directive({ selector: 'input[confirmationCodeInput]' })
 export class ConfirmationCodeInputDirective implements FocusableOption {
@@ -64,7 +64,7 @@ export class ConfirmationCodeInputComponent
     ),
   });
 
-  readonly trackByControl = trackByControl;
+  readonly trackByControl = trackByFactory<ControlArray<string>>('uniqueId');
 
   get arrayControl(): ControlArray<string> {
     return this.form.get('array');

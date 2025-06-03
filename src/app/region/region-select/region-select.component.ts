@@ -13,8 +13,8 @@ import { MODAL_DATA } from '@shared/components/modal/modal.config';
 import { Region } from '@model/region';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { Control } from '@stlmpp/control';
-import { trackById } from '@util/track-by';
 import { RegionService } from '../region.service';
+import { trackByFactory } from '@stlmpp/utils';
 
 export interface RegionSelectData {
   idRegion: number;
@@ -54,7 +54,7 @@ export class RegionSelectComponent implements OnInit, AfterViewInit {
   readonly searchControl = new Control<string>('');
   readonly search$ = this.searchControl.value$.pipe(debounceTime(400));
 
-  readonly trackByRegion = trackById;
+  readonly trackByRegion = trackByFactory<Region>('id');
 
   private _scrollToIdRegionSelected(): void {
     const index = this.regions.findIndex(region => region.id === this.idRegion);

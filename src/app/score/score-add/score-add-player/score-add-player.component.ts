@@ -19,11 +19,11 @@ import { generateScorePlayerControlGroup, ScorePlayerAddForm } from '../score-ad
 import { AuthQuery } from '../../../auth/auth.query';
 import { BooleanInput } from 'st-utils';
 import { SimpleChangesCustom } from '@util/util';
-import { trackById } from '@util/track-by';
 import { PlayerModalService } from '../../../player/player-modal.service';
 import { Control } from '@stlmpp/control';
 import { Destroyable } from '@shared/components/common/destroyable-component';
 import { PlatformInputType } from '@model/platform-input-type';
+import { trackByFactory } from '@stlmpp/utils';
 
 @Component({
   selector: 'bio-score-add-player',
@@ -88,7 +88,10 @@ export class ScoreAddPlayerComponent extends Destroyable implements OnInit, OnCh
   playersLoading = false;
   playerSearchModalLoading = false;
 
-  readonly trackById = trackById;
+  readonly trackByPlayer = trackByFactory<Player>('id');
+  readonly trackByPlatformInputType = trackByFactory<PlatformInputType>('id');
+  readonly trackByCharacter = trackByFactory<CharacterWithCharacterCostumes>('id');
+  readonly trackByCharacterCostume = trackByFactory<CharacterCostume>('id');
 
   async openPlayerSearchModal(): Promise<void> {
     this.playerSearchModalLoading = true;

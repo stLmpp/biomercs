@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { Score } from '@model/score';
 import { MODAL_DATA } from '@shared/components/modal/modal.config';
-import { ControlBuilder, Validators } from '@stlmpp/control';
+import { ControlArray, ControlBuilder, Validators } from '@stlmpp/control';
 import { ModalRef } from '@shared/components/modal/modal-ref';
 import { ScoreApprovalPagination } from '@model/score-approval';
 import { finalize, Subject, switchMap, tap, throttleTime } from 'rxjs';
@@ -18,8 +18,8 @@ import { Key, KeyCode } from '@model/enum/key';
 import { FocusKeyManager } from '@angular/cdk/a11y';
 import { InputDirective } from '@shared/components/form/input.directive';
 import { ScoreApprovalComponentState } from '../score-approval/score-approval.component';
-import { trackByControl } from '@util/track-by';
 import { ScoreService } from '../score.service';
+import { trackByFactory } from '@stlmpp/utils';
 
 export interface ScoreRequestChangesModalData {
   score: Score;
@@ -66,7 +66,7 @@ export class ScoreRequestChangesModalComponent implements OnInit, AfterViewInit 
   readonly form = this.controlBuilder.group<ScoreRequestChangesModalForm>({
     changes: this.controlBuilder.array<string>([['', [Validators.required]]]),
   });
-  readonly trackByControl = trackByControl;
+  readonly trackByControl = trackByFactory<ControlArray<string>>('uniqueId');
   readonly changesControl = this.form.get('changes');
 
   addChange(focus = false): void {

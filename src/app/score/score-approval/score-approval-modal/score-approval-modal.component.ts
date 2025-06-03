@@ -9,8 +9,8 @@ import { ScoreApprovalMotive } from '@model/score-approval-motive';
 import { finalize, Observable, switchMap, tap } from 'rxjs';
 import { ScoreApprovalAdd, ScoreApprovalPagination } from '@model/score-approval';
 import { ScoreApprovalComponentState } from '../score-approval.component';
-import { trackById } from '@util/track-by';
 import { ScoreService } from '../../score.service';
+import { trackByFactory } from '@stlmpp/utils';
 
 export interface ScoreApprovalModalData {
   score: Score;
@@ -58,7 +58,7 @@ export class ScoreApprovalModalComponent {
     description: ['', [Validators.required]],
   });
 
-  readonly trackById = trackById;
+  readonly trackByScoreApprovalMotive = trackByFactory<ScoreApprovalMotive>('id');
 
   save(): void {
     this.modalRef.disableClose = true;

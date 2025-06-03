@@ -7,9 +7,9 @@ import { PersonaNameExistsValidator } from '@shared/validators/persona-name-exis
 import { SteamIdExistsValidator } from '@shared/validators/steam-id-exists.validator';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { trackById } from '@util/track-by';
 import { Region } from '@model/region';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
+import { trackByFactory } from '@stlmpp/utils';
 
 @Component({
   selector: 'bio-admin-create-player',
@@ -40,7 +40,7 @@ export class AdminCreatePlayerComponent {
     steamid: new Control('', [this.steamIdExistsValidator]),
   });
   readonly regions: Region[] = this.activatedRoute.snapshot.data[RouteDataEnum.regions];
-  readonly trackByRegion = trackById;
+  readonly trackByRegion = trackByFactory<Region>('id');
 
   readonly isInvalid$ = this.form.value$.pipe(map(dto => dto.personaName.length < 3 && !dto.steamid?.length));
   readonly personaNameLength$ = this.form.get('personaName').value$.pipe(pluck('length'));

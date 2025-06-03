@@ -20,7 +20,7 @@
       (cdkDropListDropped)="onCdkDropListDropped($event)"
     >
       <bio-accordion-item
-        *ngFor="let category of categories | forumFilterDeleted: hideDeleted; trackBy: trackById"
+        *ngFor="let category of categories | forumFilterDeleted: hideDeleted; trackBy: trackByCategory"
         cdkDrag
         [cdkDragData]="category"
         expanded

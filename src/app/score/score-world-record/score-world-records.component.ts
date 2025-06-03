@@ -17,8 +17,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { isNotNil } from '@util/operators/filter';
 import { BreakpointObserverService } from '@shared/services/breakpoint-observer/breakpoint-observer.service';
-import { trackById } from '@util/track-by';
 import { ScoreModalService } from '../score-modal.service';
+import { Stage } from '@model/stage';
 
 export interface ScoreWorldRecordTableState {
   tableLoading: boolean;
@@ -119,7 +119,7 @@ export class ScoreWorldRecordsComponent extends LocalState<ScoreWorldRecordTable
     }))
   );
 
-  readonly trackById = trackById;
+  readonly trackByStage = trackByFactory<Stage>('id');
   readonly trackByScoreTable = trackByFactory<ScoreTableWorldRecord>('idCharacterCostume');
   readonly trackByScoreTableWithoutUndefined =
     trackByFactory<ScoreTableWorldRecordWithoutUndefined>('idCharacterCostume');

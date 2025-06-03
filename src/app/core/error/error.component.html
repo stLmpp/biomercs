@@ -1,7 +1,7 @@
-<h1 bioModalTitle>{{ httpError?.status }}</h1>
+<h1 bioModalTitle>{{ httpError.status }}</h1>
 <bio-modal-content>
-  <p *ngIf="httpError?.message">Message: {{ httpError.message }}</p>
-  <p *ngIf="httpError?.error">Error: {{ httpError.error }}</p>
+  <p *ngIf="httpError.message">Message: {{ httpError.message }}</p>
+  <p *ngIf="httpError.error">Error: {{ httpError.error }}</p>
   <ng-container *ngIf="httpError.sqlError">
     <p *ngFor="let keyvalue of httpError.sqlError | keyvalue">
       <span style="text-transform: capitalize"> {{ keyvalue.key }} </span>: {{ keyvalue.value }}

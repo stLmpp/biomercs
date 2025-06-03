@@ -2,11 +2,10 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/
 import { ActivatedRoute } from '@angular/router';
 import { CategoriesWithRecentTopics, CategoryWithSubCategories } from '@model/forum/category';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
-import { trackById } from '@util/track-by';
 import { AuthQuery } from '../../auth/auth.query';
 import { CategoryModalService } from '../service/category-modal.service';
 import { arrayUtil, isFunction } from 'st-utils';
-import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { CategoryService } from '../service/category.service';
 import { BehaviorSubject, finalize, map } from 'rxjs';
 import { BreakpointObserverService } from '@shared/services/breakpoint-observer/breakpoint-observer.service';
@@ -16,6 +15,7 @@ import { SubCategoryOrderDto } from '@model/forum/sub-category';
 import { ForumCategoriesCategoryComponentOrderChangeEvent } from './forum-categories-category/forum-categories-category.component';
 import { SubCategoryService } from '../service/sub-category.service';
 import { TopicRecent } from '@model/forum/topic';
+import { trackByFactory } from '@stlmpp/utils';
 
 @Component({
   selector: 'bio-forum-categories',
@@ -53,7 +53,7 @@ export class ForumCategoriesComponent {
   readonly isAdmin$ = this.authQuery.isAdmin$;
   readonly isMobile$ = this.breakpointObserverService.isMobile$;
   readonly mdiAccountTie = mdiAccountTie;
-  readonly trackById = trackById;
+  readonly trackByCategory = trackByFactory<CategoryWithSubCategories>('id');
 
   readonly recentTopics: TopicRecent[] = this._getCategoriesWithRecentTopicsFromRoute().recentTopics;
 

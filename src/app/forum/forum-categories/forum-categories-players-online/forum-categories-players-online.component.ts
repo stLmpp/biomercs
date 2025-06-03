@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { trackById } from '@util/track-by';
 import { ForumService } from '../../service/forum.service';
+import { trackByFactory } from '@stlmpp/utils';
+import { UserOnline } from '@model/user';
 
 @Component({
   selector: 'bio-forum-categories-players-online',
@@ -12,5 +13,5 @@ export class ForumCategoriesPlayersOnlineComponent {
   constructor(private forumService: ForumService) {}
 
   readonly usersOnline$ = this.forumService.usersOnline$;
-  readonly trackById = trackById;
+  readonly trackById = trackByFactory<UserOnline>();
 }

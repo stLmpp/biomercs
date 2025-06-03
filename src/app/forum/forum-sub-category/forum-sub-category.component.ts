@@ -2,13 +2,13 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { SubCategoryWithTopics } from '@model/forum/sub-category';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
-import { trackByIndex } from '@util/track-by';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { SubCategoryService } from '../service/sub-category.service';
 import { finalize, skip, takeUntil } from 'rxjs';
 import { Destroyable } from '@shared/components/common/destroyable-component';
 import { Topic } from '@model/forum/topic';
 import { arrayUtil } from 'st-utils';
+import { trackByFactory } from '@stlmpp/utils';
 
 @Component({
   selector: 'bio-forum-sub-category',
@@ -30,7 +30,7 @@ export class ForumSubCategoryComponent extends Destroyable implements OnInit {
   loading = false;
   subCategory: SubCategoryWithTopics = this.activatedRoute.snapshot.data[RouteDataEnum.subCategoryWithTopics];
 
-  readonly trackById = trackByIndex;
+  readonly trackById = trackByFactory<Topic>('id');
 
   async onPageChange($event: number): Promise<void> {
     this.loading = true;

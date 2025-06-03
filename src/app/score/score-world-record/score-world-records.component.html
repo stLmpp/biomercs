@@ -10,10 +10,10 @@
     <div class="score-list" *ngIf="scoreTopTableList$ | async as scoreTopTable">
       <bio-loading *ngIf="tableLoading"></bio-loading>
       <bio-score-list
+        *ngFor="let character of scoreTopTable.scoreTables; trackBy: trackByScoreTableWithoutUndefined"
         title="{{ character.characterName }}{{
           character.characterCostumeName !== character.characterName ? ' ' + character.characterCostumeName : ''
         }}"
-        *ngFor="let character of scoreTopTable.scoreTables; trackBy: trackByScoreTableWithoutUndefined"
         collapsable
         [scores]="character.scores"
         class="card-score-list"
@@ -38,7 +38,7 @@
                 </bio-icon>
               </div>
               <div
-                *ngFor="let stage of scoreTopTable.stages; trackBy: trackById"
+                *ngFor="let stage of scoreTopTable.stages; trackBy: trackByStage"
                 [bioTooltip]="stage.name"
                 (click)="updateOrderByIdStage(stage.id)"
                 class="stage"

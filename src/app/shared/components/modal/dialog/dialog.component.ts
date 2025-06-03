@@ -5,8 +5,8 @@ import { MODAL_DATA } from '../modal.config';
 import { isBoolean, isFunction, isNotNil, isString } from 'st-utils';
 import { DialogData, DialogDataButton, DialogDataButtonType } from '@shared/components/modal/dialog/dialog-data';
 import { DialogType } from '@shared/components/modal/dialog/dialog-type.enum';
-import { trackById } from '@util/track-by';
 import { Destroyable } from '@shared/components/common/destroyable-component';
+import { trackByFactory } from '@stlmpp/utils';
 
 let uid = 1;
 
@@ -50,7 +50,7 @@ export class DialogComponent extends Destroyable implements OnInit {
   loading = false;
   readonly dialogType = DialogType;
   readonly typesWithoutIcon = [DialogType.confirm, DialogType.info];
-  readonly trackById = trackById;
+  readonly trackById = trackByFactory<DialogDataButtonInternal>('id');
 
   @HostBinding('class.success')
   get successClass(): boolean {

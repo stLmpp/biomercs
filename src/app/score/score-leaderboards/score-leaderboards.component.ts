@@ -21,8 +21,8 @@ import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { PaginationMeta } from '@model/pagination';
 import { Score, ScoreTable, ScoreTopTable } from '@model/score';
 import { LocalState } from '@stlmpp/store';
-import { trackById } from '@util/track-by';
 import { ScoreModalService } from '../score-modal.service';
+import { Stage } from '@model/stage';
 
 interface TopTableForm extends ParamsForm {
   page: number;
@@ -144,7 +144,7 @@ export class ScoreLeaderboardsComponent extends LocalState<ScoreLeaderboardsStat
     })
   );
 
-  readonly trackById = trackById;
+  readonly trackByStage = trackByFactory<Stage>('id');
   readonly trackByPlayer = trackByFactory<ScoreTable>('idPlayer');
 
   private _getItemsPerPageFromRoute(): number {

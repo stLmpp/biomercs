@@ -23,7 +23,7 @@
             </bio-icon>
           </div>
           <div
-            *ngFor="let stage of scores.stages; trackBy: trackById"
+            *ngFor="let stage of scores.stages; trackBy: trackByStage"
             (click)="updateOrderByStage(stage.id)"
             [bioTooltip]="stage.name"
           >
