@@ -1,4 +1,5 @@
 {
+  "$schema": "https://raw.githubusercontent.com/SchemaStore/schemastore/refs/heads/master/src/schemas/json/web-manifest.json",
   "name": "Biomercs",
   "short_name": "Biomercs",
   "theme_color": "#1976d2",
