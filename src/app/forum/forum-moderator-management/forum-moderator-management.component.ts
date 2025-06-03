@@ -31,7 +31,7 @@ export class ForumModeratorManagementComponent extends Destroyable implements On
   saving = false;
   loadingPlayers = false;
 
-  // Map has idPlayer as key, and idModerator as value
+  // Map has idPlayer as a key, and idModerator as value
   readonly moderatorsDeletedMap = new Map<number, number>();
   moderators: ModeratorWithInfo[] = [];
   moderatorsSelected: ModeratorWithInfo[] = [];

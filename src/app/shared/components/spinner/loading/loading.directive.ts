@@ -1,10 +1,8 @@
 import {
   AfterViewInit,
-  ComponentFactoryResolver,
   Directive,
   ElementRef,
   HostBinding,
-  Injector,
   Input,
   OnDestroy,
   OnInit,
@@ -21,14 +19,11 @@ import { BooleanInput, coerceBooleanProperty } from 'st-utils';
 export class LoadingDirective implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private viewContainerRef: ViewContainerRef,
-    private componentFactoryResolver: ComponentFactoryResolver,
-    private injector: Injector,
     private renderer2: Renderer2,
     private elementRef: ElementRef
   ) {}
 
-  private readonly _componentFactory = this.componentFactoryResolver.resolveComponentFactory(LoadingComponent);
-  private readonly _componentRef = this.viewContainerRef.createComponent(this._componentFactory);
+  private readonly _componentRef = this.viewContainerRef.createComponent(LoadingComponent);
 
   private _loading = false;
   private _bioLoadingNoBox = false;

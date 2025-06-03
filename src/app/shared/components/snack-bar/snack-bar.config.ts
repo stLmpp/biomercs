@@ -1,4 +1,4 @@
-import { ComponentFactoryResolver, InjectionToken, ViewContainerRef } from '@angular/core';
+import { InjectionToken, ViewContainerRef } from '@angular/core';
 import { Observable } from 'rxjs';
 import { v4 } from 'uuid';
 
@@ -17,7 +17,6 @@ export class SnackBarConfig {
 
   actionObservable?: Observable<any>;
   viewContainerRef?: ViewContainerRef;
-  componentFactoryResolver?: ComponentFactoryResolver;
   timeout: number | null | undefined = 5000;
   timeoutCloseWithObservable = false;
 }

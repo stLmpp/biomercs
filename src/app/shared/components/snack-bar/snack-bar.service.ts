@@ -36,12 +36,7 @@ export class SnackBarService {
         { provide: OverlayRef, useValue: overlayRef },
       ],
     });
-    const componentPortal = new ComponentPortal(
-      SnackBarComponent,
-      config.viewContainerRef,
-      injector,
-      config.componentFactoryResolver
-    );
+    const componentPortal = new ComponentPortal(SnackBarComponent, config.viewContainerRef, injector);
     const componentRef = overlayRef.attach(componentPortal);
     componentRef.instance.actionObservable = config.actionObservable;
     componentRef.instance.action = config.action;

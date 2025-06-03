@@ -41,7 +41,7 @@ export class CalendarAdapter {
     });
     // Verify if the total of days has at least 6 weeks
     if ((days.length + padStart + padEnd) / daysInWeek < 6) {
-      // If the padStart if 0, add padding to the start
+      // If the padStart is 0, add padding to the start
       if (!padStart) {
         padStart += daysInWeek;
       } else {
@@ -49,7 +49,7 @@ export class CalendarAdapter {
       }
     }
     if (padStart) {
-      // If has padStart simply add the days to the beginning of the array
+      // If has padStart, simply add the days to the beginning of the array
       const lastMonthDate = endOfMonth(subMonths(date, 1));
       let day = lastMonthDate.getDate();
       days.unshift(
@@ -63,7 +63,7 @@ export class CalendarAdapter {
       );
     }
     if (padEnd) {
-      // If has padEnd add the days to the end of the array
+      // If has padEnd, add the days to the end of the array
       let day = 1;
       const nextMonth = addMonths(date, 1);
       days.push(

@@ -12,7 +12,7 @@ export class ScrollService {
     if (element instanceof ElementRef) {
       element = element.nativeElement as HTMLElement;
     }
-    const y = element.getBoundingClientRect().top + this.window.pageYOffset + offset;
+    const y = element.getBoundingClientRect().top + this.window.scrollY + offset;
     this.window.scrollTo({ top: y, behavior: 'smooth' });
   }
 }

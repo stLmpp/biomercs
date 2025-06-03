@@ -6,7 +6,6 @@ import { PlayerChangeRequestsModalComponent } from './player-change-requests-mod
 import { CurrencyMaskModule } from '@shared/currency-mask/currency-mask.module';
 import { MaskModule } from '@shared/mask/mask.module';
 import { PlayerChangeRequestsActionCellComponent } from './player-change-requests-action-cell/player-change-requests-action-cell.component';
-import { ScoreListModule } from '../../score/score-list/score-list.module';
 import { TitleModule } from '@shared/title/title.module';
 import { ScoreApprovalModule } from '../../score/score-approval/score-approval.module';
 

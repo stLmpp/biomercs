@@ -1,4 +1,4 @@
-import { ComponentFactoryResolver, InjectionToken, ViewContainerRef } from '@angular/core';
+import { InjectionToken, ViewContainerRef } from '@angular/core';
 import { v4 } from 'uuid';
 import { ScrollStrategy } from '@angular/cdk/overlay';
 import { LazyFn } from '../../../core/dynamic-loader.service';
@@ -24,7 +24,6 @@ export class ModalConfig<D = any> {
   restoreFocus = true;
   scrollStrategy?: ScrollStrategy;
   viewContainerRef?: ViewContainerRef;
-  componentFactoryResolver?: ComponentFactoryResolver;
 }
 
 export type ModalConfigLazy<D = any> = Partial<ModalConfig<D> & { module: LazyFn }>;

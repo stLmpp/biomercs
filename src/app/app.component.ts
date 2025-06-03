@@ -5,7 +5,7 @@ import { MetaService } from '@shared/meta/meta.service';
 import { GlobalListenersService } from '@shared/services/global-listeners/global-listeners.service';
 import { Destroyable } from '@shared/components/common/destroyable-component';
 import { DOCUMENT } from '@angular/common';
-import { auditTime, distinctUntilChanged, from, map, startWith } from 'rxjs';
+import { auditTime, distinctUntilChanged, filter, from, map, startWith } from 'rxjs';
 import { WINDOW } from './core/window.service';
 import { BreadcrumbsService } from '@shared/breadcrumbs/breadcrumbs.service';
 import { SwUpdate } from '@angular/service-worker';
@@ -53,21 +53,26 @@ export class AppComponent extends Destroyable implements OnInit, OnDestroy {
   }
 
   private _listenToSwUpdate(): void {
-    this.swUpdate.available.pipe(this.takeUntilDestroy()).subscribe(() => {
-      this.dialogService
-        .info({
-          title: `There's a new version of the app`,
-          content: 'The app will updated and then reloaded',
-          buttons: [
-            {
-              title: 'Update and reload',
-              action: () => from(this.swUpdate.activateUpdate().then(() => this.document.location.reload())),
-              type: 'primary',
-            },
-          ],
-        })
-        .then();
-    });
+    this.swUpdate.versionUpdates
+      .pipe(
+        this.takeUntilDestroy(),
+        filter(event => event.type === 'VERSION_READY')
+      )
+      .subscribe(() => {
+        this.dialogService
+          .info({
+            title: `There's a new version of the app`,
+            content: 'The app will updated and then reloaded',
+            buttons: [
+              {
+                title: 'Update and reload',
+                action: () => from(this.swUpdate.activateUpdate().then(() => this.document.location.reload())),
+                type: 'primary',
+              },
+            ],
+          })
+          .then();
+      });
   }
 
   ngOnInit(): void {
