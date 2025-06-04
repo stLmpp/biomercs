@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { ChangePasswordConfirmComponent } from './change-password-confirm/change-password-confirm.component';
-import { ChangePasswordValidateGuard } from './change-password-validate.guard';
+import { changePasswordValidateGuard } from './change-password-validate.guard';
 
 const routes: Routes = [
   {
@@ -13,7 +13,7 @@ const routes: Routes = [
   {
     path: `confirm/:${RouteParamEnum.key}`,
     component: ChangePasswordConfirmComponent,
-    canActivate: [ChangePasswordValidateGuard],
+    canActivate: [changePasswordValidateGuard()],
   },
 ];
 

@@ -1,22 +1,16 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { map, Observable } from 'rxjs';
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+import { map } from 'rxjs';
 import { PlayerService } from '../player.service';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class PlayerProfilePersonaNameGuard implements CanActivate {
-  constructor(private playerService: PlayerService, private router: Router) {}
-
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+export function playerProfilePersonaNameGuard(): CanActivateFn {
+  return route => {
+    const router = inject(Router);
+    const playerService = inject(PlayerService);
     const personaName = route.paramMap.get(RouteParamEnum.personaName)!;
-    return this.playerService
+    return playerService
       .getIdByPersonaName(personaName)
-      .pipe(map(idPlayer => this.router.createUrlTree(['/player', idPlayer])));
-  }
+      .pipe(map(idPlayer => router.createUrlTree(['/player', idPlayer])));
+  };
 }

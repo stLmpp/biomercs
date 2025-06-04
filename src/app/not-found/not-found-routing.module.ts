@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { NotFoundComponent } from './not-found.component';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { createMeta } from '@shared/meta/meta';
-import { NotFoundResolver } from './not-found.resolver';
+import { notFoundResolver } from './not-found.resolver';
 
 export const routes: Routes = [
   {
@@ -17,7 +17,7 @@ export const routes: Routes = [
       }),
     },
     resolve: {
-      [RouteDataEnum.possiblePaths]: NotFoundResolver,
+      [RouteDataEnum.possiblePaths]: notFoundResolver(),
     },
   },
 ];

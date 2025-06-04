@@ -1,24 +1,20 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { inject } from '@angular/core';
+import { ResolveFn } from '@angular/router';
 import { ScoreGroupedByStatus } from '@model/score-grouped-by-status';
 import { ScoreService } from '../../score/score.service';
 import { AuthQuery } from '../../auth/auth.query';
-import { Observable } from 'rxjs';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 
-@Injectable({ providedIn: 'root' })
-export class PlayerRejectedPendingScoresResolver implements Resolve<ScoreGroupedByStatus[]> {
-  constructor(private scoreService: ScoreService, private authQuery: AuthQuery) {}
+export function playerRejectedPendingScoresResolver(): ResolveFn<ScoreGroupedByStatus[]> {
+  return route => {
+    const scoreService = inject(ScoreService);
+    const authQuery = inject(AuthQuery);
 
-  resolve(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): Observable<ScoreGroupedByStatus[]> | Promise<ScoreGroupedByStatus[]> | ScoreGroupedByStatus[] {
     const idPlayer = +route.paramMap.get(RouteParamEnum.idPlayer)!;
-    if (this.authQuery.getIsSameAsLogged(idPlayer)) {
-      return this.scoreService.findRejectedAndPendingScoresByIdUser();
+    if (authQuery.getIsSameAsLogged(idPlayer)) {
+      return scoreService.findRejectedAndPendingScoresByIdUser();
     } else {
       return [];
     }
-  }
+  };
 }

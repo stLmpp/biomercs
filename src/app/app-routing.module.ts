@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { AuthAdminGuard } from './auth/auth-admin.guard';
-import { AuthLoggedGuard } from './auth/auth-logged.guard';
+import { RouterModule, Routes } from '@angular/router';
+import { authAdminGuard } from './auth/auth-admin.guard';
+import { authLoggedGuard } from './auth/auth-logged.guard';
 
 const routes: Routes = [
   { path: '', loadChildren: () => import('./home/home.module').then(m => m.HomeModule), pathMatch: 'full' },
   {
     path: 'admin',
     loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule),
-    canLoad: [AuthAdminGuard],
+    canMatch: [authAdminGuard()],
   },
   { path: 'auth', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule) },
   { path: 'contact', loadChildren: () => import('./contact/contact.module').then(m => m.ContactModule) },
@@ -16,18 +16,18 @@ const routes: Routes = [
   {
     path: 'forum',
     loadChildren: () => import('./forum/forum.module').then(m => m.ForumModule),
-    canLoad: [AuthLoggedGuard],
+    canMatch: [authLoggedGuard()],
   },
   {
     path: 'player',
     loadChildren: () => import('./player/player.module').then(m => m.PlayerModule),
-    canLoad: [AuthLoggedGuard],
+    canMatch: [authLoggedGuard()],
   },
   { path: 'rules', loadChildren: () => import('./rules/rules.module').then(m => m.RulesModule) },
   {
     path: 'score',
     loadChildren: () => import('./score/score.module').then(m => m.ScoreModule),
-    canLoad: [AuthLoggedGuard],
+    canMatch: [authLoggedGuard()],
   },
   {
     path: 'stlmpp',

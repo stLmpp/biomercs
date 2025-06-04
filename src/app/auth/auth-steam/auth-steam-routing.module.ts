@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { SteamRegisterComponent } from './steam-register/steam-register.component';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
-import { SteamRegisterGuard } from './steam-register/steam-register.guard';
+import { steamRegisterGuard } from './steam-register/steam-register.guard';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { createMeta } from '@shared/meta/meta';
-import { SteamValidateNamesResolver } from './steam-register/steam-validate-names.resolver';
+import { steamValidateNamesResolver } from './steam-register/steam-validate-names.resolver';
 
 const routes: Routes = [
   {
     path: `:${RouteParamEnum.steamid}`,
-    canActivate: [SteamRegisterGuard],
+    canActivate: [steamRegisterGuard()],
     children: [
       {
         path: 'register',
@@ -20,7 +20,7 @@ const routes: Routes = [
           [RouteDataEnum.meta]: createMeta({ title: 'Register steam', description: 'Register steam' }),
         },
         resolve: {
-          [RouteDataEnum.steamValidateNames]: SteamValidateNamesResolver,
+          [RouteDataEnum.steamValidateNames]: steamValidateNamesResolver(),
         },
       },
       {

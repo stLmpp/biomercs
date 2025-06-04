@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { inject, Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, CanDeactivateFn, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { isObservable, Observable, of, switchMap, take } from 'rxjs';
 import { isNil, isObject, isString } from 'st-utils';
 import { DialogService } from '@shared/components/modal/dialog/dialog.service';
@@ -15,9 +15,14 @@ export interface UnsavedData {
   ): UnsavedDataType | Observable<UnsavedDataType>;
 }
 
+export function unsavedDataGuard<T extends UnsavedData = any>(): CanDeactivateFn<T> {
+  return (component, currentRoute, currentState, nextState) =>
+    inject(UnsavedDataGuard).canDeactivate(component, currentRoute, currentState, nextState);
+}
+
 @Injectable({ providedIn: 'root' })
-export class UnsavedDataGuard<T extends UnsavedData = any> implements CanDeactivate<T> {
-  constructor(private dialogService: DialogService) {}
+export class UnsavedDataGuard<T extends UnsavedData = any> {
+  constructor(private readonly dialogService: DialogService) {}
 
   private _resolveData(data: UnsavedDataType): Observable<boolean> {
     if (isNil(data) || data === false) {

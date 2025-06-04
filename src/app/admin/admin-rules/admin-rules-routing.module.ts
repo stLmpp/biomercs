@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminRulesComponent } from './admin-rules.component';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
-import { RuleResolver } from '../../rules/rule.resolver';
-import { UnsavedDataGuard } from '@shared/guards/unsaved-data.guard';
+import { ruleResolver } from '../../rules/rule.resolver';
+import { unsavedDataGuard } from '@shared/guards/unsaved-data.guard';
 
 const routes: Routes = [
   {
@@ -13,9 +13,9 @@ const routes: Routes = [
       [RouteDataEnum.title]: 'Edit rules',
     },
     resolve: {
-      [RouteDataEnum.rules]: RuleResolver,
+      [RouteDataEnum.rules]: ruleResolver(),
     },
-    canDeactivate: [UnsavedDataGuard],
+    canDeactivate: [unsavedDataGuard()],
   },
 ];
 

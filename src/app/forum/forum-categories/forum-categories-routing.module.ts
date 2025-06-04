@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ForumCategoriesComponent } from './forum-categories.component';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
-import { CategoriesWithRecentTopicsResolver } from '../resolver/categories-with-recent-topics.resolver';
+import { categoriesWithRecentTopicsResolver } from '../resolver/categories-with-recent-topics.resolver';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 
 const routes: Routes = [
@@ -10,7 +10,7 @@ const routes: Routes = [
     path: '',
     component: ForumCategoriesComponent,
     resolve: {
-      [RouteDataEnum.categoriesWithRecentTopics]: CategoriesWithRecentTopicsResolver,
+      [RouteDataEnum.categoriesWithRecentTopics]: categoriesWithRecentTopicsResolver(),
     },
   },
   {

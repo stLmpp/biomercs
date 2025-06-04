@@ -7,7 +7,7 @@ import { InputmaskService } from '@shared/inputmask/inputmask.service';
 
 @Directive({
   selector: 'input[bioDatepicker]',
-  providers: [{ provide: ControlValue, useExisting: DatepickerDirective, multi: false }],
+  providers: [{ provide: ControlValue, useExisting: DatepickerDirective, multi: true }],
 })
 export class DatepickerDirective extends ControlValue<Date | null | undefined> implements OnInit {
   constructor(

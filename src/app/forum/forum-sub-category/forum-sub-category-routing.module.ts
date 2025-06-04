@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ForumSubCategoryComponent } from './forum-sub-category.component';
-import { SubCategoryWithTopicsResolver } from '../resolver/sub-category-with-topics.resolver';
+import { subCategoryWithTopicsResolver } from '../resolver/sub-category-with-topics.resolver';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { ForumSubCategoryBreadcrumbResolver } from './forum-sub-category.breadcrumb-resolver';
-import { ForumRedirectTopicPostGuard } from '../guard/forum-redirect-topic-post.guard';
+import { forumRedireectTopicPostGuard } from '../guard/forum-redirect-topic-post.guard';
 
 const routes: Routes = [
   {
     path: `page/:${RouteParamEnum.pageSubCategory}`,
     resolve: {
-      [RouteDataEnum.subCategoryWithTopics]: SubCategoryWithTopicsResolver,
+      [RouteDataEnum.subCategoryWithTopics]: subCategoryWithTopicsResolver(),
     },
     data: {
       [RouteDataEnum.breadcrumbs]: ForumSubCategoryBreadcrumbResolver,
@@ -21,7 +21,7 @@ const routes: Routes = [
         path: '',
         component: ForumSubCategoryComponent,
         resolve: {
-          [RouteDataEnum.subCategoryWithTopics]: SubCategoryWithTopicsResolver,
+          [RouteDataEnum.subCategoryWithTopics]: subCategoryWithTopicsResolver(),
         },
       },
       {
@@ -36,7 +36,7 @@ const routes: Routes = [
   },
   {
     path: `topic/:${RouteParamEnum.idTopic}/post/:${RouteParamEnum.idPost}`,
-    canActivate: [ForumRedirectTopicPostGuard],
+    canActivate: [forumRedireectTopicPostGuard()],
   },
 ];
 

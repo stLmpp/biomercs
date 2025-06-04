@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PlayerProfilePersonaNameGuard } from './player-profile/player-profile-persona-name.guard';
+import { playerProfilePersonaNameGuard } from './player-profile/player-profile-persona-name.guard';
 import { RouteParamEnum } from '@model/enum/route-param.enum';
 
 const routes: Routes = [
   {
     path: `p/:${RouteParamEnum.personaName}`,
-    canActivate: [PlayerProfilePersonaNameGuard],
+    canActivate: [playerProfilePersonaNameGuard()],
+    children: [],
   },
   {
     path: `:${RouteParamEnum.idPlayer}`,

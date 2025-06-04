@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { RulesComponent } from './rules.component';
 import { RouteDataEnum } from '@model/enum/route-data.enum';
 import { createMeta } from '@shared/meta/meta';
-import { RuleResolver } from './rule.resolver';
+import { ruleResolver } from './rule.resolver';
 
 const routes: Routes = [
   {
@@ -14,7 +14,7 @@ const routes: Routes = [
       [RouteDataEnum.meta]: createMeta({ title: 'Rules', description: 'Rules' }),
     },
     resolve: {
-      [RouteDataEnum.rules]: RuleResolver,
+      [RouteDataEnum.rules]: ruleResolver(),
     },
   },
 ];
